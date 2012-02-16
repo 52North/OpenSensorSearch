@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SensorML xmlns="http://www.opengis.net/sensorML/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd" version="1.0.1">
+	<member>
+		<System>
+			<!--~~~~~~~~~~~~~~~~~~~ -->
+			<!--General Sensor Info -->
+			<!--~~~~~~~~~~~~~~~~~~~ -->
+			<gml:description>Network video camera at ifgi for testing of SPS.</gml:description>
+			<keywords>
+				<KeywordList>
+					<keyword>camera</keyword>
+					<keyword>surveillance</keyword>
+					<keyword>monitoring</keyword>
+				</KeywordList>
+			</keywords>
+			<identification>
+				<IdentifierList>
+					<identifier name="uniqueID">
+						<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+							<value>urn:ogc:object:feature:Sensor:52n:ifgicam_flur</value>
+						</Term>
+					</identifier>
+					<identifier name="longName">
+						<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+							<value>Network Video Camera</value>
+						</Term>
+					</identifier>
+					<identifier name="shortName">
+						<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+							<value>VideoCam</value>
+						</Term>
+					</identifier>
+				</IdentifierList>
+			</identification>
+			<classification>
+				<ClassifierList>
+					<classifier name="sensor_type">
+						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+							<value>video camera</value>
+						</Term>
+					</classifier>
+					<classifier name="application">
+						<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+							<value>surrveillance</value>
+						</Term>
+					</classifier>
+					<classifier name="application">
+						<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+							<value>remote monitoring</value>
+						</Term>
+					</classifier>
+				</ClassifierList>
+			</classification>
+			<!--~~~~~~~~~~-->
+			<!--Valid time-->
+			<!--~~~~~~~~~~-->
+			<validTime>
+				<gml:TimePeriod>
+					<gml:beginPosition>2010-01-01</gml:beginPosition>
+					<gml:endPosition>2010-12-31</gml:endPosition>
+				</gml:TimePeriod>
+			</validTime>
+			<!--~~~~~~~~~~~~-->
+			<!--Capabilities-->
+			<!--~~~~~~~~~~~~-->
+			<capabilities>
+				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+					<swe:field name="horizontalResolution">
+						<swe:Quantity definition="horizontalResolution">
+							<gml:description>The horizontal resolution of the camera.</gml:description>
+							<swe:value>704</swe:value>
+						</swe:Quantity>
+					</swe:field>
+					<swe:field name="verticalResolution">
+						<swe:Quantity definition="verticalResolution">
+							<gml:description>The vertical resolution of the camera.</gml:description>
+							<swe:value>576</swe:value>
+						</swe:Quantity>
+					</swe:field>
+					<swe:field name="zoomRange">
+						<!-- uom="urn:ogc:def:uom:OGC:1.0.30:mm" -->
+						<swe:QuantityRange definition="urn:ogc:def:phenomenon:OGC:1.0.30:FocalLength">
+							<swe:value>3.5 91</swe:value>
+						</swe:QuantityRange>
+					</swe:field>
+					<swe:field name="observedBBOX">
+						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+							<gml:description>Observed BBOX does not apply for indoor camera, is just position.</gml:description>
+							<swe:lowerCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>51.9412</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>7.6103</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:lowerCorner>
+							<swe:upperCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>51.9412</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>7.6103</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:upperCorner>
+						</swe:Envelope>
+					</swe:field>
+				</swe:DataRecord>
+			</capabilities>
+			<!--~~~~~~~-->
+			<!--Contact-->
+			<!--~~~~~~~-->
+			<contact>
+				<ResponsibleParty gml:id="ifgicam_contact">
+					<individualName>Nüst, Daniel</individualName>
+					<organizationName>Institute for Geoinformatics, Muenster, Germany.</organizationName>
+					<contactInfo>
+						<phone>
+							<voice>+49 251 83 31962</voice>
+							<facsimile>+49 251 83 39763</facsimile>
+						</phone>
+						<address>
+							<deliveryPoint>Weselerstr. 253</deliveryPoint>
+							<city>Münster</city>
+							<administrativeArea>North Rhine-Westfalia</administrativeArea>
+							<postalCode>49151</postalCode>
+							<country>Germany</country>
+							<electronicMailAddress>daniel.nuest@uni-muenster.de</electronicMailAddress>
+						</address>
+					</contactInfo>
+				</ResponsibleParty>
+			</contact>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Camera Coordinate Frame -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<spatialReferenceFrame>
+				<gml:EngineeringCRS gml:id="CAMERA_FRAME">
+					<gml:srsName>Camera Frame</gml:srsName>
+					<gml:usesCS xlink:href="urn:ogc:cs:xyzFrame"/>
+					<gml:usesEngineeringDatum>
+						<gml:EngineeringDatum gml:id="CAMERA_DATUM">
+							<gml:datumName>
+								Image Datum
+                      </gml:datumName>
+							<gml:anchorPoint>
+								origin is the intersection of the
+								image plane and the	focal axis; can thus be
+								considered as the center of the image frame.
+								z is along focal axis in direction of view out; x
+								is parallel to the center scan line of the
+								CCD, y is parallel to the center column of the
+								CCD.
+                      </gml:anchorPoint>
+						</gml:EngineeringDatum>
+					</gml:usesEngineeringDatum>
+				</gml:EngineeringCRS>
+			</spatialReferenceFrame>
+			<!--~~~~~~~~~-->
+			<!--Position -->
+			<!--~~~~~~~~~-->
+			<position name="camera_position">
+				<swe:Position fixed="true" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+					<swe:location>
+						<swe:Vector gml:id="cam_location">
+							<swe:coordinate name="latitude">
+								<swe:Quantity axisID="y">
+									<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+									<swe:value>51.9412</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="longitude">
+								<swe:Quantity axisID="x">
+									<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+									<swe:value>7.6103</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="altitude">
+								<swe:Quantity axisID="z">
+									<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
+									<swe:value>200</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:location>
+				</swe:Position>
+			</position>
+			<!--~~~~~~~~~~~~~~~~~-->
+			<!--System Interfaces-->
+			<!--~~~~~~~~~~~~~~~~~-->
+			<interfaces>
+				<InterfaceList>
+					<interface name="IFGI-SPS">
+						<InterfaceDefinition>
+							<serviceLayer>
+								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://to.be.added/sps
+										</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SPS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>urn:ogc:object:feature:Sensor:52n:ifgicam_flur</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</serviceLayer>
+						</InterfaceDefinition>
+					</interface>
+				</InterfaceList>
+			</interfaces>
+			<!--~~~~~~~~~~~~~ -->
+			<!--Sensor Inputs -->
+			<!--~~~~~~~~~~~~~ -->
+			<inputs>
+				<InputList>
+					<input name="radiance">
+						<!-- originally swe:Quantity -->
+						<swe:ObservableProperty definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance"/>
+					</input>
+					<input name="rowIndex">
+						<swe:ObservableProperty definition="urn:ogc:data:index:row"/>
+						<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 576</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count>-->
+					</input>
+					<input name="columnIndex">
+						<swe:ObservableProperty definition="urn:ogc:data:index:column"/>
+						<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 704</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count> -->
+					</input>
+				</InputList>
+			</inputs>
+			<!--~~~~~~~~~~~~~~ -->
+			<!--Sensor Outputs -->
+			<!--~~~~~~~~~~~~~~ -->
+			<outputs>
+				<OutputList>
+					<output name="videoFrame">
+						<swe:DataArray gml:id="VIDEO_FRAME" definition="urn:ogc:data:image:column">
+							<swe:elementCount>
+								<swe:Count>
+									<swe:value>704</swe:value>
+								</swe:Count>
+							</swe:elementCount>
+							<swe:elementType name="scanLine">
+								<swe:DataArray definition="urn:ogc:data:image:row">
+									<swe:elementCount>
+										<swe:Count>
+											<swe:value>576</swe:value>
+										</swe:Count>
+									</swe:elementCount>
+									<swe:elementType name="pixel">
+										<swe:SimpleDataRecord definition="urn:ogc:data:image:pixel">
+											<swe:field name="red">
+												<swe:Quantity definition="urn:ogc:data:DN"/>
+											</swe:field>
+											<swe:field name="green">
+												<swe:Quantity definition="urn:ogc:data:DN"/>
+											</swe:field>
+											<swe:field name="blue">
+												<swe:Quantity definition="urn:ogc:data:DN"/>
+											</swe:field>
+										</swe:SimpleDataRecord>
+									</swe:elementType>
+								</swe:DataArray>
+							</swe:elementType>
+						</swe:DataArray>
+					</output>
+				</OutputList>
+			</outputs>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Internal transducers (one for each channel) -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<components>
+				<ComponentList>
+					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<!-- Red Channel Specifications -->
+					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<component name="redChannel">
+						<Component>
+							<gml:description>The red channel of a camera.</gml:description>
+							<keywords>
+								<KeywordList>
+									<keyword>red</keyword>
+									<keyword>camera colour channel</keyword>
+								</KeywordList>
+							</keywords>
+							<identification>
+								<IdentifierList>
+									<identifier name="uniqueID">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+											<value>urn:ogc:object:feature:Sensor:52n:ifgicam_flur:red_channel</value>
+										</Term>
+									</identifier>
+									<identifier name="longName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+											<value>Red Channel</value>
+										</Term>
+									</identifier>
+									<identifier name="shortName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+											<value>Red</value>
+										</Term>
+									</identifier>
+								</IdentifierList>
+							</identification>
+							<classification>
+								<ClassifierList>
+									<classifier name="sensorType">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+											<value>image sensor</value>
+										</Term>
+									</classifier>
+									<classifier name="intendedApplication">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+											<value>imaging</value>
+										</Term>
+									</classifier>
+								</ClassifierList>
+							</classification>
+							<contact xlink:href="#ifgicam_contact" />
+							<inputs>
+								<InputList>
+									<input name="radiance">
+										<!-- originally swe:Quantity -->
+										<swe:ObservableProperty definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance"/>
+									</input>
+									<input name="rowIndex">
+										<swe:ObservableProperty definition="urn:ogc:data:index:row"/>
+										<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 576</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count>-->
+									</input>
+									<input name="columnIndex">
+										<swe:ObservableProperty definition="urn:ogc:data:index:column"/>
+										<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 704</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count> -->
+									</input>
+								</InputList>
+							</inputs>
+							<outputs>
+								<OutputList>
+									<output name="redPixel">
+										<swe:Quantity definition="urn:ogc:data:DN">
+											<swe:uom code="NA"/>
+										</swe:Quantity>
+									</output>
+								</OutputList>
+							</outputs>
+							<parameters>
+								<ParameterList>
+									<parameter name="radianceCurve">
+										<!-- one could specify steady-state response for each channel if 
+										they had this info -->
+										<!-- for typical consumer video cams, this may not be available -->
+										<swe:NormalizedCurve>
+											<swe:function>
+												<swe:Curve>
+													<swe:elementCount>
+														<swe:Count>
+															<swe:value>20</swe:value>
+														</swe:Count>
+													</swe:elementCount>
+													<swe:elementType>
+														<swe:SimpleDataRecord>
+															<!-- define calibration of radiance to DN if you have it -->
+															<swe:field name="radiance">
+																<swe:Quantity axisID="x" definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance">
+																	<swe:uom code="W.m-2.Sr-1.um-1"/>
+																</swe:Quantity>
+															</swe:field>
+															<swe:field name="digitalNumber">
+																<swe:Quantity axisID="y" definition="urn:ogc:data:DN"/>
+															</swe:field>
+															<!-- NOTE:would put calibration values here -
+													<swe:tupleValues/>-->
+														</swe:SimpleDataRecord>
+													</swe:elementType>
+												</swe:Curve>
+											</swe:function>
+										</swe:NormalizedCurve>
+										<!-- sample position left out -->
+									</parameter>
+								</ParameterList>
+							</parameters>
+							<method xlink:href="urn:ogc:process:transducer"/>
+						</Component>
+					</component>
+					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<!-- Green Channel Specifications -->
+					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<component name="greenChannel">
+						<Component>
+							<gml:description>The green channel of a camera.</gml:description>
+							<keywords>
+								<KeywordList>
+									<keyword>green</keyword>
+									<keyword>camera colour channel</keyword>
+								</KeywordList>
+							</keywords>
+							<identification>
+								<IdentifierList>
+									<identifier name="uniqueID">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+											<value>urn:ogc:object:feature:Sensor:52n:ifgicam_flur:green_channel</value>
+										</Term>
+									</identifier>
+									<identifier name="longName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+											<value>Green Channel</value>
+										</Term>
+									</identifier>
+									<identifier name="shortName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+											<value>Green</value>
+										</Term>
+									</identifier>
+								</IdentifierList>
+							</identification>
+							<classification>
+								<ClassifierList>
+									<classifier name="sensorType">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+											<value>image sensor</value>
+										</Term>
+									</classifier>
+									<classifier name="intendedApplication">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+											<value>imaging</value>
+										</Term>
+									</classifier>
+								</ClassifierList>
+							</classification>
+							<contact xlink:href="#ifgicam_contact" />
+							<inputs>
+								<InputList>
+									<input name="radiance">
+										<!-- originally swe:Quantity -->
+										<swe:ObservableProperty definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance"/>
+									</input>
+									<input name="rowIndex">
+										<swe:ObservableProperty definition="urn:ogc:data:index:row"/>
+										<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 576</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count>-->
+									</input>
+									<input name="columnIndex">
+										<swe:ObservableProperty definition="urn:ogc:data:index:column"/>
+										<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 704</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count> -->
+									</input>
+								</InputList>
+							</inputs>
+							<outputs>
+								<OutputList>
+									<output name="greenPixel">
+										<swe:Quantity definition="urn:ogc:data:DN">
+											<swe:uom code="NA"/>
+										</swe:Quantity>
+									</output>
+								</OutputList>
+							</outputs>
+							<parameters>
+								<ParameterList>
+									<parameter name="radianceCurve">
+										<!-- one could specify steady-state response for each channel if 
+										they had this info -->
+										<!-- for typical consumer video cams, this may not be available -->
+										<swe:NormalizedCurve>
+											<swe:function>
+												<swe:Curve>
+													<swe:elementCount>
+														<swe:Count>
+															<swe:value>20</swe:value>
+														</swe:Count>
+													</swe:elementCount>
+													<swe:elementType>
+														<swe:SimpleDataRecord>
+															<!-- define calibration of radiance to DN if you have it -->
+															<swe:field name="radiance">
+																<swe:Quantity axisID="x" definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance">
+																	<swe:uom code="W.m-2.Sr-1.um-1"/>
+																</swe:Quantity>
+															</swe:field>
+															<swe:field name="digitalNumber">
+																<swe:Quantity axisID="y" definition="urn:ogc:data:DN"/>
+															</swe:field>
+															<!-- NOTE:would put calibration values here 
+													<swe:tupleValues/>-->
+														</swe:SimpleDataRecord>
+													</swe:elementType>
+												</swe:Curve>
+											</swe:function>
+										</swe:NormalizedCurve>
+										<!-- look angles are the same as red channel, so simply point to 
+										it <samplePosition xlink:href="#SAMPLE_POSITION"/> -->
+									</parameter>
+								</ParameterList>
+							</parameters>
+							<method xlink:href="urn:ogc:process:transducer"/>
+						</Component>
+					</component>
+					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<!-- Blue Channel Specifications -->
+					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+					<component name="blueChannel">
+						<Component>
+							<gml:description>The blue channel of a camera.</gml:description>
+							<keywords>
+								<KeywordList>
+									<keyword>blue</keyword>
+									<keyword>camera colour channel</keyword>
+								</KeywordList>
+							</keywords>
+							<identification>
+								<IdentifierList>
+									<identifier name="uniqueID">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+											<value>urn:ogc:object:feature:Sensor:52n:ifgicam_flur:blue_channel</value>
+										</Term>
+									</identifier>
+									<identifier name="longName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+											<value>Blue Channel</value>
+										</Term>
+									</identifier>
+									<identifier name="shortName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+											<value>Blue</value>
+										</Term>
+									</identifier>
+								</IdentifierList>
+							</identification>
+							<classification>
+								<ClassifierList>
+									<classifier name="sensorType">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+											<value>image sensor</value>
+										</Term>
+									</classifier>
+									<classifier name="intendedApplication">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+											<value>imaging</value>
+										</Term>
+									</classifier>
+								</ClassifierList>
+							</classification>
+							<contact xlink:href="#ifgicam_contact" />
+							<inputs>
+								<InputList>
+									<input name="radiance">
+										<!-- originally swe:Quantity -->
+										<swe:ObservableProperty definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance"/>
+									</input>
+									<input name="rowIndex">
+										<swe:ObservableProperty definition="urn:ogc:data:index:row"/>
+										<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 576</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count>-->
+									</input>
+									<input name="columnIndex">
+										<swe:ObservableProperty definition="urn:ogc:data:index:column"/>
+										<!-- originally swe:Quantity with <swe:Count definition="urn:ogc:data:index">
+											<swe:constraint>
+												<swe:AllowedValues>
+													<swe:interval>1 704</swe:interval>
+												</swe:AllowedValues>
+											</swe:constraint>
+										</swe:Count> -->
+									</input>
+								</InputList>
+							</inputs>
+							<outputs>
+								<OutputList>
+									<output name="greenPixel">
+										<swe:Quantity definition="urn:ogc:data:DN">
+											<swe:uom code="NA"/>
+										</swe:Quantity>
+									</output>
+								</OutputList>
+							</outputs>
+							<parameters>
+								<ParameterList>
+									<parameter name="radianceCurve">
+										<!-- one could specify steady-state response for each channel if 
+										they had this info -->
+										<!-- for typical consumer video cams, this may not be available -->
+										<swe:NormalizedCurve>
+											<swe:function>
+												<swe:Curve>
+													<swe:elementCount>
+														<swe:Count>
+															<swe:value>20</swe:value>
+														</swe:Count>
+													</swe:elementCount>
+													<swe:elementType>
+														<swe:SimpleDataRecord>
+															<!-- define calibration of radiance to DN if you have it -->
+															<swe:field name="radiance">
+																<swe:Quantity axisID="x" definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance">
+																	<swe:uom code="W.m-2.Sr-1.um-1"/>
+																</swe:Quantity>
+															</swe:field>
+															<swe:field name="digitalNumber">
+																<swe:Quantity axisID="y" definition="urn:ogc:data:DN"/>
+															</swe:field>
+															<!-- NOTE:would put calibration values here 
+													<swe:tupleValues/>-->
+														</swe:SimpleDataRecord>
+													</swe:elementType>
+												</swe:Curve>
+											</swe:function>
+										</swe:NormalizedCurve>
+										<!-- look angles are the same as red channel, so simply point to 
+										it <samplePosition xlink:href="#SAMPLE_POSITION"/> -->
+									</parameter>
+								</ParameterList>
+							</parameters>
+							<method xlink:href="urn:ogc:process:transducer"/>
+						</Component>
+					</component>
+				</ComponentList>
+			</components>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Internal connections -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<connections>
+				<ConnectionList>
+					<!-- sensor inputs to channel inputs -->
+					<connection name="inputToRed">
+						<Link>
+							<source ref="this/inputs/radiance"/>
+							<destination ref="redChannel/inputs/radiance"/>
+						</Link>
+					</connection>
+					<connection name="rowIndexToRed">
+						<Link>
+							<source ref="this/inputs/rowIndex"/>
+							<destination ref="redChannel/inputs/rowIndex"/>
+						</Link>
+					</connection>
+					<connection name="columnIndexToRed">
+						<Link>
+							<source ref="this/inputs/columnIndex"/>
+							<destination ref="redChannel/inputs/columnIndex"/>
+						</Link>
+					</connection>
+					<connection name="inputToGreen">
+						<Link>
+							<source ref="this/inputs/radiance"/>
+							<destination ref="greenChannel/inputs/radiance"/>
+						</Link>
+					</connection>
+					<connection name="rowIndexToGreen">
+						<Link>
+							<source ref="this/inputs/rowIndex"/>
+							<destination ref="greenChannel/inputs/rowIndex"/>
+						</Link>
+					</connection>
+					<connection name="columnIndexToGreen">
+						<Link>
+							<source ref="this/inputs/columnIndex"/>
+							<destination ref="greenChannel/inputs/columnIndex"/>
+						</Link>
+					</connection>
+					<connection name="inputToBlue">
+						<Link>
+							<source ref="this/inputs/radiance"/>
+							<destination ref="blueChannel/inputs/radiance"/>
+						</Link>
+					</connection>
+					<connection name="rowIndexToBlue">
+						<Link>
+							<source ref="this/inputs/rowIndex"/>
+							<destination ref="blueChannel/inputs/rowIndex"/>
+						</Link>
+					</connection>
+					<connection name="columnIndexToBlue">
+						<Link>
+							<source ref="this/inputs/columnIndex"/>
+							<destination ref="blueChannel/inputs/columnIndex"/>
+						</Link>
+					</connection>
+					<!-- sensor zoom to channel geometry -->
+					<connection name="zoomToRedGeometry">
+						<Link>
+							<source ref="this/parameters/zoomFactor"/>
+							<destination ref="redChannel/samplePostition/rowLookAngles/outputGain"/>
+						</Link>
+					</connection>
+					<connection name="zoomToGreenGeometry">
+						<Link>
+							<source ref="this/parameters/zoomFactor"/>
+							<destination ref="greenChannel/samplePostition/rowLookAngles/outputGain"/>
+						</Link>
+					</connection>
+					<connection name="zoomToBlueGeometry">
+						<Link>
+							<source ref="this/parameters/zoomFactor"/>
+							<destination ref="blueChannel/samplePostition/rowLookAngles/outputGain"/>
+						</Link>
+					</connection>
+					<!-- channel outputs to sensor output array, using indices -->
+					<connection>
+						<ArrayLink>
+							<destinationArray ref="this/outputs/videoFrame"/>
+							<sourceIndex ref="this/inputs/rowIndex"/>
+							<connection>
+								<ArrayLink>
+									<destinationArray ref="scanLine"/>
+									<sourceIndex ref="this/inputs/columnIndex"/>
+									<!-- connections to array components -->
+									<connection name="redPixelToArray">
+										<Link>
+											<source ref="redChannel/outputs/redPixel"/>
+											<destination ref="pixel/red"/>
+										</Link>
+									</connection>
+									<connection name="greenPixelToArray">
+										<Link>
+											<source ref="greenChannel/outputs/greenPixel"/>
+											<destination ref="pixel/green"/>
+										</Link>
+									</connection>
+									<connection name="bluePixelToArray">
+										<Link>
+											<source ref="blueChannel/outputs/bluePixel"/>
+											<destination ref="pixel/blue"/>
+										</Link>
+									</connection>
+								</ArrayLink>
+							</connection>
+						</ArrayLink>
+					</connection>
+				</ConnectionList>
+			</connections>
+		</System>
+	</member>
+</SensorML>

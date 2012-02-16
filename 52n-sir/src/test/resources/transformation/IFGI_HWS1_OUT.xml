@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rim:RegistryPackage xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+	id="sir:id:package:N65552" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd">
+	<rim:RegistryObjectList>
+		<wrs:ExtrinsicObject xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+			mimeType="application/xml" objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System"
+			lid="" id="">
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIMSensor::Inputs"
+				slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+				<rim:ValueList>
+					<rim:Value>urn:x-ogc:def:property:OGC::Precipitation</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::AirTemperature</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::AtmosphericPressure</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::Wind</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::Luminance</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::RelativeHumidity</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIMSensor::Outputs"
+				slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+				<rim:ValueList>
+					<rim:Value>urn:x-ogc:def:property:OGC::Precipitation1Hour</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::WindDirection</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::WindSpeed</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::BarometricPressure</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::Temperature</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::Luminance</rim:Value>
+					<rim:Value>urn:x-ogc:def:property:OGC::RelativeHumidity</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIMSensor::ShortName"
+				slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+				<rim:ValueList>
+					<rim:Value>IFGI HWS 1</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Name>
+				<rim:LocalizedString
+					value="This is a WS2500 weather station setup at the&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;Institute for Geoinformatics, Muenster University." />
+			</rim:Name>
+			<rim:Classification id="sir:id:classification:application:N65641"
+				classifiedObject="" classificationNode="weather"
+				classificationScheme="application" />
+			<rim:Classification id="sir:id:classification:sensorType:N65652"
+				classifiedObject="" classificationNode="thermometer"
+				classificationScheme="type" />
+			<rim:Classification id="sir:id:classification:sensorType:N65663"
+				classifiedObject="" classificationNode="rain gauge"
+				classificationScheme="type" />
+			<rim:Classification id="sir:id:classification:sensorType:N65674"
+				classifiedObject="" classificationNode="barometer"
+				classificationScheme="type" />
+			<rim:Classification id="sir:id:classification:sensorType:N65685"
+				classifiedObject="" classificationNode="anemometer"
+				classificationScheme="type" />
+			<rim:Classification id="sir:id:classification:sensorType:N65696"
+				classifiedObject="" classificationNode="Luminance Sensor"
+				classificationScheme="type" />
+		</wrs:ExtrinsicObject>
+		<!--
+			########## contact information ##########
+		-->
+		<rim:Organization id="sir:id:org:N65796"
+			primaryContact="sir:id:org:N65793">
+			<rim:Name>
+				<rim:LocalizedString
+					value="Institute for Geoinformatics, Münster, Germany." />
+			</rim:Name>
+
+			<rim:Address street="Weselerstraße 253" city="Münster"
+				postalCode="49151" country="Germany" />
+			<rim:EmailAddress address="ehjuerrens@uni-muenster.de" />
+		</rim:Organization>
+		<rim:Person id="sir:id:person:N65793">
+			<rim:PersonName lastName="Jürrens, Eike Hinderk" />
+		</rim:Person>
+		<!--
+			############### components ##############
+		-->
+		<wrs:ExtrinsicObject xmlns:wrs="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+			objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+			lid="" id="" />
+		<wrs:ExtrinsicObject xmlns:wrs="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+			objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+			lid="" id="" />
+		<wrs:ExtrinsicObject xmlns:wrs="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+			objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+			lid="" id="" />
+		<wrs:ExtrinsicObject xmlns:wrs="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+			objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+			lid="" id="" />
+		<wrs:ExtrinsicObject xmlns:wrs="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+			objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+			lid="" id="" />
+		<wrs:ExtrinsicObject xmlns:wrs="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+			objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+			lid="" id="" />
+	</rim:RegistryObjectList>
+</rim:RegistryPackage>

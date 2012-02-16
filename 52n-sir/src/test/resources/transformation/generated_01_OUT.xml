@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+			This document was created using the Sensor Instance Registry (SIR).
+			Contact: daniel.nuest@uni-muenster.de
+		-->
+<rim:RegistryPackage xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" id="urn:sir:id:package:N65546">
+	<rim:RegistryObjectList>
+		<wrs:ExtrinsicObject xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" mimeType="application/xml" objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System" lid="urn:ogc:object:feature:Sensor:IFGI:station_5763" id="urn:ogc:object:feature:Sensor:IFGI:station_5763">
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Keywords" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+				<rim:ValueList>
+					<rim:Value>water level</rim:Value>
+					<rim:Value>water gage</rim:Value>
+					<rim:Value>precipitation</rim:Value>
+					<rim:Value>flood</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeBegin" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:DateTime">
+				<rim:ValueList>
+					<rim:Value>2010-05-01T00:00:00.000+02:00</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeEnd" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:DateTime">
+				<rim:ValueList>
+					<rim:Value>2010-06-25T00:00:00.000+02:00</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::BoundedBy" slotType="urn:ogc:def:dataType:ISO-19107:2003:GM_Envelope">
+				<wrs:ValueList>
+					<wrs:AnyValue>
+						<gml:Envelope xmlns:gml="http://www.opengis.net/gml" srsName="urn:ogc:def:crs:EPSG:4326">
+							<gml:lowerCorner>7.3 51.77</gml:lowerCorner>
+							<gml:upperCorner>7.833 52.076</gml:upperCorner>
+						</gml:Envelope>
+					</wrs:AnyValue>
+				</wrs:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Location" slotType="urn:ogc:def:dataType:ISO-19107:2003:GM_Point">
+				<wrs:ValueList>
+					<wrs:AnyValue>
+						<gml:Point xmlns:gml="http://www.opengis.net/gml" gml:id="N65666" srsName="urn:ogc:def:crs:EPSG:4326">
+							<gml:pos>7.545083856445161 51.80752593080149</gml:pos>
+							<!--z-value '16.87' omitted!-->
+						</gml:Point>
+					</wrs:AnyValue>
+				</wrs:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Inputs" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+				<rim:ValueList>
+					<rim:Value>urn:ogc:def:property:OGC:1.0:water_level</rim:Value>
+					<rim:Value>urn:ogc:def:property:OGC:1.0:webcam</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Outputs" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+				<rim:ValueList>
+					<rim:Value>urn:ogc:def:property:OGC:1.0:gauge</rim:Value>
+					<rim:Value>urn:ogc:def:property:OGC:1.0:gauge</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ShortName" slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+				<rim:ValueList>
+					<rim:Value>station 5763</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en-US" value="station 5763, a dummy test station near Münster"/>
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en-US" value="Test sensor (dummy, fake!) in the vicinity of Muenster, Germany"/>
+			</rim:Description>
+			<!--
+				******** classifications ********
+			-->
+			<rim:Classification id="urn:sir:id:classification:N65583" classifiedObject="urn:ogc:object:feature:Sensor:IFGI:station_5763" classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::N65585"/>
+			<rim:Classification id="urn:sir:id:classification:N65589" classifiedObject="urn:ogc:object:feature:Sensor:IFGI:station_5763" classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::N65591"/>
+		</wrs:ExtrinsicObject>
+		<!--
+			******** classification nodes ********
+		-->
+		<rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::N65585" parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en-US" value="water gauge"/>
+			</rim:Name>
+		</rim:ClassificationNode>
+		<rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::N65591" parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en-US" value="reservoir (drain)"/>
+			</rim:Name>
+		</rim:ClassificationNode>
+		<!--
+			******** associations ********
+		-->
+		<rim:Association id="urn:sir:id:association:N65695" associationType="urn:ogc:def:associationType::OGC-CSW-ebRIM-Sensor::AccessibleThrough" sourceObject="urn:ogc:object:feature:Sensor:IFGI:station_5763" targetObject="urn:sir:id:service:N65695">
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ServiceSpecificSensorID">
+				<rim:ValueList>
+					<rim:Value>WaterSAS:52</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+		</rim:Association>
+		<rim:Service id="urn:sir:id:service:N65695">
+			<rim:ServiceBinding id="urn:sir:id:service:N65700" service="urn:sir:id:service:N65695" accessURI="http://giv-genesis.uni-muenster.de:8080/water/SAS">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en-US" value="WaterSAS_52"/>
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en-US" value="TBD"/>
+				</rim:Description>
+			</rim:ServiceBinding>
+		</rim:Service>
+		<rim:Classification id="urn:sir:id:classification:N65695" classifiedObject="urn:sir:id:service:N65695" classificationNode="urn:ogc:serviceType:SensorAlertService"/>
+		<rim:ClassificationNode id="urn:ogc:serviceType:SensorAlertService" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Subscription"/>
+		<rim:Association id="urn:sir:id:association:N65716" associationType="urn:ogc:def:associationType::OGC-CSW-ebRIM-Sensor::AccessibleThrough" sourceObject="urn:ogc:object:feature:Sensor:IFGI:station_5763" targetObject="urn:sir:id:service:N65716">
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ServiceSpecificSensorID">
+				<rim:ValueList>
+					<rim:Value>PegelSOS2:108</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+		</rim:Association>
+		<rim:Service id="urn:sir:id:service:N65716">
+			<rim:ServiceBinding id="urn:sir:id:service:N65721" service="urn:sir:id:service:N65716" accessURI="http://giv-sos.uni-muenster.de:8080/SosRheinpegelSued/sos">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en-US" value="PegelSOS2_108"/>
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en-US" value="TBD"/>
+				</rim:Description>
+			</rim:ServiceBinding>
+		</rim:Service>
+		<rim:Classification id="urn:sir:id:classification:N65716" classifiedObject="urn:sir:id:service:N65716" classificationNode="urn:ogc:serviceType:SensorObservationService"/>
+		<rim:ClassificationNode id="urn:ogc:serviceType:SensorObservationService" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"/>
+		<rim:Association id="urn:sir:id:association:N65737" associationType="urn:ogc:def:associationType::OGC-CSW-ebRIM-Sensor::AccessibleThrough" sourceObject="urn:ogc:object:feature:Sensor:IFGI:station_5763" targetObject="urn:sir:id:service:N65737">
+			<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ServiceSpecificSensorID">
+				<rim:ValueList>
+					<rim:Value>SOS5:219</rim:Value>
+				</rim:ValueList>
+			</rim:Slot>
+		</rim:Association>
+		<rim:Service id="urn:sir:id:service:N65737">
+			<rim:ServiceBinding id="urn:sir:id:service:N65742" service="urn:sir:id:service:N65737" accessURI="http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-1/sos">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en-US" value="SOS5_219"/>
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en-US" value="TBD"/>
+				</rim:Description>
+			</rim:ServiceBinding>
+		</rim:Service>
+		<rim:Classification id="urn:sir:id:classification:N65737" classifiedObject="urn:sir:id:service:N65737" classificationNode="urn:ogc:serviceType:SensorObservationService"/>
+		<rim:ClassificationNode id="urn:ogc:serviceType:SensorObservationService" parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"/>
+		<!--
+					########## contact information ##########
+				-->
+		<rim:Organization id="urn:sir:id:org:N65648" primaryContact="urn:sir:id:org:N65646">
+			<rim:Name>
+				<rim:LocalizedString value="Institute for Geoinformatics - Westfaelische Wilhelms Universitaet Muenster - Sensor Web and Simulation Lab"/>
+			</rim:Name>
+			<rim:Address street="Weseler Straße 253" city="Münster" postalCode="48151" country="Germany"/>
+			<rim:EmailAddress address="daniel.nuest@uni-muenster.de"/>
+		</rim:Organization>
+		<rim:Person id="urn:sir:id:person:N65646">
+			<rim:PersonName lastName="Nuest" firstName="Daniel"/>
+		</rim:Person>
+		<!--
+					############### components ##############
+				-->
+	</rim:RegistryObjectList>
+</rim:RegistryPackage>

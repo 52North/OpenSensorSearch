@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Component xmlns="http://www.opengis.net/sensorML/1.0.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:swe="http://www.opengis.net/swe/1.0.1"
+	xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd"
+	version="1.0.1">
+	<!--
+		profile-specific: A short textual description of the component shall
+		be provided..
+	-->
+	<gml:description>A fake component for testing purposes.</gml:description>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!--Keywords-->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<keywords>
+		<KeywordList>
+			<keyword>test</keyword>
+		</KeywordList>
+	</keywords>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!--Identification-->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<identification>
+		<IdentifierList>
+			<identifier name="uniqueID">
+				<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+					<value>urn:ogc:object:feature:Sensor:IFGI:testComp1</value>
+				</Term>
+			</identifier>
+			<identifier name="longName">
+				<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+					<value>Non-existing test component</value>
+				</Term>
+			</identifier>
+			<identifier name="shortName">
+				<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+					<value>test component</value>
+				</Term>
+			</identifier>
+		</IdentifierList>
+	</identification>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!--Classification-->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<classification>
+		<ClassifierList>
+			<classifier name="intendedApplication">
+				<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+					<value>weather</value>
+				</Term>
+			</classifier>
+			<classifier name="sensorType">
+				<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+					<value>thermometer</value>
+				</Term>
+			</classifier>
+		</ClassifierList>
+	</classification>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!--Valid time-->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<validTime>
+		<gml:TimePeriod>
+			<gml:beginPosition>2009-01-15</gml:beginPosition>
+			<gml:endPosition>2009-03-30</gml:endPosition>
+		</gml:TimePeriod>
+	</validTime>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!--Capabilities-->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<capabilities>
+		<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+			<swe:field name="observedBBOX">
+				<swe:Envelope referenceFrame="urn:ogc:def:crs:EPSG:6.14:31466" definition="urn:ogc:def:property:OGC:1.0:observedBBOX">
+					<swe:lowerCorner>
+						<swe:Vector>
+							<swe:coordinate name="easting">
+								<swe:Quantity axisID="x">
+									<swe:uom code="m" />
+									<swe:value>0</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="northing">
+								<swe:Quantity axisID="y">
+									<swe:uom code="m" />
+									<swe:value>0</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:lowerCorner>
+					<swe:upperCorner>
+						<swe:Vector>
+							<swe:coordinate name="easting">
+								<swe:Quantity axisID="x">
+									<swe:uom code="m" />
+									<swe:value>0</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="northing">
+								<swe:Quantity axisID="y">
+									<swe:uom code="m" />
+									<swe:value>0</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:upperCorner>
+				</swe:Envelope>
+			</swe:field>
+		</swe:DataRecord>
+	</capabilities>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!--Contact-->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~-->
+	<contact>
+		<ResponsibleParty gml:id="WWU_IfGI_contact">
+			<organizationName>Institute for Geoinformatics - Westfaelische
+				Wilhelms
+				Universität Münster - Sensor Web and Simulation Lab</organizationName>
+		</ResponsibleParty>
+	</contact>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!--Position -->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<position name="thermometerPosition">
+		<swe:Position referenceFrame="urn:ogc:def:crs:EPSG:6.14:31466">
+			<swe:location>
+				<swe:Vector gml:id="THERMOMETER_LOCATION">
+					<swe:coordinate name="easting">
+						<swe:Quantity axisID="x">
+							<swe:uom code="m" />
+							<swe:value>0</swe:value>
+						</swe:Quantity>
+					</swe:coordinate>
+					<swe:coordinate name="northing">
+						<swe:Quantity axisID="y">
+							<swe:uom code="m" />
+							<swe:value>0</swe:value>
+						</swe:Quantity>
+					</swe:coordinate>
+				</swe:Vector>
+			</swe:location>
+		</swe:Position>
+	</position>
+	<!--~~~~~~~~~~~~~-->
+	<!--Sensor Interfaces-->
+	<!--~~~~~~~~~~~~~-->
+
+	<interfaces>
+		<InterfaceList>
+			<interface name="myDummyService">
+				<InterfaceDefinition>
+					<serviceLayer>
+						<swe:DataRecord
+							definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+							<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+								<swe:Text>
+									<swe:value>http://this.is.does.not.exist.com/</swe:value>
+								</swe:Text>
+							</swe:field>
+							<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+								<swe:Text>
+									<swe:value>FAKE</swe:value>
+								</swe:Text>
+							</swe:field>
+							<swe:field
+								name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+								<swe:Text>
+									<swe:value>sensor-fortytwo</swe:value>
+								</swe:Text>
+							</swe:field>
+						</swe:DataRecord>
+					</serviceLayer>
+				</InterfaceDefinition>
+			</interface>
+		</InterfaceList>
+	</interfaces>
+	<!--~~~~~~~~~~~~~-->
+	<!--Sensor Inputs-->
+	<!--~~~~~~~~~~~~~-->
+	<inputs>
+		<InputList>
+			<input name="something">
+				<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:something" />
+			</input>
+		</InputList>
+	</inputs>
+	<!--~~~~~~~~~~~~~~-->
+	<!--Sensor Outputs-->
+	<!--~~~~~~~~~~~~~~-->
+	<outputs>
+		<OutputList>
+			<output name="anything">
+				<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:anything">
+				</swe:Quantity>
+			</output>
+		</OutputList>
+	</outputs>
+</Component>

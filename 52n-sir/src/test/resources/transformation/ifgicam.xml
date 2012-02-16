@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SensorML xmlns="http://www.opengis.net/sensorML/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<documentation xlink:role="urn:x-ogc:def:role:objectPlan">
+		<Document>
+			<gml:description>
+				Description document of the camera
+                  </gml:description>
+			<format>application/pdf</format>
+			<onlineResource xlink:href="http://the.path.to/a/description/document" />
+		</Document>
+	</documentation>
+
+	<!--~~~~~~~~~~~~~~~~~~~ -->
+	<!--General Sensor Info -->
+	<!--~~~~~~~~~~~~~~~~~~~ -->
+	<identification>
+		<IdentifierList>
+			<identifier>
+				<Term definition="urn:ogc:def:identifier:OGC:uniqueID">
+					urn:ogc:object:feature:Sensor:52n:ifgicam_Flur
+                    </Term>
+			</identifier>
+			<identifier name="longName">
+				<Term>
+					Network Video Camera
+                    </Term>
+			</identifier>
+			<identifier name="shortName">
+				<Term>VideoCam</Term>
+			</identifier>
+		</IdentifierList>
+	</identification>
+	<classification>
+		<ClassifierList>
+			<classifier name="sensor_type">
+				<Term qualifier="urn:ogc:classifier:sensorType">
+					video camera
+                    </Term>
+			</classifier>
+			<classifier name="application">
+				<Term qualifier="urn:ogc:classifier:application">
+					surveillance and remote
+					monitoring for scientific
+					purposes
+                    </Term>
+			</classifier>
+		</ClassifierList>
+	</classification>
+	<description />
+	<capabilities>
+		<PropertyList>
+			<property name="zoomRange">
+				<swe:QuantityRange definition="urn:ogc:def:phenomenon:OGC:1.0.30:FocalLength"
+					uom="urn:ogc:def:uom:OGC:1.0.30:mm">
+					3.5 91
+                    </swe:QuantityRange>
+			</property>
+			<property name="resolution">
+				<swe:DataGroup>
+					<swe:component name="horizontalResolution">
+						<swe:Count>
+							704
+                        </swe:Count>
+					</swe:component>
+					<swe:component name="verticalResolution">
+						<swe:Count>
+							576
+                        </swe:Count>
+					</swe:component>
+				</swe:DataGroup>
+			</property>
+		</PropertyList>
+	</capabilities>
+	<contact xlink:href="http://mycam.myorganization.com/~whoever/"
+		role="urn:ogc:role:operator" />
+	<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Camera Coordinate Frame -->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<referenceFrame>
+		<LocalSpatialCRS id="CAMERA_FRAME">
+			<srsName>Camera Frame</srsName>
+			<usesCS xlink:href="urn:ogc:cs:xyzFrame" />
+			<usesDatum>
+				<LocalSpatialDatum>
+					<datumName>
+						Image Datum
+                      </datumName>
+					<anchorPoint>
+						origin is the
+						intersection of the
+						image plane and the
+						focal axis; can thus be
+						considered as the center
+						of the image frame.
+                      </anchorPoint>
+					<orientation>
+						z is along focal axis in
+						direction of view out; x
+						is parallel to the
+						center scan line of the
+						CCD, y is parallel to
+						the center column of the
+						CCD.
+                      </orientation>
+				</LocalSpatialDatum>
+			</usesDatum>
+		</LocalSpatialCRS>
+	</referenceFrame>
+	<!--~~~~~~~~~~~~~ -->
+	<!--Sensor Inputs -->
+	<!--~~~~~~~~~~~~~ -->
+	<inputs>
+		<InputList>
+			<input name="radiance">
+				<swe:Quantity definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance" />
+			</input>
+			<input name="rowIndex">
+				<swe:Count definition="urn:ogc:data:index" min="1" max="576" />
+			</input>
+			<input name="columnIndex">
+				<swe:Count definition="urn:ogc:data:index" min="1" max="704" />
+			</input>
+		</InputList>
+	</inputs>
+	<!--~~~~~~~~~~~~~~ -->
+	<!--Sensor Outputs -->
+	<!--~~~~~~~~~~~~~~ -->
+	<outputs>
+		<OutputList>
+			<output name="videoFrame">
+				<swe:DataArray id="VIDEO_FRAME" arraySize="704"
+					definition="urn:ogc:data:image:column">
+					<swe:component name="scanLine">
+						<swe:DataArray arraySize="576" definition="urn:ogc:data:image:row">
+							<swe:component name="pixel">
+								<swe:DataGroup definition="urn:ogc:data:image:pixel">
+									<swe:component name="red">
+										<swe:Quantity definition="urn:ogc:data:DN" />
+									</swe:component>
+									<swe:component name="green">
+										<swe:Quantity definition="urn:ogc:data:DN" />
+									</swe:component>
+									<swe:component name="blue">
+										<swe:Quantity definition="urn:ogc:data:DN" />
+									</swe:component>
+								</swe:DataGroup>
+							</swe:component>
+						</swe:DataArray>
+					</swe:component>
+				</swe:DataArray>
+			</output>
+		</OutputList>
+	</outputs>
+	<processes>
+		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<!-- Internal transducers (one for each channel) -->
+		<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<ProcessList>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Red Channel Specifications -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<process name="redChannel">
+				<Transducer id="Red">
+					<identification>
+						<IdentifierList>
+							<identifier name="shortName">
+								<Term>
+									Red Channel
+                            </Term>
+							</identifier>
+						</IdentifierList>
+					</identification>
+					<inputs>
+						<InputList>
+							<input name="radiance">
+								<swe:Quantity definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance" />
+							</input>
+							<index name="rowIndex">
+								<swe:Count definition="urn:ogc:data:index" min="1"
+									max="576" />
+							</index>
+							<index name="columnIndex">
+								<swe:Count definition="urn:ogc:data:index" min="1"
+									max="704" />
+							</index>
+						</InputList>
+					</inputs>
+					<outputs>
+						<OutputList>
+							<output name="redPixel">
+								<swe:Quantity definition="urn:ogc:data:DN" />
+							</output>
+						</OutputList>
+					</outputs>
+					<parameters>
+						<ParameterList>
+							<!-- one could specify steady-state response for each channel if they 
+								had this info -->
+							<!-- for typical consumer video cams, this may not be available -->
+							<steadyStateResponse>
+								<NormalizedCurve>
+									<function>
+										<swe:Curve arraySize="20">
+											<swe:definition>
+												<swe:Coordinates>
+													<!-- define calibration of radiance to DN if you have it -->
+													<swe:axis name="radiance">
+														<swe:Quantity definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance"
+															uom="W.m-2.Sr-1.um-1" />
+													</swe:axis>
+													<swe:axis name="digitalNumber">
+														<swe:Quantity definition="urn:ogc:data:DN" />
+													</swe:axis>
+												</swe:Coordinates>
+											</swe:definition>
+											<!-- NOTE:would put calibration values here -->
+											<swe:tupleValues />
+										</swe:Curve>
+									</function>
+								</NormalizedCurve>
+							</steadyStateResponse>
+							<!-- one could add frequency response for each channel if they had 
+								this info -->
+							<!-- for typical video cams, this may not be available -->
+							<!-- to enable complete geolocation, one should provide look angle -->
+							<!-- information as a function of zoom levels -->
+							<!-- for typical consumer video cams, this may not be available -->
+							<!-- since we have two directions we will describe these as two curves -->
+							<samplePosition>
+								<PositionCurves id="SAMPLE_POSITION"
+									referenceFrame="#CAMERA_FRAME">
+									<curve name="rowLookAngles">
+										<NormalizedCurve>
+											<!-- the zoom factor on the camera would set this gain -->
+											<outputGain>
+												<swe:Quantity definition="urn:ogc:data:gain">
+													1.0
+                                    </swe:Quantity>
+											</outputGain>
+											<!-- Interpolation between given points should be linear -->
+											<interpolationMethod>
+												<swe:Category>
+													linear
+                                    </swe:Category>
+											</interpolationMethod>
+											<!-- data points -->
+											<function>
+												<IndexedCurve arraySize="2">
+													<definition>
+														<Coordinates>
+															<index name="columnIndex">
+																<swe:Count definition="urn:ogc:data:index"
+																	min="1" max="704" />
+															</index>
+															<value name="psi_y">
+																<swe:Quantity
+
+																	definition="urn:ogc:def:phenomenon:OGC:1.0.30:Rotation"
+																	uom="degree" axisCode="Y" />
+															</value>
+														</Coordinates>
+													</definition>
+													<!-- index/angle value pairs as described above -->
+													<swe:tupleValues>
+														1,-20
+														704,20
+                                      </swe:tupleValues>
+												</IndexedCurve>
+											</function>
+										</NormalizedCurve>
+									</curve>
+									<curve name="columnLookAngles">
+										<NormalizedCurve>
+											<!-- the zoom factor on the camera would set this gain -->
+											<outputGain>
+												<swe:Quantity definition="urn:ogc:data:gain">
+													1.0
+                                    </swe:Quantity>
+											</outputGain>
+											<!-- Interpolation between given points should be linear -->
+											<interpolationMethod>
+												<swe:Category>
+													linear
+                                    </swe:Category>
+											</interpolationMethod>
+											<!-- data points -->
+											<function>
+												<IndexedCurve arraySize="2">
+													<definition>
+														<Coordinates>
+															<index name="rowIndex">
+																<swe:Count definition="urn:ogc:data:index"
+																	min="1" max="576" />
+															</index>
+															<value name="psi_x">
+																<swe:Quantity
+
+																	definition="urn:ogc:def:phenomenon:OGC:1.0.30:Rotation"
+																	uom="degree" axisCode="X" />
+															</value>
+														</Coordinates>
+													</definition>
+													<!-- index/angle value pairs as described above -->
+													<swe:tupleValues>
+														1,-15
+														576,15
+                                      </swe:tupleValues>
+												</IndexedCurve>
+											</function>
+										</NormalizedCurve>
+									</curve>
+									<rotationOrder>
+										<swe:Category>
+											X Y
+											Z
+                                </swe:Category>
+									</rotationOrder>
+								</PositionCurves>
+							</samplePosition>
+						</ParameterList>
+					</parameters>
+					<method xlink:href="urn:ogc:process:transducer" />
+				</Transducer>
+			</process>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Green Channel Specifications -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<process name="greenChannel">
+				<Transducer id="Green">
+					<identification>
+						<IdentifierList>
+							<identifier name="shortName">
+								<Term>
+									Green
+									Channel
+                            </Term>
+							</identifier>
+						</IdentifierList>
+					</identification>
+					<inputs>
+						<InputList>
+							<input name="radiance">
+								<swe:Quantity definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance" />
+							</input>
+							<index name="rowIndex">
+								<swe:Count definition="urn:ogc:data:index" min="1"
+									max="576" />
+							</index>
+							<index name="columnIndex">
+								<swe:Count definition="urn:ogc:data:index" min="1"
+									max="704" />
+							</index>
+						</InputList>
+					</inputs>
+					<outputs>
+						<OutputList>
+							<output name="greenPixel">
+								<swe:Quantity definition="urn:ogc:data:DN" />
+							</output>
+						</OutputList>
+					</outputs>
+					<parameters>
+						<ParameterList>
+							<!-- one could specify steady-state response for each channel if they 
+								had this info -->
+							<!-- for typical consumer video cams, this may not be available -->
+							<steadyStateResponse>
+								<NormalizedCurve>
+									<function>
+										<swe:Curve arraySize="20">
+											<swe:definition>
+												<swe:Coordinates>
+													<!-- define calibration of radiance to DN if you have it -->
+													<swe:axis name="radiance">
+														<swe:Quantity definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance"
+															uom="W.m-2.Sr-1.um-1" />
+													</swe:axis>
+													<swe:axis name="digitalNumber">
+														<swe:Quantity definition="urn:ogc:data:DN" />
+													</swe:axis>
+												</swe:Coordinates>
+											</swe:definition>
+											<!-- NOTE:would put calibration values here -->
+											<swe:tupleValues />
+										</swe:Curve>
+									</function>
+								</NormalizedCurve>
+							</steadyStateResponse>
+							<!-- look angles are the same as red channel, so simply point to it -->
+							<samplePosition xlink:href="#SAMPLE_POSITION" />
+						</ParameterList>
+					</parameters>
+					<method xlink:href="urn:ogc:process:transducer" />
+				</Transducer>
+			</process>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- Blue Channel Specifications -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<process name="blueChannel">
+				<Transducer id="Blue">
+					<identification>
+						<IdentifierList>
+							<identifier name="shortName">
+								<Term>
+									Blue Channel
+                            </Term>
+							</identifier>
+						</IdentifierList>
+					</identification>
+					<inputs>
+						<InputList>
+							<input name="radiance">
+								<swe:Quantity definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance" />
+							</input>
+							<index name="rowIndex">
+								<swe:Count definition="urn:ogc:data:index" min="1"
+									max="576" />
+							</index>
+							<index name="columnIndex">
+								<swe:Count definition="urn:ogc:data:index" min="1"
+									max="704" />
+							</index>
+						</InputList>
+					</inputs>
+					<outputs>
+						<OutputList>
+							<output name="bluePixel">
+								<swe:Quantity definition="urn:ogc:data:DN" />
+							</output>
+						</OutputList>
+					</outputs>
+					<parameters>
+						<ParameterList>
+							<!-- one could specify steady-state response for each channel if they 
+								had this info -->
+							<!-- for typical consumer video cams, this may not be available -->
+							<steadyStateResponse>
+								<NormalizedCurve>
+									<function>
+										<swe:Curve arraySize="20">
+											<swe:definition>
+												<swe:Coordinates>
+													<!-- define calibration of radiance to DN if you have it -->
+													<swe:axis name="radiance">
+														<swe:Quantity definition="urn:ogc:def:phenomenon:OGC:1.0.30:Radiance"
+															uom="W.m-2.Sr-1.um-1" />
+													</swe:axis>
+													<swe:axis name="digitalNumber">
+														<swe:Quantity definition="urn:ogc:data:DN" />
+													</swe:axis>
+												</swe:Coordinates>
+											</swe:definition>
+											<!-- NOTE: would put calibration values here -->
+											<!-- radiance/DN pairs -->
+											<swe:tupleValues />
+										</swe:Curve>
+									</function>
+								</NormalizedCurve>
+							</steadyStateResponse>
+							<!-- look angles are the same as red channel, so simply point to it -->
+							<samplePosition xlink:href="#SAMPLE_POSITION" />
+						</ParameterList>
+					</parameters>
+					<method xlink:href="urn:ogc:process:transducer" />
+				</Transducer>
+			</process>
+		</ProcessList>
+	</processes>
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Internal connections -->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<connections>
+		<ConnectionList>
+			<!-- sensor inputs to channel inputs -->
+			<connection name="inputToRed">
+				<Link>
+					<source ref="this/inputs/radiance" />
+					<destination ref="redChannel/inputs/radiance" />
+				</Link>
+			</connection>
+			<connection name="rowIndexToRed">
+				<Link>
+					<source ref="this/inputs/rowIndex" />
+					<destination ref="redChannel/inputs/rowIndex" />
+				</Link>
+			</connection>
+			<connection name="columnIndexToRed">
+				<Link>
+					<source ref="this/inputs/columnIndex" />
+					<destination ref="redChannel/inputs/columnIndex" />
+				</Link>
+			</connection>
+			<connection name="inputToGreen">
+				<Link>
+					<source ref="this/inputs/radiance" />
+					<destination ref="greenChannel/inputs/radiance" />
+				</Link>
+			</connection>
+			<connection name="rowIndexToGreen">
+				<Link>
+					<source ref="this/inputs/rowIndex" />
+					<destination ref="greenChannel/inputs/rowIndex" />
+				</Link>
+			</connection>
+			<connection name="columnIndexToGreen">
+				<Link>
+					<source ref="this/inputs/columnIndex" />
+					<destination ref="greenChannel/inputs/columnIndex" />
+				</Link>
+			</connection>
+			<connection name="inputToBlue">
+				<Link>
+					<source ref="this/inputs/radiance" />
+					<destination ref="blueChannel/inputs/radiance" />
+				</Link>
+			</connection>
+			<connection name="rowIndexToBlue">
+				<Link>
+					<source ref="this/inputs/rowIndex" />
+					<destination ref="blueChannel/inputs/rowIndex" />
+				</Link>
+			</connection>
+			<connection name="columnIndexToBlue">
+				<Link>
+					<source ref="this/inputs/columnIndex" />
+					<destination ref="blueChannel/inputs/columnIndex" />
+				</Link>
+			</connection>
+			<!-- sensor zoom to channel geometry -->
+			<connection name="zoomToRedGeometry">
+				<Link>
+					<source ref="this/parameters/zoomFactor" />
+					<destination ref="redChannel/samplePostition/rowLookAngles/outputGain" />
+				</Link>
+			</connection>
+			<connection name="zoomToGreenGeometry">
+				<Link>
+					<source ref="this/parameters/zoomFactor" />
+					<destination
+
+						ref="greenChannel/samplePostition/rowLookAngles/outputGain" />
+				</Link>
+			</connection>
+			<connection name="zoomToBlueGeometry">
+				<Link>
+					<source ref="this/parameters/zoomFactor" />
+					<destination ref="blueChannel/samplePostition/rowLookAngles/outputGain" />
+				</Link>
+			</connection>
+			<!-- channel outputs to sensor output array, using indices -->
+			<connection>
+				<ArrayLink>
+					<destinationArray ref="this/outputs/videoFrame" />
+					<indexSource ref="this/inputs/rowIndex" />
+					<connection>
+						<ArrayLink>
+							<destinationArray ref="scanLine" />
+							<indexSource ref="this/inputs/columnIndex" />
+							<!-- connections to array components -->
+							<connection name="redPixelToArray">
+								<Link>
+									<source ref="redChannel/outputs/redPixel" />
+									<destination ref="pixel/red" />
+								</Link>
+							</connection>
+							<connection name="greenPixelToArray">
+								<Link>
+									<source ref="greenChannel/outputs/greenPixel" />
+									<destination ref="pixel/green" />
+								</Link>
+							</connection>
+							<connection name="bluePixelToArray">
+								<Link>
+									<source ref="blueChannel/outputs/bluePixel" />
+									<destination ref="pixel/blue" />
+								</Link>
+							</connection>
+						</ArrayLink>
+					</connection>
+				</ArrayLink>
+			</connection>
+		</ConnectionList>
+	</connections>
+	<positions>
+		<PositionList>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- camera-position in Lat, Lon -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<position>
+				<swe:Position localFrame="#CAMERA_FRAME"
+					referenceFrame="urn:ogc:def:crs:EPSG:6.3:4326">
+					<swe:location>
+						<swe:GeoLocation definition="urn:ogc:def:phenomenon:OGC:1.0.30:location">
+							<!-- OWS-3 demo-location -->
+							<swe:latitude>
+								<swe:Quantity uom="urn:ogc:def:uom:OGC:1.0:degree">
+									33.062018
+                            </swe:Quantity>
+							</swe:latitude>
+							<swe:longitude>
+								<swe:Quantity uom="urn:ogc:def:uom:OGC:1.0:degree">
+									-116.616526
+                            </swe:Quantity>
+							</swe:longitude>
+						</swe:GeoLocation>
+					</swe:location>
+				</swe:Position>
+			</position>
+		</PositionList>
+	</positions>
+</SensorML>

@@ -1,0 +1,230 @@
+<sml:SensorML xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" version="1.0.1" xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+	<sml:member>
+		<sml:System>
+			<gml:description>Test sensor (dummy, fake!) in the vicinity of Muenster, Germany</gml:description>
+			<sml:keywords>
+				<sml:KeywordList>
+					<sml:keyword>water level</sml:keyword>
+					<sml:keyword>water gage</sml:keyword>
+					<sml:keyword>precipitation</sml:keyword>
+					<sml:keyword>flood</sml:keyword>
+				</sml:KeywordList>
+			</sml:keywords>
+			<sml:identification>
+				<sml:IdentifierList>
+					<sml:identifier name="uniqueID">
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+							<sml:value>urn:ogc:object:feature:Sensor:IFGI:station_5763</sml:value>
+						</sml:Term>
+					</sml:identifier>
+					<sml:identifier name="longName">
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+							<sml:value>station 5763, a dummy test station near Münster</sml:value>
+						</sml:Term>
+					</sml:identifier>
+					<sml:identifier name="shortName">
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+							<sml:value>station 5763</sml:value>
+						</sml:Term>
+					</sml:identifier>
+				</sml:IdentifierList>
+			</sml:identification>
+			<sml:classification>
+				<sml:ClassifierList>
+					<sml:classifier name="intendedApplication">
+						<sml:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+							<sml:value>water gauge</sml:value>
+						</sml:Term>
+					</sml:classifier>
+					<sml:classifier name="sensorType">
+						<sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+							<sml:value>reservoir (drain)</sml:value>
+						</sml:Term>
+					</sml:classifier>
+				</sml:ClassifierList>
+			</sml:classification>
+			<sml:validTime>
+				<gml:TimePeriod>
+					<gml:beginPosition>2010-05-01T00:00:00.000+02:00</gml:beginPosition>
+					<gml:endPosition>2010-06-25T00:00:00.000+02:00</gml:endPosition>
+				</gml:TimePeriod>
+			</sml:validTime>
+			<sml:capabilities>
+				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+					<swe:field name="observedBBOX">
+						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+							<swe:lowerCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree"/>
+											<swe:value>51.77</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree"/>
+											<swe:value>7.3</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:lowerCorner>
+							<swe:upperCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree"/>
+											<swe:value>52.076</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree"/>
+											<swe:value>7.833</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:upperCorner>
+						</swe:Envelope>
+					</swe:field>
+				</swe:DataRecord>
+			</sml:capabilities>
+			<sml:contact>
+				<sml:ResponsibleParty gml:id="WWU_ifgi_test_sensor_data_contact_2490063021060975692">
+					<sml:individualName>Daniel Nuest</sml:individualName>
+					<sml:organizationName>Institute for Geoinformatics - Westfaelische Wilhelms Universitaet Muenster - Sensor Web and Simulation Lab</sml:organizationName>
+					<sml:contactInfo>
+						<sml:address>
+							<sml:deliveryPoint>Weseler Straße 253</sml:deliveryPoint>
+							<sml:city>Münster</sml:city>
+							<sml:postalCode>48151</sml:postalCode>
+							<sml:country>Germany</sml:country>
+							<sml:electronicMailAddress>daniel.nuest@uni-muenster.de</sml:electronicMailAddress>
+						</sml:address>
+					</sml:contactInfo>
+				</sml:ResponsibleParty>
+			</sml:contact>
+			<sml:position name="stationPosition">
+				<swe:Position referenceFrame="urn:ogc:def:crs:EPSG:4326">
+					<swe:location>
+						<swe:Vector gml:id="SYSTEM_LOCATION_882421871291303127">
+							<swe:coordinate name="latitude">
+								<swe:Quantity axisID="y">
+									<swe:uom code="degree"/>
+									<swe:value>51.80752593080149</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="longitude">
+								<swe:Quantity axisID="x">
+									<swe:value>7.545083856445161</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="altitude">
+								<swe:Quantity axisID="z">
+									<swe:value>16.87</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:location>
+				</swe:Position>
+			</sml:position>
+			<sml:interfaces>
+				<sml:InterfaceList>
+					<sml:interface name="WaterSAS_52">
+						<sml:InterfaceDefinition>
+							<sml:serviceLayer>
+								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SAS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>WaterSAS:52</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</sml:serviceLayer>
+						</sml:InterfaceDefinition>
+					</sml:interface>
+					<sml:interface name="PegelSOS2_108">
+						<sml:InterfaceDefinition>
+							<sml:serviceLayer>
+								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://giv-sos.uni-muenster.de:8080/SosRheinpegelSued/sos</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SOS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>PegelSOS2:108</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</sml:serviceLayer>
+						</sml:InterfaceDefinition>
+					</sml:interface>
+					<sml:interface name="SOS5_219">
+						<sml:InterfaceDefinition>
+							<sml:serviceLayer>
+								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-1/sos</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SOS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>SOS5:219</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</sml:serviceLayer>
+						</sml:InterfaceDefinition>
+					</sml:interface>
+				</sml:InterfaceList>
+			</sml:interfaces>
+			<sml:inputs>
+				<sml:InputList>
+					<sml:input name="water_level">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+					</sml:input>
+					<sml:input name="webcam">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:webcam"/>
+					</sml:input>
+				</sml:InputList>
+			</sml:inputs>
+			<sml:outputs>
+				<sml:OutputList>
+					<sml:output name="water_level">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+							<swe:uom code="m"/>
+						</swe:Quantity>
+					</sml:output>
+					<sml:output name="webcam">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+							<swe:uom code="m"/>
+						</swe:Quantity>
+					</sml:output>
+				</sml:OutputList>
+			</sml:outputs>
+		</sml:System>
+	</sml:member>
+</sml:SensorML>

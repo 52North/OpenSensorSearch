@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+			This document was created using the Sensor Instance Registry (SIR).
+			Contact: daniel.nuest@uni-muenster.de
+		--><rim:RegistryPackage xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"
+                     id="urn:sir:id:package:d32e3">
+   <rim:RegistryObjectList>
+      <wrs:ExtrinsicObject xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" mimeType="application/xml"
+                           objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System"
+                           lid="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                           id="urn:ogc:object:feature:Sensor:52n:ifgicam_flur">
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Keywords"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>camera</rim:Value>
+               <rim:Value>surveillance</rim:Value>
+               <rim:Value>monitoring</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeBegin"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:DateTime">
+            <rim:ValueList>
+               <rim:Value>2010-01-01</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeEnd"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:DateTime">
+            <rim:ValueList>
+               <rim:Value>2010-12-31</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::BoundedBy"
+                   slotType="urn:ogc:def:dataType:ISO-19107:2003:GM_Envelope">
+            <wrs:ValueList>
+               <wrs:AnyValue>
+                  <gml:Envelope xmlns:gml="http://www.opengis.net/gml" srsName="urn:ogc:def:crs:EPSG:4326"><!--Observed BBOX does not apply for indoor camera, is just position.--><gml:lowerCorner>51.9412 7.6103</gml:lowerCorner>
+                     <gml:upperCorner>51.9412 7.6103</gml:upperCorner>
+                  </gml:Envelope>
+               </wrs:AnyValue>
+            </wrs:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Location"
+                   slotType="urn:ogc:def:dataType:ISO-19107:2003:GM_Point">
+            <wrs:ValueList>
+               <wrs:AnyValue>
+                  <gml:Point xmlns:gml="http://www.opengis.net/gml" gml:id="d32e153"
+                             srsName="urn:ogc:def:crs:EPSG:4326">
+                     <gml:pos>7.6103 51.9412</gml:pos>
+                     <!--z-value '200' omitted!--></gml:Point>
+               </wrs:AnyValue>
+            </wrs:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Inputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:def:phenomenon:OGC:1.0.30:Radiance</rim:Value>
+               <rim:Value>urn:ogc:data:index:row</rim:Value>
+               <rim:Value>urn:ogc:data:index:column</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Outputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList/>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ShortName"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>VideoCam</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="Network Video Camera"/>
+         </rim:Name>
+         <rim:Description>
+            <rim:LocalizedString xml:lang="en-US" value="Network video camera at ifgi for testing of SPS."/>
+         </rim:Description>
+         <!--
+				******** classifications ********
+			--><rim:Classification id="urn:sir:id:classification:d32e34"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e35"/>
+         <rim:Classification id="urn:sir:id:classification:d32e38"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e39"/>
+         <rim:Classification id="urn:sir:id:classification:d32e42"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e43"/>
+      </wrs:ExtrinsicObject>
+      <!--
+			******** classification nodes ********
+		--><rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e35"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="video camera"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e39"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="surrveillance"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e43"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="remote monitoring"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <!--
+			******** associations ********
+		--><rim:Association id="urn:sir:id:association:d32e240"
+                       associationType="urn:ogc:def:associationType::OGC-CSW-ebRIM-Sensor::ComposedOf"
+                       sourceObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                       targetObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:red_channel"/>
+      <rim:Association id="urn:sir:id:association:d32e317"
+                       associationType="urn:ogc:def:associationType::OGC-CSW-ebRIM-Sensor::ComposedOf"
+                       sourceObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                       targetObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:green_channel"/>
+      <rim:Association id="urn:sir:id:association:d32e395"
+                       associationType="urn:ogc:def:associationType::OGC-CSW-ebRIM-Sensor::ComposedOf"
+                       sourceObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                       targetObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:blue_channel"/>
+      <rim:Association id="urn:sir:id:association:d32e178"
+                       associationType="urn:ogc:def:associationType::OGC-CSW-ebRIM-Sensor::AccessibleThrough"
+                       sourceObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur"
+                       targetObject="urn:sir:id:service:d32e178">
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ServiceSpecificSensorID">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:object:feature:Sensor:52n:ifgicam_flur</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+      </rim:Association>
+      <rim:Service id="urn:sir:id:service:d32e178">
+         <rim:ServiceBinding id="urn:sir:id:service:d32e181" service="urn:sir:id:service:d32e178"
+                             accessURI="http://to.be.added/sps">
+            <rim:Name>
+               <rim:LocalizedString xml:lang="en-US" value="IFGI-SPS"/>
+            </rim:Name>
+            <rim:Description>
+               <rim:LocalizedString xml:lang="en-US" value="TBD"/>
+            </rim:Description>
+         </rim:ServiceBinding>
+      </rim:Service>
+      <rim:Classification id="urn:sir:id:classification:d32e178"
+                          classifiedObject="urn:sir:id:service:d32e178"
+                          classificationNode="urn:ogc:serviceType:SensorPlanningService"/>
+      <rim:ClassificationNode id="urn:ogc:serviceType:SensorPlanningService"
+                              parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SystemManagement"/>
+      <!--
+					########## contact information ##########
+				--><rim:Organization id="urn:sir:id:org:d32e112" primaryContact="urn:sir:id:org:d32e110">
+         <rim:Name>
+            <rim:LocalizedString value="Institute for Geoinformatics, Muenster, Germany."/>
+         </rim:Name>
+         <rim:Address street="Weselerstr. 253" city="Münster" postalCode="49151" country="Germany"/>
+         <rim:EmailAddress address="daniel.nuest@uni-muenster.de"/>
+      </rim:Organization>
+      <rim:Person id="urn:sir:id:person:d32e110">
+         <rim:PersonName lastName="Nüst" firstName="Daniel"/>
+      </rim:Person>
+      <!--
+					############### components ##############
+				--><wrs:ExtrinsicObject xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+                           objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+                           lid="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:red_channel"
+                           id="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:red_channel">
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Keywords"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>red</rim:Value>
+               <rim:Value>camera colour channel</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Inputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:def:phenomenon:OGC:1.0.30:Radiance</rim:Value>
+               <rim:Value>urn:ogc:data:index:row</rim:Value>
+               <rim:Value>urn:ogc:data:index:column</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Outputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:data:DN</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ShortName"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>Red</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="Red Channel"/>
+         </rim:Name>
+         <rim:Description>
+            <rim:LocalizedString xml:lang="en-US" value="The red channel of a camera."/>
+         </rim:Description>
+         <rim:Classification id="urn:sir:id:classification:d32e266"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:red_channel"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e267"/>
+         <rim:Classification id="urn:sir:id:classification:d32e270"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:red_channel"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e271"/>
+      </wrs:ExtrinsicObject>
+      <wrs:ExtrinsicObject xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+                           objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+                           lid="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:green_channel"
+                           id="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:green_channel">
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Keywords"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>green</rim:Value>
+               <rim:Value>camera colour channel</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Inputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:def:phenomenon:OGC:1.0.30:Radiance</rim:Value>
+               <rim:Value>urn:ogc:data:index:row</rim:Value>
+               <rim:Value>urn:ogc:data:index:column</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Outputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:data:DN</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ShortName"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>Green</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="Green Channel"/>
+         </rim:Name>
+         <rim:Description>
+            <rim:LocalizedString xml:lang="en-US" value="The green channel of a camera."/>
+         </rim:Description>
+         <rim:Classification id="urn:sir:id:classification:d32e343"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:green_channel"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e344"/>
+         <rim:Classification id="urn:sir:id:classification:d32e347"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:green_channel"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e348"/>
+      </wrs:ExtrinsicObject>
+      <wrs:ExtrinsicObject xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+                           objectType="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+                           lid="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:blue_channel"
+                           id="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:blue_channel">
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Keywords"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>blue</rim:Value>
+               <rim:Value>camera colour channel</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Inputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:def:phenomenon:OGC:1.0.30:Radiance</rim:Value>
+               <rim:Value>urn:ogc:data:index:row</rim:Value>
+               <rim:Value>urn:ogc:data:index:column</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Outputs"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>urn:ogc:data:DN</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ShortName"
+                   slotType="urn:oasis:names:tc:ebxml-regrep:DataType:String">
+            <rim:ValueList>
+               <rim:Value>Blue</rim:Value>
+            </rim:ValueList>
+         </rim:Slot>
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="Blue Channel"/>
+         </rim:Name>
+         <rim:Description>
+            <rim:LocalizedString xml:lang="en-US" value="The blue channel of a camera."/>
+         </rim:Description>
+         <rim:Classification id="urn:sir:id:classification:d32e421"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:blue_channel"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e422"/>
+         <rim:Classification id="urn:sir:id:classification:d32e425"
+                             classifiedObject="urn:ogc:object:feature:Sensor:52n:ifgicam_flur:blue_channel"
+                             classificationNode="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e426"/>
+      </wrs:ExtrinsicObject>
+      <!--
+			******** classification nodes and accessible through associations ********
+		--><rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e267"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="image sensor"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e271"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="imaging"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e344"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="image sensor"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e348"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="imaging"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e422"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="image sensor"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+      <rim:ClassificationNode id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::d32e426"
+                              parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication">
+         <rim:Name>
+            <rim:LocalizedString xml:lang="en-US" value="imaging"/>
+         </rim:Name>
+      </rim:ClassificationNode>
+   </rim:RegistryObjectList>
+</rim:RegistryPackage>

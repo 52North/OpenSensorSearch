@@ -1,0 +1,89 @@
+<%--
+
+    ﻿Copyright (C) 2012
+    by 52 North Initiative for Geospatial Open Source Software GmbH
+
+    Contact: Andreas Wytzisk
+    52 North Initiative for Geospatial Open Source Software GmbH
+    Martin-Luther-King-Weg 24
+    48155 Muenster, Germany
+    info@52north.org
+
+    This program is free software; you can redistribute and/or modify it under
+    the terms of the GNU General Public License version 2 as published by the
+    Free Software Foundation.
+
+    This program is distributed WITHOUT ANY WARRANTY; even without the implied
+    WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with
+    this program (see gnu-gpl v2.txt). If not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+    visit the Free Software Foundation web page, http://www.fsf.org.
+
+--%>
+<?xml version="1.0" encoding="utf-8"?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<%@page import="org.n52.sir.client.Client"%>
+
+<jsp:useBean id="describeSensor"
+	class="org.n52.sir.client.DescribeSensorBean" scope="page" />
+<jsp:setProperty property="*" name="describeSensor" />
+
+<%
+	if (request.getParameter("build") != null) {
+		describeSensor.buildRequest();
+	}
+
+	if (request.getParameter("sendRequest") != null) {
+		describeSensor.setResponseString(Client
+				.sendPostRequest(describeSensor.getRequestString()));
+	}
+%>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Describe Sensor Request</title>
+
+<jsp:include page="htmlHead.jsp"></jsp:include>
+
+</head>
+<body onload="load()">
+
+<div id="content"><jsp:include page="header.jsp" /> <jsp:include
+	page="../menu.jsp" />
+
+<div id="pageContent">
+
+<h2>Describe Sensor Request</h2>
+
+<form action="describeSensor.jsp" method="post">
+<ul class="inputTablesList">
+	<li>
+	<table style="">
+		<tr>
+			<td class="inputTitle">Sensor ID in SIR:</td>
+			<td><input type="text" class="inputField" name="sensorIdInSir"
+				value="<%=describeSensor.getSensorIdInSir()%>" /></td>
+		</tr>
+	</table>
+	</li>
+</ul>
+<p><input type="submit" name="build" value="Build request" /></p>
+</form>
+<form action="describeSensor.jsp" method="post">
+<p class="textareaBorder"><textarea id="requestStringArea"
+	class="smallTextarea" name="requestString" rows="10" cols="10"><%=describeSensor.getRequestString()%></textarea></p>
+<p><input type="submit" name="sendRequest" value="Send request" /></p>
+</form>
+<p class="textareaBorder"><textarea id="responseStringArea"
+	class="largeTextarea" rows="10" cols="10"><%=describeSensor.getResponseString()%></textarea></p>
+
+</div>
+</div>
+</body>
+</html>

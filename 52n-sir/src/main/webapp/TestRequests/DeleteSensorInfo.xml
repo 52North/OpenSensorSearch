@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DeleteSensorInfoRequest service="SIR" version="0.3.0" xmlns="http://swsl.uni-muenster.de/sir" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd">
+	<InfoToBeDeleted>
+		<SensorIdentification>
+			<SensorIDInSIR>3</SensorIDInSIR>
+		</SensorIdentification>
+		<DeleteSensor>true</DeleteSensor>
+	</InfoToBeDeleted>
+	<InfoToBeDeleted>
+		<SensorIdentification>
+			<ServiceReference>
+				<ServiceURL>http://service.url</ServiceURL>
+				<ServiceType>SOS</ServiceType>
+				<ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+			</ServiceReference>
+		</SensorIdentification>
+		<DeleteSensor>true</DeleteSensor>
+	</InfoToBeDeleted>
+</DeleteSensorInfoRequest>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CancelSensorStatusSubscriptionRequest service="SIR" version="0.3.0" xmlns="http://swsl.uni-muenster.de/sir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd">
+	<SubscriptionID>001</SubscriptionID>
+</CancelSensorStatusSubscriptionRequest>

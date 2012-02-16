@@ -1,0 +1,2 @@
+GetCapabilities = request=GetCapabilities&service=SIR&acceptversions=0.3.0&sections=all
+DescribeSensor = request=DescribeSensor&service=SIR&version=0.3.0&sensorIDinSIR=1

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SearchSensorRequest service="SIR" version="0.3.0" xmlns="http://swsl.uni-muenster.de/sir"
+	xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:swe="http://www.opengis.net/swe/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd">
+	<SensorIdentification>
+		<SensorIDInSIR>1</SensorIDInSIR>
+	</SensorIdentification>
+	<SimpleResponse>true</SimpleResponse>
+</SearchSensorRequest>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sir:GetCapabilities service="SIR" xmlns:sir="http://swsl.uni-muenster.de/sir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/ows/1.1" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd">
+	<AcceptVersions>
+		<Version>0.3.0</Version>
+	</AcceptVersions>
+	<Sections>
+		<Section>Operationsmetadata</Section>
+		<Section>Contents</Section>
+	</Sections>
+</sir:GetCapabilities>

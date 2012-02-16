@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sir="http://swsl.uni-muenster.de/sir" xmlns:ows="http://www.opengis.net/ows/1.1" targetNamespace="http://swsl.uni-muenster.de/sir" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.opengis.net/ows/1.1" schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsCommon.xsd"/>
+	<xs:include schemaLocation="sirCommon.xsd"/>
+	<xs:element name="DescribeSensorRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SensorIDInSIR" type="xs:string"/>
+			</xs:sequence>
+			<xs:attribute name="service" type="xs:string" use="required" fixed="SIR"/>
+			<xs:attribute ref="sir:version" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<!--  The response is a SensorML document -->
+</xs:schema>

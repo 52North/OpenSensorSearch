@@ -1,0 +1,519 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.n52.sensorweb</groupId>
+	<artifactId>52n-sir</artifactId>
+
+	<name>SIR</name>
+	<description>52North Sensor Instance Registry</description>
+	<packaging>war</packaging>
+	<version>0.5</version>
+
+	<url>http://52north.org/communities/sensorweb/incubation/discovery/</url>
+	<inceptionYear>2012</inceptionYear>
+
+	<organization>
+		<name>52°North Initiative for Geospatial Open Source Software GmbH</name>
+		<url>http://52north.org</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<name>Jan Schulte</name>
+			<email>j.schulte@52north.org</email>
+			<organization>${project.organization.name}</organization>
+			<organizationUrl>${project.organization.url}</organizationUrl>
+			<timezone>GMT+1</timezone>
+			<id>JanSchulte</id>
+		</developer>
+		<developer>
+			<name>Daniel Nüst</name>
+			<email>d.nuest@52north.org</email>
+			<organization>${project.organization.name}</organization>
+			<organizationUrl>${project.organization.url}</organizationUrl>
+			<timezone>GMT+1</timezone>
+			<id>DanielNuest</id>
+		</developer>
+	</developers>
+
+	<mailingLists>
+		<mailingList>
+			<name>Sensor Web Community Mailing List</name>
+			<subscribe>http://list.52north.org/mailman/listinfo/swe</subscribe>
+			<unsubscribe>http://list.52north.org/mailman/listinfo/swe</unsubscribe>
+			<post>swe@52north.org</post>
+			<archive>http://list.52north.org/pipermail/swe</archive>
+			<otherArchives>
+				<otherArchive>http://sensorweb.forum.52north.org</otherArchive>
+			</otherArchives>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:svn:https://svn.52north.org/svn/swe/incubation/SIR/${project.artifactID}/trunk</connection>
+		<url>https://svn.52north.org/cgi-bin/viewvc.cgi/incubation/SIR/${project.artifactID}/trunk/?root=sensorweb</url>
+	</scm>
+
+	<issueManagement>
+		<system>Bugzilla</system>
+		<url>https://52north.org/bugzilla/</url>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>General Public License Version 2</name>
+			<url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<properties>
+		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<restlet.version>2.0.11</restlet.version>
+		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
+
+		<!-- would like to use filtering here, but I did not get it to work with Tomcat and Jetty plugins:
+		 http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
+		<service.path>/SIR</service.path>
+		<service.endpoint.service>sir</service.endpoint.service>
+		<service.endpoint.rest>rest</service.endpoint.rest>
+		<service.endpoint.opensearch>search</service.endpoint.opensearch>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<service.url>http://localhost:8080</service.url>
+				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
+				<db.driver>org.postgresql.Driver</db.driver>
+				<db.user>postgres</db.user>
+				<db.password>postgres</db.password>
+			</properties>
+		</profile>
+		<profile>
+			<id>deploy</id>
+			<properties>
+			<!-- add these to your settings.xml file to ensure passwords are not uploaded to SCM:
+				<profile>
+					<id>deploy</id>
+					<properties>
+						<sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server>
+						<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user>
+						<sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password>
+					</properties>
+				</profile>
+				 -->
+				<service.url>${sir.deploy.server}</service.url>
+				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
+				<db.driver>org.postgresql.Driver</db.driver>
+				<db.user>${sir.deploy.database.user}</db.user>
+				<db.password>${sir.deploy.database.password}</db.password>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<finalName>${project.name}</finalName>
+
+		<plugins>
+			<plugin>
+				<!-- http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin -->
+				<!-- jetty:run-exploded invoces lifecycle phase package -->
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.0.RC4</version>
+
+				<configuration>
+					<scanIntervalSeconds>2</scanIntervalSeconds>
+					<!-- if you embed the following in <webApp>, then jetty:run-exploded will result in error
+					"When configuring a basic element the configuration cannot contain any child elements. Configuration element 'war'." -->
+					<contextPath>${service.path}</contextPath> <!-- is ignored for run-exploded, but used by Webby: Right-click, Debug as, Webby ... -->
+					<war>target/${project.build.finalName}</war>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+
+				<configuration>
+					<!-- <filters>
+						<filter>src/main/config/config.properties</filter>
+					</filters> -->
+					<!-- have to explicitly add resources and target paths if I want to do filtering on different resources -->
+					<!-- http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+						</resource>
+						<resource>
+							<directory>src/main/resources</directory>
+							<filtering>true</filtering>
+							<targetPath>WEB-INF/classes</targetPath>
+						</resource>
+					</webResources>
+
+					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.1-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>true</doCheck>
+					<doUpdate>true</doUpdate>
+					<format>{0,number}</format>
+					<items>
+						<item>buildNumber</item>
+					</items>
+					<buildNumberPropertiesFileLocation>${basedir}/src/main/config/buildNumber.properties</buildNumberPropertiesFileLocation>
+					<revisionOnScmFailure>svm-NA</revisionOnScmFailure>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat6-maven-plugin</artifactId>
+				<version>2.0-SNAPSHOT</version>
+				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
+				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir> 
+					</systemProperties> </configuration> -->
+				<configuration>
+					<path>${service.path}</path>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>commons-io</groupId>
+						<artifactId>commons-io</artifactId>
+						<version>2.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.0-SNAPSHOT</version>
+				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
+				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir> 
+					</systemProperties> </configuration> -->
+				<configuration>
+					<path>${service.path}</path>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>commons-io</groupId>
+						<artifactId>commons-io</artifactId>
+						<version>2.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
+				<!-- run "mvn license:check -Dyear=2011" to check -->
+				<!-- run "mvn license:format -Dyear=2011" to add to the files -->
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
+				<configuration>
+					<header>src/main/resources/52N_license.txt</header>
+					<excludes>
+						<exclude>**/log4j*</exclude>
+						<exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
+						<exclude>**/iso_svrl_for_xslt2.xsl</exclude>
+						<exclude>**/test/resources/**</exclude>
+						<exclude>**/webapp/TestRequests/**</exclude>
+						<exclude>**/webapp/codemirror/**</exclude>
+						<exclude>**/buildNumber.properties</exclude>
+					</excludes>
+					<includes>
+						<include>**/*.java</include>
+						<include>**/*.properties</include>
+						<include>**/*.jsp</include>
+						<include>**/*.xml</include>
+						<include>**/*.xsl</include>
+						<include>**/*.sch</include>
+						<include>**/*.sql</include>
+						<include>**/*.css</include>
+						<include>**/*.html</include>
+					</includes>
+					<strictCheck>true</strictCheck>
+					<properties>
+						<year>${project.inceptionYear}</year>
+					</properties>
+					<mapping>
+						<sch>XML_STYLE</sch>
+					</mapping>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<!-- test will fail if license headers are not correct, run license:format 
+							to add the headers. -->
+						<goals>
+							<goal>check</goal>
+							<!-- <goal>format</goal> -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>apache-snapshots</id>
+			<name>Apache Snapshots</name>
+			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+
+		<pluginRepository>
+			<id>Codehaus Snapshots</id>
+			<url>http://nexus.codehaus.org/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>  <!-- Workaround for MNG-2974, see note below -->
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+
+		<repository>
+			<!-- Tentative local repo for libs that are not migrated to Maven dependency 
+				mechanism and available in online repositories. -->
+			<id>lib-repository</id>
+			<name>Local Repository</name>
+			<url>file:///${basedir}/lib-repository/</url>
+		</repository>
+
+		<!-- for postgis -->
+		<repository>
+			<id>sonatype-postgis-releases</id>
+			<name>Sonatype Postgis Releases Repo</name>
+			<url>http://oss.sonatype.org/content/repositories/postgis-releases</url>
+		</repository>
+		
+		<!-- for buildnumber-maven-plugin -->
+		<repository>
+			<id>Codehaus Snapshots</id>
+			<url>http://nexus.codehaus.org/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.restlet.jee</groupId>
+			<artifactId>org.restlet</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.core</artifactId>
+				</exclusion>
+			</exclusions>
+			<version>${restlet.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.restlet.jee</groupId>
+			<artifactId>org.restlet.ext.servlet</artifactId>
+			<version>${restlet.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<!-- it’s just the api and the implementation should be provided by the 
+				application server/web container -->
+			<scope>provided</scope> <!-- for running with tomcat-maven-plugin, see http://singztechmusings.wordpress.com/2011/06/17/java-lang-classcastexception-cannot-be-cast-to-javax-servlet-servlet-how-to-resolve/ -->
+		</dependency>
+
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.messaging.saaj</groupId>
+			<artifactId>saaj-impl</artifactId>
+			<version>1.3.18</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>2.5.0</version>
+			<!-- if added, the wrong XmlConstants is used, see XmlTools.javaa and 
+				SMLtoEbRIMTransformer.java -->
+			<exclusions>
+				<exclusion>
+					<groupId>stax</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.10.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-sps-v100</artifactId>
+			<version>1.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.n52.sensorweb</groupId>
+					<artifactId>52n-xml-gml-v311</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-sos-v100</artifactId>
+			<version>1.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.n52.sensorweb</groupId>
+					<artifactId>52n-xml-gml-v311</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-gml</artifactId>
+			<version>3.2-patched</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>dbcp</artifactId>
+			<version>6.0.35</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgis</groupId>
+			<artifactId>postgis-jdbc</artifactId>
+			<version>1.3.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>8.4-702.jdbc4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf</groupId>
+			<artifactId>saxon-he</artifactId>
+			<version>9</version>
+		</dependency>
+
+		<!-- TODO move these to 52N online repo -->
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-wrs-v101</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-sir-v032</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-sor-v031</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+
+</project>

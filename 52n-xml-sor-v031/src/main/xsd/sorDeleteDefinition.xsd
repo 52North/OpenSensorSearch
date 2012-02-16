@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sor="http://swsl.uni-muenster.de/sor" xmlns:swe="http://www.opengis.net/swe/1.0/gml32" xmlns:ns1="http://www.opengis.net/swe/1.0.1" targetNamespace="http://swsl.uni-muenster.de/sor" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="http://schemas.opengis.net/sweCommon/1.0.1/phenomenon.xsd"/>
+	<element name="DeleteDefinitionRequest">
+		<complexType>
+			<sequence>
+				<element name="DefinitionURI" type="anyURI"/>
+			</sequence>
+			<attribute name="service" type="string" use="required" fixed="SOR"/>
+			<attribute name="version" type="string" use="required" fixed="0.3.0"/>
+		</complexType>
+	</element>
+	<element name="DeleteDefinitionResponse">
+		<complexType>
+			<sequence>
+				<element name="DefinitionURI" type="anyURI"/>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

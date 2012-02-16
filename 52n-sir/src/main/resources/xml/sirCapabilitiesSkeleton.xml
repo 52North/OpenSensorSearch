@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    ﻿Copyright (C) 2012
+    by 52 North Initiative for Geospatial Open Source Software GmbH
+
+    Contact: Andreas Wytzisk
+    52 North Initiative for Geospatial Open Source Software GmbH
+    Martin-Luther-King-Weg 24
+    48155 Muenster, Germany
+    info@52north.org
+
+    This program is free software; you can redistribute and/or modify it under
+    the terms of the GNU General Public License version 2 as published by the
+    Free Software Foundation.
+
+    This program is distributed WITHOUT ANY WARRANTY; even without the implied
+    WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with
+    this program (see gnu-gpl v2.txt). If not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+    visit the Free Software Foundation web page, http://www.fsf.org.
+
+-->
+<sir:Capabilities version="1.0.0" xmlns:sir="http://swsl.uni-muenster.de/sir" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd">
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<!-- Service Identification -->
+	<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
+	<ows:ServiceIdentification>
+		<ows:Title>WWU SIR</ows:Title>
+		<ows:Abstract>SIR Server Operated by WWU</ows:Abstract>
+		<ows:ServiceType codeSpace="http://swsl.uni-muenster.de/sir">OGC:SIR</ows:ServiceType>
+		<ows:ServiceTypeVersion>0.0.0</ows:ServiceTypeVersion>
+		<ows:Fees>NONE</ows:Fees>
+		<ows:AccessConstraints>NONE</ows:AccessConstraints>
+	</ows:ServiceIdentification>
+	<!--~~~~~~~~~~~~~~~~~~~~~~-->
+	<!-- Provider Description -->
+	<!--~~~~~~~~~~~~~~~~~~~~~~-->
+	<ows:ServiceProvider>
+		<ows:ProviderName>WWU</ows:ProviderName>
+		<ows:ProviderSite xlink:href="http://swsl.uni-muenster.de/sir"/>
+		<ows:ServiceContact>
+			<ows:IndividualName>Simon Jirka</ows:IndividualName>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>222-222-2222</ows:Voice>
+					<ows:Facsimile>333-333-3333</ows:Facsimile>
+				</ows:Phone>
+			</ows:ContactInfo>
+		</ows:ServiceContact>
+	</ows:ServiceProvider>
+	<!--~~~~~~~~~~~~~~~~~~~~-->
+	<!-- OperationsMetadata -->
+	<!--~~~~~~~~~~~~~~~~~~~~-->
+	<ows:OperationsMetadata>
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://url.will.be.replaced"/>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="updateSequence">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="AcceptVersions">
+				<ows:AllowedValues>
+					<ows:Value>VERSION_WILL_BE_REPLACED</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="Sections">
+				<ows:AllowedValues>
+					<ows:Value>ServiceIdentification</ows:Value>
+					<ows:Value>ServiceProvider</ows:Value>
+					<ows:Value>OperationsMetadata</ows:Value>
+					<ows:Value>Contents</ows:Value>
+					<ows:Value>All</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="AcceptFormats">
+				<ows:AllowedValues>
+					<ows:Value>text/xml</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="ConnectToCatalog">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="CatalogURL">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="PushIntervalSeconds">
+				<ows:AllowedValues>
+					<ows:Range>
+						<ows:MinimumValue>0</ows:MinimumValue>
+					</ows:Range>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="DescribeSensor">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://url.will.be.replaced"/>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="SensorIDInSIR">
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="DisconnectFromCatalog">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="CatalogURL">
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="GetSensorStatus">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="SensorIdentification">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="SearchCriteria">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="PropertyFilter">
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="HarvestService">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="ServiceURL">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="ServiceType">
+				<ows:AllowedValues>
+					<ows:Value>SOS</ows:Value>
+					<ows:Value>SPS</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="InsertSensorInfo">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="InfoToBeInserted">
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="InsertSensorStatus">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="StatusDescription">
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="SearchSensor">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://url.will.be.replaced"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="SensorIdentification">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="SearchCriteria">
+				<ows:AnyValue/>
+			</ows:Parameter>
+			<ows:Parameter name="SimpleResponse">
+				<!-- true or false -->
+				<ows:AnyValue/>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Parameter name="service">
+			<ows:AllowedValues>
+				<ows:Value>SIR</ows:Value>
+			</ows:AllowedValues>
+		</ows:Parameter>
+		<ows:Parameter name="version">
+			<ows:AllowedValues>
+				<ows:Value>WILL_BE_REPLACED</ows:Value>
+			</ows:AllowedValues>
+		</ows:Parameter>
+	</ows:OperationsMetadata>
+	<sir:Contents/>
+</sir:Capabilities>

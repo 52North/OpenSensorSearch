@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    ﻿Copyright (C) 2012
+    by 52 North Initiative for Geospatial Open Source Software GmbH
+
+    Contact: Andreas Wytzisk
+    52 North Initiative for Geospatial Open Source Software GmbH
+    Martin-Luther-King-Weg 24
+    48155 Muenster, Germany
+    info@52north.org
+
+    This program is free software; you can redistribute and/or modify it under
+    the terms of the GNU General Public License version 2 as published by the
+    Free Software Foundation.
+
+    This program is distributed WITHOUT ANY WARRANTY; even without the implied
+    WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with
+    this program (see gnu-gpl v2.txt). If not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+    visit the Free Software Foundation web page, http://www.fsf.org.
+
+-->
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd">
+
+	<!--
+		See
+		http://code.google.com/p/buddata-ebxml-registry/issues/detail?id=58
+		for a discussion of how to add slots to buddata.
+	-->
+	<rim:ExtrinsicObject id="urn:sir:id:SlotDefinition"
+		objectType="urn:kzen:ObjectType:SlotDescription">
+
+		<!--
+			See OGC document 09-163, section "Slots" for details on the slots.
+		-->
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ShortName"
+			slotType="string">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Keywords"
+			slotType="string">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Slot
+			name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ServiceSpecificSensorID"
+			slotType="string">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Inputs"
+			slotType="string">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Outputs"
+			slotType="string">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::BoundedBy"
+			slotType="geometry">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::Location"
+			slotType="geometry">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeBegin"
+			slotType="datetime">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+		<rim:Slot name="urn:ogc:def:slot:OGC-CSW-ebRIM-Sensor::ValidTimeEnd"
+			slotType="datetime">
+			<rim:ValueList>
+				<rim:Value />
+			</rim:ValueList>
+		</rim:Slot>
+
+	</rim:ExtrinsicObject>
+</rim:RegistryObjectList>

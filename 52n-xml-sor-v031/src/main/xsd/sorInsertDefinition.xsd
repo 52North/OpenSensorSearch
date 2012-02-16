@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sor="http://swsl.uni-muenster.de/sor"
+	xmlns:swe="http://www.opengis.net/swe/1.0/gml32" xmlns:ns1="http://www.opengis.net/swe/1.0.1"
+	targetNamespace="http://swsl.uni-muenster.de/sor" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<import namespace="http://www.opengis.net/swe/1.0/gml32"
+		schemaLocation="http://giv-genesis.uni-muenster.de/schemas/sweCommon/1.0.1_gml32/phenomenon.xsd" />
+	<element name="InsertDefinitionRequest">
+		<complexType>
+			<sequence>
+				<element ref="swe:Phenomenon" />
+			</sequence>
+			<attribute name="service" type="string" use="required"
+				fixed="SOR" />
+			<attribute name="version" type="string" use="required"
+				fixed="0.3.0" />
+		</complexType>
+	</element>
+	<element name="InsertDefinitionResponse">
+		<complexType>
+			<sequence>
+				<element name="DefinitionURI" type="anyURI" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

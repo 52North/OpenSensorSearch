@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sir="http://swsl.uni-muenster.de/sir" xmlns:swe="http://www.opengis.net/swe/1.0" targetNamespace="http://swsl.uni-muenster.de/sir" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="sirCommon.xsd"/>
+	<xs:element name="CancelSensorStatusSubscriptionRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SubscriptionID" type="xs:string"/>
+			</xs:sequence>
+			<xs:attribute name="service" type="xs:string" use="required" fixed="SIR"/>
+			<xs:attribute ref="sir:version" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CancelSensorStatusSubscriptionResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SubscriptionID" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

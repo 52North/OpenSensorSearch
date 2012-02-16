@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    ﻿Copyright (C) 2012
+    by 52 North Initiative for Geospatial Open Source Software GmbH
+
+    Contact: Andreas Wytzisk
+    52 North Initiative for Geospatial Open Source Software GmbH
+    Martin-Luther-King-Weg 24
+    48155 Muenster, Germany
+    info@52north.org
+
+    This program is free software; you can redistribute and/or modify it under
+    the terms of the GNU General Public License version 2 as published by the
+    Free Software Foundation.
+
+    This program is distributed WITHOUT ANY WARRANTY; even without the implied
+    WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with
+    this program (see gnu-gpl v2.txt). If not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+    visit the Free Software Foundation web page, http://www.fsf.org.
+
+-->
+<rim:ClassificationScheme xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+	id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+	objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
+	isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd">
+	<rim:Name>
+		<rim:LocalizedString xml:lang="en"
+			value="ISO 19119 Geographic services taxonomy" />
+	</rim:Name>
+	<rim:Description>
+		<rim:LocalizedString xml:lang="en"
+			value="This taxonomy (defined in Subclause 8.3) is used to classify services according to their general computational characteristics." />
+	</rim:Description>
+
+	<rim:ClassificationNode code="HumanInteraction"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+		parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+		id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en"
+				value="Human interaction services" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en"
+				value="Services for providing user interfaces, graphics, multimedia, and for presentation of compound documents." />
+		</rim:Description>
+
+		<rim:ClassificationNode code="CatalogueViewer"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CatalogueViewer">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en" value="Catalogue viewer" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Client service that allows a user to interact with a catalogue to locate, browse, and manage metadata about geographic data or geographic services." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Service:GeoViewer"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:GeoViewer">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Geographic viewer" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Client service that allows a user to view one or more feature collections or coverages. This viewer allows a user to interact with map data, e.g., displaying, overlaying and querying. An example is the viewer client generator defined in ISO 19128." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="SpreadsheetViewer"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SpreadsheetViewer">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Geographic spreadsheet viewer" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Client service that allows a user to interact with multiple data objects and to request calculations similar to an arithmetic spreadsheet but extended to geographic data." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="ServiceEditor"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:ServiceEditor">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en" value="Service editor" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Client service that allows a user to control geographic processing services. Views include understanding a service, composing/scripting service chains, invoking a service, statusing a service, scheduling services, and invoking a service chain." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="WorkflowManager"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:WorkflowManager">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Workflow enactment manager" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides user interaction with a workflow enactment service." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="FeatureEditor"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureEditor">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Geographic feature editor" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Geographic viewer that allows a user to interact with feature data, e.g.,displaying, querying. Supports feature annotation. The user controls view orientation, perspective, depth cueing, hidden-line/surface, light-sources, transparency, and texture etc." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="SymbolEditor"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SymbolEditor">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Geographic symbol editor" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Client service that allows a human to select and manage symbol libraries. ISO 19117 is relevant to symbol libraries." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="GeneralizationEditor"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:GeneralizationEditor">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Feature generalization editor" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Client service that allows a user to modify the cartographic characteristics of a feature or feature collection by simplifying its visualization, while maintaining its salient elements - the spatial equivalent of simplification." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="DataViewer"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:HumanInteraction"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:DataViewer">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Geographic data-structure viewer" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Client service that allows a user to access part of dataset to see its internal structure. Allows user to request creation of new objects from parts of an object being browsed. Allow user to request a check of an object (e.g., type checking)." />
+			</rim:Description>
+		</rim:ClassificationNode>
+	</rim:ClassificationNode>
+
+	<rim:ClassificationNode code="InfoManagement"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+		parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+		id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en"
+				value="Model/information management services" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en"
+				value="Services for managing the development, manipulation, and storage of metadata, conceptual schemas, and datasets." />
+		</rim:Description>
+
+		<rim:ClassificationNode code="FeatureAccess"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureAccess">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Feature access service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides access to and management of a feature store. An access service may include a query that filters the data returned to the client. ISO 19125-1 is relevant to feature access." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="MapAccess"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:MapAccess">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Map access service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides access to a geographic graphics (i.e., pictures of geographic data)." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="CoverageAccess"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CoverageAccess">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Coverage access service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides access to and management of a coverage store. An access service may include a query that filters the data returned to the client. ISO 19123 and ISO 19111 are relevant to coverage access." />
+			</rim:Description>
+
+			<rim:ClassificationNode code="CoverageAccess-Sensors"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CoverageAccess"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CoverageAccess-Sensors">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Coverage Access Service - Sensors" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Provides access to a coverage where the source of the coverage data is a real-time sensor, i.e., not a persistent store." />
+				</rim:Description>
+			</rim:ClassificationNode>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="SensorDescription"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SensorDescription">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Sensor description service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides the description of a coverage sensor, including sensor location and orientation, as well as the sensor-s geometric, dynamic, and radiometric characteristics for geoprocessing purposes." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="ProductAccess"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:ProductAccess">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Product access service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides access to and management of a geographic product store. A product can be a predefined feature collection and metadata with known boundaries and content, corresponding to a paper map or report." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="FeatureType"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureType">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Feature type service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides access to and management of a store of feature type definitions. The static and dynamic information models for a feature type catalogue are provided in ISO 19110." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Catalogue"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Catalogue">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Catalogue service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides discovery and management services on a store of metadata about instances. The metadata may be for dataset instances, e.g., dataset catalogue, or may contain service metadata, e.g., service catalogue." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Registry"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Registry">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en" value="Registry service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides access to store of metadata about types or structured vocabularies that can be organized and related to each other. Example registries are information community registries, type dictionaries, service registries and schema registries." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Gazetteer"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Gazetteer">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Gazetteer service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides access to a directory of instances of a class or classes of realworld phenomena containing some information regarding position. An information model for a gazetteer is provided by ISO 19112." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="OrderHandling"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:OrderHandling">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Order handling service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides the ability to order products from a provider including: formulation of quotes on orders, selection of geographic processing options, submission of an order, statusing of orders, and billing etc." />
+			</rim:Description>
+
+			<rim:ClassificationNode code="StandingOrder"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:OrderHandling"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:StandingOrder">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Standing order service" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Order handling service that allows a user to request that a product over a geographic area be disseminated when it becomes available. Such dissemination includes receive, prepare (i.e., reformat, compress, decompress, etc.), prioritize, etc." />
+				</rim:Description>
+			</rim:ClassificationNode>
+		</rim:ClassificationNode>
+	</rim:ClassificationNode>
+
+	<rim:ClassificationNode code="Workflow"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+		parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+		id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Workflow">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en"
+				value="Workflow/task management services" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en"
+				value="Services for supporting specific tasks or work-related activities conducted by humans. These services support use of resources and development of products involving a sequence of activities or steps." />
+		</rim:Description>
+
+		<rim:ClassificationNode code="ChainDefinition"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Workflow"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:ChainDefinition">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Chain definition service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Enables the definition and execution of a chain by the workflow enactment service. This includes information about its starting and completion conditions, constituent activities and rules for navigating between them, etc." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="WorkflowEnactment"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Workflow"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:WorkflowEnactment">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Workflow enactment service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Interprets a chain and controls the instantiation of services and sequencing of activities. This is done through one or more co-operating workflow management engines, which manages the execution." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Subscription"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Workflow"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Subscription">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Subscription service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Allow clients to register for notification about events of interest. Events are defined by a service that performs an activity resulting in the event. Events are catalogued by the subscription service." />
+			</rim:Description>
+		</rim:ClassificationNode>
+	</rim:ClassificationNode>
+
+	<rim:ClassificationNode code="Processing"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+		parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+		id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en"
+				value="Processing services" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en"
+				value="Services that perform large-scale computations involving substantial amounts of data. Examples include services for providing the time of day, spelling checkers, and services that perform coordinate transformations." />
+		</rim:Description>
+
+		<rim:ClassificationNode code="Processing-Spatial"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Spatial">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Spatial processing service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Performs spatial operations on geographic features." />
+			</rim:Description>
+
+			<rim:ClassificationNode code="CoordinateTransformation"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Spatial"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:CoordinateTransformation">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Coordinate transformation service" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Transforms or converts coordinates between coordinate reference systems (see ISO 19111)." />
+				</rim:Description>
+			</rim:ClassificationNode>
+
+			<rim:ClassificationNode code="Orthorectification"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Spatial"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Orthorectification">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Orthorectification service" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Removes image displacement due to variation in terrain elevation. Orthorectification requires use of digital elevation data, usually in grid form." />
+				</rim:Description>
+			</rim:ClassificationNode>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Processing-Thematic"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Thematic">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Thematic processing service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Performs thematic operations on geographic features." />
+			</rim:Description>
+
+			<rim:ClassificationNode code="ThematicClassification"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Thematic"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:ThematicClassification">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Thematic classification service" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Classifies regions of geographic data based on thematic attributes." />
+				</rim:Description>
+			</rim:ClassificationNode>
+
+			<rim:ClassificationNode code="FeatureGeneralization"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Thematic"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureGeneralization">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Feature generalization service" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Generalizes feature types in a feature collection to increase the effectiveness of communication by counteracting the undesirable effects of data reduction." />
+				</rim:Description>
+			</rim:ClassificationNode>
+
+			<rim:ClassificationNode code="Geoparsing"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Thematic"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Geoparsing">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Geoparsing service" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Scans text resources for location-based references, such as a place names, addresses, postal codes, etc., in preparation for passage to a geocoding service." />
+				</rim:Description>
+			</rim:ClassificationNode>
+
+			<rim:ClassificationNode code="Geocoding"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Thematic"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Geocoding">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en"
+						value="Geocoding service" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en"
+						value="Augments location-based text references with geographic coordinates (or some other spatial reference)." />
+				</rim:Description>
+			</rim:ClassificationNode>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Processing-Temporal"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Temporal">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Temporal processing service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Performs temporal operations on geographic features." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Processing-Metadata"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Processing-Metadata">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Metadata processing service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Performs operations on geographic metadata." />
+			</rim:Description>
+		</rim:ClassificationNode>
+	</rim:ClassificationNode>
+
+	<rim:ClassificationNode code="Communication"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+		parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+		id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Communication">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en"
+				value="Geographic communication services" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en"
+				value="Communication services are services for encoding and transfer of data across communications networks." />
+		</rim:Description>
+
+		<rim:ClassificationNode code="Encoding"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Communication"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Encoding">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en" value="Encoding service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides an implementation of an encoding rule and an interface for encoding and decoding functionality. A standard relevant to encoding is ISO 19118." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Transfer"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Communication"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Transfer">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en" value="Transfer service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides an implementation of one or more transfer protocols, which allows data transfer between distributed information systems over off-line or on-line communication media." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Compression"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Communication"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Compression">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Compression service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Converts spatial portions of a feature collection to and from compressed form." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Conversion"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Communication"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Conversion">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Format conversion service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Converts from one geographic data format to another." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Messaging"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Communication"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Messaging">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Messaging service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Allows multiple users to simultaneously view, comment about, and request edits of feature collections. This service allows collaboration involving geographic data." />
+			</rim:Description>
+		</rim:ClassificationNode>
+	</rim:ClassificationNode>
+
+	<rim:ClassificationNode code="SystemManagement"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+		parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+		id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SystemManagement">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en"
+				value="System management services" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en"
+				value="Services that manage system components, applications, and networks. These services also include the management of user accounts and user access privileges." />
+		</rim:Description>
+
+		<rim:ClassificationNode code="Authn"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SystemManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Authentication">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Authentication service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Provides authentication information and facilities for verifying an identity claimed by or for a system entity." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Authz"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SystemManagement"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Authorization">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en"
+					value="Authorization service" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en"
+					value="Evaluates relevant access control policies and renders access control decisions." />
+			</rim:Description>
+		</rim:ClassificationNode>
+	</rim:ClassificationNode>
+</rim:ClassificationScheme>

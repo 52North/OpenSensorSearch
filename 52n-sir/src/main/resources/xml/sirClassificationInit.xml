@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    ﻿Copyright (C) 2012
+    by 52 North Initiative for Geospatial Open Source Software GmbH
+
+    Contact: Andreas Wytzisk
+    52 North Initiative for Geospatial Open Source Software GmbH
+    Martin-Luther-King-Weg 24
+    48155 Muenster, Germany
+    info@52north.org
+
+    This program is free software; you can redistribute and/or modify it under
+    the terms of the GNU General Public License version 2 as published by the
+    Free Software Foundation.
+
+    This program is distributed WITHOUT ANY WARRANTY; even without the implied
+    WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with
+    this program (see gnu-gpl v2.txt). If not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+    visit the Free Software Foundation web page, http://www.fsf.org.
+
+-->
+	<!--
+		
+		 by 52 North Initiative for Geospatial Open Source
+		Software GmbH Contact: Andreas Wytzisk 52 North Initiative for
+		Geospatial Open Source Software GmbH Martin-Luther-King-Weg 24 48155
+		Muenster, Germany info@52north.org. This program is free software; you
+		can redistribute and/or modify it under the terms of the GNU General
+		Public License version 2 as published by the Free Software Foundation.
+
+		This program is distributed WITHOUT ANY WARRANTY; even without the
+		implied WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR
+		PURPOSE. See the GNU General Public License for more details. You
+		should have received a copy of the GNU General Public License along
+		with this program (see gnu-gplv2.txt). If not, write to the Free
+		Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+		02111-1307, USA or visit the Free Software Foundation web page,
+		http://www.fsf.org. Created on: 21.01.2010
+		*********************************************************************************/
+	-->
+<rim:RegistryObjectList xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd">
+
+	<!--
+		See OGC 09-163r2 section 8.1 Intended application classification
+		scheme
+	-->
+	<rim:ClassificationScheme
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::IntendedApplication"
+		isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en-US"
+				value="Intended application taxonomy" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en-US"
+				value="Defines a taxonomy that may be used to classify sensors according to their purpose." />
+		</rim:Description>
+	</rim:ClassificationScheme>
+
+	<!--
+		See OGC 09-163r2 section 8.2 System types classification scheme
+	-->
+	<rim:ClassificationScheme
+		id="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes"
+		isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme">
+		<rim:Name>
+			<rim:LocalizedString xml:lang="en-US"
+				value="System types taxonomy" />
+		</rim:Name>
+		<rim:Description>
+			<rim:LocalizedString xml:lang="en-US"
+				value="Defines a taxonomy that may be used to classify sensors according to their types." />
+		</rim:Description>
+
+		<rim:ClassificationNode
+			id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::System"
+			parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en-US" value="System" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en-US"
+					value="A node in the sensor classification taxonomy for all System
+			elements." />
+			</rim:Description>
+		</rim:ClassificationNode>
+		<rim:ClassificationNode
+			id="urn:ogc:def:objectType:OGC-CSW-ebRIM-Sensor::Component"
+			parent="urn:ogc:def:classificationScheme:OGC-CSW-ebRIM-Sensor::SystemTypes">
+			<rim:Name>
+				<rim:LocalizedString xml:lang="en-US" value="Component" />
+			</rim:Name>
+			<rim:Description>
+				<rim:LocalizedString xml:lang="en-US"
+					value="A node in the sensor classification taxonomy for all Component
+			elements." />
+			</rim:Description>
+		</rim:ClassificationNode>
+
+	</rim:ClassificationScheme>
+
+	<!--
+		See 07-144r4 section 8.4 "OGC Service Types" (version numbering partly
+		left out at this point) and ISO19119:2003(E) section 8.3.
+
+		ClassificationScheme can be inserted from the document
+		ISO19119-Services-Scheme.xml in
+		07-144r4-csw-ebrim-part2.zip/resources/basic-pkg/schemes. Additional
+		ClassificationNodes are as follows.
+	-->
+	<rim:ClassificationScheme
+		id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+		objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationScheme"
+		isInternal="true" nodeType="urn:oasis:names:tc:ebxml-regrep:NodeType:UniqueCode">
+
+		<rim:ClassificationNode code="InfoManagement"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement">
+
+			<rim:ClassificationNode code="SOS"
+				id="urn:ogc:serviceType:SensorObservationService"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en-US"
+						value="Sensor Observation Service (SOS)" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en-US"
+						value="Provides access to sensor information (SensorML) and measured sensor observations (OM)." />
+				</rim:Description>
+			</rim:ClassificationNode>
+
+			<rim:ClassificationNode code="FeatureAccess"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureAccess">
+
+				<rim:ClassificationNode code="WFS"
+					id="urn:ogc:serviceType:WebFeatureService:1.1"
+					parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:FeatureAccess">
+					<rim:Name>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Web Feature Service (WFS)" />
+					</rim:Name>
+					<rim:Description>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Provides access to and management of a feature data repository." />
+					</rim:Description>
+				</rim:ClassificationNode>
+
+			</rim:ClassificationNode>
+
+			<rim:ClassificationNode code="Catalogue"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Catalogue">
+
+				<rim:ClassificationNode code="CAT"
+					id="urn:ogc:serviceType:CatalogueService:2.0.2"
+					parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Catalogue">
+					<rim:Name>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Catalogue Service" />
+					</rim:Name>
+					<rim:Description>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Provides facilities for discovering, browsing, and searching descriptions about data, services, and other information resources." />
+					</rim:Description>
+
+
+					<rim:ClassificationNode code="CSW-ebRIM"
+						id="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM" parent="urn:ogc:serviceType:CatalogueService:2.0.2">
+						<rim:Name>
+							<rim:LocalizedString xml:lang="en-US"
+								value="CSW-ebRIM Registry Service" />
+						</rim:Name>
+						<rim:Description>
+							<rim:LocalizedString xml:lang="en-US"
+								value="A specialized CSW-based catalogue service that uses the OASIS ebXML Registry Information Model (ebRIM). It provides facilities for creating, searching, and maintaining registers." />
+						</rim:Description>
+					</rim:ClassificationNode>
+
+				</rim:ClassificationNode>
+
+			</rim:ClassificationNode>
+
+			<rim:ClassificationNode code="Registry"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:InfoManagement"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Registry">
+
+				<rim:ClassificationNode code="SIR"
+					objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+					id="urn:ogc:serviceType:SensorInstanceRegistry"
+					parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Registry">
+					<rim:Name>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Sensor Instance Registry (SIR)" />
+					</rim:Name>
+					<rim:Description>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Provides functionality for discovering sensors as well as SWE services. Generally the SIR interface consists of two parts: sensor discovery and sensor status handling. The discovery part of the SIR interface deals with sensor metadata (based on SensorML) and metadata of the services that encapsulate the sensors. The sensor status handling handling part provides functionality for handling the status of sensors." />
+					</rim:Description>
+				</rim:ClassificationNode>
+
+			</rim:ClassificationNode>
+
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="Workflow"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Workflow">
+
+			<rim:ClassificationNode code="Subscription"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Workflow"
+				id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Subscription">
+
+				<rim:ClassificationNode code="SAS"
+					objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+					id="urn:ogc:serviceType:SensorAlertService"
+					parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:Subscription">
+					<rim:Name>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Sensor Alert Service (SAS)" />
+					</rim:Name>
+					<rim:Description>
+						<rim:LocalizedString xml:lang="en-US"
+							value="Provides access to sensor alerts, as in an event notification system, that are advertised by sensor nodes." />
+					</rim:Description>
+				</rim:ClassificationNode>
+				
+			</rim:ClassificationNode>
+			
+		</rim:ClassificationNode>
+
+		<rim:ClassificationNode code="SystemManagement"
+			objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+			parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services"
+			id="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SystemManagement">
+
+			<rim:ClassificationNode code="SPS"
+				objectType="urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ClassificationNode"
+				id="urn:ogc:serviceType:SensorPlanningService"
+				parent="urn:ogc:def:ebRIM-ClassificationScheme:ISO-19119:2005:Services:SystemManagement">
+				<rim:Name>
+					<rim:LocalizedString xml:lang="en-US"
+						value="Sensor Planning Service (SPS)" />
+				</rim:Name>
+				<rim:Description>
+					<rim:LocalizedString xml:lang="en-US"
+						value="Tasks sensors or sensor systems." />
+				</rim:Description>
+			</rim:ClassificationNode>
+
+		</rim:ClassificationNode>
+
+	</rim:ClassificationScheme>
+</rim:RegistryObjectList>

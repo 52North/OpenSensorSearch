@@ -47,7 +47,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.TransformerException;
 
 import net.opengis.gml.ReferenceType;
+import net.opengis.kml.x22.AbstractFeatureType;
 import net.opengis.kml.x22.KmlDocument;
+import net.opengis.kml.x22.KmlType;
 import net.opengis.sos.x10.CapabilitiesDocument;
 import net.opengis.sos.x10.CapabilitiesDocument.Capabilities;
 import net.opengis.sos.x10.ContentsDocument.Contents;
@@ -80,6 +82,8 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
+import com.sun.syndication.feed.synd.SyndImage;
+import com.sun.syndication.feed.synd.SyndImageImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 
@@ -207,6 +211,8 @@ public class OpenSearchSIR extends HttpServlet {
 
     private String timeseriesImage = "/SIR/images/timeseries.png";
 
+    private String feed_author = "Open Sensor Search by 52°North";
+
     /**
      * 
      */
@@ -281,6 +287,16 @@ public class OpenSearchSIR extends HttpServlet {
                 + "?" + QUERY_PARAMETER + "=" + searchText + "&" + ACCEPT_PARAMETER + "=" + MIME_TYPE_RSS;
         feed.setLink(channelURL);
         feed.setPublishedDate(new Date());
+        feed.setAuthor(this.feed_author);
+        // feed.setContributors(contributors) // TODO add all service contacts
+        // feed.setCategories(categories) // TODO user user tags for categories
+        feed.setEncoding(this.configurator.getCharacterEncoding());
+        SyndImage image = new SyndImageImpl();
+        image.setUrl("http://52north.org/templates/52n/images/52n-logo.gif");
+        image.setLink(this.configurator.getFullServicePath().toString());
+        image.setTitle("52°North Logo");
+        image.setDescription("Logo of the provider of Open Sensor Search: 52°North");
+        feed.setImage(image);
         feed.setDescription("These are the sensors for the keywords '" + searchText + "' from Open Sensor Search ("
                 + this.configurator.getFullServicePath().toString() + ").");
 
@@ -375,7 +391,7 @@ public class OpenSearchSIR extends HttpServlet {
         writer.print(QUERY_PARAMETER);
         writer.print("\" type=\"text\" value=\"");
         writer.print(searchText);
-        writer.print("\" />");
+        writer.print("\" class=\"search-input\" />");
 
         // hidden input for default accept parameter
         writer.print("<input type=\"hidden\" name=\"");
@@ -649,19 +665,32 @@ public class OpenSearchSIR extends HttpServlet {
      * @param searchResult
      * @param writer
      * @param searchText
+     * @throws OwsExceptionReport
      */
     private void createKMLResponse(HttpServletRequest req,
                                    HttpServletResponse resp,
                                    Collection<SirSearchResultElement> searchResult,
                                    PrintWriter writer,
-                                   String searchText) {
-        // TODO Auto-generated method stub
-
+                                   String searchText) throws OwsExceptionReport {
         resp.setContentType(MIME_TYPE_KML);
+        resp.setHeader("Content-Disposition", "attachment; filename=" + searchText + "_Open-Sensor-Search.kml");
 
         KmlDocument doc = KmlDocument.Factory.newInstance();
+        KmlType kml = doc.addNewKml();
+        // simpleExtensionGroup.setStringValue("RESPONSE TYPE NOT IMPLEMENTED!");
 
-        writer.print("Response format not implemented yet!");
+        AbstractFeatureType abstractFeatureGroup = kml.addNewAbstractFeatureGroup();
+        abstractFeatureGroup.addNewAuthor().addName("Open Sensor Search");
+
+        // TODO add kml content
+
+        try {
+            doc.save(writer, XmlTools.xmlOptionsForNamespaces());
+        }
+        catch (IOException e) {
+            log.error("Error outputting feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
+        }
     }
 
     /**
@@ -1018,8 +1047,8 @@ public class OpenSearchSIR extends HttpServlet {
                                             Math.max(pp.foi.size(), pp.phen.size()));
 
                 log.debug("I found {} different fois or observed properties, but will only use the first one! Offering: {}",
-                         Integer.valueOf(targetLength),
-                         offering);
+                          Integer.valueOf(targetLength),
+                          offering);
                 // FIXME current procedure does not cover all combinations of phenomena and fois...
 
                 links.add(pp);

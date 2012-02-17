@@ -475,6 +475,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-kml-v220</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>dbcp</artifactId>
 			<version>6.0.35</version>
@@ -496,6 +502,26 @@
 			<groupId>net.sf</groupId>
 			<artifactId>saxon-he</artifactId>
 			<version>9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<!-- required by net.sf.json-lib but not in dependencies -->
+		<dependency>
+			<groupId>xom</groupId>
+			<artifactId>xom</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+		
+		<!-- RSS support -->
+		<dependency>
+			<groupId>net.java.dev.rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 
 		<!-- TODO move these to 52N online repo -->

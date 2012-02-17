@@ -52,7 +52,7 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
                                  "Invalid GET request!");
             throw se;
         }
-
+        
         // split queryString info the different parameter names and values
         String[] params = queryString.split("&");
 

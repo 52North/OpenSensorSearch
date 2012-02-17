@@ -21,10 +21,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +48,10 @@ import org.n52.sir.datastructure.SirSensorDescription;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.datastructure.SirXmlSensorDescription;
+import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.util.XmlTools;
+import org.restlet.engine.io.WriterOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +103,29 @@ public class SirSearchSensorResponse implements ISirResponse {
         return bytes;
     }
 
+    /**
+     * 
+     * @param writer
+     * @throws OwsExceptionReport
+     */
+    public void writeTo(Writer writer) throws OwsExceptionReport {
+        SearchSensorResponseDocument searchSensorRespDoc = parseToResponseDocument();
+        try {
+            WriterOutputStream wos = new WriterOutputStream(writer);
+            searchSensorRespDoc.save(wos, XmlTools.xmlOptionsForNamespaces());
+        }
+        catch (IOException e) {
+            log.error("Could not write response document to writer.", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "server",
+                                         "Could not write response to output writer.");
+        }
+    }
+
+    /**
+     * 
+     * @return
+     */
     private SearchSensorResponseDocument parseToResponseDocument() {
         SearchSensorResponseDocument document = SearchSensorResponseDocument.Factory.newInstance();
         SearchSensorResponse searchSensResp = document.addNewSearchSensorResponse();

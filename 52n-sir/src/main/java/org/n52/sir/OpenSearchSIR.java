@@ -38,19 +38,24 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.TransformerException;
 
 import net.opengis.gml.ReferenceType;
+import net.opengis.kml.x22.KmlDocument;
 import net.opengis.sos.x10.CapabilitiesDocument;
 import net.opengis.sos.x10.CapabilitiesDocument.Capabilities;
 import net.opengis.sos.x10.ContentsDocument.Contents;
 import net.opengis.sos.x10.ContentsDocument.Contents.ObservationOfferingList;
 import net.opengis.sos.x10.ObservationOfferingType;
 import net.opengis.swe.x101.PhenomenonPropertyType;
+import net.sf.json.JSON;
+import net.sf.json.xml.XMLSerializer;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.datastructure.SirSearchCriteria;
@@ -60,17 +65,60 @@ import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.listener.SearchSensorListener;
 import org.n52.sir.listener.harvest.Harvester;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.request.SirSearchSensorRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirSearchSensorResponse;
+import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.syndication.feed.synd.SyndContent;
+import com.sun.syndication.feed.synd.SyndContentImpl;
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.synd.SyndFeedImpl;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedOutput;
 
 /**
  * 
  */
 public class OpenSearchSIR extends HttpServlet {
+
+    /**
+     * 
+     * @author Daniel Nüst (d.nuest@52north.org)
+     * 
+     */
+    private class PermalinkParameters {
+
+        public ArrayList<String> foi = new ArrayList<String>();
+        public ArrayList<String> offering = new ArrayList<String>();
+        public ArrayList<String> phen = new ArrayList<String>();
+        public ArrayList<String> proc = new ArrayList<String>();
+
+        public PermalinkParameters() {
+            //
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return "[" + Arrays.deepToString(this.offering.toArray()) + " | " + Arrays.deepToString(this.foi.toArray())
+                    + " | " + Arrays.deepToString(this.proc.toArray()) + " | "
+                    + Arrays.deepToString(this.phen.toArray()) + "]";
+        }
+
+    }
+
+    private static final String ACCEPT_PARAMETER = "httpAccept";
 
     private static final String CDATA_END_TAG = "]";
 
@@ -93,34 +141,35 @@ public class OpenSearchSIR extends HttpServlet {
      */
     private static Logger log = LoggerFactory.getLogger(OpenSearchSIR.class);
 
+    private static final String MIME_TYPE_ATOM = "application/atom+xml";
+
+    private static final String MIME_TYPE_HTML = "text/html";
+
+    private static final String MIME_TYPE_JSON = "application/json";
+
+    private static final String MIME_TYPE_KML = "application/vnd.google-earth.kml+xml";
+
+    private static final String MIME_TYPE_RSS = "application/rss+xml";
+
+    private static final String MIME_TYPE_XML = "application/xml";
+
     /**
      * 
      */
     private static final String QUERY_PARAMETER = "q";
 
     /**
-     * 
-     */
-    private static final String SEARCH_FORM_ACTION = "/SIR/search";
-
-    /**
 	 * 
 	 */
     private static final long serialVersionUID = 3051953359478226492L;
 
-    private static final String MIME_TYPE_KML = "application/vnd.google-earth.kml+xml";
+    private static final String X_DEFAULT_MIME_TYPE = MIME_TYPE_HTML;
 
-    private static final String MIME_TYPE_XML = "application/xml";
+    private static final String MIME_TYPE_PLAIN = "text/plain";
 
-    private static final String MIME_TYPE_JSON = "application/json";
+    private HashMap<URL, XmlObject> capabilitiesCache;
 
-    private static final String MIME_TYPE_RSS = "application/rss+xml";
-
-    private static final String MIME_TYPE_HTML = "text/html";
-
-    private static final String DEFAULT_MIME_TYPE = MIME_TYPE_HTML;
-
-    private static final String ACCEPT_PARAMETER = "httpAccept";
+    private SirConfigurator configurator = SirConfigurator.getInstance();
 
     private String cssFile = "sir.css";
 
@@ -132,9 +181,15 @@ public class OpenSearchSIR extends HttpServlet {
 
     private boolean linksInSearchText = true;
 
+    private SearchSensorListener listener;
+
     private String mapImage = "/SIR/images/map.png";
 
     private String openMap = "Open hits on map.";
+
+    private String openTimeSeries = "Open Sensor in Viewer";
+
+    private SimpleDateFormat permalinkDateFormat;
 
     private String searchButtonText = "Search";
 
@@ -152,23 +207,136 @@ public class OpenSearchSIR extends HttpServlet {
 
     private String timeseriesImage = "/SIR/images/timeseries.png";
 
-    private String openTimeSeries = "Open Sensor in Viewer";
-
-    private SimpleDateFormat permalinkDateFormat;
-
-    private HashMap<URL, XmlObject> capabilitiesCache;
-
-    private SearchSensorListener listener;
-
     /**
      * 
      */
     public OpenSearchSIR() {
         super();
-        log.info("NEW " + this);
 
         this.permalinkDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         this.capabilitiesCache = new HashMap<URL, XmlObject>();
+
+        log.info("NEW " + this);
+    }
+
+    /**
+     * 
+     * @param sb
+     * @param list
+     * @param maxElements
+     */
+    private void concatenate(StringBuilder sb, ArrayList<String> list, int maxElements) {
+        ArrayList<String> myList = new ArrayList<String>();
+        while (myList.size() < maxElements) {
+            // duplicate!
+            myList.addAll(list);
+        }
+
+        int i = 0;
+        while (i < maxElements) {
+            String s = myList.get(i);
+            sb.append(s);
+
+            i++;
+            if (i == maxElements)
+                break;
+
+            sb.append(",");
+        }
+    }
+
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @param searchResult
+     * @param writer
+     * @param searchText
+     * @throws OwsExceptionReport
+     */
+    private void createAtomResponse(HttpServletRequest req,
+                                    HttpServletResponse resp,
+                                    Collection<SirSearchResultElement> searchResult,
+                                    PrintWriter writer,
+                                    String searchText) throws OwsExceptionReport {
+        resp.setContentType(MIME_TYPE_ATOM);
+
+        SyndFeed feed = createFeed(searchResult, searchText);
+        feed.setFeedType("atom_0.3");
+
+        outputFeed(writer, feed);
+    }
+
+    /**
+     * 
+     * @param searchResult
+     * @param searchText
+     * @return
+     */
+    private SyndFeed createFeed(Collection<SirSearchResultElement> searchResult, String searchText) {
+        SyndFeed feed = new SyndFeedImpl();
+
+        feed.setTitle("Sensor Search for " + searchText);
+        String channelURL = this.configurator.getFullServicePath().toString() + this.configurator.getOpenSearchPath()
+                + "?" + QUERY_PARAMETER + "=" + searchText + "&" + ACCEPT_PARAMETER + "=" + MIME_TYPE_RSS;
+        feed.setLink(channelURL);
+        feed.setPublishedDate(new Date());
+        feed.setDescription("These are the sensors for the keywords '" + searchText + "' from Open Sensor Search ("
+                + this.configurator.getFullServicePath().toString() + ").");
+
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        for (SirSearchResultElement ssre : searchResult) {
+            SyndEntry e = createFeedEntry(ssre);
+            entries.add(e);
+        }
+        feed.setEntries(entries);
+
+        return feed;
+    }
+
+    /**
+     * 
+     * @param ssre
+     * @return
+     */
+    private SyndEntry createFeedEntry(SirSearchResultElement ssre) {
+        SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) ssre.getSensorDescription();
+
+        SyndEntry entry = new SyndEntryImpl();
+        // SyndContent title = new SyndContentImpl();
+        // title.setType(MIME_TYPE_HTML)
+        entry.setTitle(ssre.getSensorIdInSir());
+        try {
+            // String link = URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
+            // this.configurator.getCharacterEncoding());
+            String link = decode(URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
+                                                   this.configurator.getCharacterEncoding()));
+
+            entry.setLink(link);
+        }
+        catch (UnsupportedEncodingException e) {
+            log.warn("Could not create URL for sensor {}", ssre.getSensorIdInSir());
+        }
+
+        // TODO include service references in text using text/html as description type
+        // List<SyndLink> links = new ArrayList<SyndLink>();
+        // for (SirServiceReference reference : ssre.getServiceReferences()) {
+        // String getCapRequest = createGetCapabilitiesRequestURL(reference);
+        // getCapRequest = encode(getCapRequest);
+        // SyndLinkImpl link = new SyndLinkImpl();
+        // link.setTitle(reference.getServiceSpecificSensorId() + " at " + reference.getService().getType());
+        // link.setHref(getCapRequest);
+        // links.add(link);
+        // }
+        // entry.setLinks(links);
+
+        entry.setPublishedDate(ssre.getLastUpdate());
+        SyndContent descr = new SyndContentImpl();
+        descr.setType(MIME_TYPE_PLAIN); // alternative e.g. text/html
+        descr.setValue(extractDescriptionText(sensorDescription));
+        entry.setDescription(descr);
+
+        return entry;
     }
 
     /**
@@ -192,7 +360,7 @@ public class OpenSearchSIR extends HttpServlet {
                                    PrintWriter writer,
                                    String searchText) throws UnsupportedEncodingException {
         writer.print("<form name=\"requestform\" method=\"get\" action=\"");
-        writer.print(SEARCH_FORM_ACTION);
+        writer.print(this.configurator.getFullServicePath() + this.configurator.getOpenSearchPath());
         writer.println("\">");
 
         writer.print("<div class=\"search-result-header\">");
@@ -213,7 +381,7 @@ public class OpenSearchSIR extends HttpServlet {
         writer.print("<input type=\"hidden\" name=\"");
         writer.print(ACCEPT_PARAMETER);
         writer.print("\" value=\"");
-        writer.print(DEFAULT_MIME_TYPE);
+        writer.print(X_DEFAULT_MIME_TYPE);
         writer.print("\" />");
 
         writer.print("<input value=\"");
@@ -232,7 +400,7 @@ public class OpenSearchSIR extends HttpServlet {
         writer.print("<div style=\"float: right; margin: 0; width: 200px;\">");
         // dropdown for response format
         writer.print("<form action=\"");
-        writer.print(SEARCH_FORM_ACTION);
+        writer.print(this.configurator.getFullServicePath() + this.configurator.getOpenSearchPath());
         writer.print("\" method=\"get\">");
         writer.print("<input type=\"hidden\" name=\"");
         writer.print(QUERY_PARAMETER);
@@ -259,6 +427,9 @@ public class OpenSearchSIR extends HttpServlet {
         writer.print(MIME_TYPE_XML);
         writer.print("\">XML</option>");
         writer.print("<option value=\"");
+        writer.print(MIME_TYPE_ATOM);
+        writer.print("\">ATOM</option>");
+        writer.print("<option value=\"");
         writer.print(MIME_TYPE_RSS);
         writer.print("\">RSS</option>");
         writer.print("</select>");
@@ -278,9 +449,90 @@ public class OpenSearchSIR extends HttpServlet {
         writer.println("</div>");
 
         for (SirSearchResultElement sirSearchResultElement : searchResultElements) {
-            String s = createSearchResultHTML(sirSearchResultElement, searchText);
+            String s = createHTMLEntry(sirSearchResultElement, searchText);
             writer.print(s);
         }
+    }
+
+    /**
+     * @param writer
+     * @param sirSearchResultElement
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    private String createHTMLEntry(SirSearchResultElement sirSearchResultElement, String searchText) throws UnsupportedEncodingException {
+        StringBuilder sb = new StringBuilder();
+        SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
+        sb.append("<div class=\"result-header\">");
+
+        sb.append(this.sensorInfo_Title);
+        sb.append("<a href=\"");
+        sb.append(URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
+                                    this.configurator.getCharacterEncoding()));
+        sb.append("\">");
+        sb.append(" ");
+        // sb.append(sirSearchResultElement.getSensorIdInSir());
+        sb.append(extractEntryTitle(sirSearchResultElement));
+        sb.append("</a>");
+        sb.append("</div>");
+
+        for (SirServiceReference reference : sirSearchResultElement.getServiceReferences()) {
+            sb.append("<div class=\"result-service\">");
+            sb.append("");
+            sb.append("Service");
+            sb.append(": <a href=\"");
+            String getCapRequest = createGetCapabilitiesRequestURL(reference);
+            getCapRequest = encode(getCapRequest);
+            sb.append(getCapRequest);
+            sb.append("\">");
+            sb.append(reference.getService().getUrl());
+            sb.append("</a>");
+
+            // timeseries link
+            String permalink = null;
+            permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
+            if (permalink != null) {
+                sb.append("<span style=\"float: right;\"><a href=\"");
+                sb.append(permalink);
+                sb.append("\" title=\"");
+                sb.append(this.openTimeSeries);
+                sb.append("\">");
+                sb.append("<img src=\"");
+                sb.append(this.timeseriesImage);
+                sb.append("\" alt=\"");
+                sb.append(this.openTimeSeries);
+                sb.append("\" />");
+                sb.append("</a></span>");
+            }
+            else
+                log.debug("Could not create permalink for {}", reference);
+
+            sb.append("</div>");
+        }
+
+        sb.append("<div class=\"result-properties\">");
+        sb.append(this.sensorInfo_LastUpdate);
+        sb.append(" ");
+        sb.append(sirSearchResultElement.getLastUpdate());
+        sb.append(" | ");
+        sb.append(this.sensorInfo_CatalogID);
+        sb.append(" ");
+        sb.append(sirSearchResultElement.getSensorIdInSir());
+        if (sensorDescription.getBoundingBox() != null) {
+            sb.append(" | ");
+            sb.append(this.sensorInfo_BoundingBox);
+            sb.append(" ");
+            sb.append(sensorDescription.getBoundingBox());
+        }
+        sb.append("</div>");
+
+        sb.append("<div class=\"result-description\">");
+        String text = extractDescriptionText(sensorDescription);
+        text = highlightHTML(text, searchText);
+        sb.append(text);
+        sb.append("</div>");
+
+        return sb.toString();
     }
 
     /**
@@ -339,6 +591,140 @@ public class OpenSearchSIR extends HttpServlet {
         writer.flush();
     }
 
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @param searchResult
+     * @param writer
+     * @param searchText
+     * @throws OwsExceptionReport
+     */
+    private void createJSONResponse(HttpServletRequest req,
+                                    HttpServletResponse resp,
+                                    Collection<SirSearchResultElement> searchResult,
+                                    PrintWriter writer,
+                                    String searchText) throws OwsExceptionReport {
+        // http://json.org/java/
+        // http://json-lib.sourceforge.net/
+
+        resp.setContentType(MIME_TYPE_JSON);
+
+        // get xml as string
+        SirSearchSensorResponse sssr = new SirSearchSensorResponse();
+        sssr.setSearchResultElements(searchResult);
+
+        String xml;
+        try {
+            xml = new String(sssr.getByteArray());
+        }
+        catch (IOException e) {
+            log.error("Could not create string from search result object.", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "service",
+                                         "Error creating string represtantion of response.");
+        }
+        catch (TransformerException e) {
+            log.error("Could not create string from search result object.", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "service",
+                                         "Error creating string represtantion of response.");
+        }
+
+        // http://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html
+        // http://json-lib.sourceforge.net/snippets.html#XMLJSON
+
+        // create json from XML string
+        XMLSerializer xmlSerializer = new XMLSerializer();
+        JSON json = xmlSerializer.read(xml);
+        // TODO write own converter that removes all the xml artifacts from JSON
+
+        writer.print(json.toString(2));
+    }
+
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @param searchResult
+     * @param writer
+     * @param searchText
+     */
+    private void createKMLResponse(HttpServletRequest req,
+                                   HttpServletResponse resp,
+                                   Collection<SirSearchResultElement> searchResult,
+                                   PrintWriter writer,
+                                   String searchText) {
+        // TODO Auto-generated method stub
+
+        resp.setContentType(MIME_TYPE_KML);
+
+        KmlDocument doc = KmlDocument.Factory.newInstance();
+
+        writer.print("Response format not implemented yet!");
+    }
+
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @param searchResult
+     * @param writer
+     * @param searchText
+     * @throws OwsExceptionReport
+     */
+    private void createRSSResponse(HttpServletRequest req,
+                                   HttpServletResponse resp,
+                                   Collection<SirSearchResultElement> searchResult,
+                                   PrintWriter writer,
+                                   String searchText) throws OwsExceptionReport {
+        resp.setContentType(MIME_TYPE_RSS);
+
+        // TODO create WireFeed, then reuse for Atom AND RSS, see
+        // http://en.wikipedia.org/wiki/RSS#Comparison_with_Atom
+
+        // TODO make GeoRSS!!!
+        SyndFeed feed = createFeed(searchResult, searchText);
+        feed.setFeedType("rss_2.0");
+
+        outputFeed(writer, feed);
+    }
+
+    /**
+     * 
+     * @param req
+     * @param resp
+     * @param searchResult
+     * @param writer
+     * @param searchText
+     * @throws OwsExceptionReport
+     */
+    private void createXMLResponse(HttpServletRequest req,
+                                   HttpServletResponse resp,
+                                   Collection<SirSearchResultElement> searchResult,
+                                   PrintWriter writer,
+                                   String searchText) throws OwsExceptionReport {
+        log.debug("Creating XML response for {}", searchText);
+
+        resp.setContentType(MIME_TYPE_XML);
+        SirSearchSensorResponse sssr = new SirSearchSensorResponse();
+        sssr.setSearchResultElements(searchResult);
+        sssr.writeTo(writer);
+
+        log.debug("Done with XML response.");
+    }
+
+    /**
+     * handle only & characters
+     * 
+     * @param url
+     * @return
+     */
+    private String decode(String url) {
+        String s = url.replaceAll("&amp;", "\\&");
+        return s;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -371,18 +757,19 @@ public class OpenSearchSIR extends HttpServlet {
         // log.debug("Accept header 2: " + httpAccept);
 
         String searchText = req.getParameter(QUERY_PARAMETER);
-        
+
         // redirect if httpAccept is missing
         if (httpAccept == null || httpAccept.isEmpty()) {
             redirectMissingHttpAccept(req, resp);
             return;
         }
-           
+        if (httpAccept.contains(" "))
+            httpAccept = httpAccept.replace(" ", "+");
 
         // must be set before getWriter() is called.
         resp.setCharacterEncoding(SirConfigurator.getInstance().getCharacterEncoding());
         PrintWriter writer = resp.getWriter();
-        
+
         Collection<SirSearchResultElement> searchResult = null;
 
         if (searchText == null || searchText.isEmpty()) {
@@ -418,55 +805,38 @@ public class OpenSearchSIR extends HttpServlet {
             }
         }
 
-        if (httpAccept.equals(MIME_TYPE_KML)) {
-            createKMLResponse(req, resp, searchResult, writer, searchText);
+        try {
+            if (httpAccept.equals(MIME_TYPE_KML)) {
+                createKMLResponse(req, resp, searchResult, writer, searchText);
+            }
+            else if (httpAccept.equals(MIME_TYPE_RSS)) {
+                createRSSResponse(req, resp, searchResult, writer, searchText);
+            }
+            else if (httpAccept.equals(MIME_TYPE_ATOM)) {
+                createAtomResponse(req, resp, searchResult, writer, searchText);
+            }
+            else if (httpAccept.equals(MIME_TYPE_JSON)) {
+                createJSONResponse(req, resp, searchResult, writer, searchText);
+            }
+            else if (httpAccept.equals(MIME_TYPE_XML)) {
+                createXMLResponse(req, resp, searchResult, writer, searchText);
+            }
+            else if (httpAccept.equals(MIME_TYPE_HTML)) {
+                createHTMLResponse(req, resp, searchResult, writer, searchText);
+            }
+            else {
+                throw new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
+                                             ACCEPT_PARAMETER,
+                                             "Unsupported output format.");
+            }
         }
-        else if (httpAccept.equals(MIME_TYPE_RSS)) {
-            createRSSResponse(req, resp, searchResult, writer, searchText);
-        }
-        else if (httpAccept.equals(MIME_TYPE_JSON)) {
-            createJSONResponse(req, resp, searchResult, writer, searchText);
-        }
-        else if (httpAccept.equals(MIME_TYPE_XML)) {
-            createXMLResponse(req, resp, searchResult, writer, searchText);
-        }
-        else if (httpAccept.equals(MIME_TYPE_HTML)) {
-            createHTMLResponse(req, resp, searchResult, writer, searchText);
+        catch (OwsExceptionReport e) {
+            log.error("Could not create response as {} : {}", httpAccept, e);
+            e.getDocument().save(writer, XmlTools.xmlOptionsForNamespaces());
         }
 
         writer.close();
-    }
-
-    /**
-     * @param req
-     * @param resp
-     * @throws IOException
-     */
-    private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        
-        sb.append(SEARCH_FORM_ACTION);
-        sb.append("?");
-        
-        Enumeration< ? > params = req.getParameterNames();
-        while (params.hasMoreElements()) {
-            String s = (String) params.nextElement();
-            sb.append(s);
-            sb.append("=");
-            String[] parameterValues = req.getParameterValues(s);
-            for (String sVal : parameterValues) {
-                sb.append(sVal);
-                sb.append(",");
-            }
-            
-            sb.replace(sb.length()-1, sb.length(), "&");
-        }
-        
-        sb.append(ACCEPT_PARAMETER);
-        sb.append("=");
-        sb.append(DEFAULT_MIME_TYPE);
-        log.debug("Redirecting to {}", sb.toString());
-        resp.sendRedirect(sb.toString());
+        resp.flushBuffer(); // commits the response
     }
 
     /*
@@ -482,73 +852,17 @@ public class OpenSearchSIR extends HttpServlet {
 
     /**
      * 
-     * @param req
-     * @param resp
-     * @param searchResult
-     * @param writer
-     * @param searchText
-     */
-    private void createKMLResponse(HttpServletRequest req,
-                                   HttpServletResponse resp,
-                                   Collection<SirSearchResultElement> searchResult,
-                                   PrintWriter writer,
-                                   String searchText) {
-        // TODO Auto-generated method stub
-
-        // resp.setContentType(MIME_TYPE_KML);
-
-        writer.print("Response format not implemented yet!");
-    }
-
-    /**
+     * using the original URLEncoder does not work, it always appends the sir URL in front...
      * 
-     * @param req
-     * @param resp
-     * @param searchResult
-     * @param writer
-     * @param searchText
-     */
-    private void createRSSResponse(HttpServletRequest req,
-                                   HttpServletResponse resp,
-                                   Collection<SirSearchResultElement> searchResult,
-                                   PrintWriter writer,
-                                   String searchText) {
-        // TODO Auto-generated method stub
-        writer.print("Response format not implemented yet!");
-    }
-
-    /**
+     * // getCapRequest = URLEncoder.encode(getCapRequest, //
+     * SirConfigurator.getInstance().getCharacterEncoding());
      * 
-     * @param req
-     * @param resp
-     * @param searchResult
-     * @param writer
-     * @param searchText
+     * @param getCapRequest
+     * @return
      */
-    private void createJSONResponse(HttpServletRequest req,
-                                    HttpServletResponse resp,
-                                    Collection<SirSearchResultElement> searchResult,
-                                    PrintWriter writer,
-                                    String searchText) {
-        // TODO Auto-generated method stub
-        writer.print("Response format not implemented yet!");
-    }
-
-    /**
-     * 
-     * @param req
-     * @param resp
-     * @param searchResult
-     * @param writer
-     * @param searchText
-     */
-    private void createXMLResponse(HttpServletRequest req,
-                                   HttpServletResponse resp,
-                                   Collection<SirSearchResultElement> searchResult,
-                                   PrintWriter writer,
-                                   String searchText) {
-        // TODO Auto-generated method stub
-        writer.print("Response format not implemented yet!");
+    private String encode(String url) {
+        String s = url.replaceAll("\\&", "&amp;");
+        return s;
     }
 
     /**
@@ -576,103 +890,18 @@ public class OpenSearchSIR extends HttpServlet {
     }
 
     /**
-     * @param writer
      * @param sirSearchResultElement
-     * @return
-     * @throws UnsupportedEncodingException
      */
-    private String createSearchResultHTML(SirSearchResultElement sirSearchResultElement, String searchText) throws UnsupportedEncodingException {
+    private String extractEntryTitle(SirSearchResultElement sirSearchResultElement) {
         StringBuilder sb = new StringBuilder();
-        SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
-        sb.append("<div class=\"result-header\">");
 
-        sb.append(this.sensorInfo_Title);
-        sb.append("<a href=\"");
-        sb.append(URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
-                                    SirConfigurator.getInstance().getCharacterEncoding()));
-        sb.append("\">");
-        sb.append(" ");
-        // sb.append(sirSearchResultElement.getSensorIdInSir());
         Collection<SirServiceReference> serviceReferences = sirSearchResultElement.getServiceReferences();
         for (SirServiceReference sirServiceReference : serviceReferences) {
             sb.append(sirServiceReference.getServiceSpecificSensorId());
             sb.append(" ");
         }
-        sb.append("</a>");
-        sb.append("</div>");
-
-        for (SirServiceReference reference : sirSearchResultElement.getServiceReferences()) {
-            sb.append("<div class=\"result-service\">");
-            sb.append("");
-            sb.append("Service");
-            sb.append(": <a href=\"");
-            String getCapRequest = createGetCapabilitiesRequestURL(reference);
-            getCapRequest = myEncode(getCapRequest);
-            sb.append(getCapRequest);
-            sb.append("\">");
-            sb.append(reference.getService().getUrl());
-            sb.append("</a>");
-
-            // timeseries link
-            String permalink = null;
-            permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
-            if (permalink != null) {
-                sb.append("<span style=\"float: right;\"><a href=\"");
-                sb.append(permalink);
-                sb.append("\" title=\"");
-                sb.append(this.openTimeSeries);
-                sb.append("\">");
-                sb.append("<img src=\"");
-                sb.append(this.timeseriesImage);
-                sb.append("\" alt=\"");
-                sb.append(this.openTimeSeries);
-                sb.append("\" />");
-                sb.append("</a></span>");
-            }
-            else
-                log.warn("Could not create permalink for {}", reference);
-
-            sb.append("</div>");
-        }
-
-        sb.append("<div class=\"result-properties\">");
-        sb.append(this.sensorInfo_LastUpdate);
-        sb.append(" ");
-        sb.append(sirSearchResultElement.getLastUpdate());
-        sb.append(" | ");
-        sb.append(this.sensorInfo_CatalogID);
-        sb.append(" ");
-        sb.append(sirSearchResultElement.getSensorIdInSir());
-        if (sensorDescription.getBoundingBox() != null) {
-            sb.append(" | ");
-            sb.append(this.sensorInfo_BoundingBox);
-            sb.append(" ");
-            sb.append(sensorDescription.getBoundingBox());
-        }
-        sb.append("</div>");
-
-        sb.append("<div class=\"result-description\">");
-        String text = extractDescriptionText(sensorDescription);
-        text = highlightHTML(text, searchText);
-        sb.append(text);
-        sb.append("</div>");
 
         return sb.toString();
-    }
-
-    /**
-     * 
-     * using the original URLEncoder does not work, it always appends the sir URL in front...
-     * 
-     * // getCapRequest = URLEncoder.encode(getCapRequest, //
-     * SirConfigurator.getInstance().getCharacterEncoding());
-     * 
-     * @param getCapRequest
-     * @return
-     */
-    private String myEncode(String getCapRequest) {
-        String s = getCapRequest.replaceAll("\\&", "&amp;");
-        return s;
     }
 
     /**
@@ -741,7 +970,7 @@ public class OpenSearchSIR extends HttpServlet {
 
         Contents contents = sosCaps.getContents();
         if (contents == null) {
-            log.warn("Contents of capabilities for service {} are null, cannot generate permalinks.", serviceReference);
+            log.debug("Contents of capabilities for service {} are null, cannot generate permalinks.", serviceReference);
             return null;
         }
 
@@ -788,7 +1017,7 @@ public class OpenSearchSIR extends HttpServlet {
                 int targetLength = Math.max(Math.max(pp.offering.size(), pp.proc.size()),
                                             Math.max(pp.foi.size(), pp.phen.size()));
 
-                log.warn("I found {} different fois or observed properties, but will only use the first one! Offering: {}",
+                log.debug("I found {} different fois or observed properties, but will only use the first one! Offering: {}",
                          Integer.valueOf(targetLength),
                          offering);
                 // FIXME current procedure does not cover all combinations of phenomena and fois...
@@ -851,7 +1080,7 @@ public class OpenSearchSIR extends HttpServlet {
         }
         log.debug("Created permalink: {}", permalink);
 
-        String encoded = myEncode(permalink.toExternalForm());
+        String encoded = encode(permalink.toExternalForm());
         // try {
         // encoded = URLEncoder.encode(permalink.toExternalForm(),
         // SirConfigurator.getInstance().getCharacterEncoding());
@@ -863,62 +1092,6 @@ public class OpenSearchSIR extends HttpServlet {
         log.debug("Encoded permalink: {}", encoded);
 
         return encoded;
-    }
-
-    /**
-     * 
-     * @param sb
-     * @param list
-     * @param maxElements
-     */
-    private void concatenate(StringBuilder sb, ArrayList<String> list, int maxElements) {
-        ArrayList<String> myList = new ArrayList<String>();
-        while (myList.size() < maxElements) {
-            // duplicate!
-            myList.addAll(list);
-        }
-
-        int i = 0;
-        while (i < maxElements) {
-            String s = myList.get(i);
-            sb.append(s);
-
-            i++;
-            if (i == maxElements)
-                break;
-
-            sb.append(",");
-        }
-    }
-
-    /**
-     * 
-     * @author Daniel Nüst (d.nuest@52north.org)
-     * 
-     */
-    private class PermalinkParameters {
-
-        public ArrayList<String> offering = new ArrayList<String>();
-        public ArrayList<String> foi = new ArrayList<String>();
-        public ArrayList<String> proc = new ArrayList<String>();
-        public ArrayList<String> phen = new ArrayList<String>();
-
-        public PermalinkParameters() {
-            //
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            return "[" + Arrays.deepToString(this.offering.toArray()) + " | " + Arrays.deepToString(this.foi.toArray())
-                    + " | " + Arrays.deepToString(this.proc.toArray()) + " | "
-                    + Arrays.deepToString(this.phen.toArray()) + "]";
-        }
-
     }
 
     /**
@@ -1008,6 +1181,62 @@ public class OpenSearchSIR extends HttpServlet {
         // }
     }
 
+    /**
+     * @param writer
+     * @param feed
+     * @throws OwsExceptionReport
+     */
+    private void outputFeed(PrintWriter writer, SyndFeed feed) throws OwsExceptionReport {
+        SyndFeedOutput output = new SyndFeedOutput();
+        try {
+            output.output(feed, writer, true);
+        }
+        catch (IllegalArgumentException e) {
+            log.error("Error outputting feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
+        }
+        catch (IOException e) {
+            log.error("Error outputting feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
+        }
+        catch (FeedException e) {
+            log.error("Error doing output of feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
+        }
+    }
+
+    /**
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
+    private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(this.configurator.getOpenSearchPath());
+        sb.append("?");
+
+        Enumeration< ? > params = req.getParameterNames();
+        while (params.hasMoreElements()) {
+            String s = (String) params.nextElement();
+            sb.append(s);
+            sb.append("=");
+            String[] parameterValues = req.getParameterValues(s);
+            for (String sVal : parameterValues) {
+                sb.append(sVal);
+                sb.append(",");
+            }
+
+            sb.replace(sb.length() - 1, sb.length(), "&");
+        }
+
+        sb.append(ACCEPT_PARAMETER);
+        sb.append("=");
+        sb.append(X_DEFAULT_MIME_TYPE);
+        log.debug("Redirecting to {}", sb.toString());
+        resp.sendRedirect(sb.toString());
+    }
+
     /*
      * 
      */
@@ -1015,7 +1244,7 @@ public class OpenSearchSIR extends HttpServlet {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("OpenSearchSIR [");
-        sb.append(SEARCH_FORM_ACTION);
+        sb.append(this.configurator.getOpenSearchPath());
         sb.append("]");
         return sb.toString();
     }

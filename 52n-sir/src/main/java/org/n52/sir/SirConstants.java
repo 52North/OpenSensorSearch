@@ -31,19 +31,30 @@ package org.n52.sir;
 public class SirConstants {
 
     /**
+     * enum with parameter names for GetCapabilities HTTP GET request
+     */
+    public enum GetCapGetParams {
+        ACCEPTFORMATS, ACCEPTVERSIONS, REQUEST, SECTIONS, SERVICE, UPDATESEQUENCE;
+    }
+
+    /**
+     * enum with parameters of DescribeSensor HTTP GET request
+     */
+    public enum GetDescSensorParams {
+        REQUEST, SENSORIDINSIR;
+    }
+
+    /**
+     * enum for all supported request operations by the SIR
+     */
+    public enum Operations {
+        CancelSensorStatusSubscription, ConnectToCatalog, DeleteSensorInfo, DescribeSensor, DisconnectFromCatalog, GetCapabilities, GetSensorStatus, HarvestService, InsertSensorInfo, InsertSensorStatus, RenewSensorStatusSubscription, SearchSensor, SubscribeSensorStatus, UpdateSensorDescription
+    }
+
+    /**
      * Constant for the content type of the response
      */
     public static final String CONTENT_TYPE_XML = "text/xml";
-
-    /**
-     * Constant for the http get request REQUEST parameter
-     */
-    public static final String GETREQUESTPARAM = "REQUEST";
-
-    /**
-     * Constant for the service name of the SIR
-     */
-    public static final String SERVICE_NAME = "SIR";
 
     /**
      * Name of the DescribeSensor operation in a capabitilities document
@@ -51,14 +62,14 @@ public class SirConstants {
     public static final String DESCRIBE_SENSOR_OPERATION_NAME = "DescribeSensor";
 
     /**
-     * Service type for Sensor Observation Service
+     * Constant for the http get request REQUEST parameter
      */
-    public static final String SOS_SERVICE_TYPE = "SOS";
+    public static final String GETREQUESTPARAM = "REQUEST";
 
     /**
-     * Service type for Sensor Planning Service
+     * 
      */
-    public static final String SPS_SERVICE_TYPE = "SPS";
+    public static final String GETVERSIONPARAM = "version";
 
     /**
      * Service type for IOOSCatalog XML sensor description file
@@ -66,9 +77,9 @@ public class SirConstants {
     public static final String IOOSCATAL0G_SERVICE_TYPE = "IOOSCatalog";
 
     /**
-     * 
+     * Constant for the service name of the SIR
      */
-    public static final String GETVERSIONPARAM = "version";
+    public static final String SERVICE_NAME = "SIR";
 
     /**
      * 
@@ -83,27 +94,21 @@ public class SirConstants {
     /**
      * 
      */
+    public static final Object SERVICEPARAM = "service";
+
+    /**
+     * Service type for Sensor Observation Service
+     */
+    public static final String SOS_SERVICE_TYPE = "SOS";
+
+    /**
+     * 
+     */
     public static final String SOS_VERSION = "1.0.0";
 
     /**
-     * enum for all supported request operations by the SIR
+     * Service type for Sensor Planning Service
      */
-    public enum Operations {
-        GetCapabilities, DescribeSensor, GetSensorStatus, HarvestService, InsertSensorInfo, DeleteSensorInfo, InsertSensorStatus, SearchSensor, ConnectToCatalog, DisconnectFromCatalog, UpdateSensorDescription, SubscribeSensorStatus, RenewSensorStatusSubscription, CancelSensorStatusSubscription
-    }
-
-    /**
-     * enum with parameter names for GetCapabilities HTTP GET request
-     */
-    public enum GetCapGetParams {
-        REQUEST, SERVICE, ACCEPTVERSIONS, SECTIONS, UPDATESEQUENCE, ACCEPTFORMATS;
-    }
-
-    /**
-     * enum with parameters of DescribeSensor HTTP GET request
-     */
-    public enum GetDescSensorParams {
-        REQUEST, SENSORIDINSIR;
-    }
+    public static final String SPS_SERVICE_TYPE = "SPS";
 
 }

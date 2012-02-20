@@ -372,7 +372,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         catch (XmlException xmle) {
             String msg = "Error on parsing Capabilities document: " + xmle.getMessage()
                     + (getCapXmlResponse == null ? "" : "\n" + getCapXmlResponse.xmlText());
-            log.error(msg);
+            log.warn(msg);
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, msg);
             throw se;
@@ -380,7 +380,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         catch (IOException ioe) {
             String errMsg = "Error sending GetCapabilities to " + serviceType + " @ " + uri.toString() + " : "
                     + ioe.getMessage();
-            log.error(errMsg);
+            log.warn(errMsg);
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
             throw se;
@@ -388,7 +388,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         catch (Exception e) {
             String errMsg = "Error doing GetCapabilities to " + serviceType + " @ " + uri.toString() + " : "
                     + e.getMessage();
-            log.error(errMsg);
+            log.warn(errMsg);
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
             throw se;

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.decode.impl;
 
 import org.n52.sir.SirConstants;
@@ -40,9 +41,13 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
 
     private static Logger log = LoggerFactory.getLogger(HttpGetRequestDecoder.class);
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.decode.IHttpGetRequestDecoder#receiveRequest(java.lang.String)
+     */
     @Override
     public AbstractSirRequest receiveRequest(String queryString) throws OwsExceptionReport {
-
         // check queryString
         if ( ! (queryString != null && queryString.length() != 0)) {
             log.error("Invalid GET request!");
@@ -52,13 +57,12 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
                                  "Invalid GET request!");
             throw se;
         }
-        
-        // split queryString info the different parameter names and values
+
         String[] params = queryString.split("&");
 
         // if less than 2 parameters, throw exception
         if (params.length < 2) {
-            log.error("Invalid GET request! At least 2 parameters needed!");
+            log.error("Invalid GET request! At least 2 parameters needed: {}", queryString);
             OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
                                  "HttpGetRequestDecoder.receiveRequest()",
@@ -86,8 +90,8 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
                 }
             }
         }
-        
-        log.error(SirConstants.GETREQUESTPARAM + " is needed!");
+
+        log.error(SirConstants.GETREQUESTPARAM + " is needed: {}", queryString);
         OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
         se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
                              "HttpGetRequestDecoder.receiveRequest()",

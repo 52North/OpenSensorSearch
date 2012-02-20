@@ -54,6 +54,9 @@ public class DescribeSensorListener implements ISirRequestListener {
      */
     private IDescribeSensorDAO descSensDao;
 
+    /**
+     * the name of the operation this listener handles
+     */
     private static final String OPERATION_NAME = SirConstants.Operations.DescribeSensor.name();
 
     /**

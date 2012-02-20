@@ -24,7 +24,6 @@
 package org.n52.sir.util;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -102,21 +101,22 @@ public class ListenersTools {
         StringBuilder sb = new StringBuilder();
         sb.append(sc.getServiceUrl());
         sb.append("?");
-        sb.append("service=");
+        sb.append(SirConstants.SERVICEPARAM);
+        sb.append("=");
         sb.append(SirConstants.SERVICE_NAME);
-        sb.append("&amp;");
+        sb.append("&");
         sb.append(SirConstants.GETVERSIONPARAM);
         sb.append("=");
         sb.append(sc.getServiceVersion());
-        sb.append("&amp;");
+        sb.append("&");
         sb.append(SirConstants.GETREQUESTPARAM);
         sb.append("=");
         sb.append(SirConstants.Operations.DescribeSensor.name());
-        sb.append("&amp;");
+        sb.append("&");
         sb.append(SirConstants.GetDescSensorParams.SENSORIDINSIR.name());
         sb.append("=");
         sb.append(sensorIdInSir);
 
-        return URLEncoder.encode(sb.toString(), sc.getCharacterEncoding());
+        return sb.toString();
     }
 }

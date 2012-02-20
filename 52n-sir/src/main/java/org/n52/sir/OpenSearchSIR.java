@@ -44,20 +44,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.TransformerException;
 
 import net.opengis.gml.ReferenceType;
 import net.opengis.kml.x22.AbstractFeatureType;
 import net.opengis.kml.x22.KmlDocument;
 import net.opengis.kml.x22.KmlType;
+import net.opengis.ows.ExceptionReportDocument;
 import net.opengis.sos.x10.CapabilitiesDocument;
 import net.opengis.sos.x10.CapabilitiesDocument.Capabilities;
 import net.opengis.sos.x10.ContentsDocument.Contents;
 import net.opengis.sos.x10.ContentsDocument.Contents.ObservationOfferingList;
 import net.opengis.sos.x10.ObservationOfferingType;
 import net.opengis.swe.x101.PhenomenonPropertyType;
-import net.sf.json.JSON;
-import net.sf.json.xml.XMLSerializer;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.datastructure.SirSearchCriteria;
@@ -76,6 +74,12 @@ import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.stream.JsonWriter;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -483,8 +487,8 @@ public class OpenSearchSIR extends HttpServlet {
 
         sb.append(this.sensorInfo_Title);
         sb.append("<a href=\"");
-        sb.append(URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
-                                    this.configurator.getCharacterEncoding()));
+        String url = sensorDescription.getSensorDescriptionURL();
+        sb.append(encode(url));
         sb.append("\">");
         sb.append(" ");
         // sb.append(sirSearchResultElement.getSensorIdInSir());
@@ -506,6 +510,7 @@ public class OpenSearchSIR extends HttpServlet {
 
             // timeseries link
             String permalink = null;
+
             permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
             if (permalink != null) {
                 sb.append("<span style=\"float: right;\"><a href=\"");
@@ -621,41 +626,39 @@ public class OpenSearchSIR extends HttpServlet {
                                     Collection<SirSearchResultElement> searchResult,
                                     PrintWriter writer,
                                     String searchText) throws OwsExceptionReport {
-        // http://json.org/java/
-        // http://json-lib.sourceforge.net/
-
         resp.setContentType(MIME_TYPE_JSON);
 
-        // get xml as string
-        SirSearchSensorResponse sssr = new SirSearchSensorResponse();
-        sssr.setSearchResultElements(searchResult);
+        // TODO move this somewhere where all listeners can use it
+        String responseDescription = "These are the search hits for the keyword(s) '" + searchText
+                + "' from Open Sensor Search (" + this.configurator.getFullServicePath().toString() + ").";
+        String responseURL = this.configurator.getFullServicePath().toString() + this.configurator.getOpenSearchPath()
+                + "?" + QUERY_PARAMETER + "=" + searchText + "&" + ACCEPT_PARAMETER + "=" + MIME_TYPE_JSON;
 
-        String xml;
-        try {
-            xml = new String(sssr.getByteArray());
-        }
-        catch (IOException e) {
-            log.error("Could not create string from search result object.", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "service",
-                                         "Error creating string represtantion of response.");
-        }
-        catch (TransformerException e) {
-            log.error("Could not create string from search result object.", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "service",
-                                         "Error creating string represtantion of response.");
-        }
+        // http://sites.google.com/site/gson/gson-user-guide
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping();
+        Gson gson = gsonBuilder.create();
 
-        // http://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html
-        // http://json-lib.sourceforge.net/snippets.html#XMLJSON
+        // creating json object
+        JsonObject response = new JsonObject();
+        response.add("source", new JsonPrimitive(this.configurator.getFullServicePath().toString()));
+        response.add("searchText", new JsonPrimitive(searchText));
+        response.add("searchURL", new JsonPrimitive(responseURL));
+        response.add("searchDescription", new JsonPrimitive(responseDescription));
+        response.add("searchAuthor", new JsonPrimitive("52°North"));
+        response.add("searchDate", new JsonPrimitive(this.permalinkDateFormat.format(new Date())));
 
-        // create json from XML string
-        XMLSerializer xmlSerializer = new XMLSerializer();
-        JSON json = xmlSerializer.read(xml);
-        // TODO write own converter that removes all the xml artifacts from JSON
+        JsonElement jsonTree = gson.toJsonTree(searchResult);
+        response.add("result", jsonTree);
 
-        writer.print(json.toString(2));
+        JsonWriter jsonWriter = new JsonWriter(writer);
+        jsonWriter.setHtmlSafe(true);
+        jsonWriter.setIndent("  ");
+
+        // if performance becomes an issue then try using stream writer, see:
+        // http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/stream/JsonWriter.html
+        // jsonWriter.beginArray();
+
+        gson.toJson(response, jsonWriter);
     }
 
     /**
@@ -967,7 +970,7 @@ public class OpenSearchSIR extends HttpServlet {
         // check if url was already requested and use that
         XmlObject caps = null;
         if ( !this.capabilitiesCache.containsKey(url)) {
-
+            //  TODO use threads for this, then update the interface one after the other (loader image and AJAX?)
             try {
                 caps = Harvester.requestCapabilities(serviceReference.getService().getType(), url.toURI());
             }
@@ -992,8 +995,16 @@ public class OpenSearchSIR extends HttpServlet {
             CapabilitiesDocument doc = (CapabilitiesDocument) caps;
             sosCaps = doc.getCapabilities();
         }
+        else if (caps instanceof ExceptionReportDocument) {
+            ExceptionReportDocument erd = (ExceptionReportDocument) caps;
+            log.warn("Could not request capabilities from service {}, got ExceptionReportDocument (turn on debug for more info)",
+                     url);
+            log.debug(Arrays.toString(erd.getExceptionReport().getExceptionArray()));
+            return null;
+        }
         else {
-            log.error("No SOS capabilities document returned by service! Instead got:\n" + caps.xmlText());
+            log.error("No SOS capabilities document returned by service! Instead got: {} [... truncated]",
+                      caps.xmlText().substring(0, 200));
             return null;
         }
 
@@ -1012,6 +1023,7 @@ public class OpenSearchSIR extends HttpServlet {
 
         ObservationOfferingType[] observationOfferingArray = observationOfferingList.getObservationOfferingArray();
 
+        //
         for (ObservationOfferingType off : observationOfferingArray) {
             PermalinkParameters pp = null;
             String offering = off.getId();
@@ -1174,6 +1186,7 @@ public class OpenSearchSIR extends HttpServlet {
 
         try {
             this.listener = new SearchSensorListener();
+            this.listener.setEncodeURLs(false);
         }
         catch (OwsExceptionReport e) {
             log.error("Could not create SearchSensorListener.", e);

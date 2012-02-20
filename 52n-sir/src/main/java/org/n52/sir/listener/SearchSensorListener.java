@@ -21,9 +21,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.listener;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,17 +62,25 @@ public class SearchSensorListener implements ISirRequestListener {
      */
     private static Logger log = LoggerFactory.getLogger(SearchSensorListener.class);
 
+    private static final String OPERATION_NAME = SirConstants.Operations.SearchSensor.name();
+
+    private SirConfigurator configurator;
+
+    private boolean encodeURLs = true;
+
     /**
      * the data access object for the searchSensor operation
      */
     private ISearchSensorDAO searchSensDao;
 
-    private static final String OPERATION_NAME = SirConstants.Operations.SearchSensor.name();
-
+    /**
+     * 
+     * @throws OwsExceptionReport
+     */
     public SearchSensorListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        this.configurator = SirConfigurator.getInstance();
 
-        IDAOFactory factory = configurator.getFactory();
+        IDAOFactory factory = this.configurator.getFactory();
         try {
             this.searchSensDao = factory.searchSensorDAO();
         }
@@ -88,6 +98,13 @@ public class SearchSensorListener implements ISirRequestListener {
     @Override
     public String getOperationName() {
         return SearchSensorListener.OPERATION_NAME;
+    }
+
+    /**
+     * @return the encodeURLs
+     */
+    public boolean isEncodeURLs() {
+        return this.encodeURLs;
     }
 
     /*
@@ -168,13 +185,18 @@ public class SearchSensorListener implements ISirRequestListener {
             // if the requested version is not 0.3.0, keep the bounding box, otherwise remove
             String version = searchSensReq.getVersion();
             boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
-            
+
             for (SirSearchResultElement sirSearchResultElement : searchResElements) {
                 SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
 
                 String descriptionURL;
                 try {
                     descriptionURL = ListenersTools.createSensorDescriptionURL(sirSearchResultElement.getSensorIdInSir());
+
+                    if (this.encodeURLs) {
+                        // must be encoded for XML:
+                        descriptionURL = URLEncoder.encode(descriptionURL, this.configurator.getCharacterEncoding());
+                    }
                 }
                 catch (UnsupportedEncodingException e) {
                     log.error("Could not encode URL", e);
@@ -186,15 +208,22 @@ public class SearchSensorListener implements ISirRequestListener {
 
                 sensorDescription.setSensorDescriptionURL(descriptionURL);
 
-                if(removeBBoxes)
+                if (removeBBoxes)
                     sensorDescription.setBoundingBox(null);
             }
-            
+
         }
-        
+
         response.setSearchResultElements(searchResElements);
 
         return response;
     }
 
+    /**
+     * @param encodeURLs
+     *        the encodeURLs to set
+     */
+    public void setEncodeURLs(boolean encodeURLs) {
+        this.encodeURLs = encodeURLs;
+    }
 }

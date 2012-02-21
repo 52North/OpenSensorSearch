@@ -38,38 +38,6 @@ import org.n52.sir.ows.OwsExceptionReport;
 public interface IInsertSensorInfoDAO {
 
     /**
-     * Inserts a sensor with service description and sensor information
-     * 
-     * @param sensor
-     *        the sensor
-     * @return Returns the sensorID in the Database
-     * @throws OwsExceptionReport
-     */
-    public String insertSensor(SirSensor sensor) throws OwsExceptionReport;
-
-    /**
-     * Deletes a sensor by SensorIdentification
-     * 
-     * @param sensIdent
-     *        the sensorIdentification
-     * @return Returns the former SensorID in SIR
-     * @throws OwsExceptionReport
-     */
-    public String deleteSensor(SirSensorIdentification sensIdent) throws OwsExceptionReport;
-
-    /**
-     * Updates the sensor document by SensorIdentification with given sensorML document
-     * 
-     * @param sensIdent
-     *        the sensorIdentification
-     * @param sensor
-     *        the sensor
-     * @return Returns the SensorID in SIR
-     * @throws OwsExceptionReport
-     */
-    public String updateSensor(SirSensorIdentification sensIdent, SirSensor sensor) throws OwsExceptionReport;
-
-    /**
      * Adds a service reference to a given sensor identification in SIR
      * 
      * @param sensIdent
@@ -90,5 +58,37 @@ public interface IInsertSensorInfoDAO {
      * @throws OwsExceptionReport
      */
     public String deleteReference(SirSensorIdentification sensIdent, SirServiceReference servRef) throws OwsExceptionReport;
+
+    /**
+     * Deletes a sensor by SensorIdentification
+     * 
+     * @param sensIdent
+     *        the sensorIdentification
+     * @return Returns the former SensorID in SIR
+     * @throws OwsExceptionReport
+     */
+    public String deleteSensor(SirSensorIdentification sensIdent) throws OwsExceptionReport;
+
+    /**
+     * Inserts a sensor with service description and sensor information
+     * 
+     * @param sensor
+     *        the sensor
+     * @return Returns the sensorID in the Database
+     * @throws OwsExceptionReport
+     */
+    public String insertSensor(SirSensor sensor) throws OwsExceptionReport;
+
+    /**
+     * Updates the sensor document by SensorIdentification with given sensorML document
+     * 
+     * @param sensIdent
+     *        the sensorIdentification
+     * @param sensor
+     *        the sensor
+     * @return Returns the SensorID in SIR
+     * @throws OwsExceptionReport
+     */
+    public String updateSensor(SirSensorIdentification sensIdent, SirSensor sensor) throws OwsExceptionReport;
 
 }

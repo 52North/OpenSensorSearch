@@ -54,126 +54,14 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
         this.cpool = cpool;
     }
 
-    @Override
-    public String insertConnection(URL cswUrl, int pushInterval) throws OwsExceptionReport {
-        String connectionID = null;
-        Connection con = null;
-        Statement stmt = null;
+    private String catalogConnectionsListQuery() {
+        StringBuilder query = new StringBuilder();
 
-        String insertCatalogQuery = insertCatalogQuery(cswUrl, pushInterval);
+        query.append("SELECT * FROM ");
+        query.append(PGDAOConstants.catalog);
+        query.append(";");
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + insertCatalogQuery);
-            ResultSet rs = stmt.executeQuery(insertCatalogQuery);
-            while (rs.next()) {
-                connectionID = rs.getString(PGDAOConstants.catalogIdSir);
-            }
-        }
-        catch (SQLException sqle) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "Error while adding a connection to catalog to database: " + sqle.getMessage());
-            PGSQLConnectToCatalogDAO.log.error("Error while adding a connection to catalog to database: "
-                    + sqle.getMessage());
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
-        return connectionID;
-    }
-
-    @Override
-    public String getConnectionID(URL cswUrl, int pushInterval) throws OwsExceptionReport {
-        String connectionID = null;
-        Connection con = null;
-        Statement stmt = null;
-
-        String getConnectionQuery = getConnectionQuery(cswUrl);
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + getConnectionQuery);
-            ResultSet rs = stmt.executeQuery(getConnectionQuery);
-            while (rs.next()) {
-                connectionID = rs.getString(PGDAOConstants.catalogIdSir);
-            }
-        }
-        catch (SQLException sqle) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "Error while requesting a connection to catalog from database: " + sqle.getMessage());
-            PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
-                    + sqle.getMessage());
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
-        return connectionID;
-    }
-
-    @Override
-    public void updateConnection(URL cswUrl, int pushInterval) throws OwsExceptionReport {
-        Connection con = null;
-        Statement stmt = null;
-
-        String updateConnectionQuery = updateConnectionQuery(cswUrl, pushInterval);
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + updateConnectionQuery);
-            stmt.execute(updateConnectionQuery);
-        }
-        catch (SQLException sqle) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "Error while requesting a connection to catalog from database: " + sqle.getMessage());
-            PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
-                    + sqle.getMessage());
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
+        return query.toString();
     }
 
     @Override
@@ -236,12 +124,60 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
         return connections;
     }
 
-    private String catalogConnectionsListQuery() {
+    @Override
+    public String getConnectionID(URL cswUrl, int pushInterval) throws OwsExceptionReport {
+        String connectionID = null;
+        Connection con = null;
+        Statement stmt = null;
+
+        String getConnectionQuery = getConnectionQuery(cswUrl);
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            if (log.isDebugEnabled())
+                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + getConnectionQuery);
+            ResultSet rs = stmt.executeQuery(getConnectionQuery);
+            while (rs.next()) {
+                connectionID = rs.getString(PGDAOConstants.catalogIdSir);
+            }
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(ExceptionCode.NoApplicableCode,
+                                 null,
+                                 "Error while requesting a connection to catalog from database: " + sqle.getMessage());
+            PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
+                    + sqle.getMessage());
+        }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    log.error("SQL Error.", e);
+                }
+            }
+
+            if (con != null) {
+                this.cpool.returnConnection(con);
+            }
+        }
+        return connectionID;
+    }
+
+    private String getConnectionQuery(URL cswUrl) {
         StringBuilder query = new StringBuilder();
 
-        query.append("SELECT * FROM ");
+        query.append("SELECT ");
+        query.append(PGDAOConstants.catalogIdSir);
+        query.append(" FROM ");
         query.append(PGDAOConstants.catalog);
-        query.append(";");
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.catalogUrl);
+        query.append(" = '");
+        query.append(cswUrl.toString());
+        query.append("');");
 
         return query.toString();
     }
@@ -270,20 +206,84 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
         return query.toString();
     }
 
-    private String getConnectionQuery(URL cswUrl) {
-        StringBuilder query = new StringBuilder();
+    @Override
+    public String insertConnection(URL cswUrl, int pushInterval) throws OwsExceptionReport {
+        String connectionID = null;
+        Connection con = null;
+        Statement stmt = null;
 
-        query.append("SELECT ");
-        query.append(PGDAOConstants.catalogIdSir);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.catalog);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.catalogUrl);
-        query.append(" = '");
-        query.append(cswUrl.toString());
-        query.append("');");
+        String insertCatalogQuery = insertCatalogQuery(cswUrl, pushInterval);
 
-        return query.toString();
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            if (log.isDebugEnabled())
+                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + insertCatalogQuery);
+            ResultSet rs = stmt.executeQuery(insertCatalogQuery);
+            while (rs.next()) {
+                connectionID = rs.getString(PGDAOConstants.catalogIdSir);
+            }
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(ExceptionCode.NoApplicableCode,
+                                 null,
+                                 "Error while adding a connection to catalog to database: " + sqle.getMessage());
+            PGSQLConnectToCatalogDAO.log.error("Error while adding a connection to catalog to database: "
+                    + sqle.getMessage());
+        }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    log.error("SQL Error.", e);
+                }
+            }
+
+            if (con != null) {
+                this.cpool.returnConnection(con);
+            }
+        }
+        return connectionID;
+    }
+
+    @Override
+    public void updateConnection(URL cswUrl, int pushInterval) throws OwsExceptionReport {
+        Connection con = null;
+        Statement stmt = null;
+
+        String updateConnectionQuery = updateConnectionQuery(cswUrl, pushInterval);
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            if (log.isDebugEnabled())
+                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + updateConnectionQuery);
+            stmt.execute(updateConnectionQuery);
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(ExceptionCode.NoApplicableCode,
+                                 null,
+                                 "Error while requesting a connection to catalog from database: " + sqle.getMessage());
+            PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
+                    + sqle.getMessage());
+        }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    log.error("SQL Error.", e);
+                }
+            }
+
+            if (con != null) {
+                this.cpool.returnConnection(con);
+            }
+        }
     }
 
     private String updateConnectionQuery(URL cswUrl, int pushInterval) {

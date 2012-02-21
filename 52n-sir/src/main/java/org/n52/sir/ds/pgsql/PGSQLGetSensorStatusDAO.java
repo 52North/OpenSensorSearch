@@ -68,205 +68,6 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         this.cpool = cpool;
     }
 
-    @Override
-    public Collection<SirStatusDescription> getSensorStatusBySearchCriteria(SirSearchCriteria searchCriteria,
-                                                                            Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {
-
-        // build query with search criteria
-        String searchCriteriaQuery = bySearchCriteria(searchCriteria) + propertyFilterQuery(propertyFilter);
-        Collection<SirStatusDescription> fullQuery = doQuery(searchCriteriaQuery);
-
-        Collection<SirStatusDescription> filtered = filterQueryResult(propertyFilter, fullQuery);
-
-        return filtered;
-    }
-
-    @Override
-    public Collection<SirStatusDescription> getSensorStatusBySensorID(SirSensorIDInSir sensorId,
-                                                                      Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {
-        // build query with sensorID in SIR
-        String sensorIDQuery = bySensorID(sensorId) + propertyFilterQuery(propertyFilter);
-        Collection<SirStatusDescription> fullQuery = doQuery(sensorIDQuery);
-        Collection<SirStatusDescription> filtered = filterQueryResult(propertyFilter, fullQuery);
-
-        return filtered;
-    }
-
-    @Override
-    public Collection<SirStatusDescription> getSensorStatusByServiceDescription(SirServiceReference servDesc,
-                                                                                Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {
-
-        // build query with service description
-        String serviceDescQuery = byServiceDescription(servDesc) + propertyFilterQuery(propertyFilter);
-        Collection<SirStatusDescription> fullQuery = doQuery(serviceDescQuery);
-        Collection<SirStatusDescription> filtered = filterQueryResult(propertyFilter, fullQuery);
-
-        return filtered;
-    }
-
-    /**
-     * @param propertyFilter
-     * @param fullQuery
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private Collection<SirStatusDescription> filterQueryResult(Collection<SirPropertyFilter> propertyFilter,
-                                                               Collection<SirStatusDescription> fullQuery) throws OwsExceptionReport {
-        Collection<SirStatusDescription> filtered = new ArrayList<SirStatusDescription>(fullQuery);
-
-        if (propertyFilter == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("No property filter given!");
-            }
-        }
-        else {
-            for (SirPropertyFilter sirPropertyFilter : propertyFilter) {
-                filtered = filter(filtered, sirPropertyFilter);
-            }
-        }
-
-        if (log.isDebugEnabled()) {
-            log.debug("Filtered to " + filtered.size() + " of " + fullQuery.size() + " results.");
-        }
-        return filtered;
-    }
-
-    private Collection<SirStatusDescription> filter(Collection<SirStatusDescription> unfiltered,
-                                                    SirPropertyFilter sirPropertyFilter) throws OwsExceptionReport {
-        Collection<SirStatusDescription> filtered = new ArrayList<SirStatusDescription>();
-
-        // do filtering other than text-based equals
-        if (sirPropertyFilter.getPropConst() != null) {
-            switch (sirPropertyFilter.getPropConst().getConstraint().getConsType()) {
-            case isLessThan:
-                for (SirStatusDescription sirStatusDescription : unfiltered) {
-                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
-                    if (d < sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
-                        filtered.add(sirStatusDescription);
-                    }
-                }
-                break;
-            case isLessThanOrEqualTo:
-                for (SirStatusDescription sirStatusDescription : unfiltered) {
-                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
-                    if (d <= sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
-                        filtered.add(sirStatusDescription);
-                    }
-                }
-                break;
-            case isGreaterThan:
-                for (SirStatusDescription sirStatusDescription : unfiltered) {
-                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
-                    if (d > sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
-                        filtered.add(sirStatusDescription);
-                    }
-                }
-                break;
-            case isGreaterThanOrEqualTo:
-                for (SirStatusDescription sirStatusDescription : unfiltered) {
-                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
-                    if (d >= sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
-                        filtered.add(sirStatusDescription);
-                    }
-                }
-                break;
-            case isBetween:
-                for (SirStatusDescription sirStatusDescription : unfiltered) {
-                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
-                    if (sirPropertyFilter.getPropConst().getConstraint().getLowerBoundary() < d
-                            && d < sirPropertyFilter.getPropConst().getConstraint().getUpperBoundary()) {
-                        filtered.add(sirStatusDescription);
-                    }
-                }
-                break;
-            case isEqualTo:
-                for (SirStatusDescription sirStatusDescription : unfiltered) {
-                    Object value = sirStatusDescription.getStatus().getPropertyValue();
-                    if (sirPropertyFilter.getPropConst().getConstraint().getValueString().equals(value)) {
-                        filtered.add(sirStatusDescription);
-                    }
-                }
-                break;
-            default:
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(ExceptionCode.OperationNotSupported,
-                                     "PGSQLGetSensorStatusDAO",
-                                     "Constraint currently not supported: "
-                                             + sirPropertyFilter.getPropConst().getConstraint().getConsType().name()
-                                             + "!");
-                log.error("Constraint currently not supported: "
-                        + sirPropertyFilter.getPropConst().getConstraint().getConsType().name() + "!");
-                throw se;
-            }
-
-            return filtered;
-        }
-
-        return unfiltered;
-    }
-
-    private Collection<SirStatusDescription> doQuery(String query) throws OwsExceptionReport {
-        ArrayList<SirStatusDescription> result = new ArrayList<SirStatusDescription>();
-        Connection con = null;
-        Statement stmt = null;
-        
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + query);
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                SirStatusDescription statusDesc = new SirStatusDescription();
-                SirStatus status = new SirStatus();
-
-                // sensorIDInSIR
-                statusDesc.setSensorIdInSir(rs.getString(PGDAOConstants.sensorIdSirOfStatus));
-                // propertyName
-                status.setPropertyName(rs.getString(PGDAOConstants.propertyName));
-                // propertyValue
-                status.setPropertyValue(rs.getString(PGDAOConstants.propertyValue));
-                // uom
-                status.setUom(rs.getString(PGDAOConstants.uom));
-                // timestamp
-                Calendar cal = Calendar.getInstance();
-                Timestamp t = rs.getTimestamp(PGDAOConstants.time);
-                cal.setTime(t);
-                status.setTimestamp(cal);
-
-                statusDesc.setStatus(status);
-                result.add(statusDesc);
-            }
-
-        }
-        catch (SQLException sqle) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while quering for sensor status with search criteria: " + sqle.getMessage());
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 "PGSQLGetSensorStatusDAO.getSensorStatusbySearchCriteria()",
-                                 "Error while quering for sensor status with search criteria: " + sqle.getMessage());
-            throw se;
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-            
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
-        
-        return result;
-    }
-
     private String bySearchCriteria(SirSearchCriteria searchCriteria) {
         StringBuffer query = new StringBuffer();
         
@@ -638,6 +439,205 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(")");
         
         return query.toString();
+    }
+
+    private Collection<SirStatusDescription> doQuery(String query) throws OwsExceptionReport {
+        ArrayList<SirStatusDescription> result = new ArrayList<SirStatusDescription>();
+        Connection con = null;
+        Statement stmt = null;
+        
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+
+            if (log.isDebugEnabled())
+                log.debug(">>>Database Query: " + query);
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                SirStatusDescription statusDesc = new SirStatusDescription();
+                SirStatus status = new SirStatus();
+
+                // sensorIDInSIR
+                statusDesc.setSensorIdInSir(rs.getString(PGDAOConstants.sensorIdSirOfStatus));
+                // propertyName
+                status.setPropertyName(rs.getString(PGDAOConstants.propertyName));
+                // propertyValue
+                status.setPropertyValue(rs.getString(PGDAOConstants.propertyValue));
+                // uom
+                status.setUom(rs.getString(PGDAOConstants.uom));
+                // timestamp
+                Calendar cal = Calendar.getInstance();
+                Timestamp t = rs.getTimestamp(PGDAOConstants.time);
+                cal.setTime(t);
+                status.setTimestamp(cal);
+
+                statusDesc.setStatus(status);
+                result.add(statusDesc);
+            }
+
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport();
+            log.error("Error while quering for sensor status with search criteria: " + sqle.getMessage());
+            se.addCodedException(ExceptionCode.NoApplicableCode,
+                                 "PGSQLGetSensorStatusDAO.getSensorStatusbySearchCriteria()",
+                                 "Error while quering for sensor status with search criteria: " + sqle.getMessage());
+            throw se;
+        }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    log.error("SQL Error.", e);
+                }
+            }
+            
+            if (con != null) {
+                this.cpool.returnConnection(con);
+            }
+        }
+        
+        return result;
+    }
+
+    private Collection<SirStatusDescription> filter(Collection<SirStatusDescription> unfiltered,
+                                                    SirPropertyFilter sirPropertyFilter) throws OwsExceptionReport {
+        Collection<SirStatusDescription> filtered = new ArrayList<SirStatusDescription>();
+
+        // do filtering other than text-based equals
+        if (sirPropertyFilter.getPropConst() != null) {
+            switch (sirPropertyFilter.getPropConst().getConstraint().getConsType()) {
+            case isLessThan:
+                for (SirStatusDescription sirStatusDescription : unfiltered) {
+                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
+                    if (d < sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
+                        filtered.add(sirStatusDescription);
+                    }
+                }
+                break;
+            case isLessThanOrEqualTo:
+                for (SirStatusDescription sirStatusDescription : unfiltered) {
+                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
+                    if (d <= sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
+                        filtered.add(sirStatusDescription);
+                    }
+                }
+                break;
+            case isGreaterThan:
+                for (SirStatusDescription sirStatusDescription : unfiltered) {
+                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
+                    if (d > sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
+                        filtered.add(sirStatusDescription);
+                    }
+                }
+                break;
+            case isGreaterThanOrEqualTo:
+                for (SirStatusDescription sirStatusDescription : unfiltered) {
+                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
+                    if (d >= sirPropertyFilter.getPropConst().getConstraint().getValueDouble()) {
+                        filtered.add(sirStatusDescription);
+                    }
+                }
+                break;
+            case isBetween:
+                for (SirStatusDescription sirStatusDescription : unfiltered) {
+                    double d = Double.parseDouble((String) sirStatusDescription.getStatus().getPropertyValue());
+                    if (sirPropertyFilter.getPropConst().getConstraint().getLowerBoundary() < d
+                            && d < sirPropertyFilter.getPropConst().getConstraint().getUpperBoundary()) {
+                        filtered.add(sirStatusDescription);
+                    }
+                }
+                break;
+            case isEqualTo:
+                for (SirStatusDescription sirStatusDescription : unfiltered) {
+                    Object value = sirStatusDescription.getStatus().getPropertyValue();
+                    if (sirPropertyFilter.getPropConst().getConstraint().getValueString().equals(value)) {
+                        filtered.add(sirStatusDescription);
+                    }
+                }
+                break;
+            default:
+                OwsExceptionReport se = new OwsExceptionReport();
+                se.addCodedException(ExceptionCode.OperationNotSupported,
+                                     "PGSQLGetSensorStatusDAO",
+                                     "Constraint currently not supported: "
+                                             + sirPropertyFilter.getPropConst().getConstraint().getConsType().name()
+                                             + "!");
+                log.error("Constraint currently not supported: "
+                        + sirPropertyFilter.getPropConst().getConstraint().getConsType().name() + "!");
+                throw se;
+            }
+
+            return filtered;
+        }
+
+        return unfiltered;
+    }
+
+    /**
+     * @param propertyFilter
+     * @param fullQuery
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private Collection<SirStatusDescription> filterQueryResult(Collection<SirPropertyFilter> propertyFilter,
+                                                               Collection<SirStatusDescription> fullQuery) throws OwsExceptionReport {
+        Collection<SirStatusDescription> filtered = new ArrayList<SirStatusDescription>(fullQuery);
+
+        if (propertyFilter == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("No property filter given!");
+            }
+        }
+        else {
+            for (SirPropertyFilter sirPropertyFilter : propertyFilter) {
+                filtered = filter(filtered, sirPropertyFilter);
+            }
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Filtered to " + filtered.size() + " of " + fullQuery.size() + " results.");
+        }
+        return filtered;
+    }
+
+    @Override
+    public Collection<SirStatusDescription> getSensorStatusBySearchCriteria(SirSearchCriteria searchCriteria,
+                                                                            Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {
+
+        // build query with search criteria
+        String searchCriteriaQuery = bySearchCriteria(searchCriteria) + propertyFilterQuery(propertyFilter);
+        Collection<SirStatusDescription> fullQuery = doQuery(searchCriteriaQuery);
+
+        Collection<SirStatusDescription> filtered = filterQueryResult(propertyFilter, fullQuery);
+
+        return filtered;
+    }
+
+    @Override
+    public Collection<SirStatusDescription> getSensorStatusBySensorID(SirSensorIDInSir sensorId,
+                                                                      Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {
+        // build query with sensorID in SIR
+        String sensorIDQuery = bySensorID(sensorId) + propertyFilterQuery(propertyFilter);
+        Collection<SirStatusDescription> fullQuery = doQuery(sensorIDQuery);
+        Collection<SirStatusDescription> filtered = filterQueryResult(propertyFilter, fullQuery);
+
+        return filtered;
+    }
+
+    @Override
+    public Collection<SirStatusDescription> getSensorStatusByServiceDescription(SirServiceReference servDesc,
+                                                                                Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {
+
+        // build query with service description
+        String serviceDescQuery = byServiceDescription(servDesc) + propertyFilterQuery(propertyFilter);
+        Collection<SirStatusDescription> fullQuery = doQuery(serviceDescQuery);
+        Collection<SirStatusDescription> filtered = filterQueryResult(propertyFilter, fullQuery);
+
+        return filtered;
     }
 
     private String propertyFilterQuery(Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {

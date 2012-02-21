@@ -34,52 +34,10 @@ import org.n52.sir.ows.OwsExceptionReport;
 public interface IDAOFactory {
 
     /**
-     * @return Returns the GetCapabilitiesDAO
+     * @return Returns the CatalogStatusHandlerDAO
      * @throws OwsExceptionReport
      */
-    IGetCapabilitiesDAO getCapabilitiesDAO() throws OwsExceptionReport;
-
-    /**
-     * @return Returns the HarvestServiceDAO
-     * @throws OwsExceptionReport
-     */
-    IHarvestServiceDAO harvestServiceDAO() throws OwsExceptionReport;
-
-    /**
-     * @return Returns the GetAllServicesDAO
-     * @throws OwsExceptionReport
-     */
-    IGetAllServicesDAO getAllServicesDAO() throws OwsExceptionReport;
-
-    /**
-     * @return Returns the DescribeSensorDAO
-     * @throws OwsExceptionReport
-     */
-    IDescribeSensorDAO describeSensorDAO() throws OwsExceptionReport;
-
-    /**
-     * @return Returns the InsertSensorStatusDAO
-     * @throws OwsExceptionReport
-     */
-    IInsertSensorStatusDAO insertSensorStatusDAO() throws OwsExceptionReport;
-
-    /**
-     * @return Returns the InsertSensorInfoDAO
-     * @throws OwsExceptionReport
-     */
-    IInsertSensorInfoDAO insertSensorInfoDAO() throws OwsExceptionReport;
-
-    /**
-     * @return Returns the SearchSensorDAO
-     * @throws OwsExceptionReport
-     */
-    ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport;
-
-    /**
-     * @return Returns the GetSensorStatusDAO
-     * @throws OwsExceptionReport
-     */
-    IGetSensorStatusDAO getSensorStatusDAO() throws OwsExceptionReport;
+    ICatalogStatusHandlerDAO catalogStatusHandlerDAO();
 
     /**
      * @return Returns the ConncetToCatalogDAO
@@ -88,14 +46,56 @@ public interface IDAOFactory {
     IConnectToCatalogDAO connectToCatalogDAO() throws OwsExceptionReport;
 
     /**
+     * @return Returns the DescribeSensorDAO
+     * @throws OwsExceptionReport
+     */
+    IDescribeSensorDAO describeSensorDAO() throws OwsExceptionReport;
+
+    /**
      * @return Returns the DisconnectFromCatalogDAO
      * @throws OwsExceptionReport
      */
     IDisconnectFromCatalogDAO disconnectFromCatalogDAO() throws OwsExceptionReport;
 
     /**
-     * @return Returns the CatalogStatusHandlerDAO
+     * @return Returns the GetAllServicesDAO
      * @throws OwsExceptionReport
      */
-    ICatalogStatusHandlerDAO catalogStatusHandlerDAO();
+    IGetAllServicesDAO getAllServicesDAO() throws OwsExceptionReport;
+
+    /**
+     * @return Returns the GetCapabilitiesDAO
+     * @throws OwsExceptionReport
+     */
+    IGetCapabilitiesDAO getCapabilitiesDAO() throws OwsExceptionReport;
+
+    /**
+     * @return Returns the GetSensorStatusDAO
+     * @throws OwsExceptionReport
+     */
+    IGetSensorStatusDAO getSensorStatusDAO() throws OwsExceptionReport;
+
+    /**
+     * @return Returns the HarvestServiceDAO
+     * @throws OwsExceptionReport
+     */
+    IHarvestServiceDAO harvestServiceDAO() throws OwsExceptionReport;
+
+    /**
+     * @return Returns the InsertSensorInfoDAO
+     * @throws OwsExceptionReport
+     */
+    IInsertSensorInfoDAO insertSensorInfoDAO() throws OwsExceptionReport;
+
+    /**
+     * @return Returns the InsertSensorStatusDAO
+     * @throws OwsExceptionReport
+     */
+    IInsertSensorStatusDAO insertSensorStatusDAO() throws OwsExceptionReport;
+
+    /**
+     * @return Returns the SearchSensorDAO
+     * @throws OwsExceptionReport
+     */
+    ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport;
 }

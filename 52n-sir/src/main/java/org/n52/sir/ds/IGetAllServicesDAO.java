@@ -44,11 +44,4 @@ public interface IGetAllServicesDAO {
      */
     public Collection<SirService> getServices() throws OwsExceptionReport;
 
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public long getServicesCount() throws OwsExceptionReport;
-
 }

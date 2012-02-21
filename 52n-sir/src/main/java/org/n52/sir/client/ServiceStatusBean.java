@@ -31,8 +31,7 @@ import java.util.Date;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.ds.IGetAllServicesDAO;
-import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.ds.IGetCapabilitiesDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,15 +44,15 @@ public class ServiceStatusBean {
 
     private static Logger log = LoggerFactory.getLogger(ServiceStatusBean.class);
 
-    private IGetAllServicesDAO allServicesDAO;
+    private IGetCapabilitiesDAO dao;
 
     private Date nextUpdate;
+
+    private long numberOfPhenomena = 0;
 
     private long numberOfSensors = 0;
 
     private long numberOfServices = 0;
-
-    private ISearchSensorDAO searchSensorDAO;
 
     private int updateIntervalMillis = 1000 * 60 * 10;
 
@@ -66,11 +65,10 @@ public class ServiceStatusBean {
         if (instance != null) {
             IDAOFactory factory = instance.getFactory();
             try {
-                this.allServicesDAO = factory.getAllServicesDAO();
-                this.searchSensorDAO = factory.searchSensorDAO();
+                this.dao = factory.getCapabilitiesDAO();
             }
             catch (OwsExceptionReport e) {
-                log.error("Error getting DAOs.", e);
+                log.error("Error getting DAO.", e);
             }
 
             this.nextUpdate = new Date(System.currentTimeMillis() - this.updateIntervalMillis);
@@ -78,6 +76,13 @@ public class ServiceStatusBean {
         }
         else
             log.error("Could not get SirConfigurator, instance is null!");
+    }
+
+    /**
+     * @return the numberOfPhenomena
+     */
+    public long getNumberOfPhenomena() {
+        return this.numberOfPhenomena;
     }
 
     /**
@@ -99,6 +104,14 @@ public class ServiceStatusBean {
     }
 
     /**
+     * @param numberOfPhenomena
+     *        the numberOfPhenomena to set
+     */
+    public void setNumberOfPhenomena(long numberOfPhenomena) {
+        this.numberOfPhenomena = numberOfPhenomena;
+    }
+
+    /**
      * @param numberOfSensors
      *        the numberOfSensors to set
      */
@@ -117,17 +130,20 @@ public class ServiceStatusBean {
     /**
      * 
      */
-    @SuppressWarnings("boxing")
     private synchronized void update() {
         Date now = new Date();
         if (now.after(this.nextUpdate)) {
             try {
-                this.numberOfServices = this.allServicesDAO.getServicesCount();
-                this.numberOfSensors = this.searchSensorDAO.getSensorsCount();
+                this.numberOfServices = this.dao.getServiceCount();
+                this.numberOfSensors = this.dao.getSensorCount();
+                this.numberOfPhenomena = this.dao.getPhenomenonCount();
 
                 this.nextUpdate = new Date(now.getTime() + this.updateIntervalMillis);
                 log.debug("Next update of sensor and service counts not before " + this.nextUpdate
-                        + ". Current counts: {} sensors, {} services.", this.numberOfSensors, this.numberOfServices);
+                                  + ". Current counts: {} sensors, {} phenomena, {} services.",
+                          new Object[] {Long.valueOf(this.numberOfSensors),
+                                        Long.valueOf(this.numberOfPhenomena),
+                                        Long.valueOf(this.numberOfServices)});
             }
             catch (OwsExceptionReport e) {
                 log.error("Error getting sensor or service count.", e);

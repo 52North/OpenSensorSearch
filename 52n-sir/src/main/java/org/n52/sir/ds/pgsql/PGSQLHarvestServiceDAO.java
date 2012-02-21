@@ -65,6 +65,103 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
     /*
      * (non-Javadoc)
      * 
+     * @see org.n52.sir.ds.IHarvestServiceDAO#addService(java.lang.String, java.lang.String)
+     */
+    @Override
+    public String addService(String serviceUrl, String serviceType) throws OwsExceptionReport {
+        String result = "";
+
+        Connection con = null;
+        Statement stmt = null;
+
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+
+            // insert service
+            String insertService = insertServiceCommand(serviceUrl, serviceType);
+            if (log.isDebugEnabled())
+                log.debug(">>>Database Query: " + insertService.toString());
+            stmt.execute(insertService.toString());
+
+            // service ID query
+            String serviceIDQuery = serviceIDQuery(serviceUrl, serviceType);
+            if (log.isDebugEnabled())
+                log.debug(">>>Database Query: " + serviceIDQuery.toString());
+            ResultSet rs = stmt.executeQuery(serviceIDQuery.toString());
+            if (rs == null) {
+                return result;
+            }
+
+            while (rs.next()) {
+                result = rs.getString(PGDAOConstants.serviceId);
+            }
+
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport();
+            log.error("Error while adding service to database: " + sqle.getMessage());
+            se.addCodedException(ExceptionCode.NoApplicableCode, null, "Error while adding service to database: "
+                    + sqle.getMessage());
+            throw se;
+        }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    log.error("SQL Error.", e);
+                }
+            }
+
+            if (con != null)
+                this.cpool.returnConnection(con);
+        }
+        return result;
+    }
+
+    /**
+     * 
+     * @param phenom
+     * @return
+     */
+    private String insertPhenomenonCommand(SirPhenomenon phenom) {
+        StringBuffer cmd = new StringBuffer();
+
+        cmd.append("INSERT INTO ");
+        cmd.append(PGDAOConstants.phenomenon);
+        cmd.append(" (");
+        cmd.append(PGDAOConstants.phenomenonUrn);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.phenomenonUom);
+        cmd.append(") SELECT '");
+        cmd.append(phenom.getUrn());
+        cmd.append("', '");
+        cmd.append(phenom.getUom());
+        cmd.append("' WHERE NOT EXISTS (SELECT ");
+        cmd.append(PGDAOConstants.phenomenonUrn);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.phenomenonUom);
+        cmd.append(" FROM ");
+        cmd.append(PGDAOConstants.phenomenon);
+        cmd.append(" WHERE (");
+        cmd.append(PGDAOConstants.phenomenonUrn);
+        cmd.append(" = '");
+        cmd.append(phenom.getUrn());
+        cmd.append("' AND ");
+        cmd.append(PGDAOConstants.phenomenonUom);
+        cmd.append(" = '");
+        cmd.append(phenom.getUom());
+        cmd.append("')) RETURNING ");
+        cmd.append(PGDAOConstants.phenomenonId);
+
+        return cmd.toString();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.n52.sir.ds.IHarvestServiceDAO#insertSensor(org.n52.sir.datastructure.SirSensor)
      */
     @Override
@@ -167,208 +264,6 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         }
 
         return sensor;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IHarvestServiceDAO#addService(java.lang.String, java.lang.String)
-     */
-    @Override
-    public String addService(String serviceUrl, String serviceType) throws OwsExceptionReport {
-        String result = "";
-
-        Connection con = null;
-        Statement stmt = null;
-
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
-            // insert service
-            String insertService = insertServiceCommand(serviceUrl, serviceType);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + insertService.toString());
-            stmt.execute(insertService.toString());
-
-            // service ID query
-            String serviceIDQuery = serviceIDQuery(serviceUrl, serviceType);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + serviceIDQuery.toString());
-            ResultSet rs = stmt.executeQuery(serviceIDQuery.toString());
-            if (rs == null) {
-                return result;
-            }
-
-            while (rs.next()) {
-                result = rs.getString(PGDAOConstants.serviceId);
-            }
-
-        }
-        catch (SQLException sqle) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while adding service to database: " + sqle.getMessage());
-            se.addCodedException(ExceptionCode.NoApplicableCode, null, "Error while adding service to database: "
-                    + sqle.getMessage());
-            throw se;
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null)
-                this.cpool.returnConnection(con);
-        }
-        return result;
-    }
-
-    /**
-     * 
-     * @param sensor
-     * @param phenomenonID
-     * @return
-     */
-    private String insertSensorPhenomenonCommand(SirSensor sensor, String phenomenonID) {
-        StringBuffer cmd = new StringBuffer();
-
-        cmd.append("INSERT INTO ");
-        cmd.append(PGDAOConstants.sensorPhen);
-        cmd.append(" (");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append(") SELECT '");
-        cmd.append(sensor.getSensorIDInSIR());
-        cmd.append("', '");
-        cmd.append(phenomenonID);
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.sensorPhen);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append("='");
-        cmd.append(sensor.getSensorIDInSIR());
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append("='");
-        cmd.append(phenomenonID);
-        cmd.append("'));");
-
-        return cmd.toString();
-    }
-
-    /**
-     * 
-     * @param phenom
-     * @return
-     */
-    private String insertPhenomenonCommand(SirPhenomenon phenom) {
-        StringBuffer cmd = new StringBuffer();
-
-        cmd.append("INSERT INTO ");
-        cmd.append(PGDAOConstants.phenomenon);
-        cmd.append(" (");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(") SELECT '");
-        cmd.append(phenom.getUrn());
-        cmd.append("', '");
-        cmd.append(phenom.getUom());
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.phenomenon);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(" = '");
-        cmd.append(phenom.getUrn());
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(" = '");
-        cmd.append(phenom.getUom());
-        cmd.append("')) RETURNING ");
-        cmd.append(PGDAOConstants.phenomenonId);
-
-        return cmd.toString();
-    }
-
-    /**
-     * 
-     * @param sensor
-     * @return
-     */
-    private String insertSensorServiceCommand(SirSensor sensor) {
-        StringBuffer cmd = new StringBuffer();
-
-        cmd.append("INSERT INTO ");
-        cmd.append(PGDAOConstants.sensorService);
-        cmd.append(" (");
-        cmd.append(PGDAOConstants.serviceId);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.sensorIdSir);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.serviceSpecId);
-        cmd.append(") SELECT (SELECT ");
-        cmd.append(PGDAOConstants.serviceId);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.service);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.serviceUrl);
-        cmd.append(" = '");
-        cmd.append(sensor.getServDescs().iterator().next().getService().getUrl());
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.serviceType);
-        cmd.append(" = '");
-        cmd.append(sensor.getServDescs().iterator().next().getService().getType());
-        cmd.append("')), '");
-        cmd.append(sensor.getSensorIDInSIR());
-        cmd.append("', '");
-        cmd.append(sensor.getServDescs().iterator().next().getServiceSpecificSensorId());
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.serviceId);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.sensorIdSir);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.serviceSpecId);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.sensorService);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.serviceId);
-        cmd.append("=(SELECT ");
-        cmd.append(PGDAOConstants.serviceId);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.service);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.serviceUrl);
-        cmd.append(" = '");
-        cmd.append(sensor.getServDescs().iterator().next().getService().getUrl());
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.serviceType);
-        cmd.append(" = '");
-        cmd.append(sensor.getServDescs().iterator().next().getService().getType());
-        cmd.append("')) AND ");
-        cmd.append(PGDAOConstants.sensorIdSir);
-        cmd.append(" = '");
-        cmd.append(sensor.getSensorIDInSIR());
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.serviceSpecId);
-        cmd.append(" = '");
-        cmd.append(sensor.getServDescs().iterator().next().getServiceSpecificSensorId());
-        cmd.append("'));");
-
-        return cmd.toString();
     }
 
     /**
@@ -493,6 +388,111 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         }
         cmd.append("}')) RETURNING ");
         cmd.append(PGDAOConstants.sensorIdSir);
+
+        return cmd.toString();
+    }
+
+    /**
+     * 
+     * @param sensor
+     * @param phenomenonID
+     * @return
+     */
+    private String insertSensorPhenomenonCommand(SirSensor sensor, String phenomenonID) {
+        StringBuffer cmd = new StringBuffer();
+
+        cmd.append("INSERT INTO ");
+        cmd.append(PGDAOConstants.sensorPhen);
+        cmd.append(" (");
+        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
+        cmd.append(") SELECT '");
+        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append("', '");
+        cmd.append(phenomenonID);
+        cmd.append("' WHERE NOT EXISTS (SELECT ");
+        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
+        cmd.append(" FROM ");
+        cmd.append(PGDAOConstants.sensorPhen);
+        cmd.append(" WHERE (");
+        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
+        cmd.append("='");
+        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append("' AND ");
+        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
+        cmd.append("='");
+        cmd.append(phenomenonID);
+        cmd.append("'));");
+
+        return cmd.toString();
+    }
+
+    /**
+     * 
+     * @param sensor
+     * @return
+     */
+    private String insertSensorServiceCommand(SirSensor sensor) {
+        StringBuffer cmd = new StringBuffer();
+
+        cmd.append("INSERT INTO ");
+        cmd.append(PGDAOConstants.sensorService);
+        cmd.append(" (");
+        cmd.append(PGDAOConstants.serviceId);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.serviceSpecId);
+        cmd.append(") SELECT (SELECT ");
+        cmd.append(PGDAOConstants.serviceId);
+        cmd.append(" FROM ");
+        cmd.append(PGDAOConstants.service);
+        cmd.append(" WHERE (");
+        cmd.append(PGDAOConstants.serviceUrl);
+        cmd.append(" = '");
+        cmd.append(sensor.getServDescs().iterator().next().getService().getUrl());
+        cmd.append("' AND ");
+        cmd.append(PGDAOConstants.serviceType);
+        cmd.append(" = '");
+        cmd.append(sensor.getServDescs().iterator().next().getService().getType());
+        cmd.append("')), '");
+        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append("', '");
+        cmd.append(sensor.getServDescs().iterator().next().getServiceSpecificSensorId());
+        cmd.append("' WHERE NOT EXISTS (SELECT ");
+        cmd.append(PGDAOConstants.serviceId);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(", ");
+        cmd.append(PGDAOConstants.serviceSpecId);
+        cmd.append(" FROM ");
+        cmd.append(PGDAOConstants.sensorService);
+        cmd.append(" WHERE (");
+        cmd.append(PGDAOConstants.serviceId);
+        cmd.append("=(SELECT ");
+        cmd.append(PGDAOConstants.serviceId);
+        cmd.append(" FROM ");
+        cmd.append(PGDAOConstants.service);
+        cmd.append(" WHERE (");
+        cmd.append(PGDAOConstants.serviceUrl);
+        cmd.append(" = '");
+        cmd.append(sensor.getServDescs().iterator().next().getService().getUrl());
+        cmd.append("' AND ");
+        cmd.append(PGDAOConstants.serviceType);
+        cmd.append(" = '");
+        cmd.append(sensor.getServDescs().iterator().next().getService().getType());
+        cmd.append("')) AND ");
+        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(" = '");
+        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append("' AND ");
+        cmd.append(PGDAOConstants.serviceSpecId);
+        cmd.append(" = '");
+        cmd.append(sensor.getServDescs().iterator().next().getServiceSpecificSensorId());
+        cmd.append("'));");
 
         return cmd.toString();
     }

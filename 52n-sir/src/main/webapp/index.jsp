@@ -66,8 +66,9 @@
 		</div>
 
 		<div class="center">
+			<!-- #TODO add links to the RESTful URLs /sensors, /phenomena and /services -->
 			<span class="infotext">Searching across <%=serviceStatusBean.getNumberOfSensors()%>
-				sensors from <%=serviceStatusBean.getNumberOfServices()%> services.
+				sensors with <%=serviceStatusBean.getNumberOfPhenomena()%> observed properties from <%=serviceStatusBean.getNumberOfServices()%> services.
 			</span>
 		</div>
 

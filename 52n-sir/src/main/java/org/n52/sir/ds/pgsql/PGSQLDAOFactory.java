@@ -74,43 +74,8 @@ public class PGSQLDAOFactory implements IDAOFactory {
     }
 
     @Override
-    public PGSQLGetCapabilitiesDAO getCapabilitiesDAO() {
-        return new PGSQLGetCapabilitiesDAO(this.cpool);
-    }
-
-    @Override
-    public IHarvestServiceDAO harvestServiceDAO() throws OwsExceptionReport {
-        return new PGSQLHarvestServiceDAO(this.cpool);
-    }
-
-    @Override
-    public IGetAllServicesDAO getAllServicesDAO() throws OwsExceptionReport {
-        return new PGSQLGetAllServicesDAO(this.cpool);
-    }
-
-    @Override
-    public IDescribeSensorDAO describeSensorDAO() throws OwsExceptionReport {
-        return new PGSQLDescribeSensorDAO(this.cpool);
-    }
-
-    @Override
-    public IInsertSensorStatusDAO insertSensorStatusDAO() throws OwsExceptionReport {
-        return new PGSQLInsertSensorStatusDAO(this.cpool);
-    }
-
-    @Override
-    public IInsertSensorInfoDAO insertSensorInfoDAO() throws OwsExceptionReport {
-        return new PGSQLInsertSensorInfoDAO(this.cpool);
-    }
-
-    @Override
-    public ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport {
-        return new PGSQLSearchSensorDAO(this.cpool);
-    }
-
-    @Override
-    public IGetSensorStatusDAO getSensorStatusDAO() throws OwsExceptionReport {
-        return new PGSQLGetSensorStatusDAO(this.cpool);
+    public ICatalogStatusHandlerDAO catalogStatusHandlerDAO() {
+        return new PGSQLCatalogStatusHandlerDAO(this.cpool);
     }
 
     @Override
@@ -119,13 +84,48 @@ public class PGSQLDAOFactory implements IDAOFactory {
     }
 
     @Override
+    public IDescribeSensorDAO describeSensorDAO() throws OwsExceptionReport {
+        return new PGSQLDescribeSensorDAO(this.cpool);
+    }
+
+    @Override
     public IDisconnectFromCatalogDAO disconnectFromCatalogDAO() throws OwsExceptionReport {
         return new PGSQLDisconnetFromCatalogDAO(this.cpool);
     }
 
     @Override
-    public ICatalogStatusHandlerDAO catalogStatusHandlerDAO() {
-        return new PGSQLCatalogStatusHandlerDAO(this.cpool);
+    public IGetAllServicesDAO getAllServicesDAO() throws OwsExceptionReport {
+        return new PGSQLGetAllServicesDAO(this.cpool);
+    }
+
+    @Override
+    public PGSQLGetCapabilitiesDAO getCapabilitiesDAO() {
+        return new PGSQLGetCapabilitiesDAO(this.cpool);
+    }
+
+    @Override
+    public IGetSensorStatusDAO getSensorStatusDAO() throws OwsExceptionReport {
+        return new PGSQLGetSensorStatusDAO(this.cpool);
+    }
+
+    @Override
+    public IHarvestServiceDAO harvestServiceDAO() throws OwsExceptionReport {
+        return new PGSQLHarvestServiceDAO(this.cpool);
+    }
+
+    @Override
+    public IInsertSensorInfoDAO insertSensorInfoDAO() throws OwsExceptionReport {
+        return new PGSQLInsertSensorInfoDAO(this.cpool);
+    }
+
+    @Override
+    public IInsertSensorStatusDAO insertSensorStatusDAO() throws OwsExceptionReport {
+        return new PGSQLInsertSensorStatusDAO(this.cpool);
+    }
+
+    @Override
+    public ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport {
+        return new PGSQLSearchSensorDAO(this.cpool);
     }
 
 }

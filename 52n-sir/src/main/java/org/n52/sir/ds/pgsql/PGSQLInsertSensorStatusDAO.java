@@ -60,6 +60,82 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
         this.cpool = cpool;
     }
 
+    private String getSensorIdInSirBySensorIdInSir(SirSensorIDInSir ident) {
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT ");
+        query.append(PGDAOConstants.sensorIdSir);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.sensor);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.sensorIdSir);
+        query.append(" = '");
+        query.append(ident.getSensorIdInSir());
+        query.append("');");
+
+        return query.toString();
+    }
+
+    private String getSensorIdInSirByServiceDescription(SirServiceReference ident) {
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT ");
+        query.append(PGDAOConstants.sensorIdSirSensServ);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.sensorService);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.serviceIdOfSensServ);
+        query.append(" = (SELECT ");
+        query.append(PGDAOConstants.serviceId);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.service);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.serviceUrl);
+        query.append(" = '");
+        query.append(ident.getService().getUrl());
+        query.append("' AND ");
+        query.append(PGDAOConstants.serviceType);
+        query.append(" = '");
+        query.append(ident.getService().getType());
+        query.append("')) AND ");
+        query.append(PGDAOConstants.sensorIdSirSensServ);
+        query.append(" = (SELECT ");
+        query.append(PGDAOConstants.sensorIdSir);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.sensorService);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.serviceSpecId);
+        query.append(" = '");
+        query.append(ident.getServiceSpecificSensorId());
+        query.append("')));");
+
+        return query.toString();
+    }
+
+    private String getStatusId(SirStatus status, String sensorIdInSir) {
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT ");
+        query.append(PGDAOConstants.statusId);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.status);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.sensorIdSirOfStatus);
+        query.append(" = '");
+        query.append(sensorIdInSir);
+        query.append("' AND ");
+        query.append(PGDAOConstants.propertyName);
+        query.append(" = '");
+        query.append(status.getPropertyName());
+        query.append("' AND ");
+        query.append(PGDAOConstants.uom);
+        query.append(" ='");
+        query.append(status.getUom());
+        query.append("');");
+
+        return query.toString();
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -157,68 +233,6 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
         return sensorIdInSir;
     }
 
-    private String updateStatus(SirStatus status, String statusID) {
-        StringBuilder query = new StringBuilder();
-
-        query.append("UPDATE ");
-        query.append(PGDAOConstants.status);
-        query.append(" SET ");
-        query.append(PGDAOConstants.propertyValue);
-        query.append(" = '");
-        query.append(status.getPropertyValue());
-        query.append("', ");
-        query.append(PGDAOConstants.time);
-        query.append(" = '");
-        query.append(GMLDateParser.getInstance().parseDate(status.getTimestamp()));
-        query.append("' WHERE ");
-        query.append(PGDAOConstants.statusId);
-        query.append(" = '");
-        query.append(statusID);
-        query.append("';");
-
-        return query.toString();
-    }
-
-    private String getStatusId(SirStatus status, String sensorIdInSir) {
-        StringBuilder query = new StringBuilder();
-
-        query.append("SELECT ");
-        query.append(PGDAOConstants.statusId);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.status);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.sensorIdSirOfStatus);
-        query.append(" = '");
-        query.append(sensorIdInSir);
-        query.append("' AND ");
-        query.append(PGDAOConstants.propertyName);
-        query.append(" = '");
-        query.append(status.getPropertyName());
-        query.append("' AND ");
-        query.append(PGDAOConstants.uom);
-        query.append(" ='");
-        query.append(status.getUom());
-        query.append("');");
-
-        return query.toString();
-    }
-
-    private String getSensorIdInSirBySensorIdInSir(SirSensorIDInSir ident) {
-        StringBuilder query = new StringBuilder();
-
-        query.append("SELECT ");
-        query.append(PGDAOConstants.sensorIdSir);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.sensor);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.sensorIdSir);
-        query.append(" = '");
-        query.append(ident.getSensorIdInSir());
-        query.append("');");
-
-        return query.toString();
-    }
-
     private String insertStatus(SirStatus status, String sensorIdInSir) {
         StringBuilder query = new StringBuilder();
 
@@ -271,38 +285,24 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
         return query.toString();
     }
 
-    private String getSensorIdInSirByServiceDescription(SirServiceReference ident) {
+    private String updateStatus(SirStatus status, String statusID) {
         StringBuilder query = new StringBuilder();
 
-        query.append("SELECT ");
-        query.append(PGDAOConstants.sensorIdSirSensServ);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.sensorService);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.serviceIdOfSensServ);
-        query.append(" = (SELECT ");
-        query.append(PGDAOConstants.serviceId);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.service);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.serviceUrl);
+        query.append("UPDATE ");
+        query.append(PGDAOConstants.status);
+        query.append(" SET ");
+        query.append(PGDAOConstants.propertyValue);
         query.append(" = '");
-        query.append(ident.getService().getUrl());
-        query.append("' AND ");
-        query.append(PGDAOConstants.serviceType);
+        query.append(status.getPropertyValue());
+        query.append("', ");
+        query.append(PGDAOConstants.time);
         query.append(" = '");
-        query.append(ident.getService().getType());
-        query.append("')) AND ");
-        query.append(PGDAOConstants.sensorIdSirSensServ);
-        query.append(" = (SELECT ");
-        query.append(PGDAOConstants.sensorIdSir);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.sensorService);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.serviceSpecId);
+        query.append(GMLDateParser.getInstance().parseDate(status.getTimestamp()));
+        query.append("' WHERE ");
+        query.append(PGDAOConstants.statusId);
         query.append(" = '");
-        query.append(ident.getServiceSpecificSensorId());
-        query.append("')));");
+        query.append(statusID);
+        query.append("';");
 
         return query.toString();
     }

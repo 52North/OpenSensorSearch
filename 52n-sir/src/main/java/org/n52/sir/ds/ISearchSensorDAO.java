@@ -40,14 +40,12 @@ import org.n52.sir.ows.OwsExceptionReport;
 public interface ISearchSensorDAO {
 
     /**
-     * Search sensors by a given searchCriteria and returns a collection of SearchResultElements
+     * Get all available sensors.
      * 
-     * @param searchCriteria
-     *        the searchCriteria
-     * @return Returns a Collection of SearchResultElements
+     * @return Returns the sensors
      * @throws OwsExceptionReport
      */
-    public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport;
+    public Collection<SirSearchResultElement> getAllSensors(boolean simpleReponse) throws OwsExceptionReport;
 
     /**
      * Search a sensor by given sensorID in the Sir and returns the sensor
@@ -71,17 +69,13 @@ public interface ISearchSensorDAO {
     public SirSearchResultElement getSensorByServiceDescription(SirServiceReference servDesc, boolean simpleReponse) throws OwsExceptionReport;
 
     /**
-     * Get all available sensors.
+     * Search sensors by a given searchCriteria and returns a collection of SearchResultElements
      * 
-     * @return Returns the sensors
+     * @param searchCriteria
+     *        the searchCriteria
+     * @return Returns a Collection of SearchResultElements
      * @throws OwsExceptionReport
      */
-    public Collection<SirSearchResultElement> getAllSensors(boolean simpleReponse) throws OwsExceptionReport;
-    
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public long getSensorsCount() throws OwsExceptionReport;
+    public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport;
+
 }

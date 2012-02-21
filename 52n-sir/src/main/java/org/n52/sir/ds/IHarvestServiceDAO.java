@@ -36,16 +36,6 @@ import org.n52.sir.ows.OwsExceptionReport;
 public interface IHarvestServiceDAO {
 
     /**
-     * Inserts a sensor in the database
-     * 
-     * @param sensor
-     *        the inserted sensor
-     * @return Returns the SensorID in the Database
-     * @throws OwsExceptionReport
-     */
-    public SirSensor insertSensor(SirSensor sensor) throws OwsExceptionReport;
-
-    /**
      * Inserts a service in the database
      * 
      * @param serviceUrl
@@ -56,5 +46,15 @@ public interface IHarvestServiceDAO {
      * @throws OwsExceptionReport
      */
     public String addService(String serviceUrl, String serviceType) throws OwsExceptionReport;
+
+    /**
+     * Inserts a sensor in the database
+     * 
+     * @param sensor
+     *        the inserted sensor
+     * @return Returns the SensorID in the Database
+     * @throws OwsExceptionReport
+     */
+    public SirSensor insertSensor(SirSensor sensor) throws OwsExceptionReport;
 
 }

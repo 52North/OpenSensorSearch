@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.net.MalformedURLException;
@@ -64,6 +65,106 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         this.cpool = cpool;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getCatalogConnections()
+     */
+    @Override
+    public Collection<ICatalogConnection> getCatalogConnections() throws OwsExceptionReport {
+        ArrayList<ICatalogConnection> result = new ArrayList<ICatalogConnection>();
+
+        Connection con = null;
+        Statement stmt = null;
+
+        StringBuffer query = new StringBuffer();
+
+        // build query
+        query.append("SELECT ");
+        query.append(PGDAOConstants.catalogIdSir);
+        query.append(", ");
+        query.append(PGDAOConstants.catalogUrl);
+        query.append(", ");
+        query.append(PGDAOConstants.pushInterval);
+        query.append(", ");
+        query.append(PGDAOConstants.catalogStatus);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.catalog);
+        query.append(";");
+
+        // execute query
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            if (log.isDebugEnabled())
+                log.debug(">>>Database Query: " + query.toString());
+            ResultSet rs = stmt.executeQuery(query.toString());
+
+            // if no phenomenon available give back empty list
+            if (rs == null) {
+                return result;
+            }
+
+            // get result as string
+            while (rs.next()) {
+                result.add(new CatalogConnectionImpl(rs.getString(PGDAOConstants.catalogIdSir),
+                                                     new URL(rs.getString(PGDAOConstants.catalogUrl)),
+                                                     rs.getInt(PGDAOConstants.pushInterval),
+                                                     rs.getString(PGDAOConstants.catalogStatus)));
+            }
+
+        }
+        catch (OwsExceptionReport se) {
+            log.error("Error while query catalog connections for the getCapabilities from database!", se);
+            throw se;
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
+            log.error("Error while query catalog connections for the getCapabilities from database!", sqle);
+            se.addCodedException(ExceptionCode.NoApplicableCode, null, sqle);
+            throw se;
+        }
+        catch (MalformedURLException e) {
+            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
+            log.error("Error while query catalog connections for the getCapabilities from database!", e);
+            se.addCodedException(ExceptionCode.NoApplicableCode, null, e);
+            throw se;
+        }
+
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                }
+                catch (SQLException e) {
+                    log.error("SQL Error.", e);
+                }
+            }
+
+            // return connection
+            if (con != null)
+                this.cpool.returnConnection(con);
+        }
+
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getPhenomenaCount()
+     */
+    @Override
+    public long getPhenomenonCount() throws OwsExceptionReport {
+        String tableName = PGDAOConstants.phenomenon;
+        return getTableSize(tableName);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getPhenomenonURNs()
+     */
     @Override
     public Collection<String> getPhenomenonURNs() throws OwsExceptionReport {
         ArrayList<String> result = new ArrayList<String>();
@@ -122,6 +223,22 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         return result;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getSensorsCount()
+     */
+    @Override
+    public long getSensorCount() throws OwsExceptionReport {
+        String tableName = PGDAOConstants.sensor;
+        return getTableSize(tableName);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getServices()
+     */
     @Override
     public Collection<SirService> getServices() throws OwsExceptionReport {
         ArrayList<SirService> result = new ArrayList<SirService>();
@@ -190,9 +307,24 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         return result;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getServicesCount()
+     */
     @Override
-    public Collection<ICatalogConnection> getCatalogConnections() throws OwsExceptionReport {
-        ArrayList<ICatalogConnection> result = new ArrayList<ICatalogConnection>();
+    public long getServiceCount() throws OwsExceptionReport {
+        String tableName = PGDAOConstants.service;
+        return getTableSize(tableName);
+    }
+
+    /**
+     * @param tableName
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private long getTableSize(String tableName) throws OwsExceptionReport {
+        long result = Long.MIN_VALUE;
 
         Connection con = null;
         Statement stmt = null;
@@ -200,16 +332,8 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         StringBuffer query = new StringBuffer();
 
         // build query
-        query.append("SELECT ");
-        query.append(PGDAOConstants.catalogIdSir);
-        query.append(", ");
-        query.append(PGDAOConstants.catalogUrl);
-        query.append(", ");
-        query.append(PGDAOConstants.pushInterval);
-        query.append(", ");
-        query.append(PGDAOConstants.catalogStatus);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.catalog);
+        query.append("SELECT COUNT(*) FROM ");
+        query.append(tableName);
         query.append(";");
 
         // execute query
@@ -225,29 +349,20 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
                 return result;
             }
 
-            // get result as string
+            // get result as long
             while (rs.next()) {
-                result.add(new CatalogConnectionImpl(rs.getString(PGDAOConstants.catalogIdSir),
-                                                     new URL(rs.getString(PGDAOConstants.catalogUrl)),
-                                                     rs.getInt(PGDAOConstants.pushInterval),
-                                                     rs.getString(PGDAOConstants.catalogStatus)));
+                result = rs.getLong(1);
             }
 
         }
         catch (OwsExceptionReport se) {
-            log.error("Error while query catalog connections for the getCapabilities from database!", se);
+            log.error("Error while query services for " + tableName + " from database!", se);
             throw se;
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            log.error("Error while query catalog connections for the getCapabilities from database!", sqle);
+            log.error("Error while query services for " + tableName + " from database!", sqle);
             se.addCodedException(ExceptionCode.NoApplicableCode, null, sqle);
-            throw se;
-        }
-        catch (MalformedURLException e) {
-            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            log.error("Error while query catalog connections for the getCapabilities from database!", e);
-            se.addCodedException(ExceptionCode.NoApplicableCode, null, e);
             throw se;
         }
 

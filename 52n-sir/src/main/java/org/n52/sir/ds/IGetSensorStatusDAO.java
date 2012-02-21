@@ -39,6 +39,19 @@ import org.n52.sir.ows.OwsExceptionReport;
 public interface IGetSensorStatusDAO {
 
     /**
+     * Search the status of sensors by a given search criteria and a filter, than returns status information
+     * 
+     * @param searchCriteria
+     *        the search criteria
+     * @param propertyFilter
+     *        the filter for status filtering
+     * @return Returns a collection of status descriptions
+     * @throws OwsExceptionReport
+     */
+    public Collection<SirStatusDescription> getSensorStatusBySearchCriteria(SirSearchCriteria searchCriteria,
+                                                                            Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport;
+
+    /**
      * Search the status of a sensor by a given sensorID and a filter, than returns a status information
      * 
      * @param sensorId
@@ -64,18 +77,5 @@ public interface IGetSensorStatusDAO {
      */
     public Collection<SirStatusDescription> getSensorStatusByServiceDescription(SirServiceReference servDesc,
                                                                                 Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport;
-
-    /**
-     * Search the status of sensors by a given search criteria and a filter, than returns status information
-     * 
-     * @param searchCriteria
-     *        the search criteria
-     * @param propertyFilter
-     *        the filter for status filtering
-     * @return Returns a collection of status descriptions
-     * @throws OwsExceptionReport
-     */
-    public Collection<SirStatusDescription> getSensorStatusBySearchCriteria(SirSearchCriteria searchCriteria,
-                                                                            Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport;
 
 }

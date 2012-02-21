@@ -39,8 +39,12 @@
 	</logger>
 
 	<logger name="org.n52.sir">
-		<level value="INFO" />
+		<level value="DEBUG" />
 		<appender-ref ref="SirRoFiAppender" />
+	</logger>
+	
+	<logger name="org.n52.sir.ds">
+		<level value="WARN" />
 	</logger>
 
 	<logger name="org.n52.sir.catalog" additivity="false">
@@ -49,7 +53,7 @@
 	</logger>
 
 	<root>
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="SirConsoleAppender" />
 	</root>
 

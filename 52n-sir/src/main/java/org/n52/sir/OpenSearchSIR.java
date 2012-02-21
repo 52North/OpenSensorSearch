@@ -58,6 +58,10 @@ import net.opengis.sos.x10.ObservationOfferingType;
 import net.opengis.swe.x101.PhenomenonPropertyType;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.api.access.AccessGenerator;
+import org.n52.api.access.client.TimeRange;
+import org.n52.api.access.client.TimeSeriesParameters;
+import org.n52.api.access.client.TimeSeriesPermalinkBuilder;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
@@ -149,6 +153,8 @@ public class OpenSearchSIR extends HttpServlet {
      */
     private static Logger log = LoggerFactory.getLogger(OpenSearchSIR.class);
 
+    private static final int MAX_GET_URL_CHARACTER_COUNT = 2000; // http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url
+
     private static final String MIME_TYPE_ATOM = "application/atom+xml";
 
     private static final String MIME_TYPE_HTML = "text/html";
@@ -156,6 +162,8 @@ public class OpenSearchSIR extends HttpServlet {
     private static final String MIME_TYPE_JSON = "application/json";
 
     private static final String MIME_TYPE_KML = "application/vnd.google-earth.kml+xml";
+
+    private static final String MIME_TYPE_PLAIN = "text/plain";
 
     private static final String MIME_TYPE_RSS = "application/rss+xml";
 
@@ -171,15 +179,32 @@ public class OpenSearchSIR extends HttpServlet {
 	 */
     private static final long serialVersionUID = 3051953359478226492L;
 
+    private static Collection<String> TIME_SERIES_SERVICE_TYPES = new ArrayList<String>();
+
     private static final String X_DEFAULT_MIME_TYPE = MIME_TYPE_HTML;
 
-    private static final String MIME_TYPE_PLAIN = "text/plain";
+    static {
+        TIME_SERIES_SERVICE_TYPES.add("SOS");
+        TIME_SERIES_SERVICE_TYPES.add("OGC:SOS");
+    }
 
+    /**
+     * store the service capabilities
+     * 
+     * TODO delete the cache occasionally so that the capabilities are requested new from time to time
+     */
     private HashMap<URL, XmlObject> capabilitiesCache;
+
+    /**
+     * store the urls where there were problems getting service capabilities
+     */
+    private HashMap<URL, XmlObject> capabilitiesErrorCache;
 
     private SirConfigurator configurator = SirConfigurator.getInstance();
 
     private String cssFile = "sir.css";
+
+    private String feed_author = "Open Sensor Search by 52°North";
 
     private String foundResults_post = "hits.";
 
@@ -196,6 +221,8 @@ public class OpenSearchSIR extends HttpServlet {
     private String openMap = "Open hits on map.";
 
     private String openTimeSeries = "Open Sensor in Viewer";
+
+    private String permalinkBaseURL = "http://sensorweb.demo.52north.org/ThinSweClient2.0/Client.html";
 
     private SimpleDateFormat permalinkDateFormat;
 
@@ -215,7 +242,7 @@ public class OpenSearchSIR extends HttpServlet {
 
     private String timeseriesImage = "/SIR/images/timeseries.png";
 
-    private String feed_author = "Open Sensor Search by 52°North";
+    private boolean enableUrlCompression = false;
 
     /**
      * 
@@ -225,6 +252,7 @@ public class OpenSearchSIR extends HttpServlet {
 
         this.permalinkDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         this.capabilitiesCache = new HashMap<URL, XmlObject>();
+        this.capabilitiesErrorCache = new HashMap<URL, XmlObject>();
 
         log.info("NEW " + this);
     }
@@ -509,12 +537,19 @@ public class OpenSearchSIR extends HttpServlet {
             sb.append("</a>");
 
             // timeseries link
-            String permalink = null;
+            URL permalinkUrl = null;
 
-            permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
-            if (permalink != null) {
+            // permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
+            try {
+                permalinkUrl = getTimeSeriesPermalink(sirSearchResultElement, reference);
+            }
+            catch (MalformedURLException e) {
+                log.warn("Could not create permalink for " + reference, e);
+            }
+
+            if (permalinkUrl != null) {
                 sb.append("<span style=\"float: right;\"><a href=\"");
-                sb.append(permalink);
+                sb.append(encode(permalinkUrl.toExternalForm()));
                 sb.append("\" title=\"");
                 sb.append(this.openTimeSeries);
                 sb.append("\">");
@@ -854,6 +889,9 @@ public class OpenSearchSIR extends HttpServlet {
                 createXMLResponse(req, resp, searchResult, writer, searchText);
             }
             else if (httpAccept.equals(MIME_TYPE_HTML)) {
+                if (searchText.contains("&"))
+                    searchText = encode(searchText);
+
                 createHTMLResponse(req, resp, searchResult, writer, searchText);
             }
             else {
@@ -869,6 +907,8 @@ public class OpenSearchSIR extends HttpServlet {
 
         writer.close();
         resp.flushBuffer(); // commits the response
+
+        log.debug(" *** (GET) Done.");
     }
 
     /*
@@ -914,9 +954,12 @@ public class OpenSearchSIR extends HttpServlet {
         }
 
         // see if the string contains new line characters
-        if (ds.contains("\n")) {
-            ds.replaceAll("\\n", System.getProperty("line.separator"));
-        }
+        if (ds.contains("\n"))
+            ds = ds.replaceAll("\\n", System.getProperty("line.separator"));
+
+        // encode possibly problematic characters
+        if (ds.contains("&"))
+            ds = encode(ds);
 
         return ds;
     }
@@ -937,26 +980,10 @@ public class OpenSearchSIR extends HttpServlet {
     }
 
     /**
-     * 
-     * @param sirSearchResultElement
      * @param serviceReference
      * @return
-     * @throws OwsExceptionReport
      */
-    private String getTimeseriesViewerPermalink(SirSearchResultElement sirSearchResultElement,
-                                                SirServiceReference serviceReference) {
-        StringBuilder sb = new StringBuilder();
-        ArrayList<PermalinkParameters> links = new ArrayList<OpenSearchSIR.PermalinkParameters>();
-
-        // FIXME move constant to configuration file
-        sb.append("http://sensorweb.demo.52north.org/ThinSweClient2.0/Client.html?");
-
-        sb.append("sos=");
-        sb.append(serviceReference.getService().getUrl());
-
-        // get offerings from service and add them all (brute force, but no other way)
-        // TODO use offering from service reference once it is there (... at some point)
-
+    private ObservationOfferingType[] getObservationOfferingArray(SirServiceReference serviceReference) {
         // get capabilities and create links
         URL url;
         try {
@@ -970,7 +997,8 @@ public class OpenSearchSIR extends HttpServlet {
         // check if url was already requested and use that
         XmlObject caps = null;
         if ( !this.capabilitiesCache.containsKey(url)) {
-            //  TODO use threads for this, then update the interface one after the other (loader image and AJAX?)
+            // TODO use threads for this, then update the interface one after the other (loader image and
+            // AJAX?)
             try {
                 caps = Harvester.requestCapabilities(serviceReference.getService().getType(), url.toURI());
             }
@@ -985,9 +1013,12 @@ public class OpenSearchSIR extends HttpServlet {
 
             this.capabilitiesCache.put(url, caps);
         }
-        else {
-            caps = this.capabilitiesCache.get(url);
+        else if (this.capabilitiesErrorCache.containsKey(url)) {
+            log.debug("Had error with capabilities for {} before, not requesting again.", url);
+            return null;
         }
+        else
+            caps = this.capabilitiesCache.get(url);
 
         // find out if the capabilities document can be handled
         Capabilities sosCaps;
@@ -999,18 +1030,21 @@ public class OpenSearchSIR extends HttpServlet {
             ExceptionReportDocument erd = (ExceptionReportDocument) caps;
             log.warn("Could not request capabilities from service {}, got ExceptionReportDocument (turn on debug for more info)",
                      url);
+            this.capabilitiesErrorCache.put(url, erd);
             log.debug(Arrays.toString(erd.getExceptionReport().getExceptionArray()));
             return null;
         }
         else {
             log.error("No SOS capabilities document returned by service! Instead got: {} [... truncated]",
                       caps.xmlText().substring(0, 200));
+            this.capabilitiesErrorCache.put(url, caps);
             return null;
         }
 
         Contents contents = sosCaps.getContents();
         if (contents == null) {
             log.debug("Contents of capabilities for service {} are null, cannot generate permalinks.", serviceReference);
+            this.capabilitiesErrorCache.put(url, caps);
             return null;
         }
 
@@ -1018,12 +1052,136 @@ public class OpenSearchSIR extends HttpServlet {
         if (observationOfferingList == null) {
             log.warn("Contents of observation offerings for service {} are null, cannot generate permalinks.",
                      serviceReference);
+            this.capabilitiesErrorCache.put(url, caps);
             return null;
         }
 
         ObservationOfferingType[] observationOfferingArray = observationOfferingList.getObservationOfferingArray();
+        return observationOfferingArray;
+    }
 
-        //
+    /**
+     * 
+     * @param sirSearchResultElement
+     * @param reference
+     * @return
+     * @throws MalformedURLException
+     *         s
+     */
+    private URL getTimeSeriesPermalink(SirSearchResultElement sirSearchResultElement, SirServiceReference reference) throws MalformedURLException {
+        ObservationOfferingType[] observationOfferingArray = getObservationOfferingArray(reference);
+
+        if (observationOfferingArray == null) {
+            // log.debug("Could not get offerings for {}", reference);
+            return null;
+        }
+
+        // get permalinks from offering
+        TimeSeriesPermalinkBuilder builder = new TimeSeriesPermalinkBuilder();
+
+        // get possible offering/obsProp/foi/proc combinations
+        for (ObservationOfferingType off : observationOfferingArray) {
+            // see if service reference is usable
+            if ( !TIME_SERIES_SERVICE_TYPES.contains(reference.getService().getType())) {
+                log.debug("Service type {} not supported.", reference.getService().getType());
+                continue;
+            }
+
+            String offering = off.getId();
+            String procedure = reference.getServiceSpecificSensorId();
+            String serviceURL = reference.getService().getUrl();
+
+            boolean sensorFound = false;
+            ReferenceType[] procedureArray = off.getProcedureArray();
+            for (ReferenceType ref : procedureArray) {
+                String href = ref.xgetHref().getStringValue();
+                if (href.equals(procedure)) {
+                    sensorFound = true;
+                    break;
+                }
+            }
+
+            if (sensorFound) {
+                // get all combinations of foi and phen
+                PhenomenonPropertyType[] observedPropertyArray = off.getObservedPropertyArray();
+                ReferenceType[] featureOfInterestArray = off.getFeatureOfInterestArray();
+
+                // use fixed time range that is not too long:
+                long now = System.currentTimeMillis();
+                TimeRange timeRange = TimeRange.createTimeRangeByMillis(now - 1000 * 60 * 60, now);
+
+                // alternative: use time range from offering
+                // TimeGeometricPrimitivePropertyType time = off.getTime();
+                // try {
+                // TimePeriodType period = TimePeriodType.Factory.parse(time.getDomNode());
+                // timeRange = TimeRange.createTimeRangebyDate(start, end);
+                // }
+                // catch (XmlException e) {
+                // log.debug("Time is not a period, cannot utilize it.");
+                // }
+                // System.out.println(time);
+
+                for (ReferenceType ref : featureOfInterestArray) {
+                    String hrefFoi = ref.xgetHref().getStringValue();
+                    String feature = hrefFoi;
+
+                    for (PhenomenonPropertyType phen : observedPropertyArray) {
+                        String hrefPhen = phen.xgetHref().getStringValue();
+                        String phenomenon = hrefPhen;
+
+                        TimeSeriesParameters tsp = new TimeSeriesParameters(serviceURL,
+                                                                            offering,
+                                                                            procedure,
+                                                                            phenomenon,
+                                                                            feature);
+                        tsp.setTimeRange(timeRange);
+                        log.debug("Adding new time series to permalink: {}", tsp);
+                        builder.addParameters(tsp);
+                    }
+                }
+            }
+        }
+
+        AccessGenerator generator = builder.build();
+        URL accessURL = generator.createAccessURL(this.permalinkBaseURL); // generator.createAccessURL(this.permalinkBaseURL);
+
+        if (accessURL.toExternalForm().length() > MAX_GET_URL_CHARACTER_COUNT && this.enableUrlCompression)
+            accessURL = generator.createCompressedAccessURL(this.permalinkBaseURL);
+
+        // accessURL = generator.uncompressAccessURL(accessURL);
+
+        return accessURL;
+    }
+
+    /**
+     * 
+     * @param sirSearchResultElement
+     * @param serviceReference
+     * @return
+     * @throws OwsExceptionReport
+     */
+    @SuppressWarnings("unused")
+    private String getTimeseriesViewerPermalink(SirSearchResultElement sirSearchResultElement,
+                                                SirServiceReference serviceReference) {
+        StringBuilder sb = new StringBuilder();
+        ArrayList<PermalinkParameters> links = new ArrayList<OpenSearchSIR.PermalinkParameters>();
+
+        // FIXME move constant to configuration file
+        sb.append("http://sensorweb.demo.52north.org/ThinSweClient2.0/Client.html?");
+
+        sb.append("sos=");
+        sb.append(serviceReference.getService().getUrl());
+
+        // get offerings from service and add them all (brute force, but no other way)
+        // TODO use offering from service reference once it is there (... at some point)
+        ObservationOfferingType[] observationOfferingArray = getObservationOfferingArray(serviceReference);
+        if (observationOfferingArray == null) {
+            log.debug("Could not get service capabilities for {}", serviceReference);
+            return null;
+        }
+
+        // get permalinks from offering
+        Collection<TimeSeriesParameters> timeSeriesParameters = new ArrayList<TimeSeriesParameters>();
         for (ObservationOfferingType off : observationOfferingArray) {
             PermalinkParameters pp = null;
             String offering = off.getId();

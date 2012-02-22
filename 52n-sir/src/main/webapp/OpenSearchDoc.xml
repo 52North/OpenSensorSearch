@@ -26,20 +26,23 @@
 -->
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
 	xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-	<ShortName>Sensor Search</ShortName>
-	<LongName>Sensor Web Search powered by 52N SIR</LongName>
+	<ShortName>Open Sensor Search</ShortName>
+	<LongName>Sensor and observed property search powered by 52N SIR
+	</LongName>
 	<Description>Search and discover online sensors and get information to
 		retrieve live data using OGC Sensor Instance Registry search
 		capabilities.
 	</Description>
-	<Contact>d.nuest@52north.org</Contact>
+	<Contact>${sir.deploy.contact}</Contact>
 	<Developer>52°North Initiative for Geospatial Open Source Software GmbH
 	</Developer>
 	<Attribution>Search data copyright belongs to the respective service
 		providers.
 	</Attribution>
 	<SyndicationRight>open</SyndicationRight>
-	<Tags>sensor web search discovery SWE OGC 52North 52N broker</Tags>
+	<Tags>sensor web search discovery SWE OGC 52North 52N broker phenomena
+		observed properties
+	</Tags>
 	<InputEncoding>UTF-8</InputEncoding>
 	<OutputEncoding>UTF-8</OutputEncoding>
 	<AdultContent>false</AdultContent>
@@ -48,11 +51,42 @@
 
 	<Query role="example" searchTerms="weather" />
 	<Query role="example" searchTerms="temperature" />
+	<Query role="example" searchTerms="IOOS" />
+	<Query role="example" searchTerms="Muenster" />
 
 	<Url type="text/html" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}?q={searchTerms}" />
-	<Url type="text/xml" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}?q={searchTerms}" />
-		
-	<moz:SearchForm>${service.url}${service.path}</moz:SearchForm>
+		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="httpAccept" value="text/html" />
+	</Url>
+	<Url type="application/xml" method="GET"
+		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="httpAccept" value="application/xml" />
+	</Url>
+	<Url type="application/json" method="GET"
+		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="httpAccept" value="application/json" />
+	</Url>
+	<Url type="application/vnd.google-earth.kml+xml" method="GET"
+		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="httpAccept" value="application/vnd.google-earth.kml+xml" />
+	</Url>
+	<Url type="application/rss+xml" method="GET"
+		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="httpAccept" value="application/rss+xml" />
+	</Url>
+	<Url type="application/atom+xml" method="GET"
+		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="httpAccept" value="application/atom+xml" />
+	</Url>
+
+	<Url type="application/opensearchdescription+xml" rel="self"
+		template="${service.url}${service.path}/OpenSearchDoc.xml" />
+
+	<moz:SearchForm>${service.url}${service.path}/</moz:SearchForm>
 </OpenSearchDescription>

@@ -33,11 +33,14 @@
 			href="http://52north.org/communities/sensorweb/incubation/discovery/"
 			title="Sensor Discovery by 52N">Find out more</a>.
 	</p>
-	<p class="infotext"><a href="./">Home</a> | <a
-			href="client.jsp">Extended Client</a> | <a href="testClient.html">Form
-			Client</a>
+	<p class="infotext">
+		<a href="./">Home</a> | <a href="client.jsp">Extended Client</a> | <a
+			href="testClient.html">Form Client</a> | <a href="javascript:void(0)"
+			onclick="window.external.AddSearchProvider('${service.url}${service.path}/OpenSearchDoc.xml');">Add
+			search to browser</a>
 	</p>
 	<p class="infotext">
 		&copy; 2012 <a href="http://52north.org">52&deg;North Initiative
-			for Geospatial Software GmbH</a></p>
+			for Geospatial Software GmbH</a>
+	</p>
 </div>

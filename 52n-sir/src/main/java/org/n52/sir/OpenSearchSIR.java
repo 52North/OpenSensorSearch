@@ -97,6 +97,7 @@ import com.sun.syndication.io.SyndFeedOutput;
 
 /**
  * 
+ * @author Jan Schulte (j.schulte@52north.org), Daniel Nüst (d.nuest@52north.org)
  */
 public class OpenSearchSIR extends HttpServlet {
 
@@ -315,8 +316,8 @@ public class OpenSearchSIR extends HttpServlet {
         SyndFeed feed = new SyndFeedImpl();
 
         feed.setTitle("Sensor Search for " + searchText);
-        String channelURL = this.configurator.getFullServicePath().toString() + this.configurator.getOpenSearchPath()
-                + "?" + QUERY_PARAMETER + "=" + searchText + "&" + ACCEPT_PARAMETER + "=" + MIME_TYPE_RSS;
+        String channelURL = getFullOpenSearchPath() + "?" + QUERY_PARAMETER + "=" + searchText + "&" + ACCEPT_PARAMETER
+                + "=" + MIME_TYPE_RSS;
         feed.setLink(channelURL);
         feed.setPublishedDate(new Date());
         feed.setAuthor(this.feed_author);
@@ -340,6 +341,14 @@ public class OpenSearchSIR extends HttpServlet {
         feed.setEntries(entries);
 
         return feed;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    private String getFullOpenSearchPath() {
+        return this.configurator.getFullServicePath().toString() + this.configurator.getOpenSearchPath();
     }
 
     /**
@@ -408,7 +417,7 @@ public class OpenSearchSIR extends HttpServlet {
                                    PrintWriter writer,
                                    String searchText) throws UnsupportedEncodingException {
         writer.print("<form name=\"requestform\" method=\"get\" action=\"");
-        writer.print(this.configurator.getFullServicePath() + this.configurator.getOpenSearchPath());
+        writer.print(getFullOpenSearchPath());
         writer.println("\">");
 
         writer.print("<div class=\"search-result-header\">");
@@ -666,8 +675,8 @@ public class OpenSearchSIR extends HttpServlet {
         // TODO move this somewhere where all listeners can use it
         String responseDescription = "These are the search hits for the keyword(s) '" + searchText
                 + "' from Open Sensor Search (" + this.configurator.getFullServicePath().toString() + ").";
-        String responseURL = this.configurator.getFullServicePath().toString() + this.configurator.getOpenSearchPath()
-                + "?" + QUERY_PARAMETER + "=" + searchText + "&" + ACCEPT_PARAMETER + "=" + MIME_TYPE_JSON;
+        String responseURL = getFullOpenSearchPath() + "?" + QUERY_PARAMETER + "=" + searchText + "&"
+                + ACCEPT_PARAMETER + "=" + MIME_TYPE_JSON;
 
         // http://sites.google.com/site/gson/gson-user-guide
         GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping();
@@ -1413,7 +1422,7 @@ public class OpenSearchSIR extends HttpServlet {
     private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(this.configurator.getOpenSearchPath());
+        sb.append(getFullOpenSearchPath());
         sb.append("?");
 
         Enumeration< ? > params = req.getParameterNames();

@@ -111,6 +111,7 @@
 				</profile>
 				 -->
 				<service.url>${sir.deploy.server}</service.url>
+				<service.contact>${sir.deploy.contact}</service.contact>
 				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
 				<db.driver>org.postgresql.Driver</db.driver>
 				<db.user>${sir.deploy.database.user}</db.user>

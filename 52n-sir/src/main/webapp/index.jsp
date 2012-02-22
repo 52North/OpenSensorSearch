@@ -48,7 +48,6 @@
 <link rel="shortcut icon"
 	href="https://52north.org/templates/52n/favicon.ico" />
 
-
 </head>
 
 <body bgcolor="#ffffff" text="#000000" onload="load()">
@@ -59,8 +58,8 @@
 		<div class="center">
 			<form name="requestform" method="get"
 				action="${service.path}/${service.endpoint.opensearch}">
-				<input type="hidden" name="httpAccept" value="text/html" />
-				<span><input name="q" type="text" class="search-input" /> </span> <span><input
+				<input type="hidden" name="httpAccept" value="text/html" /> <span><input
+					name="q" type="text" class="search-input" /> </span> <span><input
 					value="Search" type="submit" class="search-button" /> </span>
 			</form>
 		</div>
@@ -68,7 +67,9 @@
 		<div class="center">
 			<!-- #TODO add links to the RESTful URLs /sensors, /phenomena and /services -->
 			<span class="infotext">Searching across <%=serviceStatusBean.getNumberOfSensors()%>
-				sensors with <%=serviceStatusBean.getNumberOfPhenomena()%> observed properties from <%=serviceStatusBean.getNumberOfServices()%> services.
+				sensors with <%=serviceStatusBean.getNumberOfPhenomena()%> observed
+				properties from <%=serviceStatusBean.getNumberOfServices()%>
+				services.
 			</span>
 		</div>
 

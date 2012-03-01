@@ -73,6 +73,11 @@
 			</span>
 		</div>
 
+		<div class="center" style="padding-top: 2em;">
+			<span class="infotextHighlight">Is your data missing? <a
+				href="mailto:${sir.deploy.contact}">Write us an email!</a></span>
+		</div>
+
 		<jsp:include page="footer.jsp" />
 	</div>
 

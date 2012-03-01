@@ -25,7 +25,7 @@
 
 -->
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
-	xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+	xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/">
 	<ShortName>Open Sensor Search</ShortName>
 	<LongName>Sensor and observed property search powered by 52N SIR
 	</LongName>
@@ -57,31 +57,55 @@
 	<Url type="text/html" method="GET"
 		template="${service.url}${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
 		<Param name="httpAccept" value="text/html" />
 	</Url>
 	<Url type="application/xml" method="GET"
 		template="${service.url}${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
 		<Param name="httpAccept" value="application/xml" />
 	</Url>
 	<Url type="application/json" method="GET"
 		template="${service.url}${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
 		<Param name="httpAccept" value="application/json" />
 	</Url>
 	<Url type="application/vnd.google-earth.kml+xml" method="GET"
 		template="${service.url}${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
 		<Param name="httpAccept" value="application/vnd.google-earth.kml+xml" />
 	</Url>
 	<Url type="application/rss+xml" method="GET"
 		template="${service.url}${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
 		<Param name="httpAccept" value="application/rss+xml" />
 	</Url>
 	<Url type="application/atom+xml" method="GET"
 		template="${service.url}${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
 		<Param name="httpAccept" value="application/atom+xml" />
 	</Url>
 

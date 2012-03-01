@@ -34,11 +34,13 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -58,10 +60,11 @@ import net.opengis.sos.x10.ObservationOfferingType;
 import net.opengis.swe.x101.PhenomenonPropertyType;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.api.access.AccessGenerator;
+import org.n52.api.access.AccessLinkFactory;
 import org.n52.api.access.client.TimeRange;
 import org.n52.api.access.client.TimeSeriesParameters;
 import org.n52.api.access.client.TimeSeriesPermalinkBuilder;
+import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
@@ -75,6 +78,7 @@ import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirSearchSensorResponse;
 import org.n52.sir.util.XmlTools;
+import org.n52.sir.util.ext.GeoLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -133,9 +137,17 @@ public class OpenSearchSIR extends HttpServlet {
 
     private static final String ACCEPT_PARAMETER = "httpAccept";
 
+    private static final String BOX_PARAM = "box";
+
     private static final String CDATA_END_TAG = "]";
 
     private static final String CDATA_START_TAG = "![CDATA[";
+
+    private static final double DEFAULT_RADIUS = 1000.0d;
+
+    private static final double EARTH_RADIUS_METERS = 6.3675 * 1000000;
+
+    private static final String GEOMETRY_PARAM = "geometry";
 
     private static final String HOME_URL = "/SIR";
 
@@ -149,10 +161,14 @@ public class OpenSearchSIR extends HttpServlet {
      */
     private static final String INIT_PARAM_DBCONFIG_FILE = "dbConfigFile";
 
+    private static final String LAT_PARAM = "lat";
+
     /**
      * The logger, used to log exceptions and additional information
      */
     private static Logger log = LoggerFactory.getLogger(OpenSearchSIR.class);
+
+    private static final String LON_PARAM = "lon";
 
     private static final int MAX_GET_URL_CHARACTER_COUNT = 2000; // http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url
 
@@ -170,10 +186,14 @@ public class OpenSearchSIR extends HttpServlet {
 
     private static final String MIME_TYPE_XML = "application/xml";
 
+    private static final String NAME_PARAM = "name";
+
     /**
      * 
      */
     private static final String QUERY_PARAMETER = "q";
+
+    private static final String RADIUS_PARAM = "radius";
 
     /**
 	 * 
@@ -200,6 +220,11 @@ public class OpenSearchSIR extends HttpServlet {
      * store the urls where there were problems getting service capabilities
      */
     private HashMap<URL, XmlObject> capabilitiesErrorCache;
+
+    /**
+     * use contextually shortended urls (replacing long string identifiers with integer ids)
+     */
+    private boolean compressPermalinks = true;
 
     private SirConfigurator configurator = SirConfigurator.getInstance();
 
@@ -242,8 +267,6 @@ public class OpenSearchSIR extends HttpServlet {
     private String sensorInfo_Title = "Sensor: ";
 
     private String timeseriesImage = "/SIR/images/timeseries.png";
-
-    private boolean enableUrlCompression = false;
 
     /**
      * 
@@ -341,14 +364,6 @@ public class OpenSearchSIR extends HttpServlet {
         feed.setEntries(entries);
 
         return feed;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private String getFullOpenSearchPath() {
-        return this.configurator.getFullServicePath().toString() + this.configurator.getOpenSearchPath();
     }
 
     /**
@@ -853,11 +868,35 @@ public class OpenSearchSIR extends HttpServlet {
             searchText = "";
         }
         else {
+            // see if Geo Extension is used:
+            // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
+            SirBoundingBox boundingBox = null;
+            if (requestContainsGeoParameters(req)) {
+                boundingBox = getBoundingBox(req);
+            }
+
+            // TODO see if time extension is used:
+            // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
+            Calendar start = null;
+            Calendar end = null;
+            if (requestContainsTime(req)) {
+                Calendar[] startEnd = getStartEnd(req);
+                start = startEnd[0];
+                end = startEnd[1];
+            }
+
             // create search criteria
             SirSearchCriteria searchCriteria = new SirSearchCriteria();
             ArrayList<String> searchTexts = new ArrayList<String>();
             searchTexts.add(searchText);
             searchCriteria.setSearchText(searchTexts);
+            if (boundingBox != null)
+                searchCriteria.setBoundingBox(boundingBox);
+            if (start != null && end != null) {
+                searchCriteria.setEnd(end);
+                searchCriteria.setStart(start);
+            }
+
             // create search request
             SirSearchSensorRequest searchRequest = new SirSearchSensorRequest();
             searchRequest.setSimpleResponse(true);
@@ -989,6 +1028,93 @@ public class OpenSearchSIR extends HttpServlet {
     }
 
     /**
+     * 
+     * @param req
+     * @return
+     */
+    private SirBoundingBox getBoundingBox(HttpServletRequest req) {
+        Set< ? > keySet = req.getParameterMap().keySet();
+        boolean containsName = keySet.contains(NAME_PARAM);
+        boolean containsLatLon = keySet.contains(LAT_PARAM) && keySet.contains(LON_PARAM);
+        boolean containsRadius = keySet.contains(RADIUS_PARAM);
+        // boolean containsBox = keySet.contains("box");
+        // boolean containsGeometry = keySet.contains("geometry");
+
+        if (containsLatLon && containsName) {
+            log.warn("More than one location definition, using latlon");
+            containsName = false;
+        }
+
+        if (containsName) {
+            return getBoundingBoxFromGazetteer(req.getParameter(NAME_PARAM));
+        }
+        else if (containsLatLon) {
+            double radius, lat, lon;
+
+            try {
+                if ( !containsRadius)
+                    radius = DEFAULT_RADIUS;
+                else
+                    radius = Double.parseDouble(req.getParameter(RADIUS_PARAM));
+                lat = Double.parseDouble(req.getParameter(LAT_PARAM));
+                lon = Double.parseDouble(req.getParameter(LON_PARAM));
+            }
+            catch (NumberFormatException e) {
+                log.error("Could not parse lat, lon or radius from request paramters: "
+                                  + Arrays.deepToString(req.getParameterMap().values().toArray()),
+                          e);
+                return null;
+            }
+
+            return getBoundingBoxFromLatLon(lat, lon, radius);
+        }
+
+        return null;
+    }
+
+    /**
+     * 
+     * @param parameter
+     * @return
+     */
+    private SirBoundingBox getBoundingBoxFromGazetteer(String parameter) {
+        log.error("gazetteer not implemented yet!");
+        return null;
+    }
+
+    /**
+     * 
+     * map lat lon und radius to a bouding box
+     * 
+     * @param lat
+     * @param lon
+     * @param radius
+     * @return
+     */
+    private SirBoundingBox getBoundingBoxFromLatLon(double lat, double lon, double radius) {
+        // stackoverflow.com/questions/1689096/calculating-bounding-box-a-certain-distance-away-from-a-lat-long-coordinate-in-j
+
+        GeoLocation loc = GeoLocation.fromDegrees(lat, lon);
+        GeoLocation[] boundingCoordinates = loc.boundingCoordinates(radius, EARTH_RADIUS_METERS);
+
+        double east = boundingCoordinates[1].getLongitudeInDegrees();
+        double south = boundingCoordinates[0].getLatitudeInDegrees();
+        double west = boundingCoordinates[0].getLongitudeInDegrees();
+        double north = boundingCoordinates[1].getLatitudeInDegrees();
+        SirBoundingBox box = new SirBoundingBox(east, south, west, north);
+
+        return box;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    private String getFullOpenSearchPath() {
+        return this.configurator.getFullServicePath().toString() + this.configurator.getOpenSearchPath();
+    }
+
+    /**
      * @param serviceReference
      * @return
      */
@@ -1069,13 +1195,17 @@ public class OpenSearchSIR extends HttpServlet {
         return observationOfferingArray;
     }
 
+    private Calendar[] getStartEnd(HttpServletRequest req) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     /**
      * 
      * @param sirSearchResultElement
      * @param reference
      * @return
      * @throws MalformedURLException
-     *         s
      */
     private URL getTimeSeriesPermalink(SirSearchResultElement sirSearchResultElement, SirServiceReference reference) throws MalformedURLException {
         ObservationOfferingType[] observationOfferingArray = getObservationOfferingArray(reference);
@@ -1151,12 +1281,15 @@ public class OpenSearchSIR extends HttpServlet {
             }
         }
 
-        AccessGenerator generator = builder.build();
-        URL accessURL = generator.createAccessURL(this.permalinkBaseURL); // generator.createAccessURL(this.permalinkBaseURL);
+        AccessLinkFactory linkFactory = builder.build();
+        URL accessURL = linkFactory.createAccessURL(this.permalinkBaseURL); // generator.createAccessURL(this.permalinkBaseURL);
 
-        if (accessURL.toExternalForm().length() > MAX_GET_URL_CHARACTER_COUNT && this.enableUrlCompression)
-            accessURL = generator.createCompressedAccessURL(this.permalinkBaseURL);
-
+        if (accessURL.toExternalForm().length() > MAX_GET_URL_CHARACTER_COUNT && this.compressPermalinks) {
+//            PermalinkCompressor compressor = new PermalinkCompressor(builder);
+            
+//            accessURL = linkFactory.createCompressedAccessURL(this.permalinkBaseURL);
+        }
+        
         // accessURL = generator.uncompressAccessURL(accessURL);
 
         return accessURL;
@@ -1444,6 +1577,27 @@ public class OpenSearchSIR extends HttpServlet {
         sb.append(X_DEFAULT_MIME_TYPE);
         log.debug("Redirecting to {}", sb.toString());
         resp.sendRedirect(sb.toString());
+    }
+
+    /**
+     * 
+     * @param req
+     * @return
+     */
+    private boolean requestContainsGeoParameters(HttpServletRequest req) {
+        Set< ? > keySet = req.getParameterMap().keySet();
+        boolean containsName = keySet.contains(NAME_PARAM);
+        boolean containsLatLon = keySet.contains(LAT_PARAM) && keySet.contains(LON_PARAM);
+        boolean containsRadius = keySet.contains(RADIUS_PARAM);
+        boolean containsBox = keySet.contains(BOX_PARAM);
+        boolean containsGeometry = keySet.contains(GEOMETRY_PARAM);
+
+        return containsName | containsLatLon | containsRadius | containsBox | containsGeometry;
+    }
+
+    private boolean requestContainsTime(HttpServletRequest req) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
     /*

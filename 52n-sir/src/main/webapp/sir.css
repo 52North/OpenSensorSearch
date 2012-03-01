@@ -1,4 +1,4 @@
-/**
+﻿/*
  * ﻿Copyright (C) 2012
  * by 52 North Initiative for Geospatial Open Source Software GmbH
  *
@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+﻿
 ﻿@CHARSET "UTF-8";
 
 body {
@@ -120,12 +121,27 @@ h3 {
 	font-size: 10pt;
 }
 
+.infotextHighlight {
+	color: #FFA500;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
 .infotext a,.infotext a:active,.infotext a:visited {
 	color: #999;
 	text-decoration: none;
 }
 
+.infotextHighlight a,.infotextHighlight a:active,.infotextHighlight a:visited {
+	color: #FFA500;
+	text-decoration: none;
+}
+
 .infotext a:hover {
+	text-decoration: underline;
+}
+
+.infotextHighlight a:hover {
 	text-decoration: underline;
 }
 

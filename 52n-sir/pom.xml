@@ -266,6 +266,7 @@
 						<exclude>**/webapp/TestRequests/**</exclude>
 						<exclude>**/webapp/codemirror/**</exclude>
 						<exclude>**/buildNumber.properties</exclude>
+						<exclude>**/org/n52/sir/util/ext/**</exclude>
 					</excludes>
 					<includes>
 						<include>**/*.java</include>
@@ -275,7 +276,7 @@
 						<include>**/*.xsl</include>
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>
-						<include>**/*.css</include>
+						<!-- <include>**/*.css</include> -->
 						<include>**/*.html</include>
 					</includes>
 					<strictCheck>true</strictCheck>

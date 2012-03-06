@@ -35,46 +35,26 @@ public class SirSimpleSensorDescription extends SirSensorDescription {
     
     private SirBoundingBox boundingBox;
 
-    /**
-     * @return the sensorDescriptionURL
-     */
     public String getSensorDescriptionURL() {
         return this.sensorDescriptionURL;
     }
 
-    /**
-     * @return the descriptionText
-     */
     public String getDescriptionText() {
         return this.descriptionText;
     }
 
-    /**
-     * @param sensorDescriptionURL
-     *        the sensorDescriptionURL to set
-     */
     public void setSensorDescriptionURL(String sensorDescriptionURL) {
         this.sensorDescriptionURL = sensorDescriptionURL;
     }
 
-    /**
-     * @param descriptionText
-     *        the descriptionText to set
-     */
     public void setDescriptionText(String descriptionText) {
         this.descriptionText = descriptionText;
     }
 
-    /**
-     * @return the boundingBox
-     */
     public SirBoundingBox getBoundingBox() {
         return this.boundingBox;
     }
 
-    /**
-     * @param boundingBox the boundingBox to set
-     */
     public void setBoundingBox(SirBoundingBox boundingBox) {
         this.boundingBox = boundingBox;
     }

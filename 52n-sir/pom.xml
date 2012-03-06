@@ -512,6 +512,18 @@
 			<version>2.1</version>
 			<scope>compile</scope>
 		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.codehaus.jackson</groupId> -->
+<!-- 			<artifactId>jackson-mapper-asl</artifactId> -->
+<!-- 			<version>1.9.4</version> -->
+<!-- 		</dependency> -->
+
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-json-sir</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 		
 		<!-- RSS support -->
 		<dependency>

@@ -60,6 +60,10 @@ import net.opengis.sos.x10.ObservationOfferingType;
 import net.opengis.swe.x101.PhenomenonPropertyType;
 
 import org.apache.xmlbeans.XmlObject;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.n52.api.access.AccessLinkFactory;
 import org.n52.api.access.client.TimeRange;
 import org.n52.api.access.client.TimeSeriesParameters;
@@ -67,8 +71,16 @@ import org.n52.api.access.client.TimeSeriesPermalinkBuilder;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
+import org.n52.sir.datastructure.SirService;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
+import org.n52.sir.json.BoundingBox;
+import org.n52.sir.json.MapperFactory;
+import org.n52.sir.json.SearchResult;
+import org.n52.sir.json.SearchResultElement;
+import org.n52.sir.json.SensorDescription;
+import org.n52.sir.json.Service;
+import org.n52.sir.json.ServiceReference;
 import org.n52.sir.listener.SearchSensorListener;
 import org.n52.sir.listener.harvest.Harvester;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -82,12 +94,6 @@ import org.n52.sir.util.ext.GeoLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonWriter;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -268,6 +274,8 @@ public class OpenSearchSIR extends HttpServlet {
 
     private String timeseriesImage = "/SIR/images/timeseries.png";
 
+    private ObjectMapper mapper;
+
     /**
      * 
      */
@@ -277,6 +285,9 @@ public class OpenSearchSIR extends HttpServlet {
         this.permalinkDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         this.capabilitiesCache = new HashMap<URL, XmlObject>();
         this.capabilitiesErrorCache = new HashMap<URL, XmlObject>();
+
+        this.mapper = MapperFactory.getMapper();
+        this.mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
 
         log.info("NEW " + this);
     }
@@ -345,7 +356,7 @@ public class OpenSearchSIR extends HttpServlet {
         feed.setPublishedDate(new Date());
         feed.setAuthor(this.feed_author);
         // feed.setContributors(contributors) // TODO add all service contacts
-        // feed.setCategories(categories) // TODO user user tags for categories
+        // feed.setCategories(categories) // TODO user tags for categories
         feed.setEncoding(this.configurator.getCharacterEncoding());
         SyndImage image = new SyndImageImpl();
         image.setUrl("http://52north.org/templates/52n/images/52n-logo.gif");
@@ -470,6 +481,7 @@ public class OpenSearchSIR extends HttpServlet {
         writer.println("</span>");
 
         writer.print("<div style=\"float: right; margin: 0; width: 200px;\">");
+        
         // dropdown for response format
         writer.print("<form action=\"");
         writer.print(this.configurator.getFullServicePath() + this.configurator.getOpenSearchPath());
@@ -479,6 +491,13 @@ public class OpenSearchSIR extends HttpServlet {
         writer.print("\" value=\"");
         writer.print(searchText);
         writer.print("\" />");
+        
+        // FIXME preserve existing geo parameters
+        // writer.print("<input type=\"hidden\" name=\"");
+        // writer.print(QUERY_PARAMETER);
+        // writer.print("\" value=\"");
+        // writer.print(searchText);
+        // writer.print("\" />");
 
         writer.print("<span style=\"float:left;\" class=\"infotext\">");
         writer.print("Response format: ");
@@ -693,31 +712,83 @@ public class OpenSearchSIR extends HttpServlet {
         String responseURL = getFullOpenSearchPath() + "?" + QUERY_PARAMETER + "=" + searchText + "&"
                 + ACCEPT_PARAMETER + "=" + MIME_TYPE_JSON;
 
+        /*
+         * test with gson, works fine, testing jackson with pojos...
+         */
         // http://sites.google.com/site/gson/gson-user-guide
-        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping();
-        Gson gson = gsonBuilder.create();
-
-        // creating json object
-        JsonObject response = new JsonObject();
-        response.add("source", new JsonPrimitive(this.configurator.getFullServicePath().toString()));
-        response.add("searchText", new JsonPrimitive(searchText));
-        response.add("searchURL", new JsonPrimitive(responseURL));
-        response.add("searchDescription", new JsonPrimitive(responseDescription));
-        response.add("searchAuthor", new JsonPrimitive("52°North"));
-        response.add("searchDate", new JsonPrimitive(this.permalinkDateFormat.format(new Date())));
-
-        JsonElement jsonTree = gson.toJsonTree(searchResult);
-        response.add("result", jsonTree);
-
-        JsonWriter jsonWriter = new JsonWriter(writer);
-        jsonWriter.setHtmlSafe(true);
-        jsonWriter.setIndent("  ");
+        // GsonBuilder gsonBuilder = new
+        // GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping();
+        // Gson gson = gsonBuilder.create();
+        //
+        // // creating json object
+        // JsonObject response = new JsonObject();
+        // response.add("source", new JsonPrimitive(this.configurator.getFullServicePath().toString()));
+        // response.add("searchText", new JsonPrimitive(searchText));
+        // response.add("searchURL", new JsonPrimitive(responseURL));
+        // response.add("searchDescription", new JsonPrimitive(responseDescription));
+        // response.add("searchAuthor", new JsonPrimitive("52°North"));
+        // response.add("searchDate", new JsonPrimitive(this.permalinkDateFormat.format(new Date())));
+        //
+        // JsonElement jsonTree = gson.toJsonTree(searchResult);
+        // response.add("result", jsonTree);
+        //
+        // JsonWriter jsonWriter = new JsonWriter(writer);
+        // jsonWriter.setHtmlSafe(true);
+        // jsonWriter.setIndent("  ");
 
         // if performance becomes an issue then try using stream writer, see:
         // http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/stream/JsonWriter.html
         // jsonWriter.beginArray();
 
-        gson.toJson(response, jsonWriter);
+        SearchResult result = new SearchResult(this.configurator.getFullServicePath().toString(),
+                                               searchText,
+                                               responseURL,
+                                               responseDescription,
+                                               "52°North",
+                                               new Date());
+        for (SirSearchResultElement sirSearchResultElement : searchResult) {
+            SearchResultElement sre = new SearchResultElement();
+            sre.setSensorIdInSir(sirSearchResultElement.getSensorIdInSir());
+            sre.setLastUpdate(sirSearchResultElement.getLastUpdate());
+
+            Collection<ServiceReference> sr = new ArrayList<ServiceReference>();
+            Collection<SirServiceReference> serviceReferences = sirSearchResultElement.getServiceReferences();
+            for (SirServiceReference sirServiceReference : serviceReferences) {
+                SirService service = sirServiceReference.getService();
+                sr.add(new ServiceReference(new Service(service.getUrl(), service.getType()),
+                                            sirServiceReference.getServiceSpecificSensorId()));
+            }
+            sre.setServiceReferences(sr);
+
+            SirSimpleSensorDescription d = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
+            SirBoundingBox b = d.getBoundingBox();
+            BoundingBox bbox = new BoundingBox(b.getEast(), b.getSouth(), b.getWest(), b.getNorth());
+            bbox.setSrid(b.getSrid());
+            SensorDescription sd = new SensorDescription(d.getSensorDescriptionURL(), extractDescriptionText(d), bbox);
+            sre.setSensorDescription(sd);
+
+            result.addResult(sre);
+        }
+
+        try {
+            this.mapper.writeValue(writer, result);
+        }
+        catch (JsonGenerationException e) {
+            log.error("Json Exception", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error with Json Generation: "
+                    + e.getMessage());
+        }
+        catch (JsonMappingException e) {
+            log.error("Json Exception", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error with Json Mapping: "
+                    + e.getMessage());
+        }
+        catch (IOException e) {
+            log.error("Error outputting feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer.");
+        }
+
+        // gson.toJson(result, writer);
     }
 
     /**
@@ -863,61 +934,66 @@ public class OpenSearchSIR extends HttpServlet {
 
         Collection<SirSearchResultElement> searchResult = null;
 
+        // handle missing query parameter, can be the case if just using geo extension...
         if (searchText == null || searchText.isEmpty()) {
             searchResult = new ArrayList<SirSearchResultElement>();
             searchText = "";
         }
-        else {
-            // see if Geo Extension is used:
-            // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
-            SirBoundingBox boundingBox = null;
-            if (requestContainsGeoParameters(req)) {
-                boundingBox = getBoundingBox(req);
-            }
 
-            // TODO see if time extension is used:
-            // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
-            Calendar start = null;
-            Calendar end = null;
-            if (requestContainsTime(req)) {
-                Calendar[] startEnd = getStartEnd(req);
-                start = startEnd[0];
-                end = startEnd[1];
-            }
+        // see if Geo Extension is used:
+        // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
+        SirBoundingBox boundingBox = null;
+        if (requestContainsGeoParameters(req)) {
+            boundingBox = getBoundingBox(req);
+            log.debug("Searching with bounding box {} from queary {}", boundingBox, req.getQueryString());
+        }
 
-            // create search criteria
-            SirSearchCriteria searchCriteria = new SirSearchCriteria();
+        // TODO see if time extension is used:
+        // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
+        Calendar start = null;
+        Calendar end = null;
+        if (requestContainsTime(req)) {
+            Calendar[] startEnd = getStartEnd(req);
+            start = startEnd[0];
+            end = startEnd[1];
+        }
+
+        // create search criteria
+        SirSearchCriteria searchCriteria = new SirSearchCriteria();
+        if ( !searchText.isEmpty()) {
             ArrayList<String> searchTexts = new ArrayList<String>();
             searchTexts.add(searchText);
             searchCriteria.setSearchText(searchTexts);
-            if (boundingBox != null)
-                searchCriteria.setBoundingBox(boundingBox);
-            if (start != null && end != null) {
-                searchCriteria.setEnd(end);
-                searchCriteria.setStart(start);
-            }
+        }
+        
+        if (boundingBox != null)
+            searchCriteria.setBoundingBox(boundingBox);
+        
+        if (start != null && end != null) {
+            searchCriteria.setEnd(end);
+            searchCriteria.setStart(start);
+        }
 
-            // create search request
-            SirSearchSensorRequest searchRequest = new SirSearchSensorRequest();
-            searchRequest.setSimpleResponse(true);
-            searchRequest.setVersion(SirConstants.SERVICE_VERSION_0_3_1);
-            searchRequest.setSearchCriteria(searchCriteria);
+        // create search request
+        SirSearchSensorRequest searchRequest = new SirSearchSensorRequest();
+        searchRequest.setSimpleResponse(true);
+        searchRequest.setVersion(SirConstants.SERVICE_VERSION_0_3_1);
+        searchRequest.setSearchCriteria(searchCriteria);
 
-            ISirResponse response = this.listener.receiveRequest(searchRequest);
+        ISirResponse response = this.listener.receiveRequest(searchRequest);
 
-            if (response instanceof SirSearchSensorResponse) {
-                SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
-                searchResult = sssr.getSearchResultElements();
-            }
-            else if (response instanceof ExceptionResponse) {
-                ExceptionResponse er = (ExceptionResponse) response;
-                String s = new String(er.getByteArray());
-                writer.print(s);
-            }
-            else {
-                log.error("Unhandled response: {}", response);
-                writer.print(response.toString());
-            }
+        if (response instanceof SirSearchSensorResponse) {
+            SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
+            searchResult = sssr.getSearchResultElements();
+        }
+        else if (response instanceof ExceptionResponse) {
+            ExceptionResponse er = (ExceptionResponse) response;
+            String s = new String(er.getByteArray());
+            writer.print(s);
+        }
+        else {
+            log.error("Unhandled response: {}", response);
+            writer.print(response.toString());
         }
 
         try {
@@ -950,6 +1026,11 @@ public class OpenSearchSIR extends HttpServlet {
         }
         catch (OwsExceptionReport e) {
             log.error("Could not create response as {} : {}", httpAccept, e);
+
+            if (httpAccept.equals(MIME_TYPE_JSON)) {
+                this.mapper.writeValue(writer, e);
+            }
+
             e.getDocument().save(writer, XmlTools.xmlOptionsForNamespaces());
         }
 
@@ -1052,10 +1133,13 @@ public class OpenSearchSIR extends HttpServlet {
             double radius, lat, lon;
 
             try {
-                if ( !containsRadius)
+                if ( !containsRadius) {
                     radius = DEFAULT_RADIUS;
+                    log.debug("No radius given, falling back to default {}", Double.valueOf(DEFAULT_RADIUS));
+                }
                 else
                     radius = Double.parseDouble(req.getParameter(RADIUS_PARAM));
+                
                 lat = Double.parseDouble(req.getParameter(LAT_PARAM));
                 lon = Double.parseDouble(req.getParameter(LON_PARAM));
             }
@@ -1285,11 +1369,11 @@ public class OpenSearchSIR extends HttpServlet {
         URL accessURL = linkFactory.createAccessURL(this.permalinkBaseURL); // generator.createAccessURL(this.permalinkBaseURL);
 
         if (accessURL.toExternalForm().length() > MAX_GET_URL_CHARACTER_COUNT && this.compressPermalinks) {
-//            PermalinkCompressor compressor = new PermalinkCompressor(builder);
-            
-//            accessURL = linkFactory.createCompressedAccessURL(this.permalinkBaseURL);
+            // PermalinkCompressor compressor = new PermalinkCompressor(builder);
+
+            // accessURL = linkFactory.createCompressedAccessURL(this.permalinkBaseURL);
         }
-        
+
         // accessURL = generator.uncompressAccessURL(accessURL);
 
         return accessURL;

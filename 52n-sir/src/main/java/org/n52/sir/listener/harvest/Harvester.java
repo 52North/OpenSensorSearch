@@ -37,17 +37,13 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import net.opengis.ows.x11.ValueType;
-import net.opengis.ows.x11.VersionType;
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sos.x10.DescribeSensorDocument;
 import net.opengis.sos.x10.DescribeSensorDocument.DescribeSensor;
-import net.opengis.sos.x10.GetCapabilitiesDocument;
-import net.opengis.sos.x10.GetCapabilitiesDocument.GetCapabilities;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
@@ -107,29 +103,6 @@ public abstract class Harvester implements Callable<ISirResponse> {
             log.error("Error while creating the harvestServiceDAO", e);
             throw e;
         }
-    }
-
-    /**
-     * 
-     * @param serviceType
-     */
-    private static String createGetCapabilities(String serviceType) {
-        if (serviceType.equals(SirConstants.SOS_SERVICE_TYPE)) {
-            GetCapabilitiesDocument gcdoc = GetCapabilitiesDocument.Factory.newInstance();
-            GetCapabilities gc = gcdoc.addNewGetCapabilities();
-            gc.setService(serviceType);
-            VersionType version = gc.addNewAcceptVersions().addNewVersion();
-            version.setStringValue(SirConstants.SOS_VERSION);
-            return gcdoc.xmlText();
-        }
-        if (serviceType.equals(SirConstants.SPS_SERVICE_TYPE)) {
-            net.opengis.sps.x10.GetCapabilitiesDocument gcdoc = net.opengis.sps.x10.GetCapabilitiesDocument.Factory.newInstance();
-            net.opengis.sps.x10.GetCapabilitiesDocument.GetCapabilities gc = gcdoc.addNewGetCapabilities();
-            gc.setService(serviceType);
-            return gcdoc.xmlText();
-        }
-
-        throw new IllegalArgumentException("Service type not supported: " + serviceType);
     }
 
     /**
@@ -346,55 +319,6 @@ public abstract class Harvester implements Callable<ISirResponse> {
             log.error("OWS Report", e.getDocument());
             failedSensorsP.put(sensorID, e.getMessage());
         }
-    }
-
-    /**
-     * @param request
-     * @param response
-     * @param uri
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public static XmlObject requestCapabilities(String serviceType, URI uri) throws OwsExceptionReport {
-        // create getCapabilities request
-        String gcDoc = createGetCapabilities(serviceType);
-
-        if (log.isDebugEnabled())
-            log.debug("GetCapabilities to be send to " + serviceType + " @ " + uri.toString() + ": " + gcDoc);
-
-        // send getCapabilities request
-        XmlObject caps = null;
-        XmlObject getCapXmlResponse = null;
-        try {
-            getCapXmlResponse = Client.xSendPostRequest(XmlObject.Factory.parse(gcDoc), uri);
-            caps = XmlObject.Factory.parse(getCapXmlResponse.getDomNode());
-        }
-        catch (XmlException xmle) {
-            String msg = "Error on parsing Capabilities document: " + xmle.getMessage()
-                    + (getCapXmlResponse == null ? "" : "\n" + getCapXmlResponse.xmlText());
-            log.warn(msg);
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, msg);
-            throw se;
-        }
-        catch (IOException ioe) {
-            String errMsg = "Error sending GetCapabilities to " + serviceType + " @ " + uri.toString() + " : "
-                    + ioe.getMessage();
-            log.warn(errMsg);
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
-            throw se;
-        }
-        catch (Exception e) {
-            String errMsg = "Error doing GetCapabilities to " + serviceType + " @ " + uri.toString() + " : "
-                    + e.getMessage();
-            log.warn(errMsg);
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
-            throw se;
-        }
-
-        return caps;
     }
 
 }

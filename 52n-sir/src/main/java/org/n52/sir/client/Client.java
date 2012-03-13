@@ -29,6 +29,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import net.opengis.ows.x11.VersionType;
+import net.opengis.sos.x10.GetCapabilitiesDocument;
+import net.opengis.sos.x10.GetCapabilitiesDocument.GetCapabilities;
+
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -39,6 +43,7 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.SirConstants;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.util.Tools;
@@ -51,170 +56,39 @@ import org.slf4j.LoggerFactory;
  */
 public class Client {
 
-    private static final String REQUEST_CONTENT_TYPE = "text/xml";
+    private static final String GET_METHOD = "GET";
+
+    private static final String HTML_TAG_IN_RESPONSE = "<html>";
+
+    private static Logger log = LoggerFactory.getLogger(Client.class);
+
+    private static final String POST_METHOD = "POST";
 
     private static final String REQUEST_CONTENT_CHARSET = "UTF-8";
+
+    private static final String REQUEST_CONTENT_TYPE = "text/xml";
 
     private static final String SYSTEM_PROPERTY_PROXY_HOST = "http.proxyHost";
 
     private static final String SYSTEM_PROPERTY_PROXY_PORT = "http.proxyPort";
 
-    private static Logger log = LoggerFactory.getLogger(Client.class);
-
-    private static final String GET_METHOD = "GET";
-
-    private static final String POST_METHOD = "POST";
-
-    private static final String HTML_TAG_IN_RESPONSE = "<html>";
-
-    /**
-     * 
-     * send to SIR
-     * 
-     * @param request
-     * @return
-     * @throws IOException
-     * @throws OwsExceptionReport
-     */
-    public static String sendPostRequest(String request) throws IOException, OwsExceptionReport {
-        URI sirURI = getSirURI();
-        return sendPostRequest(request, sirURI);
-    }
-
-    /**
-     * 
-     * @param request
-     * @param sirURI
-     * @return
-     * @throws OwsExceptionReport
-     * @throws IOException
-     * @throws HttpException
-     * @throws UnsupportedEncodingException
-     */
-    public static String sendPostRequest(String request, URI serviceURI) throws UnsupportedEncodingException,
-            HttpException,
-            IOException,
-            OwsExceptionReport {
-        if (request.isEmpty()) {
-            return "The request is empty!";
+    private static String createGetCapabilities(String serviceType) {
+        if (serviceType.equals(SirConstants.SOS_SERVICE_TYPE)) {
+            GetCapabilitiesDocument gcdoc = GetCapabilitiesDocument.Factory.newInstance();
+            GetCapabilities gc = gcdoc.addNewGetCapabilities();
+            gc.setService(serviceType);
+            VersionType version = gc.addNewAcceptVersions().addNewVersion();
+            version.setStringValue(SirConstants.SOS_VERSION);
+            return gcdoc.xmlText();
+        }
+        if (serviceType.equals(SirConstants.SPS_SERVICE_TYPE)) {
+            net.opengis.sps.x10.GetCapabilitiesDocument gcdoc = net.opengis.sps.x10.GetCapabilitiesDocument.Factory.newInstance();
+            net.opengis.sps.x10.GetCapabilitiesDocument.GetCapabilities gc = gcdoc.addNewGetCapabilities();
+            gc.setService(serviceType);
+            return gcdoc.xmlText();
         }
 
-        XmlObject response = doSend(request, POST_METHOD, serviceURI);
-        return response.toString();
-    }
-
-    /**
-     * 
-     * @param request
-     * @return
-     * @throws IOException
-     * @throws OwsExceptionReport
-     */
-    public static XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + request);
-        URI sirURI = getSirURI();
-        return xSendPostRequest(request, sirURI);
-    }
-
-    /**
-     * 
-     * @param request
-     * @param sirURI
-     * @return
-     * @throws OwsExceptionReport
-     * @throws IOException
-     * @throws HttpException
-     * @throws UnsupportedEncodingException
-     */
-    public static XmlObject xSendPostRequest(XmlObject request, URI serviceURI) throws UnsupportedEncodingException,
-            HttpException,
-            IOException,
-            OwsExceptionReport {
-
-        XmlObject response = doSend(request.xmlText(), POST_METHOD, serviceURI);
-        return response;
-    }
-
-    /**
-     * 
-     * @param request
-     * @return
-     * @throws UnsupportedEncodingException
-     * @throws HttpException
-     * @throws IOException
-     * @throws OwsExceptionReport
-     */
-    public static String sendGetRequest(String request) throws UnsupportedEncodingException,
-            HttpException,
-            IOException,
-            OwsExceptionReport {
-        if (request.isEmpty()) {
-            return "The request is empty!";
-        }
-        return xSendGetRequest(request).xmlText();
-    }
-
-    /**
-     * 
-     * @param request
-     * @return
-     * @throws UnsupportedEncodingException
-     * @throws HttpException
-     * @throws IOException
-     * @throws OwsExceptionReport
-     */
-    public static XmlObject xSendGetRequest(String request) throws UnsupportedEncodingException,
-            HttpException,
-            IOException,
-            OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + request);
-        URI sirURI = getSirURI();
-        XmlObject response = doSend(request, GET_METHOD, sirURI);
-        return response;
-    }
-
-    /**
-     * 
-     * @param uri
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public static XmlObject xSendGetRequest(URI uri) throws OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + uri);
-        XmlObject response;
-        try {
-            response = doSend("", GET_METHOD, uri);
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new OwsExceptionReport(e);
-        }
-        catch (HttpException e) {
-            throw new OwsExceptionReport(e);
-        }
-        catch (IOException e) {
-            throw new OwsExceptionReport(e);
-        }
-        catch (OwsExceptionReport e) {
-            throw new OwsExceptionReport(e);
-        }
-        return response;
-    }
-
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private static URI getSirURI() throws OwsExceptionReport {
-        try {
-            return SirConfigurator.getInstance().getServiceUrl().toURI();
-        }
-        catch (URISyntaxException e) {
-            throw new OwsExceptionReport("Could not transform service URL to URI", e);
-        }
+        throw new IllegalArgumentException("Service type not supported: " + serviceType);
     }
 
     /**
@@ -302,6 +176,198 @@ public class Client {
             return er.getDocument();
         }
 
+        return response;
+    }
+
+    /**
+     * 
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private static URI getSirURI() throws OwsExceptionReport {
+        try {
+            return SirConfigurator.getInstance().getServiceUrl().toURI();
+        }
+        catch (URISyntaxException e) {
+            throw new OwsExceptionReport("Could not transform service URL to URI", e);
+        }
+    }
+
+    public static XmlObject requestCapabilities(String serviceType, URI uri) throws OwsExceptionReport {
+        // create getCapabilities request
+        String gcDoc = createGetCapabilities(serviceType);
+
+        if (log.isDebugEnabled())
+            log.debug("GetCapabilities to be send to " + serviceType + " @ " + uri.toString() + ": " + gcDoc);
+
+        // send getCapabilities request
+        XmlObject caps = null;
+        XmlObject getCapXmlResponse = null;
+        try {
+            getCapXmlResponse = xSendPostRequest(XmlObject.Factory.parse(gcDoc), uri);
+            caps = XmlObject.Factory.parse(getCapXmlResponse.getDomNode());
+        }
+        catch (XmlException xmle) {
+            String msg = "Error on parsing Capabilities document: " + xmle.getMessage()
+                    + (getCapXmlResponse == null ? "" : "\n" + getCapXmlResponse.xmlText());
+            log.warn(msg);
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, msg);
+            throw se;
+        }
+        catch (IOException ioe) {
+            String errMsg = "Error sending GetCapabilities to " + serviceType + " @ " + uri.toString() + " : "
+                    + ioe.getMessage();
+            log.warn(errMsg);
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
+            throw se;
+        }
+        catch (Exception e) {
+            String errMsg = "Error doing GetCapabilities to " + serviceType + " @ " + uri.toString() + " : "
+                    + e.getMessage();
+            log.warn(errMsg);
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
+            throw se;
+        }
+
+        return caps;
+    }
+
+    /**
+     * 
+     * @param request
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws HttpException
+     * @throws IOException
+     * @throws OwsExceptionReport
+     */
+    public static String sendGetRequest(String request) throws UnsupportedEncodingException,
+            HttpException,
+            IOException,
+            OwsExceptionReport {
+        if (request.isEmpty()) {
+            return "The request is empty!";
+        }
+        return xSendGetRequest(request).xmlText();
+    }
+
+    /**
+     * 
+     * send to SIR
+     * 
+     * @param request
+     * @return
+     * @throws IOException
+     * @throws OwsExceptionReport
+     */
+    public static String sendPostRequest(String request) throws IOException, OwsExceptionReport {
+        URI sirURI = getSirURI();
+        return sendPostRequest(request, sirURI);
+    }
+
+    /**
+     * 
+     * @param request
+     * @param sirURI
+     * @return
+     * @throws OwsExceptionReport
+     * @throws IOException
+     * @throws HttpException
+     * @throws UnsupportedEncodingException
+     */
+    public static String sendPostRequest(String request, URI serviceURI) throws UnsupportedEncodingException,
+            HttpException,
+            IOException,
+            OwsExceptionReport {
+        if (request.isEmpty()) {
+            return "The request is empty!";
+        }
+
+        XmlObject response = doSend(request, POST_METHOD, serviceURI);
+        return response.toString();
+    }
+
+    /**
+     * 
+     * @param request
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws HttpException
+     * @throws IOException
+     * @throws OwsExceptionReport
+     */
+    public static XmlObject xSendGetRequest(String request) throws UnsupportedEncodingException,
+            HttpException,
+            IOException,
+            OwsExceptionReport {
+        if (log.isDebugEnabled())
+            log.debug("Sending request: " + request);
+        URI sirURI = getSirURI();
+        XmlObject response = doSend(request, GET_METHOD, sirURI);
+        return response;
+    }
+
+    /**
+     * 
+     * @param uri
+     * @return
+     * @throws OwsExceptionReport
+     */
+    public static XmlObject xSendGetRequest(URI uri) throws OwsExceptionReport {
+        if (log.isDebugEnabled())
+            log.debug("Sending request: " + uri);
+        XmlObject response;
+        try {
+            response = doSend("", GET_METHOD, uri);
+        }
+        catch (UnsupportedEncodingException e) {
+            throw new OwsExceptionReport(e);
+        }
+        catch (HttpException e) {
+            throw new OwsExceptionReport(e);
+        }
+        catch (IOException e) {
+            throw new OwsExceptionReport(e);
+        }
+        catch (OwsExceptionReport e) {
+            throw new OwsExceptionReport(e);
+        }
+        return response;
+    }
+
+    /**
+     * 
+     * @param request
+     * @return
+     * @throws IOException
+     * @throws OwsExceptionReport
+     */
+    public static XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport {
+        if (log.isDebugEnabled())
+            log.debug("Sending request: " + request);
+        URI sirURI = getSirURI();
+        return xSendPostRequest(request, sirURI);
+    }
+
+    /**
+     * 
+     * @param request
+     * @param sirURI
+     * @return
+     * @throws OwsExceptionReport
+     * @throws IOException
+     * @throws HttpException
+     * @throws UnsupportedEncodingException
+     */
+    public static XmlObject xSendPostRequest(XmlObject request, URI serviceURI) throws UnsupportedEncodingException,
+            HttpException,
+            IOException,
+            OwsExceptionReport {
+
+        XmlObject response = doSend(request.xmlText(), POST_METHOD, serviceURI);
         return response;
     }
 

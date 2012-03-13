@@ -37,6 +37,7 @@ import net.opengis.sps.x10.SensorOfferingType;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -78,7 +79,7 @@ public class SPSServiceHarvester extends Harvester {
     public ISirResponse call() throws Exception {
         // request capabilities
         URI uri = Tools.url2Uri(this.request);
-        XmlObject caps = requestCapabilities(this.request.getServiceType(), uri);
+        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), uri);
 
         CapabilitiesDocument.Capabilities spsCaps;
         if (caps instanceof CapabilitiesDocument) {

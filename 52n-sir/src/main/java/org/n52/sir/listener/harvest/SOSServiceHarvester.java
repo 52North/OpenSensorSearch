@@ -41,6 +41,7 @@ import net.opengis.sos.x10.CapabilitiesDocument.Capabilities;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
+import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -95,7 +96,7 @@ public class SOSServiceHarvester extends Harvester {
         URI uri = Tools.url2Uri(this.request);
 
         // request capabilities
-        XmlObject caps = requestCapabilities(this.request.getServiceType(), uri);
+        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), uri);
         Capabilities sosCaps;
         if (caps instanceof CapabilitiesDocument) {
             CapabilitiesDocument doc = (CapabilitiesDocument) caps;

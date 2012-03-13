@@ -48,11 +48,11 @@ public class CswFactory implements ICatalogFactory {
     private static Logger log = LoggerFactory.getLogger(CswFactory.class);
     
     private URL catalogUrl;
-    private String[] classificationInitFiles;
-    private String slotInitFile;
     private List<XmlObject> classificationInitDocs;
-    private XmlObject slotInitDoc;
+    private String[] classificationInitFiles;
     private boolean doNotCheck;
+    private XmlObject slotInitDoc;
+    private String slotInitFile;
 
     /**
      * Create a CSW with the given URL.
@@ -99,26 +99,6 @@ public class CswFactory implements ICatalogFactory {
         return catalog;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SensorMLCatalogFactory [cswUrl=");
-        sb.append(this.catalogUrl);
-        sb.append(", doNotCheck=");
-        sb.append(this.doNotCheck);
-        sb.append(", classificationInitFiles=");
-        sb.append(Arrays.toString(this.classificationInitFiles));
-        sb.append(", slotInitFile=");
-        sb.append(this.slotInitFile);
-        sb.append("]");
-        return sb.toString();
-    }
-
-    @Override
-    public URL getCatalogUrl() {
-        return this.catalogUrl;
-    }
-
     /**
      * 
      * @param connectionID
@@ -134,5 +114,25 @@ public class CswFactory implements ICatalogFactory {
                                                    int pushInterval,
                                                    String newConnectionStatus) {
         return new CatalogConnectionImpl(connectionID, url, pushInterval, ICatalogConnection.NEW_CONNECTION_STATUS);
+    }
+
+    @Override
+    public URL getCatalogUrl() {
+        return this.catalogUrl;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SensorMLCatalogFactory [cswUrl=");
+        sb.append(this.catalogUrl);
+        sb.append(", doNotCheck=");
+        sb.append(this.doNotCheck);
+        sb.append(", classificationInitFiles=");
+        sb.append(Arrays.toString(this.classificationInitFiles));
+        sb.append(", slotInitFile=");
+        sb.append(this.slotInitFile);
+        sb.append("]");
+        return sb.toString();
     }
 }

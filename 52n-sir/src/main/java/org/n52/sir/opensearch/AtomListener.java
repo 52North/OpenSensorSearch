@@ -31,14 +31,19 @@ package org.n52.sir.opensearch;
  */
 public class AtomListener extends AbstractFeedListener {
 
-    private static final String NAME = "Atom";
-
     private static final String FEED_TYPE = "atom_0.3";
 
     public static final String MIME_TYPE = "application/atom+xml";
 
+    private static final String NAME = "Atom";
+
     public AtomListener(OpenSearchConfigurator configurator) {
         super(configurator);
+    }
+
+    @Override
+    protected String getFeedType() {
+        return FEED_TYPE;
     }
 
     @Override
@@ -49,11 +54,6 @@ public class AtomListener extends AbstractFeedListener {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    protected String getFeedType() {
-        return FEED_TYPE;
     }
 
 }

@@ -38,6 +38,14 @@ public class GMLDateParser {
 
     private static final GMLDateParser instance = new GMLDateParser();
 
+    /**
+     * 
+     * @return
+     */
+    public static GMLDateParser getInstance() {
+        return instance;
+    }
+
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SirConfigurator.getInstance().getGmlDateFormat());
 
     /**
@@ -45,14 +53,6 @@ public class GMLDateParser {
      */
     private GMLDateParser() {
         //
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public static GMLDateParser getInstance() {
-        return instance;
     }
 
     /**

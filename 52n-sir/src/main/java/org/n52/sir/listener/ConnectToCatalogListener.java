@@ -51,9 +51,9 @@ public class ConnectToCatalogListener implements ISirRequestListener {
 
     private static Logger log = LoggerFactory.getLogger(ConnectToCatalogListener.class);
 
-    private IConnectToCatalogDAO conToCatDao;
-
     private static final String OPERATION_NAME = SirConstants.Operations.ConnectToCatalog.name();
+
+    private IConnectToCatalogDAO conToCatDao;
 
     public ConnectToCatalogListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();

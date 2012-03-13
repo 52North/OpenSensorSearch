@@ -48,12 +48,12 @@ public class InsertSensorStatusListener implements ISirRequestListener {
      */
     private static Logger log = LoggerFactory.getLogger(InsertSensorStatusListener.class);
 
+    private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorStatus.name();
+
     /**
      * the data access object for the insertSensorStatus operation
      */
     private IInsertSensorStatusDAO insSensStatDao;
-
-    private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorStatus.name();
 
     public InsertSensorStatusListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();

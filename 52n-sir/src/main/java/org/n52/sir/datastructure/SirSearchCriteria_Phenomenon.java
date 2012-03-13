@@ -66,30 +66,7 @@ import de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument.GetMatching
 public class SirSearchCriteria_Phenomenon {
 
     public enum SirMatchingType {
-        SUPER_TYPE, EQUIVALENT_TYPE, SUB_TYPE;
-
-        /**
-         * 
-         * @return
-         * @throws OwsExceptionReport
-         */
-        public de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType.Enum getSchemaMatchingType() throws OwsExceptionReport {
-            if (this.equals(SirMatchingType.SUPER_TYPE)) {
-                return MatchingType.SUPER_TYPE;
-            }
-            else if (this.equals(SirMatchingType.EQUIVALENT_TYPE)) {
-                return MatchingType.EQUIVALENT_TYPE;
-            }
-            else if (this.equals(SirMatchingType.SUB_TYPE)) {
-                return MatchingType.SUB_TYPE;
-            }
-
-            OwsExceptionReport er = new OwsExceptionReport();
-            er.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
-                                 "MatchingType",
-                                 "MatchingType not supported!");
-            throw er;
-        }
+        EQUIVALENT_TYPE, SUB_TYPE, SUPER_TYPE;
 
         /**
          * 
@@ -160,39 +137,38 @@ public class SirSearchCriteria_Phenomenon {
                                  "MatchingType not supported!");
             throw er;
         }
+
+        /**
+         * 
+         * @return
+         * @throws OwsExceptionReport
+         */
+        public de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType.Enum getSchemaMatchingType() throws OwsExceptionReport {
+            if (this.equals(SirMatchingType.SUPER_TYPE)) {
+                return MatchingType.SUPER_TYPE;
+            }
+            else if (this.equals(SirMatchingType.EQUIVALENT_TYPE)) {
+                return MatchingType.EQUIVALENT_TYPE;
+            }
+            else if (this.equals(SirMatchingType.SUB_TYPE)) {
+                return MatchingType.SUB_TYPE;
+            }
+
+            OwsExceptionReport er = new OwsExceptionReport();
+            er.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
+                                 "MatchingType",
+                                 "MatchingType not supported!");
+            throw er;
+        }
     }
-
-    private String phenomenonName;
-
-    private String sorUrl;
 
     private SirMatchingType matchingType;
 
+    private String phenomenonName;
+
     private int searchDepth;
 
-    /**
-     * @param phenomenonName
-     * @param sorUrl
-     * @param matchingType
-     * @param searchDepth
-     */
-    public SirSearchCriteria_Phenomenon(String phenomenonName,
-                                        String sorUrl,
-                                        SirMatchingType matchingType,
-                                        int searchDepth) {
-        this.phenomenonName = phenomenonName;
-        this.sorUrl = sorUrl;
-        this.matchingType = matchingType;
-        this.searchDepth = searchDepth;
-    }
-
-    /**
-     * @param phenomenonName
-     * 
-     */
-    public SirSearchCriteria_Phenomenon(String phenomenonName) {
-        this.phenomenonName = phenomenonName;
-    }
+    private String sorUrl;
 
     /**
      * 
@@ -212,17 +188,27 @@ public class SirSearchCriteria_Phenomenon {
     }
 
     /**
-     * @return the phenomenonName
+     * @param phenomenonName
+     * 
      */
-    public String getPhenomenonName() {
-        return this.phenomenonName;
+    public SirSearchCriteria_Phenomenon(String phenomenonName) {
+        this.phenomenonName = phenomenonName;
     }
 
     /**
-     * @return the sorUrl
+     * @param phenomenonName
+     * @param sorUrl
+     * @param matchingType
+     * @param searchDepth
      */
-    public String getSorUrl() {
-        return this.sorUrl;
+    public SirSearchCriteria_Phenomenon(String phenomenonName,
+                                        String sorUrl,
+                                        SirMatchingType matchingType,
+                                        int searchDepth) {
+        this.phenomenonName = phenomenonName;
+        this.sorUrl = sorUrl;
+        this.matchingType = matchingType;
+        this.searchDepth = searchDepth;
     }
 
     /**
@@ -233,6 +219,13 @@ public class SirSearchCriteria_Phenomenon {
     }
 
     /**
+     * @return the phenomenonName
+     */
+    public String getPhenomenonName() {
+        return this.phenomenonName;
+    }
+
+    /**
      * @return the searchDepth
      */
     public int getSearchDepth() {
@@ -240,19 +233,10 @@ public class SirSearchCriteria_Phenomenon {
     }
 
     /**
-     * @param phenomenonName
-     *        the phenomenonName to set
+     * @return the sorUrl
      */
-    public void setPhenomenonName(String phenomenonName) {
-        this.phenomenonName = phenomenonName;
-    }
-
-    /**
-     * @param sorUrl
-     *        the sorUrl to set
-     */
-    public void setSorUrl(String sorUrl) {
-        this.sorUrl = sorUrl;
+    public String getSorUrl() {
+        return this.sorUrl;
     }
 
     /**
@@ -264,6 +248,14 @@ public class SirSearchCriteria_Phenomenon {
     }
 
     /**
+     * @param phenomenonName
+     *        the phenomenonName to set
+     */
+    public void setPhenomenonName(String phenomenonName) {
+        this.phenomenonName = phenomenonName;
+    }
+
+    /**
      * @param searchDepth
      *        the searchDepth to set
      */
@@ -272,15 +264,11 @@ public class SirSearchCriteria_Phenomenon {
     }
 
     /**
-     * 
-     * @return true if all parameters for SOR are given
+     * @param sorUrl
+     *        the sorUrl to set
      */
-    public boolean usesSOR() {
-        if (this.sorUrl == null || this.matchingType == null)
-            return false;
-        return Tools.noneEmpty(new String[] {this.sorUrl,
-                                             this.matchingType.toString(),
-                                             Integer.toString(this.searchDepth)});
+    public void setSorUrl(String sorUrl) {
+        this.sorUrl = sorUrl;
     }
 
     @Override
@@ -296,6 +284,18 @@ public class SirSearchCriteria_Phenomenon {
         sb.append(this.searchDepth);
         sb.append("]");
         return sb.toString();
+    }
+
+    /**
+     * 
+     * @return true if all parameters for SOR are given
+     */
+    public boolean usesSOR() {
+        if (this.sorUrl == null || this.matchingType == null)
+            return false;
+        return Tools.noneEmpty(new String[] {this.sorUrl,
+                                             this.matchingType.toString(),
+                                             Integer.toString(this.searchDepth)});
     }
 
 }

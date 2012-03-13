@@ -33,20 +33,35 @@ import java.util.GregorianCalendar;
 public class SirTimePeriod {
 
     /**
+     * end of measure
+     */
+    private Date endTime = new GregorianCalendar(2099, 11, 31).getTime();
+
+    /**
      * start of measure
      */
     private Date startTime = new Date(0);
 
     /**
-     * end of measure
+     * @return the endTime
      */
-    private Date endTime = new GregorianCalendar(2099, 11, 31).getTime();
+    public Date getEndTime() {
+        return this.endTime;
+    }
 
     /**
      * @return the startTime
      */
     public Date getStartTime() {
         return this.startTime;
+    }
+
+    /**
+     * @param endTime
+     *        the endTime to set
+     */
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     /**
@@ -57,19 +72,15 @@ public class SirTimePeriod {
         this.startTime = startTime;
     }
 
-    /**
-     * @return the endTime
-     */
-    public Date getEndTime() {
-        return this.endTime;
-    }
-
-    /**
-     * @param endTime
-     *        the endTime to set
-     */
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        sb.append(this.startTime);
+        sb.append(" - ");
+        sb.append(this.endTime);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**
@@ -84,17 +95,6 @@ public class SirTimePeriod {
         if (this.endTime.before(other.getEndTime())) {
             this.endTime.setTime(other.getEndTime().getTime());
         }
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        sb.append(this.startTime);
-        sb.append(" - ");
-        sb.append(this.endTime);
-        sb.append("]");
-        return sb.toString();
     }
 
 }

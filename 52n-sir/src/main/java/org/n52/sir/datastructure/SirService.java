@@ -33,14 +33,14 @@ package org.n52.sir.datastructure;
 public class SirService {
 
     /**
-     * service url
-     */
-    private String url;
-
-    /**
      * service type
      */
     private String type;
+
+    /**
+     * service url
+     */
+    private String url;
 
     /**
      * @param url
@@ -54,25 +54,17 @@ public class SirService {
     }
 
     /**
-     * @return the url
-     */
-    public String getUrl() {
-        return this.url;
-    }
-
-    /**
-     * @param url
-     *        the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
      * @return the type
      */
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return this.url;
     }
 
     /**
@@ -81,6 +73,14 @@ public class SirService {
      */
     public void setType(String type) {
         this.type = type;
+    }
+
+    /**
+     * @param url
+     *        the url to set
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override

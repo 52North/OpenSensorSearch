@@ -52,45 +52,6 @@ public class SirUpdateSensorDescriptionResponse implements ISirResponse {
 
     private Collection<String> updatedSensors;
 
-    /**
-     * @return the numberOfNewSensors
-     */
-    public int getNumberOfUpdatedSensorDescriptions() {
-        return this.numberOfUpdatedSensorDescriptions;
-    }
-
-    /**
-     * @param numberOfNewSensors
-     *        the numberOfNewSensors to set
-     */
-    public void setNumberOfUpdatedSensorDescriptions(int numberOfNewSensors) {
-        this.numberOfUpdatedSensorDescriptions = numberOfNewSensors;
-    }
-
-    /**
-     * @return the insertedSensors
-     */
-    public Collection<String> getUpdatedSensors() {
-        return this.updatedSensors;
-    }
-
-    /**
-     * @param insertedSensors
-     *        the insertedSensors to set
-     */
-    public void setUpdatedSensors(Collection<String> updatedSensors) {
-        this.updatedSensors = updatedSensors;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirUpdateSensorDescriptionResponse: ");
-        sb.append("\n#Sensors: " + this.numberOfUpdatedSensorDescriptions);
-        sb.append("\nUpdated Sensors: " + Arrays.toString(this.updatedSensors.toArray()));
-        return sb.toString();
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -103,6 +64,40 @@ public class SirUpdateSensorDescriptionResponse implements ISirResponse {
         updSensDescrResp.save(baos, XmlTools.xmlOptionsForNamespaces());
         byte[] bytes = baos.toByteArray();
         return bytes;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentLength()
+     */
+    @Override
+    public int getContentLength() throws IOException, TransformerException {
+        return getByteArray().length;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    /**
+     * @return the numberOfNewSensors
+     */
+    public int getNumberOfUpdatedSensorDescriptions() {
+        return this.numberOfUpdatedSensorDescriptions;
+    }
+
+    /**
+     * @return the insertedSensors
+     */
+    public Collection<String> getUpdatedSensors() {
+        return this.updatedSensors;
     }
 
     private UpdateSensorDescriptionResponseDocument parseToResponseDocument() {
@@ -125,24 +120,29 @@ public class SirUpdateSensorDescriptionResponse implements ISirResponse {
         return document;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
+    /**
+     * @param numberOfNewSensors
+     *        the numberOfNewSensors to set
      */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
+    public void setNumberOfUpdatedSensorDescriptions(int numberOfNewSensors) {
+        this.numberOfUpdatedSensorDescriptions = numberOfNewSensors;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
+    /**
+     * @param insertedSensors
+     *        the insertedSensors to set
      */
+    public void setUpdatedSensors(Collection<String> updatedSensors) {
+        this.updatedSensors = updatedSensors;
+    }
+
     @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SirUpdateSensorDescriptionResponse: ");
+        sb.append("\n#Sensors: " + this.numberOfUpdatedSensorDescriptions);
+        sb.append("\nUpdated Sensors: " + Arrays.toString(this.updatedSensors.toArray()));
+        return sb.toString();
     }
 
 }

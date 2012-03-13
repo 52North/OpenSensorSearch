@@ -56,21 +56,6 @@ public class SirDescribeSensorResponse implements ISirResponse {
      */
     private XmlObject sensorML;
 
-    /**
-     * @return the sensorML
-     */
-    public XmlObject getSensorML() {
-        return this.sensorML;
-    }
-
-    /**
-     * @param sensorML
-     *        the sensorML to set
-     */
-    public void setSensorML(XmlObject sensorML) {
-        this.sensorML = sensorML;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -83,6 +68,26 @@ public class SirDescribeSensorResponse implements ISirResponse {
         process.save(baos, XmlTools.xmlOptionsForNamespaces());
         byte[] bytes = baos.toByteArray();
         return bytes;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentLength()
+     */
+    @Override
+    public int getContentLength() throws IOException, TransformerException {
+        return getByteArray().length;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
     }
 
     private SensorMLDocument getDocument() {
@@ -126,24 +131,19 @@ public class SirDescribeSensorResponse implements ISirResponse {
         return document;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
+    /**
+     * @return the sensorML
      */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
+    public XmlObject getSensorML() {
+        return this.sensorML;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
+    /**
+     * @param sensorML
+     *        the sensorML to set
      */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+    public void setSensorML(XmlObject sensorML) {
+        this.sensorML = sensorML;
     }
 
 }

@@ -74,21 +74,6 @@ public class SirSearchSensorResponse implements ISirResponse {
      */
     private Collection<SirSearchResultElement> searchResultElements;
 
-    /**
-     * @return the searchResultElements
-     */
-    public Collection<SirSearchResultElement> getSearchResultElements() {
-        return this.searchResultElements;
-    }
-
-    /**
-     * @param searchResultElements
-     *        the searchResultElements to set
-     */
-    public void setSearchResultElements(Collection<SirSearchResultElement> searchResultElements) {
-        this.searchResultElements = searchResultElements;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -103,23 +88,31 @@ public class SirSearchSensorResponse implements ISirResponse {
         return bytes;
     }
 
-    /**
+    /*
+     * (non-Javadoc)
      * 
-     * @param writer
-     * @throws OwsExceptionReport
+     * @see org.n52.sir.response.ISirResponse#getContentLength()
      */
-    public void writeTo(Writer writer) throws OwsExceptionReport {
-        SearchSensorResponseDocument searchSensorRespDoc = parseToResponseDocument();
-        try {
-            WriterOutputStream wos = new WriterOutputStream(writer);
-            searchSensorRespDoc.save(wos, XmlTools.xmlOptionsForNamespaces());
-        }
-        catch (IOException e) {
-            log.error("Could not write response document to writer.", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "server",
-                                         "Could not write response to output writer.");
-        }
+    @Override
+    public int getContentLength() throws IOException, TransformerException {
+        return getByteArray().length;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    /**
+     * @return the searchResultElements
+     */
+    public Collection<SirSearchResultElement> getSearchResultElements() {
+        return this.searchResultElements;
     }
 
     /**
@@ -225,24 +218,31 @@ public class SirSearchSensorResponse implements ISirResponse {
         return document;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
+    /**
+     * @param searchResultElements
+     *        the searchResultElements to set
      */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
+    public void setSearchResultElements(Collection<SirSearchResultElement> searchResultElements) {
+        this.searchResultElements = searchResultElements;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
      * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
+     * @param writer
+     * @throws OwsExceptionReport
      */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+    public void writeTo(Writer writer) throws OwsExceptionReport {
+        SearchSensorResponseDocument searchSensorRespDoc = parseToResponseDocument();
+        try {
+            WriterOutputStream wos = new WriterOutputStream(writer);
+            searchSensorRespDoc.save(wos, XmlTools.xmlOptionsForNamespaces());
+        }
+        catch (IOException e) {
+            log.error("Could not write response document to writer.", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "server",
+                                         "Could not write response to output writer.");
+        }
     }
 
 }

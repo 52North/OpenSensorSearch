@@ -51,18 +51,18 @@ public class SirInfoToBeInserted_SensorDescription extends SirInfoToBeInserted {
     }
 
     /**
+     * @return the serviceInfos
+     */
+    public Collection<SirServiceReference> getServiceReferences() {
+        return this.serviceReferences;
+    }
+
+    /**
      * @param sensorDescription
      *        the sensorDescription to set
      */
     public void setSensorDescription(XmlObject sensorDescription) {
         this.sensorDescription = sensorDescription;
-    }
-
-    /**
-     * @return the serviceInfos
-     */
-    public Collection<SirServiceReference> getServiceReferences() {
-        return this.serviceReferences;
     }
 
     /**

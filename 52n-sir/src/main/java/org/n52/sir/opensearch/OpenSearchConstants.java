@@ -55,6 +55,8 @@ public class OpenSearchConstants {
 
     public static final int MAX_GET_URL_CHARACTER_COUNT = 2000; // http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url
 
+    public static final String MIME_TYPE_PLAIN = "text/plain";
+
     public static final String NAME_PARAM = "name";
 
     public static final String QUERY_PARAMETER = "q";
@@ -69,7 +71,5 @@ public class OpenSearchConstants {
         TIME_SERIES_SERVICE_TYPES.add("SOS");
         TIME_SERIES_SERVICE_TYPES.add("OGC:SOS");
     }
-
-    public static final String MIME_TYPE_PLAIN = "text/plain";
 
 }

@@ -49,18 +49,18 @@ public class Pair<T1, T2> {
     }
 
     /**
+     * @return the second
+     */
+    public T2 getSecond() {
+        return this.second;
+    }
+
+    /**
      * @param first
      *        the first to set
      */
     public void setFirst(T1 first) {
         this.first = first;
-    }
-
-    /**
-     * @return the second
-     */
-    public T2 getSecond() {
-        return this.second;
     }
 
     /**

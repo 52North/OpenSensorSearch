@@ -36,9 +36,13 @@ import javax.xml.transform.TransformerException;
 public interface ISirResponse {
 
     /**
-     * @return Returns the content type of this response
+     * @return Returns the reponse XML document as byte[]
+     * @throws IOException
+     *         if getting the response as byte[] failed
+     * @throws TransformerException
+     *         if getting the response as byte[] failed
      */
-    public String getContentType();
+    public byte[] getByteArray() throws IOException, TransformerException;
 
     /**
      * @return Returns the length of the content in bytes
@@ -50,12 +54,8 @@ public interface ISirResponse {
     public int getContentLength() throws IOException, TransformerException;
 
     /**
-     * @return Returns the reponse XML document as byte[]
-     * @throws IOException
-     *         if getting the response as byte[] failed
-     * @throws TransformerException
-     *         if getting the response as byte[] failed
+     * @return Returns the content type of this response
      */
-    public byte[] getByteArray() throws IOException, TransformerException;
+    public String getContentType();
 
 }

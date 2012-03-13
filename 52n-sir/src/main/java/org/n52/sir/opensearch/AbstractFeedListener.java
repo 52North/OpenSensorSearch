@@ -70,51 +70,6 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
         this.conf.addResponseFormat(this);
     }
 
-    @Override
-    public void createResponse(HttpServletRequest req,
-                               HttpServletResponse resp,
-                               Collection<SirSearchResultElement> searchResult,
-                               PrintWriter writer,
-                               String searchText) throws OwsExceptionReport {
-        // TODO Auto-generated method stub
-
-        resp.setContentType(getMimeType());
-
-        // TODO create WireFeed, then reuse for Atom AND RSS, see
-        // http://en.wikipedia.org/wiki/RSS#Comparison_with_Atom
-        SyndFeed feed = createFeed(searchResult, searchText);
-        feed.setFeedType(getFeedType());
-
-        outputFeed(writer, feed);
-
-    }
-
-    protected abstract String getFeedType();
-
-    /**
-     * @param writer
-     * @param feed
-     * @throws OwsExceptionReport
-     */
-    protected void outputFeed(PrintWriter writer, SyndFeed feed) throws OwsExceptionReport {
-        SyndFeedOutput output = new SyndFeedOutput();
-        try {
-            output.output(feed, writer, true);
-        }
-        catch (IllegalArgumentException e) {
-            log.error("Error outputting feed to writer", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
-        }
-        catch (IOException e) {
-            log.error("Error outputting feed to writer", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
-        }
-        catch (FeedException e) {
-            log.error("Error doing output of feed to writer", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
-        }
-    }
-
     /**
      * 
      * @param searchResult
@@ -195,6 +150,51 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
         entry.setDescription(descr);
 
         return entry;
+    }
+
+    @Override
+    public void createResponse(HttpServletRequest req,
+                               HttpServletResponse resp,
+                               Collection<SirSearchResultElement> searchResult,
+                               PrintWriter writer,
+                               String searchText) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+
+        resp.setContentType(getMimeType());
+
+        // TODO create WireFeed, then reuse for Atom AND RSS, see
+        // http://en.wikipedia.org/wiki/RSS#Comparison_with_Atom
+        SyndFeed feed = createFeed(searchResult, searchText);
+        feed.setFeedType(getFeedType());
+
+        outputFeed(writer, feed);
+
+    }
+
+    protected abstract String getFeedType();
+
+    /**
+     * @param writer
+     * @param feed
+     * @throws OwsExceptionReport
+     */
+    protected void outputFeed(PrintWriter writer, SyndFeed feed) throws OwsExceptionReport {
+        SyndFeedOutput output = new SyndFeedOutput();
+        try {
+            output.output(feed, writer, true);
+        }
+        catch (IllegalArgumentException e) {
+            log.error("Error outputting feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
+        }
+        catch (IOException e) {
+            log.error("Error outputting feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
+        }
+        catch (FeedException e) {
+            log.error("Error doing output of feed to writer", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
+        }
     }
 
 }

@@ -64,9 +64,14 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
 
     private static final Object ACCEPT_VERSIONS_PARAMETER_NAME = "AcceptVersions";
 
+    private static Logger log = LoggerFactory.getLogger(SirGetCapabilitiesResponse.class);
+
     private static final Object VERSION_PARAMETER_NAME = "version";
 
-    private static Logger log = LoggerFactory.getLogger(SirGetCapabilitiesResponse.class);
+    /**
+     * Collection of catalog connections
+     */
+    private Collection<ICatalogConnection> catalogConnection;
 
     private ArrayList<Section> sections;
 
@@ -75,10 +80,82 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
      */
     private Collection<SirService> services;
 
-    /**
-     * Collection of catalog connections
-     */
-    private Collection<ICatalogConnection> catalogConnection;
+    private Contents createContents() {
+        Contents contents = Contents.Factory.newInstance();
+
+        // set list of services
+        for (SirService service : this.services) {
+            HarvestedService harvestedService = contents.addNewHarvestedService();
+            harvestedService.setServiceType(service.getType());
+            harvestedService.setServiceURL(service.getUrl());
+        }
+
+        // set catalog connections
+        for (ICatalogConnection catConn : this.catalogConnection) {
+            LinkedCatalog linkedCatalog = contents.addNewLinkedCatalog();
+            linkedCatalog.setCatalogURL(catConn.getCatalogURL().toString());
+            linkedCatalog.setStatus(catConn.getStatus());
+            linkedCatalog.setPushIntervalSeconds(catConn.getPushIntervalSeconds());
+        }
+
+        return contents;
+    }
+
+    private OperationsMetadata createOperationsMetadata() {
+        OperationsMetadata opMeData = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getOperationsMetadata();
+        // Operations
+        for (Operation operation : opMeData.getOperationArray()) {
+            for (DCP dcp : operation.getDCPArray()) {
+                HTTP http = dcp.getHTTP();
+                for (RequestMethodType get : http.getGetArray()) {
+                    get.setHref(SirConfigurator.getInstance().getServiceUrl().toString());
+                }
+                for (RequestMethodType post : http.getPostArray()) {
+                    post.setHref(SirConfigurator.getInstance().getServiceUrl().toString());
+                }
+            }
+            // parameter acceptVersion in operation GetCapabilities
+            for (DomainType parameter : operation.getParameterArray()) {
+                if (parameter.getName().equals(ACCEPT_VERSIONS_PARAMETER_NAME)) {
+                    // remove existing placeholder
+                    for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
+                        parameter.getAllowedValues().removeValue(i);
+                    }
+                    // set value
+                    AllowedValues values = parameter.getAllowedValues();
+                    for (String s : SirConfigurator.getInstance().getAcceptedServiceVersions()) {
+                        values.addNewValue().setStringValue(s);
+                    }
+                }
+            }
+        }
+        // parameter version
+        for (DomainType parameter : opMeData.getParameterArray()) {
+            if (parameter.getName().equals(VERSION_PARAMETER_NAME)) {
+                // remove existing
+                for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
+                    parameter.getAllowedValues().removeValue(i);
+                }
+                // set value
+                ValueType value = parameter.getAllowedValues().addNewValue();
+                value.setStringValue(SirConfigurator.getInstance().getServiceVersion());
+            }
+        }
+        return opMeData;
+    }
+
+    private ServiceIdentification createServiceIdentification() {
+        ServiceIdentification servIdent = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getServiceIdentification();
+        servIdent.getServiceType().setCodeSpace(SirConfigurator.getInstance().getServiceUrl().toString());
+        servIdent.setServiceTypeVersionArray(new String[] {SirConfigurator.getInstance().getServiceVersion()});
+        return servIdent;
+    }
+
+    private ServiceProvider createServiceProvider() {
+        ServiceProvider servProv = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getServiceProvider();
+        servProv.getProviderSite().setHref(SirConfigurator.getInstance().getServiceUrl().toString());
+        return servProv;
+    }
 
     @Override
     public byte[] getByteArray() throws IOException, TransformerException {
@@ -89,6 +166,13 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
         return bytes;
     }
 
+    /**
+     * @return the catalog collections
+     */
+    public Collection<ICatalogConnection> getCatalogConnection() {
+        return this.catalogConnection;
+    }
+
     @Override
     public int getContentLength() throws IOException, TransformerException {
         return getByteArray().length;
@@ -97,14 +181,6 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
     @Override
     public String getContentType() {
         return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    /**
-     * @param sections
-     *        the sections to set
-     */
-    public void setSections(ArrayList<Section> sections) {
-        this.sections = sections;
     }
 
     /**
@@ -119,29 +195,6 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
      */
     public Collection<SirService> getServices() {
         return this.services;
-    }
-
-    /**
-     * @param services
-     *        the services to set
-     */
-    public void setServices(Collection<SirService> services) {
-        this.services = services;
-    }
-
-    /**
-     * @return the catalog collections
-     */
-    public Collection<ICatalogConnection> getCatalogConnection() {
-        return this.catalogConnection;
-    }
-
-    /**
-     * @param collection
-     *        the catalog connections to set
-     */
-    public void setCatalogConnection(Collection<ICatalogConnection> collection) {
-        this.catalogConnection = collection;
     }
 
     private CapabilitiesDocument parseToGetCapabilitesDocument() {
@@ -194,81 +247,28 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
         return capDoc;
     }
 
-    private OperationsMetadata createOperationsMetadata() {
-        OperationsMetadata opMeData = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getOperationsMetadata();
-        // Operations
-        for (Operation operation : opMeData.getOperationArray()) {
-            for (DCP dcp : operation.getDCPArray()) {
-                HTTP http = dcp.getHTTP();
-                for (RequestMethodType get : http.getGetArray()) {
-                    get.setHref(SirConfigurator.getInstance().getServiceUrl().toString());
-                }
-                for (RequestMethodType post : http.getPostArray()) {
-                    post.setHref(SirConfigurator.getInstance().getServiceUrl().toString());
-                }
-            }
-            // parameter acceptVersion in operation GetCapabilities
-            for (DomainType parameter : operation.getParameterArray()) {
-                if (parameter.getName().equals(ACCEPT_VERSIONS_PARAMETER_NAME)) {
-                    // remove existing placeholder
-                    for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
-                        parameter.getAllowedValues().removeValue(i);
-                    }
-                    // set value
-                    AllowedValues values = parameter.getAllowedValues();
-                    for (String s : SirConfigurator.getInstance().getAcceptedServiceVersions()) {
-                        values.addNewValue().setStringValue(s);
-                    }
-                }
-            }
-        }
-        // parameter version
-        for (DomainType parameter : opMeData.getParameterArray()) {
-            if (parameter.getName().equals(VERSION_PARAMETER_NAME)) {
-                // remove existing
-                for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
-                    parameter.getAllowedValues().removeValue(i);
-                }
-                // set value
-                ValueType value = parameter.getAllowedValues().addNewValue();
-                value.setStringValue(SirConfigurator.getInstance().getServiceVersion());
-            }
-        }
-        return opMeData;
+    /**
+     * @param collection
+     *        the catalog connections to set
+     */
+    public void setCatalogConnection(Collection<ICatalogConnection> collection) {
+        this.catalogConnection = collection;
     }
 
-    private ServiceProvider createServiceProvider() {
-        ServiceProvider servProv = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getServiceProvider();
-        servProv.getProviderSite().setHref(SirConfigurator.getInstance().getServiceUrl().toString());
-        return servProv;
+    /**
+     * @param sections
+     *        the sections to set
+     */
+    public void setSections(ArrayList<Section> sections) {
+        this.sections = sections;
     }
 
-    private ServiceIdentification createServiceIdentification() {
-        ServiceIdentification servIdent = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getServiceIdentification();
-        servIdent.getServiceType().setCodeSpace(SirConfigurator.getInstance().getServiceUrl().toString());
-        servIdent.setServiceTypeVersionArray(new String[] {SirConfigurator.getInstance().getServiceVersion()});
-        return servIdent;
-    }
-
-    private Contents createContents() {
-        Contents contents = Contents.Factory.newInstance();
-
-        // set list of services
-        for (SirService service : this.services) {
-            HarvestedService harvestedService = contents.addNewHarvestedService();
-            harvestedService.setServiceType(service.getType());
-            harvestedService.setServiceURL(service.getUrl());
-        }
-
-        // set catalog connections
-        for (ICatalogConnection catConn : this.catalogConnection) {
-            LinkedCatalog linkedCatalog = contents.addNewLinkedCatalog();
-            linkedCatalog.setCatalogURL(catConn.getCatalogURL().toString());
-            linkedCatalog.setStatus(catConn.getStatus());
-            linkedCatalog.setPushIntervalSeconds(catConn.getPushIntervalSeconds());
-        }
-
-        return contents;
+    /**
+     * @param services
+     *        the services to set
+     */
+    public void setServices(Collection<SirService> services) {
+        this.services = services;
     }
 
 }

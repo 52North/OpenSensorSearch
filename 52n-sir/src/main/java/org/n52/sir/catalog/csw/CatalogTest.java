@@ -43,17 +43,6 @@ public class CatalogTest {
     private static Logger log = LoggerFactory.getLogger(CatalogTest.class);
 
     /**
-     * @param args
-     * @throws MalformedURLException
-     */
-    public static void main(String[] args) throws MalformedURLException {
-
-        getCap();
-
-        System.exit(0);
-    }
-
-    /**
      * 
      */
     private static void getCap() {
@@ -101,5 +90,16 @@ public class CatalogTest {
         catch (OwsExceptionReport e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @param args
+     * @throws MalformedURLException
+     */
+    public static void main(String[] args) throws MalformedURLException {
+
+        getCap();
+
+        System.exit(0);
     }
 }

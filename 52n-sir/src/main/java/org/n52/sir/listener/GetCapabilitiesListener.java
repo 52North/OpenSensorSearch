@@ -47,11 +47,6 @@ import org.slf4j.LoggerFactory;
 public class GetCapabilitiesListener implements ISirRequestListener {
 
     /**
-     * the data access object for the getCapabilities operation
-     */
-    private IGetCapabilitiesDAO capDao;
-
-    /**
      * the logger, used to log exceptions and additionally information
      */
     private static Logger log = LoggerFactory.getLogger(GetCapabilitiesListener.class);
@@ -60,6 +55,11 @@ public class GetCapabilitiesListener implements ISirRequestListener {
      * Name of the operation the listener implements
      */
     private static final String OPERATION_NAME = SirConstants.Operations.GetCapabilities.name();
+
+    /**
+     * the data access object for the getCapabilities operation
+     */
+    private IGetCapabilitiesDAO capDao;
 
     public GetCapabilitiesListener() throws OwsExceptionReport {
 
@@ -76,6 +76,84 @@ public class GetCapabilitiesListener implements ISirRequestListener {
             log.error("Error while creating the getCapabilitiesDAO", se);
             throw se;
         }
+    }
+
+    private void checkAcceptedVersions(String[] versions) throws OwsExceptionReport {
+        // String serviceVersion = SirConfigurator.getInstance().getServiceVersion();
+        for (String version : versions) {
+            ListenersTools.checkVersionParameter(version);
+
+            // if (version.equals(serviceVersion)) {
+            // return;
+            // }
+        }
+    }
+
+    private ArrayList<Section> checkSections(String[] sections) throws OwsExceptionReport {
+        ArrayList<Section> responseSection = new ArrayList<Section>();
+        for (String section : sections) {
+            if (section.equalsIgnoreCase(Section.Contents.name())) {
+                responseSection.add(Section.Contents);
+            }
+            else if (section.equalsIgnoreCase(Section.OperationsMetadata.name())) {
+                responseSection.add(Section.OperationsMetadata);
+            }
+            else if (section.equalsIgnoreCase(Section.ServiceIdentification.name())) {
+                responseSection.add(Section.ServiceIdentification);
+            }
+            else if (section.equalsIgnoreCase(Section.ServiceProvider.name())) {
+                responseSection.add(Section.ServiceProvider);
+            }
+            else if (section.equalsIgnoreCase(Section.All.name())) {
+                responseSection.add(Section.All);
+            }
+            else {
+                OwsExceptionReport se = new OwsExceptionReport();
+                se.addCodedException(ExceptionCode.InvalidParameterValue,
+                                     null,
+                                     "The parameter 'Sections' has a wrong value: '" + section
+                                             + "'. Please use only this values: "
+                                             + Section.ServiceIdentification.name() + ", "
+                                             + Section.ServiceProvider.name() + ", "
+                                             + Section.OperationsMetadata.name() + ", " + Section.Contents.name()
+                                             + ", " + Section.All.name());
+                log.error("The sections parameter is incorrect.", se);
+                throw se;
+            }
+        }
+        return responseSection;
+    }
+
+    private boolean checkUpdateSequenceEquals(String updateSequence) throws OwsExceptionReport {
+        if (updateSequence != null && !updateSequence.equals("") && !updateSequence.equals("NOT_SET")) {
+
+            try {
+                Calendar usDate = GMLDateParser.getInstance().parseString(updateSequence);
+                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(SirConfigurator.getInstance().getUpdateSequence());
+                if (usDate.equals(sorUpdateSequence)) {
+                    return true;
+                }
+                else if (usDate.after(sorUpdateSequence)) {
+                    OwsExceptionReport se = new OwsExceptionReport();
+                    se.addCodedException(ExceptionCode.InvalidUpdateSequence, null, "The parameter 'updateSequence'"
+                            + " is wrong. The Value should be a date in gml-format and could not be after '"
+                            + GMLDateParser.getInstance().parseDate(sorUpdateSequence));
+                    log.error("The update Sequence parameter is wrong!", se);
+                    throw se;
+                }
+            }
+            catch (ParseException pe) {
+                OwsExceptionReport se = new OwsExceptionReport();
+                se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidUpdateSequence,
+                                     null,
+                                     "The value of parameter update sequence has to be a date in GML format like this '"
+                                             + GMLDateParser.getInstance().parseDate(Calendar.getInstance())
+                                             + "'! Your requested value was: '" + updateSequence + "'");
+                log.error("The date of the update sequence could not be parsed!", pe);
+                throw se;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -125,84 +203,6 @@ public class GetCapabilitiesListener implements ISirRequestListener {
         }
         catch (OwsExceptionReport se) {
             return new ExceptionResponse(se.getDocument());
-        }
-    }
-
-    private boolean checkUpdateSequenceEquals(String updateSequence) throws OwsExceptionReport {
-        if (updateSequence != null && !updateSequence.equals("") && !updateSequence.equals("NOT_SET")) {
-
-            try {
-                Calendar usDate = GMLDateParser.getInstance().parseString(updateSequence);
-                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(SirConfigurator.getInstance().getUpdateSequence());
-                if (usDate.equals(sorUpdateSequence)) {
-                    return true;
-                }
-                else if (usDate.after(sorUpdateSequence)) {
-                    OwsExceptionReport se = new OwsExceptionReport();
-                    se.addCodedException(ExceptionCode.InvalidUpdateSequence, null, "The parameter 'updateSequence'"
-                            + " is wrong. The Value should be a date in gml-format and could not be after '"
-                            + GMLDateParser.getInstance().parseDate(sorUpdateSequence));
-                    log.error("The update Sequence parameter is wrong!", se);
-                    throw se;
-                }
-            }
-            catch (ParseException pe) {
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidUpdateSequence,
-                                     null,
-                                     "The value of parameter update sequence has to be a date in GML format like this '"
-                                             + GMLDateParser.getInstance().parseDate(Calendar.getInstance())
-                                             + "'! Your requested value was: '" + updateSequence + "'");
-                log.error("The date of the update sequence could not be parsed!", pe);
-                throw se;
-            }
-        }
-        return false;
-    }
-
-    private ArrayList<Section> checkSections(String[] sections) throws OwsExceptionReport {
-        ArrayList<Section> responseSection = new ArrayList<Section>();
-        for (String section : sections) {
-            if (section.equalsIgnoreCase(Section.Contents.name())) {
-                responseSection.add(Section.Contents);
-            }
-            else if (section.equalsIgnoreCase(Section.OperationsMetadata.name())) {
-                responseSection.add(Section.OperationsMetadata);
-            }
-            else if (section.equalsIgnoreCase(Section.ServiceIdentification.name())) {
-                responseSection.add(Section.ServiceIdentification);
-            }
-            else if (section.equalsIgnoreCase(Section.ServiceProvider.name())) {
-                responseSection.add(Section.ServiceProvider);
-            }
-            else if (section.equalsIgnoreCase(Section.All.name())) {
-                responseSection.add(Section.All);
-            }
-            else {
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(ExceptionCode.InvalidParameterValue,
-                                     null,
-                                     "The parameter 'Sections' has a wrong value: '" + section
-                                             + "'. Please use only this values: "
-                                             + Section.ServiceIdentification.name() + ", "
-                                             + Section.ServiceProvider.name() + ", "
-                                             + Section.OperationsMetadata.name() + ", " + Section.Contents.name()
-                                             + ", " + Section.All.name());
-                log.error("The sections parameter is incorrect.", se);
-                throw se;
-            }
-        }
-        return responseSection;
-    }
-
-    private void checkAcceptedVersions(String[] versions) throws OwsExceptionReport {
-        // String serviceVersion = SirConfigurator.getInstance().getServiceVersion();
-        for (String version : versions) {
-            ListenersTools.checkVersionParameter(version);
-
-            // if (version.equals(serviceVersion)) {
-            // return;
-            // }
         }
     }
 }

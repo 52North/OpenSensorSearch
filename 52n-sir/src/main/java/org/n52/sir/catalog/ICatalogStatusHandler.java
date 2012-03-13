@@ -42,13 +42,9 @@ public interface ICatalogStatusHandler {
 
     /**
      * 
-     * Updates the status of the catalog saved under the given identifier with the given message and saves the
-     * information for runtime querying (the former only if the push is scheduled for repetition).
-     * 
-     * @param identifier
-     * @param statusMessage
+     * @return The maximum number of events that are available.
      */
-    public abstract void setStatus(String identifier, String statusMessage);
+    public int getMaximumInfolistSize();
 
     /**
      * 
@@ -61,8 +57,12 @@ public interface ICatalogStatusHandler {
 
     /**
      * 
-     * @return The maximum number of events that are available.
+     * Updates the status of the catalog saved under the given identifier with the given message and saves the
+     * information for runtime querying (the former only if the push is scheduled for repetition).
+     * 
+     * @param identifier
+     * @param statusMessage
      */
-    public int getMaximumInfolistSize();
+    public abstract void setStatus(String identifier, String statusMessage);
 
 }

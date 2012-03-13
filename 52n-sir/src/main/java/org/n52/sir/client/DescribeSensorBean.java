@@ -39,21 +39,6 @@ public class DescribeSensorBean extends AbstractBean {
     private String sensorIdInSir = "";
 
     /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
-    }
-
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
-    }
-
-    /**
      * 
      */
     public DescribeSensorBean() {
@@ -94,5 +79,20 @@ public class DescribeSensorBean extends AbstractBean {
         }
         else
             this.requestString = "Please enter an ID!";
+    }
+
+    /**
+     * @return the sensorIdInSir
+     */
+    public String getSensorIdInSir() {
+        return this.sensorIdInSir;
+    }
+
+    /**
+     * @param sensorIdInSir
+     *        the sensorIdInSir to set
+     */
+    public void setSensorIdInSir(String sensorIdInSir) {
+        this.sensorIdInSir = sensorIdInSir;
     }
 }

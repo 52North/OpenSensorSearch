@@ -35,15 +35,36 @@ public class SirStatus {
 
     private Object propertyValue;
 
-    private String uom;
-
     private Calendar timestamp;
+
+    private String uom;
 
     /**
      * @return the propertyName
      */
     public String getPropertyName() {
         return this.propertyName;
+    }
+
+    /**
+     * @return the propertyValue
+     */
+    public Object getPropertyValue() {
+        return this.propertyValue;
+    }
+
+    /**
+     * @return the timestamp
+     */
+    public Calendar getTimestamp() {
+        return this.timestamp;
+    }
+
+    /**
+     * @return the uom
+     */
+    public String getUom() {
+        return this.uom;
     }
 
     /**
@@ -55,13 +76,6 @@ public class SirStatus {
     }
 
     /**
-     * @return the propertyValue
-     */
-    public Object getPropertyValue() {
-        return this.propertyValue;
-    }
-
-    /**
      * @param propertyValue
      *        the propertyValue to set
      */
@@ -70,10 +84,11 @@ public class SirStatus {
     }
 
     /**
-     * @return the uom
+     * @param timestamp
+     *        the timestamp to set
      */
-    public String getUom() {
-        return this.uom;
+    public void setTimestamp(Calendar timestamp) {
+        this.timestamp = timestamp;
     }
 
     /**
@@ -82,21 +97,6 @@ public class SirStatus {
      */
     public void setUom(String uom) {
         this.uom = uom;
-    }
-
-    /**
-     * @return the timestamp
-     */
-    public Calendar getTimestamp() {
-        return this.timestamp;
-    }
-
-    /**
-     * @param timestamp
-     *        the timestamp to set
-     */
-    public void setTimestamp(Calendar timestamp) {
-        this.timestamp = timestamp;
     }
 
     @Override

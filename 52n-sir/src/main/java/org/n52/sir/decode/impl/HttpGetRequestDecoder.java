@@ -41,64 +41,6 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
 
     private static Logger log = LoggerFactory.getLogger(HttpGetRequestDecoder.class);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.decode.IHttpGetRequestDecoder#receiveRequest(java.lang.String)
-     */
-    @Override
-    public AbstractSirRequest receiveRequest(String queryString) throws OwsExceptionReport {
-        // check queryString
-        if ( ! (queryString != null && queryString.length() != 0)) {
-            log.error("Invalid GET request!");
-            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 "HttpGetRequestDecoder.receiveRequest()",
-                                 "Invalid GET request!");
-            throw se;
-        }
-
-        String[] params = queryString.split("&");
-
-        // if less than 2 parameters, throw exception
-        if (params.length < 2) {
-            log.error("Invalid GET request! At least 2 parameters needed: {}", queryString);
-            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 "HttpGetRequestDecoder.receiveRequest()",
-                                 "Invalid GET request! At least 2 parameters needed!");
-            throw se;
-        }
-
-        for (String param : params) {
-            String[] nameAndValue = param.split("=");
-            // check the request parameter
-            if (nameAndValue[0].equalsIgnoreCase(SirConstants.GETREQUESTPARAM)) {
-
-                // check request = GetCapabilities
-                if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.GetCapabilities.name())) {
-                    if (log.isDebugEnabled())
-                        log.debug("**** GetCapabilities");
-                    return decodeGetCapabilities(params);
-                }
-
-                // check request = DescribeSensor
-                if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.DescribeSensor.name())) {
-                    if (log.isDebugEnabled())
-                        log.debug("**** DescribeSensor");
-                    return decodeDescribeSensor(params);
-                }
-            }
-        }
-
-        log.error(SirConstants.GETREQUESTPARAM + " is needed: {}", queryString);
-        OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
-        se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                             "HttpGetRequestDecoder.receiveRequest()",
-                             SirConstants.GETREQUESTPARAM + " is needed!");
-        throw se;
-    }
-
     private AbstractSirRequest decodeDescribeSensor(String[] params) throws OwsExceptionReport {
         try {
             SirDescribeSensorRequest request = new SirDescribeSensorRequest();
@@ -157,5 +99,63 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
             }
         }
         return sirRequest;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.decode.IHttpGetRequestDecoder#receiveRequest(java.lang.String)
+     */
+    @Override
+    public AbstractSirRequest receiveRequest(String queryString) throws OwsExceptionReport {
+        // check queryString
+        if ( ! (queryString != null && queryString.length() != 0)) {
+            log.error("Invalid GET request!");
+            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
+                                 "HttpGetRequestDecoder.receiveRequest()",
+                                 "Invalid GET request!");
+            throw se;
+        }
+
+        String[] params = queryString.split("&");
+
+        // if less than 2 parameters, throw exception
+        if (params.length < 2) {
+            log.error("Invalid GET request! At least 2 parameters needed: {}", queryString);
+            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
+                                 "HttpGetRequestDecoder.receiveRequest()",
+                                 "Invalid GET request! At least 2 parameters needed!");
+            throw se;
+        }
+
+        for (String param : params) {
+            String[] nameAndValue = param.split("=");
+            // check the request parameter
+            if (nameAndValue[0].equalsIgnoreCase(SirConstants.GETREQUESTPARAM)) {
+
+                // check request = GetCapabilities
+                if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.GetCapabilities.name())) {
+                    if (log.isDebugEnabled())
+                        log.debug("**** GetCapabilities");
+                    return decodeGetCapabilities(params);
+                }
+
+                // check request = DescribeSensor
+                if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.DescribeSensor.name())) {
+                    if (log.isDebugEnabled())
+                        log.debug("**** DescribeSensor");
+                    return decodeDescribeSensor(params);
+                }
+            }
+        }
+
+        log.error(SirConstants.GETREQUESTPARAM + " is needed: {}", queryString);
+        OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
+        se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
+                             "HttpGetRequestDecoder.receiveRequest()",
+                             SirConstants.GETREQUESTPARAM + " is needed!");
+        throw se;
     }
 }

@@ -56,36 +56,6 @@ public class ConnectToCatalogBean extends AbstractBean {
         this.pushInterval = pushInterval;
     }
 
-    /**
-     * @return the cswUrl
-     */
-    public String getCatalogUrl() {
-        return this.catalogUrl;
-    }
-
-    /**
-     * @param cswUrl
-     *        the cswUrl to set
-     */
-    public void setCatalogUrl(String cswUrl) {
-        this.catalogUrl = cswUrl;
-    }
-
-    /**
-     * @return the pushIntervalSeconds
-     */
-    public int getPushInterval() {
-        return this.pushInterval;
-    }
-
-    /**
-     * @param pushIntervalSeconds
-     *        the pushIntervalSeconds to set
-     */
-    public void setPushInterval(int pushInterval) {
-        this.pushInterval = pushInterval;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -120,6 +90,36 @@ public class ConnectToCatalogBean extends AbstractBean {
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
         else
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
+    }
+
+    /**
+     * @return the cswUrl
+     */
+    public String getCatalogUrl() {
+        return this.catalogUrl;
+    }
+
+    /**
+     * @return the pushIntervalSeconds
+     */
+    public int getPushInterval() {
+        return this.pushInterval;
+    }
+
+    /**
+     * @param cswUrl
+     *        the cswUrl to set
+     */
+    public void setCatalogUrl(String cswUrl) {
+        this.catalogUrl = cswUrl;
+    }
+
+    /**
+     * @param pushIntervalSeconds
+     *        the pushIntervalSeconds to set
+     */
+    public void setPushInterval(int pushInterval) {
+        this.pushInterval = pushInterval;
     }
 
 }

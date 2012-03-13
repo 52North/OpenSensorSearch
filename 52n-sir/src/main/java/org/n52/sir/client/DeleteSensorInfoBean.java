@@ -39,137 +39,21 @@ import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
  */
 public class DeleteSensorInfoBean extends AbstractBean {
 
-    private String sensorIDinSIR = "";
-
-    private String serviceURL = "";
-
-    private String serviceType = "";
-
-    private String serviceSpecificSensorID = "";
-
-    private boolean deleteSensor = false;
-
-    private String deleteRefURL = "";
+    private String deleteRefSensorID = "";
 
     private String deleteRefType = "";
 
-    private String deleteRefSensorID = "";
+    private String deleteRefURL = "";
 
-    /**
-     * @return the sensorIDinSIR
-     */
-    public String getSensorIDinSIR() {
-        return this.sensorIDinSIR;
-    }
+    private boolean deleteSensor = false;
 
-    /**
-     * @param sensorIDinSIR
-     *        the sensorIDinSIR to set
-     */
-    public void setSensorIDinSIR(String sensorIDinSIR) {
-        this.sensorIDinSIR = sensorIDinSIR;
-    }
+    private String sensorIDinSIR = "";
 
-    /**
-     * @return the serviceInfosServiceURL
-     */
-    public String getServiceURL() {
-        return this.serviceURL;
-    }
+    private String serviceSpecificSensorID = "";
 
-    /**
-     * @return the serviceInfosServiceType
-     */
-    public String getServiceType() {
-        return this.serviceType;
-    }
+    private String serviceType = "";
 
-    /**
-     * @return the serviceInfosServiceSpecificSensorID
-     */
-    public String getServiceSpecificSensorID() {
-        return this.serviceSpecificSensorID;
-    }
-
-    /**
-     * @param serviceInfosServiceURL
-     *        the serviceInfosServiceURL to set
-     */
-    public void setServiceURL(String serviceInfosServiceURL) {
-        this.serviceURL = serviceInfosServiceURL;
-    }
-
-    /**
-     * @param serviceInfosServiceType
-     *        the serviceInfosServiceType to set
-     */
-    public void setServiceType(String serviceInfosServiceType) {
-        this.serviceType = serviceInfosServiceType;
-    }
-
-    /**
-     * @param serviceInfosServiceSpecificSensorID
-     *        the serviceInfosServiceSpecificSensorID to set
-     */
-    public void setServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
-        this.serviceSpecificSensorID = serviceInfosServiceSpecificSensorID;
-    }
-
-    /**
-     * @return the deleteSensor
-     */
-    public boolean isDeleteSensor() {
-        return this.deleteSensor;
-    }
-
-    /**
-     * @return the deleteRefURL
-     */
-    public String getDeleteRefURL() {
-        return this.deleteRefURL;
-    }
-
-    /**
-     * @return the deleteRefType
-     */
-    public String getDeleteRefType() {
-        return this.deleteRefType;
-    }
-
-    /**
-     * @return the deleteRefSensorID
-     */
-    public String getDeleteRefSensorID() {
-        return this.deleteRefSensorID;
-    }
-
-    /**
-     * @param deleteSensor the deleteSensor to set
-     */
-    public void setDeleteSensor(boolean deleteSensor) {
-        this.deleteSensor = deleteSensor;
-    }
-
-    /**
-     * @param deleteRefURL the deleteRefURL to set
-     */
-    public void setDeleteRefURL(String deleteRefURL) {
-        this.deleteRefURL = deleteRefURL;
-    }
-
-    /**
-     * @param deleteRefType the deleteRefType to set
-     */
-    public void setDeleteRefType(String deleteRefType) {
-        this.deleteRefType = deleteRefType;
-    }
-
-    /**
-     * @param deleteRefSensorID the deleteRefSensorID to set
-     */
-    public void setDeleteRefSensorID(String deleteRefSensorID) {
-        this.deleteRefSensorID = deleteRefSensorID;
-    }
+    private String serviceURL = "";
 
     @Override
     public void buildRequest() {
@@ -219,6 +103,122 @@ public class DeleteSensorInfoBean extends AbstractBean {
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
         else
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
+    }
+
+    /**
+     * @return the deleteRefSensorID
+     */
+    public String getDeleteRefSensorID() {
+        return this.deleteRefSensorID;
+    }
+
+    /**
+     * @return the deleteRefType
+     */
+    public String getDeleteRefType() {
+        return this.deleteRefType;
+    }
+
+    /**
+     * @return the deleteRefURL
+     */
+    public String getDeleteRefURL() {
+        return this.deleteRefURL;
+    }
+
+    /**
+     * @return the sensorIDinSIR
+     */
+    public String getSensorIDinSIR() {
+        return this.sensorIDinSIR;
+    }
+
+    /**
+     * @return the serviceInfosServiceSpecificSensorID
+     */
+    public String getServiceSpecificSensorID() {
+        return this.serviceSpecificSensorID;
+    }
+
+    /**
+     * @return the serviceInfosServiceType
+     */
+    public String getServiceType() {
+        return this.serviceType;
+    }
+
+    /**
+     * @return the serviceInfosServiceURL
+     */
+    public String getServiceURL() {
+        return this.serviceURL;
+    }
+
+    /**
+     * @return the deleteSensor
+     */
+    public boolean isDeleteSensor() {
+        return this.deleteSensor;
+    }
+
+    /**
+     * @param deleteRefSensorID the deleteRefSensorID to set
+     */
+    public void setDeleteRefSensorID(String deleteRefSensorID) {
+        this.deleteRefSensorID = deleteRefSensorID;
+    }
+
+    /**
+     * @param deleteRefType the deleteRefType to set
+     */
+    public void setDeleteRefType(String deleteRefType) {
+        this.deleteRefType = deleteRefType;
+    }
+
+    /**
+     * @param deleteRefURL the deleteRefURL to set
+     */
+    public void setDeleteRefURL(String deleteRefURL) {
+        this.deleteRefURL = deleteRefURL;
+    }
+
+    /**
+     * @param deleteSensor the deleteSensor to set
+     */
+    public void setDeleteSensor(boolean deleteSensor) {
+        this.deleteSensor = deleteSensor;
+    }
+
+    /**
+     * @param sensorIDinSIR
+     *        the sensorIDinSIR to set
+     */
+    public void setSensorIDinSIR(String sensorIDinSIR) {
+        this.sensorIDinSIR = sensorIDinSIR;
+    }
+
+    /**
+     * @param serviceInfosServiceSpecificSensorID
+     *        the serviceInfosServiceSpecificSensorID to set
+     */
+    public void setServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
+        this.serviceSpecificSensorID = serviceInfosServiceSpecificSensorID;
+    }
+
+    /**
+     * @param serviceInfosServiceType
+     *        the serviceInfosServiceType to set
+     */
+    public void setServiceType(String serviceInfosServiceType) {
+        this.serviceType = serviceInfosServiceType;
+    }
+
+    /**
+     * @param serviceInfosServiceURL
+     *        the serviceInfosServiceURL to set
+     */
+    public void setServiceURL(String serviceInfosServiceURL) {
+        this.serviceURL = serviceInfosServiceURL;
     }
 
 }

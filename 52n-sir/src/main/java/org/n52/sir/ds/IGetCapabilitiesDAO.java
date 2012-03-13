@@ -65,15 +65,15 @@ public interface IGetCapabilitiesDAO {
     public long getSensorCount() throws OwsExceptionReport;
 
     /**
-     * @return Returns all services in the SIR
-     * @throws OwsExceptionReport
-     */
-    public Collection<SirService> getServices() throws OwsExceptionReport;
-    
-    /**
      * 
      * @return
      * @throws OwsExceptionReport
      */
     public long getServiceCount() throws OwsExceptionReport;
+    
+    /**
+     * @return Returns all services in the SIR
+     * @throws OwsExceptionReport
+     */
+    public Collection<SirService> getServices() throws OwsExceptionReport;
 }

@@ -52,18 +52,18 @@ public class SirInsertSensorStatusRequest extends AbstractSirRequest {
     }
 
     /**
+     * @return the status
+     */
+    public Collection<SirStatus> getStatus() {
+        return this.status;
+    }
+
+    /**
      * @param sensIdent
      *        the sensIdent to set
      */
     public void setSensIdent(SirSensorIdentification sensIdent) {
         this.sensIdent = sensIdent;
-    }
-
-    /**
-     * @return the status
-     */
-    public Collection<SirStatus> getStatus() {
-        return this.status;
     }
 
     /**

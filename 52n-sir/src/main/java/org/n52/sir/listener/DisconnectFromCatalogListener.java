@@ -47,9 +47,9 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
 
     private static Logger log = LoggerFactory.getLogger(DisconnectFromCatalogListener.class);
 
-    private IDisconnectFromCatalogDAO disconFromCatDao;
-
     private static final String OPERATION_NAME = SirConstants.Operations.DisconnectFromCatalog.name();
+
+    private IDisconnectFromCatalogDAO disconFromCatDao;
 
     public DisconnectFromCatalogListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();

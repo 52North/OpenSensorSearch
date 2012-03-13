@@ -31,13 +31,34 @@ package org.n52.sir.request;
  */
 public class SirGetCapabilitiesRequest extends AbstractSirRequest {
 
-    private String updateSequence;
+    private String[] acceptFormats;
 
     private String[] acceptVersions;
 
     private String[] sections;
 
-    private String[] acceptFormats;
+    private String updateSequence;
+
+    /**
+     * @return the acceptFormats
+     */
+    public String[] getAcceptFormats() {
+        return this.acceptFormats;
+    }
+
+    /**
+     * @return the acceptVersions
+     */
+    public String[] getAcceptVersions() {
+        return this.acceptVersions;
+    }
+
+    /**
+     * @return the sections
+     */
+    public String[] getSections() {
+        return this.sections;
+    }
 
     /**
      * @return the updateSequence
@@ -47,18 +68,11 @@ public class SirGetCapabilitiesRequest extends AbstractSirRequest {
     }
 
     /**
-     * @param updateSequence
-     *        the updateSequence to set
+     * @param acceptFormats
+     *        the acceptFormats to set
      */
-    public void setUpdateSequence(String updateSequence) {
-        this.updateSequence = updateSequence;
-    }
-
-    /**
-     * @return the acceptVersions
-     */
-    public String[] getAcceptVersions() {
-        return this.acceptVersions;
+    public void setAcceptFormats(String[] acceptFormats) {
+        this.acceptFormats = acceptFormats;
     }
 
     /**
@@ -70,13 +84,6 @@ public class SirGetCapabilitiesRequest extends AbstractSirRequest {
     }
 
     /**
-     * @return the sections
-     */
-    public String[] getSections() {
-        return this.sections;
-    }
-
-    /**
      * @param sections
      *        the sections to set
      */
@@ -85,18 +92,11 @@ public class SirGetCapabilitiesRequest extends AbstractSirRequest {
     }
 
     /**
-     * @return the acceptFormats
+     * @param updateSequence
+     *        the updateSequence to set
      */
-    public String[] getAcceptFormats() {
-        return this.acceptFormats;
-    }
-
-    /**
-     * @param acceptFormats
-     *        the acceptFormats to set
-     */
-    public void setAcceptFormats(String[] acceptFormats) {
-        this.acceptFormats = acceptFormats;
+    public void setUpdateSequence(String updateSequence) {
+        this.updateSequence = updateSequence;
     }
 
 }

@@ -41,18 +41,18 @@ public class SirStatusDescription {
     }
 
     /**
+     * @return the status
+     */
+    public SirStatus getStatus() {
+        return this.status;
+    }
+
+    /**
      * @param sensorIdInSir
      *        the sensorIdInSir to set
      */
     public void setSensorIdInSir(String sensorIdInSir) {
         this.sensorIdInSir = sensorIdInSir;
-    }
-
-    /**
-     * @return the status
-     */
-    public SirStatus getStatus() {
-        return this.status;
     }
 
     /**

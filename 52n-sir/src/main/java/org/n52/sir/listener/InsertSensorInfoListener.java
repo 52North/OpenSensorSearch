@@ -59,6 +59,8 @@ public class InsertSensorInfoListener implements ISirRequestListener {
      */
     private static Logger log = LoggerFactory.getLogger(InsertSensorInfoListener.class);
 
+    private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorInfo.name();
+
     /**
      * the data access object for the insertSensorInfo operation
      */
@@ -68,8 +70,6 @@ public class InsertSensorInfoListener implements ISirRequestListener {
      * the factory for validators
      */
     private IValidatorFactory validatorFactory;
-
-    private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorInfo.name();
 
     public InsertSensorInfoListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();
@@ -94,63 +94,6 @@ public class InsertSensorInfoListener implements ISirRequestListener {
     @Override
     public String getOperationName() {
         return InsertSensorInfoListener.OPERATION_NAME;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
-    @Override
-    public ISirResponse receiveRequest(AbstractSirRequest request) {
-
-        SirInsertSensorInfoRequest sirRequest = (SirInsertSensorInfoRequest) request;
-        SirInsertSensorInfoResponse response = new SirInsertSensorInfoResponse();
-
-        try {
-            for (SirInfoToBeInserted infoToBeInserted : sirRequest.getInfoToBeInserted()) {
-
-                if (infoToBeInserted instanceof SirInfoToBeInserted_SensorDescription) {
-                    SirInfoToBeInserted_SensorDescription newSensor = (SirInfoToBeInserted_SensorDescription) infoToBeInserted;
-                    SirSensor sensor = SensorMLDecoder.decode(newSensor.getSensorDescription());
-                    sensor.setLastUpdate(new Date());
-
-                    Collection<SirServiceReference> serviceReferences = newSensor.getServiceReferences();
-
-                    // INSERT
-                    insertSensor(response, serviceReferences, sensor);
-                }
-                else if (infoToBeInserted instanceof SirInfoToBeInserted_ServiceReference) {
-                    SirInfoToBeInserted_ServiceReference newReference = (SirInfoToBeInserted_ServiceReference) infoToBeInserted;
-
-                    // INSERT
-                    insertServiceReferences(response, newReference);
-                }
-            }
-        }
-        catch (OwsExceptionReport e) {
-            return new ExceptionResponse(e.getDocument());
-        }
-
-        return response;
-    }
-
-    /**
-     * 
-     * @param response
-     * @param newReference
-     * @throws OwsExceptionReport
-     */
-    private void insertServiceReferences(SirInsertSensorInfoResponse response,
-                                         SirInfoToBeInserted_ServiceReference newReference) throws OwsExceptionReport {
-        Collection<SirServiceReference> referenceArray = newReference.getServiceReferences();
-        for (SirServiceReference sirServiceReference : referenceArray) {
-            String id = this.insSensInfoDao.addNewReference(newReference.getSensorIDinSIR(), sirServiceReference);
-            if (log.isDebugEnabled())
-                log.debug("Inserted service reference for sensor " + id + ": " + sirServiceReference.getService());
-
-            response.setNumberOfNewServiceReferences(response.getNumberOfNewServiceReferences() + 1);
-        }
     }
 
     /**
@@ -205,6 +148,63 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                                  "Missing parameter: To insert a sensor, a sensorInfo element is required!");
             throw se;
         }
+    }
+
+    /**
+     * 
+     * @param response
+     * @param newReference
+     * @throws OwsExceptionReport
+     */
+    private void insertServiceReferences(SirInsertSensorInfoResponse response,
+                                         SirInfoToBeInserted_ServiceReference newReference) throws OwsExceptionReport {
+        Collection<SirServiceReference> referenceArray = newReference.getServiceReferences();
+        for (SirServiceReference sirServiceReference : referenceArray) {
+            String id = this.insSensInfoDao.addNewReference(newReference.getSensorIDinSIR(), sirServiceReference);
+            if (log.isDebugEnabled())
+                log.debug("Inserted service reference for sensor " + id + ": " + sirServiceReference.getService());
+
+            response.setNumberOfNewServiceReferences(response.getNumberOfNewServiceReferences() + 1);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
+     */
+    @Override
+    public ISirResponse receiveRequest(AbstractSirRequest request) {
+
+        SirInsertSensorInfoRequest sirRequest = (SirInsertSensorInfoRequest) request;
+        SirInsertSensorInfoResponse response = new SirInsertSensorInfoResponse();
+
+        try {
+            for (SirInfoToBeInserted infoToBeInserted : sirRequest.getInfoToBeInserted()) {
+
+                if (infoToBeInserted instanceof SirInfoToBeInserted_SensorDescription) {
+                    SirInfoToBeInserted_SensorDescription newSensor = (SirInfoToBeInserted_SensorDescription) infoToBeInserted;
+                    SirSensor sensor = SensorMLDecoder.decode(newSensor.getSensorDescription());
+                    sensor.setLastUpdate(new Date());
+
+                    Collection<SirServiceReference> serviceReferences = newSensor.getServiceReferences();
+
+                    // INSERT
+                    insertSensor(response, serviceReferences, sensor);
+                }
+                else if (infoToBeInserted instanceof SirInfoToBeInserted_ServiceReference) {
+                    SirInfoToBeInserted_ServiceReference newReference = (SirInfoToBeInserted_ServiceReference) infoToBeInserted;
+
+                    // INSERT
+                    insertServiceReferences(response, newReference);
+                }
+            }
+        }
+        catch (OwsExceptionReport e) {
+            return new ExceptionResponse(e.getDocument());
+        }
+
+        return response;
     }
 
 }

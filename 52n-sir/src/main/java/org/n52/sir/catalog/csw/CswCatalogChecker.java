@@ -90,15 +90,49 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.SlotType1;
  */
 public class CswCatalogChecker {
 
-    private static Logger log = LoggerFactory.getLogger(CswCatalogChecker.class);
+    private static Collection<String> acceptedServiceParameters;
 
     private static Collection<String> acceptedServiceTypes;
 
     private static Collection<String> acceptedServiceTypeVersions;
 
-    private static Collection<String> acceptedServiceParameters;
-
     private static Collection<String> acceptedVersionParameters;
+
+    private static List<XmlObject> classificationInitDocs;
+
+    private static final Object EBRIM_NAMESPACE_URI = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
+
+    private static final String GET_RECORDS_REQUEST_OUTPUTFORMAT = "application/xml";
+
+    private static final String GET_RECORDS_REQUEST_SERVICE = "CSW";
+
+    private static final String GET_RECORDS_REQUEST_VERSION = "2.0.2";
+
+    private static final String INSERT_HANDLE_ADD_CLASSIFICATIONS = "InsertClassificationScheme";
+
+    private static Logger log = LoggerFactory.getLogger(CswCatalogChecker.class);
+
+    private static final String POST_ENCODING_CONSTRAINT_NAME = "PostEncoding";
+
+    private static Map<String, String> requiredSlots = new HashMap<String, String>();
+
+    private static String requiredSlotsDocumentId;
+
+    private static boolean saveClassificationsCheckOnRuntime = true;
+
+    private static final String SERVICE_PARAMETER_NAME = "service";
+
+    private static final String SLOT_DESCRIPTION_INSERTION_EO_ID = "urn:sir:id:SlotDefinition";
+
+    private static final Object SLOT_DESRCRIPTION_INSERTION_EO_TYPE = "urn:kzen:ObjectType:SlotDescription";
+
+    private static XmlObject slotInitDoc;
+
+    private static final String SOAP_POST_ENCODING_VALUE = "SOAP";
+
+    private static final String TRANSACTION_OPERATION_NAME = "Transaction";
+
+    private static final String VERSION_PARAMETER_NAME = "version";
 
     static {
         acceptedServiceTypes = new HashSet<String>();
@@ -115,41 +149,7 @@ public class CswCatalogChecker {
         acceptedVersionParameters.add("2.0.2");
     }
 
-    private static final String INSERT_HANDLE_ADD_CLASSIFICATIONS = "InsertClassificationScheme";
-
-    private static final String TRANSACTION_OPERATION_NAME = "Transaction";
-
-    private static final String POST_ENCODING_CONSTRAINT_NAME = "PostEncoding";
-
-    private static final String SOAP_POST_ENCODING_VALUE = "SOAP";
-
-    private static final String VERSION_PARAMETER_NAME = "version";
-
-    private static final String SERVICE_PARAMETER_NAME = "service";
-
-    private static final String GET_RECORDS_REQUEST_SERVICE = "CSW";
-
-    private static final String GET_RECORDS_REQUEST_VERSION = "2.0.2";
-
-    private static final String GET_RECORDS_REQUEST_OUTPUTFORMAT = "application/xml";
-
-    private static final Object SLOT_DESRCRIPTION_INSERTION_EO_TYPE = "urn:kzen:ObjectType:SlotDescription";
-
-    private static final String SLOT_DESCRIPTION_INSERTION_EO_ID = "urn:sir:id:SlotDefinition";
-
-    private static final Object EBRIM_NAMESPACE_URI = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
-
-    private static XmlObject slotInitDoc;
-
     private SimpleSoapCswClient client;
-
-    private static List<XmlObject> classificationInitDocs;
-
-    private static String requiredSlotsDocumentId;
-
-    private static Map<String, String> requiredSlots = new HashMap<String, String>();
-
-    private static boolean saveClassificationsCheckOnRuntime = true;
 
     /**
      * 
@@ -163,6 +163,64 @@ public class CswCatalogChecker {
         this.client = clientP;
         classificationInitDocs = classificationInitDocsP;
         slotInitDoc = slotInitDocP;
+    }
+
+    /**
+     * 
+     * Recursive method that goes through all given {@link ClassificationNodeType}s based ONLY on the ids.
+     * 
+     * @param foundIds
+     * @param cNodes
+     * @param currentRequiredClassificationNodes
+     */
+    private void addFoundNodes(Collection<String> foundIds,
+                               ClassificationNodeType[] cNodes,
+                               Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
+        for (ClassificationNodeType cNode : cNodes) {
+            foundIds.add(cNode.getId());
+
+            if (log.isDebugEnabled())
+                log.debug("Added found id: " + cNode.getId());
+
+            ClassificationNodeType[] ccNodes = cNode.getClassificationNodeArray();
+            addFoundNodes(foundIds, ccNodes, currentRequiredClassificationNodes);
+        }
+    }
+
+    /**
+     * 
+     * Recursive method that goes through all given {@link ClassificationNodeType}s also inspecting if the
+     * correct parents are set.
+     * 
+     * @param foundIds
+     * @param cNodes
+     * @param currentParent
+     * @param requiredClassificationNodes
+     */
+    @SuppressWarnings("unused")
+    private void addFoundNodes(Collection<String> foundIds,
+                               ClassificationNodeType[] cNodes,
+                               String currentParent,
+                               Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
+        for (ClassificationNodeType cNode : cNodes) {
+            Pair<String, String> parentAndCode = currentRequiredClassificationNodes.get(cNode.getId());
+            if (parentAndCode != null && parentAndCode.getFirst().equals(currentParent)) {
+                if (parentAndCode.getSecond() != null && parentAndCode.getSecond().equals(cNode.getCode())) {
+                    foundIds.add(cNode.getId());
+
+                    if (log.isDebugEnabled())
+                        log.debug("Found node: " + XmlTools.inspect(cNode));
+                }
+                // check for child nodes
+                ClassificationNodeType[] ccNodes = cNode.getClassificationNodeArray();
+                addFoundNodes(foundIds, ccNodes, cNode.getId(), currentRequiredClassificationNodes);
+            }
+            else {
+                if (log.isDebugEnabled())
+                    log.debug("Found node that is NOT required (due to current scheme document!): "
+                            + XmlTools.inspect(cNode));
+            }
+        }
     }
 
     /**
@@ -226,186 +284,6 @@ public class CswCatalogChecker {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Checks the given catalog for sufficient capabilities, classification schemes, classification nodes and
-     * slots.
-     * 
-     * @param c
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public boolean checkClient(SimpleSoapCswClient c) throws OwsExceptionReport {
-        if (this.client.isDoNotCheck()) {
-            log.info("This soap client was already successfully checked during runtime or is not suppossed to be checked - not checking (again)!");
-            return true;
-        }
-
-        log.info("Checking if capabilities are sufficient, and if classification schemes, classification nodes and needed slots are present in the catalog @ "
-                + c);
-
-        boolean hasCaps = isCapabilitiesSufficient();
-        boolean hasClassification = checkForClassificationSchemes(c);
-        boolean hasSlots = checkForSlots(c);
-
-        if (log.isDebugEnabled()) {
-            if ( !hasCaps)
-                log.debug("Capabilities not sufficient due to CapabilitiesDocument!");
-            if ( !hasClassification)
-                log.debug("ClassificationSchemes not sufficient!");
-            if ( !hasSlots)
-                log.debug("Slots not sufficient!");
-        }
-
-        if (hasCaps && hasClassification && hasSlots) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 
-     * Use of this method is discouraged. Please use
-     * {@link CswCatalogChecker#checkAndUpdateClient(SimpleSoapCswClient)}. This method simply tries to send
-     * the classification schemes and required slots.
-     * 
-     * @param c
-     * @throws OwsExceptionReport
-     */
-    public void sendRequiredElements(SimpleSoapCswClient c) throws OwsExceptionReport {
-        log.info("Sending required classification schemes, classification nodes and needed slots to the catalog @ " + c);
-
-        sendInsertTransaction(c, slotInitDoc, requiredSlots.size());
-
-        for (XmlObject xmlObj : classificationInitDocs) {
-            int nClassificationSchemes = getClassificationSchemeCount(xmlObj);
-            sendInsertTransaction(c, xmlObj, nClassificationSchemes);
-        }
-    }
-
-    /**
-     * 
-     * Method requests the {@link CapabilitiesDocument} from the service and checks if
-     * 
-     * - at least one of the accepted service types coincide
-     * 
-     * - at least one of the accepted version parameters coincide
-     * 
-     * - at least one of the accepted service parameter names coincide
-     * 
-     * - at least one of the accepted service type versions coincide.
-     * 
-     * - an transaction service operation that supports SOAP is given.
-     * 
-     * @param capabilitiesDoc
-     * @throws OwsExceptionReport
-     */
-    public boolean isCapabilitiesSufficient() throws OwsExceptionReport {
-        // request the document:
-        CapabilitiesDocument capabilitiesDoc = requestCapabilities();
-
-        CapabilitiesType caps = capabilitiesDoc.getCapabilities();
-        ServiceIdentification serviceIdent = caps.getServiceIdentification();
-
-        // check if service type is acceptable
-        if ( !acceptedServiceTypes.contains(serviceIdent.getServiceType().getStringValue())) {
-            log.warn("Error checking sufficiency of capabilities: No accepted service type ("
-                    + Arrays.toString(acceptedServiceTypes.toArray()) + ") found!");
-            return false;
-        }
-
-        // check if version parameter is acceptable
-        DomainType[] parameters = caps.getOperationsMetadata().getParameterArray();
-        for (DomainType domainType : parameters) {
-            if (domainType.getName().equalsIgnoreCase(VERSION_PARAMETER_NAME)) {
-                if ( !firstContainsAtLeastOneOfSecond(acceptedVersionParameters,
-                                                      Arrays.asList(domainType.getValueArray()))) {
-                    log.warn("Error checking sufficiency of capabilities: No accepted version parameter ("
-                            + Arrays.toString(acceptedVersionParameters.toArray()) + ") found!");
-                    return false;
-                }
-                break;
-            }
-        }
-
-        // check if service parameter is acceptable
-        for (DomainType domainType : parameters) {
-            if (domainType.getName().equalsIgnoreCase(SERVICE_PARAMETER_NAME)) {
-                if ( !firstContainsAtLeastOneOfSecond(acceptedServiceParameters,
-                                                      Arrays.asList(domainType.getValueArray()))) {
-                    log.warn("Error checking sufficiency of capabilities: No accepted service parameter ("
-                            + Arrays.toString(acceptedServiceParameters.toArray()) + ") found!");
-                    return false;
-                }
-                break;
-            }
-        }
-
-        // check if service type version is acceptable
-        if ( !firstContainsAtLeastOneOfSecond(acceptedServiceTypeVersions,
-                                              Arrays.asList(serviceIdent.getServiceTypeVersionArray()))) {
-            log.warn("Error checking sufficiency of capabilities: No accepted service type version ("
-                    + Arrays.toString(acceptedServiceTypeVersions.toArray()) + ") found!");
-            return false;
-        }
-
-        // check if transaction operation via HTTP-Post for a SOAP PostEncoding is present
-        Operation[] operations = caps.getOperationsMetadata().getOperationArray();
-        boolean foundIt = false;
-        for (Operation operation : operations) {
-            if (operation.getName().equalsIgnoreCase(TRANSACTION_OPERATION_NAME)) {
-                DCP[] dcps = operation.getDCPArray();
-                for (DCP dcp : dcps) {
-                    RequestMethodType[] posts = dcp.getHTTP().getPostArray();
-                    for (RequestMethodType requestMethodType : posts) {
-                        DomainType[] constraints = requestMethodType.getConstraintArray();
-                        for (DomainType domainType : constraints) {
-                            if (domainType.getName().equals(POST_ENCODING_CONSTRAINT_NAME)) {
-                                List<String> values = Arrays.asList(domainType.getValueArray());
-                                if (values.contains(SOAP_POST_ENCODING_VALUE)) {
-                                    foundIt = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if ( !foundIt) {
-            log.warn("Error checking sufficiency of capabilities: Did not find the needed value "
-                    + SOAP_POST_ENCODING_VALUE + " of a constraint " + POST_ENCODING_CONSTRAINT_NAME
-                    + " for an HTTP DCP of an operation named " + TRANSACTION_OPERATION_NAME);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Method calls {@link CswCatalogChecker#checkClassificationScheme(SimpleSoapCswClient, XmlObject)} with
-     * every object from the internal list and returnes the combined result.
-     * 
-     * @param c
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private boolean checkForClassificationSchemes(SimpleSoapCswClient c) throws OwsExceptionReport {
-        boolean all = true;
-
-        for (XmlObject xmlObj : classificationInitDocs) {
-            boolean passed = checkClassificationScheme(c, xmlObj);
-            if ( !passed) {
-                all = false;
-                log.warn("Classification scheme did NOT pass test: " + XmlTools.inspect(xmlObj));
-            }
-            else {
-                log.info("Classification scheme passed test: " + XmlTools.inspect(xmlObj));
-            }
-        }
-
-        return all;
     }
 
     /**
@@ -551,152 +429,64 @@ public class CswCatalogChecker {
     }
 
     /**
+     * Checks the given catalog for sufficient capabilities, classification schemes, classification nodes and
+     * slots.
      * 
-     * @param xmlObj
+     * @param c
      * @return
+     * @throws OwsExceptionReport
      */
-    private int getClassificationSchemeCount(XmlObject xmlObj) {
-        int returnValue = Integer.MAX_VALUE;
-
-        // several classification schemes in RegistryObjectList
-        if (xmlObj instanceof RegistryObjectListDocument) {
-            RegistryObjectListDocument rold = (RegistryObjectListDocument) xmlObj;
-            IdentifiableType[] list = rold.getRegistryObjectList().getIdentifiableArray();
-
-            Map<String, String> currentRequiredClassificationSchemes = new HashMap<String, String>();
-            Map<String, Pair<String, String>> currentRequiredClassificationNodes = new HashMap<String, Pair<String, String>>();
-            parseClassificationSchemesAndNodes(list,
-                                               currentRequiredClassificationSchemes,
-                                               currentRequiredClassificationNodes);
-
-            int n = Integer.valueOf(currentRequiredClassificationSchemes.size()).intValue();
-            currentRequiredClassificationSchemes = null;
-
-            returnValue = n;
+    public boolean checkClient(SimpleSoapCswClient c) throws OwsExceptionReport {
+        if (this.client.isDoNotCheck()) {
+            log.info("This soap client was already successfully checked during runtime or is not suppossed to be checked - not checking (again)!");
+            return true;
         }
 
-        // just a classification scheme
-        if (xmlObj instanceof ClassificationSchemeDocument) {
-            returnValue = 1;
+        log.info("Checking if capabilities are sufficient, and if classification schemes, classification nodes and needed slots are present in the catalog @ "
+                + c);
+
+        boolean hasCaps = isCapabilitiesSufficient();
+        boolean hasClassification = checkForClassificationSchemes(c);
+        boolean hasSlots = checkForSlots(c);
+
+        if (log.isDebugEnabled()) {
+            if ( !hasCaps)
+                log.debug("Capabilities not sufficient due to CapabilitiesDocument!");
+            if ( !hasClassification)
+                log.debug("ClassificationSchemes not sufficient!");
+            if ( !hasSlots)
+                log.debug("Slots not sufficient!");
         }
 
-        if (returnValue == Integer.MAX_VALUE)
-            log.warn("Could not extract number of classification schemes from given document, returning " + returnValue
-                    + ". Document is: " + XmlTools.inspect(xmlObj));
-
-        return returnValue;
+        if (hasCaps && hasClassification && hasSlots) {
+            return true;
+        }
+        return false;
     }
 
     /**
-     * @param list
-     * @param requiredClassificationNodes
+     * Method calls {@link CswCatalogChecker#checkClassificationScheme(SimpleSoapCswClient, XmlObject)} with
+     * every object from the internal list and returnes the combined result.
+     * 
+     * @param c
+     * @return
+     * @throws OwsExceptionReport
      */
-    private void parseClassificationSchemesAndNodes(IdentifiableType[] list,
-                                                    Map<String, String> currentRequiredClassificationSchemes,
-                                                    Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
-        for (IdentifiableType identifiableType : list) {
-            if (identifiableType instanceof ClassificationSchemeType) {
-                ClassificationSchemeType cs = (ClassificationSchemeType) identifiableType;
+    private boolean checkForClassificationSchemes(SimpleSoapCswClient c) throws OwsExceptionReport {
+        boolean all = true;
 
-                currentRequiredClassificationSchemes.put(cs.getId(), cs.getNodeType());
-                parseClassificationNodes(cs.getClassificationNodeArray(), currentRequiredClassificationNodes);
-
-                if (log.isDebugEnabled())
-                    log.debug("Added Scheme to required list: " + XmlTools.inspect(cs));
-
-                // process internal ClassificationNodes happens below, do not need to get deeper in hierarchy
-                // as list contains all elements...
-                // parseClassificationNodes(cs.getClassificationNodeArray(),
-                // currentRequiredClassificationNodes);
-
-                continue;
-            }
-            if (identifiableType instanceof ClassificationNodeType) {
-                ClassificationNodeType cn = (ClassificationNodeType) identifiableType;
-                currentRequiredClassificationNodes.put(cn.getId(),
-                                                       new Pair<String, String>(cn.getParent(), cn.getCode()));
-                if (log.isDebugEnabled()) {
-                    log.debug("Added Node to required list: " + XmlTools.inspect(cn));
-                }
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param classificationNodeArray
-     * @param requiredClassificationNodes
-     */
-    private void parseClassificationNodes(ClassificationNodeType[] classificationNodeArray,
-                                          Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
-        for (ClassificationNodeType cNode : classificationNodeArray) {
-            currentRequiredClassificationNodes.put(cNode.getId(),
-                                                   new Pair<String, String>(cNode.getParent(), cNode.getCode()));
-
-            if (log.isDebugEnabled())
-                log.debug("Added Node to required list: " + XmlTools.inspect(cNode));
-
-            // process child nodes
-            parseClassificationNodes(cNode.getClassificationNodeArray(), currentRequiredClassificationNodes);
-        }
-    }
-
-    /**
-     * 
-     * Recursive method that goes through all given {@link ClassificationNodeType}s based ONLY on the ids.
-     * 
-     * @param foundIds
-     * @param cNodes
-     * @param currentRequiredClassificationNodes
-     */
-    private void addFoundNodes(Collection<String> foundIds,
-                               ClassificationNodeType[] cNodes,
-                               Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
-        for (ClassificationNodeType cNode : cNodes) {
-            foundIds.add(cNode.getId());
-
-            if (log.isDebugEnabled())
-                log.debug("Added found id: " + cNode.getId());
-
-            ClassificationNodeType[] ccNodes = cNode.getClassificationNodeArray();
-            addFoundNodes(foundIds, ccNodes, currentRequiredClassificationNodes);
-        }
-    }
-
-    /**
-     * 
-     * Recursive method that goes through all given {@link ClassificationNodeType}s also inspecting if the
-     * correct parents are set.
-     * 
-     * @param foundIds
-     * @param cNodes
-     * @param currentParent
-     * @param requiredClassificationNodes
-     */
-    @SuppressWarnings("unused")
-    private void addFoundNodes(Collection<String> foundIds,
-                               ClassificationNodeType[] cNodes,
-                               String currentParent,
-                               Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
-        for (ClassificationNodeType cNode : cNodes) {
-            Pair<String, String> parentAndCode = currentRequiredClassificationNodes.get(cNode.getId());
-            if (parentAndCode != null && parentAndCode.getFirst().equals(currentParent)) {
-                if (parentAndCode.getSecond() != null && parentAndCode.getSecond().equals(cNode.getCode())) {
-                    foundIds.add(cNode.getId());
-
-                    if (log.isDebugEnabled())
-                        log.debug("Found node: " + XmlTools.inspect(cNode));
-                }
-                // check for child nodes
-                ClassificationNodeType[] ccNodes = cNode.getClassificationNodeArray();
-                addFoundNodes(foundIds, ccNodes, cNode.getId(), currentRequiredClassificationNodes);
+        for (XmlObject xmlObj : classificationInitDocs) {
+            boolean passed = checkClassificationScheme(c, xmlObj);
+            if ( !passed) {
+                all = false;
+                log.warn("Classification scheme did NOT pass test: " + XmlTools.inspect(xmlObj));
             }
             else {
-                if (log.isDebugEnabled())
-                    log.debug("Found node that is NOT required (due to current scheme document!): "
-                            + XmlTools.inspect(cNode));
+                log.info("Classification scheme passed test: " + XmlTools.inspect(xmlObj));
             }
         }
+
+        return all;
     }
 
     /**
@@ -843,6 +633,248 @@ public class CswCatalogChecker {
     }
 
     /**
+     * Method checks if at least one element of the second collection is present in the first collection.
+     * "true" is returned as soon as the first occurence of such an element is found.
+     * 
+     * @param first
+     * @param second
+     * @return
+     */
+    private boolean firstContainsAtLeastOneOfSecond(Collection<String> first, Collection<String> second) {
+        for (String stringOfSecond : second) {
+            if (first.contains(stringOfSecond))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * 
+     * @param xmlObj
+     * @return
+     */
+    private int getClassificationSchemeCount(XmlObject xmlObj) {
+        int returnValue = Integer.MAX_VALUE;
+
+        // several classification schemes in RegistryObjectList
+        if (xmlObj instanceof RegistryObjectListDocument) {
+            RegistryObjectListDocument rold = (RegistryObjectListDocument) xmlObj;
+            IdentifiableType[] list = rold.getRegistryObjectList().getIdentifiableArray();
+
+            Map<String, String> currentRequiredClassificationSchemes = new HashMap<String, String>();
+            Map<String, Pair<String, String>> currentRequiredClassificationNodes = new HashMap<String, Pair<String, String>>();
+            parseClassificationSchemesAndNodes(list,
+                                               currentRequiredClassificationSchemes,
+                                               currentRequiredClassificationNodes);
+
+            int n = Integer.valueOf(currentRequiredClassificationSchemes.size()).intValue();
+            currentRequiredClassificationSchemes = null;
+
+            returnValue = n;
+        }
+
+        // just a classification scheme
+        if (xmlObj instanceof ClassificationSchemeDocument) {
+            returnValue = 1;
+        }
+
+        if (returnValue == Integer.MAX_VALUE)
+            log.warn("Could not extract number of classification schemes from given document, returning " + returnValue
+                    + ". Document is: " + XmlTools.inspect(xmlObj));
+
+        return returnValue;
+    }
+
+    /**
+     * 
+     * Method tries to parse given message's content to a {@link TransactionResponseDocument} and extract the
+     * number of totally inserted elements. If it is smaller than the expected inserted documents an error is
+     * logged. If the message is a {@link SOAPFault} an exception is thrown.
+     * 
+     * @param responseString
+     * @throws OwsExceptionReport
+     */
+    private void handleResponse(SOAPMessage message, int expectedInsertions) throws OwsExceptionReport {
+        // try parsing content to TransactionResponseDocument
+        try {
+            XmlObject content = this.client.extractContent(message);
+            TransactionResponseDocument transactionRespDoc = TransactionResponseDocument.Factory.parse(content.getDomNode());
+
+            // check if correct count was inserted
+            TransactionResponseType transactionResp = transactionRespDoc.getTransactionResponse();
+            TransactionSummaryType transactionSummary = transactionResp.getTransactionSummary();
+
+            if (transactionSummary.getTotalInserted().intValue() < expectedInsertions) {
+                log.error("Insert Transaction did not complete succesfully! Wanted to insert " + expectedInsertions
+                        + " documents but only " + transactionSummary.getTotalInserted() + " were inserted!");
+            }
+            log.info("### RESPONSE FOR INSERT TRANSACTION ###\n" + XmlTools.inspect(transactionResp));
+
+            return;
+        }
+        catch (XmlException e) {
+            log.warn("Could not parse response to TransactionResponseDocument. Maybe it's a Fault?", e);
+        }
+
+        // check for fault
+        SOAPFault f = this.client.extractFault(message);
+        throw new OwsExceptionReport("FAULT RETURNED VIA SOAP:\n" + SoapTools.inspect(f), null);
+    }
+
+    /**
+     * 
+     * Method requests the {@link CapabilitiesDocument} from the service and checks if
+     * 
+     * - at least one of the accepted service types coincide
+     * 
+     * - at least one of the accepted version parameters coincide
+     * 
+     * - at least one of the accepted service parameter names coincide
+     * 
+     * - at least one of the accepted service type versions coincide.
+     * 
+     * - an transaction service operation that supports SOAP is given.
+     * 
+     * @param capabilitiesDoc
+     * @throws OwsExceptionReport
+     */
+    public boolean isCapabilitiesSufficient() throws OwsExceptionReport {
+        // request the document:
+        CapabilitiesDocument capabilitiesDoc = requestCapabilities();
+
+        CapabilitiesType caps = capabilitiesDoc.getCapabilities();
+        ServiceIdentification serviceIdent = caps.getServiceIdentification();
+
+        // check if service type is acceptable
+        if ( !acceptedServiceTypes.contains(serviceIdent.getServiceType().getStringValue())) {
+            log.warn("Error checking sufficiency of capabilities: No accepted service type ("
+                    + Arrays.toString(acceptedServiceTypes.toArray()) + ") found!");
+            return false;
+        }
+
+        // check if version parameter is acceptable
+        DomainType[] parameters = caps.getOperationsMetadata().getParameterArray();
+        for (DomainType domainType : parameters) {
+            if (domainType.getName().equalsIgnoreCase(VERSION_PARAMETER_NAME)) {
+                if ( !firstContainsAtLeastOneOfSecond(acceptedVersionParameters,
+                                                      Arrays.asList(domainType.getValueArray()))) {
+                    log.warn("Error checking sufficiency of capabilities: No accepted version parameter ("
+                            + Arrays.toString(acceptedVersionParameters.toArray()) + ") found!");
+                    return false;
+                }
+                break;
+            }
+        }
+
+        // check if service parameter is acceptable
+        for (DomainType domainType : parameters) {
+            if (domainType.getName().equalsIgnoreCase(SERVICE_PARAMETER_NAME)) {
+                if ( !firstContainsAtLeastOneOfSecond(acceptedServiceParameters,
+                                                      Arrays.asList(domainType.getValueArray()))) {
+                    log.warn("Error checking sufficiency of capabilities: No accepted service parameter ("
+                            + Arrays.toString(acceptedServiceParameters.toArray()) + ") found!");
+                    return false;
+                }
+                break;
+            }
+        }
+
+        // check if service type version is acceptable
+        if ( !firstContainsAtLeastOneOfSecond(acceptedServiceTypeVersions,
+                                              Arrays.asList(serviceIdent.getServiceTypeVersionArray()))) {
+            log.warn("Error checking sufficiency of capabilities: No accepted service type version ("
+                    + Arrays.toString(acceptedServiceTypeVersions.toArray()) + ") found!");
+            return false;
+        }
+
+        // check if transaction operation via HTTP-Post for a SOAP PostEncoding is present
+        Operation[] operations = caps.getOperationsMetadata().getOperationArray();
+        boolean foundIt = false;
+        for (Operation operation : operations) {
+            if (operation.getName().equalsIgnoreCase(TRANSACTION_OPERATION_NAME)) {
+                DCP[] dcps = operation.getDCPArray();
+                for (DCP dcp : dcps) {
+                    RequestMethodType[] posts = dcp.getHTTP().getPostArray();
+                    for (RequestMethodType requestMethodType : posts) {
+                        DomainType[] constraints = requestMethodType.getConstraintArray();
+                        for (DomainType domainType : constraints) {
+                            if (domainType.getName().equals(POST_ENCODING_CONSTRAINT_NAME)) {
+                                List<String> values = Arrays.asList(domainType.getValueArray());
+                                if (values.contains(SOAP_POST_ENCODING_VALUE)) {
+                                    foundIt = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ( !foundIt) {
+            log.warn("Error checking sufficiency of capabilities: Did not find the needed value "
+                    + SOAP_POST_ENCODING_VALUE + " of a constraint " + POST_ENCODING_CONSTRAINT_NAME
+                    + " for an HTTP DCP of an operation named " + TRANSACTION_OPERATION_NAME);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 
+     * @param classificationNodeArray
+     * @param requiredClassificationNodes
+     */
+    private void parseClassificationNodes(ClassificationNodeType[] classificationNodeArray,
+                                          Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
+        for (ClassificationNodeType cNode : classificationNodeArray) {
+            currentRequiredClassificationNodes.put(cNode.getId(),
+                                                   new Pair<String, String>(cNode.getParent(), cNode.getCode()));
+
+            if (log.isDebugEnabled())
+                log.debug("Added Node to required list: " + XmlTools.inspect(cNode));
+
+            // process child nodes
+            parseClassificationNodes(cNode.getClassificationNodeArray(), currentRequiredClassificationNodes);
+        }
+    }
+
+    /**
+     * @param list
+     * @param requiredClassificationNodes
+     */
+    private void parseClassificationSchemesAndNodes(IdentifiableType[] list,
+                                                    Map<String, String> currentRequiredClassificationSchemes,
+                                                    Map<String, Pair<String, String>> currentRequiredClassificationNodes) {
+        for (IdentifiableType identifiableType : list) {
+            if (identifiableType instanceof ClassificationSchemeType) {
+                ClassificationSchemeType cs = (ClassificationSchemeType) identifiableType;
+
+                currentRequiredClassificationSchemes.put(cs.getId(), cs.getNodeType());
+                parseClassificationNodes(cs.getClassificationNodeArray(), currentRequiredClassificationNodes);
+
+                if (log.isDebugEnabled())
+                    log.debug("Added Scheme to required list: " + XmlTools.inspect(cs));
+
+                // process internal ClassificationNodes happens below, do not need to get deeper in hierarchy
+                // as list contains all elements...
+                // parseClassificationNodes(cs.getClassificationNodeArray(),
+                // currentRequiredClassificationNodes);
+
+                continue;
+            }
+            if (identifiableType instanceof ClassificationNodeType) {
+                ClassificationNodeType cn = (ClassificationNodeType) identifiableType;
+                currentRequiredClassificationNodes.put(cn.getId(),
+                                                       new Pair<String, String>(cn.getParent(), cn.getCode()));
+                if (log.isDebugEnabled()) {
+                    log.debug("Added Node to required list: " + XmlTools.inspect(cn));
+                }
+            }
+        }
+    }
+
+    /**
      * 
      * @return
      * @throws OwsExceptionReport
@@ -919,54 +951,22 @@ public class CswCatalogChecker {
 
     /**
      * 
-     * Method tries to parse given message's content to a {@link TransactionResponseDocument} and extract the
-     * number of totally inserted elements. If it is smaller than the expected inserted documents an error is
-     * logged. If the message is a {@link SOAPFault} an exception is thrown.
+     * Use of this method is discouraged. Please use
+     * {@link CswCatalogChecker#checkAndUpdateClient(SimpleSoapCswClient)}. This method simply tries to send
+     * the classification schemes and required slots.
      * 
-     * @param responseString
+     * @param c
      * @throws OwsExceptionReport
      */
-    private void handleResponse(SOAPMessage message, int expectedInsertions) throws OwsExceptionReport {
-        // try parsing content to TransactionResponseDocument
-        try {
-            XmlObject content = this.client.extractContent(message);
-            TransactionResponseDocument transactionRespDoc = TransactionResponseDocument.Factory.parse(content.getDomNode());
+    public void sendRequiredElements(SimpleSoapCswClient c) throws OwsExceptionReport {
+        log.info("Sending required classification schemes, classification nodes and needed slots to the catalog @ " + c);
 
-            // check if correct count was inserted
-            TransactionResponseType transactionResp = transactionRespDoc.getTransactionResponse();
-            TransactionSummaryType transactionSummary = transactionResp.getTransactionSummary();
+        sendInsertTransaction(c, slotInitDoc, requiredSlots.size());
 
-            if (transactionSummary.getTotalInserted().intValue() < expectedInsertions) {
-                log.error("Insert Transaction did not complete succesfully! Wanted to insert " + expectedInsertions
-                        + " documents but only " + transactionSummary.getTotalInserted() + " were inserted!");
-            }
-            log.info("### RESPONSE FOR INSERT TRANSACTION ###\n" + XmlTools.inspect(transactionResp));
-
-            return;
+        for (XmlObject xmlObj : classificationInitDocs) {
+            int nClassificationSchemes = getClassificationSchemeCount(xmlObj);
+            sendInsertTransaction(c, xmlObj, nClassificationSchemes);
         }
-        catch (XmlException e) {
-            log.warn("Could not parse response to TransactionResponseDocument. Maybe it's a Fault?", e);
-        }
-
-        // check for fault
-        SOAPFault f = this.client.extractFault(message);
-        throw new OwsExceptionReport("FAULT RETURNED VIA SOAP:\n" + SoapTools.inspect(f), null);
-    }
-
-    /**
-     * Method checks if at least one element of the second collection is present in the first collection.
-     * "true" is returned as soon as the first occurence of such an element is found.
-     * 
-     * @param first
-     * @param second
-     * @return
-     */
-    private boolean firstContainsAtLeastOneOfSecond(Collection<String> first, Collection<String> second) {
-        for (String stringOfSecond : second) {
-            if (first.contains(stringOfSecond))
-                return true;
-        }
-        return false;
     }
 
 }

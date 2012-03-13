@@ -108,212 +108,6 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
     private static Logger log = LoggerFactory.getLogger(HttpPostRequestDecoder.class);
 
-    @Override
-    public AbstractSirRequest receiveRequest(String docString) throws OwsExceptionReport {
-        AbstractSirRequest request = null;
-
-        XmlObject doc = null;
-
-        try {
-            doc = XmlObject.Factory.parse(docString);
-        }
-        catch (XmlException e) {
-            log.error("Error while parsing xml request!");
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 null,
-                                 "Error while parsing the post request: " + e.getMessage());
-            throw se;
-        }
-
-        // getCapabilitiesRequest
-        if (doc instanceof GetCapabilitiesDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post getCapabilities request");
-            GetCapabilitiesDocument getCapDoc = (GetCapabilitiesDocument) doc;
-            request = decodeGetCapabilities(getCapDoc);
-        }
-
-        // harvestServiceRequest
-        else if (doc instanceof HarvestServiceRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post harvestService request");
-            HarvestServiceRequestDocument harvServDoc = (HarvestServiceRequestDocument) doc;
-            request = decodeHarvestServiceRequest(harvServDoc);
-        }
-
-        // describeSensorRequest
-        else if (doc instanceof DescribeSensorRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post describeSensor request");
-            DescribeSensorRequestDocument descSensDoc = (DescribeSensorRequestDocument) doc;
-            request = decodeDescribeSensorRequest(descSensDoc);
-        }
-
-        // insertSensorStatusRequest
-        else if (doc instanceof InsertSensorStatusRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post insertSensorStatus request");
-            InsertSensorStatusRequestDocument insSensStatDoc = (InsertSensorStatusRequestDocument) doc;
-            request = decodeInsertSensorStatusRequest(insSensStatDoc);
-        }
-
-        // insertSensorInfoRequest
-        else if (doc instanceof InsertSensorInfoRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post insertSensorInfo request");
-            InsertSensorInfoRequestDocument insSensInfoDoc = (InsertSensorInfoRequestDocument) doc;
-            request = decodeInsertSensorInfoRequest(insSensInfoDoc);
-        }
-
-        // deleteSensorInfoRequest
-        else if (doc instanceof DeleteSensorInfoRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post deleteSensorInfo request");
-            DeleteSensorInfoRequestDocument delSensInfoDoc = (DeleteSensorInfoRequestDocument) doc;
-            request = decodeDeleteSensorInfoRequest(delSensInfoDoc);
-        }
-
-        // updateSensorDescriptionRequest
-        else if (doc instanceof UpdateSensorDescriptionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post updateSensorDescription request");
-            UpdateSensorDescriptionRequestDocument updSensDescrDoc = (UpdateSensorDescriptionRequestDocument) doc;
-            request = decodeUpdateSensorDescriptionRequest(updSensDescrDoc);
-        }
-
-        // searchSensorRequest
-        else if (doc instanceof SearchSensorRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post searchSensor request");
-            SearchSensorRequestDocument searchSensDoc = (SearchSensorRequestDocument) doc;
-            request = decodeSearchSensorRequest(searchSensDoc);
-        }
-
-        // getSensorStatusRequest
-        else if (doc instanceof GetSensorStatusRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post getSensorStatus request");
-            GetSensorStatusRequestDocument getSensStatDoc = (GetSensorStatusRequestDocument) doc;
-            request = decodeGetSensorStatusRequest(getSensStatDoc);
-        }
-
-        // connectToCatalogRequest
-        else if (doc instanceof ConnectToCatalogRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post connectToCatalog request");
-            ConnectToCatalogRequestDocument conToCatDoc = (ConnectToCatalogRequestDocument) doc;
-            request = decodeConnectToCatalogRequest(conToCatDoc);
-        }
-
-        // disconnectFromCatalogRequest
-        else if (doc instanceof DisconnectFromCatalogRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post disconnectFromCatalog request");
-            DisconnectFromCatalogRequestDocument disconFromCatDoc = (DisconnectFromCatalogRequestDocument) doc;
-            request = decodeDisconnectFromCatalogRequest(disconFromCatDoc);
-        }
-
-        // not implemented: status subscription handling:
-        else if (doc instanceof SubscribeSensorStatusRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post subscribeSensorStatus request");
-            request = new SirSubscriptionRequest(SirConstants.Operations.SubscribeSensorStatus.name());
-        }
-        else if (doc instanceof RenewSensorStatusSubscriptionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post renewSensorStatusSubscription request");
-            request = new SirSubscriptionRequest(SirConstants.Operations.RenewSensorStatusSubscription.name());
-        }
-        else if (doc instanceof CancelSensorStatusSubscriptionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post cancelSensorStatusSubscription request");
-            request = new SirSubscriptionRequest(SirConstants.Operations.CancelSensorStatusSubscription.name());
-        }
-
-        if (request == null) {
-            log.error("Invalid Request!");
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, "The request is invalid! ");
-            throw se;
-        }
-        return request;
-    }
-
-    private AbstractSirRequest decodeDeleteSensorInfoRequest(DeleteSensorInfoRequestDocument delSensInfoDoc) throws OwsExceptionReport {
-        SirDeleteSensorInfoRequest sirRequest = new SirDeleteSensorInfoRequest();
-        Collection<SirInfoToBeDeleted> deleteInfos = new ArrayList<SirInfoToBeDeleted>();
-
-        InfoToBeDeleted[] infos = delSensInfoDoc.getDeleteSensorInfoRequest().getInfoToBeDeletedArray();
-
-        for (InfoToBeDeleted infoToBeDeleted : infos) {
-            SirInfoToBeDeleted itbd = new SirInfoToBeDeleted();
-            itbd.setSensorIdentification(decodeSensorIdentification(infoToBeDeleted.getSensorIdentification()));
-
-            if (infoToBeDeleted.isSetDeleteSensor()) {
-                itbd.setDeleteSensor(infoToBeDeleted.getDeleteSensor());
-            }
-
-            if (infoToBeDeleted.isSetServiceInfo()) {
-                itbd.setServiceInfo(decodeServiceInfo(infoToBeDeleted.getServiceInfo()));
-            }
-
-            deleteInfos.add(itbd);
-        }
-
-        sirRequest.setInfoToBeDeleted(deleteInfos);
-
-        return sirRequest;
-    }
-
-    private SirServiceInfo decodeServiceInfo(ServiceInfo serviceInfo) {
-        ServiceReference[] serviceReferenceArray = serviceInfo.getServiceReferenceArray();
-        Collection<SirServiceReference> decodedReferences = new ArrayList<SirServiceReference>();
-
-        for (ServiceReference serviceReference : serviceReferenceArray) {
-            SirServiceReference newRef = new SirServiceReference(new SirService(serviceReference.getServiceURL(),
-                                                                                serviceReference.getServiceType()),
-                                                                 serviceReference.getServiceSpecificSensorID());
-            decodedReferences.add(newRef);
-        }
-
-        SirServiceInfo decodedInfo = new SirServiceInfo(decodedReferences);
-
-        return decodedInfo;
-    }
-
-    private AbstractSirRequest decodeUpdateSensorDescriptionRequest(UpdateSensorDescriptionRequestDocument updSensDescrDoc) throws OwsExceptionReport {
-        SirUpdateSensorDescriptionRequest sirRequest = new SirUpdateSensorDescriptionRequest();
-        Collection<SirDescriptionToBeUpdated> descriptionsToBeUpdated = new ArrayList<SirDescriptionToBeUpdated>();
-
-        SensorDescriptionToBeUpdated[] sensors = updSensDescrDoc.getUpdateSensorDescriptionRequest().getSensorDescriptionToBeUpdatedArray();
-
-        for (SensorDescriptionToBeUpdated sensorDescriptionToBeUpdated : sensors) {
-            SirDescriptionToBeUpdated sdtbu = new SirDescriptionToBeUpdated();
-            sdtbu.setSensorIdentification(decodeSensorIdentification(sensorDescriptionToBeUpdated.getSensorIdentification()));
-            sdtbu.setSensorDescription(sensorDescriptionToBeUpdated.getSensorDescription());
-
-            descriptionsToBeUpdated.add(sdtbu);
-        }
-
-        sirRequest.setDescriptionToBeUpdated(descriptionsToBeUpdated);
-
-        return sirRequest;
-    }
-
-    private AbstractSirRequest decodeDisconnectFromCatalogRequest(DisconnectFromCatalogRequestDocument disconFromCatDoc) {
-        SirDisconnectFromCatalogRequest sirRequest = new SirDisconnectFromCatalogRequest();
-        if (disconFromCatDoc.getDisconnectFromCatalogRequest().getCatalogURL() != null) {
-            sirRequest.setCswURL(disconFromCatDoc.getDisconnectFromCatalogRequest().getCatalogURL());
-        }
-        else {
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(ExceptionCode.InvalidParameterValue, null, "&lt;cswURL&gt; is missing");
-            log.error("&lt;cswURL&gt; is missing!");
-        }
-        return sirRequest;
-    }
-
     private AbstractSirRequest decodeConnectToCatalogRequest(ConnectToCatalogRequestDocument conToCatDoc) throws OwsExceptionReport {
         SirConnectToCatalogRequest sirRequest = new SirConnectToCatalogRequest();
         // csw url
@@ -347,6 +141,104 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
                 log.error("The update interval is not positive!");
                 throw se;
             }
+        }
+        return sirRequest;
+    }
+
+    private AbstractSirRequest decodeDeleteSensorInfoRequest(DeleteSensorInfoRequestDocument delSensInfoDoc) throws OwsExceptionReport {
+        SirDeleteSensorInfoRequest sirRequest = new SirDeleteSensorInfoRequest();
+        Collection<SirInfoToBeDeleted> deleteInfos = new ArrayList<SirInfoToBeDeleted>();
+
+        InfoToBeDeleted[] infos = delSensInfoDoc.getDeleteSensorInfoRequest().getInfoToBeDeletedArray();
+
+        for (InfoToBeDeleted infoToBeDeleted : infos) {
+            SirInfoToBeDeleted itbd = new SirInfoToBeDeleted();
+            itbd.setSensorIdentification(decodeSensorIdentification(infoToBeDeleted.getSensorIdentification()));
+
+            if (infoToBeDeleted.isSetDeleteSensor()) {
+                itbd.setDeleteSensor(infoToBeDeleted.getDeleteSensor());
+            }
+
+            if (infoToBeDeleted.isSetServiceInfo()) {
+                itbd.setServiceInfo(decodeServiceInfo(infoToBeDeleted.getServiceInfo()));
+            }
+
+            deleteInfos.add(itbd);
+        }
+
+        sirRequest.setInfoToBeDeleted(deleteInfos);
+
+        return sirRequest;
+    }
+
+    /**
+     * 
+     * @param descSensDoc
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private AbstractSirRequest decodeDescribeSensorRequest(DescribeSensorRequestDocument descSensDoc) throws OwsExceptionReport {
+        SirDescribeSensorRequest sirRequest = new SirDescribeSensorRequest();
+
+        if (descSensDoc.getDescribeSensorRequest().getSensorIDInSIR() != null) {
+            sirRequest.setSensorIdInSir(descSensDoc.getDescribeSensorRequest().getSensorIDInSIR());
+        }
+        else {
+            log.error("&lt;sensorIDInSIR&gt; is missing!");
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(ExceptionCode.InvalidRequest,
+                                 "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
+                                 "&lt;sensorIDInSIR&gt; is missing!");
+            throw se;
+        }
+        return sirRequest;
+    }
+
+    private AbstractSirRequest decodeDisconnectFromCatalogRequest(DisconnectFromCatalogRequestDocument disconFromCatDoc) {
+        SirDisconnectFromCatalogRequest sirRequest = new SirDisconnectFromCatalogRequest();
+        if (disconFromCatDoc.getDisconnectFromCatalogRequest().getCatalogURL() != null) {
+            sirRequest.setCswURL(disconFromCatDoc.getDisconnectFromCatalogRequest().getCatalogURL());
+        }
+        else {
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(ExceptionCode.InvalidParameterValue, null, "&lt;cswURL&gt; is missing");
+            log.error("&lt;cswURL&gt; is missing!");
+        }
+        return sirRequest;
+    }
+
+    /**
+     * 
+     * @param getCapDoc
+     * @return
+     */
+    private AbstractSirRequest decodeGetCapabilities(GetCapabilitiesDocument getCapDoc) {
+        SirGetCapabilitiesRequest sirRequest = new SirGetCapabilitiesRequest();
+        GetCapabilities getCaps = getCapDoc.getGetCapabilities();
+        // test
+        // getCaps.addNewAcceptVersions();
+
+        // service
+        sirRequest.setService(getCaps.getService());
+
+        // acceptVersions
+        if (getCaps.isSetAcceptVersions()) {
+            sirRequest.setAcceptVersions(getCaps.getAcceptVersions().getVersionArray());
+        }
+
+        // sections
+        if (getCaps.isSetSections()) {
+            sirRequest.setSections(getCaps.getSections().getSectionArray());
+        }
+
+        // updateSequence
+        if (getCaps.isSetUpdateSequence()) {
+            sirRequest.setUpdateSequence(getCaps.getUpdateSequence());
+        }
+
+        // acceptFormats
+        if (getCaps.isSetAcceptFormats()) {
+            sirRequest.setAcceptFormats(getCaps.getAcceptFormats().getOutputFormatArray());
         }
         return sirRequest;
     }
@@ -386,260 +278,44 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         return sirRequest;
     }
 
-    private SirPropertyFilter decodePropertyFilter(PropertyFilter propertyFilter) throws OwsExceptionReport {
-        SirPropertyFilter sirPropertyFilter = new SirPropertyFilter();
+    /**
+     * 
+     * @param harvServDoc
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private AbstractSirRequest decodeHarvestServiceRequest(HarvestServiceRequestDocument harvServDoc) throws OwsExceptionReport {
+        SirHarvestServiceRequest sirRequest = new SirHarvestServiceRequest();
 
-        if (propertyFilter.getPropertyName() != null) {
-            // propertyName
-            sirPropertyFilter.setPropertyName(propertyFilter.getPropertyName());
-            if (propertyFilter.isSetPropertyConstraint()) {
-                // propertyConstraint
-                SirPropertyConstraint sirPropertyConstraint = new SirPropertyConstraint();
-                sirPropertyFilter.setPropConst(sirPropertyConstraint);
-                // constraint
-                SirConstraint sirConstraint = new SirConstraint();
-                sirPropertyConstraint.setConstraint(sirConstraint);
-                if (propertyFilter.getPropertyConstraint().getConstraint() == null) {
-                    OwsExceptionReport se = new OwsExceptionReport();
-                    se.addCodedException(ExceptionCode.InvalidRequest,
-                                         "HttpPostRequestDecoder",
-                                         "Constraint is missing!");
-                    log.error("&lt;constraint&gt; is missing!");
-                    throw se;
-                }
-                // isEqualTo
-                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsEqualTo()) {
-                    sirConstraint.setConsType(ConsType.isEqualTo);
-                    String value = (String) propertyFilter.getPropertyConstraint().getConstraint().getIsEqualTo();
-                    sirConstraint.setValueString(value);
-                    // try {
-                    // sirConstraint.setValueDouble(new Double(value));
-                    // } catch (NumberFormatException nfe) {
-                    // if (value.equals("true") || value.equals("false")) {
-                    // sirConstraint.setValueBoolean(new Boolean(value));
-                    // } else {
-                    // sirConstraint.setValueString(value);
-                    // }
-                    // }
-                }
-                // isNotEqualTo
-                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsNotEqualTo()) {
-                    sirConstraint.setConsType(ConsType.isNotEqualTo);
-                    String value = (String) propertyFilter.getPropertyConstraint().getConstraint().getIsNotEqualTo();
-                    sirConstraint.setValueString(value);
-                    // try {
-                    // sirConstraint.setValueDouble(new Double(value));
-                    // } catch (NumberFormatException nfe) {
-                    // if (value.equals("true") || value.equals("false")) {
-                    // sirConstraint.setValueBoolean(new Boolean(value));
-                    // } else {
-                    // sirConstraint.setValueString(value);
-                    // }
-                    // }
-                }
-                // isGreaterThan
-                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsGreaterThan()) {
-                    sirConstraint.setConsType(ConsType.isGreaterThan);
-                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsGreaterThan());
-                }
-                // isLessThan
-                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsLessThan()) {
-                    sirConstraint.setConsType(ConsType.isLessThan);
-                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsLessThan());
-                }
-                // isGreaterThanOrEqualThanTo
-                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsGreaterThanOrEqualTo()) {
-                    sirConstraint.setConsType(ConsType.isGreaterThanOrEqualTo);
-                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsGreaterThanOrEqualTo());
-                }
-                // isLessThanOrEqualThanTo
-                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsLessThanOrEqualTo()) {
-                    sirConstraint.setConsType(ConsType.isLessThanOrEqualTo);
-                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsLessThanOrEqualTo());
-                }
-                // isBetween
-                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsBetween()) {
-                    sirConstraint.setConsType(ConsType.isBetween);
-                    sirConstraint.setLowerBoundary(propertyFilter.getPropertyConstraint().getConstraint().getIsBetween().getLowerBoundary());
-                    sirConstraint.setUpperBoundary(propertyFilter.getPropertyConstraint().getConstraint().getIsBetween().getUpperBoundary());
-                }
-                // uom
-                if (propertyFilter.getPropertyConstraint().getUom() != null) {
-                    sirPropertyConstraint.setUom(propertyFilter.getPropertyConstraint().getUom().getCode());
-                }
-                if (sirPropertyFilter.getPropConst().getConstraint().getConsType() == null) {
-                    OwsExceptionReport se = new OwsExceptionReport();
-                    se.addCodedException(ExceptionCode.InvalidRequest, "HttpPostRequestDecoder", "Unknown constraint!");
-                    log.error("Unknown constraint!");
-                    throw se;
-                }
-            }
+        HarvestServiceRequest harvServ = harvServDoc.getHarvestServiceRequest();
+
+        // set service url
+        if (harvServ.getServiceURL() != null) {
+            sirRequest.setServiceUrl(harvServ.getServiceURL());
         }
         else {
+            log.error("&lt;serviceURL&gt; is missing!");
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(ExceptionCode.InvalidRequest,
-                                 "HttpPostRequestDecoder",
-                                 "&lt;propertyName&gt; is missing!");
-            log.error("&lt;propertyName&gt; is missing!");
+                                 "HttpPostRequestDecoder.decodeHarvestService()",
+                                 "&lt;serviceURL&gt; is Missing!");
             throw se;
         }
-        return sirPropertyFilter;
-    }
 
-    private AbstractSirRequest decodeSearchSensorRequest(SearchSensorRequestDocument searchSensDoc) throws OwsExceptionReport {
-        SirSearchSensorRequest sirRequest = new SirSearchSensorRequest();
-        sirRequest.setVersion(searchSensDoc.getSearchSensorRequest().getVersion().toString());
-
-        // sensorIdentification
-        if (searchSensDoc.getSearchSensorRequest().getSensorIdentificationArray().length != 0) {
-            ArrayList<SirSensorIdentification> sensIdents = new ArrayList<SirSensorIdentification>();
-
-            for (SensorIdentification sensIdent : searchSensDoc.getSearchSensorRequest().getSensorIdentificationArray()) {
-                sensIdents.add(decodeSensorIdentification(sensIdent));
-            }
-
-            sirRequest.setSensIdent(sensIdents);
-        }
-        else if (searchSensDoc.getSearchSensorRequest().getSearchCriteria() != null) {
-            // search criteria
-            sirRequest.setSearchCriteria(decodeSearchCriteria(searchSensDoc.getSearchSensorRequest().getSearchCriteria()));
-
+        // set service type
+        if (harvServ.getServiceType() != null) {
+            sirRequest.setServiceType(harvServ.getServiceType());
         }
         else {
+            log.error("&lt;serviceType&gt; is missing!");
             OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
-                                 null,
-                                 "&lt;sensorIdentification&gt; or &lt;searchCriteria&gt; is missing!");
-            log.error("&lt;sensorIdentification&gt; or &lt;searchCriteria&gt; is missing!");
+            se.addCodedException(ExceptionCode.InvalidRequest,
+                                 "HttpPostRequestDecoder.decodeHarvestServiceRequest()",
+                                 "&lt;serviceType&gt; is missing!");
             throw se;
         }
-        // simpleResponse
-        sirRequest.setSimpleResponse(searchSensDoc.getSearchSensorRequest().getSimpleResponse());
 
         return sirRequest;
-    }
-
-    private SirSearchCriteria decodeSearchCriteria(SearchCriteria searchCrit) throws OwsExceptionReport {
-        // searchCriteria
-        SirSearchCriteria sirSearchCriteria = new SirSearchCriteria();
-
-        // serviceCriteria
-        ArrayList<SirService> servCrits = new ArrayList<SirService>();
-        for (ServiceCriteria servCrit : searchCrit.getServiceCriteriaArray()) {
-            servCrits.add(new SirService(servCrit.getServiceURL(), servCrit.getServiceType()));
-        }
-        sirSearchCriteria.setServiceCriteria(servCrits);
-
-        // searchText
-        ArrayList<String> searchText = new ArrayList<String>();
-        for (String text : searchCrit.getSearchTextArray()) {
-            searchText.add(text);
-        }
-        sirSearchCriteria.setSearchText(searchText);
-
-        // phenomena
-        if (searchCrit.getPhenomenonArray().length > 0) {
-            Phenomenon[] phenomena = searchCrit.getPhenomenonArray();
-
-            for (Phenomenon phenomenon : phenomena) {
-                sirSearchCriteria.addPhenomenon(new SirSearchCriteria_Phenomenon(phenomenon));
-            }
-        }
-
-        // uom
-        ArrayList<String> uoms = new ArrayList<String>();
-        for (UomPropertyType uom : searchCrit.getUomArray()) {
-            uoms.add(uom.getCode());
-        }
-        sirSearchCriteria.setUom(uoms);
-
-        // bounding Box
-        if (searchCrit.isSetBoundingBox()) {
-            // coordinate order: lat lon
-            double south = Double.parseDouble(searchCrit.getBoundingBox().getLowerCorner().get(0).toString());
-            double east = Double.parseDouble(searchCrit.getBoundingBox().getUpperCorner().get(1).toString());
-            double north = Double.parseDouble(searchCrit.getBoundingBox().getUpperCorner().get(0).toString());
-            double west = Double.parseDouble(searchCrit.getBoundingBox().getLowerCorner().get(1).toString());
-            sirSearchCriteria.setBoundingBox(new SirBoundingBox(east, south, west, north));
-        }
-
-        // time
-        // check time
-        if (searchCrit.isSetTime()) {
-            // check if it is timeInstantType
-            if (searchCrit.getTime() instanceof TimeInstantType) {
-                sirSearchCriteria.setStart(decodeTimeInstantType((TimeInstantType) searchCrit.getTime()));
-            }
-
-            // check it it is timePeriodType
-            if (searchCrit.getTime() instanceof TimePeriodType) {
-                TimePeriodType timePeriod = (TimePeriodType) searchCrit.getTime();
-                Calendar start;
-                try {
-                    start = GMLDateParser.getInstance().parseString(timePeriod.getBeginPosition().getStringValue());
-                    sirSearchCriteria.setStart(start);
-                }
-                catch (ParseException e) {
-                    log.error("&lt;TimePeriodType&gt; &lt;BeginPosition&gt; has wrong format!");
-                    OwsExceptionReport se = new OwsExceptionReport();
-                    se.addCodedException(ExceptionCode.InvalidRequest,
-                                         "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
-                                         "&lt;TimePeriodType&gt; &lt;BeginPosition&gt; has wrong format, please use "
-                                                 + GMLDateParser.getInstance().parseDate(Calendar.getInstance()) + "!");
-                    throw se;
-                }
-                try {
-                    Calendar end = GMLDateParser.getInstance().parseString(timePeriod.getEndPosition().getStringValue());
-                    sirSearchCriteria.setEnd(end);
-                }
-                catch (ParseException e) {
-                    log.error("&lt;TimePeriodType&gt; &lt;EndPosition&gt; has wrong format!");
-                    OwsExceptionReport se = new OwsExceptionReport();
-                    se.addCodedException(ExceptionCode.InvalidRequest,
-                                         "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
-                                         "&lt;TimePeriodType&gt; &lt;EndPosition&gt; has wrong format, please use "
-                                                 + GMLDateParser.getInstance().parseDate(Calendar.getInstance()) + "!");
-                    throw se;
-                }
-                log.info("TimePeriodType");
-            }
-            // check if it is _TimeGeometricPrimitive not implemented
-        }
-
-        // try {
-        // if (searchCrit.isSetTimeperiod()) {
-        // if (searchCrit.getTimeperiod().getStart() == null) {
-        // log.error("&lt;starttime&gt; is missing!");
-        // OwsExceptionReport se = new OwsExceptionReport();
-        // se.addCodedException(ExceptionCode.InvalidRequest,
-        // "HttpPostRequestDecoder.decodeSearchCriteria",
-        // "&lt;starttime&gt; is missing!");
-        // throw se;
-        // }
-        // else if (searchCrit.getTimeperiod().getEnd() == null) {
-        // log.error("&lt;endtime&gt; is missing!");
-        // OwsExceptionReport se = new OwsExceptionReport();
-        // se.addCodedException(ExceptionCode.InvalidRequest,
-        // "HttpPostRequestDecoder.decodeSearchCriteria",
-        // "&lt;endtime&gt; is missing!");
-        // throw se;
-        // }
-        // else {
-        // sirSearchCriteria.setStart(searchCrit.getTimeperiod().getStart());
-        // sirSearchCriteria.setEnd(searchCrit.getTimeperiod().getEnd());
-        // }
-        // }
-        // }
-        // catch (XmlValueOutOfRangeException e) {
-        // log.error("Wrong date: " + e.getMessage());
-        // OwsExceptionReport se = new OwsExceptionReport();
-        // se.addCodedException(ExceptionCode.InvalidRequest,
-        // "HttpPostRequestDecoder.decodeSearchCriteria",
-        // "Invalid date value. Use date in this form: 2008-01-27T12:11:00.943Z !");
-        // throw se;
-        // }
-
-        return sirSearchCriteria;
     }
 
     /**
@@ -803,27 +479,104 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         return sirRequest;
     }
 
-    /**
-     * 
-     * @param timestamp
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private Calendar decodeTimeInstantType(TimeInstantType timestamp) throws OwsExceptionReport {
-        try {
-            return GMLDateParser.getInstance().parseString(timestamp.getTimePosition().getStringValue());
+    private SirPropertyFilter decodePropertyFilter(PropertyFilter propertyFilter) throws OwsExceptionReport {
+        SirPropertyFilter sirPropertyFilter = new SirPropertyFilter();
+
+        if (propertyFilter.getPropertyName() != null) {
+            // propertyName
+            sirPropertyFilter.setPropertyName(propertyFilter.getPropertyName());
+            if (propertyFilter.isSetPropertyConstraint()) {
+                // propertyConstraint
+                SirPropertyConstraint sirPropertyConstraint = new SirPropertyConstraint();
+                sirPropertyFilter.setPropConst(sirPropertyConstraint);
+                // constraint
+                SirConstraint sirConstraint = new SirConstraint();
+                sirPropertyConstraint.setConstraint(sirConstraint);
+                if (propertyFilter.getPropertyConstraint().getConstraint() == null) {
+                    OwsExceptionReport se = new OwsExceptionReport();
+                    se.addCodedException(ExceptionCode.InvalidRequest,
+                                         "HttpPostRequestDecoder",
+                                         "Constraint is missing!");
+                    log.error("&lt;constraint&gt; is missing!");
+                    throw se;
+                }
+                // isEqualTo
+                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsEqualTo()) {
+                    sirConstraint.setConsType(ConsType.isEqualTo);
+                    String value = (String) propertyFilter.getPropertyConstraint().getConstraint().getIsEqualTo();
+                    sirConstraint.setValueString(value);
+                    // try {
+                    // sirConstraint.setValueDouble(new Double(value));
+                    // } catch (NumberFormatException nfe) {
+                    // if (value.equals("true") || value.equals("false")) {
+                    // sirConstraint.setValueBoolean(new Boolean(value));
+                    // } else {
+                    // sirConstraint.setValueString(value);
+                    // }
+                    // }
+                }
+                // isNotEqualTo
+                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsNotEqualTo()) {
+                    sirConstraint.setConsType(ConsType.isNotEqualTo);
+                    String value = (String) propertyFilter.getPropertyConstraint().getConstraint().getIsNotEqualTo();
+                    sirConstraint.setValueString(value);
+                    // try {
+                    // sirConstraint.setValueDouble(new Double(value));
+                    // } catch (NumberFormatException nfe) {
+                    // if (value.equals("true") || value.equals("false")) {
+                    // sirConstraint.setValueBoolean(new Boolean(value));
+                    // } else {
+                    // sirConstraint.setValueString(value);
+                    // }
+                    // }
+                }
+                // isGreaterThan
+                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsGreaterThan()) {
+                    sirConstraint.setConsType(ConsType.isGreaterThan);
+                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsGreaterThan());
+                }
+                // isLessThan
+                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsLessThan()) {
+                    sirConstraint.setConsType(ConsType.isLessThan);
+                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsLessThan());
+                }
+                // isGreaterThanOrEqualThanTo
+                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsGreaterThanOrEqualTo()) {
+                    sirConstraint.setConsType(ConsType.isGreaterThanOrEqualTo);
+                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsGreaterThanOrEqualTo());
+                }
+                // isLessThanOrEqualThanTo
+                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsLessThanOrEqualTo()) {
+                    sirConstraint.setConsType(ConsType.isLessThanOrEqualTo);
+                    sirConstraint.setValueDouble(propertyFilter.getPropertyConstraint().getConstraint().getIsLessThanOrEqualTo());
+                }
+                // isBetween
+                if (propertyFilter.getPropertyConstraint().getConstraint().isSetIsBetween()) {
+                    sirConstraint.setConsType(ConsType.isBetween);
+                    sirConstraint.setLowerBoundary(propertyFilter.getPropertyConstraint().getConstraint().getIsBetween().getLowerBoundary());
+                    sirConstraint.setUpperBoundary(propertyFilter.getPropertyConstraint().getConstraint().getIsBetween().getUpperBoundary());
+                }
+                // uom
+                if (propertyFilter.getPropertyConstraint().getUom() != null) {
+                    sirPropertyConstraint.setUom(propertyFilter.getPropertyConstraint().getUom().getCode());
+                }
+                if (sirPropertyFilter.getPropConst().getConstraint().getConsType() == null) {
+                    OwsExceptionReport se = new OwsExceptionReport();
+                    se.addCodedException(ExceptionCode.InvalidRequest, "HttpPostRequestDecoder", "Unknown constraint!");
+                    log.error("Unknown constraint!");
+                    throw se;
+                }
+            }
         }
-        catch (ParseException pe) {
-            log.error("&lt;TimeInstantType&gt; has wrong format!");
-            log.error(Calendar.getInstance().toString());
-            
+        else {
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(ExceptionCode.InvalidRequest,
-                                 "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
-                                 "&lt;TimeInstantType&gt; has a wrong format, please use "
-                                         + GMLDateParser.getInstance().parseDate(Calendar.getInstance()) + "!");
+                                 "HttpPostRequestDecoder",
+                                 "&lt;propertyName&gt; is missing!");
+            log.error("&lt;propertyName&gt; is missing!");
             throw se;
         }
+        return sirPropertyFilter;
     }
 
     /**
@@ -851,101 +604,158 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         return string;
     }
 
-    /**
-     * 
-     * @param descSensDoc
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private AbstractSirRequest decodeDescribeSensorRequest(DescribeSensorRequestDocument descSensDoc) throws OwsExceptionReport {
-        SirDescribeSensorRequest sirRequest = new SirDescribeSensorRequest();
+    private SirSearchCriteria decodeSearchCriteria(SearchCriteria searchCrit) throws OwsExceptionReport {
+        // searchCriteria
+        SirSearchCriteria sirSearchCriteria = new SirSearchCriteria();
 
-        if (descSensDoc.getDescribeSensorRequest().getSensorIDInSIR() != null) {
-            sirRequest.setSensorIdInSir(descSensDoc.getDescribeSensorRequest().getSensorIDInSIR());
+        // serviceCriteria
+        ArrayList<SirService> servCrits = new ArrayList<SirService>();
+        for (ServiceCriteria servCrit : searchCrit.getServiceCriteriaArray()) {
+            servCrits.add(new SirService(servCrit.getServiceURL(), servCrit.getServiceType()));
         }
-        else {
-            log.error("&lt;sensorIDInSIR&gt; is missing!");
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(ExceptionCode.InvalidRequest,
-                                 "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
-                                 "&lt;sensorIDInSIR&gt; is missing!");
-            throw se;
+        sirSearchCriteria.setServiceCriteria(servCrits);
+
+        // searchText
+        ArrayList<String> searchText = new ArrayList<String>();
+        for (String text : searchCrit.getSearchTextArray()) {
+            searchText.add(text);
         }
-        return sirRequest;
+        sirSearchCriteria.setSearchText(searchText);
+
+        // phenomena
+        if (searchCrit.getPhenomenonArray().length > 0) {
+            Phenomenon[] phenomena = searchCrit.getPhenomenonArray();
+
+            for (Phenomenon phenomenon : phenomena) {
+                sirSearchCriteria.addPhenomenon(new SirSearchCriteria_Phenomenon(phenomenon));
+            }
+        }
+
+        // uom
+        ArrayList<String> uoms = new ArrayList<String>();
+        for (UomPropertyType uom : searchCrit.getUomArray()) {
+            uoms.add(uom.getCode());
+        }
+        sirSearchCriteria.setUom(uoms);
+
+        // bounding Box
+        if (searchCrit.isSetBoundingBox()) {
+            // coordinate order: lat lon
+            double south = Double.parseDouble(searchCrit.getBoundingBox().getLowerCorner().get(0).toString());
+            double east = Double.parseDouble(searchCrit.getBoundingBox().getUpperCorner().get(1).toString());
+            double north = Double.parseDouble(searchCrit.getBoundingBox().getUpperCorner().get(0).toString());
+            double west = Double.parseDouble(searchCrit.getBoundingBox().getLowerCorner().get(1).toString());
+            sirSearchCriteria.setBoundingBox(new SirBoundingBox(east, south, west, north));
+        }
+
+        // time
+        // check time
+        if (searchCrit.isSetTime()) {
+            // check if it is timeInstantType
+            if (searchCrit.getTime() instanceof TimeInstantType) {
+                sirSearchCriteria.setStart(decodeTimeInstantType((TimeInstantType) searchCrit.getTime()));
+            }
+
+            // check it it is timePeriodType
+            if (searchCrit.getTime() instanceof TimePeriodType) {
+                TimePeriodType timePeriod = (TimePeriodType) searchCrit.getTime();
+                Calendar start;
+                try {
+                    start = GMLDateParser.getInstance().parseString(timePeriod.getBeginPosition().getStringValue());
+                    sirSearchCriteria.setStart(start);
+                }
+                catch (ParseException e) {
+                    log.error("&lt;TimePeriodType&gt; &lt;BeginPosition&gt; has wrong format!");
+                    OwsExceptionReport se = new OwsExceptionReport();
+                    se.addCodedException(ExceptionCode.InvalidRequest,
+                                         "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
+                                         "&lt;TimePeriodType&gt; &lt;BeginPosition&gt; has wrong format, please use "
+                                                 + GMLDateParser.getInstance().parseDate(Calendar.getInstance()) + "!");
+                    throw se;
+                }
+                try {
+                    Calendar end = GMLDateParser.getInstance().parseString(timePeriod.getEndPosition().getStringValue());
+                    sirSearchCriteria.setEnd(end);
+                }
+                catch (ParseException e) {
+                    log.error("&lt;TimePeriodType&gt; &lt;EndPosition&gt; has wrong format!");
+                    OwsExceptionReport se = new OwsExceptionReport();
+                    se.addCodedException(ExceptionCode.InvalidRequest,
+                                         "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
+                                         "&lt;TimePeriodType&gt; &lt;EndPosition&gt; has wrong format, please use "
+                                                 + GMLDateParser.getInstance().parseDate(Calendar.getInstance()) + "!");
+                    throw se;
+                }
+                log.info("TimePeriodType");
+            }
+            // check if it is _TimeGeometricPrimitive not implemented
+        }
+
+        // try {
+        // if (searchCrit.isSetTimeperiod()) {
+        // if (searchCrit.getTimeperiod().getStart() == null) {
+        // log.error("&lt;starttime&gt; is missing!");
+        // OwsExceptionReport se = new OwsExceptionReport();
+        // se.addCodedException(ExceptionCode.InvalidRequest,
+        // "HttpPostRequestDecoder.decodeSearchCriteria",
+        // "&lt;starttime&gt; is missing!");
+        // throw se;
+        // }
+        // else if (searchCrit.getTimeperiod().getEnd() == null) {
+        // log.error("&lt;endtime&gt; is missing!");
+        // OwsExceptionReport se = new OwsExceptionReport();
+        // se.addCodedException(ExceptionCode.InvalidRequest,
+        // "HttpPostRequestDecoder.decodeSearchCriteria",
+        // "&lt;endtime&gt; is missing!");
+        // throw se;
+        // }
+        // else {
+        // sirSearchCriteria.setStart(searchCrit.getTimeperiod().getStart());
+        // sirSearchCriteria.setEnd(searchCrit.getTimeperiod().getEnd());
+        // }
+        // }
+        // }
+        // catch (XmlValueOutOfRangeException e) {
+        // log.error("Wrong date: " + e.getMessage());
+        // OwsExceptionReport se = new OwsExceptionReport();
+        // se.addCodedException(ExceptionCode.InvalidRequest,
+        // "HttpPostRequestDecoder.decodeSearchCriteria",
+        // "Invalid date value. Use date in this form: 2008-01-27T12:11:00.943Z !");
+        // throw se;
+        // }
+
+        return sirSearchCriteria;
     }
 
-    /**
-     * 
-     * @param getCapDoc
-     * @return
-     */
-    private AbstractSirRequest decodeGetCapabilities(GetCapabilitiesDocument getCapDoc) {
-        SirGetCapabilitiesRequest sirRequest = new SirGetCapabilitiesRequest();
-        GetCapabilities getCaps = getCapDoc.getGetCapabilities();
-        // test
-        // getCaps.addNewAcceptVersions();
+    private AbstractSirRequest decodeSearchSensorRequest(SearchSensorRequestDocument searchSensDoc) throws OwsExceptionReport {
+        SirSearchSensorRequest sirRequest = new SirSearchSensorRequest();
+        sirRequest.setVersion(searchSensDoc.getSearchSensorRequest().getVersion().toString());
 
-        // service
-        sirRequest.setService(getCaps.getService());
+        // sensorIdentification
+        if (searchSensDoc.getSearchSensorRequest().getSensorIdentificationArray().length != 0) {
+            ArrayList<SirSensorIdentification> sensIdents = new ArrayList<SirSensorIdentification>();
 
-        // acceptVersions
-        if (getCaps.isSetAcceptVersions()) {
-            sirRequest.setAcceptVersions(getCaps.getAcceptVersions().getVersionArray());
+            for (SensorIdentification sensIdent : searchSensDoc.getSearchSensorRequest().getSensorIdentificationArray()) {
+                sensIdents.add(decodeSensorIdentification(sensIdent));
+            }
+
+            sirRequest.setSensIdent(sensIdents);
         }
+        else if (searchSensDoc.getSearchSensorRequest().getSearchCriteria() != null) {
+            // search criteria
+            sirRequest.setSearchCriteria(decodeSearchCriteria(searchSensDoc.getSearchSensorRequest().getSearchCriteria()));
 
-        // sections
-        if (getCaps.isSetSections()) {
-            sirRequest.setSections(getCaps.getSections().getSectionArray());
-        }
-
-        // updateSequence
-        if (getCaps.isSetUpdateSequence()) {
-            sirRequest.setUpdateSequence(getCaps.getUpdateSequence());
-        }
-
-        // acceptFormats
-        if (getCaps.isSetAcceptFormats()) {
-            sirRequest.setAcceptFormats(getCaps.getAcceptFormats().getOutputFormatArray());
-        }
-        return sirRequest;
-    }
-
-    /**
-     * 
-     * @param harvServDoc
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private AbstractSirRequest decodeHarvestServiceRequest(HarvestServiceRequestDocument harvServDoc) throws OwsExceptionReport {
-        SirHarvestServiceRequest sirRequest = new SirHarvestServiceRequest();
-
-        HarvestServiceRequest harvServ = harvServDoc.getHarvestServiceRequest();
-
-        // set service url
-        if (harvServ.getServiceURL() != null) {
-            sirRequest.setServiceUrl(harvServ.getServiceURL());
         }
         else {
-            log.error("&lt;serviceURL&gt; is missing!");
             OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(ExceptionCode.InvalidRequest,
-                                 "HttpPostRequestDecoder.decodeHarvestService()",
-                                 "&lt;serviceURL&gt; is Missing!");
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
+                                 null,
+                                 "&lt;sensorIdentification&gt; or &lt;searchCriteria&gt; is missing!");
+            log.error("&lt;sensorIdentification&gt; or &lt;searchCriteria&gt; is missing!");
             throw se;
         }
-
-        // set service type
-        if (harvServ.getServiceType() != null) {
-            sirRequest.setServiceType(harvServ.getServiceType());
-        }
-        else {
-            log.error("&lt;serviceType&gt; is missing!");
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(ExceptionCode.InvalidRequest,
-                                 "HttpPostRequestDecoder.decodeHarvestServiceRequest()",
-                                 "&lt;serviceType&gt; is missing!");
-            throw se;
-        }
+        // simpleResponse
+        sirRequest.setSimpleResponse(searchSensDoc.getSearchSensorRequest().getSimpleResponse());
 
         return sirRequest;
     }
@@ -976,6 +786,22 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
             throw se;
         }
         return null;
+    }
+
+    private SirServiceInfo decodeServiceInfo(ServiceInfo serviceInfo) {
+        ServiceReference[] serviceReferenceArray = serviceInfo.getServiceReferenceArray();
+        Collection<SirServiceReference> decodedReferences = new ArrayList<SirServiceReference>();
+
+        for (ServiceReference serviceReference : serviceReferenceArray) {
+            SirServiceReference newRef = new SirServiceReference(new SirService(serviceReference.getServiceURL(),
+                                                                                serviceReference.getServiceType()),
+                                                                 serviceReference.getServiceSpecificSensorID());
+            decodedReferences.add(newRef);
+        }
+
+        SirServiceInfo decodedInfo = new SirServiceInfo(decodedReferences);
+
+        return decodedInfo;
     }
 
     /**
@@ -1014,5 +840,179 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
                                            servRef.getServiceSpecificSensorID());
 
         }
+    }
+
+    /**
+     * 
+     * @param timestamp
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private Calendar decodeTimeInstantType(TimeInstantType timestamp) throws OwsExceptionReport {
+        try {
+            return GMLDateParser.getInstance().parseString(timestamp.getTimePosition().getStringValue());
+        }
+        catch (ParseException pe) {
+            log.error("&lt;TimeInstantType&gt; has wrong format!");
+            log.error(Calendar.getInstance().toString());
+            
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(ExceptionCode.InvalidRequest,
+                                 "HttpPostRequestDecoder.decodeDescribeSensorRequest()",
+                                 "&lt;TimeInstantType&gt; has a wrong format, please use "
+                                         + GMLDateParser.getInstance().parseDate(Calendar.getInstance()) + "!");
+            throw se;
+        }
+    }
+
+    private AbstractSirRequest decodeUpdateSensorDescriptionRequest(UpdateSensorDescriptionRequestDocument updSensDescrDoc) throws OwsExceptionReport {
+        SirUpdateSensorDescriptionRequest sirRequest = new SirUpdateSensorDescriptionRequest();
+        Collection<SirDescriptionToBeUpdated> descriptionsToBeUpdated = new ArrayList<SirDescriptionToBeUpdated>();
+
+        SensorDescriptionToBeUpdated[] sensors = updSensDescrDoc.getUpdateSensorDescriptionRequest().getSensorDescriptionToBeUpdatedArray();
+
+        for (SensorDescriptionToBeUpdated sensorDescriptionToBeUpdated : sensors) {
+            SirDescriptionToBeUpdated sdtbu = new SirDescriptionToBeUpdated();
+            sdtbu.setSensorIdentification(decodeSensorIdentification(sensorDescriptionToBeUpdated.getSensorIdentification()));
+            sdtbu.setSensorDescription(sensorDescriptionToBeUpdated.getSensorDescription());
+
+            descriptionsToBeUpdated.add(sdtbu);
+        }
+
+        sirRequest.setDescriptionToBeUpdated(descriptionsToBeUpdated);
+
+        return sirRequest;
+    }
+
+    @Override
+    public AbstractSirRequest receiveRequest(String docString) throws OwsExceptionReport {
+        AbstractSirRequest request = null;
+
+        XmlObject doc = null;
+
+        try {
+            doc = XmlObject.Factory.parse(docString);
+        }
+        catch (XmlException e) {
+            log.error("Error while parsing xml request!");
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
+                                 null,
+                                 "Error while parsing the post request: " + e.getMessage());
+            throw se;
+        }
+
+        // getCapabilitiesRequest
+        if (doc instanceof GetCapabilitiesDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post getCapabilities request");
+            GetCapabilitiesDocument getCapDoc = (GetCapabilitiesDocument) doc;
+            request = decodeGetCapabilities(getCapDoc);
+        }
+
+        // harvestServiceRequest
+        else if (doc instanceof HarvestServiceRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post harvestService request");
+            HarvestServiceRequestDocument harvServDoc = (HarvestServiceRequestDocument) doc;
+            request = decodeHarvestServiceRequest(harvServDoc);
+        }
+
+        // describeSensorRequest
+        else if (doc instanceof DescribeSensorRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post describeSensor request");
+            DescribeSensorRequestDocument descSensDoc = (DescribeSensorRequestDocument) doc;
+            request = decodeDescribeSensorRequest(descSensDoc);
+        }
+
+        // insertSensorStatusRequest
+        else if (doc instanceof InsertSensorStatusRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post insertSensorStatus request");
+            InsertSensorStatusRequestDocument insSensStatDoc = (InsertSensorStatusRequestDocument) doc;
+            request = decodeInsertSensorStatusRequest(insSensStatDoc);
+        }
+
+        // insertSensorInfoRequest
+        else if (doc instanceof InsertSensorInfoRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post insertSensorInfo request");
+            InsertSensorInfoRequestDocument insSensInfoDoc = (InsertSensorInfoRequestDocument) doc;
+            request = decodeInsertSensorInfoRequest(insSensInfoDoc);
+        }
+
+        // deleteSensorInfoRequest
+        else if (doc instanceof DeleteSensorInfoRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post deleteSensorInfo request");
+            DeleteSensorInfoRequestDocument delSensInfoDoc = (DeleteSensorInfoRequestDocument) doc;
+            request = decodeDeleteSensorInfoRequest(delSensInfoDoc);
+        }
+
+        // updateSensorDescriptionRequest
+        else if (doc instanceof UpdateSensorDescriptionRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post updateSensorDescription request");
+            UpdateSensorDescriptionRequestDocument updSensDescrDoc = (UpdateSensorDescriptionRequestDocument) doc;
+            request = decodeUpdateSensorDescriptionRequest(updSensDescrDoc);
+        }
+
+        // searchSensorRequest
+        else if (doc instanceof SearchSensorRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post searchSensor request");
+            SearchSensorRequestDocument searchSensDoc = (SearchSensorRequestDocument) doc;
+            request = decodeSearchSensorRequest(searchSensDoc);
+        }
+
+        // getSensorStatusRequest
+        else if (doc instanceof GetSensorStatusRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post getSensorStatus request");
+            GetSensorStatusRequestDocument getSensStatDoc = (GetSensorStatusRequestDocument) doc;
+            request = decodeGetSensorStatusRequest(getSensStatDoc);
+        }
+
+        // connectToCatalogRequest
+        else if (doc instanceof ConnectToCatalogRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post connectToCatalog request");
+            ConnectToCatalogRequestDocument conToCatDoc = (ConnectToCatalogRequestDocument) doc;
+            request = decodeConnectToCatalogRequest(conToCatDoc);
+        }
+
+        // disconnectFromCatalogRequest
+        else if (doc instanceof DisconnectFromCatalogRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post disconnectFromCatalog request");
+            DisconnectFromCatalogRequestDocument disconFromCatDoc = (DisconnectFromCatalogRequestDocument) doc;
+            request = decodeDisconnectFromCatalogRequest(disconFromCatDoc);
+        }
+
+        // not implemented: status subscription handling:
+        else if (doc instanceof SubscribeSensorStatusRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post subscribeSensorStatus request");
+            request = new SirSubscriptionRequest(SirConstants.Operations.SubscribeSensorStatus.name());
+        }
+        else if (doc instanceof RenewSensorStatusSubscriptionRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post renewSensorStatusSubscription request");
+            request = new SirSubscriptionRequest(SirConstants.Operations.RenewSensorStatusSubscription.name());
+        }
+        else if (doc instanceof CancelSensorStatusSubscriptionRequestDocument) {
+            if (log.isDebugEnabled())
+                log.debug("Post cancelSensorStatusSubscription request");
+            request = new SirSubscriptionRequest(SirConstants.Operations.CancelSensorStatusSubscription.name());
+        }
+
+        if (request == null) {
+            log.error("Invalid Request!");
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, "The request is invalid! ");
+            throw se;
+        }
+        return request;
     }
 }

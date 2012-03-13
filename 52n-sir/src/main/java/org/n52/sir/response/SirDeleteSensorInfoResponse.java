@@ -49,66 +49,11 @@ public class SirDeleteSensorInfoResponse implements ISirResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirDeleteSensorInfoResponse.class);
 
+    private Collection<String> deletedSensors = new ArrayList<String>();
+
     private int numberOfDeletedSensors = 0;
 
     private int numberOfDeletedServiceReferences = 0;
-
-    private Collection<String> deletedSensors = new ArrayList<String>();
-
-    /**
-     * @return the numberOfNewSensors
-     */
-    public int getNumberOfDeletedSensors() {
-        return this.numberOfDeletedSensors;
-    }
-
-    /**
-     * @param numberOfDeletedSensors
-     *        the numberOfDeletedSensors to set
-     */
-    public void setNumberOfDeletedSensors(int numberOfDeletedSensors) {
-        this.numberOfDeletedSensors = numberOfDeletedSensors;
-    }
-
-    /**
-     * @return the numberOfNewServiceReferences
-     */
-    public int getNumberOfDeletedServiceReferences() {
-        return this.numberOfDeletedServiceReferences;
-    }
-
-    /**
-     * @param numberOfDeletedServiceReferences
-     *        the numberOfDeletedServiceReferences to set
-     */
-    public void setNumberOfDeletedServiceReferences(int numberOfDeletedServiceReferences) {
-        this.numberOfDeletedServiceReferences = numberOfDeletedServiceReferences;
-    }
-
-    /**
-     * @return the deletedSensors
-     */
-    public Collection<String> getDeletedSensors() {
-        return this.deletedSensors;
-    }
-
-    /**
-     * @param deletedSensors
-     *        the deletedSensors to set
-     */
-    public void setDeletedSensors(Collection<String> insertedSensors) {
-        this.deletedSensors = insertedSensors;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirDeleteSensorInfoResponse: ");
-        sb.append("\n# of deleted sensors: " + this.numberOfDeletedSensors);
-        sb.append("\nDeleted service references: " + this.numberOfDeletedServiceReferences);
-        sb.append("\nDeleted Sensors: " + Arrays.toString(this.deletedSensors.toArray()));
-        return sb.toString();
-    }
 
     /*
      * (non-Javadoc)
@@ -122,6 +67,47 @@ public class SirDeleteSensorInfoResponse implements ISirResponse {
         resp.save(baos, XmlTools.xmlOptionsForNamespaces());
         byte[] bytes = baos.toByteArray();
         return bytes;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentLength()
+     */
+    @Override
+    public int getContentLength() throws IOException, TransformerException {
+        return getByteArray().length;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    /**
+     * @return the deletedSensors
+     */
+    public Collection<String> getDeletedSensors() {
+        return this.deletedSensors;
+    }
+
+    /**
+     * @return the numberOfNewSensors
+     */
+    public int getNumberOfDeletedSensors() {
+        return this.numberOfDeletedSensors;
+    }
+
+    /**
+     * @return the numberOfNewServiceReferences
+     */
+    public int getNumberOfDeletedServiceReferences() {
+        return this.numberOfDeletedServiceReferences;
     }
 
     private DeleteSensorInfoResponseDocument parseToResponseDocument() {
@@ -145,24 +131,38 @@ public class SirDeleteSensorInfoResponse implements ISirResponse {
         return document;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
+    /**
+     * @param deletedSensors
+     *        the deletedSensors to set
      */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
+    public void setDeletedSensors(Collection<String> insertedSensors) {
+        this.deletedSensors = insertedSensors;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
+    /**
+     * @param numberOfDeletedSensors
+     *        the numberOfDeletedSensors to set
      */
+    public void setNumberOfDeletedSensors(int numberOfDeletedSensors) {
+        this.numberOfDeletedSensors = numberOfDeletedSensors;
+    }
+
+    /**
+     * @param numberOfDeletedServiceReferences
+     *        the numberOfDeletedServiceReferences to set
+     */
+    public void setNumberOfDeletedServiceReferences(int numberOfDeletedServiceReferences) {
+        this.numberOfDeletedServiceReferences = numberOfDeletedServiceReferences;
+    }
+
     @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SirDeleteSensorInfoResponse: ");
+        sb.append("\n# of deleted sensors: " + this.numberOfDeletedSensors);
+        sb.append("\nDeleted service references: " + this.numberOfDeletedServiceReferences);
+        sb.append("\nDeleted Sensors: " + Arrays.toString(this.deletedSensors.toArray()));
+        return sb.toString();
     }
 
 }

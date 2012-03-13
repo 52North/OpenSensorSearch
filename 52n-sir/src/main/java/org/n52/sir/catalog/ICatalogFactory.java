@@ -50,12 +50,6 @@ public interface ICatalogFactory {
 
     /**
      * 
-     * @return the URL used by the instatiated catalogs
-     */
-    public abstract URL getCatalogUrl();
-
-    /**
-     * 
      * Method creates objects that encapsulate all information that is needed to persitently save a connection
      * to a catalog.
      * 
@@ -69,5 +63,11 @@ public interface ICatalogFactory {
                                                             URL url,
                                                             int pushInterval,
                                                             String newConnectionStatus);
+
+    /**
+     * 
+     * @return the URL used by the instatiated catalogs
+     */
+    public abstract URL getCatalogUrl();
 
 }

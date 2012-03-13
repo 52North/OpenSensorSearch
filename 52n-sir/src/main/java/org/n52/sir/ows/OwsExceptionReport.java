@@ -46,28 +46,28 @@ import org.slf4j.LoggerFactory;
  */
 public class OwsExceptionReport extends Exception {
 
-    private static final long serialVersionUID = 9069373009339881302L;
-
-    /** logger */
-    private static Logger log = LoggerFactory.getLogger(OwsExceptionReport.class.getName());
-
     /**
      * ExceptionCodes as defined in the OWS Common Implementation Specification 0.3.0
      */
     public enum ExceptionCode {
-        OperationNotSupported, MissingParameterValue, InvalidParameterValue, VersionNegotiationFailed, InvalidUpdateSequence, NoApplicableCode, NoDataAvailable, InvalidRequest
+        InvalidParameterValue, InvalidRequest, InvalidUpdateSequence, MissingParameterValue, NoApplicableCode, NoDataAvailable, OperationNotSupported, VersionNegotiationFailed
     }
 
     /** Exception levels */
     public enum ExceptionLevel {
-        PlainExceptions, DetailedExceptions
+        DetailedExceptions, PlainExceptions
     }
 
-    /** Exception types */
-    private ArrayList<ExceptionType> excs = new ArrayList<ExceptionType>();
+    /** logger */
+    private static Logger log = LoggerFactory.getLogger(OwsExceptionReport.class.getName());
+
+    private static final long serialVersionUID = 9069373009339881302L;
 
     /** exception level */
     private ExceptionLevel excLevel = null;
+
+    /** Exception types */
+    private ArrayList<ExceptionType> excs = new ArrayList<ExceptionType>();
 
     /**
      * standard constructor without parameters, sets the ExceptionLevel on PlainExceptions
@@ -75,6 +75,29 @@ public class OwsExceptionReport extends Exception {
      */
     public OwsExceptionReport() {
         this.excLevel = ExceptionLevel.DetailedExceptions;
+    }
+
+    /**
+     * 
+     * constructor with one coded exception
+     * 
+     * @param code
+     * @param locator
+     * @param message
+     */
+    public OwsExceptionReport(ExceptionCode code, String locator, String message) {
+        super();
+
+        addCodedException(code, locator, message);
+    }
+
+    /**
+     * �constructor with exceptionLevel as parameter
+     * 
+     * @param excLevelIn
+     */
+    public OwsExceptionReport(ExceptionLevel excLevelIn) {
+        this.excLevel = excLevelIn;
     }
 
     /**
@@ -99,59 +122,6 @@ public class OwsExceptionReport extends Exception {
     public OwsExceptionReport(Throwable cause) {
         super(cause);
         this.excLevel = ExceptionLevel.DetailedExceptions;
-    }
-
-    /**
-     * �constructor with exceptionLevel as parameter
-     * 
-     * @param excLevelIn
-     */
-    public OwsExceptionReport(ExceptionLevel excLevelIn) {
-        this.excLevel = excLevelIn;
-    }
-
-    /**
-     * 
-     * constructor with one coded exception
-     * 
-     * @param code
-     * @param locator
-     * @param message
-     */
-    public OwsExceptionReport(ExceptionCode code, String locator, String message) {
-        super();
-
-        addCodedException(code, locator, message);
-    }
-
-    /**
-     * 
-     * @return Returns the ExceptionTypes of this exception
-     */
-    public ArrayList<ExceptionType> getExceptions() {
-        return this.excs;
-    }
-
-    /**
-     * adds a coded exception to this exception with code, locator and messages as parameters
-     * 
-     * @param code
-     *        ExceptionCode of the added exception
-     * @param locator
-     *        String locator of this exception
-     * @param messages
-     *        String[] messages of this exception
-     */
-    public void addCodedException(ExceptionCode code, String locator, String[] messages) {
-        ExceptionType et = ExceptionType.Factory.newInstance();
-        et.setExceptionCode(code.toString());
-        if (locator != null)
-            et.setLocator(locator);
-        for (int i = 0; i < messages.length; i++) {
-            String string = messages[i];
-            et.addExceptionText(string);
-        }
-        this.excs.add(et);
     }
 
     /**
@@ -215,6 +185,28 @@ public class OwsExceptionReport extends Exception {
     }
 
     /**
+     * adds a coded exception to this exception with code, locator and messages as parameters
+     * 
+     * @param code
+     *        ExceptionCode of the added exception
+     * @param locator
+     *        String locator of this exception
+     * @param messages
+     *        String[] messages of this exception
+     */
+    public void addCodedException(ExceptionCode code, String locator, String[] messages) {
+        ExceptionType et = ExceptionType.Factory.newInstance();
+        et.setExceptionCode(code.toString());
+        if (locator != null)
+            et.setLocator(locator);
+        for (int i = 0; i < messages.length; i++) {
+            String string = messages[i];
+            et.addExceptionText(string);
+        }
+        this.excs.add(et);
+    }
+
+    /**
      * adds a ServiceException to this exception
      * 
      * @param seIn
@@ -237,6 +229,15 @@ public class OwsExceptionReport extends Exception {
                 return true;
         }
         return false;
+    }
+
+    /**
+     * checks whether this service exception contains another exception
+     * 
+     * @return Returns true if this service exception contains another exception
+     */
+    public boolean containsExceptions() {
+        return this.excs.size() > 0;
     }
 
     /**
@@ -268,12 +269,11 @@ public class OwsExceptionReport extends Exception {
     }
 
     /**
-     * checks whether this service exception contains another exception
      * 
-     * @return Returns true if this service exception contains another exception
+     * @return Returns the ExceptionTypes of this exception
      */
-    public boolean containsExceptions() {
-        return this.excs.size() > 0;
+    public ArrayList<ExceptionType> getExceptions() {
+        return this.excs;
     }
 
     @Override

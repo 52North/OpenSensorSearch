@@ -65,6 +65,67 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
         this.insertSensorInfoDAO = factory.insertSensorInfoDAO();
     }
 
+    /**
+     * @param response
+     * @param sensorIdent
+     * @param deletedSensors
+     * @throws OwsExceptionReport
+     */
+    private void deleteSensor(SirDeleteSensorInfoResponse response,
+                              SirSensorIdentification sensorIdent,
+                              ArrayList<String> deletedSensors) throws OwsExceptionReport {
+        // check if ident is present, cannot delete otherwise
+        if (sensorIdent != null) {
+            // DELETE
+            String sID = this.insertSensorInfoDAO.deleteSensor(sensorIdent);
+
+            if (sID != null) {
+                deletedSensors.add(sID);
+                response.setNumberOfDeletedSensors(response.getNumberOfDeletedSensors() + 1);
+                if (log.isDebugEnabled())
+                    log.debug("Deleted Sensor! " + sID);
+            }
+        }
+        else {
+            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
+            se.addCodedException(OwsExceptionReport.ExceptionCode.MissingParameterValue,
+                                 "DeleteSensorInfoListener.receiveRequest()",
+                                 "Missing parameter: To delete a sensor, a sensorIdentification element is required!");
+            throw se;
+        }
+    }
+
+    /**
+     * 
+     * @param response
+     * @param serviceReference
+     * @param sensIdent
+     * @throws OwsExceptionReport
+     */
+    private void deleteServiceReference(SirDeleteSensorInfoResponse response,
+                                        SirServiceReference serviceReference,
+                                        SirSensorIdentification sensIdent) throws OwsExceptionReport {
+        // check if ident is present, cannot delete otherwise
+        if (serviceReference != null) {
+            // DELETE
+            String sID = this.insertSensorInfoDAO.deleteReference(sensIdent, serviceReference);
+
+            if (sID != null) {
+                response.setNumberOfDeletedServiceReferences(response.getNumberOfDeletedServiceReferences() + 1);
+
+                if (log.isDebugEnabled())
+                    log.debug("Deleted ServiceReference! " + sID);
+            }
+        }
+        else {
+            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
+            se.addCodedException(OwsExceptionReport.ExceptionCode.MissingParameterValue,
+                                 "DeleteSensorInfoListener.receiveRequest()",
+                                 "Missing parameter: To delete a service reference, a ServiceReference element is required!");
+            throw se;
+        }
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -113,67 +174,6 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
         response.setDeletedSensors(deletedSensors);
 
         return response;
-    }
-
-    /**
-     * 
-     * @param response
-     * @param serviceReference
-     * @param sensIdent
-     * @throws OwsExceptionReport
-     */
-    private void deleteServiceReference(SirDeleteSensorInfoResponse response,
-                                        SirServiceReference serviceReference,
-                                        SirSensorIdentification sensIdent) throws OwsExceptionReport {
-        // check if ident is present, cannot delete otherwise
-        if (serviceReference != null) {
-            // DELETE
-            String sID = this.insertSensorInfoDAO.deleteReference(sensIdent, serviceReference);
-
-            if (sID != null) {
-                response.setNumberOfDeletedServiceReferences(response.getNumberOfDeletedServiceReferences() + 1);
-
-                if (log.isDebugEnabled())
-                    log.debug("Deleted ServiceReference! " + sID);
-            }
-        }
-        else {
-            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
-            se.addCodedException(OwsExceptionReport.ExceptionCode.MissingParameterValue,
-                                 "DeleteSensorInfoListener.receiveRequest()",
-                                 "Missing parameter: To delete a service reference, a ServiceReference element is required!");
-            throw se;
-        }
-    }
-
-    /**
-     * @param response
-     * @param sensorIdent
-     * @param deletedSensors
-     * @throws OwsExceptionReport
-     */
-    private void deleteSensor(SirDeleteSensorInfoResponse response,
-                              SirSensorIdentification sensorIdent,
-                              ArrayList<String> deletedSensors) throws OwsExceptionReport {
-        // check if ident is present, cannot delete otherwise
-        if (sensorIdent != null) {
-            // DELETE
-            String sID = this.insertSensorInfoDAO.deleteSensor(sensorIdent);
-
-            if (sID != null) {
-                deletedSensors.add(sID);
-                response.setNumberOfDeletedSensors(response.getNumberOfDeletedSensors() + 1);
-                if (log.isDebugEnabled())
-                    log.debug("Deleted Sensor! " + sID);
-            }
-        }
-        else {
-            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
-            se.addCodedException(OwsExceptionReport.ExceptionCode.MissingParameterValue,
-                                 "DeleteSensorInfoListener.receiveRequest()",
-                                 "Missing parameter: To delete a sensor, a sensorIdentification element is required!");
-            throw se;
-        }
     }
 
 }

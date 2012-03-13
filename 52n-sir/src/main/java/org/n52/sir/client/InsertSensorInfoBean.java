@@ -44,135 +44,21 @@ import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
  */
 public class InsertSensorInfoBean extends AbstractBean {
 
-    private String sensorDescription = "";
-
-    private String serviceInfosServiceURL = "";
-
-    private String serviceInfosServiceType = "";
-
-    private String serviceInfosServiceSpecificSensorID = "";
-
-    private String addRefURL = "";
+    private String addRefSensorID = "";
 
     private String addRefType = "";
 
-    private String addRefSensorID = "";
+    private String addRefURL = "";
+
+    private String sensorDescription = "";
 
     private String sensorIDinSIR = "";
 
-    /**
-     * @return the sensorDescription
-     */
-    public String getSensorDescription() {
-        return this.sensorDescription;
-    }
+    private String serviceInfosServiceSpecificSensorID = "";
 
-    /**
-     * @param sensorDescription
-     *        the sensorDescription to set
-     */
-    public void setSensorDescription(String sensorDescription) {
-        this.sensorDescription = sensorDescription;
-    }
+    private String serviceInfosServiceType = "";
 
-    /**
-     * @return the sensorIDinSIR
-     */
-    public String getSensorIDinSIR() {
-        return this.sensorIDinSIR;
-    }
-
-    /**
-     * @param sensorIDinSIR
-     *        the sensorIDinSIR to set
-     */
-    public void setSensorIDinSIR(String sensorIDinSIR) {
-        this.sensorIDinSIR = sensorIDinSIR;
-    }
-    
-    /**
-     * @return the serviceInfosServiceURL
-     */
-    public String getServiceInfosServiceURL() {
-        return this.serviceInfosServiceURL;
-    }
-
-    /**
-     * @return the serviceInfosServiceType
-     */
-    public String getServiceInfosServiceType() {
-        return this.serviceInfosServiceType;
-    }
-
-    /**
-     * @return the serviceInfosServiceSpecificSensorID
-     */
-    public String getServiceInfosServiceSpecificSensorID() {
-        return this.serviceInfosServiceSpecificSensorID;
-    }
-
-    /**
-     * @return the addRefURL
-     */
-    public String getAddRefURL() {
-        return this.addRefURL;
-    }
-
-    /**
-     * @return the addRefType
-     */
-    public String getAddRefType() {
-        return this.addRefType;
-    }
-
-    /**
-     * @return the addRefSensorID
-     */
-    public String getAddRefSensorID() {
-        return this.addRefSensorID;
-    }
-
-    /**
-     * @param serviceInfosServiceURL the serviceInfosServiceURL to set
-     */
-    public void setServiceInfosServiceURL(String serviceInfosServiceURL) {
-        this.serviceInfosServiceURL = serviceInfosServiceURL;
-    }
-
-    /**
-     * @param serviceInfosServiceType the serviceInfosServiceType to set
-     */
-    public void setServiceInfosServiceType(String serviceInfosServiceType) {
-        this.serviceInfosServiceType = serviceInfosServiceType;
-    }
-
-    /**
-     * @param serviceInfosServiceSpecificSensorID the serviceInfosServiceSpecificSensorID to set
-     */
-    public void setServiceInfosServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
-        this.serviceInfosServiceSpecificSensorID = serviceInfosServiceSpecificSensorID;
-    }
-
-    /**
-     * @param addRefURL the addRefURL to set
-     */
-    public void setAddRefURL(String addRefURL) {
-        this.addRefURL = addRefURL;
-    }
-
-    /**
-     * @param addRefType the addRefType to set
-     */
-    public void setAddRefType(String addRefType) {
-        this.addRefType = addRefType;
-    }
-
-    /**
-     * @param addRefSensorID the addRefSensorID to set
-     */
-    public void setAddRefSensorID(String addRefSensorID) {
-        this.addRefSensorID = addRefSensorID;
-    }
+    private String serviceInfosServiceURL = "";
 
     @Override
     public void buildRequest() {
@@ -235,6 +121,120 @@ public class InsertSensorInfoBean extends AbstractBean {
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
         else
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
+    }
+
+    /**
+     * @return the addRefSensorID
+     */
+    public String getAddRefSensorID() {
+        return this.addRefSensorID;
+    }
+
+    /**
+     * @return the addRefType
+     */
+    public String getAddRefType() {
+        return this.addRefType;
+    }
+
+    /**
+     * @return the addRefURL
+     */
+    public String getAddRefURL() {
+        return this.addRefURL;
+    }
+    
+    /**
+     * @return the sensorDescription
+     */
+    public String getSensorDescription() {
+        return this.sensorDescription;
+    }
+
+    /**
+     * @return the sensorIDinSIR
+     */
+    public String getSensorIDinSIR() {
+        return this.sensorIDinSIR;
+    }
+
+    /**
+     * @return the serviceInfosServiceSpecificSensorID
+     */
+    public String getServiceInfosServiceSpecificSensorID() {
+        return this.serviceInfosServiceSpecificSensorID;
+    }
+
+    /**
+     * @return the serviceInfosServiceType
+     */
+    public String getServiceInfosServiceType() {
+        return this.serviceInfosServiceType;
+    }
+
+    /**
+     * @return the serviceInfosServiceURL
+     */
+    public String getServiceInfosServiceURL() {
+        return this.serviceInfosServiceURL;
+    }
+
+    /**
+     * @param addRefSensorID the addRefSensorID to set
+     */
+    public void setAddRefSensorID(String addRefSensorID) {
+        this.addRefSensorID = addRefSensorID;
+    }
+
+    /**
+     * @param addRefType the addRefType to set
+     */
+    public void setAddRefType(String addRefType) {
+        this.addRefType = addRefType;
+    }
+
+    /**
+     * @param addRefURL the addRefURL to set
+     */
+    public void setAddRefURL(String addRefURL) {
+        this.addRefURL = addRefURL;
+    }
+
+    /**
+     * @param sensorDescription
+     *        the sensorDescription to set
+     */
+    public void setSensorDescription(String sensorDescription) {
+        this.sensorDescription = sensorDescription;
+    }
+
+    /**
+     * @param sensorIDinSIR
+     *        the sensorIDinSIR to set
+     */
+    public void setSensorIDinSIR(String sensorIDinSIR) {
+        this.sensorIDinSIR = sensorIDinSIR;
+    }
+
+    /**
+     * @param serviceInfosServiceSpecificSensorID the serviceInfosServiceSpecificSensorID to set
+     */
+    public void setServiceInfosServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
+        this.serviceInfosServiceSpecificSensorID = serviceInfosServiceSpecificSensorID;
+    }
+
+    /**
+     * @param serviceInfosServiceType the serviceInfosServiceType to set
+     */
+    public void setServiceInfosServiceType(String serviceInfosServiceType) {
+        this.serviceInfosServiceType = serviceInfosServiceType;
+    }
+
+    /**
+     * @param serviceInfosServiceURL the serviceInfosServiceURL to set
+     */
+    public void setServiceInfosServiceURL(String serviceInfosServiceURL) {
+        this.serviceInfosServiceURL = serviceInfosServiceURL;
     }
 
 }

@@ -62,17 +62,17 @@ public class SimpleSoapCswClient {
 
     private static Logger log = LoggerFactory.getLogger(SimpleSoapCswClient.class);
 
-    private boolean extendedDebugToConsole = false;
-
-    private URL url;
-
     private SOAPConnectionFactory connfactory;
 
-    private TransformerFactory transformerFact;
+    private boolean doNotCheck = false;
+
+    private boolean extendedDebugToConsole = false;
 
     private boolean sendNothing = false;
 
-    private boolean doNotCheck = false;
+    private TransformerFactory transformerFact;
+
+    private URL url;
 
     /**
      * 
@@ -109,59 +109,110 @@ public class SimpleSoapCswClient {
     }
 
     /**
-     * @return the doNotCheck
+     * 
+     * add soap envelope and body
+     * 
+     * @param doc
+     * @return
+     * @throws SOAPException
      */
-    public boolean isDoNotCheck() {
-        return this.doNotCheck;
+    private SOAPMessage buildMessage(Document doc) throws SOAPException {
+        MessageFactory mfact = MessageFactory.newInstance();
+        SOAPMessage smsg = mfact.createMessage();
+        SOAPPart prt = smsg.getSOAPPart();
+        SOAPEnvelope env = prt.getEnvelope();
+        SOAPBody bdy = env.getBody();
+        bdy.addDocument(doc);
+        smsg.saveChanges();
+
+        return smsg;
     }
 
-    /**
-     * @param doNotCheck
-     *        the doNotCheck to set
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
      */
-    public void setDoNotCheck(boolean doNotCheck) {
-        this.doNotCheck = doNotCheck;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SimpleSoapCswClient other = (SimpleSoapCswClient) obj;
+        if (this.connfactory == null) {
+            if (other.connfactory != null)
+                return false;
+        }
+        else if ( !this.connfactory.equals(other.connfactory))
+            return false;
+        if (this.url == null) {
+            if (other.url != null)
+                return false;
+        }
+        else
+            try {
+                if ( !this.url.toURI().equals(other.url.toURI()))
+                    return false;
+            }
+            catch (URISyntaxException e) {
+                log.error("Uri error.", e);
+            }
+        return true;
     }
 
     /**
      * 
-     * @param doc
+     * @param response
      * @return
      * @throws OwsExceptionReport
+     * @throws SOAPException
+     * @throws TransformerException
+     * @throws XmlException
      */
-    public SOAPMessage send(Document doc) throws OwsExceptionReport {
-        SOAPMessage responseMessage;
-
+    public XmlObject extractContent(SOAPMessage message) throws OwsExceptionReport {
         try {
-            // build the message
-            SOAPMessage smsg = buildMessage(doc);
+            // extract the content of the reply
+            Source contentSource = message.getSOAPPart().getContent();
 
-            if (this.extendedDebugToConsole) {
-                log.debug("########## SENDING #########\n" + SoapTools.toString(smsg));
-            }
+            // create transformer
+            Transformer transformer = this.transformerFact.newTransformer();
 
-            if ( !this.sendNothing) {
-                // send the message
-                SOAPConnection con = this.connfactory.createConnection();
+            // set the output for the transformation
+            StringWriter stringWriter = new StringWriter();
+            StreamResult result = new StreamResult(stringWriter);
 
-                // handle response
-                responseMessage = con.call(smsg, this.url);
-                if (this.extendedDebugToConsole) {
-                    log.debug("########## RECEIVED ##########\n" + SoapTools.toString(responseMessage));
-                }
-                con.close();
-                return responseMessage;
-            }
+            // do the transformation to the set result
+            transformer.transform(contentSource, result);
+            stringWriter.flush();
+            String responseString = new String(stringWriter.getBuffer());
 
-            log.warn("Fake mode - DID NOT SEND ANYTHING, CHANGE VARIABLE IN SimpleSoapCswClient!");
-            throw new OwsExceptionReport("Fake mode, did not send the document!", null);
+            // create xmlobject
+            XmlObject o = XmlObject.Factory.parse(responseString);
+
+            // find the content, so something different than envelope or body, and return it
+            Node contentNode = findContent(o.getDomNode().getChildNodes());
+            o = XmlObject.Factory.parse(contentNode);
+
+            return o;
+        }
+        catch (TransformerException e) {
+            log.error("Could not process received document.");
+            OwsExceptionReport report = new OwsExceptionReport("Could not transform content of SOAPMessage.", e);
+            throw report;
+        }
+        catch (XmlException e) {
+            log.error("Could not parse received content.");
+            OwsExceptionReport report = new OwsExceptionReport("Could not parse content of SOAPMessage to XmlObject.",
+                                                               e);
+            throw report;
         }
         catch (SOAPException e) {
-            log.error("Could not send document to service!", e);
-            OwsExceptionReport er = new OwsExceptionReport("Could not send document to service using SOAP!",
-                                                           e.getCause());
-            er.addCodedException(ExceptionCode.InvalidRequest, "-", e);
-            throw er;
+            log.error("Could not get content from SOAPMessage.");
+            OwsExceptionReport report = new OwsExceptionReport("Could get content from SOAPMessage.", e);
+            throw report;
         }
     }
 
@@ -222,59 +273,6 @@ public class SimpleSoapCswClient {
 
     /**
      * 
-     * @param response
-     * @return
-     * @throws OwsExceptionReport
-     * @throws SOAPException
-     * @throws TransformerException
-     * @throws XmlException
-     */
-    public XmlObject extractContent(SOAPMessage message) throws OwsExceptionReport {
-        try {
-            // extract the content of the reply
-            Source contentSource = message.getSOAPPart().getContent();
-
-            // create transformer
-            Transformer transformer = this.transformerFact.newTransformer();
-
-            // set the output for the transformation
-            StringWriter stringWriter = new StringWriter();
-            StreamResult result = new StreamResult(stringWriter);
-
-            // do the transformation to the set result
-            transformer.transform(contentSource, result);
-            stringWriter.flush();
-            String responseString = new String(stringWriter.getBuffer());
-
-            // create xmlobject
-            XmlObject o = XmlObject.Factory.parse(responseString);
-
-            // find the content, so something different than envelope or body, and return it
-            Node contentNode = findContent(o.getDomNode().getChildNodes());
-            o = XmlObject.Factory.parse(contentNode);
-
-            return o;
-        }
-        catch (TransformerException e) {
-            log.error("Could not process received document.");
-            OwsExceptionReport report = new OwsExceptionReport("Could not transform content of SOAPMessage.", e);
-            throw report;
-        }
-        catch (XmlException e) {
-            log.error("Could not parse received content.");
-            OwsExceptionReport report = new OwsExceptionReport("Could not parse content of SOAPMessage to XmlObject.",
-                                                               e);
-            throw report;
-        }
-        catch (SOAPException e) {
-            log.error("Could not get content from SOAPMessage.");
-            OwsExceptionReport report = new OwsExceptionReport("Could get content from SOAPMessage.", e);
-            throw report;
-        }
-    }
-
-    /**
-     * 
      * @param message
      * @return
      * @throws OwsExceptionReport
@@ -288,26 +286,6 @@ public class SimpleSoapCswClient {
             OwsExceptionReport report = new OwsExceptionReport("Could get fault from SOAPMessage.", e);
             throw report;
         }
-    }
-
-    /**
-     * 
-     * add soap envelope and body
-     * 
-     * @param doc
-     * @return
-     * @throws SOAPException
-     */
-    private SOAPMessage buildMessage(Document doc) throws SOAPException {
-        MessageFactory mfact = MessageFactory.newInstance();
-        SOAPMessage smsg = mfact.createMessage();
-        SOAPPart prt = smsg.getSOAPPart();
-        SOAPEnvelope env = prt.getEnvelope();
-        SOAPBody bdy = env.getBody();
-        bdy.addDocument(doc);
-        smsg.saveChanges();
-
-        return smsg;
     }
 
     /**
@@ -342,39 +320,61 @@ public class SimpleSoapCswClient {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * @return the doNotCheck
      */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        SimpleSoapCswClient other = (SimpleSoapCswClient) obj;
-        if (this.connfactory == null) {
-            if (other.connfactory != null)
-                return false;
-        }
-        else if ( !this.connfactory.equals(other.connfactory))
-            return false;
-        if (this.url == null) {
-            if (other.url != null)
-                return false;
-        }
-        else
-            try {
-                if ( !this.url.toURI().equals(other.url.toURI()))
-                    return false;
+    public boolean isDoNotCheck() {
+        return this.doNotCheck;
+    }
+
+    /**
+     * 
+     * @param doc
+     * @return
+     * @throws OwsExceptionReport
+     */
+    public SOAPMessage send(Document doc) throws OwsExceptionReport {
+        SOAPMessage responseMessage;
+
+        try {
+            // build the message
+            SOAPMessage smsg = buildMessage(doc);
+
+            if (this.extendedDebugToConsole) {
+                log.debug("########## SENDING #########\n" + SoapTools.toString(smsg));
             }
-            catch (URISyntaxException e) {
-                log.error("Uri error.", e);
+
+            if ( !this.sendNothing) {
+                // send the message
+                SOAPConnection con = this.connfactory.createConnection();
+
+                // handle response
+                responseMessage = con.call(smsg, this.url);
+                if (this.extendedDebugToConsole) {
+                    log.debug("########## RECEIVED ##########\n" + SoapTools.toString(responseMessage));
+                }
+                con.close();
+                return responseMessage;
             }
-        return true;
+
+            log.warn("Fake mode - DID NOT SEND ANYTHING, CHANGE VARIABLE IN SimpleSoapCswClient!");
+            throw new OwsExceptionReport("Fake mode, did not send the document!", null);
+        }
+        catch (SOAPException e) {
+            log.error("Could not send document to service!", e);
+            OwsExceptionReport er = new OwsExceptionReport("Could not send document to service using SOAP!",
+                                                           e.getCause());
+            er.addCodedException(ExceptionCode.InvalidRequest, "-", e);
+            throw er;
+        }
+    }
+
+    /**
+     * @param doNotCheck
+     *        the doNotCheck to set
+     */
+    public void setDoNotCheck(boolean doNotCheck) {
+        this.doNotCheck = doNotCheck;
     }
 
     @Override

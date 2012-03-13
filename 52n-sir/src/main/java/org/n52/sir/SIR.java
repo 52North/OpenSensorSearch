@@ -58,11 +58,6 @@ import org.slf4j.LoggerFactory;
 public class SIR extends HttpServlet {
 
     /**
-     * 
-     */
-    private static final long serialVersionUID = -8056397366588482503L;
-
-    /**
      * The init parameter of the configFile
      */
     private static final String INIT_PARAM_CONFIG_FILE = "configFile";
@@ -78,9 +73,104 @@ public class SIR extends HttpServlet {
     private static Logger log = LoggerFactory.getLogger(SIR.class);
 
     /**
+     * 
+     */
+    private static final long serialVersionUID = -8056397366588482503L;
+
+    /**
      * Handles POST and GET operations
      */
     private RequestOperator requestOperator;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.servlet.GenericServlet#destroy()
+     */
+    @Override
+    public void destroy() {
+        log.info("destroy() called...");
+
+        super.destroy();
+        SirConfigurator.getInstance().getExecutor().shutdown();
+
+        log.info("done destroy()");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest ,
+     * javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.debug(" ****** (GET) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
+        String queryString = req.getQueryString();
+        if (log.isDebugEnabled())
+            log.debug("Query String: " + queryString);
+        ISirResponse sirResp = this.requestOperator.doGetOperation(queryString);
+        doResponse(resp, sirResp);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse)
+     */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (log.isDebugEnabled())
+            log.debug(" ****** (POST) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
+
+        // Read the request
+        InputStream in = req.getInputStream();
+        String inputString = "";
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String line;
+        StringBuffer sb = new StringBuffer();
+        while ( (line = br.readLine()) != null) {
+            sb.append(line + "\n");
+        }
+        br.close();
+        inputString = sb.toString();
+
+        // discard "request="
+        if (inputString.startsWith("request=")) {
+            inputString = inputString.substring(8, inputString.length());
+            inputString = java.net.URLDecoder.decode(inputString, "UTF-8");
+        }
+
+        ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
+        doResponse(resp, sirResp);
+
+    }
+
+    /**
+     * 
+     * @param resp
+     * @param sirResp
+     */
+    private void doResponse(HttpServletResponse resp, ISirResponse sirResp) {
+        try {
+            String contentType = sirResp.getContentType();
+            int contentLength = sirResp.getContentLength();
+            byte[] bytes = sirResp.getByteArray();
+            resp.setContentLength(contentLength);
+            OutputStream out = resp.getOutputStream();
+            resp.setContentType(contentType);
+            out.write(bytes);
+            out.close();
+        }
+        catch (IOException ioe) {
+            log.error("doResponse", ioe);
+        }
+        catch (TransformerException te) {
+            log.error("doResponse", te);
+        }
+    }
 
     /*
      * (non-Javadoc)
@@ -153,95 +243,5 @@ public class SIR extends HttpServlet {
         }
 
         log.info(" ***** SIR initiated successfully! ***** ");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest ,
-     * javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug(" ****** (GET) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
-        String queryString = req.getQueryString();
-        if (log.isDebugEnabled())
-            log.debug("Query String: " + queryString);
-        ISirResponse sirResp = this.requestOperator.doGetOperation(queryString);
-        doResponse(resp, sirResp);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (log.isDebugEnabled())
-            log.debug(" ****** (POST) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
-
-        // Read the request
-        InputStream in = req.getInputStream();
-        String inputString = "";
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String line;
-        StringBuffer sb = new StringBuffer();
-        while ( (line = br.readLine()) != null) {
-            sb.append(line + "\n");
-        }
-        br.close();
-        inputString = sb.toString();
-
-        // discard "request="
-        if (inputString.startsWith("request=")) {
-            inputString = inputString.substring(8, inputString.length());
-            inputString = java.net.URLDecoder.decode(inputString, "UTF-8");
-        }
-
-        ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
-        doResponse(resp, sirResp);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#destroy()
-     */
-    @Override
-    public void destroy() {
-        log.info("destroy() called...");
-
-        super.destroy();
-        SirConfigurator.getInstance().getExecutor().shutdown();
-
-        log.info("done destroy()");
-    }
-
-    /**
-     * 
-     * @param resp
-     * @param sirResp
-     */
-    private void doResponse(HttpServletResponse resp, ISirResponse sirResp) {
-        try {
-            String contentType = sirResp.getContentType();
-            int contentLength = sirResp.getContentLength();
-            byte[] bytes = sirResp.getByteArray();
-            resp.setContentLength(contentLength);
-            OutputStream out = resp.getOutputStream();
-            resp.setContentType(contentType);
-            out.write(bytes);
-            out.close();
-        }
-        catch (IOException ioe) {
-            log.error("doResponse", ioe);
-        }
-        catch (TransformerException te) {
-            log.error("doResponse", te);
-        }
     }
 }

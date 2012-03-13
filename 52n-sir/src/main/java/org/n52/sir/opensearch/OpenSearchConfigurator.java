@@ -40,29 +40,45 @@ import org.n52.sir.SirConfigurator;
  */
 public class OpenSearchConfigurator {
 
+    public static final String HOME_URL = "/SIR";
+
     private static SirConfigurator sirConfigurator = SirConfigurator.getInstance();
 
-    private String cssFile = "sir.css";
-
-    public static final String HOME_URL = "/SIR";
+    private int capabilitiesCacheMaximumAgeSeconds = 60 * 60;
 
     /**
      * use contextually shortended urls (replacing long string identifiers with integer ids)
      */
     private boolean compressPermalinks = true;
 
-    private String permalinkBaseURL = "http://sensorweb.demo.52north.org/ThinSweClient2.0/Client.html";
+    private String cssFile = "sir.css";
     
     private String feedAuthor = "Open Sensor Search by 52°North";
+
+    private String permalinkBaseURL = "http://sensorweb.demo.52north.org/ThinSweClient2.0/Client.html";
 
     private SimpleDateFormat permalinkDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     HashMap<String, String> responseFormats = new HashMap<String, String>();
 
-    private int capabilitiesCacheMaximumAgeSeconds = 60 * 60;
+    public void addResponseFormat(IOpenSearchListener listener) {
+        this.responseFormats.put(listener.getMimeType(), listener.getName());
+    }
+
+    public int getCapabilitiesCacheMaximumAgeSeconds() {
+        return this.capabilitiesCacheMaximumAgeSeconds;
+    }
 
     public String getCharacterEncoding() {
         return sirConfigurator.getCharacterEncoding();
+    }
+
+    public String getCssFile() {
+        return this.cssFile;
+    }
+
+    public String getFeedAuthor() {
+        return this.feedAuthor;
     }
 
     public String getFullOpenSearchPath() {
@@ -73,28 +89,12 @@ public class OpenSearchConfigurator {
         return sirConfigurator.getFullServicePath();
     }
 
-    public String getOpenSearchPath() {
-        return sirConfigurator.getOpenSearchPath();
-    }
-
     public String getHomeUrl() {
         return HOME_URL;
     }
 
-    public void addResponseFormat(IOpenSearchListener listener) {
-        this.responseFormats.put(listener.getMimeType(), listener.getName());
-    }
-
-    public Map<String, String> getResponseFormats() {
-        return this.responseFormats;
-    }
-
-    public String getCssFile() {
-        return this.cssFile;
-    }
-
-    public boolean isCompressPermalinks() {
-        return this.compressPermalinks;
+    public String getOpenSearchPath() {
+        return sirConfigurator.getOpenSearchPath();
     }
 
     public String getPermalinkBaseURL() {
@@ -105,12 +105,12 @@ public class OpenSearchConfigurator {
         return this.permalinkDateFormat;
     }
 
-    public int getCapabilitiesCacheMaximumAgeSeconds() {
-        return this.capabilitiesCacheMaximumAgeSeconds;
+    public Map<String, String> getResponseFormats() {
+        return this.responseFormats;
     }
 
-    public String getFeedAuthor() {
-        return this.feedAuthor;
+    public boolean isCompressPermalinks() {
+        return this.compressPermalinks;
     }
 
 }

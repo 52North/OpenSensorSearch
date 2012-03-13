@@ -50,29 +50,6 @@ public class SirDisconnectFromCatalogResponse implements ISirResponse {
      */
     private String catalogUrl;
 
-    /**
-     * @return the cswUrl
-     */
-    public String getCatalogUrl() {
-        return this.catalogUrl;
-    }
-
-    /**
-     * @param cswUrl
-     *        the cswUrl to set
-     */
-    public void setCatalogUrl(String catalogUrl) {
-        this.catalogUrl = catalogUrl;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirDisconnectFromCatalogResponse: ");
-        sb.append("CatalogUrl: " + this.catalogUrl);
-        return sb.toString();
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -87,21 +64,11 @@ public class SirDisconnectFromCatalogResponse implements ISirResponse {
         return bytes;
     }
 
-    private DisconnectFromCatalogResponseDocument parseToResponseDocument() {
-        DisconnectFromCatalogResponseDocument document = DisconnectFromCatalogResponseDocument.Factory.newInstance();
-        DisconnectFromCatalogResponse disconCat = document.addNewDisconnectFromCatalogResponse();
-
-        XmlTools.addSirAndSensorMLSchemaLocation(disconCat);
-
-        // set csw url
-        disconCat.setCatalogURL(this.catalogUrl);
-
-        if (SirConfigurator.getInstance().isValidateResponses()) {
-            if ( !document.validate())
-                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
-        }
-        
-        return document;
+    /**
+     * @return the cswUrl
+     */
+    public String getCatalogUrl() {
+        return this.catalogUrl;
     }
 
     /*
@@ -122,6 +89,39 @@ public class SirDisconnectFromCatalogResponse implements ISirResponse {
     @Override
     public String getContentType() {
         return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    private DisconnectFromCatalogResponseDocument parseToResponseDocument() {
+        DisconnectFromCatalogResponseDocument document = DisconnectFromCatalogResponseDocument.Factory.newInstance();
+        DisconnectFromCatalogResponse disconCat = document.addNewDisconnectFromCatalogResponse();
+
+        XmlTools.addSirAndSensorMLSchemaLocation(disconCat);
+
+        // set csw url
+        disconCat.setCatalogURL(this.catalogUrl);
+
+        if (SirConfigurator.getInstance().isValidateResponses()) {
+            if ( !document.validate())
+                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
+        }
+        
+        return document;
+    }
+
+    /**
+     * @param cswUrl
+     *        the cswUrl to set
+     */
+    public void setCatalogUrl(String catalogUrl) {
+        this.catalogUrl = catalogUrl;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SirDisconnectFromCatalogResponse: ");
+        sb.append("CatalogUrl: " + this.catalogUrl);
+        return sb.toString();
     }
 
 }

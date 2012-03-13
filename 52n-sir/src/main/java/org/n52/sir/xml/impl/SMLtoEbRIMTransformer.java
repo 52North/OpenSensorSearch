@@ -80,25 +80,47 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;
  */
 public class SMLtoEbRIMTransformer implements ITransformer {
 
-    private static Logger log = LoggerFactory.getLogger(SMLtoEbRIMTransformer.class);
+    /**
+     * 
+     * Class catches {@link SAXParseException}s and is used during validated transformation.
+     * 
+     * @author Daniel Nüst
+     * 
+     */
+    protected static class ParseExceptionHandler extends DefaultHandler {
 
-    private boolean validating = ITransformer.IS_VALIDATING_DEFAULT;
+        @SuppressWarnings("synthetic-access")
+        @Override
+        public void error(SAXParseException spe) throws SAXException {
+            log.error(" [ParseExceptionHandler] SAXParseException error: " + spe.getMessage());
+        }
 
-    private Transformer transformer;
-
-    private static TransformerFactory tFactory = TransformerFactory.newInstance();
-
-    private StreamSource xsltSource;
-
-    public static final String TRANSFORMATION_FILE_NAME = "SensorML-to-ebRIM.xsl";
-
-    public static final Object TRANSFORMED_DOCS_LISTING_ELEMENT_BEFORE = "<rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
-
-    public static final Object TRANSFORMED_DOCS_LISTING_ELEMENT_AFTER = "</rim:RegistryObjectList>";
+        @SuppressWarnings("synthetic-access")
+        @Override
+        public void warning(SAXParseException spe) throws SAXException {
+            log.error(" [ParseExceptionHandler] SAXParseException warning: " + spe);
+        }
+    }
 
     private static final String INDENT_OUTPUT_PROPERTY_VALUE = "yes";
 
+    private static Logger log = LoggerFactory.getLogger(SMLtoEbRIMTransformer.class);
+
     private static final String TESTING_ENCODING = "UTF-8";
+
+    private static TransformerFactory tFactory = TransformerFactory.newInstance();
+
+    public static final String TRANSFORMATION_FILE_NAME = "SensorML-to-ebRIM.xsl";
+
+    public static final Object TRANSFORMED_DOCS_LISTING_ELEMENT_AFTER = "</rim:RegistryObjectList>";
+
+    public static final Object TRANSFORMED_DOCS_LISTING_ELEMENT_BEFORE = "<rim:RegistryObjectList xmlns:rim=\"urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0\">";
+
+    private Transformer transformer;
+
+    private boolean validating = ITransformer.IS_VALIDATING_DEFAULT;
+
+    private StreamSource xsltSource;
 
     /**
      * @throws InstantiationException
@@ -122,76 +144,6 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         catch (TransformerConfigurationException e) {
             throw new InstantiationError("Could not instantiate Transformer from file " + this.xsltSource);
         }
-    }
-
-    @Override
-    public Result transform(String file) throws FileNotFoundException, TransformerException {
-        StreamSource input = new StreamSource(file);
-        return transform(input);
-    }
-
-    @Override
-    public XmlObject transform(SensorMLDocument smlDoc) throws XmlException, TransformerException {
-        return actualTransform(smlDoc);
-    }
-
-    @Override
-    public XmlObject transform(SirSensorDescription sensor) throws XmlException, TransformerException {
-        if (sensor instanceof SirXmlSensorDescription) {
-            SirXmlSensorDescription sensorDescription = (SirXmlSensorDescription) sensor;
-            XmlObject o = sensorDescription.getDescription();
-
-            if (o instanceof SystemType) {
-                SystemType st = (SystemType) o;
-                return transform(st);
-            }
-            else if (o instanceof SensorMLDocument) {
-                SensorMLDocument smlDoc = (SensorMLDocument) o;
-                return actualTransform(smlDoc);
-            }
-
-            return o;
-        }
-        log.error("'transform' can only handle SiXmlSensorDescriptions, because it requires the complete sensor description!");
-        return null;
-    }
-
-    @Override
-    public XmlObject transform(SystemType st) throws XmlException, TransformerException {
-        SensorMLDocument smlDoc = SensorMLDocument.Factory.newInstance();
-        AbstractProcessType abstractProcess = smlDoc.addNewSensorML().addNewMember().addNewProcess();
-        SystemType systemType = (SystemType) abstractProcess.substitute(new QName(SMLConstants.NAMESPACE, "System"),
-                                                                        SystemType.type);
-        systemType.set(st);
-        return actualTransform(smlDoc);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.n52.sir.xml.ITransformer#transform(javax.xml.transform.Source)
-     */
-    @Override
-    public Result transform(Source input) throws TransformerException, FileNotFoundException {
-        if (this.validating) {
-            return validateAndTransform(new InputSource(input.getSystemId()));
-        }
-
-        log.info("Transformation of " + input.getSystemId());
-
-        ErrorListener errL = new StandardErrorListener();
-        this.transformer.setErrorListener(errL);
-
-        // create output string
-        StringWriter sw = new StringWriter();
-        StreamResult output = new StreamResult(sw);
-
-        // do transform
-        this.transformer.transform(input, output);
-
-        if (log.isDebugEnabled())
-            log.debug("Transformation Done.");
-        
-        return output;
     }
 
     /**
@@ -240,6 +192,98 @@ public class SMLtoEbRIMTransformer implements ITransformer {
             log.debug("Finished transformation: " + XmlTools.inspect(regPackDoc));
 
         return regPackDoc;
+    }
+
+    @Override
+    public boolean isValidating() {
+        return this.validating;
+    }
+
+    @Override
+    public void setValidating(boolean b) {
+        this.validating = b;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SensorMLToEbRIMTransformer [validating: ");
+        sb.append(this.validating);
+        sb.append(", xsltSource: ");
+        sb.append(this.xsltSource);
+        sb.append(", transformation file: ");
+        sb.append(TRANSFORMATION_FILE_NAME);
+        return sb.toString();
+    }
+
+    @Override
+    public XmlObject transform(SensorMLDocument smlDoc) throws XmlException, TransformerException {
+        return actualTransform(smlDoc);
+    }
+
+    @Override
+    public XmlObject transform(SirSensorDescription sensor) throws XmlException, TransformerException {
+        if (sensor instanceof SirXmlSensorDescription) {
+            SirXmlSensorDescription sensorDescription = (SirXmlSensorDescription) sensor;
+            XmlObject o = sensorDescription.getDescription();
+
+            if (o instanceof SystemType) {
+                SystemType st = (SystemType) o;
+                return transform(st);
+            }
+            else if (o instanceof SensorMLDocument) {
+                SensorMLDocument smlDoc = (SensorMLDocument) o;
+                return actualTransform(smlDoc);
+            }
+
+            return o;
+        }
+        log.error("'transform' can only handle SiXmlSensorDescriptions, because it requires the complete sensor description!");
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see org.n52.sir.xml.ITransformer#transform(javax.xml.transform.Source)
+     */
+    @Override
+    public Result transform(Source input) throws TransformerException, FileNotFoundException {
+        if (this.validating) {
+            return validateAndTransform(new InputSource(input.getSystemId()));
+        }
+
+        log.info("Transformation of " + input.getSystemId());
+
+        ErrorListener errL = new StandardErrorListener();
+        this.transformer.setErrorListener(errL);
+
+        // create output string
+        StringWriter sw = new StringWriter();
+        StreamResult output = new StreamResult(sw);
+
+        // do transform
+        this.transformer.transform(input, output);
+
+        if (log.isDebugEnabled())
+            log.debug("Transformation Done.");
+        
+        return output;
+    }
+
+    @Override
+    public Result transform(String file) throws FileNotFoundException, TransformerException {
+        StreamSource input = new StreamSource(file);
+        return transform(input);
+    }
+
+    @Override
+    public XmlObject transform(SystemType st) throws XmlException, TransformerException {
+        SensorMLDocument smlDoc = SensorMLDocument.Factory.newInstance();
+        AbstractProcessType abstractProcess = smlDoc.addNewSensorML().addNewMember().addNewProcess();
+        SystemType systemType = (SystemType) abstractProcess.substitute(new QName(SMLConstants.NAMESPACE, "System"),
+                                                                        SystemType.type);
+        systemType.set(st);
+        return actualTransform(smlDoc);
     }
 
     /**
@@ -306,50 +350,6 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         }
         log.error("TransformerFactory does not support required SAXSource.FEATURE");
         throw new TransformerConfigurationException("TransformerFactory does not support required SAXSource.FEATURE");
-    }
-
-    @Override
-    public boolean isValidating() {
-        return this.validating;
-    }
-
-    @Override
-    public void setValidating(boolean b) {
-        this.validating = b;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SensorMLToEbRIMTransformer [validating: ");
-        sb.append(this.validating);
-        sb.append(", xsltSource: ");
-        sb.append(this.xsltSource);
-        sb.append(", transformation file: ");
-        sb.append(TRANSFORMATION_FILE_NAME);
-        return sb.toString();
-    }
-
-    /**
-     * 
-     * Class catches {@link SAXParseException}s and is used during validated transformation.
-     * 
-     * @author Daniel Nüst
-     * 
-     */
-    protected static class ParseExceptionHandler extends DefaultHandler {
-
-        @SuppressWarnings("synthetic-access")
-        @Override
-        public void warning(SAXParseException spe) throws SAXException {
-            log.error(" [ParseExceptionHandler] SAXParseException warning: " + spe);
-        }
-
-        @SuppressWarnings("synthetic-access")
-        @Override
-        public void error(SAXParseException spe) throws SAXException {
-            log.error(" [ParseExceptionHandler] SAXParseException error: " + spe.getMessage());
-        }
     }
 
 }

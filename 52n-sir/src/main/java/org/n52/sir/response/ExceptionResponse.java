@@ -63,25 +63,6 @@ public class ExceptionResponse implements ISirResponse {
     }
 
     /**
-     * @return Returns the content type of this response. The returned value is the constant
-     *         ScsConstant.CONTENT_TYPE.
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    /**
-     * @return Returns the the length of the content in bytes
-     * @throws IOException
-     *         if getting the content length failed
-     */
-    @Override
-    public int getContentLength() throws IOException {
-        return getByteArray().length;
-    }
-
-    /**
      * @return Returns the response as byte[]
      * @throws IOException
      *         if getting the byte[] failed
@@ -102,6 +83,25 @@ public class ExceptionResponse implements ISirResponse {
         this.erd.save(baos, options);
         byte[] bytes = baos.toByteArray();
         return bytes;
+    }
+
+    /**
+     * @return Returns the the length of the content in bytes
+     * @throws IOException
+     *         if getting the content length failed
+     */
+    @Override
+    public int getContentLength() throws IOException {
+        return getByteArray().length;
+    }
+
+    /**
+     * @return Returns the content type of this response. The returned value is the constant
+     *         ScsConstant.CONTENT_TYPE.
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
     }
 
 }

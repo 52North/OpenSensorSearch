@@ -42,6 +42,20 @@ import javax.xml.soap.SOAPMessage;
  */
 public class SoapTools {
 
+    private static String inspect(Detail d) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Detail [");
+
+        Iterator< ? > iter = d.getDetailEntries();
+        while (iter.hasNext()) {
+            DetailEntry entry = (DetailEntry) iter.next();
+            sb.append(" [entry=");
+            sb.append(XmlTools.xmlToString(entry));
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     public static String inspect(SOAPFault fault) {
         StringBuilder sb = new StringBuilder();
         sb.append("Fault [faultcode: ");
@@ -53,20 +67,6 @@ public class SoapTools {
         sb.append(", detail: ");
         Detail d = fault.getDetail();
         sb.append(inspect(d));
-        sb.append("]");
-        return sb.toString();
-    }
-
-    private static String inspect(Detail d) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Detail [");
-
-        Iterator< ? > iter = d.getDetailEntries();
-        while (iter.hasNext()) {
-            DetailEntry entry = (DetailEntry) iter.next();
-            sb.append(" [entry=");
-            sb.append(XmlTools.xmlToString(entry));
-        }
         sb.append("]");
         return sb.toString();
     }

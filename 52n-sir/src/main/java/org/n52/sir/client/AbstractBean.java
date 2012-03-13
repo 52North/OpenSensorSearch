@@ -34,10 +34,22 @@ public abstract class AbstractBean {
     protected String responseString = "";
 
     /**
+     * Build the request based on the user input, then save it in {@link AbstractBean#requestString}.
+     */
+    public abstract void buildRequest();
+
+    /**
      * @return the request
      */
     public String getRequestString() {
         return this.requestString;
+    }
+
+    /**
+     * @return the response
+     */
+    public String getResponseString() {
+        return this.responseString;
     }
 
     /**
@@ -49,23 +61,11 @@ public abstract class AbstractBean {
     }
 
     /**
-     * @return the response
-     */
-    public String getResponseString() {
-        return this.responseString;
-    }
-
-    /**
      * @param response
      *        the response to set
      */
     public void setResponseString(String response) {
         this.responseString = response;
     }
-
-    /**
-     * Build the request based on the user input, then save it in {@link AbstractBean#requestString}.
-     */
-    public abstract void buildRequest();
 
 }

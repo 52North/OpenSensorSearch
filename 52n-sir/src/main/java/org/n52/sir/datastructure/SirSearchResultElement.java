@@ -33,31 +33,23 @@ import java.util.Date;
  */
 public class SirSearchResultElement {
 
-    private String sensorIdInSir;
+    private Date lastUpdate;
 
     private SirSensorDescription sensorDescription;
 
-    private Collection<SirServiceReference> serviceReferences;
+    private String sensorIdInSir;
 
-    private Date lastUpdate;
+    private Collection<SirServiceReference> serviceReferences;
 
     public SirSearchResultElement() {
         // empty constructor for deserialization
     }
 
     /**
-     * @return the sensorIdInSir
+     * @return the lastUpdate
      */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
-    }
-
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public Date getLastUpdate() {
+        return this.lastUpdate;
     }
 
     /**
@@ -68,11 +60,10 @@ public class SirSearchResultElement {
     }
 
     /**
-     * @param sensorDescription
-     *        the sensorDescription to set
+     * @return the sensorIdInSir
      */
-    public void setSensorDescription(SirSensorDescription sensorDescription) {
-        this.sensorDescription = sensorDescription;
+    public String getSensorIdInSir() {
+        return this.sensorIdInSir;
     }
 
     /**
@@ -80,14 +71,6 @@ public class SirSearchResultElement {
      */
     public Collection<SirServiceReference> getServiceReferences() {
         return this.serviceReferences;
-    }
-
-    /**
-     * @param serviceDescriptions
-     *        the serviceDescriptions to set
-     */
-    public void setServiceReferences(Collection<SirServiceReference> serviceReferences) {
-        this.serviceReferences = serviceReferences;
     }
 
     /**
@@ -99,10 +82,27 @@ public class SirSearchResultElement {
     }
 
     /**
-     * @return the lastUpdate
+     * @param sensorDescription
+     *        the sensorDescription to set
      */
-    public Date getLastUpdate() {
-        return this.lastUpdate;
+    public void setSensorDescription(SirSensorDescription sensorDescription) {
+        this.sensorDescription = sensorDescription;
+    }
+
+    /**
+     * @param sensorIdInSir
+     *        the sensorIdInSir to set
+     */
+    public void setSensorIdInSir(String sensorIdInSir) {
+        this.sensorIdInSir = sensorIdInSir;
+    }
+
+    /**
+     * @param serviceDescriptions
+     *        the serviceDescriptions to set
+     */
+    public void setServiceReferences(Collection<SirServiceReference> serviceReferences) {
+        this.serviceReferences = serviceReferences;
     }
 
     @Override

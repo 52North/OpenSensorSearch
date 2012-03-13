@@ -31,15 +31,15 @@ package org.n52.sir.ows;
  */
 public class OWSConstants {
 
+    public static final String NAMESPACE = "http://www.opengis.net/ows";
+
+    public static final String NAMESPACE_PREFIX = "ows";
+
+    public static final String OWS_VERSION = "1.0.0";
+
     /**
      * Constant for the schema repository of OWS
      */
     public static final String SCHEMA_LOCATION = "http://schemas.opengis.net/ows/1.0.0/owsAll.xsd";
-
-    public static final String NAMESPACE = "http://www.opengis.net/ows";
-
-    public static final String OWS_VERSION = "1.0.0";
-
-    public static final String NAMESPACE_PREFIX = "ows";
 
 }

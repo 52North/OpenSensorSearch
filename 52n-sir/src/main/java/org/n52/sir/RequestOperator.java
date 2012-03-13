@@ -68,11 +68,6 @@ public class RequestOperator {
     private static Logger log = LoggerFactory.getLogger(RequestOperator.class);
 
     /**
-     * container of the requestListener
-     */
-    private HashMap<String, ISirRequestListener> reqListener;
-
-    /**
      * decoder for http get requests
      */
     private IHttpGetRequestDecoder httpGetDecoder;
@@ -81,6 +76,11 @@ public class RequestOperator {
      * decoder for http post requests
      */
     private IHttpPostRequestDecoder httpPostDecoder;
+
+    /**
+     * container of the requestListener
+     */
+    private HashMap<String, ISirRequestListener> reqListener;
 
     /**
      * constructor

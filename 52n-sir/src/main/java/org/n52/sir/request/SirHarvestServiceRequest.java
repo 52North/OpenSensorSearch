@@ -49,18 +49,18 @@ public class SirHarvestServiceRequest extends AbstractSirRequest {
     }
 
     /**
+     * @return the serviceUrl
+     */
+    public String getServiceUrl() {
+        return this.serviceUrl;
+    }
+
+    /**
      * @param serviceType
      *        the serviceType to set
      */
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
-    }
-
-    /**
-     * @return the serviceUrl
-     */
-    public String getServiceUrl() {
-        return this.serviceUrl;
     }
 
     /**

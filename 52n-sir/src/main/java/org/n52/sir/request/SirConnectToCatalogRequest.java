@@ -53,18 +53,18 @@ public class SirConnectToCatalogRequest extends AbstractSirRequest {
     }
 
     /**
+     * @return the pushInterval
+     */
+    public int getPushInterval() {
+        return this.pushInterval;
+    }
+
+    /**
      * @param cswUrl
      *        the cswUrl to set
      */
     public void setCswUrl(URL cswUrl) {
         this.cswUrl = cswUrl;
-    }
-
-    /**
-     * @return the pushInterval
-     */
-    public int getPushInterval() {
-        return this.pushInterval;
     }
 
     /**

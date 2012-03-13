@@ -37,19 +37,26 @@ import org.n52.sir.datastructure.SirSensorIdentification;
 public class SirSearchSensorRequest extends AbstractSirRequest {
 
     /**
-     * Collection of sensor identifications
-     */
-    private Collection<SirSensorIdentification> sensIdent;
-
-    /**
      * Search Criteria
      */
     private SirSearchCriteria searchCriteria;
 
     /**
+     * Collection of sensor identifications
+     */
+    private Collection<SirSensorIdentification> sensIdent;
+
+    /**
      * if a simple response is requested
      */
     private boolean simpleResponse = false;
+
+    /**
+     * @return the searchCriteria
+     */
+    public SirSearchCriteria getSearchCriteria() {
+        return this.searchCriteria;
+    }
 
     /**
      * @return the sensIdent
@@ -59,18 +66,10 @@ public class SirSearchSensorRequest extends AbstractSirRequest {
     }
 
     /**
-     * @param sensIdent
-     *        the sensIdent to set
+     * @return the simpleResponse
      */
-    public void setSensIdent(Collection<SirSensorIdentification> sensIdent) {
-        this.sensIdent = sensIdent;
-    }
-
-    /**
-     * @return the searchCriteria
-     */
-    public SirSearchCriteria getSearchCriteria() {
-        return this.searchCriteria;
+    public boolean isSimpleResponse() {
+        return this.simpleResponse;
     }
 
     /**
@@ -82,10 +81,11 @@ public class SirSearchSensorRequest extends AbstractSirRequest {
     }
 
     /**
-     * @return the simpleResponse
+     * @param sensIdent
+     *        the sensIdent to set
      */
-    public boolean isSimpleResponse() {
-        return this.simpleResponse;
+    public void setSensIdent(Collection<SirSensorIdentification> sensIdent) {
+        this.sensIdent = sensIdent;
     }
 
     /**

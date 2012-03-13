@@ -37,39 +37,9 @@ import org.apache.xmlbeans.XmlObject;
 public class SirSensor {
 
     /**
-     * sensor ID in SIR
-     */
-    private String sensorIDInSIR;
-
-    /**
-     * service descriptions
-     */
-    private Collection<SirServiceReference> servDescs;
-
-    /**
-     * observed phenomenon
-     */
-    private Collection<SirPhenomenon> phenomenon;
-
-    /**
      * bounding box of the observed area
      */
     private SirBoundingBox bBox;
-
-    /**
-     * searchwords for this sensor
-     */
-    private Collection<String> text;
-
-    /**
-     * sensorML document
-     */
-    private XmlObject sensorMLDocument;
-
-    /**
-     * time period
-     */
-    private SirTimePeriod timePeriod;
 
     /**
      * time period
@@ -77,33 +47,47 @@ public class SirSensor {
     private Date lastUpdate;
 
     /**
-     * @return the sensorIDInSIR
+     * observed phenomenon
      */
-    public String getSensorIDInSIR() {
-        return this.sensorIDInSIR;
+    private Collection<SirPhenomenon> phenomenon;
+
+    /**
+     * sensor ID in SIR
+     */
+    private String sensorIDInSIR;
+
+    /**
+     * sensorML document
+     */
+    private XmlObject sensorMLDocument;
+
+    /**
+     * service descriptions
+     */
+    private Collection<SirServiceReference> servDescs;
+
+    /**
+     * searchwords for this sensor
+     */
+    private Collection<String> text;
+
+    /**
+     * time period
+     */
+    private SirTimePeriod timePeriod;
+
+    /**
+     * @return the bBox
+     */
+    public SirBoundingBox getbBox() {
+        return this.bBox;
     }
 
     /**
-     * @param sensorIDInSIR
-     *        the sensorIDInSIR to set
+     * @return the lastUpdate
      */
-    public void setSensorIDInSIR(String sensorIDInSIR) {
-        this.sensorIDInSIR = sensorIDInSIR;
-    }
-
-    /**
-     * @return the servDescs
-     */
-    public Collection<SirServiceReference> getServDescs() {
-        return this.servDescs;
-    }
-
-    /**
-     * @param servDescs
-     *        the servDescs to set
-     */
-    public void setServDescs(Collection<SirServiceReference> servDescs) {
-        this.servDescs = servDescs;
+    public Date getLastUpdate() {
+        return this.lastUpdate;
     }
 
     /**
@@ -114,18 +98,38 @@ public class SirSensor {
     }
 
     /**
-     * @param phenomenon
-     *        the phenomenon to set
+     * @return the sensorIDInSIR
      */
-    public void setPhenomenon(Collection<SirPhenomenon> phenomenon) {
-        this.phenomenon = phenomenon;
+    public String getSensorIDInSIR() {
+        return this.sensorIDInSIR;
     }
 
     /**
-     * @return the bBox
+     * @return the sensorMLDocument
      */
-    public SirBoundingBox getbBox() {
-        return this.bBox;
+    public XmlObject getSensorMLDocument() {
+        return this.sensorMLDocument;
+    }
+
+    /**
+     * @return the servDescs
+     */
+    public Collection<SirServiceReference> getServDescs() {
+        return this.servDescs;
+    }
+
+    /**
+     * @return the text
+     */
+    public Collection<String> getText() {
+        return this.text;
+    }
+
+    /**
+     * @return the timePeriod
+     */
+    public SirTimePeriod getTimePeriod() {
+        return this.timePeriod;
     }
 
     /**
@@ -137,25 +141,27 @@ public class SirSensor {
     }
 
     /**
-     * @return the text
+     * @param lastUpdate
+     *        the lastUpdate to set
      */
-    public Collection<String> getText() {
-        return this.text;
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     /**
-     * @param text
-     *        the text to set
+     * @param phenomenon
+     *        the phenomenon to set
      */
-    public void setText(Collection<String> text) {
-        this.text = text;
+    public void setPhenomenon(Collection<SirPhenomenon> phenomenon) {
+        this.phenomenon = phenomenon;
     }
 
     /**
-     * @return the sensorMLDocument
+     * @param sensorIDInSIR
+     *        the sensorIDInSIR to set
      */
-    public XmlObject getSensorMLDocument() {
-        return this.sensorMLDocument;
+    public void setSensorIDInSIR(String sensorIDInSIR) {
+        this.sensorIDInSIR = sensorIDInSIR;
     }
 
     /**
@@ -167,10 +173,19 @@ public class SirSensor {
     }
 
     /**
-     * @return the timePeriod
+     * @param servDescs
+     *        the servDescs to set
      */
-    public SirTimePeriod getTimePeriod() {
-        return this.timePeriod;
+    public void setServDescs(Collection<SirServiceReference> servDescs) {
+        this.servDescs = servDescs;
+    }
+
+    /**
+     * @param text
+     *        the text to set
+     */
+    public void setText(Collection<String> text) {
+        this.text = text;
     }
 
     /**
@@ -179,21 +194,6 @@ public class SirSensor {
      */
     public void setTimePeriod(SirTimePeriod timePeriod) {
         this.timePeriod = timePeriod;
-    }
-
-    /**
-     * @return the lastUpdate
-     */
-    public Date getLastUpdate() {
-        return this.lastUpdate;
-    }
-
-    /**
-     * @param lastUpdate
-     *        the lastUpdate to set
-     */
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
     }
 
     @Override

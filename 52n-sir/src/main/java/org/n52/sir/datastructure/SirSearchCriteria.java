@@ -33,48 +33,40 @@ import java.util.Collection;
  */
 public class SirSearchCriteria {
 
-    private Collection<SirService> serviceCriteria;
-
-    private Collection<String> searchText;
-
-    private Collection<SirSearchCriteria_Phenomenon> phenomena = new ArrayList<SirSearchCriteria_Phenomenon>();
-
-    private Collection<String> uom;
-
     private SirBoundingBox boundingBox;
-
-    private Calendar start;
 
     private Calendar end;
 
+    private Collection<SirSearchCriteria_Phenomenon> phenomena = new ArrayList<SirSearchCriteria_Phenomenon>();
+
+    private Collection<String> searchText;
+
+    private Collection<SirService> serviceCriteria;
+
+    private Calendar start;
+
+    private Collection<String> uom;
+
     /**
-     * @return the serviceCriteria
+     * 
+     * @param p
      */
-    public Collection<SirService> getServiceCriteria() {
-        return this.serviceCriteria;
+    public void addPhenomenon(SirSearchCriteria_Phenomenon p) {
+        this.phenomena.add(p);
     }
 
     /**
-     * @param serviceCriteria
-     *        the serviceCriteria to set
+     * @return the boundingBox
      */
-    public void setServiceCriteria(Collection<SirService> serviceCriteria) {
-        this.serviceCriteria = serviceCriteria;
+    public SirBoundingBox getBoundingBox() {
+        return this.boundingBox;
     }
 
     /**
-     * @return the searchText
+     * @return the end
      */
-    public Collection<String> getSearchText() {
-        return this.searchText;
-    }
-
-    /**
-     * @param searchText
-     *        the searchText to set
-     */
-    public void setSearchText(Collection<String> searchText) {
-        this.searchText = searchText;
+    public Calendar getEnd() {
+        return this.end;
     }
 
     /**
@@ -86,19 +78,24 @@ public class SirSearchCriteria {
     }
 
     /**
-     * 
-     * @param phenomena
+     * @return the searchText
      */
-    public void setPhenomena(Collection<SirSearchCriteria_Phenomenon> phenomena) {
-        this.phenomena = phenomena;
+    public Collection<String> getSearchText() {
+        return this.searchText;
     }
 
     /**
-     * 
-     * @param p
+     * @return the serviceCriteria
      */
-    public void addPhenomenon(SirSearchCriteria_Phenomenon p) {
-        this.phenomena.add(p);
+    public Collection<SirService> getServiceCriteria() {
+        return this.serviceCriteria;
+    }
+
+    /**
+     * @return the start
+     */
+    public Calendar getStart() {
+        return this.start;
     }
 
     /**
@@ -109,18 +106,15 @@ public class SirSearchCriteria {
     }
 
     /**
-     * @param uom
-     *        the uom to set
+     * 
+     * @return true if one of the given phenomena uses SOR feature
      */
-    public void setUom(Collection<String> uom) {
-        this.uom = uom;
-    }
-
-    /**
-     * @return the boundingBox
-     */
-    public SirBoundingBox getBoundingBox() {
-        return this.boundingBox;
+    public boolean isUsingSOR() {
+        for (SirSearchCriteria_Phenomenon p : this.phenomena) {
+            if (p.usesSOR())
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -132,10 +126,35 @@ public class SirSearchCriteria {
     }
 
     /**
-     * @return the start
+     * @param end
+     *        the end to set
      */
-    public Calendar getStart() {
-        return this.start;
+    public void setEnd(Calendar end) {
+        this.end = end;
+    }
+
+    /**
+     * 
+     * @param phenomena
+     */
+    public void setPhenomena(Collection<SirSearchCriteria_Phenomenon> phenomena) {
+        this.phenomena = phenomena;
+    }
+
+    /**
+     * @param searchText
+     *        the searchText to set
+     */
+    public void setSearchText(Collection<String> searchText) {
+        this.searchText = searchText;
+    }
+
+    /**
+     * @param serviceCriteria
+     *        the serviceCriteria to set
+     */
+    public void setServiceCriteria(Collection<SirService> serviceCriteria) {
+        this.serviceCriteria = serviceCriteria;
     }
 
     /**
@@ -147,18 +166,11 @@ public class SirSearchCriteria {
     }
 
     /**
-     * @return the end
+     * @param uom
+     *        the uom to set
      */
-    public Calendar getEnd() {
-        return this.end;
-    }
-
-    /**
-     * @param end
-     *        the end to set
-     */
-    public void setEnd(Calendar end) {
-        this.end = end;
+    public void setUom(Collection<String> uom) {
+        this.uom = uom;
     }
 
     @Override
@@ -173,18 +185,6 @@ public class SirSearchCriteria {
         sb.append(", Start: " + this.start);
         sb.append(", End: " + this.end);
         return sb.toString();
-    }
-
-    /**
-     * 
-     * @return true if one of the given phenomena uses SOR feature
-     */
-    public boolean isUsingSOR() {
-        for (SirSearchCriteria_Phenomenon p : this.phenomena) {
-            if (p.usesSOR())
-                return true;
-        }
-        return false;
     }
 
 }

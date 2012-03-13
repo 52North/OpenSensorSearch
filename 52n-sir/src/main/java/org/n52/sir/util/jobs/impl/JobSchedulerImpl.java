@@ -42,9 +42,9 @@ import org.slf4j.LoggerFactory;
  */
 public class JobSchedulerImpl implements IJobScheduler {
 
-    private static Logger log = LoggerFactory.getLogger(JobSchedulerImpl.class);
-
     private static final long DEFAULT_DELAY_MILLISECS = 100;
+
+    private static Logger log = LoggerFactory.getLogger(JobSchedulerImpl.class);
 
     private static final int SECONDS_TO_MILLISECONDS_FACTOR = 1000;
 
@@ -57,6 +57,14 @@ public class JobSchedulerImpl implements IJobScheduler {
     protected JobSchedulerImpl(TimerServlet timer) {
         this.timerServlet = timer;
         log.info("NEW " + this);
+    }
+
+    @Override
+    public void cancel(String identifier) {
+        if (log.isDebugEnabled()) {
+            log.debug("Cancelling Task: " + identifier + ".");
+        }
+        this.timerServlet.cancel(identifier);
     }
 
     @Override
@@ -88,14 +96,6 @@ public class JobSchedulerImpl implements IJobScheduler {
                             delay,
                             conn.getPushIntervalSeconds() * SECONDS_TO_MILLISECONDS_FACTOR);
         }
-    }
-
-    @Override
-    public void cancel(String identifier) {
-        if (log.isDebugEnabled()) {
-            log.debug("Cancelling Task: " + identifier + ".");
-        }
-        this.timerServlet.cancel(identifier);
     }
 
     private void submitOnce(TimerTask task, long delay) {

@@ -50,14 +50,14 @@ public class DescribeSensorListener implements ISirRequestListener {
     private static Logger log = LoggerFactory.getLogger(DescribeSensorListener.class);
 
     /**
-     * the data access object for the describeSensor operation
-     */
-    private IDescribeSensorDAO descSensDao;
-
-    /**
      * the name of the operation this listener handles
      */
     private static final String OPERATION_NAME = SirConstants.Operations.DescribeSensor.name();
+
+    /**
+     * the data access object for the describeSensor operation
+     */
+    private IDescribeSensorDAO descSensDao;
 
     /**
      * 

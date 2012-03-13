@@ -34,9 +34,9 @@ package org.n52.sir.opensearch;
  */
 public class RssListener extends AbstractFeedListener {
 
-    public static final String MIME_TYPE = "application/rss+xml";
-
     private static final String FEED_TYPE = "rss_2.0";
+
+    public static final String MIME_TYPE = "application/rss+xml";
 
     private static final String NAME = "RSS";
 
@@ -45,18 +45,18 @@ public class RssListener extends AbstractFeedListener {
     }
 
     @Override
-    public String getMimeType() {
-        return MIME_TYPE;
+    protected String getFeedType() {
+        return FEED_TYPE;
     }
 
     @Override
-    public String getName() {
-        return NAME;
+    public String getMimeType() {
+        return MIME_TYPE;
     }
     
     @Override
-    protected String getFeedType() {
-        return FEED_TYPE;
+    public String getName() {
+        return NAME;
     }
 
 }

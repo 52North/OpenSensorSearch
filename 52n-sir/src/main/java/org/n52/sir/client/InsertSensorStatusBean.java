@@ -44,90 +44,15 @@ public class InsertSensorStatusBean extends AbstractBean {
 
     private static final String TIME_STAMP_ID = "status_time_stamp";
 
-    private String sensorIDInSIRValue = "";
-
     private String propertyName = "";
 
     private String propertyValue = "";
 
-    private String uom = "";
+    private String sensorIDInSIRValue = "";
 
     private String timestamp = "";
 
-    /**
-     * @return the sensorIDInSIRValue
-     */
-    public String getSensorIDInSIRValue() {
-        return this.sensorIDInSIRValue;
-    }
-
-    /**
-     * @param sensorIDInSIRValue
-     *        the sensorIDInSIRValue to set
-     */
-    public void setSensorIDInSIRValue(String sensorIDInSIRValue) {
-        this.sensorIDInSIRValue = sensorIDInSIRValue;
-    }
-
-    /**
-     * @return the propertyName
-     */
-    public String getPropertyName() {
-        return this.propertyName;
-    }
-
-    /**
-     * @param propertyName
-     *        the propertyName to set
-     */
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    /**
-     * @return the propertyValue
-     */
-    public String getPropertyValue() {
-        return this.propertyValue;
-    }
-
-    /**
-     * @param propertyValue
-     *        the propertyValue to set
-     */
-    public void setPropertyValue(String propertyValue) {
-        this.propertyValue = propertyValue;
-    }
-
-    /**
-     * @return the uom
-     */
-    public String getUom() {
-        return this.uom;
-    }
-
-    /**
-     * @param uom
-     *        the uom to set
-     */
-    public void setUom(String uom) {
-        this.uom = uom;
-    }
-
-    /**
-     * @return the timestamp
-     */
-    public String getTimestamp() {
-        return this.timestamp;
-    }
-
-    /**
-     * @param timestamp
-     *        the timestamp to set
-     */
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
+    private String uom = "";
 
     /*
      * (non-Javadoc)
@@ -177,6 +102,81 @@ public class InsertSensorStatusBean extends AbstractBean {
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
         else
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
+    }
+
+    /**
+     * @return the propertyName
+     */
+    public String getPropertyName() {
+        return this.propertyName;
+    }
+
+    /**
+     * @return the propertyValue
+     */
+    public String getPropertyValue() {
+        return this.propertyValue;
+    }
+
+    /**
+     * @return the sensorIDInSIRValue
+     */
+    public String getSensorIDInSIRValue() {
+        return this.sensorIDInSIRValue;
+    }
+
+    /**
+     * @return the timestamp
+     */
+    public String getTimestamp() {
+        return this.timestamp;
+    }
+
+    /**
+     * @return the uom
+     */
+    public String getUom() {
+        return this.uom;
+    }
+
+    /**
+     * @param propertyName
+     *        the propertyName to set
+     */
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
+
+    /**
+     * @param propertyValue
+     *        the propertyValue to set
+     */
+    public void setPropertyValue(String propertyValue) {
+        this.propertyValue = propertyValue;
+    }
+
+    /**
+     * @param sensorIDInSIRValue
+     *        the sensorIDInSIRValue to set
+     */
+    public void setSensorIDInSIRValue(String sensorIDInSIRValue) {
+        this.sensorIDInSIRValue = sensorIDInSIRValue;
+    }
+
+    /**
+     * @param timestamp
+     *        the timestamp to set
+     */
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    /**
+     * @param uom
+     *        the uom to set
+     */
+    public void setUom(String uom) {
+        this.uom = uom;
     }
 
 }

@@ -45,25 +45,25 @@ import org.slf4j.LoggerFactory;
  */
 public class PushCatalogTask extends TimerTask {
 
+    private static final String CAPABILITIES_NOT_ENSURED = "Catalog does not have sufficient capabilities and extensions could not be inserted!";
+
     private static final String LAST_COMPLETE_PUSH = "Last push finished succesfully with [insert, update, delete]: ";
+
+    private static final String LAST_ERROR_OWS = "Error on last push: ";
 
     private static final String LAST_ERROR_PUSH = "Last push with errors (see the log for details).";
 
     private static final String LAST_PUSH_WITH_REPORTS = "Last push finished with errors, see the log for details. Error count: ";
 
-    private static final String LAST_ERROR_OWS = "Error on last push: ";
-
-    private static final String CAPABILITIES_NOT_ENSURED = "Catalog does not have sufficient capabilities and extensions could not be inserted!";
-
     private static Logger log = LoggerFactory.getLogger(PushCatalogTask.class);
+
+    private ICatalog catalog;
 
     private ICatalogStatusHandler catalogStatusHandler;
 
     private String connectionID;
 
     private boolean repeated;
-
-    private ICatalog catalog;
 
     /**
      * 
@@ -75,6 +75,62 @@ public class PushCatalogTask extends TimerTask {
         this.connectionID = connectionID;
         this.catalogStatusHandler = catalogStatusHandler;
         this.catalog = catalogP;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.util.TimerTask#cancel()
+     */
+    @Override
+    public boolean cancel() {
+        log.info("Cancelling " + this);
+        return super.cancel();
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#finalize()
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        if (log.isDebugEnabled())
+            log.debug("Finalizing " + this);
+        super.finalize();
+    }
+
+    /**
+     * 
+     * @param reports
+     * @return
+     */
+    private String getReportString(List<OwsExceptionReport> reports) {
+        StringBuilder sb = new StringBuilder();
+        for (OwsExceptionReport owsExceptionReport : reports) {
+            sb.append("\n");
+            sb.append(owsExceptionReport.getDocument().xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 
+     * @return
+     */
+    private String getStatusSignature() {
+        return " AT " + new Date(System.currentTimeMillis()).toString() + " WITH CATALOG " + this.catalog;
+    }
+
+    /**
+     * 
+     * @param reports
+     */
+    private void logReports(List<OwsExceptionReport> reports) {
+        int i = 0;
+        for (OwsExceptionReport owsExceptionReport : reports) {
+            i++;
+            log.error("Error " + i + " of " + reports.size() + " when pushing data to catalog (" + this.connectionID
+                    + "): " + owsExceptionReport);
+        }
     }
 
     /*
@@ -120,41 +176,6 @@ public class PushCatalogTask extends TimerTask {
         }
     }
 
-    /**
-     * 
-     * @param reports
-     * @return
-     */
-    private String getReportString(List<OwsExceptionReport> reports) {
-        StringBuilder sb = new StringBuilder();
-        for (OwsExceptionReport owsExceptionReport : reports) {
-            sb.append("\n");
-            sb.append(owsExceptionReport.getDocument().xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private String getStatusSignature() {
-        return " AT " + new Date(System.currentTimeMillis()).toString() + " WITH CATALOG " + this.catalog;
-    }
-
-    /**
-     * 
-     * @param reports
-     */
-    private void logReports(List<OwsExceptionReport> reports) {
-        int i = 0;
-        for (OwsExceptionReport owsExceptionReport : reports) {
-            i++;
-            log.error("Error " + i + " of " + reports.size() + " when pushing data to catalog (" + this.connectionID
-                    + "): " + owsExceptionReport);
-        }
-    }
-
     /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()
@@ -170,27 +191,6 @@ public class PushCatalogTask extends TimerTask {
         sb.append(this.repeated);
         sb.append("]");
         return sb.toString();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.util.TimerTask#cancel()
-     */
-    @Override
-    public boolean cancel() {
-        log.info("Cancelling " + this);
-        return super.cancel();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#finalize()
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        if (log.isDebugEnabled())
-            log.debug("Finalizing " + this);
-        super.finalize();
     }
 
 }

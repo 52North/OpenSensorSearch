@@ -36,7 +36,7 @@ public class SirConstraint {
      * 
      */
     public enum ConsType {
-        isEqualTo, isNotEqualTo, isGreaterThan, isLessThan, isGreaterThanOrEqualTo, isLessThanOrEqualTo, isBetween
+        isBetween, isEqualTo, isGreaterThan, isGreaterThanOrEqualTo, isLessThan, isLessThanOrEqualTo, isNotEqualTo
     }
 
     /**
@@ -55,14 +55,14 @@ public class SirConstraint {
     private ConsType consType;
 
     /**
-     * Value type
+     * lower boundary for constraint isBetween
      */
-    private ValueType valueType;
+    private double lowerBoundary;
 
     /**
-     * Value it ValueType is String
+     * upper boundary for constraint isBetween
      */
-    private String valueString;
+    private double upperBoundary;
 
     /**
      * Value if ValueType is boolean
@@ -75,20 +75,62 @@ public class SirConstraint {
     private double valueDouble;
 
     /**
-     * lower boundary for constraint isBetween
+     * Value it ValueType is String
      */
-    private double lowerBoundary;
+    private String valueString;
 
     /**
-     * upper boundary for constraint isBetween
+     * Value type
      */
-    private double upperBoundary;
+    private ValueType valueType;
 
     /**
      * @return the consType
      */
     public ConsType getConsType() {
         return this.consType;
+    }
+
+    /**
+     * @return the lowerBoundary
+     */
+    public double getLowerBoundary() {
+        return this.lowerBoundary;
+    }
+
+    /**
+     * @return the upperBoundary
+     */
+    public double getUpperBoundary() {
+        return this.upperBoundary;
+    }
+
+    /**
+     * @return the valueDouble
+     */
+    public double getValueDouble() {
+        return this.valueDouble;
+    }
+
+    /**
+     * @return the valueString
+     */
+    public String getValueString() {
+        return this.valueString;
+    }
+
+    /**
+     * @return the valueType
+     */
+    public ValueType getValueType() {
+        return this.valueType;
+    }
+
+    /**
+     * @return the valueBoolean
+     */
+    public boolean isValueBoolean() {
+        return this.valueBoolean;
     }
 
     /**
@@ -100,40 +142,19 @@ public class SirConstraint {
     }
 
     /**
-     * @return the valueType
+     * @param lowerBoundary
+     *        the lowerBoundary to set
      */
-    public ValueType getValueType() {
-        return this.valueType;
+    public void setLowerBoundary(double lowerBoundary) {
+        this.lowerBoundary = lowerBoundary;
     }
 
     /**
-     * @param valueType
-     *        the valueType to set
+     * @param upperBoundary
+     *        the upperBoundary to set
      */
-    public void setValueType(ValueType valueType) {
-        this.valueType = valueType;
-    }
-
-    /**
-     * @return the valueString
-     */
-    public String getValueString() {
-        return this.valueString;
-    }
-
-    /**
-     * @param valueString
-     *        the valueString to set
-     */
-    public void setValueString(String valueString) {
-        this.valueString = valueString;
-    }
-
-    /**
-     * @return the valueBoolean
-     */
-    public boolean isValueBoolean() {
-        return this.valueBoolean;
+    public void setUpperBoundary(double upperBoundary) {
+        this.upperBoundary = upperBoundary;
     }
 
     /**
@@ -145,13 +166,6 @@ public class SirConstraint {
     }
 
     /**
-     * @return the valueDouble
-     */
-    public double getValueDouble() {
-        return this.valueDouble;
-    }
-
-    /**
      * @param valueDouble
      *        the valueDouble to set
      */
@@ -160,33 +174,19 @@ public class SirConstraint {
     }
 
     /**
-     * @return the lowerBoundary
+     * @param valueString
+     *        the valueString to set
      */
-    public double getLowerBoundary() {
-        return this.lowerBoundary;
+    public void setValueString(String valueString) {
+        this.valueString = valueString;
     }
 
     /**
-     * @param lowerBoundary
-     *        the lowerBoundary to set
+     * @param valueType
+     *        the valueType to set
      */
-    public void setLowerBoundary(double lowerBoundary) {
-        this.lowerBoundary = lowerBoundary;
-    }
-
-    /**
-     * @return the upperBoundary
-     */
-    public double getUpperBoundary() {
-        return this.upperBoundary;
-    }
-
-    /**
-     * @param upperBoundary
-     *        the upperBoundary to set
-     */
-    public void setUpperBoundary(double upperBoundary) {
-        this.upperBoundary = upperBoundary;
+    public void setValueType(ValueType valueType) {
+        this.valueType = valueType;
     }
 
     @Override

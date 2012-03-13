@@ -39,21 +39,21 @@ import de.uniMuenster.swsl.sir.GetCapabilitiesDocument.GetCapabilities;
  */
 public class GetCapabilitiesBean extends AbstractBean {
 
-    private String service;
-
-    private String updateSequence = "";
-
     private String acceptVersions;
+
+    private boolean all;
+
+    private boolean contents;
+
+    private boolean operationsMetadata;
+
+    private String service;
 
     private boolean serviceIdentification;
 
     private boolean serviceProvider;
 
-    private boolean operationsMetadata;
-
-    private boolean contents;
-
-    private boolean all;
+    private String updateSequence = "";
 
     /**
      * 
@@ -98,126 +98,6 @@ public class GetCapabilitiesBean extends AbstractBean {
         this.serviceProvider = serviceProvider;
         this.operationsMetadata = operationsMetadata;
         this.contents = contents;
-        this.all = all;
-    }
-
-    /**
-     * @return the service
-     */
-    public String getService() {
-        return this.service;
-    }
-
-    /**
-     * @param service
-     *        the service to set
-     */
-    public void setService(String service) {
-        this.service = service;
-    }
-
-    /**
-     * @return the updateSequence
-     */
-    public String getUpdateSequence() {
-        return this.updateSequence;
-    }
-
-    /**
-     * @param updateSequence
-     *        the updateSequence to set
-     */
-    public void setUpdateSequence(String updateSequence) {
-        this.updateSequence = updateSequence;
-    }
-
-    /**
-     * @return the acceptVersions
-     */
-    public String getAcceptVersions() {
-        return this.acceptVersions;
-    }
-
-    /**
-     * @param acceptVersions
-     *        the acceptVersions to set
-     */
-    public void setAcceptVersions(String acceptVersions) {
-        this.acceptVersions = acceptVersions;
-    }
-
-    /**
-     * @return the serviceIdentification
-     */
-    public boolean isServiceIdentification() {
-        return this.serviceIdentification;
-    }
-
-    /**
-     * @param serviceIdentification
-     *        the serviceIdentification to set
-     */
-    public void setServiceIdentification(boolean serviceIdentification) {
-        this.serviceIdentification = serviceIdentification;
-    }
-
-    /**
-     * @return the serviceProvider
-     */
-    public boolean isServiceProvider() {
-        return this.serviceProvider;
-    }
-
-    /**
-     * @param serviceProvider
-     *        the serviceProvider to set
-     */
-    public void setServiceProvider(boolean serviceProvider) {
-        this.serviceProvider = serviceProvider;
-    }
-
-    /**
-     * @return the operationsMetadata
-     */
-    public boolean isOperationsMetadata() {
-        return this.operationsMetadata;
-    }
-
-    /**
-     * @param operationsMetadata
-     *        the operationsMetadata to set
-     */
-    public void setOperationsMetadata(boolean operationsMetadata) {
-        this.operationsMetadata = operationsMetadata;
-    }
-
-    /**
-     * @return the contents
-     */
-    public boolean isContents() {
-        return this.contents;
-    }
-
-    /**
-     * @param contents
-     *        the contents to set
-     */
-    public void setContents(boolean contents) {
-        this.contents = contents;
-    }
-
-    /**
-     * @return the all
-     */
-    public boolean isAll() {
-        return this.all;
-    }
-
-    /**
-     * @param all
-     *        the all to set
-     */
-    public void setAll(boolean all) {
         this.all = all;
     }
 
@@ -285,6 +165,126 @@ public class GetCapabilitiesBean extends AbstractBean {
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
         else
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
+    }
+
+    /**
+     * @return the acceptVersions
+     */
+    public String getAcceptVersions() {
+        return this.acceptVersions;
+    }
+
+    /**
+     * @return the service
+     */
+    public String getService() {
+        return this.service;
+    }
+
+    /**
+     * @return the updateSequence
+     */
+    public String getUpdateSequence() {
+        return this.updateSequence;
+    }
+
+    /**
+     * @return the all
+     */
+    public boolean isAll() {
+        return this.all;
+    }
+
+    /**
+     * @return the contents
+     */
+    public boolean isContents() {
+        return this.contents;
+    }
+
+    /**
+     * @return the operationsMetadata
+     */
+    public boolean isOperationsMetadata() {
+        return this.operationsMetadata;
+    }
+
+    /**
+     * @return the serviceIdentification
+     */
+    public boolean isServiceIdentification() {
+        return this.serviceIdentification;
+    }
+
+    /**
+     * @return the serviceProvider
+     */
+    public boolean isServiceProvider() {
+        return this.serviceProvider;
+    }
+
+    /**
+     * @param acceptVersions
+     *        the acceptVersions to set
+     */
+    public void setAcceptVersions(String acceptVersions) {
+        this.acceptVersions = acceptVersions;
+    }
+
+    /**
+     * @param all
+     *        the all to set
+     */
+    public void setAll(boolean all) {
+        this.all = all;
+    }
+
+    /**
+     * @param contents
+     *        the contents to set
+     */
+    public void setContents(boolean contents) {
+        this.contents = contents;
+    }
+
+    /**
+     * @param operationsMetadata
+     *        the operationsMetadata to set
+     */
+    public void setOperationsMetadata(boolean operationsMetadata) {
+        this.operationsMetadata = operationsMetadata;
+    }
+
+    /**
+     * @param service
+     *        the service to set
+     */
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    /**
+     * @param serviceIdentification
+     *        the serviceIdentification to set
+     */
+    public void setServiceIdentification(boolean serviceIdentification) {
+        this.serviceIdentification = serviceIdentification;
+    }
+
+    /**
+     * @param serviceProvider
+     *        the serviceProvider to set
+     */
+    public void setServiceProvider(boolean serviceProvider) {
+        this.serviceProvider = serviceProvider;
+    }
+
+    /**
+     * @param updateSequence
+     *        the updateSequence to set
+     */
+    public void setUpdateSequence(String updateSequence) {
+        this.updateSequence = updateSequence;
     }
 
 }

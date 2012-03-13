@@ -54,302 +54,39 @@ import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
  */
 public class SearchSensorBean extends AbstractBean {
 
-    private String sensorIDInSIRValue = "";
-
-    private String serviceURL = "";
-
-    private String serviceType = "";
-
-    private String serviceSpecificSensorID = "";
-
-    private String serviceCriteriaURL = "";
-
-    private String serviceCriteriaType = "";
-
-    private String searchText = "";
+    private String lowerCorner = "";
 
     private String phenomenonName = "";
 
-    private String sorUrl = "";
+    private String searchText = "";
+
+    private String sensorIDInSIRValue = "";
+
+    private String serviceCriteriaType = "";
+
+    private String serviceCriteriaURL = "";
+
+    private String serviceSpecificSensorID = "";
+
+    private String serviceType = "";
+
+    private String serviceURL = "";
+
+    private boolean simpleResponse = false;
 
     private String sorMatchingType = "";
 
     private String sorSearchDepth = "";
 
-    private String uom = "";
-
-    private String lowerCorner = "";
-
-    private String upperCorner = "";
-
-    private String timePeriodStart = "";
+    private String sorUrl = "";
 
     private String timePeriodEnd = "";
 
-    private boolean simpleResponse = false;
+    private String timePeriodStart = "";
 
-    /**
-     * @return the sensorIDInSIRValue
-     */
-    public String getSensorIDInSIRValue() {
-        return this.sensorIDInSIRValue;
-    }
+    private String uom = "";
 
-    /**
-     * @param sensorIDInSIRValue
-     *        the sensorIDInSIRValue to set
-     */
-    public void setSensorIDInSIRValue(String sensorIDInSIRValue) {
-        this.sensorIDInSIRValue = sensorIDInSIRValue;
-    }
-
-    /**
-     * @return the serviceURL
-     */
-    public String getServiceURL() {
-        return this.serviceURL;
-    }
-
-    /**
-     * @param serviceURL
-     *        the serviceURL to set
-     */
-    public void setServiceURL(String serviceURL) {
-        this.serviceURL = serviceURL;
-    }
-
-    /**
-     * @return the serviceType
-     */
-    public String getServiceType() {
-        return this.serviceType;
-    }
-
-    /**
-     * @param serviceType
-     *        the serviceType to set
-     */
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    /**
-     * @return the serviceSpecificSensorID
-     */
-    public String getServiceSpecificSensorID() {
-        return this.serviceSpecificSensorID;
-    }
-
-    /**
-     * @param serviceSpecificSensorID
-     *        the serviceSpecificSensorID to set
-     */
-    public void setServiceSpecificSensorID(String serviceSpecificSensorID) {
-        this.serviceSpecificSensorID = serviceSpecificSensorID;
-    }
-
-    /**
-     * @return the serviceCriteriaURL
-     */
-    public String getServiceCriteriaURL() {
-        return this.serviceCriteriaURL;
-    }
-
-    /**
-     * @param serviceCriteriaURL
-     *        the serviceCriteriaURL to set
-     */
-    public void setServiceCriteriaURL(String serviceCriteriaURL) {
-        this.serviceCriteriaURL = serviceCriteriaURL;
-    }
-
-    /**
-     * @return the serviceCriteriaType
-     */
-    public String getServiceCriteriaType() {
-        return this.serviceCriteriaType;
-    }
-
-    /**
-     * @param serviceCriteriaType
-     *        the serviceCriteriaType to set
-     */
-    public void setServiceCriteriaType(String serviceCriteriaType) {
-        this.serviceCriteriaType = serviceCriteriaType;
-    }
-
-    /**
-     * @return the searchText
-     */
-    public String getSearchText() {
-        return this.searchText;
-    }
-
-    /**
-     * @param searchText
-     *        the searchText to set
-     */
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
-    }
-
-    /**
-     * @return the phenomenon
-     */
-    public String getPhenomenonName() {
-        return this.phenomenonName;
-    }
-
-    /**
-     * @param phenomenon
-     *        the phenomenon to set
-     */
-    public void setPhenomenonName(String phenomenonName) {
-        this.phenomenonName = phenomenonName;
-    }
-
-    /**
-     * @return the sorUrl
-     */
-    public String getSorUrl() {
-        return this.sorUrl;
-    }
-
-    /**
-     * @return the sorMatchingType
-     */
-    public String getSorMatchingType() {
-        return this.sorMatchingType;
-    }
-
-    /**
-     * @return the sorSearchDepth
-     */
-    public String getSorSearchDepth() {
-        return this.sorSearchDepth;
-    }
-
-    /**
-     * @param sorUrl
-     *        the sorUrl to set
-     */
-    public void setSorUrl(String sorUrl) {
-        this.sorUrl = sorUrl;
-    }
-
-    /**
-     * @param sorMatchingType
-     *        the sorMatchingType to set
-     */
-    public void setSorMatchingType(String sorMatchingType) {
-        this.sorMatchingType = sorMatchingType;
-    }
-
-    /**
-     * @param sorSearchDepth
-     *        the sorSearchDepth to set
-     */
-    public void setSorSearchDepth(String sorSearchDepth) {
-        this.sorSearchDepth = sorSearchDepth;
-    }
-
-    /**
-     * @return the uom
-     */
-    public String getUom() {
-        return this.uom;
-    }
-
-    /**
-     * @param uom
-     *        the uom to set
-     */
-    public void setUom(String uom) {
-        this.uom = uom;
-    }
-
-    /**
-     * @return the lowerCorner
-     */
-    public String getLowerCorner() {
-        return this.lowerCorner;
-    }
-
-    /**
-     * @param lowerCorner
-     *        the lowerCorner to set
-     */
-    public void setLowerCorner(String lowerCorner) {
-        this.lowerCorner = lowerCorner;
-    }
-
-    /**
-     * @return the upperCorner
-     */
-    public String getUpperCorner() {
-        return this.upperCorner;
-    }
-
-    /**
-     * @param upperCorner
-     *        the upperCorner to set
-     */
-    public void setUpperCorner(String upperCorner) {
-        this.upperCorner = upperCorner;
-    }
-
-    /**
-     * @return the timePeriodStart
-     */
-    public String getTimePeriodStart() {
-        return this.timePeriodStart;
-    }
-
-    /**
-     * @param timePeriodStart
-     *        the timePeriodStart to set
-     */
-    public void setTimePeriodStart(String timePeriodStart) {
-        this.timePeriodStart = timePeriodStart;
-    }
-
-    /**
-     * @return the timePeriodEnd
-     */
-    public String getTimePeriodEnd() {
-        return this.timePeriodEnd;
-    }
-
-    /**
-     * @param timePeriodEnd
-     *        the timePeriodEnd to set
-     */
-    public void setTimePeriodEnd(String timePeriodEnd) {
-        this.timePeriodEnd = timePeriodEnd;
-    }
-
-    /**
-     * @return the simpleResponse
-     */
-    public boolean isSimpleResponse() {
-        return this.simpleResponse;
-    }
-
-    /**
-     * @param simpleResponse
-     *        the simpleResponse to set
-     */
-    public void setSimpleResponse(boolean simpleResponse) {
-        this.simpleResponse = simpleResponse;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public SirMatchingType[] getMatchingTypes() {
-        return SirMatchingType.values();
-    }
+    private String upperCorner = "";
 
     /*
      * (non-Javadoc)
@@ -501,6 +238,269 @@ public class SearchSensorBean extends AbstractBean {
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
 
         this.requestString = requestDoc.toString();
+    }
+
+    /**
+     * @return the lowerCorner
+     */
+    public String getLowerCorner() {
+        return this.lowerCorner;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public SirMatchingType[] getMatchingTypes() {
+        return SirMatchingType.values();
+    }
+
+    /**
+     * @return the phenomenon
+     */
+    public String getPhenomenonName() {
+        return this.phenomenonName;
+    }
+
+    /**
+     * @return the searchText
+     */
+    public String getSearchText() {
+        return this.searchText;
+    }
+
+    /**
+     * @return the sensorIDInSIRValue
+     */
+    public String getSensorIDInSIRValue() {
+        return this.sensorIDInSIRValue;
+    }
+
+    /**
+     * @return the serviceCriteriaType
+     */
+    public String getServiceCriteriaType() {
+        return this.serviceCriteriaType;
+    }
+
+    /**
+     * @return the serviceCriteriaURL
+     */
+    public String getServiceCriteriaURL() {
+        return this.serviceCriteriaURL;
+    }
+
+    /**
+     * @return the serviceSpecificSensorID
+     */
+    public String getServiceSpecificSensorID() {
+        return this.serviceSpecificSensorID;
+    }
+
+    /**
+     * @return the serviceType
+     */
+    public String getServiceType() {
+        return this.serviceType;
+    }
+
+    /**
+     * @return the serviceURL
+     */
+    public String getServiceURL() {
+        return this.serviceURL;
+    }
+
+    /**
+     * @return the sorMatchingType
+     */
+    public String getSorMatchingType() {
+        return this.sorMatchingType;
+    }
+
+    /**
+     * @return the sorSearchDepth
+     */
+    public String getSorSearchDepth() {
+        return this.sorSearchDepth;
+    }
+
+    /**
+     * @return the sorUrl
+     */
+    public String getSorUrl() {
+        return this.sorUrl;
+    }
+
+    /**
+     * @return the timePeriodEnd
+     */
+    public String getTimePeriodEnd() {
+        return this.timePeriodEnd;
+    }
+
+    /**
+     * @return the timePeriodStart
+     */
+    public String getTimePeriodStart() {
+        return this.timePeriodStart;
+    }
+
+    /**
+     * @return the uom
+     */
+    public String getUom() {
+        return this.uom;
+    }
+
+    /**
+     * @return the upperCorner
+     */
+    public String getUpperCorner() {
+        return this.upperCorner;
+    }
+
+    /**
+     * @return the simpleResponse
+     */
+    public boolean isSimpleResponse() {
+        return this.simpleResponse;
+    }
+
+    /**
+     * @param lowerCorner
+     *        the lowerCorner to set
+     */
+    public void setLowerCorner(String lowerCorner) {
+        this.lowerCorner = lowerCorner;
+    }
+
+    /**
+     * @param phenomenon
+     *        the phenomenon to set
+     */
+    public void setPhenomenonName(String phenomenonName) {
+        this.phenomenonName = phenomenonName;
+    }
+
+    /**
+     * @param searchText
+     *        the searchText to set
+     */
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
+    /**
+     * @param sensorIDInSIRValue
+     *        the sensorIDInSIRValue to set
+     */
+    public void setSensorIDInSIRValue(String sensorIDInSIRValue) {
+        this.sensorIDInSIRValue = sensorIDInSIRValue;
+    }
+
+    /**
+     * @param serviceCriteriaType
+     *        the serviceCriteriaType to set
+     */
+    public void setServiceCriteriaType(String serviceCriteriaType) {
+        this.serviceCriteriaType = serviceCriteriaType;
+    }
+
+    /**
+     * @param serviceCriteriaURL
+     *        the serviceCriteriaURL to set
+     */
+    public void setServiceCriteriaURL(String serviceCriteriaURL) {
+        this.serviceCriteriaURL = serviceCriteriaURL;
+    }
+
+    /**
+     * @param serviceSpecificSensorID
+     *        the serviceSpecificSensorID to set
+     */
+    public void setServiceSpecificSensorID(String serviceSpecificSensorID) {
+        this.serviceSpecificSensorID = serviceSpecificSensorID;
+    }
+
+    /**
+     * @param serviceType
+     *        the serviceType to set
+     */
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    /**
+     * @param serviceURL
+     *        the serviceURL to set
+     */
+    public void setServiceURL(String serviceURL) {
+        this.serviceURL = serviceURL;
+    }
+
+    /**
+     * @param simpleResponse
+     *        the simpleResponse to set
+     */
+    public void setSimpleResponse(boolean simpleResponse) {
+        this.simpleResponse = simpleResponse;
+    }
+
+    /**
+     * @param sorMatchingType
+     *        the sorMatchingType to set
+     */
+    public void setSorMatchingType(String sorMatchingType) {
+        this.sorMatchingType = sorMatchingType;
+    }
+
+    /**
+     * @param sorSearchDepth
+     *        the sorSearchDepth to set
+     */
+    public void setSorSearchDepth(String sorSearchDepth) {
+        this.sorSearchDepth = sorSearchDepth;
+    }
+
+    /**
+     * @param sorUrl
+     *        the sorUrl to set
+     */
+    public void setSorUrl(String sorUrl) {
+        this.sorUrl = sorUrl;
+    }
+
+    /**
+     * @param timePeriodEnd
+     *        the timePeriodEnd to set
+     */
+    public void setTimePeriodEnd(String timePeriodEnd) {
+        this.timePeriodEnd = timePeriodEnd;
+    }
+
+    /**
+     * @param timePeriodStart
+     *        the timePeriodStart to set
+     */
+    public void setTimePeriodStart(String timePeriodStart) {
+        this.timePeriodStart = timePeriodStart;
+    }
+
+    /**
+     * @param uom
+     *        the uom to set
+     */
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
+
+    /**
+     * @param upperCorner
+     *        the upperCorner to set
+     */
+    public void setUpperCorner(String upperCorner) {
+        this.upperCorner = upperCorner;
     }
 
 }

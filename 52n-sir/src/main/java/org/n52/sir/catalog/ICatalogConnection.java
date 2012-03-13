@@ -39,14 +39,14 @@ import java.net.URL;
 public interface ICatalogConnection {
 
     /**
-     * Push interval value if not push interval is set.
-     */
-    public static final int NO_PUSH_INTERVAL = Integer.MIN_VALUE;
-
-    /**
      * The string that is written into the status field if there is no real status yet.
      */
     public static final String NEW_CONNECTION_STATUS = "NEW";
+
+    /**
+     * Push interval value if not push interval is set.
+     */
+    public static final int NO_PUSH_INTERVAL = Integer.MIN_VALUE;
 
     /**
      * String that is used as the connectionID for unsaved connections.
@@ -55,15 +55,15 @@ public interface ICatalogConnection {
 
     /**
      * 
-     * @return The internal identifier, can be used to cancel a connection
-     */
-    public abstract String getConnectionID();
-
-    /**
-     * 
      * @return The URL pointing to the catalog service
      */
     public abstract URL getCatalogURL();
+
+    /**
+     * 
+     * @return The internal identifier, can be used to cancel a connection
+     */
+    public abstract String getConnectionID();
 
     /**
      * 

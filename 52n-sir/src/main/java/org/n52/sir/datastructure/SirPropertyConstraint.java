@@ -47,18 +47,18 @@ public class SirPropertyConstraint {
     }
 
     /**
+     * @return the uom
+     */
+    public String getUom() {
+        return this.uom;
+    }
+
+    /**
      * @param constraint
      *        the constraint to set
      */
     public void setConstraint(SirConstraint constraint) {
         this.constraint = constraint;
-    }
-
-    /**
-     * @return the uom
-     */
-    public String getUom() {
-        return this.uom;
     }
 
     /**

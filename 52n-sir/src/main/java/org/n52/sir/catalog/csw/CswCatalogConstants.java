@@ -30,10 +30,10 @@ package org.n52.sir.catalog.csw;
  */
 public class CswCatalogConstants {
     
-    public static final String CATALOG_SERVICE_NS = "http://www.opengis.net/cat/csw";
-    
-    public static final String CATALOG_VERSION = "2.0.2";
-
     public static final String CATALOG_SERVICE = "CSW";
+    
+    public static final String CATALOG_SERVICE_NS = "http://www.opengis.net/cat/csw";
+
+    public static final String CATALOG_VERSION = "2.0.2";
 
 }

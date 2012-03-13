@@ -109,35 +109,23 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.ServiceType;
  */
 public class CswCatalog implements ICatalog {
 
-    private static final int MAXIMUM_COUNT_OF_SENSORS_IN_DOC = 10;
-
     private static final String INSERT_HANDLE_SENSOR_DESCRIPTIONS = "InsertSensorDescription";
 
     private static Logger log = LoggerFactory.getLogger(CswCatalog.class);
 
-    private SimpleSoapCswClient client;
-
-    private CswCatalogChecker checker;
-
-    private CswCatalogCache identifiableCache;
-
-    private IValidatorFactory validatorFactory;
-
-    private int[] lastPushSummary;
+    private static final int MAXIMUM_COUNT_OF_SENSORS_IN_DOC = 10;
 
     private static Random rand = new Random();
 
-    /**
-     * 
-     * @param client
-     * @param slotInitDoc
-     * @param classificationInitDoc
-     */
-    public CswCatalog(SimpleSoapCswClient c, XmlObject classificationInitDoc, XmlObject slotInitDoc) {
-        ArrayList<XmlObject> docs = new ArrayList<XmlObject>();
-        docs.add(classificationInitDoc);
-        initialize(c, docs, slotInitDoc);
-    }
+    private CswCatalogChecker checker;
+
+    private SimpleSoapCswClient client;
+
+    private CswCatalogCache identifiableCache;
+
+    private int[] lastPushSummary;
+
+    private IValidatorFactory validatorFactory;
 
     /**
      * 
@@ -151,71 +139,15 @@ public class CswCatalog implements ICatalog {
     }
 
     /**
-     * @param c
-     * @param docs
-     * @param slotInitDoc
      * 
+     * @param client
+     * @param slotInitDoc
+     * @param classificationInitDoc
      */
-    private void initialize(SimpleSoapCswClient c, List<XmlObject> classificationInitDocs, XmlObject slotInitDoc) {
-        this.client = c;
-        this.identifiableCache = new CswCatalogCache();
-
-        this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
-        this.validatorFactory = SirConfigurator.getInstance().getValidatorFactory();
-
-        if (log.isDebugEnabled())
-            log.debug("Initialized " + this.toString());
-    }
-
-    @Override
-    public List<OwsExceptionReport> pushAllDataToCatalog() throws OwsExceptionReport {
-        return pushAllDataToCatalog(OLDEST_PUSH_DATE);
-    }
-
-    @Override
-    public List<OwsExceptionReport> pushAllDataToCatalog(Date lastPush) throws OwsExceptionReport {
-        log.info("Start pushing all data to catalog for all data after " + lastPush + " ...");
-        this.lastPushSummary = new int[3];
-
-        // create documents with all sensors, classification nodes and associations
-        List<Pair<Document, Integer>> inserts = createInsertTransactions(lastPush);
-
-        // send request and handle response seperately for each document, log errors if any occured
-        List<OwsExceptionReport> reports = new ArrayList<OwsExceptionReport>();
-        for (Pair<Document, Integer> currentPair : inserts) {
-            try {
-                if (log.isDebugEnabled()) {
-                    log.debug("Sending Document with " + currentPair.getSecond() + " sensor description(s) to client "
-                            + this.client);
-                }
-                SOAPMessage responseMessage = this.client.send(currentPair.getFirst());
-                handleTransactionResponse(responseMessage, currentPair.getSecond().intValue());
-            }
-            catch (OwsExceptionReport e) {
-                reports.add(e);
-            }
-        }
-
-        inserts = null;
-        return reports;
-    }
-
-    @Override
-    public boolean hasSufficientCapabilities() throws OwsExceptionReport {
-        return this.checker.checkClient(this.client);
-    }
-
-    @Override
-    public boolean ensureSufficientCapabilities() throws OwsExceptionReport {
-        // check if catalog has all neccessary classification and slot elements and an accepted version etc.
-        boolean b = this.checker.checkAndUpdateClient(this.client);
-        if ( !b) {
-            log.warn("Capabilities and catalog elements not sufficient due to catalog checker! See the log for details.");
-            return false;
-        }
-
-        // did find all needed values
-        return b;
+    public CswCatalog(SimpleSoapCswClient c, XmlObject classificationInitDoc, XmlObject slotInitDoc) {
+        ArrayList<XmlObject> docs = new ArrayList<XmlObject>();
+        docs.add(classificationInitDoc);
+        initialize(c, docs, slotInitDoc);
     }
 
     @Override
@@ -240,48 +172,37 @@ public class CswCatalog implements ICatalog {
 
     /**
      * 
-     * @param responseString
+     * generate random integer between 10000 and 100000
+     * 
+     * @param oldId
      * @return
-     * @throws OwsExceptionReport
      */
-    private void handleTransactionResponse(SOAPMessage message, int insertedDocuments) throws OwsExceptionReport {
-        // try parsing content to TransactionResponseDocument
-        try {
-            XmlObject content = this.client.extractContent(message);
-            TransactionResponseDocument transactionRespDoc = TransactionResponseDocument.Factory.parse(content.getDomNode());
+    private String appendRandomSuffix(String oldId) {
+        int postfix = 10000 + rand .nextInt(10000);
+        String newId = oldId.concat(":random_").concat(Integer.toString(postfix));
+        return newId;
+    }
 
-            // check if correct count was inserted
-            TransactionResponseType transactionResp = transactionRespDoc.getTransactionResponse();
-            TransactionSummaryType transactionSummary = transactionResp.getTransactionSummary();
-
-            // save response summary, not so nice that this is done with a side effect, but now other way atm.
-            this.lastPushSummary[0] += (transactionSummary.getTotalInserted() != null) ? transactionSummary.getTotalInserted().intValue()
-                                                                                      : 0;
-            this.lastPushSummary[1] += (transactionSummary.getTotalUpdated() != null) ? transactionSummary.getTotalUpdated().intValue()
-                                                                                     : 0;
-            this.lastPushSummary[2] += (transactionSummary.getTotalDeleted() != null) ? transactionSummary.getTotalDeleted().intValue()
-                                                                                     : 0;
-
-            if (insertedDocuments < (this.lastPushSummary[0] + this.lastPushSummary[1])) {
-                log.error("Insert Transaction did not complete succesfully! Wanted to insert " + insertedDocuments
-                        + " documents but only " + this.lastPushSummary[0] + "/" + this.lastPushSummary[1]
-                        + " were inserted/updated!");
-            }
-            else {
-                log.info("Got transaction response with count of inserted high enough - set the logging level to DEBUG for details.");
-            }
-
-            if (log.isDebugEnabled())
-                log.debug("RESPONSE FOR INSERT TRANSACTION: " + XmlTools.inspect(transactionSummary));
-
+    /**
+     * 
+     * @param ids
+     * @return
+     */
+    private GetRecordByIdDocument createGetRecordById(Collection<String> ids) {
+        if (log.isDebugEnabled()) {
+            log.debug("* Creating GetRecordsByIdDocument with these ids: " + Arrays.toString(ids.toArray()));
         }
-        catch (XmlException e) {
-            log.warn("Could not parse response to TransactionResponseDocument. Maybe it's a Fault?");
-            // check for fault
-            SOAPFault f = this.client.extractFault(message);
-            if (f != null)
-                throw new OwsExceptionReport("FAULT RETURNED VIA SOAP:\n" + SoapTools.inspect(f), null);
+
+        GetRecordByIdDocument getRecDoc = GetRecordByIdDocument.Factory.newInstance();
+        GetRecordByIdType getRecordById = getRecDoc.addNewGetRecordById();
+        getRecordById.setService(CswCatalogConstants.CATALOG_SERVICE);
+        getRecordById.setVersion(CswCatalogConstants.CATALOG_VERSION);
+
+        for (String s : ids) {
+            getRecordById.addId(s);
         }
+
+        return getRecDoc;
     }
 
     /**
@@ -402,136 +323,80 @@ public class CswCatalog implements ICatalog {
     }
 
     /**
-     * 
-     * works directly on the given table
-     * 
      * @param transformedDocs
      * @return
      * @throws OwsExceptionReport
      */
-    private void processSensorDescriptions(Hashtable<String, RegistryPackageDocument> transformedDocs) throws OwsExceptionReport {
-        for (Entry<String, RegistryPackageDocument> transformed : transformedDocs.entrySet()) {
-            RegistryPackageDocument doc = transformed.getValue();
-
-            // FIXME catalogue does not accept the same registry package id twice, even if it contains the
-            // same extrinsic objects
-            String oldId = doc.getIdentifiable().getId();
-            String newId = appendRandomSuffix(oldId);
-            doc.getIdentifiable().setId(newId);
-            log.info("Changed RegistryPackage id from " + oldId + " to " + newId);
-
-            RegistryObjectListType registryObjectList = doc.getRegistryPackage().getRegistryObjectList();
-            IdentifiableType[] identifableArray = registryObjectList.getIdentifiableArray();
-
-            if (identifableArray == null) {
-                transformedDocs.put(transformed.getKey(), ITransformer.PROCESSING_ERROR_OBJECT);
-                continue;
-            }
-            else if (log.isDebugEnabled()) {
-                log.debug("Starting to process " + identifableArray.length + " elements in RegistryPackageDocument "
-                        + transformed.getValue().getIdentifiable().getId());
-            }
-
-            // query service which Identifiables can be found
-            Map<IdentifiableType, Boolean> existing = getExistingIdentifiablesById(identifableArray);
-            ArrayList<String> idsToRemove = new ArrayList<String>();
-
-            // iterate through all identifiables
-            for (Entry<IdentifiableType, Boolean> entry : existing.entrySet()) {
-                IdentifiableType iT = entry.getKey();
-                boolean needsUpdate = entry.getValue().booleanValue();
-
-                if ( !needsUpdate)
-                    continue;
-
-                if (log.isDebugEnabled()) {
-                    log.debug("Processing " + iT.getId());
-                }
-
-                // check for already existing ExtrinsicObjects
-                if (iT instanceof ExtrinsicObjectType) {
-                    ExtrinsicObjectType eo = (ExtrinsicObjectType) iT;
-                    log.debug("ExtrinsicObject already found in catalog, but proceeding normally (not removed!): "
-                            + XmlTools.inspect(eo));
-                }
-
-                // check for already existing ClassificationNodes
-                else if (iT instanceof ClassificationNodeType) {
-                    ClassificationNodeType cnt = (ClassificationNodeType) iT;
-                    log.warn("REMOVING " + XmlTools.inspect(cnt));
-                    idsToRemove.add(cnt.getId());
-                }
-
-                // check for already existing Service definitions
-                else if (iT instanceof ServiceType) {
-                    ServiceType st = (ServiceType) iT;
-                    if (log.isDebugEnabled()) {
-                        log.debug("REMOVING " + XmlTools.inspect(st));
-                    }
-
-                    // TODO get the capabilites of the service and fill in rim:Name and rim:Description with
-                    // ows:ServiceIdentification/ows:Title and /ows:Abstract respectively (see 07-144r4 12.2)
-
-                    // if service and binding does exist, update the corresponding associations in the current
-                    // document
-
-                    // remove existing service and service binding
-                    idsToRemove.add(st.getId());
-                }
-
-                // check for existing organizations
-                else if (iT instanceof OrganizationType) {
-                    OrganizationType ot = (OrganizationType) iT;
-                    log.warn("REMOVING " + XmlTools.inspect(ot));
-                    idsToRemove.add(ot.getId());
-                }
-            }
-
-            removeAll(registryObjectList, idsToRemove);
-
-            log.info("Processed RegistryPackage: " + doc.getIdentifiable().getId());
+    private TransactionDocument createTransaction(Hashtable<String, RegistryPackageDocument> transformedDocs) throws OwsExceptionReport {
+        if (log.isDebugEnabled()) {
+            log.debug("** Creating TransactionDocument for " + transformedDocs.size() + " transformed docs.");
         }
-    }
 
-    /**
-     * 
-     * generate random integer between 10000 and 100000
-     * 
-     * @param oldId
-     * @return
-     */
-    private String appendRandomSuffix(String oldId) {
-        int postfix = 10000 + rand .nextInt(10000);
-        String newId = oldId.concat(":random_").concat(Integer.toString(postfix));
-        return newId;
-    }
+        TransactionDocument transactionDoc = TransactionDocument.Factory.newInstance();
+        TransactionType transaction = transactionDoc.addNewTransaction();
+        transaction.setService(CswCatalogConstants.CATALOG_SERVICE);
+        transaction.setVersion(CswCatalogConstants.CATALOG_VERSION);
+        InsertType insert = transaction.addNewInsert();
 
-    /**
-     * Removes all id listed in the second parameter from the first list.
-     * 
-     * @param registryObjectList
-     *        the registry object list
-     * @param idsToRemove
-     *        the ids to remove
-     */
-    private void removeAll(RegistryObjectListType registryObjectList, ArrayList<String> idsToRemove) {
-        IdentifiableType[] identifiables = registryObjectList.getIdentifiableArray();
-        int beforeLength = identifiables.length;
-        for (int i = 0; i < identifiables.length; i++) {
-            IdentifiableType current = identifiables[i];
+        // string hack here, but xmlbeans-methods (tried a lot!) did not work at all.
+        StringBuilder sb = new StringBuilder();
+        sb.append(SMLtoEbRIMTransformer.TRANSFORMED_DOCS_LISTING_ELEMENT_BEFORE);
 
-            if (idsToRemove.contains(current.getId())) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Removing identifiable from registry object list: " + current.getId() + " with index "
-                            + i);
+        // remove the schema location from all but the first registry package
+        boolean isFirst = true;
+        for (RegistryPackageDocument elem : transformedDocs.values()) {
+            if (isFirst) {
+                sb.append(elem.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
+                isFirst = false;
+            }
+            else {
+                XmlCursor c = elem.getRegistryPackage().newCursor();
+                c.removeAttribute(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME);
+                c.dispose();
+                c = null;
+
+                sb.append(elem.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
+            }
+
+        }
+        sb.append(SMLtoEbRIMTransformer.TRANSFORMED_DOCS_LISTING_ELEMENT_AFTER);
+
+        RegistryObjectListDocument regObjListDoc;
+        try {
+            regObjListDoc = RegistryObjectListDocument.Factory.parse(sb.toString());
+
+            if (SirConfigurator.getInstance().isValidateRequests()) {
+                if ( !regObjListDoc.validate()) {
+                    log.warn("Created invalid RegistryObjectListDocument, possibly rejected by the service! Set the logging level to DEBUG for more information on the document.");
+                    if (log.isDebugEnabled())
+                        log.debug("### Invalid document: ###\n" + regObjListDoc.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
                 }
-                registryObjectList.removeIdentifiable(i);
-                identifiables = registryObjectList.getIdentifiableArray();
             }
         }
-        if ( !idsToRemove.isEmpty())
-            log.info("Removed " + (beforeLength - identifiables.length) + " of " + beforeLength
-                    + " element(s) from registry object list with the ids " + Arrays.toString(idsToRemove.toArray()));
+        catch (XmlException e) {
+            OwsExceptionReport report = new OwsExceptionReport("Could not create insert-transaction document for given transformed docs",
+                                                               e);
+            throw report;
+        }
+
+        // insert the RegistryObjectListDocument into the insert transaction
+        insert.newCursor().getObject().set(regObjListDoc);
+        insert.setHandle(INSERT_HANDLE_SENSOR_DESCRIPTIONS);
+
+        return transactionDoc;
+    }
+
+    @Override
+    public boolean ensureSufficientCapabilities() throws OwsExceptionReport {
+        // check if catalog has all neccessary classification and slot elements and an accepted version etc.
+        boolean b = this.checker.checkAndUpdateClient(this.client);
+        if ( !b) {
+            log.warn("Capabilities and catalog elements not sufficient due to catalog checker! See the log for details.");
+            return false;
+        }
+
+        // did find all needed values
+        return b;
     }
 
     /**
@@ -638,26 +503,239 @@ public class CswCatalog implements ICatalog {
 
     }
 
+    @Override
+    public int[] getSummaryOfLastPush() {
+        return this.lastPushSummary;
+    }
+
     /**
      * 
-     * @param ids
+     * @param responseString
      * @return
+     * @throws OwsExceptionReport
      */
-    private GetRecordByIdDocument createGetRecordById(Collection<String> ids) {
-        if (log.isDebugEnabled()) {
-            log.debug("* Creating GetRecordsByIdDocument with these ids: " + Arrays.toString(ids.toArray()));
+    private void handleTransactionResponse(SOAPMessage message, int insertedDocuments) throws OwsExceptionReport {
+        // try parsing content to TransactionResponseDocument
+        try {
+            XmlObject content = this.client.extractContent(message);
+            TransactionResponseDocument transactionRespDoc = TransactionResponseDocument.Factory.parse(content.getDomNode());
+
+            // check if correct count was inserted
+            TransactionResponseType transactionResp = transactionRespDoc.getTransactionResponse();
+            TransactionSummaryType transactionSummary = transactionResp.getTransactionSummary();
+
+            // save response summary, not so nice that this is done with a side effect, but now other way atm.
+            this.lastPushSummary[0] += (transactionSummary.getTotalInserted() != null) ? transactionSummary.getTotalInserted().intValue()
+                                                                                      : 0;
+            this.lastPushSummary[1] += (transactionSummary.getTotalUpdated() != null) ? transactionSummary.getTotalUpdated().intValue()
+                                                                                     : 0;
+            this.lastPushSummary[2] += (transactionSummary.getTotalDeleted() != null) ? transactionSummary.getTotalDeleted().intValue()
+                                                                                     : 0;
+
+            if (insertedDocuments < (this.lastPushSummary[0] + this.lastPushSummary[1])) {
+                log.error("Insert Transaction did not complete succesfully! Wanted to insert " + insertedDocuments
+                        + " documents but only " + this.lastPushSummary[0] + "/" + this.lastPushSummary[1]
+                        + " were inserted/updated!");
+            }
+            else {
+                log.info("Got transaction response with count of inserted high enough - set the logging level to DEBUG for details.");
+            }
+
+            if (log.isDebugEnabled())
+                log.debug("RESPONSE FOR INSERT TRANSACTION: " + XmlTools.inspect(transactionSummary));
+
+        }
+        catch (XmlException e) {
+            log.warn("Could not parse response to TransactionResponseDocument. Maybe it's a Fault?");
+            // check for fault
+            SOAPFault f = this.client.extractFault(message);
+            if (f != null)
+                throw new OwsExceptionReport("FAULT RETURNED VIA SOAP:\n" + SoapTools.inspect(f), null);
+        }
+    }
+
+    @Override
+    public boolean hasSufficientCapabilities() throws OwsExceptionReport {
+        return this.checker.checkClient(this.client);
+    }
+
+    /**
+     * @param c
+     * @param docs
+     * @param slotInitDoc
+     * 
+     */
+    private void initialize(SimpleSoapCswClient c, List<XmlObject> classificationInitDocs, XmlObject slotInitDoc) {
+        this.client = c;
+        this.identifiableCache = new CswCatalogCache();
+
+        this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
+        this.validatorFactory = SirConfigurator.getInstance().getValidatorFactory();
+
+        if (log.isDebugEnabled())
+            log.debug("Initialized " + this.toString());
+    }
+
+    /**
+     * 
+     * works directly on the given table
+     * 
+     * @param transformedDocs
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private void processSensorDescriptions(Hashtable<String, RegistryPackageDocument> transformedDocs) throws OwsExceptionReport {
+        for (Entry<String, RegistryPackageDocument> transformed : transformedDocs.entrySet()) {
+            RegistryPackageDocument doc = transformed.getValue();
+
+            // FIXME catalogue does not accept the same registry package id twice, even if it contains the
+            // same extrinsic objects
+            String oldId = doc.getIdentifiable().getId();
+            String newId = appendRandomSuffix(oldId);
+            doc.getIdentifiable().setId(newId);
+            log.info("Changed RegistryPackage id from " + oldId + " to " + newId);
+
+            RegistryObjectListType registryObjectList = doc.getRegistryPackage().getRegistryObjectList();
+            IdentifiableType[] identifableArray = registryObjectList.getIdentifiableArray();
+
+            if (identifableArray == null) {
+                transformedDocs.put(transformed.getKey(), ITransformer.PROCESSING_ERROR_OBJECT);
+                continue;
+            }
+            else if (log.isDebugEnabled()) {
+                log.debug("Starting to process " + identifableArray.length + " elements in RegistryPackageDocument "
+                        + transformed.getValue().getIdentifiable().getId());
+            }
+
+            // query service which Identifiables can be found
+            Map<IdentifiableType, Boolean> existing = getExistingIdentifiablesById(identifableArray);
+            ArrayList<String> idsToRemove = new ArrayList<String>();
+
+            // iterate through all identifiables
+            for (Entry<IdentifiableType, Boolean> entry : existing.entrySet()) {
+                IdentifiableType iT = entry.getKey();
+                boolean needsUpdate = entry.getValue().booleanValue();
+
+                if ( !needsUpdate)
+                    continue;
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Processing " + iT.getId());
+                }
+
+                // check for already existing ExtrinsicObjects
+                if (iT instanceof ExtrinsicObjectType) {
+                    ExtrinsicObjectType eo = (ExtrinsicObjectType) iT;
+                    log.debug("ExtrinsicObject already found in catalog, but proceeding normally (not removed!): "
+                            + XmlTools.inspect(eo));
+                }
+
+                // check for already existing ClassificationNodes
+                else if (iT instanceof ClassificationNodeType) {
+                    ClassificationNodeType cnt = (ClassificationNodeType) iT;
+                    log.warn("REMOVING " + XmlTools.inspect(cnt));
+                    idsToRemove.add(cnt.getId());
+                }
+
+                // check for already existing Service definitions
+                else if (iT instanceof ServiceType) {
+                    ServiceType st = (ServiceType) iT;
+                    if (log.isDebugEnabled()) {
+                        log.debug("REMOVING " + XmlTools.inspect(st));
+                    }
+
+                    // TODO get the capabilites of the service and fill in rim:Name and rim:Description with
+                    // ows:ServiceIdentification/ows:Title and /ows:Abstract respectively (see 07-144r4 12.2)
+
+                    // if service and binding does exist, update the corresponding associations in the current
+                    // document
+
+                    // remove existing service and service binding
+                    idsToRemove.add(st.getId());
+                }
+
+                // check for existing organizations
+                else if (iT instanceof OrganizationType) {
+                    OrganizationType ot = (OrganizationType) iT;
+                    log.warn("REMOVING " + XmlTools.inspect(ot));
+                    idsToRemove.add(ot.getId());
+                }
+            }
+
+            removeAll(registryObjectList, idsToRemove);
+
+            log.info("Processed RegistryPackage: " + doc.getIdentifiable().getId());
+        }
+    }
+
+    @Override
+    public List<OwsExceptionReport> pushAllDataToCatalog() throws OwsExceptionReport {
+        return pushAllDataToCatalog(OLDEST_PUSH_DATE);
+    }
+
+    @Override
+    public List<OwsExceptionReport> pushAllDataToCatalog(Date lastPush) throws OwsExceptionReport {
+        log.info("Start pushing all data to catalog for all data after " + lastPush + " ...");
+        this.lastPushSummary = new int[3];
+
+        // create documents with all sensors, classification nodes and associations
+        List<Pair<Document, Integer>> inserts = createInsertTransactions(lastPush);
+
+        // send request and handle response seperately for each document, log errors if any occured
+        List<OwsExceptionReport> reports = new ArrayList<OwsExceptionReport>();
+        for (Pair<Document, Integer> currentPair : inserts) {
+            try {
+                if (log.isDebugEnabled()) {
+                    log.debug("Sending Document with " + currentPair.getSecond() + " sensor description(s) to client "
+                            + this.client);
+                }
+                SOAPMessage responseMessage = this.client.send(currentPair.getFirst());
+                handleTransactionResponse(responseMessage, currentPair.getSecond().intValue());
+            }
+            catch (OwsExceptionReport e) {
+                reports.add(e);
+            }
         }
 
-        GetRecordByIdDocument getRecDoc = GetRecordByIdDocument.Factory.newInstance();
-        GetRecordByIdType getRecordById = getRecDoc.addNewGetRecordById();
-        getRecordById.setService(CswCatalogConstants.CATALOG_SERVICE);
-        getRecordById.setVersion(CswCatalogConstants.CATALOG_VERSION);
+        inserts = null;
+        return reports;
+    }
 
-        for (String s : ids) {
-            getRecordById.addId(s);
+    /**
+     * Removes all id listed in the second parameter from the first list.
+     * 
+     * @param registryObjectList
+     *        the registry object list
+     * @param idsToRemove
+     *        the ids to remove
+     */
+    private void removeAll(RegistryObjectListType registryObjectList, ArrayList<String> idsToRemove) {
+        IdentifiableType[] identifiables = registryObjectList.getIdentifiableArray();
+        int beforeLength = identifiables.length;
+        for (int i = 0; i < identifiables.length; i++) {
+            IdentifiableType current = identifiables[i];
+
+            if (idsToRemove.contains(current.getId())) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Removing identifiable from registry object list: " + current.getId() + " with index "
+                            + i);
+                }
+                registryObjectList.removeIdentifiable(i);
+                identifiables = registryObjectList.getIdentifiableArray();
+            }
         }
+        if ( !idsToRemove.isEmpty())
+            log.info("Removed " + (beforeLength - identifiables.length) + " of " + beforeLength
+                    + " element(s) from registry object list with the ids " + Arrays.toString(idsToRemove.toArray()));
+    }
 
-        return getRecDoc;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CswCatalog [client=");
+        sb.append(this.client);
+        sb.append("]");
+        return sb.toString();
     }
 
     /**
@@ -772,83 +850,5 @@ public class CswCatalog implements ICatalog {
             }
         } // for loop
         return transformedDocs;
-    }
-
-    /**
-     * @param transformedDocs
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private TransactionDocument createTransaction(Hashtable<String, RegistryPackageDocument> transformedDocs) throws OwsExceptionReport {
-        if (log.isDebugEnabled()) {
-            log.debug("** Creating TransactionDocument for " + transformedDocs.size() + " transformed docs.");
-        }
-
-        TransactionDocument transactionDoc = TransactionDocument.Factory.newInstance();
-        TransactionType transaction = transactionDoc.addNewTransaction();
-        transaction.setService(CswCatalogConstants.CATALOG_SERVICE);
-        transaction.setVersion(CswCatalogConstants.CATALOG_VERSION);
-        InsertType insert = transaction.addNewInsert();
-
-        // string hack here, but xmlbeans-methods (tried a lot!) did not work at all.
-        StringBuilder sb = new StringBuilder();
-        sb.append(SMLtoEbRIMTransformer.TRANSFORMED_DOCS_LISTING_ELEMENT_BEFORE);
-
-        // remove the schema location from all but the first registry package
-        boolean isFirst = true;
-        for (RegistryPackageDocument elem : transformedDocs.values()) {
-            if (isFirst) {
-                sb.append(elem.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
-                isFirst = false;
-            }
-            else {
-                XmlCursor c = elem.getRegistryPackage().newCursor();
-                c.removeAttribute(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME);
-                c.dispose();
-                c = null;
-
-                sb.append(elem.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
-            }
-
-        }
-        sb.append(SMLtoEbRIMTransformer.TRANSFORMED_DOCS_LISTING_ELEMENT_AFTER);
-
-        RegistryObjectListDocument regObjListDoc;
-        try {
-            regObjListDoc = RegistryObjectListDocument.Factory.parse(sb.toString());
-
-            if (SirConfigurator.getInstance().isValidateRequests()) {
-                if ( !regObjListDoc.validate()) {
-                    log.warn("Created invalid RegistryObjectListDocument, possibly rejected by the service! Set the logging level to DEBUG for more information on the document.");
-                    if (log.isDebugEnabled())
-                        log.debug("### Invalid document: ###\n" + regObjListDoc.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
-                }
-            }
-        }
-        catch (XmlException e) {
-            OwsExceptionReport report = new OwsExceptionReport("Could not create insert-transaction document for given transformed docs",
-                                                               e);
-            throw report;
-        }
-
-        // insert the RegistryObjectListDocument into the insert transaction
-        insert.newCursor().getObject().set(regObjListDoc);
-        insert.setHandle(INSERT_HANDLE_SENSOR_DESCRIPTIONS);
-
-        return transactionDoc;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("CswCatalog [client=");
-        sb.append(this.client);
-        sb.append("]");
-        return sb.toString();
-    }
-
-    @Override
-    public int[] getSummaryOfLastPush() {
-        return this.lastPushSummary;
     }
 }

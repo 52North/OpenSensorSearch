@@ -49,18 +49,18 @@ public abstract class AbstractSirRequest {
     }
 
     /**
+     * @return the version
+     */
+    public String getVersion() {
+        return this.version;
+    }
+
+    /**
      * @param service
      *        the service to set
      */
     public void setService(String service) {
         this.service = service;
-    }
-
-    /**
-     * @return the version
-     */
-    public String getVersion() {
-        return this.version;
     }
 
     /**

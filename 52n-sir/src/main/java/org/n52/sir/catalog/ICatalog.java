@@ -44,6 +44,42 @@ public interface ICatalog {
     public static final Date OLDEST_PUSH_DATE = new Date(0l);
 
     /**
+     * Checks if the given document is conform with the required schema or profile of this catalog.
+     * 
+     * @param doc
+     * @return
+     * @throws OwsExceptionReport
+     */
+    public abstract boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport;
+
+    /**
+     * 
+     * Checks if the catalog instance is fit for the purpose of storing sensor information and tries to update
+     * the catalog with the required elements.
+     * 
+     * @return
+     * @throws OwsExceptionReport
+     */
+    public abstract boolean ensureSufficientCapabilities() throws OwsExceptionReport;
+
+    /**
+     * Returns an array with the number of {inserted, updated, deleted} sensors during the last
+     * {@link ICatalog#pushAllDataToCatalog()} call.
+     * 
+     * @return
+     */
+    public abstract int[] getSummaryOfLastPush();
+
+    /**
+     * Checks if this catalog instance is fit for the purpose of storing sensor information, e.g. if the given
+     * URL points at a valid catalog service that supports the required document profiles.
+     * 
+     * @return
+     * @throws OwsExceptionReport
+     */
+    public abstract boolean hasSufficientCapabilities() throws OwsExceptionReport;
+
+    /**
      * Saves all sensor information data that is stored within this instance of the SIR after
      * {@link ICatalog#OLDEST_PUSH_DATE} into this catalog instance. As the push might include a set of
      * transactions so the return type can be a list of errors that occurred.
@@ -64,41 +100,5 @@ public interface ICatalog {
      * @throws OwsExceptionReport
      */
     List<OwsExceptionReport> pushAllDataToCatalog(Date lastPush) throws OwsExceptionReport;
-
-    /**
-     * Checks if this catalog instance is fit for the purpose of storing sensor information, e.g. if the given
-     * URL points at a valid catalog service that supports the required document profiles.
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public abstract boolean hasSufficientCapabilities() throws OwsExceptionReport;
-
-    /**
-     * 
-     * Checks if the catalog instance is fit for the purpose of storing sensor information and tries to update
-     * the catalog with the required elements.
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public abstract boolean ensureSufficientCapabilities() throws OwsExceptionReport;
-
-    /**
-     * Checks if the given document is conform with the required schema or profile of this catalog.
-     * 
-     * @param doc
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public abstract boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport;
-
-    /**
-     * Returns an array with the number of {inserted, updated, deleted} sensors during the last
-     * {@link ICatalog#pushAllDataToCatalog()} call.
-     * 
-     * @return
-     */
-    public abstract int[] getSummaryOfLastPush();
 
 }

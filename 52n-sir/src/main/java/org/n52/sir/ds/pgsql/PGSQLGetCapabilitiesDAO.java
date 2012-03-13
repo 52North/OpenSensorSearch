@@ -237,6 +237,17 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
     /*
      * (non-Javadoc)
      * 
+     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getServicesCount()
+     */
+    @Override
+    public long getServiceCount() throws OwsExceptionReport {
+        String tableName = PGDAOConstants.service;
+        return getTableSize(tableName);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.n52.sir.ds.IGetCapabilitiesDAO#getServices()
      */
     @Override
@@ -305,17 +316,6 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         }
 
         return result;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getServicesCount()
-     */
-    @Override
-    public long getServiceCount() throws OwsExceptionReport {
-        String tableName = PGDAOConstants.service;
-        return getTableSize(tableName);
     }
 
     /**

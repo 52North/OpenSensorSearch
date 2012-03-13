@@ -51,29 +51,6 @@ public class SirConnectToCatalogResponse implements ISirResponse {
      */
     private URL catalogUrl;
 
-    /**
-     * @return the catalogUrl
-     */
-    public URL getCatalogUrl() {
-        return this.catalogUrl;
-    }
-
-    /**
-     * @param cswUrl
-     *        the cswUrl to set
-     */
-    public void setCatalogUrl(URL catalogUrl) {
-        this.catalogUrl = catalogUrl;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirConnectToCatalogResponse: ");
-        sb.append("CatalogUrl: " + this.catalogUrl);
-        return sb.toString();
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -88,22 +65,11 @@ public class SirConnectToCatalogResponse implements ISirResponse {
         return bytes;
     }
 
-    private ConnectToCatalogResponseDocument parseToResponseDocument() {
-        ConnectToCatalogResponseDocument document = ConnectToCatalogResponseDocument.Factory.newInstance();
-        ConnectToCatalogResponse conCatResp = document.addNewConnectToCatalogResponse();
-
-        // set csw URL
-        conCatResp.setCatalogURL(this.catalogUrl.toString());
-
-        // add schema location for validation
-        XmlTools.addSirAndSensorMLSchemaLocation(conCatResp);
-
-        if (SirConfigurator.getInstance().isValidateResponses()) {
-            if ( !document.validate())
-                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
-        }
-
-        return document;
+    /**
+     * @return the catalogUrl
+     */
+    public URL getCatalogUrl() {
+        return this.catalogUrl;
     }
 
     /*
@@ -124,6 +90,40 @@ public class SirConnectToCatalogResponse implements ISirResponse {
     @Override
     public String getContentType() {
         return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    private ConnectToCatalogResponseDocument parseToResponseDocument() {
+        ConnectToCatalogResponseDocument document = ConnectToCatalogResponseDocument.Factory.newInstance();
+        ConnectToCatalogResponse conCatResp = document.addNewConnectToCatalogResponse();
+
+        // set csw URL
+        conCatResp.setCatalogURL(this.catalogUrl.toString());
+
+        // add schema location for validation
+        XmlTools.addSirAndSensorMLSchemaLocation(conCatResp);
+
+        if (SirConfigurator.getInstance().isValidateResponses()) {
+            if ( !document.validate())
+                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
+        }
+
+        return document;
+    }
+
+    /**
+     * @param cswUrl
+     *        the cswUrl to set
+     */
+    public void setCatalogUrl(URL catalogUrl) {
+        this.catalogUrl = catalogUrl;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SirConnectToCatalogResponse: ");
+        sb.append("CatalogUrl: " + this.catalogUrl);
+        return sb.toString();
     }
 
 }

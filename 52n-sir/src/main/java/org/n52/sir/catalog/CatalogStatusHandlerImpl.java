@@ -43,9 +43,9 @@ import org.slf4j.LoggerFactory;
  */
 public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
 
-    private static final int MAXIMUM_INFOLIST_SIZE = 100;
-
     private static Logger log = LoggerFactory.getLogger(CatalogStatusHandlerImpl.class);
+
+    private static final int MAXIMUM_INFOLIST_SIZE = 100;
 
     private ICatalogStatusHandlerDAO catStatHandlerDao;
 
@@ -59,26 +59,9 @@ public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
         this.runtimeInfo = new ArrayList<String>();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.catalog.ICatalogStatusHandler#setStatus(java.lang.String, java.lang.String)
-     */
     @Override
-    public void setStatus(String identifier, String statusMessage) {
-        if (identifier.equals(ICatalogConnection.UNSAVED_CONNECTION_ID)) {
-            log.info("* STATUS CHANGE FOR UNSAVED CONNECTION: " + statusMessage + " *");
-            saveRuntimeInfo(identifier, statusMessage);
-            return;
-        }
-
-        try {
-            this.catStatHandlerDao.setNewStatus(identifier, statusMessage);
-            saveRuntimeInfo(identifier, statusMessage);
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Error setting new status for " + identifier, e);
-        }
+    public int getMaximumInfolistSize() {
+        return MAXIMUM_INFOLIST_SIZE;
     }
 
     @Override
@@ -102,9 +85,26 @@ public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
         this.runtimeInfo.add("Connection id: " + identifier + "\t>>>\t" + statusMessage);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.catalog.ICatalogStatusHandler#setStatus(java.lang.String, java.lang.String)
+     */
     @Override
-    public int getMaximumInfolistSize() {
-        return MAXIMUM_INFOLIST_SIZE;
+    public void setStatus(String identifier, String statusMessage) {
+        if (identifier.equals(ICatalogConnection.UNSAVED_CONNECTION_ID)) {
+            log.info("* STATUS CHANGE FOR UNSAVED CONNECTION: " + statusMessage + " *");
+            saveRuntimeInfo(identifier, statusMessage);
+            return;
+        }
+
+        try {
+            this.catStatHandlerDao.setNewStatus(identifier, statusMessage);
+            saveRuntimeInfo(identifier, statusMessage);
+        }
+        catch (OwsExceptionReport e) {
+            log.error("Error setting new status for " + identifier, e);
+        }
     }
 
 }

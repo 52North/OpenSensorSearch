@@ -56,54 +56,9 @@ public class SirHarvestServiceResponse implements ISirResponse {
     private static Logger log = LoggerFactory.getLogger(SirHarvestServiceResponse.class);
 
     /**
-     * the harvested service type
-     */
-    private String serviceType;
-
-    /**
-     * the harvested service URL
-     */
-    private String serviceUrl;
-
-    /**
-     * number of sensors found in the service
-     */
-    private int numberOfFoundSensors;
-
-    /**
-     * number of sensors inserted in the SIR
-     */
-    private int numberOfInsertedSensors;
-
-    /**
-     * number of sensors deleted from the SIR
-     */
-    private int numberOfDeletedSensors;
-
-    /**
-     * number of sensors updated in the SIR
-     */
-    private int numberOfUpdatedSensors;
-
-    /**
-     * number of sensors which could no be inserted in the SIR
-     */
-    private int numberOfFailedSensors;
-
-    /**
-     * collection of the inserted sensors in the SIR
-     */
-    private Collection<SirSensor> insertedSensors;
-
-    /**
      * collection of the deleted sensors in the SIR
      */
     private Collection<SirSensor> deletedSensors;
-
-    /**
-     * collection of the updated sensors in the SIR
-     */
-    private Collection<SirSensor> updatedSensors;
 
     /**
      * collection of sensors which could not be inserted in the SIR
@@ -116,176 +71,49 @@ public class SirHarvestServiceResponse implements ISirResponse {
     private Map<String, String> failureDescriptions = new HashMap<String, String>();
 
     /**
-     * @return the serviceType
+     * collection of the inserted sensors in the SIR
      */
-    public String getServiceType() {
-        return this.serviceType;
-    }
+    private Collection<SirSensor> insertedSensors;
 
     /**
-     * @param serviceType
-     *        the serviceType to set
+     * number of sensors deleted from the SIR
      */
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
-    }
+    private int numberOfDeletedSensors;
 
     /**
-     * @return the serviceUrl
+     * number of sensors which could no be inserted in the SIR
      */
-    public String getServiceUrl() {
-        return this.serviceUrl;
-    }
+    private int numberOfFailedSensors;
 
     /**
-     * @param serviceUrl
-     *        the serviceUrl to set
+     * number of sensors found in the service
      */
-    public void setServiceUrl(String serviceUrl) {
-        this.serviceUrl = serviceUrl;
-    }
+    private int numberOfFoundSensors;
 
     /**
-     * @return the numberOfFoundSensors
+     * number of sensors inserted in the SIR
      */
-    public int getNumberOfFoundSensors() {
-        return this.numberOfFoundSensors;
-    }
+    private int numberOfInsertedSensors;
 
     /**
-     * @param numberOfFoundSensors
-     *        the numberOfFoundSensors to set
+     * number of sensors updated in the SIR
      */
-    public void setNumberOfFoundSensors(int numberOfFoundSensors) {
-        this.numberOfFoundSensors = numberOfFoundSensors;
-    }
+    private int numberOfUpdatedSensors;
 
     /**
-     * @return the numberOfInsertedSensors
+     * the harvested service type
      */
-    public int getNumberOfInsertedSensors() {
-        return this.numberOfInsertedSensors;
-    }
+    private String serviceType;
 
     /**
-     * @param numberOfInsertedSensors
-     *        the numberOfInsertedSensors to set
+     * the harvested service URL
      */
-    public void setNumberOfInsertedSensors(int numberOfInsertedSensors) {
-        this.numberOfInsertedSensors = numberOfInsertedSensors;
-    }
+    private String serviceUrl;
 
     /**
-     * @return the numberOfDeletedSensors
+     * collection of the updated sensors in the SIR
      */
-    public int getNumberOfDeletedSensors() {
-        return this.numberOfDeletedSensors;
-    }
-
-    /**
-     * @param numberOfDeletedSensors
-     *        the numberOfDeletedSensors to set
-     */
-    public void setNumberOfDeletedSensors(int numberOfDeletedSensors) {
-        this.numberOfDeletedSensors = numberOfDeletedSensors;
-    }
-
-    /**
-     * @return the numberOfUpdatedSensors
-     */
-    public int getNumberOfUpdatedSensors() {
-        return this.numberOfUpdatedSensors;
-    }
-
-    /**
-     * @param numberOfUpdatedSensors
-     *        the numberOfUpdatedSensors to set
-     */
-    public void setNumberOfUpdatedSensors(int numberOfUpdatedSensors) {
-        this.numberOfUpdatedSensors = numberOfUpdatedSensors;
-    }
-
-    /**
-     * @return the numberOfFailedSensors
-     */
-    public int getNumberOfFailedSensors() {
-        return this.numberOfFailedSensors;
-    }
-
-    /**
-     * @param numberOfFailedSensors
-     *        the numberOfFailedSensors to set
-     */
-    public void setNumberOfFailedSensors(int numberOfFailedSensors) {
-        this.numberOfFailedSensors = numberOfFailedSensors;
-    }
-
-    /**
-     * @return the insertedSensors
-     */
-    public Collection<SirSensor> getInsertedSensors() {
-        return this.insertedSensors;
-    }
-
-    /**
-     * @param insertedSensors
-     *        the insertedSensors to set
-     */
-    public void setInsertedSensors(Collection<SirSensor> insertedSensors) {
-        this.insertedSensors = insertedSensors;
-    }
-
-    /**
-     * @return the deletedSensors
-     */
-    public Collection<SirSensor> getDeletedSensors() {
-        return this.deletedSensors;
-    }
-
-    /**
-     * @param deletedSensors
-     *        the deletedSensors to set
-     */
-    public void setDeletedSensors(Collection<SirSensor> deletedSensors) {
-        this.deletedSensors = deletedSensors;
-    }
-
-    /**
-     * @return the updatedSensors
-     */
-    public Collection<SirSensor> getUpdatedSensors() {
-        return this.updatedSensors;
-    }
-
-    /**
-     * @param updatedSensors
-     *        the updatedSensors to set
-     */
-    public void setUpdatedSensors(Collection<SirSensor> updatedSensors) {
-        this.updatedSensors = updatedSensors;
-    }
-
-    /**
-     * @return the failedSensors
-     */
-    public Collection<String> getFailedSensors() {
-        return this.failedSensors;
-    }
-
-    /**
-     * @param failedSensors
-     *        the failedSensors to set
-     */
-    public void setFailedSensors(Collection<String> failedSensors) {
-        this.failedSensors = failedSensors;
-    }
-
-    /**
-     * @return the failureDescriptions
-     */
-    public Map<String, String> getFailureDescriptions() {
-        return this.failureDescriptions;
-    }
+    private Collection<SirSensor> updatedSensors;
 
     /**
      * 
@@ -294,24 +122,6 @@ public class SirHarvestServiceResponse implements ISirResponse {
      */
     public void addFailureDescription(String sensor, String description) {
         this.failureDescriptions.put(sensor, description);
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirHarvestServiceResponse: ");
-        sb.append("ServiceType: " + this.serviceType);
-        sb.append(", ServiceURL: " + this.serviceUrl);
-        sb.append(", Number Found Sensors: " + this.numberOfFoundSensors);
-        sb.append(", Number Inserted Sensors: " + this.numberOfInsertedSensors);
-        sb.append(", Number Deleted Sensors: " + this.numberOfDeletedSensors);
-        sb.append(", Number Updated Sensors: " + this.numberOfUpdatedSensors);
-        sb.append(", Number Failed Sensors: " + this.numberOfFailedSensors);
-        sb.append(", Inserted Sensors: " + this.insertedSensors);
-        sb.append(", Deleted Sensors: " + this.deletedSensors);
-        sb.append(", Updated Sensors: " + this.updatedSensors);
-        sb.append(", Failed Sensors: " + this.failedSensors);
-        return sb.toString();
     }
 
     /*
@@ -326,6 +136,110 @@ public class SirHarvestServiceResponse implements ISirResponse {
         harvestServiceRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
         byte[] bytes = baos.toByteArray();
         return bytes;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentLength()
+     */
+    @Override
+    public int getContentLength() throws IOException, TransformerException {
+        return getByteArray().length;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    /**
+     * @return the deletedSensors
+     */
+    public Collection<SirSensor> getDeletedSensors() {
+        return this.deletedSensors;
+    }
+
+    /**
+     * @return the failedSensors
+     */
+    public Collection<String> getFailedSensors() {
+        return this.failedSensors;
+    }
+
+    /**
+     * @return the failureDescriptions
+     */
+    public Map<String, String> getFailureDescriptions() {
+        return this.failureDescriptions;
+    }
+
+    /**
+     * @return the insertedSensors
+     */
+    public Collection<SirSensor> getInsertedSensors() {
+        return this.insertedSensors;
+    }
+
+    /**
+     * @return the numberOfDeletedSensors
+     */
+    public int getNumberOfDeletedSensors() {
+        return this.numberOfDeletedSensors;
+    }
+
+    /**
+     * @return the numberOfFailedSensors
+     */
+    public int getNumberOfFailedSensors() {
+        return this.numberOfFailedSensors;
+    }
+
+    /**
+     * @return the numberOfFoundSensors
+     */
+    public int getNumberOfFoundSensors() {
+        return this.numberOfFoundSensors;
+    }
+
+    /**
+     * @return the numberOfInsertedSensors
+     */
+    public int getNumberOfInsertedSensors() {
+        return this.numberOfInsertedSensors;
+    }
+
+    /**
+     * @return the numberOfUpdatedSensors
+     */
+    public int getNumberOfUpdatedSensors() {
+        return this.numberOfUpdatedSensors;
+    }
+
+    /**
+     * @return the serviceType
+     */
+    public String getServiceType() {
+        return this.serviceType;
+    }
+
+    /**
+     * @return the serviceUrl
+     */
+    public String getServiceUrl() {
+        return this.serviceUrl;
+    }
+
+    /**
+     * @return the updatedSensors
+     */
+    public Collection<SirSensor> getUpdatedSensors() {
+        return this.updatedSensors;
     }
 
     private HarvestServiceResponseDocument parseToResponseDocument() {
@@ -387,24 +301,110 @@ public class SirHarvestServiceResponse implements ISirResponse {
         return document;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
+    /**
+     * @param deletedSensors
+     *        the deletedSensors to set
      */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
+    public void setDeletedSensors(Collection<SirSensor> deletedSensors) {
+        this.deletedSensors = deletedSensors;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
+    /**
+     * @param failedSensors
+     *        the failedSensors to set
      */
+    public void setFailedSensors(Collection<String> failedSensors) {
+        this.failedSensors = failedSensors;
+    }
+
+    /**
+     * @param insertedSensors
+     *        the insertedSensors to set
+     */
+    public void setInsertedSensors(Collection<SirSensor> insertedSensors) {
+        this.insertedSensors = insertedSensors;
+    }
+
+    /**
+     * @param numberOfDeletedSensors
+     *        the numberOfDeletedSensors to set
+     */
+    public void setNumberOfDeletedSensors(int numberOfDeletedSensors) {
+        this.numberOfDeletedSensors = numberOfDeletedSensors;
+    }
+
+    /**
+     * @param numberOfFailedSensors
+     *        the numberOfFailedSensors to set
+     */
+    public void setNumberOfFailedSensors(int numberOfFailedSensors) {
+        this.numberOfFailedSensors = numberOfFailedSensors;
+    }
+
+    /**
+     * @param numberOfFoundSensors
+     *        the numberOfFoundSensors to set
+     */
+    public void setNumberOfFoundSensors(int numberOfFoundSensors) {
+        this.numberOfFoundSensors = numberOfFoundSensors;
+    }
+
+    /**
+     * @param numberOfInsertedSensors
+     *        the numberOfInsertedSensors to set
+     */
+    public void setNumberOfInsertedSensors(int numberOfInsertedSensors) {
+        this.numberOfInsertedSensors = numberOfInsertedSensors;
+    }
+
+    /**
+     * @param numberOfUpdatedSensors
+     *        the numberOfUpdatedSensors to set
+     */
+    public void setNumberOfUpdatedSensors(int numberOfUpdatedSensors) {
+        this.numberOfUpdatedSensors = numberOfUpdatedSensors;
+    }
+
+    /**
+     * @param serviceType
+     *        the serviceType to set
+     */
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    /**
+     * @param serviceUrl
+     *        the serviceUrl to set
+     */
+    public void setServiceUrl(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
+    }
+
+    /**
+     * @param updatedSensors
+     *        the updatedSensors to set
+     */
+    public void setUpdatedSensors(Collection<SirSensor> updatedSensors) {
+        this.updatedSensors = updatedSensors;
+    }
+
     @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SirHarvestServiceResponse: ");
+        sb.append("ServiceType: " + this.serviceType);
+        sb.append(", ServiceURL: " + this.serviceUrl);
+        sb.append(", Number Found Sensors: " + this.numberOfFoundSensors);
+        sb.append(", Number Inserted Sensors: " + this.numberOfInsertedSensors);
+        sb.append(", Number Deleted Sensors: " + this.numberOfDeletedSensors);
+        sb.append(", Number Updated Sensors: " + this.numberOfUpdatedSensors);
+        sb.append(", Number Failed Sensors: " + this.numberOfFailedSensors);
+        sb.append(", Inserted Sensors: " + this.insertedSensors);
+        sb.append(", Deleted Sensors: " + this.deletedSensors);
+        sb.append(", Updated Sensors: " + this.updatedSensors);
+        sb.append(", Failed Sensors: " + this.failedSensors);
+        return sb.toString();
     }
 
 }

@@ -53,9 +53,22 @@ public interface ITransformer {
 
     public static final boolean IS_VALIDATING_DEFAULT = true;
 
+    public static final RegistryPackageDocument PROCESSING_ERROR_OBJECT = RegistryPackageDocument.Factory.newInstance();
+
     public static final RegistryPackageDocument TRANSFORMATION_ERROR_OBJECT = RegistryPackageDocument.Factory.newInstance();
 
-    public static final RegistryPackageDocument PROCESSING_ERROR_OBJECT = RegistryPackageDocument.Factory.newInstance();
+    /**
+     * 
+     * @return If the transformer perfoms validation of incoming and outgoing documents.
+     */
+    public abstract boolean isValidating();
+
+    /**
+     * 
+     * @param Set
+     *        if the transformer perfoms a validation before and after transformation.
+     */
+    public abstract void setValidating(boolean b);
 
     /**
      * 
@@ -68,12 +81,12 @@ public interface ITransformer {
 
     /**
      * 
-     * @param copy
+     * @param sensor
      * @return
      * @throws TransformerException
      * @throws XmlException
      */
-    public abstract XmlObject transform(SystemType copy) throws XmlException, TransformerException;
+    public abstract XmlObject transform(SirSensorDescription sensor) throws XmlException, TransformerException;
 
     /**
      * 
@@ -95,24 +108,11 @@ public interface ITransformer {
 
     /**
      * 
-     * @param sensor
+     * @param copy
      * @return
      * @throws TransformerException
      * @throws XmlException
      */
-    public abstract XmlObject transform(SirSensorDescription sensor) throws XmlException, TransformerException;
-
-    /**
-     * 
-     * @return If the transformer perfoms validation of incoming and outgoing documents.
-     */
-    public abstract boolean isValidating();
-
-    /**
-     * 
-     * @param Set
-     *        if the transformer perfoms a validation before and after transformation.
-     */
-    public abstract void setValidating(boolean b);
+    public abstract XmlObject transform(SystemType copy) throws XmlException, TransformerException;
 
 }

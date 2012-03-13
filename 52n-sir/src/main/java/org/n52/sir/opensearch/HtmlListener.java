@@ -79,6 +79,36 @@ public class HtmlListener implements IOpenSearchListener {
 
     private static final String NAME = "HTML";
 
+    /**
+     * store the service capabilities
+     * 
+     * TODO delete the cache occasionally so that the capabilities are requested new from time to time
+     */
+    private HashMap<URL, XmlObject> capabilitiesCache;
+
+    private HashMap<URL, Date> capabilitiesCacheAge;
+
+    /**
+     * store the urls where there were problems getting service capabilities
+     */
+    private HashMap<URL, XmlObject> capabilitiesErrorCache;
+
+    private OpenSearchConfigurator conf;
+
+    private String foundResults_post = "hits.";
+
+    private String foundResults_pre = "";
+
+    private boolean highlightSearchText = true;
+
+    private boolean linksInSearchText = true;
+
+    private String mapImage = "/SIR/images/map.png";
+
+    private String openMap = "Open hits on map.";
+
+    private String openTimeSeries = "Open Sensor in Viewer";
+
     private String searchButtonText = "Search";
 
     private String searchResultHeadline = "Open Sensor Search";
@@ -95,112 +125,13 @@ public class HtmlListener implements IOpenSearchListener {
 
     private String timeseriesImage = "/SIR/images/timeseries.png";
 
-    private String foundResults_post = "hits.";
-
-    private String foundResults_pre = "";
-
-    private boolean highlightSearchText = true;
-
-    private boolean linksInSearchText = true;
-
-    private String mapImage = "/SIR/images/map.png";
-
-    private String openMap = "Open hits on map.";
-
-    private String openTimeSeries = "Open Sensor in Viewer";
-
-    private OpenSearchConfigurator conf;
-
     public HtmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
-        
+
         this.capabilitiesCache = new HashMap<URL, XmlObject>();
         this.capabilitiesCacheAge = new HashMap<URL, Date>();
         this.capabilitiesErrorCache = new HashMap<URL, XmlObject>();
-    }
-
-    /**
-     * store the service capabilities
-     * 
-     * TODO delete the cache occasionally so that the capabilities are requested new from time to time
-     */
-    private HashMap<URL, XmlObject> capabilitiesCache;
-
-    private HashMap<URL, Date> capabilitiesCacheAge;
-
-    /**
-     * store the urls where there were problems getting service capabilities
-     */
-    private HashMap<URL, XmlObject> capabilitiesErrorCache;
-
-    @Override
-    public void createResponse(HttpServletRequest req,
-                               HttpServletResponse resp,
-                               Collection<SirSearchResultElement> searchResult,
-                               PrintWriter writer,
-                               String searchText) throws OwsExceptionReport {
-        String searchT;
-        if (searchText.contains("&"))
-            searchT = Tools.encode(searchText);
-        else searchT = searchText;
-        
-        writer.print("<?xml version=\"1.0\" encoding=\"");
-        writer.print(SirConfigurator.getInstance().getCharacterEncoding().toLowerCase());
-        writer.println("\"?>");
-
-        writer.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        writer.println("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-
-        writer.println("<head>");
-        writer.print("<link href=\"");
-        writer.print(this.conf.getCssFile());
-        writer.println("\" rel=\"stylesheet\" type=\"text/css\" />");
-
-        writer.print("<title>");
-        writer.print(this.searchResultTitle);
-        writer.print(" '");
-        writer.print(searchT);
-        writer.println("'</title>");
-
-        writer.println("<link rel=\"shortcut icon\" href=\"https://52north.org/templates/52n/favicon.ico\" />");
-        writer.println("</head>");
-
-        writer.println("<body>");
-        writer.println("<div id=\"content\">");
-
-        try {
-            createHTMLContent(searchResult, writer, searchT);
-        }
-        catch (UnsupportedEncodingException e) {
-            log.error("Error creating HTML content.", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Encoding error: " + e.getMessage());
-        }
-
-        writer.println("<div id=\"footer\">");
-        writer.println("<p class=\"infotext\">Open Sensor Search is powered by the 52&deg;North Sensor Instance Registry. <a href=\"http://52north.org/communities/sensorweb/incubation/discovery/\" title=\"Sensor Discovery by 52N\">Find out more</a>.");
-        writer.println("</p>");
-        writer.println("<p class=\"infotext\"><a href=\"./\">Home</a> | <a href=\"client.jsp\">Extended Client</a> | <a href=\"formClient.html\">Form Client</a>");
-        writer.println("</p>");
-        writer.println("<p class=\"infotext\">&copy; 2012 <a href=\"http://52north.org\">52&deg;North Initiative for Geospatial Software GmbH</a>");
-        writer.println("</p>");
-        writer.println("</div>");
-
-        writer.println("</div>"); // content
-        writer.println("</body>");
-        writer.println("</html>");
-        writer.flush();
-    }
-
-    @Override
-    public String getMimeType() {
-        // TODO Auto-generated method stub
-        return MIME_TYPE;
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
     }
 
     /**
@@ -281,32 +212,15 @@ public class HtmlListener implements IOpenSearchListener {
         writer.print("\" onchange=\"this.form.submit();\">");
 
         for (Entry<String, String> format : responseFormats.entrySet()) {
-            writer.print("<option value=\"");
+            if (format.getKey().equals(MIME_TYPE))
+                writer.print("<option selected=\"selected\" value=\"");
+            else
+                writer.print("<option value=\"");
             writer.print(format.getKey());
             writer.print("\">");
             writer.print(format.getValue());
             writer.print("</option>");
         }
-        // writer.print("<option value=\"");
-        // writer.print(MIME_TYPE);
-        // writer.print("\" selected=\"selected\">HTML</option>");
-        // writer.print("<option value=\"");
-        // writer.print(MIME_TYPE_KML);
-        // writer.print("\">KML</option>");
-        // writer.print("<option value=\"");
-        // writer.print(this.jsonListener.getMimeType());
-        // writer.print("\">");
-        // writer.print(this.jsonListener.getName());
-        // writer.print("</option>");
-        // writer.print("<option value=\"");
-        // writer.print(MIME_TYPE_XML);
-        // writer.print("\">XML</option>");
-        // writer.print("<option value=\"");
-        // writer.print(MIME_TYPE_ATOM);
-        // writer.print("\">ATOM</option>");
-        // writer.print("<option value=\"");
-        // writer.print(MIME_TYPE_RSS);
-        // writer.print("\">RSS</option>");
         writer.print("</select>");
         writer.print("</span>");
         writer.print("</form>");
@@ -418,6 +332,154 @@ public class HtmlListener implements IOpenSearchListener {
         return sb.toString();
     }
 
+    @Override
+    public void createResponse(HttpServletRequest req,
+                               HttpServletResponse resp,
+                               Collection<SirSearchResultElement> searchResult,
+                               PrintWriter writer,
+                               String searchText) throws OwsExceptionReport {
+        String searchT;
+        if (searchText.contains("&"))
+            searchT = Tools.encode(searchText);
+        else
+            searchT = searchText;
+
+        writer.print("<?xml version=\"1.0\" encoding=\"");
+        writer.print(SirConfigurator.getInstance().getCharacterEncoding().toLowerCase());
+        writer.println("\"?>");
+
+        writer.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+        writer.println("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+
+        writer.println("<head>");
+        writer.print("<link href=\"");
+        writer.print(this.conf.getCssFile());
+        writer.println("\" rel=\"stylesheet\" type=\"text/css\" />");
+
+        writer.print("<title>");
+        writer.print(this.searchResultTitle);
+        writer.print(" '");
+        writer.print(searchT);
+        writer.println("'</title>");
+
+        writer.println("<link rel=\"shortcut icon\" href=\"https://52north.org/templates/52n/favicon.ico\" />");
+        writer.println("</head>");
+
+        writer.println("<body>");
+        writer.println("<div id=\"content\">");
+
+        try {
+            createHTMLContent(searchResult, writer, searchT);
+        }
+        catch (UnsupportedEncodingException e) {
+            log.error("Error creating HTML content.", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Encoding error: " + e.getMessage());
+        }
+
+        writer.println("<div id=\"footer\">");
+        writer.println("<p class=\"infotext\">Open Sensor Search is powered by the 52&deg;North Sensor Instance Registry. <a href=\"http://52north.org/communities/sensorweb/incubation/discovery/\" title=\"Sensor Discovery by 52N\">Find out more</a>.");
+        writer.println("</p>");
+        writer.println("<p class=\"infotext\"><a href=\"./\">Home</a> | <a href=\"client.jsp\">Extended Client</a> | <a href=\"formClient.html\">Form Client</a>");
+        writer.println("</p>");
+        writer.println("<p class=\"infotext\">&copy; 2012 <a href=\"http://52north.org\">52&deg;North Initiative for Geospatial Software GmbH</a>");
+        writer.println("</p>");
+        writer.println("</div>");
+
+        writer.println("</div>"); // content
+        writer.println("</body>");
+        writer.println("</html>");
+        writer.flush();
+    }
+
+    @Override
+    public String getMimeType() {
+        // TODO Auto-generated method stub
+        return MIME_TYPE;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    /**
+     * @param serviceReference
+     * @return
+     */
+    private ObservationOfferingType[] getObservationOfferingArray(SirServiceReference serviceReference) {
+        // get capabilities and create links
+        URL url;
+        try {
+            url = new URL(serviceReference.getService().getUrl());
+        }
+        catch (MalformedURLException e) {
+            log.error("Cannot create valid URL for service reference.", e);
+            return null;
+        }
+
+        // check if url was already requested, and use that
+        XmlObject caps = null;
+        if ( !this.capabilitiesCache.containsKey(url)) {
+            caps = updateCache(serviceReference, url);
+        }
+        else if (this.capabilitiesErrorCache.containsKey(url)) {
+            log.debug("Had error with capabilities for {} before, not requesting again.", url);
+            return null;
+        }
+        else {
+            Calendar maxAge = Calendar.getInstance();
+            maxAge.add(Calendar.SECOND, -1 * this.conf.getCapabilitiesCacheMaximumAgeSeconds());
+
+            if (this.capabilitiesCacheAge.get(url).before(maxAge.getTime())) {
+                log.debug("Updating cached capabilities, was from {} but maximum age is {}.",
+                          this.capabilitiesCacheAge.get(url),
+                          maxAge);
+                caps = updateCache(serviceReference, url);
+            }
+            else
+                caps = this.capabilitiesCache.get(url);
+        }
+
+        // find out if the capabilities document can be handled
+        Capabilities sosCaps;
+        if (caps instanceof CapabilitiesDocument) {
+            CapabilitiesDocument doc = (CapabilitiesDocument) caps;
+            sosCaps = doc.getCapabilities();
+        }
+        else if (caps instanceof ExceptionReportDocument) {
+            ExceptionReportDocument erd = (ExceptionReportDocument) caps;
+            log.warn("Could not request capabilities from service {}, got ExceptionReportDocument (turn on debug for more info)",
+                     url);
+            this.capabilitiesErrorCache.put(url, erd);
+            log.debug(Arrays.toString(erd.getExceptionReport().getExceptionArray()));
+            return null;
+        }
+        else {
+            log.error("No SOS capabilities document returned by service! Instead got: {} [... truncated]",
+                      caps.xmlText().substring(0, 200));
+            this.capabilitiesErrorCache.put(url, caps);
+            return null;
+        }
+
+        Contents contents = sosCaps.getContents();
+        if (contents == null) {
+            log.debug("Contents of capabilities for service {} are null, cannot generate permalinks.", serviceReference);
+            this.capabilitiesErrorCache.put(url, caps);
+            return null;
+        }
+
+        ObservationOfferingList observationOfferingList = contents.getObservationOfferingList();
+        if (observationOfferingList == null) {
+            log.warn("Contents of observation offerings for service {} are null, cannot generate permalinks.",
+                     serviceReference);
+            this.capabilitiesErrorCache.put(url, caps);
+            return null;
+        }
+
+        ObservationOfferingType[] observationOfferingArray = observationOfferingList.getObservationOfferingArray();
+        return observationOfferingArray;
+    }
+
     /**
      * 
      * @param sirSearchResultElement
@@ -512,84 +574,6 @@ public class HtmlListener implements IOpenSearchListener {
         // accessURL = generator.uncompressAccessURL(accessURL);
 
         return accessURL;
-    }
-
-    /**
-     * @param serviceReference
-     * @return
-     */
-    private ObservationOfferingType[] getObservationOfferingArray(SirServiceReference serviceReference) {
-        // get capabilities and create links
-        URL url;
-        try {
-            url = new URL(serviceReference.getService().getUrl());
-        }
-        catch (MalformedURLException e) {
-            log.error("Cannot create valid URL for service reference.", e);
-            return null;
-        }
-
-        // check if url was already requested, and use that
-        XmlObject caps = null;
-        if ( !this.capabilitiesCache.containsKey(url)) {
-            caps = updateCache(serviceReference, url);
-        }
-        else if (this.capabilitiesErrorCache.containsKey(url)) {
-            log.debug("Had error with capabilities for {} before, not requesting again.", url);
-            return null;
-        }
-        else {
-            Calendar maxAge = Calendar.getInstance();
-            maxAge.add(Calendar.SECOND, -1 * this.conf.getCapabilitiesCacheMaximumAgeSeconds());
-
-            if (this.capabilitiesCacheAge.get(url).before(maxAge.getTime())) {
-                log.debug("Updating cached capabilities, was from {} but maximum age is {}.",
-                          this.capabilitiesCacheAge.get(url),
-                          maxAge);
-                caps = updateCache(serviceReference, url);
-            }
-            else
-                caps = this.capabilitiesCache.get(url);
-        }
-
-        // find out if the capabilities document can be handled
-        Capabilities sosCaps;
-        if (caps instanceof CapabilitiesDocument) {
-            CapabilitiesDocument doc = (CapabilitiesDocument) caps;
-            sosCaps = doc.getCapabilities();
-        }
-        else if (caps instanceof ExceptionReportDocument) {
-            ExceptionReportDocument erd = (ExceptionReportDocument) caps;
-            log.warn("Could not request capabilities from service {}, got ExceptionReportDocument (turn on debug for more info)",
-                     url);
-            this.capabilitiesErrorCache.put(url, erd);
-            log.debug(Arrays.toString(erd.getExceptionReport().getExceptionArray()));
-            return null;
-        }
-        else {
-            log.error("No SOS capabilities document returned by service! Instead got: {} [... truncated]",
-                      caps.xmlText().substring(0, 200));
-            this.capabilitiesErrorCache.put(url, caps);
-            return null;
-        }
-
-        Contents contents = sosCaps.getContents();
-        if (contents == null) {
-            log.debug("Contents of capabilities for service {} are null, cannot generate permalinks.", serviceReference);
-            this.capabilitiesErrorCache.put(url, caps);
-            return null;
-        }
-
-        ObservationOfferingList observationOfferingList = contents.getObservationOfferingList();
-        if (observationOfferingList == null) {
-            log.warn("Contents of observation offerings for service {} are null, cannot generate permalinks.",
-                     serviceReference);
-            this.capabilitiesErrorCache.put(url, caps);
-            return null;
-        }
-
-        ObservationOfferingType[] observationOfferingArray = observationOfferingList.getObservationOfferingArray();
-        return observationOfferingArray;
     }
 
     /**

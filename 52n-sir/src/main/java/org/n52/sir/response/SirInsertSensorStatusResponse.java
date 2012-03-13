@@ -49,36 +49,6 @@ public class SirInsertSensorStatusResponse implements ISirResponse {
 
     private boolean statusUpdateSuccessful;
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
-    }
-
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
-    }
-
-    /**
-     * @return the statusUpdateSuccessful
-     */
-    public boolean isStatusUpdateSuccessful() {
-        return this.statusUpdateSuccessful;
-    }
-
-    /**
-     * @param statusUpdateSuccessful
-     *        the statusUpdateSuccessful to set
-     */
-    public void setStatusUpdateSuccessful(boolean statusUpdateSuccessful) {
-        this.statusUpdateSuccessful = statusUpdateSuccessful;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -91,23 +61,6 @@ public class SirInsertSensorStatusResponse implements ISirResponse {
         insertSensStatRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
         byte[] bytes = baos.toByteArray();
         return bytes;
-    }
-
-    private InsertSensorStatusResponseDocument parseToResponseDocument() {
-        InsertSensorStatusResponseDocument document = InsertSensorStatusResponseDocument.Factory.newInstance();
-        InsertSensorStatusResponse insSensStatResp = document.addNewInsertSensorStatusResponse();
-
-        // set sensorID in SIR
-        insSensStatResp.setSensorIDInSIR(this.sensorIdInSir);
-
-        XmlTools.addSirAndSensorMLSchemaLocation(insSensStatResp);
-
-        if (SirConfigurator.getInstance().isValidateResponses()) {
-            if ( !document.validate())
-                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
-        }
-
-        return document;
     }
 
     /*
@@ -128,6 +81,53 @@ public class SirInsertSensorStatusResponse implements ISirResponse {
     @Override
     public String getContentType() {
         return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    /**
+     * @return the sensorIdInSir
+     */
+    public String getSensorIdInSir() {
+        return this.sensorIdInSir;
+    }
+
+    /**
+     * @return the statusUpdateSuccessful
+     */
+    public boolean isStatusUpdateSuccessful() {
+        return this.statusUpdateSuccessful;
+    }
+
+    private InsertSensorStatusResponseDocument parseToResponseDocument() {
+        InsertSensorStatusResponseDocument document = InsertSensorStatusResponseDocument.Factory.newInstance();
+        InsertSensorStatusResponse insSensStatResp = document.addNewInsertSensorStatusResponse();
+
+        // set sensorID in SIR
+        insSensStatResp.setSensorIDInSIR(this.sensorIdInSir);
+
+        XmlTools.addSirAndSensorMLSchemaLocation(insSensStatResp);
+
+        if (SirConfigurator.getInstance().isValidateResponses()) {
+            if ( !document.validate())
+                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
+        }
+
+        return document;
+    }
+
+    /**
+     * @param sensorIdInSir
+     *        the sensorIdInSir to set
+     */
+    public void setSensorIdInSir(String sensorIdInSir) {
+        this.sensorIdInSir = sensorIdInSir;
+    }
+
+    /**
+     * @param statusUpdateSuccessful
+     *        the statusUpdateSuccessful to set
+     */
+    public void setStatusUpdateSuccessful(boolean statusUpdateSuccessful) {
+        this.statusUpdateSuccessful = statusUpdateSuccessful;
     }
 
 }

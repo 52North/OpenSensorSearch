@@ -66,15 +66,17 @@ public class Tools {
 
     /**
      * 
-     * @param strings
+     * @param text
      * @return
      */
-    public static boolean noneEmpty(String[] strings) {
-        for (String string : strings) {
-            if (string.isEmpty())
-                return false;
+    public static String escapeSQLString(String text) {
+        String s = text;
+        if (text.contains("'")) {
+            if (log.isDebugEnabled())
+                log.debug("Text contains character that has to be escaped before database insertion, namely ' .");
+            s = s.replace("'", "\\'");
         }
-        return true;
+        return s;
     }
 
     /**
@@ -96,6 +98,19 @@ public class Tools {
 
     /**
      * 
+     * @param strings
+     * @return
+     */
+    public static boolean noneEmpty(String[] strings) {
+        for (String string : strings) {
+            if (string.isEmpty())
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * 
      * remove trailing and leading white spaces, replace newline characters with space character.
      * 
      * @param value
@@ -104,37 +119,6 @@ public class Tools {
     public static String simplifyString(String stringToSimplify) {
         String s = stringToSimplify.trim();
         s = s.replaceAll("\n", " ");
-        return s;
-    }
-
-    /**
-     * @param stToSet
-     * @return
-     */
-    public static SensorMLDocument wrapSystemTypeInSensorMLDocument(SystemType stToSet) {
-        SensorMLDocument document;
-        document = SensorMLDocument.Factory.newInstance();
-        SensorML newSensorML = document.addNewSensorML();
-        newSensorML.setVersion(SMLConstants.SML_VERSION);
-        AbstractProcessType abstractProcess = newSensorML.addNewMember().addNewProcess();
-        SystemType newSystemType = (SystemType) abstractProcess.substitute(new QName(SMLConstants.NAMESPACE, "System"),
-                                                                           SystemType.type);
-        newSystemType.set(stToSet);
-        return document;
-    }
-
-    /**
-     * 
-     * @param text
-     * @return
-     */
-    public static String escapeSQLString(String text) {
-        String s = text;
-        if (text.contains("'")) {
-            if (log.isDebugEnabled())
-                log.debug("Text contains character that has to be escaped before database insertion, namely ' .");
-            s = s.replace("'", "\\'");
-        }
         return s;
     }
 
@@ -165,5 +149,21 @@ public class Tools {
                                          "Service url is not a valid URL.");
         }
         return uri;
+    }
+
+    /**
+     * @param stToSet
+     * @return
+     */
+    public static SensorMLDocument wrapSystemTypeInSensorMLDocument(SystemType stToSet) {
+        SensorMLDocument document;
+        document = SensorMLDocument.Factory.newInstance();
+        SensorML newSensorML = document.addNewSensorML();
+        newSensorML.setVersion(SMLConstants.SML_VERSION);
+        AbstractProcessType abstractProcess = newSensorML.addNewMember().addNewProcess();
+        SystemType newSystemType = (SystemType) abstractProcess.substitute(new QName(SMLConstants.NAMESPACE, "System"),
+                                                                           SystemType.type);
+        newSystemType.set(stToSet);
+        return document;
     }
 }

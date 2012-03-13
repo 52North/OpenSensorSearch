@@ -49,66 +49,11 @@ public class SirInsertSensorInfoResponse implements ISirResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirInsertSensorInfoResponse.class);
 
+    private Collection<String> insertedSensors = new ArrayList<String>();
+
     private int numberOfInsertedSensors = 0;
 
     private int numberOfInsertedServiceReferences = 0;
-
-    private Collection<String> insertedSensors = new ArrayList<String>();
-
-    /**
-     * @return the numberOfNewSensors
-     */
-    public int getNumberOfNewSensors() {
-        return this.numberOfInsertedSensors;
-    }
-
-    /**
-     * @param numberOfNewSensors
-     *        the numberOfNewSensors to set
-     */
-    public void setNumberOfNewSensors(int numberOfNewSensors) {
-        this.numberOfInsertedSensors = numberOfNewSensors;
-    }
-
-    /**
-     * @return the numberOfNewServiceReferences
-     */
-    public int getNumberOfNewServiceReferences() {
-        return this.numberOfInsertedServiceReferences;
-    }
-
-    /**
-     * @param numberOfNewServiceReferences
-     *        the numberOfNewServiceReferences to set
-     */
-    public void setNumberOfNewServiceReferences(int numberOfNewServiceReferences) {
-        this.numberOfInsertedServiceReferences = numberOfNewServiceReferences;
-    }
-
-    /**
-     * @return the insertedSensors
-     */
-    public Collection<String> getInsertedSensors() {
-        return this.insertedSensors;
-    }
-
-    /**
-     * @param insertedSensors
-     *        the insertedSensors to set
-     */
-    public void setInsertedSensors(Collection<String> insertedSensors) {
-        this.insertedSensors = insertedSensors;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirInsertSensorInfoResponse: ");
-        sb.append(" Inserted sensors: " + this.numberOfInsertedSensors);
-        sb.append(" New service references: " + this.numberOfInsertedServiceReferences);
-        sb.append(" Inserted Sensors: " + Arrays.toString(this.insertedSensors.toArray()));
-        return sb.toString();
-    }
 
     /*
      * (non-Javadoc)
@@ -122,6 +67,47 @@ public class SirInsertSensorInfoResponse implements ISirResponse {
         insSensInfoResp.save(baos, XmlTools.xmlOptionsForNamespaces());
         byte[] bytes = baos.toByteArray();
         return bytes;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentLength()
+     */
+    @Override
+    public int getContentLength() throws IOException, TransformerException {
+        return getByteArray().length;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    /**
+     * @return the insertedSensors
+     */
+    public Collection<String> getInsertedSensors() {
+        return this.insertedSensors;
+    }
+
+    /**
+     * @return the numberOfNewSensors
+     */
+    public int getNumberOfNewSensors() {
+        return this.numberOfInsertedSensors;
+    }
+
+    /**
+     * @return the numberOfNewServiceReferences
+     */
+    public int getNumberOfNewServiceReferences() {
+        return this.numberOfInsertedServiceReferences;
     }
 
     private InsertSensorInfoResponseDocument parseToResponseDocument() {
@@ -145,24 +131,38 @@ public class SirInsertSensorInfoResponse implements ISirResponse {
         return document;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
+    /**
+     * @param insertedSensors
+     *        the insertedSensors to set
      */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
+    public void setInsertedSensors(Collection<String> insertedSensors) {
+        this.insertedSensors = insertedSensors;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
+    /**
+     * @param numberOfNewSensors
+     *        the numberOfNewSensors to set
      */
+    public void setNumberOfNewSensors(int numberOfNewSensors) {
+        this.numberOfInsertedSensors = numberOfNewSensors;
+    }
+
+    /**
+     * @param numberOfNewServiceReferences
+     *        the numberOfNewServiceReferences to set
+     */
+    public void setNumberOfNewServiceReferences(int numberOfNewServiceReferences) {
+        this.numberOfInsertedServiceReferences = numberOfNewServiceReferences;
+    }
+
     @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SirInsertSensorInfoResponse: ");
+        sb.append(" Inserted sensors: " + this.numberOfInsertedSensors);
+        sb.append(" New service references: " + this.numberOfInsertedServiceReferences);
+        sb.append(" Inserted Sensors: " + Arrays.toString(this.insertedSensors.toArray()));
+        return sb.toString();
     }
 
 }

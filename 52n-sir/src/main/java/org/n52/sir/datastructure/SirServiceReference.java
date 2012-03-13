@@ -52,18 +52,18 @@ public class SirServiceReference extends SirSensorIdentification {
     }
 
     /**
+     * @return the serviceSpecificSensorId
+     */
+    public String getServiceSpecificSensorId() {
+        return this.serviceSpecificSensorId;
+    }
+
+    /**
      * @param service
      *        the service to set
      */
     public void setService(SirService service) {
         this.service = service;
-    }
-
-    /**
-     * @return the serviceSpecificSensorId
-     */
-    public String getServiceSpecificSensorId() {
-        return this.serviceSpecificSensorId;
     }
 
     /**

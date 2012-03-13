@@ -30,29 +30,14 @@ package org.n52.sir.datastructure;
 public class SirPropertyFilter {
 
     /**
-     * property name
-     */
-    private String propertyName;
-
-    /**
      * property constraint
      */
     private SirPropertyConstraint propConst;
 
     /**
-     * @return the propertyName
+     * property name
      */
-    public String getPropertyName() {
-        return this.propertyName;
-    }
-
-    /**
-     * @param propertyName
-     *        the propertyName to set
-     */
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
+    private String propertyName;
 
     /**
      * @return the propConst
@@ -62,11 +47,26 @@ public class SirPropertyFilter {
     }
 
     /**
+     * @return the propertyName
+     */
+    public String getPropertyName() {
+        return this.propertyName;
+    }
+
+    /**
      * @param propConst
      *        the propConst to set
      */
     public void setPropConst(SirPropertyConstraint propConst) {
         this.propConst = propConst;
+    }
+
+    /**
+     * @param propertyName
+     *        the propertyName to set
+     */
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
     }
 
     @Override

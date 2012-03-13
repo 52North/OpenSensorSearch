@@ -21,25 +21,26 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.sml;
 
 /**
  * @author Daniel Nüst
- *
+ * 
  */
 public class SMLConstants {
 
-    public static final String SML_1_0_1_SCHEMA_LOCATION_URL = "http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd";
-    
     public static final String NAMESPACE = "http://www.opengis.net/sensorML/1.0.1";
-    
-    public static final String SML_VERSION = "1.0.1";
 
     public static final String NAMESPACE_PREFIX = "sml";
-    
+
+    public static final String SCHEMA_LOCATION_URL = "http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd";
+
     /**
      * Constant for the schema repository of SML
      */
-    public static final String SCHEMA_LOCATION = NAMESPACE + " " + SML_1_0_1_SCHEMA_LOCATION_URL;
-    
+    public static final String SCHEMA_LOCATION = NAMESPACE + " " + SCHEMA_LOCATION_URL;
+
+    public static final String SML_VERSION = "1.0.1";
+
 }

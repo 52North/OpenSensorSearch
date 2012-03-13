@@ -63,29 +63,6 @@ public class SirGetSensorStatusResponse implements ISirResponse {
      */
     private Collection<SirStatusDescription> statusDescs;
 
-    /**
-     * @return the statusDescs
-     */
-    public Collection<SirStatusDescription> getStatusDescs() {
-        return this.statusDescs;
-    }
-
-    /**
-     * @param statusDescs
-     *        the statusDescs to set
-     */
-    public void setStatusDescs(Collection<SirStatusDescription> statusDescs) {
-        this.statusDescs = statusDescs;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirGetSensorStatusResponse: ");
-        sb.append("StatusDescriptions: " + this.statusDescs);
-        return sb.toString();
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -98,6 +75,33 @@ public class SirGetSensorStatusResponse implements ISirResponse {
         getSensStatRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
         byte[] bytes = baos.toByteArray();
         return bytes;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentLength()
+     */
+    @Override
+    public int getContentLength() throws IOException, TransformerException {
+        return getByteArray().length;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.response.ISirResponse#getContentType()
+     */
+    @Override
+    public String getContentType() {
+        return SirConstants.CONTENT_TYPE_XML;
+    }
+
+    /**
+     * @return the statusDescs
+     */
+    public Collection<SirStatusDescription> getStatusDescs() {
+        return this.statusDescs;
     }
 
     private GetSensorStatusResponseDocument parseToResponseDocument() {
@@ -140,24 +144,20 @@ public class SirGetSensorStatusResponse implements ISirResponse {
         return document;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
+    /**
+     * @param statusDescs
+     *        the statusDescs to set
      */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
+    public void setStatusDescs(Collection<SirStatusDescription> statusDescs) {
+        this.statusDescs = statusDescs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
     @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SirGetSensorStatusResponse: ");
+        sb.append("StatusDescriptions: " + this.statusDescs);
+        return sb.toString();
     }
 
 }

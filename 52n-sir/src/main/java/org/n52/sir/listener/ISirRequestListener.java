@@ -35,6 +35,11 @@ import org.n52.sir.response.ISirResponse;
 public interface ISirRequestListener {
 
     /**
+     * @return Returns the name of the supported operation
+     */
+    public String getOperationName();
+
+    /**
      * method handles the incoming operation request an returns a matching response or an
      * ServiceExceptionReport if the SIR was not able to build a response
      * 
@@ -43,10 +48,5 @@ public interface ISirRequestListener {
      * @return Returns the responose of the request or an operation failed
      */
     public ISirResponse receiveRequest(AbstractSirRequest request);
-
-    /**
-     * @return Returns the name of the supported operation
-     */
-    public String getOperationName();
 
 }

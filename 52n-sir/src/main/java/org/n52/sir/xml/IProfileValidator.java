@@ -41,19 +41,13 @@ public interface IProfileValidator {
      * 
      * @return
      */
-    public abstract boolean validate(SensorMLDocument smlDoc);
-
-    /**
-     * 
-     * @return
-     */
-    public abstract boolean validate(XmlObject xml);
-
-    /**
-     * 
-     * @return
-     */
     public abstract List<String> getValidationFailures();
+
+    /**
+     * 
+     * @return
+     */
+    public abstract String getValidationFailuresAsString();
 
     /**
      * 
@@ -67,6 +61,12 @@ public interface IProfileValidator {
      * 
      * @return
      */
-    public abstract String getValidationFailuresAsString();
+    public abstract boolean validate(SensorMLDocument smlDoc);
+
+    /**
+     * 
+     * @return
+     */
+    public abstract boolean validate(XmlObject xml);
 
 }

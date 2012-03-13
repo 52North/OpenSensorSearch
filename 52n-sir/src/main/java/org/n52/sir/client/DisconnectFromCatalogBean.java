@@ -52,21 +52,6 @@ public class DisconnectFromCatalogBean extends AbstractBean {
         this.catalogUrl = catalogUrl;
     }
 
-    /**
-     * @return the cswUrl
-     */
-    public String getCatalogUrl() {
-        return this.catalogUrl;
-    }
-
-    /**
-     * @param cswUrl
-     *        the cswUrl to set
-     */
-    public void setCatalogUrl(String cswUrl) {
-        this.catalogUrl = cswUrl;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -92,6 +77,21 @@ public class DisconnectFromCatalogBean extends AbstractBean {
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
         else
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
+    }
+
+    /**
+     * @return the cswUrl
+     */
+    public String getCatalogUrl() {
+        return this.catalogUrl;
+    }
+
+    /**
+     * @param cswUrl
+     *        the cswUrl to set
+     */
+    public void setCatalogUrl(String cswUrl) {
+        this.catalogUrl = cswUrl;
     }
 
 }

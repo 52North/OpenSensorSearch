@@ -25,19 +25,11 @@ package org.n52.sir.util.ext;
  */
 public class GeoLocation {
 
-    private double radLat; // latitude in radians
-    private double radLon; // longitude in radians
-
-    private double degLat; // latitude in degrees
-    private double degLon; // longitude in degrees
-
-    private static final double MIN_LAT = Math.toRadians( -90d); // -PI/2
     private static final double MAX_LAT = Math.toRadians(90d); // PI/2
-    private static final double MIN_LON = Math.toRadians( -180d); // -PI
     private static final double MAX_LON = Math.toRadians(180d); // PI
 
-    private GeoLocation() {
-    }
+    private static final double MIN_LAT = Math.toRadians( -90d); // -PI/2
+    private static final double MIN_LON = Math.toRadians( -180d); // -PI
 
     /**
      * @param latitude
@@ -54,7 +46,6 @@ public class GeoLocation {
         result.checkBounds();
         return result;
     }
-
     /**
      * @param latitude
      *        the latitude, in radians.
@@ -70,58 +61,14 @@ public class GeoLocation {
         result.checkBounds();
         return result;
     }
+    private double degLat; // latitude in degrees
+    private double degLon; // longitude in degrees
 
-    private void checkBounds() {
-        if (this.radLat < MIN_LAT || this.radLat > MAX_LAT || this.radLon < MIN_LON || this.radLon > MAX_LON)
-            throw new IllegalArgumentException();
-    }
+    private double radLat; // latitude in radians
 
-    /**
-     * @return the latitude, in degrees.
-     */
-    public double getLatitudeInDegrees() {
-        return this.degLat;
-    }
+    private double radLon; // longitude in radians
 
-    /**
-     * @return the longitude, in degrees.
-     */
-    public double getLongitudeInDegrees() {
-        return this.degLon;
-    }
-
-    /**
-     * @return the latitude, in radians.
-     */
-    public double getLatitudeInRadians() {
-        return this.radLat;
-    }
-
-    /**
-     * @return the longitude, in radians.
-     */
-    public double getLongitudeInRadians() {
-        return this.radLon;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + this.degLat + "\u00B0, " + this.degLon + "\u00B0) = (" + this.radLat + " rad, " + this.radLon
-                + " rad)";
-    }
-
-    /**
-     * Computes the great circle distance between this GeoLocation instance and the location argument.
-     * 
-     * @param radius
-     *        the radius of the sphere, e.g. the average radius for a spherical approximation of the figure of
-     *        the Earth is approximately 6371.01 kilometers.
-     * @return the distance, measured in the same unit as the radius argument.
-     */
-    public double distanceTo(GeoLocation location, double radius) {
-        return Math.acos(Math.sin(this.radLat) * Math.sin(location.radLat) + Math.cos(this.radLat)
-                * Math.cos(location.radLat) * Math.cos(this.radLon - location.radLon))
-                * radius;
+    private GeoLocation() {
     }
 
     /**
@@ -186,6 +133,59 @@ public class GeoLocation {
         }
 
         return new GeoLocation[] {fromRadians(minLat, minLon), fromRadians(maxLat, maxLon)};
+    }
+
+    private void checkBounds() {
+        if (this.radLat < MIN_LAT || this.radLat > MAX_LAT || this.radLon < MIN_LON || this.radLon > MAX_LON)
+            throw new IllegalArgumentException();
+    }
+
+    /**
+     * Computes the great circle distance between this GeoLocation instance and the location argument.
+     * 
+     * @param radius
+     *        the radius of the sphere, e.g. the average radius for a spherical approximation of the figure of
+     *        the Earth is approximately 6371.01 kilometers.
+     * @return the distance, measured in the same unit as the radius argument.
+     */
+    public double distanceTo(GeoLocation location, double radius) {
+        return Math.acos(Math.sin(this.radLat) * Math.sin(location.radLat) + Math.cos(this.radLat)
+                * Math.cos(location.radLat) * Math.cos(this.radLon - location.radLon))
+                * radius;
+    }
+
+    /**
+     * @return the latitude, in degrees.
+     */
+    public double getLatitudeInDegrees() {
+        return this.degLat;
+    }
+
+    /**
+     * @return the latitude, in radians.
+     */
+    public double getLatitudeInRadians() {
+        return this.radLat;
+    }
+
+    /**
+     * @return the longitude, in degrees.
+     */
+    public double getLongitudeInDegrees() {
+        return this.degLon;
+    }
+
+    /**
+     * @return the longitude, in radians.
+     */
+    public double getLongitudeInRadians() {
+        return this.radLon;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + this.degLat + "\u00B0, " + this.degLon + "\u00B0) = (" + this.radLat + " rad, " + this.radLon
+                + " rad)";
     }
 
 }

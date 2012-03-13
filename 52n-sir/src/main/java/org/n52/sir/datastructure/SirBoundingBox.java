@@ -37,29 +37,29 @@ import org.postgis.Polygon;
  */
 public class SirBoundingBox {
 
+    private int dimension;
+
     /**
      * east coordinate
      */
     private double east;
 
     /**
+     * north coordinate
+     */
+    private double north;
+
+    /**
      * south coordinate
      */
     private double south;
+
+    private int srid;
 
     /**
      * west coordinate
      */
     private double west;
-
-    /**
-     * north coordinate
-     */
-    private double north;
-
-    private int srid;
-
-    private int dimension;
 
     public SirBoundingBox(double east, double south, double west, double north) {
         this.east = east;
@@ -96,10 +96,93 @@ public class SirBoundingBox {
     }
 
     /**
+     * @return the dimension
+     */
+    public int getDimension() {
+        return this.dimension;
+    }
+
+    /**
      * @return the east
      */
     public double getEast() {
         return this.east;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public List<String> getLowerCorner() {
+        ArrayList<String> corner = new ArrayList<String>();
+        // coordinate order: lat lon
+        corner.add(Double.toString(Math.min(this.south, this.north)));
+        corner.add(Double.toString(Math.min(this.east, this.west)));
+        return corner;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public double[] getLowerCornerPoint() {
+        return new double[] {Math.min(this.south, this.north), Math.min(this.east, this.west)};
+    }
+
+    /**
+     * @return the north
+     */
+    public double getNorth() {
+        return this.north;
+    }
+
+    /**
+     * @return the south
+     */
+    public double getSouth() {
+        return this.south;
+    }
+
+    /**
+     * @return the srid
+     */
+    public int getSrid() {
+        return this.srid;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public List<String> getUpperCorner() {
+        ArrayList<String> corner = new ArrayList<String>();
+        // coordiante order: lat lon
+        corner.add(Double.toString(Math.max(this.south, this.north)));
+        corner.add(Double.toString(Math.max(this.east, this.west)));
+        return corner;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public double[] getUpperCornerPoint() {
+        return new double[] {Math.max(this.south, this.north), Math.max(this.east, this.west)};
+    }
+
+    /**
+     * @return the west
+     */
+    public double getWest() {
+        return this.west;
+    }
+
+    /**
+     * @param dimension
+     *        the dimension to set
+     */
+    public void setDimension(int dimension) {
+        this.dimension = dimension;
     }
 
     /**
@@ -111,10 +194,11 @@ public class SirBoundingBox {
     }
 
     /**
-     * @return the south
+     * @param north
+     *        the north to set
      */
-    public double getSouth() {
-        return this.south;
+    public void setNorth(double north) {
+        this.north = north;
     }
 
     /**
@@ -126,43 +210,6 @@ public class SirBoundingBox {
     }
 
     /**
-     * @return the west
-     */
-    public double getWest() {
-        return this.west;
-    }
-
-    /**
-     * @param west
-     *        the west to set
-     */
-    public void setWest(double west) {
-        this.west = west;
-    }
-
-    /**
-     * @return the north
-     */
-    public double getNorth() {
-        return this.north;
-    }
-
-    /**
-     * @param north
-     *        the north to set
-     */
-    public void setNorth(double north) {
-        this.north = north;
-    }
-
-    /**
-     * @return the srid
-     */
-    public int getSrid() {
-        return this.srid;
-    }
-
-    /**
      * @param srid
      *        the srid to set
      */
@@ -171,18 +218,11 @@ public class SirBoundingBox {
     }
 
     /**
-     * @return the dimension
+     * @param west
+     *        the west to set
      */
-    public int getDimension() {
-        return this.dimension;
-    }
-
-    /**
-     * @param dimension
-     *        the dimension to set
-     */
-    public void setDimension(int dimension) {
-        this.dimension = dimension;
+    public void setWest(double west) {
+        this.west = west;
     }
 
     @Override
@@ -205,46 +245,6 @@ public class SirBoundingBox {
         this.east = Math.min(this.east, other.getEast());
         this.north = Math.max(this.north, other.getNorth());
         this.west = Math.max(this.west, other.getWest());
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public List<String> getLowerCorner() {
-        ArrayList<String> corner = new ArrayList<String>();
-        // coordinate order: lat lon
-        corner.add(Double.toString(Math.min(this.south, this.north)));
-        corner.add(Double.toString(Math.min(this.east, this.west)));
-        return corner;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public List<String> getUpperCorner() {
-        ArrayList<String> corner = new ArrayList<String>();
-        // coordiante order: lat lon
-        corner.add(Double.toString(Math.max(this.south, this.north)));
-        corner.add(Double.toString(Math.max(this.east, this.west)));
-        return corner;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public double[] getLowerCornerPoint() {
-        return new double[] {Math.min(this.south, this.north), Math.min(this.east, this.west)};
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public double[] getUpperCornerPoint() {
-        return new double[] {Math.max(this.south, this.north), Math.max(this.east, this.west)};
     }
 
 }

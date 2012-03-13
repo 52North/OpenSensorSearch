@@ -46,9 +46,9 @@ public class ValidatorFactoryImpl implements IValidatorFactory {
 
     private File discoveryFile;
 
-    private File svrlFile;
-
     private SensorML4DiscoveryValidatorImpl discoveryValidator = null;
+
+    private File svrlFile;
 
     /**
      * 

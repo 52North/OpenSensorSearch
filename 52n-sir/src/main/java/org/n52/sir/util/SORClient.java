@@ -56,13 +56,52 @@ import de.uniMuenster.swsl.sor.GetMatchingDefinitionsResponseDocument;
  */
 public class SORClient {
 
-    private static final String SOR_SERVICE = "SOR";
+    private static Logger log = LoggerFactory.getLogger(SORClient.class);
 
     private static final String SECTION_ALL = "ALL";
 
+    private static final String SOR_SERVICE = "SOR";
+
     private static final String VERSION = "0.3.0";
 
-    private static Logger log = LoggerFactory.getLogger(SORClient.class);
+    /**
+     * 
+     * @param serviceVersion
+     * @param inputURI
+     * @param matchingTypeString
+     * @param searchDepth
+     * @param validateXml
+     * @return
+     * @throws OwsExceptionReport
+     */
+    private static GetMatchingDefinitionsRequestDocument buildRequest(String serviceVersion,
+                                                                      String inputURI,
+                                                                      String matchingTypeString,
+                                                                      int searchDepth,
+                                                                      boolean validateXml) throws OwsExceptionReport {
+        GetMatchingDefinitionsRequestDocument requestDoc = GetMatchingDefinitionsRequestDocument.Factory.newInstance();
+        GetMatchingDefinitionsRequest request = requestDoc.addNewGetMatchingDefinitionsRequest();
+        request.setService(SOR_SERVICE);
+        request.setVersion(serviceVersion);
+
+        // phenomenon
+        request.setInputURI(inputURI);
+
+        // matchingType
+        request.setMatchingType(SirMatchingType.getSorMatchingType(SirMatchingType.getSirMatchingType(matchingTypeString)));
+
+        // searchDepth
+        request.setSearchDepth(searchDepth);
+
+        if (validateXml) {
+            if ( !requestDoc.validate()) {
+                log.warn("Request is NOT valid, service may return error!\n"
+                        + XmlTools.validateAndIterateErrors(requestDoc));
+            }
+        }
+
+        return requestDoc;
+    }
 
     public static Collection<SirSearchCriteria_Phenomenon> getMatchingTypes(SirSearchCriteria_Phenomenon p,
                                                                             boolean validateXml) throws OwsExceptionReport {
@@ -97,68 +136,6 @@ public class SORClient {
                                                       validateXml);
 
         return matchedPhenomena;
-    }
-
-    /**
-     * 
-     * @param serviceURI
-     * @param phenomenon
-     * @param matchingType
-     * @param searchDepth
-     * @param validateXml
-     * @return
-     * @throws OwsExceptionReport
-     */
-    private static Collection<SirSearchCriteria_Phenomenon> requestMatchingDefinitions(URI serviceURI,
-                                                                                       String phenomenon,
-                                                                                       String matchingType,
-                                                                                       int searchDepth,
-                                                                                       boolean validateXml) throws OwsExceptionReport {
-
-        GetMatchingDefinitionsRequestDocument getDefRequest = buildRequest(VERSION,
-                                                                           phenomenon,
-                                                                           matchingType,
-                                                                           searchDepth,
-                                                                           validateXml);
-        try {
-            XmlObject response = Client.xSendPostRequest(getDefRequest, serviceURI);
-
-            if (response instanceof GetMatchingDefinitionsResponseDocument) {
-                GetMatchingDefinitionsResponseDocument getMatchinDefsRespDoc = (GetMatchingDefinitionsResponseDocument) response;
-
-                String[] matchingURIArray = getMatchinDefsRespDoc.getGetMatchingDefinitionsResponse().getMatchingURIArray();
-
-                return parseMatchingURIs(matchingURIArray);
-            }
-            if (response instanceof ExceptionReportDocument) {
-                ExceptionReportDocument er = (ExceptionReportDocument) response;
-                log.info("Received ExceptionReport, could be a sign for no matches found!\n" + er.xmlText());
-                return new ArrayList<SirSearchCriteria_Phenomenon>();
-            }
-            log.error("Did not get GetMatchingDefinitionsResponseDocument, but \n" + response.xmlText());
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + response.xmlText());
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + e);
-        }
-        catch (HttpException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + e);
-        }
-        catch (IOException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + e);
-        }
     }
 
     /**
@@ -234,40 +211,63 @@ public class SORClient {
 
     /**
      * 
-     * @param serviceVersion
-     * @param inputURI
-     * @param matchingTypeString
+     * @param serviceURI
+     * @param phenomenon
+     * @param matchingType
      * @param searchDepth
      * @param validateXml
      * @return
      * @throws OwsExceptionReport
      */
-    private static GetMatchingDefinitionsRequestDocument buildRequest(String serviceVersion,
-                                                                      String inputURI,
-                                                                      String matchingTypeString,
-                                                                      int searchDepth,
-                                                                      boolean validateXml) throws OwsExceptionReport {
-        GetMatchingDefinitionsRequestDocument requestDoc = GetMatchingDefinitionsRequestDocument.Factory.newInstance();
-        GetMatchingDefinitionsRequest request = requestDoc.addNewGetMatchingDefinitionsRequest();
-        request.setService(SOR_SERVICE);
-        request.setVersion(serviceVersion);
+    private static Collection<SirSearchCriteria_Phenomenon> requestMatchingDefinitions(URI serviceURI,
+                                                                                       String phenomenon,
+                                                                                       String matchingType,
+                                                                                       int searchDepth,
+                                                                                       boolean validateXml) throws OwsExceptionReport {
 
-        // phenomenon
-        request.setInputURI(inputURI);
+        GetMatchingDefinitionsRequestDocument getDefRequest = buildRequest(VERSION,
+                                                                           phenomenon,
+                                                                           matchingType,
+                                                                           searchDepth,
+                                                                           validateXml);
+        try {
+            XmlObject response = Client.xSendPostRequest(getDefRequest, serviceURI);
 
-        // matchingType
-        request.setMatchingType(SirMatchingType.getSorMatchingType(SirMatchingType.getSirMatchingType(matchingTypeString)));
+            if (response instanceof GetMatchingDefinitionsResponseDocument) {
+                GetMatchingDefinitionsResponseDocument getMatchinDefsRespDoc = (GetMatchingDefinitionsResponseDocument) response;
 
-        // searchDepth
-        request.setSearchDepth(searchDepth);
+                String[] matchingURIArray = getMatchinDefsRespDoc.getGetMatchingDefinitionsResponse().getMatchingURIArray();
 
-        if (validateXml) {
-            if ( !requestDoc.validate()) {
-                log.warn("Request is NOT valid, service may return error!\n"
-                        + XmlTools.validateAndIterateErrors(requestDoc));
+                return parseMatchingURIs(matchingURIArray);
             }
+            if (response instanceof ExceptionReportDocument) {
+                ExceptionReportDocument er = (ExceptionReportDocument) response;
+                log.info("Received ExceptionReport, could be a sign for no matches found!\n" + er.xmlText());
+                return new ArrayList<SirSearchCriteria_Phenomenon>();
+            }
+            log.error("Did not get GetMatchingDefinitionsResponseDocument, but \n" + response.xmlText());
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "SorURL",
+                                         "Could not request matching types from given url " + serviceURI.toString()
+                                                 + " because of\n\n" + response.xmlText());
         }
-
-        return requestDoc;
+        catch (UnsupportedEncodingException e) {
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "SorURL",
+                                         "Could not request matching types from given url " + serviceURI.toString()
+                                                 + " because of\n\n" + e);
+        }
+        catch (HttpException e) {
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "SorURL",
+                                         "Could not request matching types from given url " + serviceURI.toString()
+                                                 + " because of\n\n" + e);
+        }
+        catch (IOException e) {
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "SorURL",
+                                         "Could not request matching types from given url " + serviceURI.toString()
+                                                 + " because of\n\n" + e);
+        }
     }
 }

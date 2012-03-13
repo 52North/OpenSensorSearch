@@ -42,6 +42,13 @@ public class SirSensorInfo {
     private XmlObject sensorMl;
 
     /**
+     * @return the sensorMl
+     */
+    public XmlObject getSensorMl() {
+        return this.sensorMl;
+    }
+
+    /**
      * @return the delete
      */
     public boolean isDelete() {
@@ -54,13 +61,6 @@ public class SirSensorInfo {
      */
     public void setDelete(boolean delete) {
         this.delete = delete;
-    }
-
-    /**
-     * @return the sensorMl
-     */
-    public XmlObject getSensorMl() {
-        return this.sensorMl;
     }
 
     /**

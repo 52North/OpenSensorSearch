@@ -29,11 +29,18 @@ package org.n52.sir.datastructure;
  */
 public class SirInfoToBeDeleted {
 
-    private SirSensorIdentification sensorIdentification;
-
     private boolean deleteSensor;
 
+    private SirSensorIdentification sensorIdentification;
+
     private SirServiceInfo serviceInfo;
+
+    /**
+     * 
+     */
+    public SirInfoToBeDeleted() {
+        //
+    }
 
     /**
      * @param sensorIdentification
@@ -49,24 +56,10 @@ public class SirInfoToBeDeleted {
     }
 
     /**
-     * 
-     */
-    public SirInfoToBeDeleted() {
-        //
-    }
-
-    /**
      * @return the sensorIdentification
      */
     public SirSensorIdentification getSensorIdentification() {
         return this.sensorIdentification;
-    }
-
-    /**
-     * @return the deleteSensor
-     */
-    public boolean isDeleteSensor() {
-        return this.deleteSensor;
     }
 
     /**
@@ -77,11 +70,10 @@ public class SirInfoToBeDeleted {
     }
 
     /**
-     * @param sensorIdentification
-     *        the sensorIdentification to set
+     * @return the deleteSensor
      */
-    public void setSensorIdentification(SirSensorIdentification sensorIdentification) {
-        this.sensorIdentification = sensorIdentification;
+    public boolean isDeleteSensor() {
+        return this.deleteSensor;
     }
 
     /**
@@ -90,6 +82,14 @@ public class SirInfoToBeDeleted {
      */
     public void setDeleteSensor(boolean deleteSensor) {
         this.deleteSensor = deleteSensor;
+    }
+
+    /**
+     * @param sensorIdentification
+     *        the sensorIdentification to set
+     */
+    public void setSensorIdentification(SirSensorIdentification sensorIdentification) {
+        this.sensorIdentification = sensorIdentification;
     }
 
     /**

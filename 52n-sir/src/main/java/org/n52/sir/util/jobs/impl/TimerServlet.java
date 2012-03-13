@@ -67,9 +67,57 @@ import org.slf4j.LoggerFactory;
 public class TimerServlet extends GenericServlet {
 
     /**
-     * propertyname of CONFIG_DIRECTORY property
+     * Inner class to handle storage and cancelling of tasks at runtime.
      */
-    private final String CONFIG_DIRECTORY = "CONFIG_DIRECTORY";
+    private static class TaskElement {
+        protected Date date;
+        protected long delay;
+        protected String id;
+        protected long period;
+        protected TimerTask task;
+
+        /**
+         * 
+         * @param identifier
+         * @param task
+         * @param delay
+         * @param period
+         */
+        protected TaskElement(String identifier, TimerTask task, long delay, long period) {
+            this.id = identifier;
+            this.task = task;
+            this.delay = delay;
+            this.period = period;
+            this.date = new Date(0l);
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("TaskElement [");
+            sb.append(this.task);
+            sb.append(", delay=");
+            sb.append(this.delay);
+            sb.append(", period=");
+            sb.append(this.period);
+            sb.append(", date=");
+            sb.append(this.date);
+            sb.append("]");
+            return sb.toString();
+        }
+    }
+
+    /**
+     * propertyname of CLASSIFICATION_INIT_FILENAME property
+     */
+    private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
+
+    private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
+
+    /**
+     * 
+     */
+    private static final String DO_NOT_CHECK_CATALOGS = "DO_NOT_CHECK_CATALOGS";
 
     /**
      * The init parameter of the configFile
@@ -77,19 +125,11 @@ public class TimerServlet extends GenericServlet {
     private static final String INIT_PARAM_CONFIG_FILE = "configFile";
 
     /**
-     * propertyname of CLASSIFICATION_INIT_FILENAME property
-     */
-    private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
-
-    /**
-     * propertyname of SLOT_INIT_FILENAME property
-     */
-    private static final String SLOT_INIT_FILENAME = "SLOT_INIT_FILENAME";
-
-    /**
      * 
      */
-    private static final long serialVersionUID = 4704774153636727580L;
+    private static final String IS_DAEMON_INIT_PARAM_NAME = "isDaemon";
+
+    private static Logger log = LoggerFactory.getLogger(TimerServlet.class);
 
     /**
      * The identifier that can be used to access the instance of this servlet an run-time.
@@ -99,16 +139,12 @@ public class TimerServlet extends GenericServlet {
     /**
      * 
      */
-    private static final String IS_DAEMON_INIT_PARAM_NAME = "isDaemon";
+    private static final long serialVersionUID = 4704774153636727580L;
 
     /**
-     * 
+     * propertyname of SLOT_INIT_FILENAME property
      */
-    private static final String DO_NOT_CHECK_CATALOGS = "DO_NOT_CHECK_CATALOGS";
-
-    private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
-
-    private static Logger log = LoggerFactory.getLogger(TimerServlet.class);
+    private static final String SLOT_INIT_FILENAME = "SLOT_INIT_FILENAME";
 
     /**
      * Inner {@link Timer} that might run as a daemon according to the init parameter
@@ -116,14 +152,18 @@ public class TimerServlet extends GenericServlet {
      */
     private static Timer timer;
 
-    /**
-     * List that holds all repeated task during run-time.
-     */
-    private ArrayList<TaskElement> tasks;
+    private Map<URI, ICatalog> catalogCache = new HashMap<URI, ICatalog>();
+
+    private String[] catalogInitClassificationFiles;
+
+    private String catalogSlotInitFile;
 
     private ICatalogStatusHandler catalogStatusHandler;
 
-    private String catalogSlotInitFile;
+    /**
+     * propertyname of CONFIG_DIRECTORY property
+     */
+    private final String CONFIG_DIRECTORY = "CONFIG_DIRECTORY";
 
     private Properties props;
 
@@ -132,15 +172,115 @@ public class TimerServlet extends GenericServlet {
      */
     private ArrayList<URL> staticDoNotCheckCatalogsList;
 
-    private String[] catalogInitClassificationFiles;
-
-    private Map<URI, ICatalog> catalogCache = new HashMap<URI, ICatalog>();
+    /**
+     * List that holds all repeated task during run-time.
+     */
+    private ArrayList<TaskElement> tasks;
 
     /**
      * Default constructor.
      */
     public TimerServlet() {
         super();
+    }
+
+    /**
+     * 
+     * @param identifier
+     */
+    public void cancel(String identifier) {
+        for (TaskElement te : this.tasks) {
+            if (te.id.equals(identifier)) {
+                te.task.cancel();
+                log.info("CANCELED " + te);
+            }
+
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see javax.servlet.GenericServlet#destroy()
+     */
+    @Override
+    public void destroy() {
+        log.info("called destroy()...");
+        super.destroy();
+        timer.cancel();
+        timer = null;
+        
+        log.info("destroyed.");
+    }
+
+    /**
+     * 
+     * @param conn
+     * @return
+     * @throws OwsExceptionReport
+     */
+    public ICatalog getCatalog(ICatalogConnection conn) throws OwsExceptionReport {
+        try {
+            if ( !this.catalogCache.containsKey(conn.getCatalogURL().toURI())) {
+                ICatalogFactory catFact = getCatalogFactory(conn.getCatalogURL());
+                ICatalog catalog = catFact.getCatalog();
+                this.catalogCache.put(conn.getCatalogURL().toURI(), catalog);
+            }
+            
+            return this.catalogCache.get(conn.getCatalogURL().toURI());
+        }
+        catch (URISyntaxException e) {
+            log.error("URI", e);
+        }
+        
+        return null;
+    }
+
+    /**
+     * 
+     * returns new catalog factory
+     * 
+     * @param catalogUrl
+     * @return A new instance of the appropriate catalog factory for the given URL.
+     * @throws OwsExceptionReport
+     *         If there is a problem reading or parsing the init files for the catalog factory.
+     */
+    private ICatalogFactory getCatalogFactory(URL catalogUrl) throws OwsExceptionReport {
+        try {
+            ICatalogFactory newFactory = new CswFactory(catalogUrl,
+                                                        this.catalogInitClassificationFiles,
+                                                        this.catalogSlotInitFile,
+                                                        Boolean.valueOf(this.staticDoNotCheckCatalogsList.contains(catalogUrl)));
+            return newFactory;
+        }
+        catch (XmlException xe) {
+            throw new OwsExceptionReport("Error parsing document(s) to initialize a catalog factory.", xe);
+        }
+        catch (IOException ioe) {
+            throw new OwsExceptionReport("Error reading document(s) to initialize a catalog factory.", ioe);
+        }
+    }
+
+    /**
+     * 
+     * Returns an instance of {@link ICatalogStatusHandler} that can be used to update the status description
+     * of repeated catalog connections.
+     * 
+     * @return the catalogStatusHandler
+     */
+    public ICatalogStatusHandler getCatalogStatusHandler() {
+        if (this.catalogStatusHandler == null) {
+            ServletContext context = getServletContext();
+            this.catalogStatusHandler = (ICatalogStatusHandler) context.getAttribute(ICatalogStatusHandler.NAME_IN_CONTEXT);
+            if (this.catalogStatusHandler == null) {
+                log.warn("Could not get catalog status handler from servlet context!");
+            }
+            else {
+                if (log.isDebugEnabled())
+                    log.debug("Got catalog status handler from servlet context: " + this.catalogStatusHandler);
+            }
+
+        }
+        return this.catalogStatusHandler;
     }
 
     @Override
@@ -203,86 +343,27 @@ public class TimerServlet extends GenericServlet {
     }
 
     /**
+     * method loads the config file
      * 
-     * Returns an instance of {@link ICatalogStatusHandler} that can be used to update the status description
-     * of repeated catalog connections.
-     * 
-     * @return the catalogStatusHandler
+     * @param is
+     *        InputStream containing the config file
+     * @return Returns properties of the given config file
+     * @throws IOException
      */
-    public ICatalogStatusHandler getCatalogStatusHandler() {
-        if (this.catalogStatusHandler == null) {
-            ServletContext context = getServletContext();
-            this.catalogStatusHandler = (ICatalogStatusHandler) context.getAttribute(ICatalogStatusHandler.NAME_IN_CONTEXT);
-            if (this.catalogStatusHandler == null) {
-                log.warn("Could not get catalog status handler from servlet context!");
-            }
-            else {
-                if (log.isDebugEnabled())
-                    log.debug("Got catalog status handler from servlet context: " + this.catalogStatusHandler);
-            }
+    private Properties loadProperties(InputStream is) throws IOException {
+        Properties properties = new Properties();
+        properties.load(is);
 
-        }
-        return this.catalogStatusHandler;
+        return properties;
     }
-
-    /**
-     * 
-     * returns new catalog factory
-     * 
-     * @param catalogUrl
-     * @return A new instance of the appropriate catalog factory for the given URL.
-     * @throws OwsExceptionReport
-     *         If there is a problem reading or parsing the init files for the catalog factory.
+    
+    /*
+     * (non-Javadoc)
+     * @see javax.servlet.GenericServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
      */
-    private ICatalogFactory getCatalogFactory(URL catalogUrl) throws OwsExceptionReport {
-        try {
-            ICatalogFactory newFactory = new CswFactory(catalogUrl,
-                                                        this.catalogInitClassificationFiles,
-                                                        this.catalogSlotInitFile,
-                                                        Boolean.valueOf(this.staticDoNotCheckCatalogsList.contains(catalogUrl)));
-            return newFactory;
-        }
-        catch (XmlException xe) {
-            throw new OwsExceptionReport("Error parsing document(s) to initialize a catalog factory.", xe);
-        }
-        catch (IOException ioe) {
-            throw new OwsExceptionReport("Error reading document(s) to initialize a catalog factory.", ioe);
-        }
-    }
-
-    /**
-     * 
-     * @param conn
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public ICatalog getCatalog(ICatalogConnection conn) throws OwsExceptionReport {
-        try {
-            if ( !this.catalogCache.containsKey(conn.getCatalogURL().toURI())) {
-                ICatalogFactory catFact = getCatalogFactory(conn.getCatalogURL());
-                ICatalog catalog = catFact.getCatalog();
-                this.catalogCache.put(conn.getCatalogURL().toURI(), catalog);
-            }
-            
-            return this.catalogCache.get(conn.getCatalogURL().toURI());
-        }
-        catch (URISyntaxException e) {
-            log.error("URI", e);
-        }
-        
-        return null;
-    }
-
-    /**
-     * 
-     * @param task
-     * @param date
-     */
-    public void submit(TimerTask task, Date date) {
-        timer.schedule(task, date);
-        if (log.isDebugEnabled()) {
-            log.debug("Submitted: " + task + " to run at " + date);
-        }
+    @Override
+    public void service(ServletRequest req, ServletResponse res) {
+        throw new UnsupportedOperationException("Not supperted by TimerServlet!");
     }
 
     /**
@@ -306,39 +387,14 @@ public class TimerServlet extends GenericServlet {
 
     /**
      * 
-     * @param identifier
+     * @param task
+     * @param date
      */
-    public void cancel(String identifier) {
-        for (TaskElement te : this.tasks) {
-            if (te.id.equals(identifier)) {
-                te.task.cancel();
-                log.info("CANCELED " + te);
-            }
-
+    public void submit(TimerTask task, Date date) {
+        timer.schedule(task, date);
+        if (log.isDebugEnabled()) {
+            log.debug("Submitted: " + task + " to run at " + date);
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see javax.servlet.GenericServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
-     */
-    @Override
-    public void service(ServletRequest req, ServletResponse res) {
-        throw new UnsupportedOperationException("Not supperted by TimerServlet!");
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see javax.servlet.GenericServlet#destroy()
-     */
-    @Override
-    public void destroy() {
-        log.info("called destroy()...");
-        super.destroy();
-        timer.cancel();
-        timer = null;
-        
-        log.info("destroyed.");
     }
 
     /*
@@ -359,61 +415,5 @@ public class TimerServlet extends GenericServlet {
         sb.delete(sb.length() - 1, sb.length() - 1);
         sb.append("]");
         return sb.toString();
-    }
-
-    /**
-     * method loads the config file
-     * 
-     * @param is
-     *        InputStream containing the config file
-     * @return Returns properties of the given config file
-     * @throws IOException
-     */
-    private Properties loadProperties(InputStream is) throws IOException {
-        Properties properties = new Properties();
-        properties.load(is);
-
-        return properties;
-    }
-
-    /**
-     * Inner class to handle storage and cancelling of tasks at runtime.
-     */
-    private static class TaskElement {
-        protected TimerTask task;
-        protected long delay;
-        protected long period;
-        protected Date date;
-        protected String id;
-
-        /**
-         * 
-         * @param identifier
-         * @param task
-         * @param delay
-         * @param period
-         */
-        protected TaskElement(String identifier, TimerTask task, long delay, long period) {
-            this.id = identifier;
-            this.task = task;
-            this.delay = delay;
-            this.period = period;
-            this.date = new Date(0l);
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("TaskElement [");
-            sb.append(this.task);
-            sb.append(", delay=");
-            sb.append(this.delay);
-            sb.append(", period=");
-            sb.append(this.period);
-            sb.append(", date=");
-            sb.append(this.date);
-            sb.append("]");
-            return sb.toString();
-        }
     }
 }

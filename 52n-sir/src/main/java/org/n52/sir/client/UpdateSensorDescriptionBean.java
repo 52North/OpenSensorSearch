@@ -47,88 +47,13 @@ public class UpdateSensorDescriptionBean extends AbstractBean {
 
     private String sensorDescription = "";
 
-    private String serviceURL = "";
-
-    private String serviceType = "";
+    private String sensorIDinSIR = "";
 
     private String serviceSpecificSensorID = "";
 
-    private String sensorIDinSIR = "";
+    private String serviceType = "";
 
-    /**
-     * @return the sensorDescription
-     */
-    public String getSensorDescription() {
-        return this.sensorDescription;
-    }
-
-    /**
-     * @param sensorDescription
-     *        the sensorDescription to set
-     */
-    public void setSensorDescription(String sensorDescription) {
-        this.sensorDescription = sensorDescription;
-    }
-
-    /**
-     * @return the sensorIDinSIR
-     */
-    public String getSensorIDinSIR() {
-        return this.sensorIDinSIR;
-    }
-
-    /**
-     * @param sensorIDinSIR
-     *        the sensorIDinSIR to set
-     */
-    public void setSensorIDinSIR(String sensorIDinSIR) {
-        this.sensorIDinSIR = sensorIDinSIR;
-    }
-
-    /**
-     * @return the serviceURL
-     */
-    public String getServiceURL() {
-        return this.serviceURL;
-    }
-
-    /**
-     * @return the serviceType
-     */
-    public String getServiceType() {
-        return this.serviceType;
-    }
-
-    /**
-     * @return the serviceSpecificSensorID
-     */
-    public String getServiceSpecificSensorID() {
-        return this.serviceSpecificSensorID;
-    }
-
-    /**
-     * @param serviceURL
-     *        the serviceURL to set
-     */
-    public void setServiceURL(String serviceInfosServiceURL) {
-        this.serviceURL = serviceInfosServiceURL;
-    }
-
-    /**
-     * @param serviceType
-     *        the serviceType to set
-     */
-    public void setServiceType(String serviceInfosServiceType) {
-        this.serviceType = serviceInfosServiceType;
-    }
-
-    /**
-     * @param serviceSpecificSensorID
-     *        the serviceSpecificSensorID to set
-     */
-    public void setServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
-        this.serviceSpecificSensorID = serviceInfosServiceSpecificSensorID;
-    }
+    private String serviceURL = "";
 
     @Override
     public void buildRequest() {
@@ -183,6 +108,81 @@ public class UpdateSensorDescriptionBean extends AbstractBean {
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
         else
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
+    }
+
+    /**
+     * @return the sensorDescription
+     */
+    public String getSensorDescription() {
+        return this.sensorDescription;
+    }
+
+    /**
+     * @return the sensorIDinSIR
+     */
+    public String getSensorIDinSIR() {
+        return this.sensorIDinSIR;
+    }
+
+    /**
+     * @return the serviceSpecificSensorID
+     */
+    public String getServiceSpecificSensorID() {
+        return this.serviceSpecificSensorID;
+    }
+
+    /**
+     * @return the serviceType
+     */
+    public String getServiceType() {
+        return this.serviceType;
+    }
+
+    /**
+     * @return the serviceURL
+     */
+    public String getServiceURL() {
+        return this.serviceURL;
+    }
+
+    /**
+     * @param sensorDescription
+     *        the sensorDescription to set
+     */
+    public void setSensorDescription(String sensorDescription) {
+        this.sensorDescription = sensorDescription;
+    }
+
+    /**
+     * @param sensorIDinSIR
+     *        the sensorIDinSIR to set
+     */
+    public void setSensorIDinSIR(String sensorIDinSIR) {
+        this.sensorIDinSIR = sensorIDinSIR;
+    }
+
+    /**
+     * @param serviceSpecificSensorID
+     *        the serviceSpecificSensorID to set
+     */
+    public void setServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
+        this.serviceSpecificSensorID = serviceInfosServiceSpecificSensorID;
+    }
+
+    /**
+     * @param serviceType
+     *        the serviceType to set
+     */
+    public void setServiceType(String serviceInfosServiceType) {
+        this.serviceType = serviceInfosServiceType;
+    }
+
+    /**
+     * @param serviceURL
+     *        the serviceURL to set
+     */
+    public void setServiceURL(String serviceInfosServiceURL) {
+        this.serviceURL = serviceInfosServiceURL;
     }
 
 }

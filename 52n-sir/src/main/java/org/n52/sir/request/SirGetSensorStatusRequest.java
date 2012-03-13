@@ -37,11 +37,25 @@ import org.n52.sir.datastructure.SirSensorIdentification;
  */
 public class SirGetSensorStatusRequest extends AbstractSirRequest {
 
-    private Collection<SirSensorIdentification> sensIdent;
+    private Collection<SirPropertyFilter> propertyFilter;
 
     private SirSearchCriteria searchCriteria;
 
-    private Collection<SirPropertyFilter> propertyFilter;
+    private Collection<SirSensorIdentification> sensIdent;
+
+    /**
+     * @return the propertyFilter
+     */
+    public Collection<SirPropertyFilter> getPropertyFilter() {
+        return this.propertyFilter;
+    }
+
+    /**
+     * @return the searchCriteria
+     */
+    public SirSearchCriteria getSearchCriteria() {
+        return this.searchCriteria;
+    }
 
     /**
      * @return the sensIdent
@@ -51,18 +65,11 @@ public class SirGetSensorStatusRequest extends AbstractSirRequest {
     }
 
     /**
-     * @param sensIdent
-     *        the sensIdent to set
+     * @param propertyFilter
+     *        the propertyFilter to set
      */
-    public void setSensIdent(Collection<SirSensorIdentification> sensIdent) {
-        this.sensIdent = sensIdent;
-    }
-
-    /**
-     * @return the searchCriteria
-     */
-    public SirSearchCriteria getSearchCriteria() {
-        return this.searchCriteria;
+    public void setPropertyFilter(Collection<SirPropertyFilter> propertyFilter) {
+        this.propertyFilter = propertyFilter;
     }
 
     /**
@@ -74,18 +81,11 @@ public class SirGetSensorStatusRequest extends AbstractSirRequest {
     }
 
     /**
-     * @return the propertyFilter
+     * @param sensIdent
+     *        the sensIdent to set
      */
-    public Collection<SirPropertyFilter> getPropertyFilter() {
-        return this.propertyFilter;
-    }
-
-    /**
-     * @param propertyFilter
-     *        the propertyFilter to set
-     */
-    public void setPropertyFilter(Collection<SirPropertyFilter> propertyFilter) {
-        this.propertyFilter = propertyFilter;
+    public void setSensIdent(Collection<SirSensorIdentification> sensIdent) {
+        this.sensIdent = sensIdent;
     }
 
     @Override

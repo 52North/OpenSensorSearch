@@ -29,34 +29,34 @@ package org.n52.sir.datastructure;
  */
 public class SirSimpleSensorDescription extends SirSensorDescription {
 
-    private String sensorDescriptionURL;
+    private SirBoundingBox boundingBox;
 
     private String descriptionText;
     
-    private SirBoundingBox boundingBox;
+    private String sensorDescriptionURL;
 
-    public String getSensorDescriptionURL() {
-        return this.sensorDescriptionURL;
+    public SirBoundingBox getBoundingBox() {
+        return this.boundingBox;
     }
 
     public String getDescriptionText() {
         return this.descriptionText;
     }
 
-    public void setSensorDescriptionURL(String sensorDescriptionURL) {
-        this.sensorDescriptionURL = sensorDescriptionURL;
+    public String getSensorDescriptionURL() {
+        return this.sensorDescriptionURL;
+    }
+
+    public void setBoundingBox(SirBoundingBox boundingBox) {
+        this.boundingBox = boundingBox;
     }
 
     public void setDescriptionText(String descriptionText) {
         this.descriptionText = descriptionText;
     }
 
-    public SirBoundingBox getBoundingBox() {
-        return this.boundingBox;
-    }
-
-    public void setBoundingBox(SirBoundingBox boundingBox) {
-        this.boundingBox = boundingBox;
+    public void setSensorDescriptionURL(String sensorDescriptionURL) {
+        this.sensorDescriptionURL = sensorDescriptionURL;
     }
 
     @Override

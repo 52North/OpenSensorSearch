@@ -129,6 +129,11 @@ public class SirConfigurator {
      */
     private static final String EXTENDED_DEBUG_TO_CONSOLE = "EXTENDED_DEBUG_TO_CONSOLE";
 
+    /*
+     * 
+     */
+    private static final String FULL_SERVICE_PATH = "FULL_SERVICE_PATH";
+
     /**
      * propertyname of get request decoder
      */
@@ -138,11 +143,6 @@ public class SirConfigurator {
      * propertyname of GML date format
      */
     private static final String GMLDATEFORMAT = "GMLDATEFORMAT";
-
-    /*
-     * 
-     */
-    private static final String FULL_SERVICE_PATH = "FULL_SERVICE_PATH";
 
     /**
      * instance attribute, due to the singleton pattern
@@ -364,12 +364,12 @@ public class SirConfigurator {
      */
     private IDAOFactory factory;
 
+    private URL fullServicePath;
+
     /**
      * GML date format
      */
     private String gmlDateFormat;
-
-    private URL fullServicePath;
 
     /**
      * decoder for decoding httpGet request
@@ -636,17 +636,17 @@ public class SirConfigurator {
     }
 
     /**
-     * @return the gmlDateFormat
-     */
-    public String getGmlDateFormat() {
-        return this.gmlDateFormat;
-    }
-
-    /**
      * @return the homepage
      */
     public URL getFullServicePath() {
         return this.fullServicePath;
+    }
+
+    /**
+     * @return the gmlDateFormat
+     */
+    public String getGmlDateFormat() {
+        return this.gmlDateFormat;
     }
 
     /**

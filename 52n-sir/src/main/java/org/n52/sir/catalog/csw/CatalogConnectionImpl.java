@@ -37,10 +37,10 @@ import org.n52.sir.catalog.ICatalogConnection;
  */
 public class CatalogConnectionImpl implements ICatalogConnection {
 
-    private String status;
-    private int pushIntervalSeconds;
     private URL catalogURL;
     private String connectionID;
+    private int pushIntervalSeconds;
+    private String status;
 
     public CatalogConnectionImpl(String connectionID, URL url, int pushInterval, String connectionStatus) {
         this.connectionID = connectionID;

@@ -30,9 +30,9 @@ package org.n52.sir.datastructure;
 public class SirPhenomenon {
 
     /**
-     * urn to the phenomenon
+     * identifier of phenomenon in SIR
      */
-    String urn;
+    String phenomenonIdInSIR;
 
     /**
      * unit of measure
@@ -40,9 +40,13 @@ public class SirPhenomenon {
     String uom;
 
     /**
-     * identifier of phenomenon in SIR
+     * urn to the phenomenon
      */
-    String phenomenonIdInSIR;
+    String urn;
+
+    public SirPhenomenon() {
+        //
+    }
 
     public SirPhenomenon(String urn, String uom, String phenomenonIdInSIR) {
         this.urn = urn;
@@ -50,8 +54,18 @@ public class SirPhenomenon {
         this.phenomenonIdInSIR = phenomenonIdInSIR;
     }
 
-    public SirPhenomenon() {
-        //
+    /**
+     * @return the phenomenonIdInSIR
+     */
+    public String getPhenomenonIdInSIR() {
+        return this.phenomenonIdInSIR;
+    }
+
+    /**
+     * @return the uom
+     */
+    public String getUom() {
+        return this.uom;
     }
 
     /**
@@ -62,18 +76,11 @@ public class SirPhenomenon {
     }
 
     /**
-     * @param urn
-     *        the urn to set
+     * @param phenomenonIdInSIR
+     *        the phenomenonIdInSIR to set
      */
-    public void setUrn(String urn) {
-        this.urn = urn;
-    }
-
-    /**
-     * @return the uom
-     */
-    public String getUom() {
-        return this.uom;
+    public void setPhenomenonIdInSIR(String phenomenonIdInSIR) {
+        this.phenomenonIdInSIR = phenomenonIdInSIR;
     }
 
     /**
@@ -85,18 +92,11 @@ public class SirPhenomenon {
     }
 
     /**
-     * @return the phenomenonIdInSIR
+     * @param urn
+     *        the urn to set
      */
-    public String getPhenomenonIdInSIR() {
-        return this.phenomenonIdInSIR;
-    }
-
-    /**
-     * @param phenomenonIdInSIR
-     *        the phenomenonIdInSIR to set
-     */
-    public void setPhenomenonIdInSIR(String phenomenonIdInSIR) {
-        this.phenomenonIdInSIR = phenomenonIdInSIR;
+    public void setUrn(String urn) {
+        this.urn = urn;
     }
 
     @Override

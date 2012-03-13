@@ -54,12 +54,12 @@ public class GetSensorStatusListener implements ISirRequestListener {
 
     private static Logger log = LoggerFactory.getLogger(GetSensorStatusListener.class);
 
+    private static final String OPERATION_NAME = SirConstants.Operations.GetSensorStatus.name();
+
     /**
      * the data access object for the get sensor status operation
      */
     private IGetSensorStatusDAO getSensStatDao;
-
-    private static final String OPERATION_NAME = SirConstants.Operations.GetSensorStatus.name();
 
     public GetSensorStatusListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();

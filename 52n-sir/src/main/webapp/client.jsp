@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <%--
 
     ﻿Copyright (C) 2012
@@ -23,7 +24,6 @@
     visit the Free Software Foundation web page, http://www.fsf.org.
 
 --%>
-<?xml version="1.0" encoding="utf-8"?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">

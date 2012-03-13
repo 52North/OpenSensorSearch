@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <%--
 
     ﻿Copyright (C) 2012
@@ -23,7 +24,6 @@
     visit the Free Software Foundation web page, http://www.fsf.org.
 
 --%>
-<?xml version="1.0" encoding="utf-8"?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -50,7 +50,7 @@
 
 </head>
 
-<body bgcolor="#ffffff" text="#000000" onload="load()">
+<body bgcolor="#ffffff" text="#000000">
 	<div id="content">
 
 		<div class="search-header">Open Sensor Search</div>

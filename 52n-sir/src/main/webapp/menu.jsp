@@ -71,7 +71,7 @@
 		<ul>
 			<li><a href="<%= request.getContextPath() %>/pages/getCapabilities.jsp">GetCapabilities</a></li>
 			<li>&nbsp;&nbsp;&nbsp;</li>
-			<li><i><a href="<%=request.getContextPath() %>/testClient.html">Textbox-Client</a></i></li>
+			<li><i><a href="<%=request.getContextPath() %>/formClient.html">Form Client</a></i></li>
 			<li><i><a href="<%=request.getContextPath() %>/pages/transformSensorML.jsp">SML to ebRIM Transformation</a></i></li>
 			<li><i><a href="<%= request.getContextPath() %>/pages/testSensorML.jsp">Check SensorML Conformity</a></i></li>
 		</ul>

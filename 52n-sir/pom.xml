@@ -272,6 +272,7 @@
 						<include>**/*.java</include>
 						<include>**/*.properties</include>
 						<include>**/*.jsp</include>
+						<include>**/*.js</include>
 						<include>**/*.xml</include>
 						<include>**/*.xsl</include>
 						<include>**/*.sch</include>

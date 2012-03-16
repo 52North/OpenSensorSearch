@@ -178,13 +178,15 @@
 					<header>src/main/resources/52N_license.txt</header>
 					<excludes>
 						<exclude>**/buildNumber.properties</exclude>
+						<exclude>**/*qrcode.js</exclude>
 					</excludes>
 					<includes>
 						<include>**/*.java</include>
 						<include>**/*.properties</include>
 						<include>**/*.jsp</include>
 						<include>**/*.xml</include>
-						<include>**/*.css</include>
+						<include>**/*.js</include>
+						<!-- <include>**/*.css</include> -->
 						<include>**/*.html</include>
 					</includes>
 					<strictCheck>true</strictCheck>
@@ -244,12 +246,6 @@
 			<artifactId>jackson-core-asl</artifactId>
 			<version>1.9.4</version>
 		</dependency>
-
-<!-- 		<dependency> -->
-<!-- 			<groupId>commons-httpclient</groupId> -->
-<!-- 			<artifactId>commons-httpclient</artifactId> -->
-<!-- 			<version>3.1</version> -->
-<!-- 		</dependency> -->
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>

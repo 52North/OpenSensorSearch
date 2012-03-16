@@ -117,8 +117,9 @@ public class LayarServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         if (action == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameter 'action'");
-            return;
+            // response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameter 'action'");
+            // return;
+            log.debug("No action given.");
         }
 
         String latParam = request.getParameter("lat");
@@ -265,5 +266,9 @@ public class LayarServlet extends HttpServlet {
 
     public String getUrl() {
         return this.url;
+    }
+
+    public String getLayerName() {
+        return this.layerName;
     }
 }

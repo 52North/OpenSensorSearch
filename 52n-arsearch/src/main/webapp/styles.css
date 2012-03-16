@@ -1,0 +1,79 @@
+﻿﻿/*
+ * ﻿Copyright (C) 2012
+ * by 52 North Initiative for Geospatial Open Source Software GmbH
+ *
+ * Contact: Andreas Wytzisk
+ * 52 North Initiative for Geospatial Open Source Software GmbH
+ * Martin-Luther-King-Weg 24
+ * 48155 Muenster, Germany
+ * info@52north.org
+ *
+ * This program is free software; you can redistribute and/or modify it under
+ * the terms of the GNU General Public License version 2 as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed WITHOUT ANY WARRANTY; even without the implied
+ * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program (see gnu-gpl v2.txt). If not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+ * visit the Free Software Foundation web page, http://www.fsf.org.
+ */
+
+.center {
+	text-align: center;
+}
+
+img {
+	border: 0;
+}
+
+.infotext {
+	color: #999;
+	font-size: 10pt;
+}
+
+.infotext,.infotext a:link {
+	color: #999;
+	font-size: 10pt;
+}
+
+.infotextHighlight {
+	color: #FFA500;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+.infotext a,.infotext a:active,.infotext a:visited {
+	color: #999;
+	text-decoration: none;
+}
+
+.infotext a:hover {
+	text-decoration: underline;
+}
+
+.infotextHighlight a:hover {
+	text-decoration: underline;
+}
+
+.infotextHighlight a,.infotextHighlight a:active,.infotextHighlight a:visited
+	{
+	color: #FFA500;
+	font-size: 10pt;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.CodeMirror-line-numbers {
+	width: 2.2em;
+	color: #aaa;
+	background-color: #eee;
+	text-align: right;
+	padding-right: .3em;
+	font-size: 10pt;
+	font-family: monospace;
+	padding-top: .4em;
+}

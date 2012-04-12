@@ -50,7 +50,9 @@ import org.n52.sir.opensearch.JsonListener;
 import org.n52.sir.opensearch.KmlListener;
 import org.n52.sir.opensearch.OpenSearchConfigurator;
 import org.n52.sir.opensearch.OpenSearchConstants;
+import org.n52.sir.opensearch.RequestDismantler;
 import org.n52.sir.opensearch.RssListener;
+import org.n52.sir.opensearch.Tools;
 import org.n52.sir.opensearch.XmlListener;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
@@ -88,9 +90,11 @@ public class OpenSearchSIR extends HttpServlet {
 
     private OpenSearchConfigurator configurator;
 
-    private SearchSensorListener listener;
+    private RequestDismantler dismantler;
 
     private HashMap<String, IOpenSearchListener> listeners;
+
+    private SearchSensorListener sensorSearcher;
 
     public OpenSearchSIR() {
         super();
@@ -143,8 +147,8 @@ public class OpenSearchSIR extends HttpServlet {
         // see if Geo Extension is used:
         // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
         SirBoundingBox boundingBox = null;
-        if (requestContainsGeoParameters(req)) {
-            boundingBox = getBoundingBox(req);
+        if (this.dismantler.requestContainsGeoParameters(req)) {
+            boundingBox = this.dismantler.getBoundingBox(req);
             log.debug("Searching with bounding box {} from queary {}", boundingBox, req.getQueryString());
         }
 
@@ -152,8 +156,8 @@ public class OpenSearchSIR extends HttpServlet {
         // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
         Calendar start = null;
         Calendar end = null;
-        if (requestContainsTime(req)) {
-            Calendar[] startEnd = getStartEnd(req);
+        if (this.dismantler.requestContainsTime(req)) {
+            Calendar[] startEnd = this.dismantler.getStartEnd(req);
             start = startEnd[0];
             end = startEnd[1];
         }
@@ -180,7 +184,7 @@ public class OpenSearchSIR extends HttpServlet {
         searchRequest.setVersion(SirConstants.SERVICE_VERSION_0_3_1);
         searchRequest.setSearchCriteria(searchCriteria);
 
-        ISirResponse response = this.listener.receiveRequest(searchRequest);
+        ISirResponse response = this.sensorSearcher.receiveRequest(searchRequest);
 
         if (response instanceof SirSearchSensorResponse) {
             SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
@@ -229,95 +233,6 @@ public class OpenSearchSIR extends HttpServlet {
         throw new UnsupportedOperationException();
     }
 
-    private SirBoundingBox getBoundingBox(HttpServletRequest req) {
-        Set< ? > keySet = req.getParameterMap().keySet();
-        boolean containsName = keySet.contains(OpenSearchConstants.NAME_PARAM);
-        boolean containsLatLon = keySet.contains(OpenSearchConstants.LAT_PARAM)
-                && keySet.contains(OpenSearchConstants.LON_PARAM);
-        boolean containsRadius = keySet.contains(OpenSearchConstants.RADIUS_PARAM);
-        // boolean containsBox = keySet.contains("box");
-        // boolean containsGeometry = keySet.contains("geometry");
-
-        if (containsLatLon && containsName) {
-            log.warn("More than one location definition, using latlon");
-            containsName = false;
-        }
-
-        if (containsName) {
-            return getBoundingBoxFromGazetteer(req.getParameter(OpenSearchConstants.NAME_PARAM));
-        }
-        else if (containsLatLon) {
-            double radius, lat, lon;
-
-            try {
-                if ( !containsRadius) {
-                    radius = OpenSearchConstants.DEFAULT_RADIUS;
-                    log.debug("No radius given, falling back to default {}",
-                              Double.valueOf(OpenSearchConstants.DEFAULT_RADIUS));
-                }
-                else
-                    radius = Double.parseDouble(req.getParameter(OpenSearchConstants.RADIUS_PARAM));
-
-                lat = Double.parseDouble(req.getParameter(OpenSearchConstants.LAT_PARAM));
-                lon = Double.parseDouble(req.getParameter(OpenSearchConstants.LON_PARAM));
-            }
-            catch (NumberFormatException e) {
-                log.error("Could not parse lat, lon or radius from request paramters: "
-                                  + Arrays.deepToString(req.getParameterMap().values().toArray()),
-                          e);
-                return null;
-            }
-
-            return getBoundingBoxFromLatLon(lat, lon, radius);
-        }
-
-        return null;
-    }
-
-    /**
-     * 
-     * @param parameter
-     * @return
-     */
-    private SirBoundingBox getBoundingBoxFromGazetteer(String parameter) {
-        log.error("gazetteer not implemented yet!");
-        return null;
-    }
-
-    /**
-     * 
-     * map lat lon und radius to a bouding box
-     * 
-     * @param lat
-     * @param lon
-     * @param radius
-     * @return
-     */
-    private SirBoundingBox getBoundingBoxFromLatLon(double lat, double lon, double radius) {
-        // stackoverflow.com/questions/1689096/calculating-bounding-box-a-certain-distance-away-from-a-lat-long-coordinate-in-j
-
-        GeoLocation loc = GeoLocation.fromDegrees(lat, lon);
-        GeoLocation[] boundingCoordinates = loc.boundingCoordinates(radius, OpenSearchConstants.EARTH_RADIUS_METERS);
-
-        double east = boundingCoordinates[1].getLongitudeInDegrees();
-        double south = boundingCoordinates[0].getLatitudeInDegrees();
-        double west = boundingCoordinates[0].getLongitudeInDegrees();
-        double north = boundingCoordinates[1].getLatitudeInDegrees();
-        SirBoundingBox box = new SirBoundingBox(east, south, west, north);
-
-        return box;
-    }
-
-    private Calendar[] getStartEnd(HttpServletRequest req) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#init()
-     */
     @Override
     public void init() throws ServletException {
         super.init();
@@ -325,13 +240,15 @@ public class OpenSearchSIR extends HttpServlet {
         this.configurator = new OpenSearchConfigurator();
 
         try {
-            this.listener = new SearchSensorListener();
-            this.listener.setEncodeURLs(false);
+            this.sensorSearcher = new SearchSensorListener();
+            this.sensorSearcher.setEncodeURLs(false);
         }
         catch (OwsExceptionReport e) {
             log.error("Could not create SearchSensorListener.", e);
             throw new ServletException(e);
         }
+
+        this.dismantler = new RequestDismantler();
 
         this.listeners = new HashMap<String, IOpenSearchListener>();
 
@@ -392,23 +309,6 @@ public class OpenSearchSIR extends HttpServlet {
         sb.append(OpenSearchConstants.X_DEFAULT_MIME_TYPE);
         log.debug("Redirecting to {}", sb.toString());
         resp.sendRedirect(sb.toString());
-    }
-
-    private boolean requestContainsGeoParameters(HttpServletRequest req) {
-        Set< ? > keySet = req.getParameterMap().keySet();
-        boolean containsName = keySet.contains(OpenSearchConstants.NAME_PARAM);
-        boolean containsLatLon = keySet.contains(OpenSearchConstants.LAT_PARAM)
-                && keySet.contains(OpenSearchConstants.LON_PARAM);
-        boolean containsRadius = keySet.contains(OpenSearchConstants.RADIUS_PARAM);
-        boolean containsBox = keySet.contains(OpenSearchConstants.BOX_PARAM);
-        boolean containsGeometry = keySet.contains(OpenSearchConstants.GEOMETRY_PARAM);
-
-        return containsName | containsLatLon | containsRadius | containsBox | containsGeometry;
-    }
-
-    private boolean requestContainsTime(HttpServletRequest req) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     @Override

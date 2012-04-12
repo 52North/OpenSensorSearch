@@ -37,7 +37,7 @@ import org.n52.sir.datastructure.SirSimpleSensorDescription;
  * 
  */
 public class Tools {
-    
+
     public static void concatenateWithLimit(StringBuilder sb, ArrayList<String> list, int maxElements) {
         ArrayList<String> myList = new ArrayList<String>();
         while (myList.size() < maxElements) {
@@ -166,5 +166,5 @@ public class Tools {
 
         return s;
     }
-    
+
 }

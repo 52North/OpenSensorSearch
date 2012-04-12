@@ -393,7 +393,6 @@ public class HtmlListener implements IOpenSearchListener {
 
     @Override
     public String getMimeType() {
-        // TODO Auto-generated method stub
         return MIME_TYPE;
     }
 

@@ -158,8 +158,6 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
                                Collection<SirSearchResultElement> searchResult,
                                PrintWriter writer,
                                String searchText) throws OwsExceptionReport {
-        // TODO Auto-generated method stub
-
         resp.setContentType(getMimeType());
 
         // TODO create WireFeed, then reuse for Atom AND RSS, see
@@ -168,7 +166,6 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
         feed.setFeedType(getFeedType());
 
         outputFeed(writer, feed);
-
     }
 
     protected abstract String getFeedType();

@@ -34,12 +34,10 @@ public class SMLConstants {
 
     public static final String NAMESPACE_PREFIX = "sml";
 
-    public static final String SCHEMA_LOCATION_URL = "http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd";
-
     /**
      * Constant for the schema repository of SML
      */
-    public static final String SCHEMA_LOCATION = NAMESPACE + " " + SCHEMA_LOCATION_URL;
+    public static final String SCHEMA_LOCATION = NAMESPACE + " http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd";
 
     public static final String SML_VERSION = "1.0.1";
 

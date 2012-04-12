@@ -109,7 +109,7 @@
 	</div>
 	<div id="wrapper">
 		<!-- LeftColumn kann deaktiviert werden, aber dann sollte in dieser Datei die Eigenschaft padding der Klasse #bodyColumn angepasst werden. Z.B. padding: 0 10px 0 10px; -->
-		<div id="bodyColumn" style="padding: 0 10px;">
+		<div id="bodyColumn" style="padding: 0 10px 0 10px;">
 			<div id="contentBox">
 				<div class="section">
 					<!-- hier kommt der eigentliche Inhalt der Seite -->

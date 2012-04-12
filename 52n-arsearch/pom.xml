@@ -57,8 +57,8 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:https://svn.52north.org/svn/sensorweb</connection>
-		<url>https://svn.52north.org/cgi-bin/viewvc.cgi/?root=sensorweb</url>
+		<connection>scm:svn:https://svn.52north.org/svn/sensorweb/incubation/SIR/trunk/52n-arsearch</connection>
+		<url>https://svn.52north.org/cgi-bin/viewvc.cgi/incubation/SIR/trunk/52n-arsearch/?root=sensorweb</url>
 	</scm>
 
 	<properties>

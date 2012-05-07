@@ -36,11 +36,10 @@ import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML.Member;
 import net.opengis.sensorML.x101.SystemType;
 
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.http.HttpException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
@@ -83,7 +82,7 @@ public class GeneratorClient {
 
     private static Logger log = LoggerFactory.getLogger(GeneratorClient.class);
 
-    private static HttpClient httpClient = new HttpClient();
+    private static DefaultHttpClient httpClient = new DefaultHttpClient();
 
     private static String genesisUrl = "http://giv-genesis.uni-muenster.de:8080/SIR/sir";
     
@@ -263,26 +262,25 @@ public class GeneratorClient {
     private static XmlObject sendRequest(InsertSensorInfoRequestDocument requestDoc) throws UnsupportedEncodingException,
             IOException,
             HttpException {
-        PostMethod method = new PostMethod(sirURL);
-        method.setRequestEntity(new StringRequestEntity(requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()),
+        HttpPost request = new HttpPost(sirURL);
+        request.setEntity(new StringEntity(requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()),
                                                         STRING_REQUEST_ENCODING,
                                                         STRING_REQUEST_CHARACTER_ENCODING));
 
-        String host = System.getProperty(SYSTEM_PROPERTY_PROXY_HOST);
-        String port = System.getProperty(SYSTEM_PROPERTY_PROXY_PORT);
+//        String host = System.getProperty(SYSTEM_PROPERTY_PROXY_HOST);
+//        String port = System.getProperty(SYSTEM_PROPERTY_PROXY_PORT);
+//        if (host != null && host.length() > 0 && port != null && port.length() > 0) {
+//            int portNumber = Integer.parseInt(port);
+//            HostConfiguration hostConfig = new HostConfiguration();
+//            hostConfig.setProxy(host, portNumber);
+//            httpClient.setHostConfiguration(hostConfig);
+//        }
 
-        if (host != null && host.length() > 0 && port != null && port.length() > 0) {
-            int portNumber = Integer.parseInt(port);
-            HostConfiguration hostConfig = new HostConfiguration();
-            hostConfig.setProxy(host, portNumber);
-            httpClient.setHostConfiguration(hostConfig);
-        }
-
-        httpClient.executeMethod(method);
+        httpClient.execute(request);
 
         XmlObject response = null;
         try {
-            response = XmlObject.Factory.parse(method.getResponseBodyAsStream());
+            response = XmlObject.Factory.parse(request.getEntity().getContent());
         }
         catch (XmlException e) {
             log.error("Error parsing response.", e);

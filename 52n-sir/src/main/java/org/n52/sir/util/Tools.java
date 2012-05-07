@@ -24,6 +24,9 @@
 
 package org.n52.sir.util;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -165,5 +168,22 @@ public class Tools {
                                                                            SystemType.type);
         newSystemType.set(stToSet);
         return document;
+    }
+
+    /**
+     * 
+     * @param is
+     * @return
+     * @throws Exception
+     */
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ( (line = reader.readLine()) != null) {
+            sb.append(line + "\n");
+        }
+        is.close();
+        return sb.toString();
     }
 }

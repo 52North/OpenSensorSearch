@@ -41,6 +41,7 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sos.x10.DescribeSensorDocument;
 import net.opengis.sos.x10.DescribeSensorDocument.DescribeSensor;
 
+import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.SirConfigurator;
@@ -177,6 +178,14 @@ public abstract class Harvester implements Callable<ISirResponse> {
             response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
         }
         catch (OwsExceptionReport e) {
+            String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
+                    + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
+            log.error(errMsg);
+
+            failedSensorsP.put(serviceSpecificSensorId, e.getMessage());
+            response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
+        }
+        catch (HttpException e) {
             String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
                     + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
             log.error(errMsg);

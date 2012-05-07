@@ -33,13 +33,16 @@ import net.opengis.ows.x11.VersionType;
 import net.opengis.sos.x10.GetCapabilitiesDocument;
 import net.opengis.sos.x10.GetCapabilitiesDocument.GetCapabilities;
 
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.SirConfigurator;
@@ -58,7 +61,7 @@ public class Client {
 
     private static final String GET_METHOD = "GET";
 
-    private static final String HTML_TAG_IN_RESPONSE = "<html>";
+    // private static final String HTML_TAG_IN_RESPONSE = "<html>";
 
     private static Logger log = LoggerFactory.getLogger(Client.class);
 
@@ -68,9 +71,11 @@ public class Client {
 
     private static final String REQUEST_CONTENT_TYPE = "text/xml";
 
-    private static final String SYSTEM_PROPERTY_PROXY_HOST = "http.proxyHost";
+    private static final int CONNECTION_TIMEOUT = 1000 * 30;
 
-    private static final String SYSTEM_PROPERTY_PROXY_PORT = "http.proxyPort";
+    // private static final String SYSTEM_PROPERTY_PROXY_HOST = "http.proxyHost";
+
+    // private static final String SYSTEM_PROPERTY_PROXY_PORT = "http.proxyPort";
 
     private static String createGetCapabilities(String serviceType) {
         if (serviceType.equals(SirConstants.SOS_SERVICE_TYPE)) {
@@ -107,34 +112,40 @@ public class Client {
             log.debug("Sending request (first 100 characters): "
                     + request.substring(0, Math.min(request.length(), 100)));
 
-        // create and set up HttpClient
-        HttpClient httpClient = new HttpClient();
-        String host = System.getProperty(SYSTEM_PROPERTY_PROXY_HOST);
-        String port = System.getProperty(SYSTEM_PROPERTY_PROXY_PORT);
-        if (host != null && host.length() > 0 && port != null && port.length() > 0) {
-            int portNumber = Integer.parseInt(port);
-            HostConfiguration hostConfig = new HostConfiguration();
-            hostConfig.setProxy(host, portNumber);
-            httpClient.setHostConfiguration(hostConfig);
-        }
+        HttpClient client = new DefaultHttpClient();
+        // configure timeout to handle really slow servers
+        HttpParams params = client.getParams();
+        HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
+        HttpConnectionParams.setSoTimeout(params, CONNECTION_TIMEOUT);
+        
+        HttpRequestBase method = null;
 
-        HttpMethodBase method = null;
+        // log.debug("Executing request: " + request);
+        // String host = System.getProperty(SYSTEM_PROPERTY_PROXY_HOST);
+        // String port = System.getProperty(SYSTEM_PROPERTY_PROXY_PORT);
+        // if (host != null && host.length() > 0 && port != null && port.length() > 0) {
+        // int portNumber = Integer.parseInt(port);
+        // HostConfiguration hostConfig = new HostConfiguration();
+        // hostConfig.setProxy(host, portNumber);
+        // httpClient.setHostConfiguration(hostConfig);
+        // }
+        // HttpMethodBase method = null;
 
         if (requestMethod.equals(GET_METHOD)) {
             if (log.isDebugEnabled())
                 log.debug("Client connecting via GET to " + uri);
-            GetMethod getMethod = new GetMethod(uri.toString());
-            if (request != null && !request.isEmpty())
-                getMethod.setQueryString(request);
 
-            method = getMethod;
+            HttpGet get = new HttpGet(request);
+            method = get;
         }
         else if (requestMethod.equals(POST_METHOD)) {
             if (log.isDebugEnabled())
                 log.debug("Client connecting via POST to " + uri);
-            PostMethod postMethod = new PostMethod(uri.toString());
+            HttpPost postMethod = new HttpPost(uri.toString());
 
-            postMethod.setRequestEntity(new StringRequestEntity(request, REQUEST_CONTENT_TYPE, REQUEST_CONTENT_CHARSET));
+            // postMethod.setRequestEntity(new StringRequestEntity(request, REQUEST_CONTENT_TYPE,
+            // REQUEST_CONTENT_CHARSET));
+            postMethod.setEntity(new StringEntity(request, REQUEST_CONTENT_TYPE, REQUEST_CONTENT_CHARSET));
 
             method = postMethod;
         }
@@ -142,48 +153,33 @@ public class Client {
             throw new IllegalArgumentException("requestMethod not supported!");
         }
 
-        String responseString = "";
         try {
-            httpClient.executeMethod(method);
-        }
-        catch (Exception e) {
-            log.error("Error executing method on httpClient.", e);
-            responseString = e.getMessage();
+            HttpResponse httpResponse = client.execute(method);
 
-            return new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", responseString).getDocument();
-        }
-
-        XmlObject response = null;
-        try {
-            responseString = new String(method.getResponseBody());
-
-            response = XmlObject.Factory.parse(responseString);
+            XmlObject responseObject = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
+            return responseObject;
         }
         catch (XmlException e) {
             log.error("Error parsing response.", e);
 
-            if (responseString.contains(HTML_TAG_IN_RESPONSE)) {
-                log.error("Received HTML!\n" + responseString + "\n");
-            }
+            // TODO add handling to identify HTML response
+            // if (responseString.contains(HTML_TAG_IN_RESPONSE)) {
+            // log.error("Received HTML!\n" + responseString + "\n");
+            // }
 
-            OwsExceptionReport er = new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                                           "Client.doSend()",
-                                                           "Could not parse response (received via " + requestMethod
-                                                                   + ") to the request " + request + "\n\n\n"
-                                                                   + Tools.getStackTrace(e)
-                                                                   + "\n\nRESPONSE STRING:\n<![CDATA[" + responseString
-                                                                   + "]]>");
+            String msg = "Could not parse response (received via " + requestMethod + ") to the request " + request
+                    + "\n\n\n" + Tools.getStackTrace(e);
+            // msg = msg + "\n\nRESPONSE STRING:\n<![CDATA[" + responseObject.xmlText() + "]]>";
+
+            OwsExceptionReport er = new OwsExceptionReport(ExceptionCode.NoApplicableCode, "Client.doSend()", msg);
             return er.getDocument();
         }
-
-        return response;
+        catch (Exception e) {
+            log.error("Error executing method on httpClient.", e);
+            return new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", e.getMessage()).getDocument();
+        }
     }
 
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
     private static URI getSirURI() throws OwsExceptionReport {
         try {
             return SirConfigurator.getInstance().getServiceUrl().toURI();
@@ -262,8 +258,9 @@ public class Client {
      * @return
      * @throws IOException
      * @throws OwsExceptionReport
+     * @throws HttpException
      */
-    public static String sendPostRequest(String request) throws IOException, OwsExceptionReport {
+    public static String sendPostRequest(String request) throws IOException, OwsExceptionReport, HttpException {
         URI sirURI = getSirURI();
         return sendPostRequest(request, sirURI);
     }
@@ -344,8 +341,9 @@ public class Client {
      * @return
      * @throws IOException
      * @throws OwsExceptionReport
+     * @throws HttpException
      */
-    public static XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport {
+    public static XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport, HttpException {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + request);
         URI sirURI = getSirURI();

@@ -27,12 +27,10 @@ package org.n52.sir;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,7 +50,6 @@ import org.n52.sir.opensearch.OpenSearchConfigurator;
 import org.n52.sir.opensearch.OpenSearchConstants;
 import org.n52.sir.opensearch.RequestDismantler;
 import org.n52.sir.opensearch.RssListener;
-import org.n52.sir.opensearch.Tools;
 import org.n52.sir.opensearch.XmlListener;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
@@ -61,7 +58,6 @@ import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirSearchSensorResponse;
 import org.n52.sir.util.XmlTools;
-import org.n52.sir.util.ext.GeoLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -33,7 +33,7 @@ import java.util.Collection;
 import net.opengis.ows.ExceptionReportDocument;
 import net.opengis.ows.x11.SectionsType;
 
-import org.apache.commons.httpclient.HttpException;
+import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;

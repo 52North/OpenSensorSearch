@@ -33,10 +33,6 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirService;
@@ -54,6 +50,10 @@ import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class JsonListener implements IOpenSearchListener {
 
     private static final Logger log = LoggerFactory.getLogger(JsonListener.class);
@@ -69,9 +69,8 @@ public class JsonListener implements IOpenSearchListener {
     public JsonListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
-        
+
         this.mapper = MapperFactory.getMapper();
-        this.mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
     }
 
     @Override
@@ -140,7 +139,9 @@ public class JsonListener implements IOpenSearchListener {
             SirBoundingBox b = d.getBoundingBox();
             BoundingBox bbox = new BoundingBox(b.getEast(), b.getSouth(), b.getWest(), b.getNorth());
             bbox.setSrid(b.getSrid());
-            SensorDescription sd = new SensorDescription(d.getSensorDescriptionURL(), Tools.extractDescriptionText(d), bbox);
+            SensorDescription sd = new SensorDescription(d.getSensorDescriptionURL(),
+                                                         Tools.extractDescriptionText(d),
+                                                         bbox);
             sre.setSensorDescription(sd);
 
             result.addResult(sre);

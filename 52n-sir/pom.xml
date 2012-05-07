@@ -8,7 +8,7 @@
 	<name>SIR</name>
 	<description>52North Sensor Instance Registry</description>
 	<packaging>war</packaging>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.5.1</version>
 
 	<url>http://52north.org/communities/sensorweb/incubation/discovery/</url>
 	<inceptionYear>2012</inceptionYear>

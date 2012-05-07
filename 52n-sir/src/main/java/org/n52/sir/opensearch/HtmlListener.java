@@ -586,6 +586,14 @@ public class HtmlListener implements IOpenSearchListener {
         // AJAX?)
         try {
             caps = Client.requestCapabilities(serviceReference.getService().getType(), url.toURI());
+
+            if (caps instanceof ExceptionReportDocument) {
+                log.debug("Got ExceptionReportDocument as response!\n\n" + caps.xmlText());
+                return null;
+            }
+            
+            this.capabilitiesCache.put(url, caps);
+            this.capabilitiesCacheAge.put(url, new Date());
         }
         catch (OwsExceptionReport e) {
             log.error("Could not get service capabilities.", e);
@@ -596,10 +604,7 @@ public class HtmlListener implements IOpenSearchListener {
             return null;
         }
 
-        this.capabilitiesCache.put(url, caps);
-        this.capabilitiesCacheAge.put(url, new Date());
-
-        return caps;
+        return this.capabilitiesCache.get(url);
     }
 
 }

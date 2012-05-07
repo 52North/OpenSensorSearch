@@ -24,11 +24,11 @@
 
 package org.n52.sir.json;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class Deserialize {
 
@@ -49,7 +49,7 @@ public class Deserialize {
     @Before
     public void setUp() throws Exception {
         this.mapper = MapperFactory.getMapper();
-        this.mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+        this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     @Test

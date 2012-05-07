@@ -24,11 +24,16 @@
 
 package org.n52.sir.json;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class MapperFactory {
 
     private static ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    }
 
     public static ObjectMapper getMapper() {
         return mapper;

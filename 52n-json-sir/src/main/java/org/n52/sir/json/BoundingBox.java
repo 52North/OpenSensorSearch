@@ -24,7 +24,8 @@
 
 package org.n52.sir.json;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @JsonIgnoreProperties({"lowerCornerPoint", "upperCornerPoint", "center"})
 public class BoundingBox {

@@ -26,10 +26,10 @@ package org.n52.sir.json;
 
 import java.io.ByteArrayOutputStream;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SerializeService {
 
@@ -39,7 +39,6 @@ public class SerializeService {
     @Before
     public void setUp() throws Exception {
         this.mapper = MapperFactory.getMapper();
-        this.mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
         this.baos = new ByteArrayOutputStream();
     }
 

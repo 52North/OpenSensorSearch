@@ -8,7 +8,7 @@
 	<name>SIR</name>
 	<description>52North Sensor Instance Registry</description>
 	<packaging>war</packaging>
-	<version>0.5.1</version>
+	<version>0.5.2</version>
 
 	<url>http://52north.org/communities/sensorweb/incubation/discovery/</url>
 	<inceptionYear>2012</inceptionYear>
@@ -57,7 +57,7 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>https://52north.org/bugzilla/</url>
+		<url>https://bugzilla.52north.org/</url>
 	</issueManagement>
 
 	<licenses>
@@ -85,7 +85,7 @@
 
 	<profiles>
 		<profile>
-			<id>dev</id>
+			<id>sir.dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -98,11 +98,11 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>deploy</id>
+			<id>sir.deploy</id>
 			<properties>
 			<!-- add these to your settings.xml file to ensure passwords are not uploaded to SCM:
 				<profile>
-					<id>deploy</id>
+					<id>sir.deploy</id>
 					<properties>
 						<sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server>
 						<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user>
@@ -146,9 +146,6 @@
 				<version>2.2</version>
 
 				<configuration>
-					<!-- <filters>
-						<filter>src/main/config/config.properties</filter>
-					</filters> -->
 					<!-- have to explicitly add resources and target paths if I want to do filtering on different resources -->
 					<!-- http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
 					<webResources>

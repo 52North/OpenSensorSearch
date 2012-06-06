@@ -27,7 +27,7 @@ package org.n52.ar.layar;
 import java.io.IOException;
 import java.net.URI;
 
-import org.codehaus.jackson.JsonGenerator;
+import com.fasterxml.jackson.core.JsonGenerator;
 
 /**
  * 
@@ -44,8 +44,8 @@ public class LayarAction {
 
     public void toJSON(final JsonGenerator generator) throws IOException {
         generator.writeStartObject();
-        generator.writeStringField("uri", uri.toString());
-        generator.writeStringField("label", label);
+        generator.writeStringField("uri", this.uri.toString());
+        generator.writeStringField("label", this.label);
         generator.writeEndObject();
     }
 }

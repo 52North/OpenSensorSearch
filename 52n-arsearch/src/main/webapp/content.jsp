@@ -69,7 +69,7 @@
 </ul>
 
 <p class="infotext">
-	Latitude: <span id="lat">0.00</span> Longitude: <span id="lon">0.00</span>
+	Latitude: <span id="lat">0.00</span> | Longitude: <span id="lon">0.00</span>
 </p>
 
 <p class="infotext">${project.build.finalName}

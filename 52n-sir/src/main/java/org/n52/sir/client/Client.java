@@ -73,10 +73,6 @@ public class Client {
 
     private static final int CONNECTION_TIMEOUT = 1000 * 30;
 
-    // private static final String SYSTEM_PROPERTY_PROXY_HOST = "http.proxyHost";
-
-    // private static final String SYSTEM_PROPERTY_PROXY_PORT = "http.proxyPort";
-
     private static String createGetCapabilities(String serviceType) {
         if (serviceType.equals(SirConstants.SOS_SERVICE_TYPE)) {
             GetCapabilitiesDocument gcdoc = GetCapabilitiesDocument.Factory.newInstance();
@@ -119,17 +115,6 @@ public class Client {
         HttpConnectionParams.setSoTimeout(params, CONNECTION_TIMEOUT);
         
         HttpRequestBase method = null;
-
-        // log.debug("Executing request: " + request);
-        // String host = System.getProperty(SYSTEM_PROPERTY_PROXY_HOST);
-        // String port = System.getProperty(SYSTEM_PROPERTY_PROXY_PORT);
-        // if (host != null && host.length() > 0 && port != null && port.length() > 0) {
-        // int portNumber = Integer.parseInt(port);
-        // HostConfiguration hostConfig = new HostConfiguration();
-        // hostConfig.setProxy(host, portNumber);
-        // httpClient.setHostConfiguration(hostConfig);
-        // }
-        // HttpMethodBase method = null;
 
         if (requestMethod.equals(GET_METHOD)) {
             if (log.isDebugEnabled())

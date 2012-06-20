@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 	<version>0.5.2</version>
 
-	<url>http://52north.org/communities/sensorweb/incubation/discovery/</url>
+	<url>http://52north.org/communities/sensorweb/discovery/</url>
 	<inceptionYear>2012</inceptionYear>
 
 	<organization>

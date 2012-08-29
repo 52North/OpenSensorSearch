@@ -38,9 +38,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
  */
 public class LayarAction {
     
-    public URI uri;
-    
     public String label;
+    
+    public URI uri;
 
     public void toJSON(final JsonGenerator generator) throws IOException {
         generator.writeStartObject();

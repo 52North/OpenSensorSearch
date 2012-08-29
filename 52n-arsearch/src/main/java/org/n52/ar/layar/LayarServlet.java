@@ -25,79 +25,62 @@
 package org.n52.ar.layar;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.n52.sir.json.MapperFactory;
-import org.n52.sir.json.SearchResult;
+import org.n52.ar.SirCallbackServlet;
+import org.n52.ar.SirPOI;
 import org.n52.sir.json.SearchResultElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
  * 
  * @author <a href="mailto:d.nuest@52north.org">Daniel Nüst</a>
  */
-public class LayarServlet extends HttpServlet {
+public class LayarServlet extends SirCallbackServlet {
+
+    private static Logger log = LoggerFactory.getLogger(LayarServlet.class);
+
+    private static final String REQUEST_FORMAT = "application/json";
 
     /**
      * 
      */
     private static final long serialVersionUID = 3747559074882272526L;
 
-    private static final Object REQUEST_FORMAT = "application/json";
-
-    private static Logger log = LoggerFactory.getLogger(LayarServlet.class);
-
-    private String sirURL;
-
-    private String layerName = "geoviquasensorsearch";
-
     private JsonFactory factory;
 
-    private ObjectMapper mapper;
-
-    private String url;
+    private String layerName = "geoviquasensorsearch";
 
     public LayarServlet() {
         log.debug("NEW {}", this);
     }
 
     @Override
-    public void init(ServletConfig servletConfig) throws ServletException {
-        super.init(servletConfig);
+    protected SirPOI createPOI(SearchResultElement sre) {
+        Hotspot h = new Hotspot();
+        // poi.actions
+        // poi.alt = calculate altitude?`
+        // poi.attribution
+        h.description = sre.getSensorDescription().getText();
+        // poi.distance = calculate?
+        h.id = sre.getSensorIdInSir();
+        // poi.imageURL
+        double[] latLon = sre.getSensorDescription().getBoundingBox().getCenter();
+        h.lat = latLon[0];
+        h.lon = latLon[1];
+        h.title = sre.getSensorDescription().getUrl();
 
-        String sirURLParam = getServletConfig().getInitParameter("sirURL");
-        if (sirURLParam != null) {
-            this.sirURL = sirURLParam;
-        }
-        String urlParam = getServletContext().getInitParameter("url");
-        if (urlParam != null) {
-            this.url = urlParam;
-        }   
-
-        this.mapper = MapperFactory.getMapper();
-        this.factory = new JsonFactory();
-
-        log.info("Initialized " + this);
+        return h;
     }
 
     /**
@@ -174,9 +157,16 @@ public class LayarServlet extends HttpServlet {
         JsonGenerator generator = this.factory.createJsonGenerator(response.getWriter());
         generator.useDefaultPrettyPrinter();
 
+        // query SIR
         try {
-            Collection<Hotspot> hotspots = querySIR(center, radius);
-            layarResponse.hotspots = hotspots;
+            Collection<SirPOI> pois = querySIR(center, radius, REQUEST_FORMAT);
+
+            for (SirPOI sirPOI : pois) {
+                if (sirPOI instanceof Hotspot) {
+                    Hotspot h = (Hotspot) sirPOI;
+                    layarResponse.hotspots.add(h);
+                }
+            }
         }
         catch (Exception e) {
             log.error("Error querying SIR.", e);
@@ -193,83 +183,16 @@ public class LayarServlet extends HttpServlet {
         response.flushBuffer();
     }
 
-    /**
-     * 
-     * @param center
-     * @param radius
-     * @return
-     * @throws IOException
-     * @throws JsonMappingException
-     * @throws JsonParseException
-     */
-    private Collection<Hotspot> querySIR(double[] center, float radius) throws JsonParseException,
-            JsonMappingException,
-            IOException {
-        List<Hotspot> hotspots = new ArrayList<Hotspot>();
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(this.sirURL);
-        sb.append("?q=");
-
-        // TODO use keyword entered by user
-        // sb.append("muenster");
-
-        sb.append("&httpAccept=");
-        sb.append(REQUEST_FORMAT);
-
-        // append location
-        sb.append("&lat=");
-        sb.append(center[0]);
-        sb.append("&lon=");
-        sb.append(center[1]);
-        sb.append("&radius=");
-        sb.append(radius);
-
-        String request = sb.toString();
-        log.info("Requesting {}", request);
-
-        DefaultHttpClient client = new DefaultHttpClient();
-
-        HttpGet get = new HttpGet(request);
-
-        HttpResponse response = client.execute(get);
-        InputStream responseStream = response.getEntity().getContent();
-        int responseCode = response.getStatusLine().getStatusCode();
-        log.debug("Response Code: " + responseCode);
-
-        SearchResult result = this.mapper.readValue(responseStream, SearchResult.class);
-        log.debug("Got {} search results.", Integer.valueOf(result.getResults().size()));
-
-        // convert search result to a list of AugmentedPOIs
-        Collection<SearchResultElement> results = result.getResults();
-        for (SearchResultElement sre : results) {
-            Hotspot h = new Hotspot();
-            // poi.actions
-            // poi.alt = calculate altitude?`
-            // poi.attribution
-            h.description = sre.getSensorDescription().getText();
-            // poi.distance = calculate?
-            h.id = sre.getSensorIdInSir();
-            // poi.imageURL
-            double[] latLon = sre.getSensorDescription().getBoundingBox().getCenter();
-            h.lat = latLon[0];
-            h.lon = latLon[1];
-            h.title = sre.getSensorDescription().getUrl();
-
-            hotspots.add(h);
-        }
-
-        responseStream.close();
-        client = null;
-
-        return hotspots;
-    }
-
-    public String getUrl() {
-        return this.url;
-    }
-
     public String getLayerName() {
         return this.layerName;
+    }
+
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        super.init(servletConfig);
+
+        this.factory = new JsonFactory();
+
+        log.info("Initialized " + this);
     }
 }

@@ -27,6 +27,8 @@ package org.n52.ar.layar;
 import java.net.URL;
 import java.util.List;
 
+import org.n52.ar.SirPOI;
+
 /**
  * 
  * @author Daniel
@@ -34,7 +36,7 @@ import java.util.List;
  * http://layar.com/documentation/browser/api/getpois-response/hotspots/
  * 
  */
-public class Hotspot {
+public class Hotspot extends SirPOI {
     
     public List<LayarAction> actions;
     

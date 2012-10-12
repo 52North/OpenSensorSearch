@@ -66,6 +66,8 @@ function load() {
 function update() {
 	radius = document.getElementById("radius").value;
 	layarURL = document.getElementById("layarURL").innerHTML;
+	junaioURL = document.getElementById("junaioURL").innerHTML;
+	wikitudeURL = document.getElementById("wikitudeURL").innerHTML;
 
 	if (currentLocation != null) {
 		lat = currentLocation.coords.latitude;
@@ -79,6 +81,18 @@ function update() {
 				+ "&userId=ed48067cda8e1b985dbb8ff3653a2da4fd490a37"
 				+ "&layerName=geoviquasensorsearch" + "&radius=" + radius
 				+ "&lat=" + lat + "&lon=" + lon;
+
+		var junaio_geo_url = junaioURL + "?" + "countryCode=IN"
+				+ "&action=refresh"
+				+ "&userId=ed48067cda8e1b985dbb8ff3653a2da4fd490a37"
+				+ "&layerName=geoviquasensorsearch" + "&p=" + radius + "&m="
+				+ 30 + "&l=" + lat + "," + lon;
+
+		var wikitude_geo_url = wikitudeURL + "?" + "&latitude=" + lat
+				+ "&longitude=" + lon;
+
 		document.getElementById("layar_link").href = layar_geo_url;
+		document.getElementById("junaio_link").href = junaio_geo_url;
+		document.getElementById("wikitude_link").href = wikitude_geo_url;
 	}
 }

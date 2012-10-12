@@ -21,27 +21,28 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
-
-package org.n52.ar.layar;
-
-import java.net.URL;
-import java.util.List;
+package org.n52.ar.junaio;
 
 import org.n52.ar.SirPOI;
 
 /**
  * 
- * @author Daniel
- * 
- *         http://layar.com/documentation/browser/api/getpois-response/hotspots/
- * 
+ * @author Arne de Wall
+ *
  */
-public class Hotspot extends SirPOI {
+public class JunaioPOI extends SirPOI {
 
-	public List<LayarAction> actions;
-
-	public String attribution;
-
-	public double distance;
-
+	void appendXML(StringBuilder sb){
+    	sb.append("<object id=\"" + id + "\">");
+    	sb.append("<title><![CDATA[" + title + "]]></title>");
+    	sb.append("<location>");
+    	sb.append("<lat>" + lat + "</lat>");
+    	sb.append("<lon>" + lon + "</lon>");
+    	sb.append("<alt>" + 0 + "</alt>");
+    	sb.append("</location>");
+    	sb.append("<popup>");
+    	sb.append("<description><![CDATA[" + description + "]]></description>");
+    	sb.append("</popup>");
+    	sb.append("</object>");
+	}
 }

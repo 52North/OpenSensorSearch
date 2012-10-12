@@ -21,27 +21,29 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
-
-package org.n52.ar.layar;
-
-import java.net.URL;
-import java.util.List;
+package org.n52.ar.wikitude;
 
 import org.n52.ar.SirPOI;
 
 /**
  * 
- * @author Daniel
- * 
- *         http://layar.com/documentation/browser/api/getpois-response/hotspots/
- * 
+ * @author Arne de Wall
+ *
  */
-public class Hotspot extends SirPOI {
+public class WikitudePOI extends SirPOI { 
 
-	public List<LayarAction> actions;
+	void appendARML(StringBuilder sb) {
+		sb.append("<Placemark id=\"" + id + "\">");
 
-	public String attribution;
+		sb.append("<ar:provider>52North</ar:provider>");
+		sb.append("<name><![CDATA[" + title + "]]></name>");
+		sb.append("<description><![CDATA[" + description + "]]></description>");
 
-	public double distance;
+		sb.append("<Point>");
+		sb.append("<coordinates>" + lat + "," + lon + "," + alt
+				+ "</coordinates>");
+		sb.append("</Point>");
 
+		sb.append("</Placemark>");
+	}
 }

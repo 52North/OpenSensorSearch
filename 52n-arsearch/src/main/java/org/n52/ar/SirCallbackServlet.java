@@ -49,6 +49,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class SirCallbackServlet extends HttpServlet {
 
+	protected static final String CONTENT_TYPE = "application/json";
+	protected static final String CONTENT_TYPE_XML = "application/xml";
+	
     private static final String INIT_PARAM_SIR_URL = "sirURL";
 
     private static final String INIT_PARAM_URL = "url";
@@ -92,6 +95,8 @@ public abstract class SirCallbackServlet extends HttpServlet {
 
         this.mapper = MapperFactory.getMapper();
     }
+    
+    
 
     /**
      * 
@@ -144,7 +149,6 @@ public abstract class SirCallbackServlet extends HttpServlet {
         Collection<SearchResultElement> results = result.getResults();
         for (SearchResultElement sre : results) {
             SirPOI p = createPOI(sre);
-
             pois.add(p);
         }
 

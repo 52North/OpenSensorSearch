@@ -25,6 +25,10 @@
 package org.n52.ar.junaio;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -34,16 +38,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.n52.ar.SirCallbackServlet;
 import org.n52.ar.SirPOI;
 import org.n52.sir.json.SearchResultElement;
+import org.n52.sir.json.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonFactory;
 
 /**
  * 
  * 
- * @author <a href="mailto:d.nuest@52north.org">Daniel Nüst</a>
+ * @author Arne de Wall
  */
 public class JunaioServlet extends SirCallbackServlet {
 
+	
+	private String layerName = "139554";
     /**
      * 
      */
@@ -57,8 +66,24 @@ public class JunaioServlet extends SirCallbackServlet {
 
     @Override
     protected SirPOI createPOI(SearchResultElement sre) {
-        // TODO implement
-        return null;
+        JunaioPOI p = new JunaioPOI();
+        
+		ArrayList<ServiceReference> references = (ArrayList<ServiceReference>) sre
+				.getServiceReferences();
+		p.title = references.get(0).getServiceSpecificSensorId();
+		
+        p.id = sre.getSensorIdInSir();
+        
+        // location paramters
+        double[] latLon = sre.getSensorDescription().getBoundingBox().getCenter();
+        p.lat = latLon[0];
+        p.lon = latLon[1];
+        p.alt = 0;
+        
+        // Description 
+        p.description = sre.getSensorDescription().getText();
+        
+        return p;
     }
 
     /**
@@ -70,21 +95,61 @@ public class JunaioServlet extends SirCallbackServlet {
         log.debug("User-agent={}", userAgent);
         
         // TODO implement callback URL
+        double latitude = 51.965344, longitude = 7.600003;
         
-        // get parameters
-
+        // get location parameters
+        String lParameter = request.getParameter("l");
+        if(lParameter != null){
+        	StringTokenizer st = new StringTokenizer(lParameter, ",");
+        	latitude = Double.parseDouble(st.nextToken());
+        	longitude = Double.parseDouble(st.nextToken());
+        }
+        double[] center = new double[]{latitude, longitude};
+        
+        float radius = 10000;
+        // get radius
+        String pParameter = request.getParameter("p");
+        if(pParameter != null){
+        	radius = Float.parseFloat(pParameter);
+        }
+         
+        int poiMaximum = Integer.MAX_VALUE;
+        // get poi maximum
+        String mProperty = request.getParameter("m");
+        if(mProperty != null){
+        	poiMaximum = Integer.parseInt(mProperty);
+        }
+        
+        response.setContentType("application/xml; charset=utf-8");
         // query SIR
-        
-        // write response
+        Collection<SirPOI> pois = querySIR(center, radius, CONTENT_TYPE);
 
-        // clean up
+        // write response
+        Writer out = response.getWriter();
+        response.setContentType(CONTENT_TYPE_XML);
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        sb.append("<results>");
+        
+        for(SirPOI p : pois)
+        	((JunaioPOI) p).appendXML(sb); 
+        
+        sb.append("</results>");
+        out.write(sb.toString());
+       
+        // clean up 
         response.flushBuffer();
     }
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
-        super.init(servletConfig);
+        super.init(servletConfig); 
 
         log.info("Initialized " + this);
+    }
+    
+    public String getLayerName(){
+    	return layerName; 
     }
 }

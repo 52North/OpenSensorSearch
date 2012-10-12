@@ -24,11 +24,35 @@
 
 package org.n52.ar;
 
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 
- * @author Daniel Nüst (d.nuest@52north.org)
+ * @author Arne de Wall
  * 
  */
 public class SirPOI {
-    // tagging class to be used for common properties of the different POIs in the future.
+
+	public String id;
+	public String title;
+	public String description;
+
+	public double alt;
+	public double lat;
+	public double lon;
+
+	public URL imageURL;
+	
+	public void matchUniqueID(String text){
+		
+		Pattern pattern = Pattern.compile("[uniqueID]+:\\s([a-zA-Z-:]+)");
+		Matcher m = pattern.matcher(text);
+		if(m.find()){
+			title = m.group(1);
+		} else {
+//			throw new Exception("No Match");
+		}
+	}
 }

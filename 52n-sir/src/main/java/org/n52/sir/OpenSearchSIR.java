@@ -138,6 +138,7 @@ public class OpenSearchSIR extends HttpServlet {
         if (searchText == null || searchText.isEmpty()) {
             searchResult = new ArrayList<SirSearchResultElement>();
             searchText = "";
+            log.debug("No search text given.");
         }
 
         // see if Geo Extension is used:
@@ -145,8 +146,11 @@ public class OpenSearchSIR extends HttpServlet {
         SirBoundingBox boundingBox = null;
         if (this.dismantler.requestContainsGeoParameters(req)) {
             boundingBox = this.dismantler.getBoundingBox(req);
-            log.debug("Searching with bounding box {} from queary {}", boundingBox, req.getQueryString());
+            log.info("Geo extension used: bounding box {} from query {} (source: {})",
+                     new Object[] {boundingBox, req.getQueryString(), req.getRemoteAddr()});
         }
+        else
+            log.info("Searching with query {} (source: {})", new Object[] {req.getQueryString(), req.getRemoteAddr()});
 
         // TODO see if time extension is used:
         // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
@@ -156,6 +160,7 @@ public class OpenSearchSIR extends HttpServlet {
             Calendar[] startEnd = this.dismantler.getStartEnd(req);
             start = startEnd[0];
             end = startEnd[1];
+            log.debug("Time extension used: {} - {}", start, end);
         }
 
         // create search criteria

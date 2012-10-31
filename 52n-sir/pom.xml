@@ -358,6 +358,27 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
+
+		<repository>
+			<id>n52-releases</id>
+			<name>52n Releases</name>
+			<url>http://52north.org/maven/repo/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>n52-snapshots</id>
+			<name>52n Snapshots</name>
+			<url>http://52north.org/maven/repo/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
 	</repositories>
 
 	<dependencies>
@@ -510,12 +531,6 @@
 			<version>2.1</version>
 			<scope>compile</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-json-sir</artifactId>
-			<version>0.0.1</version>
-		</dependency>
 		
 		<!-- RSS support -->
 		<dependency>
@@ -532,6 +547,11 @@
 		</dependency>
 
 		<!-- TODO move these to 52N online repo -->
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-json-sir</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-wrs-v101</artifactId>

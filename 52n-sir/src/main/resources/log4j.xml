@@ -42,7 +42,7 @@
 		<level value="DEBUG" />
 		<appender-ref ref="SirRoFiAppender" />
 	</logger>
-	
+
 	<logger name="org.n52.sir.ds">
 		<level value="WARN" />
 	</logger>
@@ -52,8 +52,9 @@
 		<appender-ref ref="SirCatalogRoFiAppender" />
 	</logger>
 
+	<!-- this will go to catalina.out -->
 	<root>
-		<priority value="DEBUG" />
+		<priority value="ERROR" />
 		<appender-ref ref="SirConsoleAppender" />
 	</root>
 

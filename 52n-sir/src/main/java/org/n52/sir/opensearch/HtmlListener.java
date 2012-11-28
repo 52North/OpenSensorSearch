@@ -53,6 +53,7 @@ import net.opengis.swe.x101.PhenomenonPropertyType;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.ext.ExternalToolsException;
+import org.n52.ext.link.AccessLinkCompressor;
 import org.n52.ext.link.AccessLinkFactory;
 import org.n52.ext.link.sos.TimeRange;
 import org.n52.ext.link.sos.TimeSeriesParameters;
@@ -62,6 +63,8 @@ import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
+import org.n52.sir.opensearch.instanceSupport.PegelOnlineCPM;
+import org.n52.sir.opensearch.instanceSupport.WeatherSosCPM;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
@@ -128,6 +131,8 @@ public class HtmlListener implements IOpenSearchListener {
 
     private String timeseriesImage = "/SIR/images/timeseries.png";
 
+    private HashMap<String, ICapabilitiesPermalinkMapper> mappers;
+
     public HtmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
@@ -135,6 +140,18 @@ public class HtmlListener implements IOpenSearchListener {
         this.capabilitiesCache = new HashMap<URL, XmlObject>();
         this.capabilitiesCacheAge = new HashMap<URL, Date>();
         this.capabilitiesErrorCache = new HashMap<URL, XmlObject>();
+
+        this.mappers = new HashMap<String, ICapabilitiesPermalinkMapper>();
+        
+        // TODO change this to service loaders
+        ICapabilitiesPermalinkMapper cpm1 = new PegelOnlineCPM();
+        add(cpm1);
+        ICapabilitiesPermalinkMapper cpm2 = new WeatherSosCPM();
+        add(cpm2);
+    }
+
+    private void add(ICapabilitiesPermalinkMapper cpm1) {
+        mappers.put(cpm1.getServiceURL(), cpm1);
     }
 
     /**
@@ -253,6 +270,9 @@ public class HtmlListener implements IOpenSearchListener {
      * @throws UnsupportedEncodingException
      */
     private String createHTMLEntry(SirSearchResultElement sirSearchResultElement, String searchText) throws UnsupportedEncodingException {
+        log.debug("Creating HTML response snipped for search result with SIR ID "
+                + sirSearchResultElement.getSensorIdInSir());
+
         StringBuilder sb = new StringBuilder();
         SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
         sb.append("<div class=\"result-header\">");
@@ -293,10 +313,13 @@ public class HtmlListener implements IOpenSearchListener {
             catch (ExternalToolsException e) {
                 log.warn("Could not create permalink for " + reference, e);
             }
+            catch (IllegalArgumentException e) {
+                log.warn("Could not create permalink for " + reference, e);
+            }
 
             if (permalinkUrl != null) {
                 sb.append("<span style=\"float: right;\"><a href=\"");
-                sb.append(permalinkUrl);
+                sb.append(Tools.encode(permalinkUrl));
                 sb.append("\" title=\"");
                 sb.append(this.openTimeSeries);
                 sb.append("\">");
@@ -540,7 +563,7 @@ public class HtmlListener implements IOpenSearchListener {
                 Date end = c.getTime();
                 c.add(Calendar.DAY_OF_MONTH, -7); // 7 days
                 Date start = c.getTime();
-                DateFormat df = new SimpleDateFormat("YYYY-MM-DD'T'HH:MM:SS");
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:MM:SS");
                 TimeRange timeRange = TimeRange.createTimeRange(df.format(start), df.format(end));
 
                 // alternative: use time range from offering
@@ -554,25 +577,36 @@ public class HtmlListener implements IOpenSearchListener {
                 // }
                 // System.out.println(time);
 
-                //
-                for (ReferenceType ref : featureOfInterestArray) {
-                    String hrefFoi = ref.xgetHref().getStringValue();
-                    String feature = hrefFoi;
+                // ISSUE: there is no matching between feature of interest and observed property, therefore I
+                // can only hack this for a few services atm
+                if (serviceCapabilitiesSupported(serviceURL)) {
+                    ICapabilitiesPermalinkMapper mapper = getCPMapper(serviceURL);
 
-                    for (PhenomenonPropertyType phen : observedPropertyArray) {
-                        String hrefPhen = phen.xgetHref().getStringValue();
-                        String phenomenon = hrefPhen;
+                    for (ReferenceType ref : featureOfInterestArray) {
+                        String feature = ref.xgetHref().getStringValue();
 
-                        TimeSeriesParameters tsp = new TimeSeriesParameters(serviceURL,
-                                                                            serviceVersion,
-                                                                            offering,
-                                                                            procedure,
-                                                                            phenomenon,
-                                                                            feature);
-                        tsp.setTimeRange(timeRange);
-                        log.debug("Adding new time series to permalink: {}", tsp);
-                        builder.addParameters(tsp);
+                        if (mapper.isValidCombinationProcFoi(procedure, feature)) {
+                            for (PhenomenonPropertyType phen : observedPropertyArray) {
+                                String phenomenon = phen.xgetHref().getStringValue();
+
+                                TimeSeriesParameters tsp = new TimeSeriesParameters(serviceURL,
+                                                                                    serviceVersion,
+                                                                                    offering,
+                                                                                    procedure,
+                                                                                    phenomenon,
+                                                                                    feature);
+                                tsp.setTimeRange(timeRange);
+                                log.debug("Adding new time series to permalink: {}", tsp);
+                                builder.addParameters(tsp);
+                            }
+                        }
                     }
+                }
+                else {
+                    log.warn("Service " + serviceURL
+                            + " is not supported and therefore no permalinks generated because of the unknown "
+                            + "mapping from obs prop to foi which could generate very large and useless permalinks.");
+                    return null;
                 }
             }
         }
@@ -582,14 +616,19 @@ public class HtmlListener implements IOpenSearchListener {
         accessURL = linkFactory.createAccessURL(this.conf.getPermalinkBaseURL());
 
         if (accessURL.length() > OpenSearchConstants.MAX_GET_URL_CHARACTER_COUNT && this.conf.isCompressPermalinks()) {
-            // PermalinkCompressor compressor = new PermalinkCompressor(builder);
-
-            // accessURL = linkFactory.createCompressedAccessURL(this.permalinkBaseURL);
+            AccessLinkCompressor compressor;
         }
 
-        // accessURL = generator.uncompressAccessURL(accessURL);
-
         return accessURL;
+    }
+
+    private ICapabilitiesPermalinkMapper getCPMapper(String serviceURL) {
+        return mappers.get(serviceURL);
+    }
+
+    private boolean serviceCapabilitiesSupported(String serviceURL) {
+        // TODO implement a service loader mechanism to support several services
+        return this.mappers.containsKey(serviceURL);
     }
 
     /**
@@ -598,6 +637,8 @@ public class HtmlListener implements IOpenSearchListener {
      * @return
      */
     private XmlObject updateCache(SirServiceReference serviceReference, URL url) {
+        log.info("Updating chache for service reverence " + serviceReference);
+
         XmlObject caps;
         // TODO use threads for this, then update the interface one after the other (loader image and
         // AJAX?)

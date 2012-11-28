@@ -29,8 +29,8 @@
 	<!-- Service Identification -->
 	<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
 	<ows:ServiceIdentification>
-		<ows:Title>WWU SIR</ows:Title>
-		<ows:Abstract>SIR Server Operated by WWU</ows:Abstract>
+		<ows:Title>52N SIR</ows:Title>
+		<ows:Abstract>SIR Server Operated by 52°North GmbH</ows:Abstract>
 		<ows:ServiceType codeSpace="http://52north.org/sir/0.3.2">OGC:SIR</ows:ServiceType>
 		<ows:ServiceTypeVersion>0.0.0</ows:ServiceTypeVersion>
 		<ows:Fees>NONE</ows:Fees>
@@ -40,7 +40,7 @@
 	<!-- Provider Description -->
 	<!--~~~~~~~~~~~~~~~~~~~~~~-->
 	<ows:ServiceProvider>
-		<ows:ProviderName>WWU</ows:ProviderName>
+		<ows:ProviderName>52°North GmbH</ows:ProviderName>
 		<ows:ProviderSite xlink:href="http://52north.org/discovery"/>
 		<ows:ServiceContact>
 			<ows:IndividualName>Simon Jirka</ows:IndividualName>

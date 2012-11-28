@@ -90,6 +90,11 @@ public class SirConstants {
      * 
      */
     public static final String SERVICE_VERSION_0_3_1 = "0.3.1";
+    
+    /**
+     * 
+     */
+    public static final String SERVICE_VERSION_0_3_2 = "0.3.2";
 
     /**
      * 

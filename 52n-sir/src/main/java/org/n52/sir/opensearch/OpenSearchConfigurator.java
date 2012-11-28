@@ -55,7 +55,8 @@ public class OpenSearchConfigurator {
 
     private String feedAuthor = "Open Sensor Search by 52°North";
 
-    private String permalinkBaseURL = "http://sensorweb.demo.52north.org/ThinSweClient2.0/Client.html";
+    // TODO move to external configuration file
+    private String permalinkBaseURL = "http://sensorweb.demo.52north.org/sensorwebclient-webapp-stable/";
 
     private SimpleDateFormat permalinkDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 

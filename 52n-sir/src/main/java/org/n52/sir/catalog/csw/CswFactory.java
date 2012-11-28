@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.catalog.csw;
 
 import java.io.FileReader;
@@ -46,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public class CswFactory implements ICatalogFactory {
 
     private static Logger log = LoggerFactory.getLogger(CswFactory.class);
-    
+
     private URL catalogUrl;
     private List<XmlObject> classificationInitDocs;
     private String[] classificationInitFiles;
@@ -58,14 +59,15 @@ public class CswFactory implements ICatalogFactory {
      * Create a CSW with the given URL.
      * 
      * @param catalogUrl
-     * @throws IOException 
-     * @throws XmlException 
+     * @throws IOException
+     * @throws XmlException
      */
-    public CswFactory(URL catalogUrl, String[] classificationInitFiles, String slotInitFile, Boolean doNotCheckCatalog) throws XmlException, IOException {
+    public CswFactory(URL catalogUrl, String[] classificationInitFiles, String slotInitFile, Boolean doNotCheckCatalog) throws XmlException,
+            IOException {
         this.catalogUrl = catalogUrl;
         this.classificationInitFiles = classificationInitFiles;
         this.slotInitFile = slotInitFile;
-        
+
         FileReader reader;
         XmlObject e;
         this.classificationInitDocs = new ArrayList<XmlObject>();
@@ -74,16 +76,16 @@ public class CswFactory implements ICatalogFactory {
             e = XmlObject.Factory.parse(reader);
             this.classificationInitDocs.add(e);
         }
-        
+
         reader = new FileReader(this.slotInitFile);
         this.slotInitDoc = XmlObject.Factory.parse(reader);
-        
+
         this.doNotCheck = doNotCheckCatalog.booleanValue();
-        
+
         reader.close();
         reader = null;
         e = null;
-        
+
         log.info("NEW " + this);
     }
 

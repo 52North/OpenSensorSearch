@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.util;
 
 import java.io.UnsupportedEncodingException;
@@ -75,7 +76,7 @@ public class ListenersTools {
     public static void checkVersionParameter(String version) throws OwsExceptionReport {
         String[] acceptedServiceVersions = SirConfigurator.getInstance().getAcceptedServiceVersions();
         List<String> versions = Arrays.asList(acceptedServiceVersions);
-        
+
         if (version == null || !versions.contains(version)) {
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,

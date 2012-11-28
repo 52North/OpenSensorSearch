@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.data;
 
 import java.util.ArrayList;
@@ -95,54 +96,60 @@ public class TestSensorFactory {
         this.intendedApplications.add("water gauge");
 
         this.availableKeywords = new HashMap<String, List<String>>();
-        this.availableKeywords.put("weather", Arrays.asList(new String[] {"weather station",
-                                                                          "precipitation",
-                                                                          "wind",
-                                                                          "wind speed",
-                                                                          "wind direction",
-                                                                          "temperature",
-                                                                          "surface pressure",
-                                                                          "precipitation",
-                                                                          "air pressure",
-                                                                          "rain",
-                                                                          "surface air temperature",
-                                                                          "climatology",
-                                                                          "humidity",
-                                                                          "sunshine"}));
-        this.availableKeywords.put("water gauge", Arrays.asList(new String[] {"water level",
-                                                                              "water gage",
-                                                                              "flood",
-                                                                              "warning system",
-                                                                              "weather",
-                                                                              "water",
-                                                                              "surface runoff",
-                                                                              "precipitation"}));
-        this.availableKeywords.put("air pollutant", Arrays.asList(new String[] {"air quality",
-                                                                                "air pollution",
-                                                                                "public health",
-                                                                                "clean air",
-                                                                                "outdoor air pollution",
-                                                                                "primary pollutants",
-                                                                                "secondary pollutants",
-                                                                                "smog"}));
+        this.availableKeywords.put("weather",
+                                   Arrays.asList(new String[] {"weather station",
+                                                               "precipitation",
+                                                               "wind",
+                                                               "wind speed",
+                                                               "wind direction",
+                                                               "temperature",
+                                                               "surface pressure",
+                                                               "precipitation",
+                                                               "air pressure",
+                                                               "rain",
+                                                               "surface air temperature",
+                                                               "climatology",
+                                                               "humidity",
+                                                               "sunshine"}));
+        this.availableKeywords.put("water gauge",
+                                   Arrays.asList(new String[] {"water level",
+                                                               "water gage",
+                                                               "flood",
+                                                               "warning system",
+                                                               "weather",
+                                                               "water",
+                                                               "surface runoff",
+                                                               "precipitation"}));
+        this.availableKeywords.put("air pollutant",
+                                   Arrays.asList(new String[] {"air quality",
+                                                               "air pollution",
+                                                               "public health",
+                                                               "clean air",
+                                                               "outdoor air pollution",
+                                                               "primary pollutants",
+                                                               "secondary pollutants",
+                                                               "smog"}));
 
         this.availableSensorTypes = new HashMap<String, List<String>>();
-        this.availableSensorTypes.put("weather", Arrays.asList(new String[] {"weather station",
-                                                                             "private weather station",
-                                                                             "weather station",
-                                                                             "human observer",
-                                                                             "old guy with thermometer",
-                                                                             "weather station (fixed position)"}));
-        this.availableSensorTypes.put("water gauge", Arrays.asList(new String[] {"gauge station",
-                                                                                 "bridge pillar station",
-                                                                                 "reservoir (intake)",
-                                                                                 "reservoir (drain)",
-                                                                                 "river",
-                                                                                 "river gauge"}));
-        this.availableSensorTypes.put("air pollutant", Arrays.asList(new String[] {"mobile roadside station",
-                                                                                   "mechanical collector (active)",
-                                                                                   "diffusion tube",
-                                                                                   "optical analyser"}));
+        this.availableSensorTypes.put("weather",
+                                      Arrays.asList(new String[] {"weather station",
+                                                                  "private weather station",
+                                                                  "weather station",
+                                                                  "human observer",
+                                                                  "old guy with thermometer",
+                                                                  "weather station (fixed position)"}));
+        this.availableSensorTypes.put("water gauge",
+                                      Arrays.asList(new String[] {"gauge station",
+                                                                  "bridge pillar station",
+                                                                  "reservoir (intake)",
+                                                                  "reservoir (drain)",
+                                                                  "river",
+                                                                  "river gauge"}));
+        this.availableSensorTypes.put("air pollutant",
+                                      Arrays.asList(new String[] {"mobile roadside station",
+                                                                  "mechanical collector (active)",
+                                                                  "diffusion tube",
+                                                                  "optical analyser"}));
 
         this.availableInterfaces = new HashMap<String, List<String[]>>();
         // format: name, ServiceURL, ServiceType
@@ -181,25 +188,28 @@ public class TestSensorFactory {
         this.availableInterfaces.put("air pollutant", airPollutantInterfaces);
 
         this.availableInputs = new HashMap<String, List<String>>();
-        this.availableInputs.put("weather", Arrays.asList(new String[] {"wind",
-                                                                        "wind",
-                                                                        "precipitation",
-                                                                        "sunshine",
-                                                                        "temperature",
-                                                                        "temperature",
-                                                                        "temperature",
-                                                                        "cloud_webcam"}));
-        this.availableInputs.put("water gauge", Arrays.asList(new String[] {"water_level",
-                                                                            "water_level",
-                                                                            "water_level",
-                                                                            "river_level",
-                                                                            "webcam",
-                                                                            "current"}));
-        this.availableInputs.put("air pollutant", Arrays.asList(new String[] {"ozone",
-                                                                              "carbonMonoxide",
-                                                                              "carbonDioxide",
-                                                                              "particulates",
-                                                                              "nitrogenOxides"}));
+        this.availableInputs.put("weather",
+                                 Arrays.asList(new String[] {"wind",
+                                                             "wind",
+                                                             "precipitation",
+                                                             "sunshine",
+                                                             "temperature",
+                                                             "temperature",
+                                                             "temperature",
+                                                             "cloud_webcam"}));
+        this.availableInputs.put("water gauge",
+                                 Arrays.asList(new String[] {"water_level",
+                                                             "water_level",
+                                                             "water_level",
+                                                             "river_level",
+                                                             "webcam",
+                                                             "current"}));
+        this.availableInputs.put("air pollutant",
+                                 Arrays.asList(new String[] {"ozone",
+                                                             "carbonMonoxide",
+                                                             "carbonDioxide",
+                                                             "particulates",
+                                                             "nitrogenOxides"}));
 
         this.outputsForInputs = new HashMap<String, String[]>();
         this.outputsForInputs.put(OGC_PROPERTY_PREFIX + "wind", new String[] {"windSpeed", "windDirection"});
@@ -380,8 +390,8 @@ public class TestSensorFactory {
                 HashMap<String, String> currentInterface = new HashMap<String, String>();
                 currentInterface.put(OGC_INTERFACE_PREFIX + "ServiceURL", current[1]);
                 currentInterface.put(OGC_INTERFACE_PREFIX + "ServiceType", current[2]);
-                currentInterface.put(OGC_INTERFACE_PREFIX + "ServiceSpecificSensorID", current[0] + ":"
-                        + this.rand.nextInt(1000));
+                currentInterface.put(OGC_INTERFACE_PREFIX + "ServiceSpecificSensorID",
+                                     current[0] + ":" + this.rand.nextInt(1000));
                 interfaces.add(currentInterface);
             }
         }

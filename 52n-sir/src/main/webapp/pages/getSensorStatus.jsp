@@ -30,7 +30,7 @@
 
 <%@page import="org.n52.sir.client.Client"%>
 <%@page import="org.n52.sir.datastructure.SirSearchCriteria_Phenomenon"%>
-<%@page import="de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria"%>
+<%@page import="org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria"%>
 
 <jsp:useBean id="getSensorStatus"
 	class="org.n52.sir.client.GetSensorStatusBean" scope="page" />

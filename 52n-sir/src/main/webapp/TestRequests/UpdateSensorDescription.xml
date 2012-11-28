@@ -1,4 +1,4 @@
-<UpdateSensorDescriptionRequest service="SIR" version="0.3.0" xmlns="http://swsl.uni-muenster.de/sir" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+<UpdateSensorDescriptionRequest service="SIR" version="0.3.0" xmlns="http://52north.org/sir/0.3.2" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
 	<SensorDescriptionToBeUpdated>
 		<SensorIdentification>
 			<SensorIDInSIR>1</SensorIDInSIR>

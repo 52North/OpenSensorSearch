@@ -52,7 +52,7 @@ public class OpenSearchConfigurator {
     private boolean compressPermalinks = true;
 
     private String cssFile = "sir.css";
-    
+
     private String feedAuthor = "Open Sensor Search by 52°North";
 
     private String permalinkBaseURL = "http://sensorweb.demo.52north.org/ThinSweClient2.0/Client.html";

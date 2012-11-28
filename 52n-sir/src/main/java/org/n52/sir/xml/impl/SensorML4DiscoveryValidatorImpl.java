@@ -332,6 +332,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
                 /*
                  * (non-Javadoc)
+                 * 
                  * @see java.lang.Runnable#run()
                  */
                 @Override
@@ -353,7 +354,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
                     log.info("Created XSL file for validation: " + tempXSLFile);
                 }
             });
-            
+
             if (source == null) {
                 log.debug("Created Stream Source of svrl xsl file.");
                 source = new StreamSource(tempXSLFile);

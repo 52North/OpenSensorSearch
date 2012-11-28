@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.DescribeSensorRequestDocument;
-import de.uniMuenster.swsl.sir.DescribeSensorRequestDocument.DescribeSensorRequest;
+import org.x52North.sir.x032.DescribeSensorRequestDocument;
+import org.x52North.sir.x032.DescribeSensorRequestDocument.DescribeSensorRequest;
 
 /**
  * @author Jan Schulte, Daniel Nüst

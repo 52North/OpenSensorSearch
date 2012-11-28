@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.catalog.csw;
 
 import java.util.ArrayList;
@@ -178,7 +179,7 @@ public class CswCatalog implements ICatalog {
      * @return
      */
     private String appendRandomSuffix(String oldId) {
-        int postfix = 10000 + rand .nextInt(10000);
+        int postfix = 10000 + rand.nextInt(10000);
         String newId = oldId.concat(":random_").concat(Integer.toString(postfix));
         return newId;
     }

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.data;
 
 import java.util.Arrays;
@@ -75,7 +76,7 @@ public class TestSensor {
     private Collection<Component> components;
 
     private String locationId;
-    
+
     /**
      * @param gmlDescription
      * @param keywords
@@ -144,7 +145,8 @@ public class TestSensor {
     }
 
     /**
-     * @param locationId the locationId to set
+     * @param locationId
+     *        the locationId to set
      */
     public void setLocationId(String locationId) {
         this.locationId = locationId;

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.decode.impl;
 
 import java.net.MalformedURLException;
@@ -75,34 +76,33 @@ import org.n52.sir.request.SirUpdateSensorDescriptionRequest;
 import org.n52.sir.util.GMLDateParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sir.CancelSensorStatusSubscriptionRequestDocument;
-import de.uniMuenster.swsl.sir.ConnectToCatalogRequestDocument;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted.ServiceInfo;
-import de.uniMuenster.swsl.sir.DescribeSensorRequestDocument;
-import de.uniMuenster.swsl.sir.DisconnectFromCatalogRequestDocument;
-import de.uniMuenster.swsl.sir.GetCapabilitiesDocument;
-import de.uniMuenster.swsl.sir.GetCapabilitiesDocument.GetCapabilities;
-import de.uniMuenster.swsl.sir.GetSensorStatusRequestDocument;
-import de.uniMuenster.swsl.sir.HarvestServiceRequestDocument;
-import de.uniMuenster.swsl.sir.HarvestServiceRequestDocument.HarvestServiceRequest;
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument;
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument.InsertSensorInfoRequest.InfoToBeInserted;
-import de.uniMuenster.swsl.sir.InsertSensorStatusRequestDocument;
-import de.uniMuenster.swsl.sir.PropertyFilterDocument.PropertyFilter;
-import de.uniMuenster.swsl.sir.RenewSensorStatusSubscriptionRequestDocument;
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria;
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon;
-import de.uniMuenster.swsl.sir.SearchSensorRequestDocument;
-import de.uniMuenster.swsl.sir.SensorIdentificationDocument.SensorIdentification;
-import de.uniMuenster.swsl.sir.ServiceCriteriaDocument.ServiceCriteria;
-import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
-import de.uniMuenster.swsl.sir.StatusDocument.Status;
-import de.uniMuenster.swsl.sir.SubscribeSensorStatusRequestDocument;
-import de.uniMuenster.swsl.sir.UpdateSensorDescriptionRequestDocument;
-import de.uniMuenster.swsl.sir.UpdateSensorDescriptionRequestDocument.UpdateSensorDescriptionRequest.SensorDescriptionToBeUpdated;
+import org.x52North.sir.x032.CancelSensorStatusSubscriptionRequestDocument;
+import org.x52North.sir.x032.ConnectToCatalogRequestDocument;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted.ServiceInfo;
+import org.x52North.sir.x032.DescribeSensorRequestDocument;
+import org.x52North.sir.x032.DisconnectFromCatalogRequestDocument;
+import org.x52North.sir.x032.GetCapabilitiesDocument;
+import org.x52North.sir.x032.GetCapabilitiesDocument.GetCapabilities;
+import org.x52North.sir.x032.GetSensorStatusRequestDocument;
+import org.x52North.sir.x032.HarvestServiceRequestDocument;
+import org.x52North.sir.x032.HarvestServiceRequestDocument.HarvestServiceRequest;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument.InsertSensorInfoRequest.InfoToBeInserted;
+import org.x52North.sir.x032.InsertSensorStatusRequestDocument;
+import org.x52North.sir.x032.PropertyFilterDocument.PropertyFilter;
+import org.x52North.sir.x032.RenewSensorStatusSubscriptionRequestDocument;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon;
+import org.x52North.sir.x032.SearchSensorRequestDocument;
+import org.x52North.sir.x032.SensorIdentificationDocument.SensorIdentification;
+import org.x52North.sir.x032.ServiceCriteriaDocument.ServiceCriteria;
+import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
+import org.x52North.sir.x032.StatusDocument.Status;
+import org.x52North.sir.x032.SubscribeSensorStatusRequestDocument;
+import org.x52North.sir.x032.UpdateSensorDescriptionRequestDocument;
+import org.x52North.sir.x032.UpdateSensorDescriptionRequestDocument.UpdateSensorDescriptionRequest.SensorDescriptionToBeUpdated;
 
 public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
@@ -855,7 +855,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         catch (ParseException pe) {
             log.error("&lt;TimeInstantType&gt; has wrong format!");
             log.error(Calendar.getInstance().toString());
-            
+
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(ExceptionCode.InvalidRequest,
                                  "HttpPostRequestDecoder.decodeDescribeSensorRequest()",

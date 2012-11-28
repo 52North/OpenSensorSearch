@@ -123,7 +123,7 @@ public class XmlTools {
 
     private static final String SIR_NAMESPACE_PREFIX = "sir";
 
-    private static final String SIR_NAMESPACE_URI = "http://swsl.uni-muenster.de/sir";
+    private static final String SIR_NAMESPACE_URI = "http://52north.org/sir/0.3.2";
 
     public static final String SML_1_0_1_NAMESPACE_URI = "http://www.opengis.net/sensorML/1.0.1";
 

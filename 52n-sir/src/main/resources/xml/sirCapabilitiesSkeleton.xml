@@ -24,14 +24,14 @@
     visit the Free Software Foundation web page, http://www.fsf.org.
 
 -->
-<sir:Capabilities version="1.0.0" xmlns:sir="http://swsl.uni-muenster.de/sir" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd">
+<sir:Capabilities version="1.0.0" xmlns:sir="http://52north.org/sir/0.3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd">
 	<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
 	<!-- Service Identification -->
 	<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
 	<ows:ServiceIdentification>
 		<ows:Title>WWU SIR</ows:Title>
 		<ows:Abstract>SIR Server Operated by WWU</ows:Abstract>
-		<ows:ServiceType codeSpace="http://swsl.uni-muenster.de/sir">OGC:SIR</ows:ServiceType>
+		<ows:ServiceType codeSpace="http://52north.org/sir/0.3.2">OGC:SIR</ows:ServiceType>
 		<ows:ServiceTypeVersion>0.0.0</ows:ServiceTypeVersion>
 		<ows:Fees>NONE</ows:Fees>
 		<ows:AccessConstraints>NONE</ows:AccessConstraints>
@@ -41,7 +41,7 @@
 	<!--~~~~~~~~~~~~~~~~~~~~~~-->
 	<ows:ServiceProvider>
 		<ows:ProviderName>WWU</ows:ProviderName>
-		<ows:ProviderSite xlink:href="http://swsl.uni-muenster.de/sir"/>
+		<ows:ProviderSite xlink:href="http://52north.org/discovery"/>
 		<ows:ServiceContact>
 			<ows:IndividualName>Simon Jirka</ows:IndividualName>
 			<ows:ContactInfo>

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir;
 
 import junit.framework.Test;
@@ -29,7 +30,7 @@ import junit.framework.TestSuite;
 /**
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
- *
+ * 
  */
 public class SirTestSuite {
 

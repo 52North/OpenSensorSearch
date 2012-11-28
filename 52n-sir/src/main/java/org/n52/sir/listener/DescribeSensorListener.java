@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.listener;
 
 import org.apache.xmlbeans.XmlObject;
@@ -81,6 +82,7 @@ public class DescribeSensorListener implements ISirRequestListener {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
      */
     @Override
@@ -90,6 +92,7 @@ public class DescribeSensorListener implements ISirRequestListener {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request.AbstractSirRequest)
      */
     @Override

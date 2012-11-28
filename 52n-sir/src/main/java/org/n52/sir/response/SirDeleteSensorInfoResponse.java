@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.response;
 
 import java.io.ByteArrayOutputStream;
@@ -36,10 +37,9 @@ import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sir.DeleteSensorInfoResponseDocument;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoResponseDocument.DeleteSensorInfoResponse;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoResponseDocument.DeleteSensorInfoResponse.DeletedSensors;
+import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
+import org.x52North.sir.x032.DeleteSensorInfoResponseDocument.DeleteSensorInfoResponse;
+import org.x52North.sir.x032.DeleteSensorInfoResponseDocument.DeleteSensorInfoResponse.DeletedSensors;
 
 /**
  * @author Daniel Nüst

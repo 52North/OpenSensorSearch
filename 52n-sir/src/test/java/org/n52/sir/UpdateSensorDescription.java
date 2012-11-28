@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir;
 
 import java.io.File;
@@ -28,14 +29,13 @@ import java.io.File;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sir.client.Client;
-
-import de.uniMuenster.swsl.sir.UpdateSensorDescriptionRequestDocument;
-import de.uniMuenster.swsl.sir.UpdateSensorDescriptionResponseDocument;
+import org.x52North.sir.x032.UpdateSensorDescriptionRequestDocument;
+import org.x52North.sir.x032.UpdateSensorDescriptionResponseDocument;
 
 /**
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
- *
+ * 
  */
 public class UpdateSensorDescription extends SirTestCase {
 

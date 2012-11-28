@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.util.jobs.impl;
 
 import org.n52.sir.util.jobs.IJobScheduler;
@@ -48,6 +49,7 @@ public class JobSchedulerFactoryImpl implements IJobSchedulerFactory {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.n52.sir.util.jobs.IJobSchedulerFactory#getJobScheduler()
      */
     @Override
@@ -57,6 +59,7 @@ public class JobSchedulerFactoryImpl implements IJobSchedulerFactory {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

@@ -63,7 +63,7 @@ public class SPSServiceHarvester extends Harvester {
      * 
      * @param request
      * @param harvServDao
-     * @throws OwsExceptionReport 
+     * @throws OwsExceptionReport
      */
     public SPSServiceHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
         super(harvServDao);
@@ -95,7 +95,6 @@ public class SPSServiceHarvester extends Harvester {
             throw e;
         }
 
-        
         // add service to database
         String serviceID = this.harvServDao.addService(this.request.getServiceUrl(),
                                                        this.request.getServiceType().toUpperCase());

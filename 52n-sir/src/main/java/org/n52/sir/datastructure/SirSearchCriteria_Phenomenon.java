@@ -23,40 +23,39 @@
  */
 /*******************************************************************************
 
-by 52 North Initiative for Geospatial Open Source Software GmbH
+ by 52 North Initiative for Geospatial Open Source Software GmbH
 
-Contact: Andreas Wytzisk
-52 North Initiative for Geospatial Open Source Software GmbH
-Martin-Luther-King-Weg 24
-48155 Muenster, Germany
-info@52north.org
+ Contact: Andreas Wytzisk
+ 52 North Initiative for Geospatial Open Source Software GmbH
+ Martin-Luther-King-Weg 24
+ 48155 Muenster, Germany
+ info@52north.org
 
-This program is free software; you can redistribute and/or modify it under 
-the terms of the GNU General Public License version 2 as published by the 
-Free Software Foundation.
+ This program is free software; you can redistribute and/or modify it under 
+ the terms of the GNU General Public License version 2 as published by the 
+ Free Software Foundation.
 
-This program is distributed WITHOUT ANY WARRANTY; even without the implied
-WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-General Public License for more details.
+ This program is distributed WITHOUT ANY WARRANTY; even without the implied
+ WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with
-this program (see gnu-gpl v2.txt). If not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
-visit the Free Software Foundation web page, http://www.fsf.org.
+ You should have received a copy of the GNU General Public License along with
+ this program (see gnu-gpl v2.txt). If not, write to the Free Software
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+ visit the Free Software Foundation web page, http://www.fsf.org.
 
-Authors: Jan Schulte, Daniel Nüst
- 
+ Authors: Jan Schulte, Daniel Nüst
+
  ******************************************************************************/
 
 package org.n52.sir.datastructure;
 
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.util.Tools;
-
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon;
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters;
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType;
-import de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType.Enum;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.*;
 
 /**
  * 
@@ -65,6 +64,11 @@ import de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument.GetMatching
  */
 public class SirSearchCriteria_Phenomenon {
 
+    /**
+     * 
+     * @author Daniel Nüst
+     * 
+     */
     public enum SirMatchingType {
         EQUIVALENT_TYPE, SUB_TYPE, SUPER_TYPE;
 
@@ -74,7 +78,7 @@ public class SirSearchCriteria_Phenomenon {
          * @return
          * @throws OwsExceptionReport
          */
-        public static SirMatchingType getSirMatchingType(MatchingType.Enum schemaMatchingType) throws OwsExceptionReport {
+        public static SirMatchingType getSirMatchingType(MatchingType schemaMatchingType) throws OwsExceptionReport {
             if (schemaMatchingType.equals(MatchingType.SUPER_TYPE)) {
                 return SirMatchingType.SUPER_TYPE;
             }
@@ -120,15 +124,15 @@ public class SirSearchCriteria_Phenomenon {
          * @return
          * @throws OwsExceptionReport
          */
-        public static Enum getSorMatchingType(SirMatchingType sirMatchingType) throws OwsExceptionReport {
+        public static org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType.Enum getSorMatchingType(SirMatchingType sirMatchingType) throws OwsExceptionReport {
             if (sirMatchingType.equals(SirMatchingType.SUPER_TYPE)) {
-                return de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType.SUPER_TYPE;
+                return GetMatchingDefinitionsRequest.MatchingType.SUPER_TYPE;
             }
             else if (sirMatchingType.equals(SirMatchingType.EQUIVALENT_TYPE)) {
-                return de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType.EQUIVALENT_TYPE;
+                return GetMatchingDefinitionsRequest.MatchingType.EQUIVALENT_TYPE;
             }
             else if (sirMatchingType.equals(SirMatchingType.SUB_TYPE)) {
-                return de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType.SUB_TYPE;
+                return GetMatchingDefinitionsRequest.MatchingType.SUB_TYPE;
             }
 
             OwsExceptionReport er = new OwsExceptionReport();
@@ -143,15 +147,15 @@ public class SirSearchCriteria_Phenomenon {
          * @return
          * @throws OwsExceptionReport
          */
-        public de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType.Enum getSchemaMatchingType() throws OwsExceptionReport {
+        public org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType.Enum getSchemaMatchingType() throws OwsExceptionReport {
             if (this.equals(SirMatchingType.SUPER_TYPE)) {
-                return MatchingType.SUPER_TYPE;
+                return org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType.SUPER_TYPE;
             }
             else if (this.equals(SirMatchingType.EQUIVALENT_TYPE)) {
-                return MatchingType.EQUIVALENT_TYPE;
+                return org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType.EQUIVALENT_TYPE;
             }
             else if (this.equals(SirMatchingType.SUB_TYPE)) {
-                return MatchingType.SUB_TYPE;
+                return org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType.SUB_TYPE;
             }
 
             OwsExceptionReport er = new OwsExceptionReport();
@@ -183,7 +187,8 @@ public class SirSearchCriteria_Phenomenon {
             SORParameters sorParams = phenomenon.getSORParameters();
             this.sorUrl = sorParams.getSORURL();
             this.searchDepth = sorParams.getSearchDepth();
-            this.matchingType = SirMatchingType.getSirMatchingType(sorParams.getMatchingType());
+            // TODO test if this still works after schema overhaul
+            this.matchingType = SirMatchingType.getSirMatchingType(sorParams.getMatchingType().toString());
         }
     }
 

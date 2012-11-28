@@ -24,6 +24,7 @@
 /**
  * 
  */
+
 package org.n52.sir.rest;
 
 import org.restlet.resource.Get;
@@ -31,10 +32,10 @@ import org.restlet.resource.ServerResource;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
- *
+ * 
  */
 public class SensorResource extends ServerResource {
-    
+
     @Get
     public String represent() {
         return "hello, this is a sensor";

@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
 public class SOSServiceHarvester extends Harvester {
 
     private static final long HARVEST_SLEEP_MILLIS = 50;
-    
+
     private static final Logger log = LoggerFactory.getLogger(SOSServiceHarvester.class);
 
     private static final String OUTPUT_FORMAT_PARAMETER_NAME = "outputFormat";
@@ -73,7 +73,7 @@ public class SOSServiceHarvester extends Harvester {
      * 
      * @param request
      * @param harvServDao
-     * @throws OwsExceptionReport 
+     * @throws OwsExceptionReport
      */
     public SOSServiceHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
         super(harvServDao);
@@ -106,13 +106,14 @@ public class SOSServiceHarvester extends Harvester {
             log.error("No SOS capabilities document returned by service! Instead got:\n" + caps.xmlText());
             OwsExceptionReport e = new OwsExceptionReport(OwsExceptionReport.ExceptionCode.OperationNotSupported,
                                                           "root",
-                                                          "No SOS capabilities document returned by service! " + caps.xmlText());
+                                                          "No SOS capabilities document returned by service! "
+                                                                  + caps.xmlText());
             throw e;
         }
 
         // add service to database
         String serviceID = this.harvServDao.addService(this.request.getServiceUrl(),
-                                                   this.request.getServiceType().toUpperCase());
+                                                       this.request.getServiceType().toUpperCase());
         log.info("Added service to database with SERVICEID: " + serviceID);
 
         // change update sequence

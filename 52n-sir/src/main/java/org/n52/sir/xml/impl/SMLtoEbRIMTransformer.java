@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.xml.impl;
 
 import java.io.FileNotFoundException;
@@ -244,6 +245,7 @@ public class SMLtoEbRIMTransformer implements ITransformer {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.n52.sir.xml.ITransformer#transform(javax.xml.transform.Source)
      */
     @Override
@@ -266,7 +268,7 @@ public class SMLtoEbRIMTransformer implements ITransformer {
 
         if (log.isDebugEnabled())
             log.debug("Transformation Done.");
-        
+
         return output;
     }
 

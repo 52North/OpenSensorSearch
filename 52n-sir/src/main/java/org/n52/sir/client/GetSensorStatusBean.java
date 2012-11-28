@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import java.util.ArrayList;
@@ -38,17 +39,16 @@ import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon.SirMatchingType;
 import org.n52.sir.util.Tools;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.ConstraintDocument.Constraint;
-import de.uniMuenster.swsl.sir.ConstraintDocument.Constraint.IsBetween;
-import de.uniMuenster.swsl.sir.GetSensorStatusRequestDocument;
-import de.uniMuenster.swsl.sir.GetSensorStatusRequestDocument.GetSensorStatusRequest;
-import de.uniMuenster.swsl.sir.PropertyFilterDocument.PropertyFilter;
-import de.uniMuenster.swsl.sir.PropertyFilterDocument.PropertyFilter.PropertyConstraint;
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria;
-import de.uniMuenster.swsl.sir.SensorIdentificationDocument.SensorIdentification;
-import de.uniMuenster.swsl.sir.ServiceCriteriaDocument.ServiceCriteria;
-import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
+import org.x52North.sir.x032.ConstraintDocument.Constraint;
+import org.x52North.sir.x032.ConstraintDocument.Constraint.IsBetween;
+import org.x52North.sir.x032.GetSensorStatusRequestDocument;
+import org.x52North.sir.x032.GetSensorStatusRequestDocument.GetSensorStatusRequest;
+import org.x52North.sir.x032.PropertyFilterDocument.PropertyFilter;
+import org.x52North.sir.x032.PropertyFilterDocument.PropertyFilter.PropertyConstraint;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria;
+import org.x52North.sir.x032.SensorIdentificationDocument.SensorIdentification;
+import org.x52North.sir.x032.ServiceCriteriaDocument.ServiceCriteria;
+import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
 
 /**
  * @author Jan Schulte
@@ -214,15 +214,15 @@ public class GetSensorStatusBean extends AbstractBean {
                 timePosition.setStringValue(this.timePeriodStart);
                 searchCriteria.setTime(timeInstantType);
             }
-            
+
             // time period
             if ( !this.timePeriodStart.isEmpty() && !this.timePeriodEnd.isEmpty()) {
-                 TimePeriodType timePeriodType = TimePeriodType.Factory.newInstance();
-                 TimePositionType beginPosition = timePeriodType.addNewBeginPosition();
-                 TimePositionType endPosition = timePeriodType.addNewEndPosition();
-                 beginPosition.setStringValue(this.timePeriodStart);
-                 endPosition.setStringValue(this.timePeriodEnd);
-                 searchCriteria.setTime(timePeriodType);
+                TimePeriodType timePeriodType = TimePeriodType.Factory.newInstance();
+                TimePositionType beginPosition = timePeriodType.addNewBeginPosition();
+                TimePositionType endPosition = timePeriodType.addNewEndPosition();
+                beginPosition.setStringValue(this.timePeriodStart);
+                endPosition.setStringValue(this.timePeriodEnd);
+                searchCriteria.setTime(timePeriodType);
             }
         }
 

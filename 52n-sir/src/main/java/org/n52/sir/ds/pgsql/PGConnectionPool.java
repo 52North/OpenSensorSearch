@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -62,7 +63,7 @@ public class PGConnectionPool extends AbstractConnectionPool {
                             int maxConnections) {
 
         super(connection, user, password, driverName, initConnections, maxConnections);
-        
+
         log.info(" ***** Config File loaded successfully! ****** ");
     }
 

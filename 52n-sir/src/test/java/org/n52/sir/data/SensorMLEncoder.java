@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.data;
 
 import java.util.Collection;
@@ -127,8 +128,7 @@ public class SensorMLEncoder {
                                                                         SystemType.type);
 
         XmlCursor requestCursor = sml.newCursor();
-        requestCursor.setAttributeText(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME,
-                                       SMLConstants.SCHEMA_LOCATION);
+        requestCursor.setAttributeText(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME, SMLConstants.SCHEMA_LOCATION);
 
         /* DESCRIPTION */
         String descriptionString = sensor.getGmlDescription();
@@ -246,8 +246,8 @@ public class SensorMLEncoder {
         smlPosition.setName(POSITION_NAME);
         AbstractProcessType abstractProcessPos = smlPosition.addNewProcess();
         PositionType swePosition = (PositionType) abstractProcessPos.substitute(new QName(XmlTools.SWE_1_0_1_NAMESPACE_URI,
-                                                                                           "Position"),
-                                                                                 PositionType.type);
+                                                                                          "Position"),
+                                                                                PositionType.type);
         swePosition.setReferenceFrame(POSTION_REFERENCE_FRAME);
         VectorType vector = swePosition.addNewLocation().addNewVector();
         vector.setId(sensor.getLocationId());

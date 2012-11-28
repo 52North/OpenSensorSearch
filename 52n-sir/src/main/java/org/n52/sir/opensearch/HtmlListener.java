@@ -29,6 +29,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -43,17 +45,18 @@ import javax.servlet.http.HttpServletResponse;
 import net.opengis.gml.ReferenceType;
 import net.opengis.ows.ExceptionReportDocument;
 import net.opengis.sos.x10.CapabilitiesDocument;
-import net.opengis.sos.x10.ObservationOfferingType;
 import net.opengis.sos.x10.CapabilitiesDocument.Capabilities;
 import net.opengis.sos.x10.ContentsDocument.Contents;
 import net.opengis.sos.x10.ContentsDocument.Contents.ObservationOfferingList;
+import net.opengis.sos.x10.ObservationOfferingType;
 import net.opengis.swe.x101.PhenomenonPropertyType;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.api.access.AccessLinkFactory;
-import org.n52.api.access.client.TimeRange;
-import org.n52.api.access.client.TimeSeriesParameters;
-import org.n52.api.access.client.TimeSeriesPermalinkBuilder;
+import org.n52.ext.ExternalToolsException;
+import org.n52.ext.link.AccessLinkFactory;
+import org.n52.ext.link.sos.TimeRange;
+import org.n52.ext.link.sos.TimeSeriesParameters;
+import org.n52.ext.link.sos.TimeSeriesPermalinkBuilder;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -278,7 +281,7 @@ public class HtmlListener implements IOpenSearchListener {
             sb.append("</a>");
 
             // timeseries link
-            URL permalinkUrl = null;
+            String permalinkUrl = null;
 
             // permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
             try {
@@ -287,10 +290,13 @@ public class HtmlListener implements IOpenSearchListener {
             catch (MalformedURLException e) {
                 log.warn("Could not create permalink for " + reference, e);
             }
+            catch (ExternalToolsException e) {
+                log.warn("Could not create permalink for " + reference, e);
+            }
 
             if (permalinkUrl != null) {
                 sb.append("<span style=\"float: right;\"><a href=\"");
-                sb.append(Tools.encode(permalinkUrl.toExternalForm()));
+                sb.append(permalinkUrl);
                 sb.append("\" title=\"");
                 sb.append(this.openTimeSeries);
                 sb.append("\">");
@@ -485,8 +491,10 @@ public class HtmlListener implements IOpenSearchListener {
      * @param reference
      * @return
      * @throws MalformedURLException
+     * @throws ExternalToolsException
      */
-    private URL getTimeSeriesPermalink(SirSearchResultElement sirSearchResultElement, SirServiceReference reference) throws MalformedURLException {
+    private String getTimeSeriesPermalink(SirSearchResultElement sirSearchResultElement, SirServiceReference reference) throws MalformedURLException,
+            ExternalToolsException {
         ObservationOfferingType[] observationOfferingArray = getObservationOfferingArray(reference);
 
         if (observationOfferingArray == null) {
@@ -509,6 +517,9 @@ public class HtmlListener implements IOpenSearchListener {
             String procedure = reference.getServiceSpecificSensorId();
             String serviceURL = reference.getService().getUrl();
 
+            // TODO add service version to SirService
+            String serviceVersion = "1.0.0";
+
             boolean sensorFound = false;
             ReferenceType[] procedureArray = off.getProcedureArray();
             for (ReferenceType ref : procedureArray) {
@@ -525,8 +536,12 @@ public class HtmlListener implements IOpenSearchListener {
                 ReferenceType[] featureOfInterestArray = off.getFeatureOfInterestArray();
 
                 // use fixed time range that is not too long:
-                long now = System.currentTimeMillis();
-                TimeRange timeRange = TimeRange.createTimeRangeByMillis(now - 1000 * 60 * 60, now);
+                Calendar c = Calendar.getInstance();
+                Date end = c.getTime();
+                c.add(Calendar.DAY_OF_MONTH, -7); // 7 days
+                Date start = c.getTime();
+                DateFormat df = new SimpleDateFormat("YYYY-MM-DD'T'HH:MM:SS");
+                TimeRange timeRange = TimeRange.createTimeRange(df.format(start), df.format(end));
 
                 // alternative: use time range from offering
                 // TimeGeometricPrimitivePropertyType time = off.getTime();
@@ -539,6 +554,7 @@ public class HtmlListener implements IOpenSearchListener {
                 // }
                 // System.out.println(time);
 
+                //
                 for (ReferenceType ref : featureOfInterestArray) {
                     String hrefFoi = ref.xgetHref().getStringValue();
                     String feature = hrefFoi;
@@ -548,6 +564,7 @@ public class HtmlListener implements IOpenSearchListener {
                         String phenomenon = hrefPhen;
 
                         TimeSeriesParameters tsp = new TimeSeriesParameters(serviceURL,
+                                                                            serviceVersion,
                                                                             offering,
                                                                             procedure,
                                                                             phenomenon,
@@ -561,10 +578,10 @@ public class HtmlListener implements IOpenSearchListener {
         }
 
         AccessLinkFactory linkFactory = builder.build();
-        URL accessURL = linkFactory.createAccessURL(this.conf.getPermalinkBaseURL()); // generator.createAccessURL(this.permalinkBaseURL);
+        String accessURL;
+        accessURL = linkFactory.createAccessURL(this.conf.getPermalinkBaseURL());
 
-        if (accessURL.toExternalForm().length() > OpenSearchConstants.MAX_GET_URL_CHARACTER_COUNT
-                && this.conf.isCompressPermalinks()) {
+        if (accessURL.length() > OpenSearchConstants.MAX_GET_URL_CHARACTER_COUNT && this.conf.isCompressPermalinks()) {
             // PermalinkCompressor compressor = new PermalinkCompressor(builder);
 
             // accessURL = linkFactory.createCompressedAccessURL(this.permalinkBaseURL);
@@ -591,7 +608,7 @@ public class HtmlListener implements IOpenSearchListener {
                 log.debug("Got ExceptionReportDocument as response!\n\n" + caps.xmlText());
                 return null;
             }
-            
+
             this.capabilitiesCache.put(url, caps);
             this.capabilitiesCacheAge.put(url, new Date());
         }

@@ -453,7 +453,7 @@ public class SensorMLDecoder {
         String sIdent = createIdentifierString(identifications);
         if ( !sIdent.isEmpty())
             texts.add(sIdent);
-        
+
         // add classification to text field
         Classification[] classifications = system.getClassificationArray();
         String sClass = createClassificationString(classifications);

@@ -21,17 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
-import de.uniMuenster.swsl.sir.SensorIdentificationDocument.SensorIdentification;
-import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
+import org.x52North.sir.x032.SensorIdentificationDocument.SensorIdentification;
+import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
 
 /**
  * @author Jan Schulte, Daniel Nüst
@@ -71,8 +71,7 @@ public class DeleteSensorInfoBean extends AbstractBean {
         }
 
         // ServiceReference
-        else if ( !this.serviceType.isEmpty() && !this.serviceType.isEmpty()
-                && !this.serviceSpecificSensorID.isEmpty()) {
+        else if ( !this.serviceType.isEmpty() && !this.serviceType.isEmpty() && !this.serviceSpecificSensorID.isEmpty()) {
             ServiceReference serviceRef = sensorIdentification.addNewServiceReference();
             serviceRef.setServiceURL(this.serviceURL);
             serviceRef.setServiceType(this.serviceType);
@@ -89,7 +88,7 @@ public class DeleteSensorInfoBean extends AbstractBean {
         }
         // delete service reference
         else if ( !this.sensorIDinSIR.isEmpty()) {
-            if ( !this.deleteRefURL.isEmpty() && !this.deleteRefType .isEmpty() && !this.deleteRefSensorID.isEmpty()) {
+            if ( !this.deleteRefURL.isEmpty() && !this.deleteRefType.isEmpty() && !this.deleteRefSensorID.isEmpty()) {
                 ServiceReference serviceRef = infoToBeDeleted.addNewServiceInfo().addNewServiceReference();
                 serviceRef.setServiceURL(this.deleteRefURL);
                 serviceRef.setServiceType(this.deleteRefType);
@@ -162,28 +161,32 @@ public class DeleteSensorInfoBean extends AbstractBean {
     }
 
     /**
-     * @param deleteRefSensorID the deleteRefSensorID to set
+     * @param deleteRefSensorID
+     *        the deleteRefSensorID to set
      */
     public void setDeleteRefSensorID(String deleteRefSensorID) {
         this.deleteRefSensorID = deleteRefSensorID;
     }
 
     /**
-     * @param deleteRefType the deleteRefType to set
+     * @param deleteRefType
+     *        the deleteRefType to set
      */
     public void setDeleteRefType(String deleteRefType) {
         this.deleteRefType = deleteRefType;
     }
 
     /**
-     * @param deleteRefURL the deleteRefURL to set
+     * @param deleteRefURL
+     *        the deleteRefURL to set
      */
     public void setDeleteRefURL(String deleteRefURL) {
         this.deleteRefURL = deleteRefURL;
     }
 
     /**
-     * @param deleteSensor the deleteSensor to set
+     * @param deleteSensor
+     *        the deleteSensor to set
      */
     public void setDeleteSensor(boolean deleteSensor) {
         this.deleteSensor = deleteSensor;

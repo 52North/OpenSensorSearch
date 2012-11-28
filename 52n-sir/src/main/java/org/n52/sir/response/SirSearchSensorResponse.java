@@ -54,12 +54,11 @@ import org.n52.sir.util.XmlTools;
 import org.restlet.engine.io.WriterOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sir.SearchSensorResponseDocument;
-import de.uniMuenster.swsl.sir.SearchSensorResponseDocument.SearchSensorResponse;
-import de.uniMuenster.swsl.sir.SearchSensorResponseDocument.SearchSensorResponse.SearchResultElement;
-import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
-import de.uniMuenster.swsl.sir.SimpleSensorDescriptionDocument.SimpleSensorDescription;
+import org.x52North.sir.x032.SearchSensorResponseDocument;
+import org.x52North.sir.x032.SearchSensorResponseDocument.SearchSensorResponse;
+import org.x52North.sir.x032.SearchSensorResponseDocument.SearchSensorResponse.SearchResultElement;
+import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
+import org.x52North.sir.x032.SimpleSensorDescriptionDocument.SimpleSensorDescription;
 
 /**
  * @author Jan Schulte

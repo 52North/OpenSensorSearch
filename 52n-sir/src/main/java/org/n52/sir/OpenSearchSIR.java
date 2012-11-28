@@ -70,11 +70,13 @@ public class OpenSearchSIR extends HttpServlet {
     /**
      * The init parameter of the configFile
      */
+    @SuppressWarnings("unused")
     private static final String INIT_PARAM_CONFIG_FILE = "configFile";
 
     /**
      * The init parameter of the database configFile
      */
+    @SuppressWarnings("unused")
     private static final String INIT_PARAM_DBCONFIG_FILE = "dbConfigFile";
 
     /**

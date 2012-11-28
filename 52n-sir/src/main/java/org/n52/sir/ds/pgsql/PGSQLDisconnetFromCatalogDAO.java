@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -53,7 +54,7 @@ public class PGSQLDisconnetFromCatalogDAO implements IDisconnectFromCatalogDAO {
         String connectionID = null;
         Connection con = null;
         Statement stmt = null;
-        
+
         String deleteConnectionQuery = deleteConnectionQuery(cswURL);
         try {
             con = this.cpool.getConnection();
@@ -81,7 +82,7 @@ public class PGSQLDisconnetFromCatalogDAO implements IDisconnectFromCatalogDAO {
                     log.error("SQL Error.", e);
                 }
             }
-            
+
             if (con != null) {
                 this.cpool.returnConnection(con);
             }

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import net.opengis.ows.x11.AcceptVersionsType;
@@ -29,9 +30,8 @@ import net.opengis.ows.x11.SectionsType;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConfigurator.Section;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.GetCapabilitiesDocument;
-import de.uniMuenster.swsl.sir.GetCapabilitiesDocument.GetCapabilities;
+import org.x52North.sir.x032.GetCapabilitiesDocument;
+import org.x52North.sir.x032.GetCapabilitiesDocument.GetCapabilities;
 
 /**
  * @author Jan Schulte
@@ -60,14 +60,14 @@ public class GetCapabilitiesBean extends AbstractBean {
      */
     public GetCapabilitiesBean() {
         super();
-        
+
         StringBuilder sb = new StringBuilder();
         String[] acceptedServiceVersions = SirConfigurator.getInstance().getAcceptedServiceVersions();
         for (String s : acceptedServiceVersions) {
             sb.append(s);
             sb.append(",");
         }
-        sb.replace(sb.length()-1, sb.length(), "");
+        sb.replace(sb.length() - 1, sb.length(), "");
         this.acceptVersions = sb.toString();
     }
 

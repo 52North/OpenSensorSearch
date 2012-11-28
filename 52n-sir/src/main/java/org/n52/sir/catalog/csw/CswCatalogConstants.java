@@ -21,17 +21,17 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
-package org.n52.sir.catalog.csw;
 
+package org.n52.sir.catalog.csw;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
- *
+ * 
  */
 public class CswCatalogConstants {
-    
+
     public static final String CATALOG_SERVICE = "CSW";
-    
+
     public static final String CATALOG_SERVICE_NS = "http://www.opengis.net/cat/csw";
 
     public static final String CATALOG_VERSION = "2.0.2";

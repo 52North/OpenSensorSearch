@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import net.opengis.gml.x32.TimeInstantType;
@@ -30,11 +31,10 @@ import net.opengis.swe.x101.UomPropertyType;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.InsertSensorStatusRequestDocument;
-import de.uniMuenster.swsl.sir.InsertSensorStatusRequestDocument.InsertSensorStatusRequest;
-import de.uniMuenster.swsl.sir.StatusDescriptionDocument.StatusDescription;
-import de.uniMuenster.swsl.sir.StatusDocument.Status;
+import org.x52North.sir.x032.InsertSensorStatusRequestDocument;
+import org.x52North.sir.x032.InsertSensorStatusRequestDocument.InsertSensorStatusRequest;
+import org.x52North.sir.x032.StatusDescriptionDocument.StatusDescription;
+import org.x52North.sir.x032.StatusDocument.Status;
 
 /**
  * @author Jan Schulte

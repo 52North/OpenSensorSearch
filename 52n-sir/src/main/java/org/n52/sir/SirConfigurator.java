@@ -61,10 +61,8 @@ import org.n52.sir.xml.ITransformerFactory;
 import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sir.CapabilitiesDocument;
-import de.uniMuenster.swsl.sir.VersionAttribute;
-import de.uniMuenster.swsl.sir.VersionAttribute.Version.Enum;
+import org.x52North.sir.x032.VersionAttribute;
+import org.x52North.sor.x031.CapabilitiesDocument;
 
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
@@ -741,7 +739,7 @@ public class SirConfigurator {
      * 
      * @return
      */
-    public Enum getServiceVersionEnum() {
+    public org.x52North.sir.x032.VersionAttribute.Version.Enum getServiceVersionEnum() {
         String sv = getServiceVersion();
 
         if (sv.equals(SirConstants.SERVICE_VERSION_0_3_0))

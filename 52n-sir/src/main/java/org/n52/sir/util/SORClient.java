@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.util;
 
 import java.io.IOException;
@@ -42,13 +43,12 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sor.CapabilitiesDocument;
-import de.uniMuenster.swsl.sor.GetCapabilitiesDocument;
-import de.uniMuenster.swsl.sor.GetCapabilitiesDocument.GetCapabilities;
-import de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument;
-import de.uniMuenster.swsl.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
-import de.uniMuenster.swsl.sor.GetMatchingDefinitionsResponseDocument;
+import org.x52North.sor.x031.CapabilitiesDocument;
+import org.x52North.sor.x031.GetCapabilitiesDocument;
+import org.x52North.sor.x031.GetCapabilitiesDocument.GetCapabilities;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
+import org.x52North.sor.x031.GetMatchingDefinitionsResponseDocument;
 
 /**
  * @author Daniel Nüst

@@ -1,4 +1,4 @@
-<InsertSensorInfoRequest service="SIR" version="0.3.0" xmlns="http://swsl.uni-muenster.de/sir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+<InsertSensorInfoRequest service="SIR" version="0.3.0" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
 	<InfoToBeInserted>
 		<SensorDescription xmlns:ns="http://www.opengis.net/sensorML/1.0.1" xsi:type="ns:SystemType">
 			<gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>

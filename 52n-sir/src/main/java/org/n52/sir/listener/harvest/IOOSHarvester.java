@@ -881,7 +881,7 @@ public class IOOSHarvester extends FileHarvester {
                                                         descriptionUrl,
                                                         datatypes,
                                                         hasRecentValues);
-                
+
                 log.debug("Created new IOOSPlatform: {}", this.currentPlatform);
             }
         }

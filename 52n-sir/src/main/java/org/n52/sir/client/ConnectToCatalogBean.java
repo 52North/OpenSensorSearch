@@ -21,14 +21,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.ConnectToCatalogRequestDocument;
-import de.uniMuenster.swsl.sir.ConnectToCatalogRequestDocument.ConnectToCatalogRequest;
+import org.x52North.sir.x032.ConnectToCatalogRequestDocument;
+import org.x52North.sir.x032.ConnectToCatalogRequestDocument.ConnectToCatalogRequest;
 
 /**
  * @author Jan Schulte, Daniel Nüst
@@ -39,14 +39,14 @@ public class ConnectToCatalogBean extends AbstractBean {
     private String catalogUrl = "";
 
     private int pushInterval = 0;
-    
+
     /**
      * 
      */
     public ConnectToCatalogBean() {
-        // 
+        //
     }
-    
+
     /**
      * @param catalogUrl
      * @param pushInterval
@@ -64,7 +64,7 @@ public class ConnectToCatalogBean extends AbstractBean {
     @Override
     public void buildRequest() {
         this.responseString = "";
-        
+
         ConnectToCatalogRequestDocument requestDoc = ConnectToCatalogRequestDocument.Factory.newInstance();
         ConnectToCatalogRequest request = requestDoc.addNewConnectToCatalogRequest();
         request.setService(SirConstants.SERVICE_NAME);
@@ -83,9 +83,9 @@ public class ConnectToCatalogBean extends AbstractBean {
         if (this.pushInterval > 0) {
             request.setPushIntervalSeconds(this.pushInterval);
         }
-        
+
         XmlTools.addSirAndSensorMLSchemaLocation(request);
-        
+
         if (requestDoc.validate())
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
         else

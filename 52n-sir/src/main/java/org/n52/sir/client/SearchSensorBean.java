@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import java.util.ArrayList;
@@ -38,15 +39,14 @@ import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon.SirMatchingType;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.util.Tools;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria;
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon;
-import de.uniMuenster.swsl.sir.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters;
-import de.uniMuenster.swsl.sir.SearchSensorRequestDocument;
-import de.uniMuenster.swsl.sir.SearchSensorRequestDocument.SearchSensorRequest;
-import de.uniMuenster.swsl.sir.SensorIdentificationDocument.SensorIdentification;
-import de.uniMuenster.swsl.sir.ServiceCriteriaDocument.ServiceCriteria;
-import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon;
+import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters;
+import org.x52North.sir.x032.SearchSensorRequestDocument;
+import org.x52North.sir.x032.SearchSensorRequestDocument.SearchSensorRequest;
+import org.x52North.sir.x032.SensorIdentificationDocument.SensorIdentification;
+import org.x52North.sir.x032.ServiceCriteriaDocument.ServiceCriteria;
+import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
 
 /**
  * @author Jan Schulte
@@ -163,7 +163,8 @@ public class SearchSensorBean extends AbstractBean {
                 if (Tools.noneEmpty(new String[] {this.sorMatchingType, this.sorSearchDepth, this.sorUrl})) {
                     SORParameters sorParams = phen.addNewSORParameters();
                     try {
-                        sorParams.setMatchingType(SirMatchingType.getSirMatchingType(this.sorMatchingType).getSchemaMatchingType());
+                        SirMatchingType mt = SirMatchingType.getSirMatchingType(this.sorMatchingType);
+                        sorParams.setMatchingType(mt.getSchemaMatchingType());
                     }
                     catch (OwsExceptionReport e) {
                         this.requestString = e.getDocument().xmlText();

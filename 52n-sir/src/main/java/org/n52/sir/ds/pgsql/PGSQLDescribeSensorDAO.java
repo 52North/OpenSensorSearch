@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -108,7 +109,7 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
                     log.error("SQL Error.", e);
                 }
             }
-            
+
             if (con != null)
                 this.cpool.returnConnection(con);
         }

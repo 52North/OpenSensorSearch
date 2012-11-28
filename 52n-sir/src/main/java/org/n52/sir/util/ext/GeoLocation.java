@@ -3,6 +3,7 @@
  * 
  * Jan Philip Matuschek
  */
+
 package org.n52.sir.util.ext;
 
 /**
@@ -46,6 +47,7 @@ public class GeoLocation {
         result.checkBounds();
         return result;
     }
+
     /**
      * @param latitude
      *        the latitude, in radians.
@@ -61,6 +63,7 @@ public class GeoLocation {
         result.checkBounds();
         return result;
     }
+
     private double degLat; // latitude in degrees
     private double degLon; // longitude in degrees
 

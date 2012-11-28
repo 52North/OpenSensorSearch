@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir;
 
 import java.io.File;
@@ -28,10 +29,9 @@ import java.io.File;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sir.client.Client;
-
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
-import de.uniMuenster.swsl.sir.DeleteSensorInfoResponseDocument;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
+import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
 
 /**
  * 

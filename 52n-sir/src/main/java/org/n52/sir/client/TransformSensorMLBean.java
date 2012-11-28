@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import javax.xml.transform.TransformerException;
@@ -57,7 +58,7 @@ public class TransformSensorMLBean extends AbstractBean {
      */
     public void requestTransformation() {
         this.responseString = "";
-        
+
         ITransformer transformer = SirConfigurator.getInstance().getTransformerFactory().getSensorMLtoCatalogXMLTransformer();
 
         SensorMLDocument sml = null;

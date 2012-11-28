@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.response;
 
 import java.io.ByteArrayOutputStream;
@@ -37,13 +38,12 @@ import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sir.HarvestServiceResponseDocument;
-import de.uniMuenster.swsl.sir.HarvestServiceResponseDocument.HarvestServiceResponse;
-import de.uniMuenster.swsl.sir.HarvestServiceResponseDocument.HarvestServiceResponse.DeletedSensor;
-import de.uniMuenster.swsl.sir.HarvestServiceResponseDocument.HarvestServiceResponse.FailedSensor;
-import de.uniMuenster.swsl.sir.HarvestServiceResponseDocument.HarvestServiceResponse.InsertedSensor;
-import de.uniMuenster.swsl.sir.HarvestServiceResponseDocument.HarvestServiceResponse.UpdatedSensor;
+import org.x52North.sir.x032.HarvestServiceResponseDocument;
+import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse;
+import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.DeletedSensor;
+import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.FailedSensor;
+import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.InsertedSensor;
+import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.UpdatedSensor;
 
 /**
  * Internal response to a harvest service request

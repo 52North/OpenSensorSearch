@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.util.jobs.impl;
 
 import java.io.IOException;
@@ -200,6 +201,7 @@ public class TimerServlet extends GenericServlet {
 
     /*
      * (non-Javadoc)
+     * 
      * @see javax.servlet.GenericServlet#destroy()
      */
     @Override
@@ -208,7 +210,7 @@ public class TimerServlet extends GenericServlet {
         super.destroy();
         timer.cancel();
         timer = null;
-        
+
         log.info("destroyed.");
     }
 
@@ -225,13 +227,13 @@ public class TimerServlet extends GenericServlet {
                 ICatalog catalog = catFact.getCatalog();
                 this.catalogCache.put(conn.getCatalogURL().toURI(), catalog);
             }
-            
+
             return this.catalogCache.get(conn.getCatalogURL().toURI());
         }
         catch (URISyntaxException e) {
             log.error("URI", e);
         }
-        
+
         return null;
     }
 
@@ -356,9 +358,10 @@ public class TimerServlet extends GenericServlet {
 
         return properties;
     }
-    
+
     /*
      * (non-Javadoc)
+     * 
      * @see javax.servlet.GenericServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
      */
     @Override
@@ -399,6 +402,7 @@ public class TimerServlet extends GenericServlet {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

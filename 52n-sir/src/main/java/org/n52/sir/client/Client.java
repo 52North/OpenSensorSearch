@@ -113,7 +113,7 @@ public class Client {
         HttpParams params = client.getParams();
         HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
         HttpConnectionParams.setSoTimeout(params, CONNECTION_TIMEOUT);
-        
+
         HttpRequestBase method = null;
 
         if (requestMethod.equals(GET_METHOD)) {

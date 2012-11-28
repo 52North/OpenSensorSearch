@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.util.jobs.impl;
 
 import java.util.Arrays;
@@ -79,6 +80,7 @@ public class PushCatalogTask extends TimerTask {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.util.TimerTask#cancel()
      */
     @Override
@@ -89,6 +91,7 @@ public class PushCatalogTask extends TimerTask {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#finalize()
      */
     @Override
@@ -178,6 +181,7 @@ public class PushCatalogTask extends TimerTask {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override

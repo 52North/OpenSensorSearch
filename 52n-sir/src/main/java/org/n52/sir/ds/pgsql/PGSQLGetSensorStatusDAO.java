@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -70,7 +71,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
 
     private String bySearchCriteria(SirSearchCriteria searchCriteria) {
         StringBuffer query = new StringBuffer();
-        
+
         query.append("SELECT ");
         query.append(PGDAOConstants.status);
         query.append(".");
@@ -333,7 +334,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(".");
         query.append(PGDAOConstants.phenomeonIdOfSensPhen);
         query.append(")");
-        
+
         return query.toString();
     }
 
@@ -375,7 +376,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
 
     private String byServiceDescription(SirServiceReference servDesc) {
         StringBuilder query = new StringBuilder();
-        
+
         query.append("SELECT ");
         query.append(PGDAOConstants.status);
         query.append(".");
@@ -437,7 +438,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(".");
         query.append(PGDAOConstants.serviceId);
         query.append(")");
-        
+
         return query.toString();
     }
 
@@ -445,7 +446,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         ArrayList<SirStatusDescription> result = new ArrayList<SirStatusDescription>();
         Connection con = null;
         Statement stmt = null;
-        
+
         try {
             con = this.cpool.getConnection();
             stmt = con.createStatement();
@@ -494,12 +495,12 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
                     log.error("SQL Error.", e);
                 }
             }
-            
+
             if (con != null) {
                 this.cpool.returnConnection(con);
             }
         }
-        
+
         return result;
     }
 
@@ -674,13 +675,13 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(".");
         query.append(PGDAOConstants.time);
         query.append(";");
-        
+
         return query.toString();
     }
 
     private String propFilt(SirPropertyFilter propFilter) throws OwsExceptionReport {
         StringBuffer filter = new StringBuffer();
-        
+
         filter.append("(");
         filter.append("(");
         filter.append(PGDAOConstants.status);
@@ -779,7 +780,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
             filter.append(" (true) ");
         }
         filter.append(")");
-        
+
         return filter.toString();
     }
 }

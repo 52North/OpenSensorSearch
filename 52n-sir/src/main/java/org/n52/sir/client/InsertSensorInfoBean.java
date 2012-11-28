@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import net.opengis.sensorML.x101.AbstractProcessType;
@@ -32,11 +33,10 @@ import org.apache.xmlbeans.XmlException;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
-
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument;
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument.InsertSensorInfoRequest;
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument.InsertSensorInfoRequest.InfoToBeInserted;
-import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument.InsertSensorInfoRequest;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument.InsertSensorInfoRequest.InfoToBeInserted;
+import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
 
 /**
  * @author Jan Schulte, Daniel Nüst
@@ -143,7 +143,7 @@ public class InsertSensorInfoBean extends AbstractBean {
     public String getAddRefURL() {
         return this.addRefURL;
     }
-    
+
     /**
      * @return the sensorDescription
      */
@@ -180,21 +180,24 @@ public class InsertSensorInfoBean extends AbstractBean {
     }
 
     /**
-     * @param addRefSensorID the addRefSensorID to set
+     * @param addRefSensorID
+     *        the addRefSensorID to set
      */
     public void setAddRefSensorID(String addRefSensorID) {
         this.addRefSensorID = addRefSensorID;
     }
 
     /**
-     * @param addRefType the addRefType to set
+     * @param addRefType
+     *        the addRefType to set
      */
     public void setAddRefType(String addRefType) {
         this.addRefType = addRefType;
     }
 
     /**
-     * @param addRefURL the addRefURL to set
+     * @param addRefURL
+     *        the addRefURL to set
      */
     public void setAddRefURL(String addRefURL) {
         this.addRefURL = addRefURL;
@@ -217,21 +220,24 @@ public class InsertSensorInfoBean extends AbstractBean {
     }
 
     /**
-     * @param serviceInfosServiceSpecificSensorID the serviceInfosServiceSpecificSensorID to set
+     * @param serviceInfosServiceSpecificSensorID
+     *        the serviceInfosServiceSpecificSensorID to set
      */
     public void setServiceInfosServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
         this.serviceInfosServiceSpecificSensorID = serviceInfosServiceSpecificSensorID;
     }
 
     /**
-     * @param serviceInfosServiceType the serviceInfosServiceType to set
+     * @param serviceInfosServiceType
+     *        the serviceInfosServiceType to set
      */
     public void setServiceInfosServiceType(String serviceInfosServiceType) {
         this.serviceInfosServiceType = serviceInfosServiceType;
     }
 
     /**
-     * @param serviceInfosServiceURL the serviceInfosServiceURL to set
+     * @param serviceInfosServiceURL
+     *        the serviceInfosServiceURL to set
      */
     public void setServiceInfosServiceURL(String serviceInfosServiceURL) {
         this.serviceInfosServiceURL = serviceInfosServiceURL;

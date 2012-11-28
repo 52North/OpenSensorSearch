@@ -34,13 +34,13 @@ import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
 
 public interface IOpenSearchListener {
-    
+
     public void createResponse(HttpServletRequest req,
                                HttpServletResponse resp,
                                Collection<SirSearchResultElement> searchResult,
                                PrintWriter writer,
                                String searchText) throws OwsExceptionReport;
-    
+
     public String getMimeType();
 
     public String getName();

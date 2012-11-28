@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.data;
 
 import java.io.IOException;
@@ -48,25 +49,24 @@ import org.n52.sir.sml.SMLConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument;
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument.InsertSensorInfoRequest;
-import de.uniMuenster.swsl.sir.InsertSensorInfoRequestDocument.InsertSensorInfoRequest.InfoToBeInserted;
-import de.uniMuenster.swsl.sir.InsertSensorInfoResponseDocument;
-import de.uniMuenster.swsl.sir.InsertSensorInfoResponseDocument.InsertSensorInfoResponse;
-import de.uniMuenster.swsl.sir.ServiceReferenceDocument.ServiceReference;
-import de.uniMuenster.swsl.sir.VersionAttribute;
-import de.uniMuenster.swsl.sir.VersionAttribute.Version.Enum;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument.InsertSensorInfoRequest;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument.InsertSensorInfoRequest.InfoToBeInserted;
+import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
+import org.x52North.sir.x032.InsertSensorInfoResponseDocument.InsertSensorInfoResponse;
+import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
+import org.x52North.sir.x032.VersionAttribute;
+import org.x52North.sir.x032.VersionAttribute.Version.Enum;
 
 /**
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
- *
+ * 
  */
 @SuppressWarnings("unused")
 public class GeneratorClient {
 
-    private static final String SIR_INSERT_SENSOR_INFO_SCHEMA_LOCATION = "http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirInsertSensorInfo.xsd";
+    private static final String SIR_INSERT_SENSOR_INFO_SCHEMA_LOCATION = "http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirInsertSensorInfo.xsd";
 
     private static final String STRING_REQUEST_CHARACTER_ENCODING = "UTF-8";
 
@@ -85,7 +85,7 @@ public class GeneratorClient {
     private static DefaultHttpClient httpClient = new DefaultHttpClient();
 
     private static String genesisUrl = "http://giv-genesis.uni-muenster.de:8080/SIR/sir";
-    
+
     private static String localhostUrl = "http://localhost:8080/SIR/sir";
 
     /* actual varying parameters: */
@@ -176,8 +176,8 @@ public class GeneratorClient {
         request.setVersion(SERVICE_VERSION);
 
         XmlCursor requestCursor = request.newCursor();
-        requestCursor.setAttributeText(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME,
-                                       SIR_INSERT_SENSOR_INFO_SCHEMA_LOCATION + " " + SMLConstants.SCHEMA_LOCATION);
+        requestCursor.setAttributeText(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME, SIR_INSERT_SENSOR_INFO_SCHEMA_LOCATION
+                + " " + SMLConstants.SCHEMA_LOCATION);
 
         /* sensorInfo */
         for (TestSensor currentSensor : sensors) {
@@ -264,17 +264,17 @@ public class GeneratorClient {
             HttpException {
         HttpPost request = new HttpPost(sirURL);
         request.setEntity(new StringEntity(requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()),
-                                                        STRING_REQUEST_ENCODING,
-                                                        STRING_REQUEST_CHARACTER_ENCODING));
+                                           STRING_REQUEST_ENCODING,
+                                           STRING_REQUEST_CHARACTER_ENCODING));
 
-//        String host = System.getProperty(SYSTEM_PROPERTY_PROXY_HOST);
-//        String port = System.getProperty(SYSTEM_PROPERTY_PROXY_PORT);
-//        if (host != null && host.length() > 0 && port != null && port.length() > 0) {
-//            int portNumber = Integer.parseInt(port);
-//            HostConfiguration hostConfig = new HostConfiguration();
-//            hostConfig.setProxy(host, portNumber);
-//            httpClient.setHostConfiguration(hostConfig);
-//        }
+        // String host = System.getProperty(SYSTEM_PROPERTY_PROXY_HOST);
+        // String port = System.getProperty(SYSTEM_PROPERTY_PROXY_PORT);
+        // if (host != null && host.length() > 0 && port != null && port.length() > 0) {
+        // int portNumber = Integer.parseInt(port);
+        // HostConfiguration hostConfig = new HostConfiguration();
+        // hostConfig.setProxy(host, portNumber);
+        // httpClient.setHostConfiguration(hostConfig);
+        // }
 
         httpClient.execute(request);
 

@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.client;
 
 import java.util.Collection;
@@ -30,7 +31,7 @@ import org.n52.sir.catalog.ICatalogStatusHandler;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
- *
+ * 
  */
 public class CatalogPushInfoBean extends AbstractBean {
 
@@ -43,14 +44,16 @@ public class CatalogPushInfoBean extends AbstractBean {
         this.catalogStatusHandler = SirConfigurator.getInstance().getCatalogStatusHandler();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.n52.sir.client.beans.AbstractBean#buildRequest()
      */
     @Override
     public void buildRequest() {
         throw new UnsupportedOperationException("Method not implemented!");
     }
-    
+
     /**
      * 
      * @return
@@ -64,7 +67,7 @@ public class CatalogPushInfoBean extends AbstractBean {
         }
         return sb.toString();
     }
-    
+
     /**
      * 
      * @return

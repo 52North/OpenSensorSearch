@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.catalog;
 
 import java.net.URL;
@@ -30,8 +31,8 @@ import java.net.URL;
  * Class encapsulates all information for persistent storage of a connection to a catalog.
  * 
  * If the connetion is only scheduled for single execution the parameters
- * {@link ICatalogConnection#NO_PUSH_INTERVAL} and {@link ICatalogConnection#UNSAVED_CONNECTION_ID} shall
- * be used for instantiation.
+ * {@link ICatalogConnection#NO_PUSH_INTERVAL} and {@link ICatalogConnection#UNSAVED_CONNECTION_ID} shall be
+ * used for instantiation.
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 

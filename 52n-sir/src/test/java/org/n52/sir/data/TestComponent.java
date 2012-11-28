@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.data;
 
 import java.util.Arrays;
@@ -31,7 +32,7 @@ import net.opengis.sensorML.x101.ContactDocument.Contact;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
- *
+ * 
  */
 public class TestComponent extends TestSensor {
 
@@ -102,6 +103,7 @@ public class TestComponent extends TestSensor {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.n52.sir.data.TestSensor#toString()
      */
     @Override
@@ -134,5 +136,5 @@ public class TestComponent extends TestSensor {
         sb.append("]");
         return sb.toString();
     }
-    
+
 }

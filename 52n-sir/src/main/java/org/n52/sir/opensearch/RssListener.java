@@ -24,7 +24,6 @@
 
 package org.n52.sir.opensearch;
 
-
 /**
  * 
  * TODO make GeoRSS!!!
@@ -53,7 +52,7 @@ public class RssListener extends AbstractFeedListener {
     public String getMimeType() {
         return MIME_TYPE;
     }
-    
+
     @Override
     public String getName() {
         return NAME;

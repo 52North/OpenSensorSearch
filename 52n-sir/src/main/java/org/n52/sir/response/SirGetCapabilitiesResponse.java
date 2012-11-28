@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.response;
 
 import java.io.ByteArrayOutputStream;
@@ -49,12 +50,11 @@ import org.n52.sir.datastructure.SirService;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uniMuenster.swsl.sir.CapabilitiesDocument;
-import de.uniMuenster.swsl.sir.CapabilitiesDocument.Capabilities;
-import de.uniMuenster.swsl.sir.CapabilitiesDocument.Capabilities.Contents;
-import de.uniMuenster.swsl.sir.CapabilitiesDocument.Capabilities.Contents.HarvestedService;
-import de.uniMuenster.swsl.sir.CapabilitiesDocument.Capabilities.Contents.LinkedCatalog;
+import org.x52North.sir.x032.CapabilitiesDocument;
+import org.x52North.sir.x032.CapabilitiesDocument.Capabilities;
+import org.x52North.sir.x032.CapabilitiesDocument.Capabilities.Contents;
+import org.x52North.sir.x032.CapabilitiesDocument.Capabilities.Contents.HarvestedService;
+import org.x52North.sir.x032.CapabilitiesDocument.Capabilities.Contents.LinkedCatalog;
 
 /**
  * @author Jan Schulte

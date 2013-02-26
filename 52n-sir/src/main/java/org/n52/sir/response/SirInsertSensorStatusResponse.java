@@ -24,13 +24,7 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.xml.transform.TransformerException;
-
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +35,7 @@ import org.x52North.sir.x032.InsertSensorStatusResponseDocument.InsertSensorStat
  * @author Jan Schulte
  * 
  */
-public class SirInsertSensorStatusResponse implements ISirResponse {
+public class SirInsertSensorStatusResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirInsertSensorStatusResponse.class);
 
@@ -49,55 +43,8 @@ public class SirInsertSensorStatusResponse implements ISirResponse {
 
     private boolean statusUpdateSuccessful;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InsertSensorStatusResponseDocument insertSensStatRespDoc = parseToResponseDocument();
-        insertSensStatRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
-    }
-
-    /**
-     * @return the statusUpdateSuccessful
-     */
-    public boolean isStatusUpdateSuccessful() {
-        return this.statusUpdateSuccessful;
-    }
-
-    private InsertSensorStatusResponseDocument parseToResponseDocument() {
+    public InsertSensorStatusResponseDocument createXml() {
         InsertSensorStatusResponseDocument document = InsertSensorStatusResponseDocument.Factory.newInstance();
         InsertSensorStatusResponse insSensStatResp = document.addNewInsertSensorStatusResponse();
 
@@ -112,6 +59,20 @@ public class SirInsertSensorStatusResponse implements ISirResponse {
         }
 
         return document;
+    }
+
+    /**
+     * @return the sensorIdInSir
+     */
+    public String getSensorIdInSir() {
+        return this.sensorIdInSir;
+    }
+
+    /**
+     * @return the statusUpdateSuccessful
+     */
+    public boolean isStatusUpdateSuccessful() {
+        return this.statusUpdateSuccessful;
     }
 
     /**

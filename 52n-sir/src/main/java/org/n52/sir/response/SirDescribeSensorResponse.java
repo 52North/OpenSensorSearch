@@ -24,11 +24,6 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.xml.transform.TransformerException;
-
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SystemType;
 
@@ -37,7 +32,6 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.values.XmlAnyTypeImpl;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.util.Tools;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
@@ -47,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * @author Jan Schulte
  * 
  */
-public class SirDescribeSensorResponse implements ISirResponse {
+public class SirDescribeSensorResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirDescribeSensorResponse.class);
 
@@ -56,41 +50,8 @@ public class SirDescribeSensorResponse implements ISirResponse {
      */
     private XmlObject sensorML;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        SensorMLDocument process = getDocument();
-        process.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    private SensorMLDocument getDocument() {
+    public SensorMLDocument createXml() {
         SensorMLDocument document = null;
 
         if (this.sensorML instanceof SystemType) {

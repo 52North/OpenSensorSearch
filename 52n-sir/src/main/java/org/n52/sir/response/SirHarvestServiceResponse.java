@@ -24,16 +24,11 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.transform.TransformerException;
-
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
@@ -51,7 +46,7 @@ import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceRespon
  * @author Jan Schulte
  * 
  */
-public class SirHarvestServiceResponse implements ISirResponse {
+public class SirHarvestServiceResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirHarvestServiceResponse.class);
 
@@ -124,38 +119,64 @@ public class SirHarvestServiceResponse implements ISirResponse {
         this.failureDescriptions.put(sensor, description);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        HarvestServiceResponseDocument harvestServiceRespDoc = parseToResponseDocument();
-        harvestServiceRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
+    public HarvestServiceResponseDocument createXml() {
+        HarvestServiceResponseDocument document = HarvestServiceResponseDocument.Factory.newInstance();
+        HarvestServiceResponse harvServResp = document.addNewHarvestServiceResponse();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
+        // set service URL
+        harvServResp.setServiceURL(this.serviceUrl);
+        // set service type
+        harvServResp.setServiceType(this.serviceType);
+        // set number of found sensors
+        harvServResp.setNumberOfFoundSensors(this.numberOfFoundSensors);
+        // set number of inserted sensors
+        harvServResp.setNumberOfInsertedSensors(this.numberOfInsertedSensors);
+        // set number of deleted sensors
+        harvServResp.setNumberOfDeletedSensors(this.numberOfDeletedSensors);
+        // set number of updated sensors
+        harvServResp.setNumberOfUpdatedSensors(this.numberOfUpdatedSensors);
+        // set number of failed sensors
+        harvServResp.setNumberOfFailedSensors(this.numberOfFailedSensors);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+        // set collection of inserted sensors
+        for (SirSensor inSens : this.insertedSensors) {
+            InsertedSensor insertedSensor = harvServResp.addNewInsertedSensor();
+            insertedSensor.setSensorIDInSIR(inSens.getSensorIDInSIR());
+            insertedSensor.setServiceSpecificSensorID(inSens.getServDescs().iterator().next().getServiceSpecificSensorId());
+        }
+        // set collection of deleted sensors
+        for (SirSensor delSens : this.deletedSensors) {
+            DeletedSensor deletedSensor = harvServResp.addNewDeletedSensor();
+            deletedSensor.setSensorIDInSIR(delSens.getSensorIDInSIR());
+            deletedSensor.setServiceSpecificSensorID(delSens.getServDescs().iterator().next().getServiceSpecificSensorId());
+        }
+        // set collection of updated sensors
+        for (SirSensor upSens : this.updatedSensors) {
+            UpdatedSensor updatedSensor = harvServResp.addNewUpdatedSensor();
+            updatedSensor.setSensorIDInSIR(upSens.getSensorIDInSIR());
+            updatedSensor.setServiceSpecificSensorID(upSens.getServDescs().iterator().next().getServiceSpecificSensorId());
+        }
+        // set collection of failed sensors
+        for (String failSens : this.failedSensors) {
+            String failureDescr = "NOT_AVAILABLE";
+            if (this.failureDescriptions.get(failSens) != null) {
+                failureDescr = this.failureDescriptions.get(failSens);
+            }
+
+            FailedSensor failedSensor = harvServResp.addNewFailedSensor();
+            failedSensor.setFailureDescription(failureDescr);
+            failedSensor.setServiceSpecificSensorID(failSens);
+        }
+
+        XmlTools.addSirAndSensorMLSchemaLocation(harvServResp);
+
+        if (SirConfigurator.getInstance().isValidateResponses()) {
+            if ( !document.validate())
+                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
+        }
+
+        return document;
     }
 
     /**
@@ -240,65 +261,6 @@ public class SirHarvestServiceResponse implements ISirResponse {
      */
     public Collection<SirSensor> getUpdatedSensors() {
         return this.updatedSensors;
-    }
-
-    private HarvestServiceResponseDocument parseToResponseDocument() {
-        HarvestServiceResponseDocument document = HarvestServiceResponseDocument.Factory.newInstance();
-        HarvestServiceResponse harvServResp = document.addNewHarvestServiceResponse();
-
-        // set service URL
-        harvServResp.setServiceURL(this.serviceUrl);
-        // set service type
-        harvServResp.setServiceType(this.serviceType);
-        // set number of found sensors
-        harvServResp.setNumberOfFoundSensors(this.numberOfFoundSensors);
-        // set number of inserted sensors
-        harvServResp.setNumberOfInsertedSensors(this.numberOfInsertedSensors);
-        // set number of deleted sensors
-        harvServResp.setNumberOfDeletedSensors(this.numberOfDeletedSensors);
-        // set number of updated sensors
-        harvServResp.setNumberOfUpdatedSensors(this.numberOfUpdatedSensors);
-        // set number of failed sensors
-        harvServResp.setNumberOfFailedSensors(this.numberOfFailedSensors);
-
-        // set collection of inserted sensors
-        for (SirSensor inSens : this.insertedSensors) {
-            InsertedSensor insertedSensor = harvServResp.addNewInsertedSensor();
-            insertedSensor.setSensorIDInSIR(inSens.getSensorIDInSIR());
-            insertedSensor.setServiceSpecificSensorID(inSens.getServDescs().iterator().next().getServiceSpecificSensorId());
-        }
-        // set collection of deleted sensors
-        for (SirSensor delSens : this.deletedSensors) {
-            DeletedSensor deletedSensor = harvServResp.addNewDeletedSensor();
-            deletedSensor.setSensorIDInSIR(delSens.getSensorIDInSIR());
-            deletedSensor.setServiceSpecificSensorID(delSens.getServDescs().iterator().next().getServiceSpecificSensorId());
-        }
-        // set collection of updated sensors
-        for (SirSensor upSens : this.updatedSensors) {
-            UpdatedSensor updatedSensor = harvServResp.addNewUpdatedSensor();
-            updatedSensor.setSensorIDInSIR(upSens.getSensorIDInSIR());
-            updatedSensor.setServiceSpecificSensorID(upSens.getServDescs().iterator().next().getServiceSpecificSensorId());
-        }
-        // set collection of failed sensors
-        for (String failSens : this.failedSensors) {
-            String failureDescr = "NOT_AVAILABLE";
-            if (this.failureDescriptions.get(failSens) != null) {
-                failureDescr = this.failureDescriptions.get(failSens);
-            }
-
-            FailedSensor failedSensor = harvServResp.addNewFailedSensor();
-            failedSensor.setFailureDescription(failureDescr);
-            failedSensor.setServiceSpecificSensorID(failSens);
-        }
-
-        XmlTools.addSirAndSensorMLSchemaLocation(harvServResp);
-
-        if (SirConfigurator.getInstance().isValidateResponses()) {
-            if ( !document.validate())
-                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
-        }
-
-        return document;
     }
 
     /**

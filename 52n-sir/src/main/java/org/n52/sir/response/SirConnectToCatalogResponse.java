@@ -24,14 +24,9 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URL;
 
-import javax.xml.transform.TransformerException;
-
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +37,7 @@ import org.x52North.sir.x032.ConnectToCatalogResponseDocument.ConnectToCatalogRe
  * @author Jan Schulte
  * 
  */
-public class SirConnectToCatalogResponse implements ISirResponse {
+public class SirConnectToCatalogResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirConnectToCatalogResponse.class);
 
@@ -51,48 +46,8 @@ public class SirConnectToCatalogResponse implements ISirResponse {
      */
     private URL catalogUrl;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ConnectToCatalogResponseDocument connectToCatalogDoc = parseToResponseDocument();
-        connectToCatalogDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /**
-     * @return the catalogUrl
-     */
-    public URL getCatalogUrl() {
-        return this.catalogUrl;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    private ConnectToCatalogResponseDocument parseToResponseDocument() {
+    public ConnectToCatalogResponseDocument createXml() {
         ConnectToCatalogResponseDocument document = ConnectToCatalogResponseDocument.Factory.newInstance();
         ConnectToCatalogResponse conCatResp = document.addNewConnectToCatalogResponse();
 
@@ -108,6 +63,13 @@ public class SirConnectToCatalogResponse implements ISirResponse {
         }
 
         return document;
+    }
+
+    /**
+     * @return the catalogUrl
+     */
+    public URL getCatalogUrl() {
+        return this.catalogUrl;
     }
 
     /**

@@ -24,16 +24,11 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javax.xml.transform.TransformerException;
-
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +40,7 @@ import org.x52North.sir.x032.InsertSensorInfoResponseDocument.InsertSensorInfoRe
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class SirInsertSensorInfoResponse implements ISirResponse {
+public class SirInsertSensorInfoResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirInsertSensorInfoResponse.class);
 
@@ -55,38 +50,26 @@ public class SirInsertSensorInfoResponse implements ISirResponse {
 
     private int numberOfInsertedServiceReferences = 0;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InsertSensorInfoResponseDocument insSensInfoResp = parseToResponseDocument();
-        insSensInfoResp.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
+    public InsertSensorInfoResponseDocument createXml() {
+        InsertSensorInfoResponseDocument document = InsertSensorInfoResponseDocument.Factory.newInstance();
+        InsertSensorInfoResponse insSensInfoResp = document.addNewInsertSensorInfoResponse();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
+        insSensInfoResp.setNumberOfInsertedSensors(this.numberOfInsertedSensors);
+        insSensInfoResp.setNumberOfInsertedServiceReferences(this.numberOfInsertedServiceReferences);
+        InsertedSensors insertedSensor = insSensInfoResp.addNewInsertedSensors();
+        for (String inSens : this.insertedSensors) {
+            insertedSensor.addSensorIDInSIR(inSens);
+        }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+        XmlTools.addSirAndSensorMLSchemaLocation(insSensInfoResp);
+
+        if (SirConfigurator.getInstance().isValidateResponses()) {
+            if ( !document.validate())
+                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
+        }
+
+        return document;
     }
 
     /**
@@ -108,27 +91,6 @@ public class SirInsertSensorInfoResponse implements ISirResponse {
      */
     public int getNumberOfNewServiceReferences() {
         return this.numberOfInsertedServiceReferences;
-    }
-
-    private InsertSensorInfoResponseDocument parseToResponseDocument() {
-        InsertSensorInfoResponseDocument document = InsertSensorInfoResponseDocument.Factory.newInstance();
-        InsertSensorInfoResponse insSensInfoResp = document.addNewInsertSensorInfoResponse();
-
-        insSensInfoResp.setNumberOfInsertedSensors(this.numberOfInsertedSensors);
-        insSensInfoResp.setNumberOfInsertedServiceReferences(this.numberOfInsertedServiceReferences);
-        InsertedSensors insertedSensor = insSensInfoResp.addNewInsertedSensors();
-        for (String inSens : this.insertedSensors) {
-            insertedSensor.addSensorIDInSIR(inSens);
-        }
-
-        XmlTools.addSirAndSensorMLSchemaLocation(insSensInfoResp);
-
-        if (SirConfigurator.getInstance().isValidateResponses()) {
-            if ( !document.validate())
-                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
-        }
-
-        return document;
     }
 
     /**

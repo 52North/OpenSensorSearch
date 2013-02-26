@@ -24,12 +24,8 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.xml.transform.TransformerException;
 
 import net.opengis.ows.x11.AllowedValuesDocument.AllowedValues;
 import net.opengis.ows.x11.DCPDocument.DCP;
@@ -44,7 +40,6 @@ import net.opengis.ows.x11.ValueType;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConfigurator.Section;
-import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.datastructure.SirService;
 import org.n52.sir.util.XmlTools;
@@ -60,7 +55,7 @@ import org.x52North.sir.x032.CapabilitiesDocument.Capabilities.Contents.LinkedCa
  * @author Jan Schulte
  * 
  */
-public class SirGetCapabilitiesResponse implements ISirResponse {
+public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
     private static final Object ACCEPT_VERSIONS_PARAMETER_NAME = "AcceptVersions";
 
@@ -158,46 +153,7 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
     }
 
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        CapabilitiesDocument capDoc = parseToGetCapabilitesDocument();
-        capDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /**
-     * @return the catalog collections
-     */
-    public Collection<ICatalogConnection> getCatalogConnection() {
-        return this.catalogConnection;
-    }
-
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    /**
-     * @return the sections
-     */
-    public ArrayList<Section> getSections() {
-        return this.sections;
-    }
-
-    /**
-     * @return the services
-     */
-    public Collection<SirService> getServices() {
-        return this.services;
-    }
-
-    private CapabilitiesDocument parseToGetCapabilitesDocument() {
+    public CapabilitiesDocument createXml() {
         CapabilitiesDocument capDoc = CapabilitiesDocument.Factory.newInstance();
 
         Capabilities caps = capDoc.addNewCapabilities();
@@ -245,6 +201,27 @@ public class SirGetCapabilitiesResponse implements ISirResponse {
         }
 
         return capDoc;
+    }
+
+    /**
+     * @return the catalog collections
+     */
+    public Collection<ICatalogConnection> getCatalogConnection() {
+        return this.catalogConnection;
+    }
+
+    /**
+     * @return the sections
+     */
+    public ArrayList<Section> getSections() {
+        return this.sections;
+    }
+
+    /**
+     * @return the services
+     */
+    public Collection<SirService> getServices() {
+        return this.services;
     }
 
     /**

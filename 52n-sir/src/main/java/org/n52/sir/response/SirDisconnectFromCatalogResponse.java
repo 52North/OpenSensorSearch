@@ -24,13 +24,7 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.xml.transform.TransformerException;
-
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +35,7 @@ import org.x52North.sir.x032.DisconnectFromCatalogResponseDocument.DisconnectFro
  * @author Jan Schulte
  * 
  */
-public class SirDisconnectFromCatalogResponse implements ISirResponse {
+public class SirDisconnectFromCatalogResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirDisconnectFromCatalogResponse.class);
 
@@ -50,48 +44,8 @@ public class SirDisconnectFromCatalogResponse implements ISirResponse {
      */
     private String catalogUrl;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DisconnectFromCatalogResponseDocument disconFromCatRespDoc = parseToResponseDocument();
-        disconFromCatRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /**
-     * @return the cswUrl
-     */
-    public String getCatalogUrl() {
-        return this.catalogUrl;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    private DisconnectFromCatalogResponseDocument parseToResponseDocument() {
+    public DisconnectFromCatalogResponseDocument createXml() {
         DisconnectFromCatalogResponseDocument document = DisconnectFromCatalogResponseDocument.Factory.newInstance();
         DisconnectFromCatalogResponse disconCat = document.addNewDisconnectFromCatalogResponse();
 
@@ -106,6 +60,13 @@ public class SirDisconnectFromCatalogResponse implements ISirResponse {
         }
 
         return document;
+    }
+
+    /**
+     * @return the cswUrl
+     */
+    public String getCatalogUrl() {
+        return this.catalogUrl;
     }
 
     /**

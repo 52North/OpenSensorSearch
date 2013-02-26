@@ -24,14 +24,9 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Writer;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
-
-import javax.xml.transform.TransformerException;
 
 import net.opengis.ows.x11.BoundingBoxType;
 import net.opengis.sensorML.x101.AbstractProcessType;
@@ -41,17 +36,13 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.values.XmlAnyTypeImpl;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensorDescription;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.datastructure.SirXmlSensorDescription;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.util.XmlTools;
-import org.restlet.engine.io.WriterOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.SearchSensorResponseDocument;
@@ -64,7 +55,7 @@ import org.x52North.sir.x032.SimpleSensorDescriptionDocument.SimpleSensorDescrip
  * @author Jan Schulte
  * 
  */
-public class SirSearchSensorResponse implements ISirResponse {
+public class SirSearchSensorResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirSearchSensorResponse.class);
 
@@ -73,52 +64,7 @@ public class SirSearchSensorResponse implements ISirResponse {
      */
     private Collection<SirSearchResultElement> searchResultElements;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
-    @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        SearchSensorResponseDocument searchSensorRespDoc = parseToResponseDocument();
-        searchSensorRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    /**
-     * @return the searchResultElements
-     */
-    public Collection<SirSearchResultElement> getSearchResultElements() {
-        return this.searchResultElements;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    private SearchSensorResponseDocument parseToResponseDocument() {
+    public SearchSensorResponseDocument createXml() {
         SearchSensorResponseDocument document = SearchSensorResponseDocument.Factory.newInstance();
         SearchSensorResponse searchSensResp = document.addNewSearchSensorResponse();
 
@@ -218,30 +164,18 @@ public class SirSearchSensorResponse implements ISirResponse {
     }
 
     /**
+     * @return the searchResultElements
+     */
+    public Collection<SirSearchResultElement> getSearchResultElements() {
+        return this.searchResultElements;
+    }
+
+    /**
      * @param searchResultElements
      *        the searchResultElements to set
      */
     public void setSearchResultElements(Collection<SirSearchResultElement> searchResultElements) {
         this.searchResultElements = searchResultElements;
-    }
-
-    /**
-     * 
-     * @param writer
-     * @throws OwsExceptionReport
-     */
-    public void writeTo(Writer writer) throws OwsExceptionReport {
-        SearchSensorResponseDocument searchSensorRespDoc = parseToResponseDocument();
-        try {
-            WriterOutputStream wos = new WriterOutputStream(writer);
-            searchSensorRespDoc.save(wos, XmlTools.xmlOptionsForNamespaces());
-        }
-        catch (IOException e) {
-            log.error("Could not write response document to writer.", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "server",
-                                         "Could not write response to output writer.");
-        }
     }
 
 }

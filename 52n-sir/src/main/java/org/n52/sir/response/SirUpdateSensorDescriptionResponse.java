@@ -24,15 +24,10 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javax.xml.transform.TransformerException;
-
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +39,7 @@ import org.x52North.sir.x032.UpdateSensorDescriptionResponseDocument.UpdateSenso
  * @author Daniel Nüst
  * 
  */
-public class SirUpdateSensorDescriptionResponse implements ISirResponse {
+public class SirUpdateSensorDescriptionResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirUpdateSensorDescriptionResponse.class);
 
@@ -52,55 +47,8 @@ public class SirUpdateSensorDescriptionResponse implements ISirResponse {
 
     private Collection<String> updatedSensors;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        UpdateSensorDescriptionResponseDocument updSensDescrResp = parseToResponseDocument();
-        updSensDescrResp.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    /**
-     * @return the numberOfNewSensors
-     */
-    public int getNumberOfUpdatedSensorDescriptions() {
-        return this.numberOfUpdatedSensorDescriptions;
-    }
-
-    /**
-     * @return the insertedSensors
-     */
-    public Collection<String> getUpdatedSensors() {
-        return this.updatedSensors;
-    }
-
-    private UpdateSensorDescriptionResponseDocument parseToResponseDocument() {
+    public UpdateSensorDescriptionResponseDocument createXml() {
         UpdateSensorDescriptionResponseDocument document = UpdateSensorDescriptionResponseDocument.Factory.newInstance();
         UpdateSensorDescriptionResponse updSensDescrResp = document.addNewUpdateSensorDescriptionResponse();
 
@@ -118,6 +66,20 @@ public class SirUpdateSensorDescriptionResponse implements ISirResponse {
         }
 
         return document;
+    }
+
+    /**
+     * @return the numberOfNewSensors
+     */
+    public int getNumberOfUpdatedSensorDescriptions() {
+        return this.numberOfUpdatedSensorDescriptions;
+    }
+
+    /**
+     * @return the insertedSensors
+     */
+    public Collection<String> getUpdatedSensors() {
+        return this.updatedSensors;
     }
 
     /**

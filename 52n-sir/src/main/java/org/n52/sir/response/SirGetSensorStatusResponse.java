@@ -24,18 +24,13 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Collection;
-
-import javax.xml.transform.TransformerException;
 
 import net.opengis.gml.x32.TimeInstantType;
 import net.opengis.gml.x32.TimePositionType;
 import net.opengis.swe.x101.UomPropertyType;
 
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirStatusDescription;
 import org.n52.sir.util.GMLDateParser;
 import org.n52.sir.util.XmlTools;
@@ -54,7 +49,7 @@ import org.x52North.sir.x032.StatusDocument.Status;
  * @author Jan Schulte
  * 
  */
-public class SirGetSensorStatusResponse implements ISirResponse {
+public class SirGetSensorStatusResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirGetSensorStatusResponse.class);
 
@@ -63,48 +58,8 @@ public class SirGetSensorStatusResponse implements ISirResponse {
      */
     private Collection<SirStatusDescription> statusDescs;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        GetSensorStatusResponseDocument getSensStatRespDoc = parseToResponseDocument();
-        getSensStatRespDoc.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
-    }
-
-    /**
-     * @return the statusDescs
-     */
-    public Collection<SirStatusDescription> getStatusDescs() {
-        return this.statusDescs;
-    }
-
-    private GetSensorStatusResponseDocument parseToResponseDocument() {
+    public GetSensorStatusResponseDocument createXml() {
         GetSensorStatusResponseDocument document = GetSensorStatusResponseDocument.Factory.newInstance();
         GetSensorStatusResponse getSensStatResp = document.addNewGetSensorStatusResponse();
 
@@ -142,6 +97,13 @@ public class SirGetSensorStatusResponse implements ISirResponse {
         }
 
         return document;
+    }
+
+    /**
+     * @return the statusDescs
+     */
+    public Collection<SirStatusDescription> getStatusDescs() {
+        return this.statusDescs;
     }
 
     /**

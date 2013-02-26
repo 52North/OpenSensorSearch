@@ -24,16 +24,11 @@
 
 package org.n52.sir.response;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javax.xml.transform.TransformerException;
-
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +40,7 @@ import org.x52North.sir.x032.DeleteSensorInfoResponseDocument.DeleteSensorInfoRe
  * @author Daniel Nüst
  * 
  */
-public class SirDeleteSensorInfoResponse implements ISirResponse {
+public class SirDeleteSensorInfoResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirDeleteSensorInfoResponse.class);
 
@@ -55,38 +50,26 @@ public class SirDeleteSensorInfoResponse implements ISirResponse {
 
     private int numberOfDeletedServiceReferences = 0;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getByteArray()
-     */
     @Override
-    public byte[] getByteArray() throws IOException, TransformerException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DeleteSensorInfoResponseDocument resp = parseToResponseDocument();
-        resp.save(baos, XmlTools.xmlOptionsForNamespaces());
-        byte[] bytes = baos.toByteArray();
-        return bytes;
-    }
+    public DeleteSensorInfoResponseDocument createXml() {
+        DeleteSensorInfoResponseDocument document = DeleteSensorInfoResponseDocument.Factory.newInstance();
+        DeleteSensorInfoResponse delteSensInfoResp = document.addNewDeleteSensorInfoResponse();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentLength()
-     */
-    @Override
-    public int getContentLength() throws IOException, TransformerException {
-        return getByteArray().length;
-    }
+        delteSensInfoResp.setNumberOfDeletedSensors(this.numberOfDeletedSensors);
+        delteSensInfoResp.setNumberOfDeletedServiceReferences(this.numberOfDeletedServiceReferences);
+        DeletedSensors deletedSensor = delteSensInfoResp.addNewDeletedSensors();
+        for (String inSens : this.deletedSensors) {
+            deletedSensor.addSensorIDInSIR(inSens);
+        }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.response.ISirResponse#getContentType()
-     */
-    @Override
-    public String getContentType() {
-        return SirConstants.CONTENT_TYPE_XML;
+        XmlTools.addSirAndSensorMLSchemaLocation(delteSensInfoResp);
+
+        if (SirConfigurator.getInstance().isValidateResponses()) {
+            if ( !document.validate())
+                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
+        }
+
+        return document;
     }
 
     /**
@@ -108,27 +91,6 @@ public class SirDeleteSensorInfoResponse implements ISirResponse {
      */
     public int getNumberOfDeletedServiceReferences() {
         return this.numberOfDeletedServiceReferences;
-    }
-
-    private DeleteSensorInfoResponseDocument parseToResponseDocument() {
-        DeleteSensorInfoResponseDocument document = DeleteSensorInfoResponseDocument.Factory.newInstance();
-        DeleteSensorInfoResponse delteSensInfoResp = document.addNewDeleteSensorInfoResponse();
-
-        delteSensInfoResp.setNumberOfDeletedSensors(this.numberOfDeletedSensors);
-        delteSensInfoResp.setNumberOfDeletedServiceReferences(this.numberOfDeletedServiceReferences);
-        DeletedSensors deletedSensor = delteSensInfoResp.addNewDeletedSensors();
-        for (String inSens : this.deletedSensors) {
-            deletedSensor.addSensorIDInSIR(inSens);
-        }
-
-        XmlTools.addSirAndSensorMLSchemaLocation(delteSensInfoResp);
-
-        if (SirConfigurator.getInstance().isValidateResponses()) {
-            if ( !document.validate())
-                log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
-        }
-
-        return document;
     }
 
     /**

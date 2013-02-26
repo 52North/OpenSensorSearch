@@ -67,10 +67,6 @@ public class Client {
 
     private static final String POST_METHOD = "POST";
 
-    private static final String REQUEST_CONTENT_CHARSET = "UTF-8";
-
-    private static final String REQUEST_CONTENT_TYPE = "text/xml";
-
     private static final int CONNECTION_TIMEOUT = 1000 * 30;
 
     private static String createGetCapabilities(String serviceType) {
@@ -130,7 +126,7 @@ public class Client {
 
             // postMethod.setRequestEntity(new StringRequestEntity(request, REQUEST_CONTENT_TYPE,
             // REQUEST_CONTENT_CHARSET));
-            postMethod.setEntity(new StringEntity(request, REQUEST_CONTENT_TYPE, REQUEST_CONTENT_CHARSET));
+            postMethod.setEntity(new StringEntity(request, SirConstants.REQUEST_CONTENT_TYPE, SirConstants.REQUEST_CONTENT_CHARSET));
 
             method = postMethod;
         }

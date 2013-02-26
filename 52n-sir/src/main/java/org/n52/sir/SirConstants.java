@@ -24,6 +24,7 @@
 
 package org.n52.sir;
 
+
 /**
  * @author Jan Schulte
  * 
@@ -51,6 +52,8 @@ public class SirConstants {
         CancelSensorStatusSubscription, ConnectToCatalog, DeleteSensorInfo, DescribeSensor, DisconnectFromCatalog, GetCapabilities, GetSensorStatus, HarvestService, InsertSensorInfo, InsertSensorStatus, RenewSensorStatusSubscription, SearchSensor, SubscribeSensorStatus, UpdateSensorDescription
     }
 
+    public static final String CHARSET_NAME = "UTF-8";
+
     /**
      * Constant for the content type of the response
      */
@@ -77,6 +80,18 @@ public class SirConstants {
     public static final String IOOSCATAL0G_SERVICE_TYPE = "IOOSCatalog";
 
     /**
+     * 
+     */
+    public static final String REQUEST_CONTENT_CHARSET = CHARSET_NAME;
+
+    public static final String REQUEST_CONTENT_TYPE = "text/xml";
+
+    /**
+     * 
+     */
+    public static final String RESPONSE_CONTENT_CHARSET = CHARSET_NAME;
+
+    /**
      * Constant for the service name of the SIR
      */
     public static final String SERVICE_NAME = "SIR";
@@ -90,7 +105,7 @@ public class SirConstants {
      * 
      */
     public static final String SERVICE_VERSION_0_3_1 = "0.3.1";
-    
+
     /**
      * 
      */

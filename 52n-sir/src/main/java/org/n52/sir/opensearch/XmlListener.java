@@ -24,7 +24,9 @@
 
 package org.n52.sir.opensearch;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,9 +34,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.response.SirSearchSensorResponse;
+import org.n52.sir.util.XmlTools;
+import org.restlet.data.CharacterSet;
+import org.restlet.engine.io.WriterOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.x52North.sir.x032.SearchSensorResponseDocument;
 
 public class XmlListener implements IOpenSearchListener {
 
@@ -62,9 +69,23 @@ public class XmlListener implements IOpenSearchListener {
         resp.setContentType(MIME_TYPE);
         SirSearchSensorResponse sssr = new SirSearchSensorResponse();
         sssr.setSearchResultElements(searchResult);
-        sssr.writeTo(writer);
+        writeTo(sssr, writer);
 
         log.debug("Done with XML response.");
+    }
+    
+    private void writeTo(SirSearchSensorResponse sssr, Writer writer) throws OwsExceptionReport {
+        SearchSensorResponseDocument searchSensorRespDoc = sssr.createXml();
+        try {
+            WriterOutputStream wos = new WriterOutputStream(writer, CharacterSet.UTF_8);
+            searchSensorRespDoc.save(wos, XmlTools.xmlOptionsForNamespaces());
+        }
+        catch (IOException e) {
+            log.error("Could not write response document to writer.", e);
+            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                         "server",
+                                         "Could not write response to output writer.");
+        }
     }
 
     @Override

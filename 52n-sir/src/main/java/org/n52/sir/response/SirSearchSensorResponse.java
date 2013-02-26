@@ -67,6 +67,7 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
     public SearchSensorResponseDocument createXml() {
         SearchSensorResponseDocument document = SearchSensorResponseDocument.Factory.newInstance();
         SearchSensorResponse searchSensResp = document.addNewSearchSensorResponse();
+        boolean isSimple = false;
 
         for (SirSearchResultElement searchResult : this.searchResultElements) {
             SearchResultElement elem = searchSensResp.addNewSearchResultElement();
@@ -119,6 +120,7 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
                         }
                     }
                     else if (description instanceof SirSimpleSensorDescription) {
+                        isSimple = true;
                         SirSimpleSensorDescription simpleDescr = (SirSimpleSensorDescription) description;
                         SimpleSensorDescription newSSDescr = elem.addNewSimpleSensorDescription();
                         newSSDescr.setDescriptionText(simpleDescr.getDescriptionText());
@@ -153,7 +155,10 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
             }
         }
 
-        XmlTools.addSirAndSensorMLSchemaLocation(searchSensResp);
+        if (isSimple)
+            XmlTools.addSirSchemaLocation(searchSensResp);
+        else
+            XmlTools.addSirAndSensorMLSchemaLocation(searchSensResp);
 
         if (SirConfigurator.getInstance().isValidateResponses()) {
             if ( !document.validate())

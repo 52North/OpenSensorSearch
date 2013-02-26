@@ -424,6 +424,10 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(PGDAOConstants.sensor);
         query.append(".");
         query.append(PGDAOConstants.lastUpdate);
+        query.append(", ");
+        query.append(PGDAOConstants.sensor);
+        query.append(".");
+        query.append(PGDAOConstants.bBox);
         query.append(" FROM ");
         query.append(PGDAOConstants.sensor);
         query.append(" WHERE (");

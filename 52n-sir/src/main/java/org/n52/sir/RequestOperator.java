@@ -56,6 +56,7 @@ import org.n52.sir.request.SirSubscriptionRequest;
 import org.n52.sir.request.SirUpdateSensorDescriptionRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
+import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,8 +164,17 @@ public class RequestOperator {
         try {
             request = this.httpPostDecoder.receiveRequest(inputString);
         }
-        catch (OwsExceptionReport se) {
-            return new ExceptionResponse(se.getDocument());
+        catch (OwsExceptionReport e) {
+            return new ExceptionResponse(e.getDocument());
+        }
+        catch (IllegalArgumentException e) {
+            log.error("Illegal argument in request: ", e);
+            
+            OwsExceptionReport owser = new OwsExceptionReport();
+            owser.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
+                                 e.getClass().toString(),
+                                 "The request contained an illeagal argument: " + e.getMessage() + "\n\n" + Tools.getStackTrace(e));
+            return new ExceptionResponse(owser.getDocument());
         }
 
         // getCapabilities request

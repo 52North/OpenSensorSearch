@@ -96,6 +96,7 @@ import org.x52North.sir.x032.RenewSensorStatusSubscriptionRequestDocument;
 import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria;
 import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon;
 import org.x52North.sir.x032.SearchSensorRequestDocument;
+import org.x52North.sir.x032.SearchSensorRequestDocument.SearchSensorRequest;
 import org.x52North.sir.x032.SensorIdentificationDocument.SensorIdentification;
 import org.x52North.sir.x032.ServiceCriteriaDocument.ServiceCriteria;
 import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
@@ -103,6 +104,7 @@ import org.x52North.sir.x032.StatusDocument.Status;
 import org.x52North.sir.x032.SubscribeSensorStatusRequestDocument;
 import org.x52North.sir.x032.UpdateSensorDescriptionRequestDocument;
 import org.x52North.sir.x032.UpdateSensorDescriptionRequestDocument.UpdateSensorDescriptionRequest.SensorDescriptionToBeUpdated;
+import org.x52North.sir.x032.VersionAttribute.Version.Enum;
 
 public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
@@ -729,7 +731,18 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
     private AbstractSirRequest decodeSearchSensorRequest(SearchSensorRequestDocument searchSensDoc) throws OwsExceptionReport {
         SirSearchSensorRequest sirRequest = new SirSearchSensorRequest();
-        sirRequest.setVersion(searchSensDoc.getSearchSensorRequest().getVersion().toString());
+        SearchSensorRequest request = searchSensDoc.getSearchSensorRequest();
+        Enum version = request.getVersion();
+        
+        if(version == null) {
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
+                                 null,
+                                 "Version is null! The request must contain this attribute including the namespace, e.g. 'sir:version'.");
+            log.error("Version is null in search sensor doc {}", searchSensDoc);
+            throw se;
+        }
+        sirRequest.setVersion(version.toString());
 
         // sensorIdentification
         if (searchSensDoc.getSearchSensorRequest().getSensorIdentificationArray().length != 0) {

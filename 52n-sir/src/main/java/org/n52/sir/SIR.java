@@ -145,7 +145,6 @@ public class SIR extends HttpServlet {
 
         ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
         doResponse(resp, sirResp);
-
     }
 
     /**

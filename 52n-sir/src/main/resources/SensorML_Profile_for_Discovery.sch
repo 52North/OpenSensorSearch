@@ -108,9 +108,9 @@
 			It describes the bounding box of the area that is observed by the System. 
 			In case of an in-situ sensor this bouding box only contains the position 
 			of the sensor. -->
-		<rule context="//sml:System/sml:capabilities">
+		<rule context="//sml:System">
 			<assert
-				test="count(swe:DataRecord/swe:field/swe:Envelope[@definition = 'urn:ogc:def:property:OGC:1.0:observedBBOX']) = 1">Error: one "swe:field" of the "DataRecord" has to contain a
+				test="count(sml:capabilities/swe:DataRecord/swe:field/swe:Envelope[@definition = 'urn:ogc:def:property:OGC:1.0:observedBBOX']) = 1">Error: one "swe:field" of a "swe:DataRecord" in a "sml:capabilities" has to contain a
 				"swe:Envelope" element with the definition
 				"urn:ogc:def:property:OGC:1.0:observedBBOX".
 			</assert>

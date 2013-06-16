@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.n52.sensorweb</groupId>
 	<artifactId>52n-json-sir</artifactId>
-	<version>0.0.1</version>
+	<version>0.1</version>
 	<name>SIR JSON Bindings</name>
 	<description>JavaScript Object Notation (JSON) encoders and decoders for the Sensor Instance Registry (SIR)</description>
 
@@ -50,9 +50,9 @@
 
 	<licenses>
 		<license>
-			<name>General Public License Version 2</name>
-			<url>http://www.gnu.org/licenses/gpl-2.0.html</url>
-			<distribution>repo</distribution>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
 
@@ -135,13 +135,13 @@
 			<artifactId>jackson-core</artifactId>
 			<version>2.1.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.1.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>

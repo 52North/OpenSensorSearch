@@ -46,7 +46,7 @@ import javax.xml.transform.stream.StreamSource;
 import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SystemType;
-import net.sf.saxon.StandardErrorListener;
+import net.sf.saxon.lib.StandardErrorListener;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;

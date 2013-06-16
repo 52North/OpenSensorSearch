@@ -515,10 +515,15 @@
 			<version>8.4-702.jdbc4</version>
 		</dependency>
 
+		<!-- <dependency> -->
+		<!-- <groupId>net.sf</groupId> -->
+		<!-- <artifactId>saxon-he</artifactId> -->
+		<!-- <version>9</version> -->
+		<!-- </dependency> -->
 		<dependency>
-			<groupId>net.sf</groupId>
-			<artifactId>saxon-he</artifactId>
-			<version>9</version>
+			<groupId>net.sf.saxon</groupId>
+			<artifactId>Saxon-HE</artifactId>
+			<version>9.5.0.2</version>
 		</dependency>
 
 		<dependency>

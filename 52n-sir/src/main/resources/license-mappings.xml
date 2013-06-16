@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<license-lookup
+	xmlns="https://source.jasig.org/schemas/maven-notice-plugin/license-lookup"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://source.jasig.org/schemas/maven-notice-plugin/license-lookup https://source.jasig.org/schemas/maven-notice-plugin/license-lookup/license-lookup-v1.0.xsd">
+	<artifact>
+		<groupId>org.n52.sensorweb</groupId>
+		<artifactId>52n-xml-gml</artifactId>
+		<version>3.2-patched</version>
+		<license>The Apache Software License, Version 2.0</license>
+	</artifact>
+	<artifact>
+		<groupId>org.n52.sensorweb</groupId>
+		<artifactId>52n-xml-gml-v321</artifactId>
+		<version>1.0.0</version>
+		<license>The Apache Software License, Version 2.0</license>
+	</artifact>
+	<artifact>
+		<groupId>org.n52.sensorweb</groupId>
+		<artifactId>52n-xml-sir-v032</artifactId>
+		<version>1.1.1</version>
+		<license>The Apache Software License, Version 2.0</license>
+	</artifact>
+	<artifact>
+		<groupId>org.n52.sensorweb</groupId>
+		<artifactId>52n-xml-sor-v031</artifactId>
+		<version>1.1.0</version>
+		<license>The Apache Software License, Version 2.0</license>
+	</artifact>
+	<artifact>
+		<groupId>org.n52.sensorweb</groupId>
+		<artifactId>52n-xml-wrs-v101</artifactId>
+		<version>1.0.0</version>
+		<license>The Apache Software License, Version 2.0</license>
+	</artifact>
+	<artifact>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<license>Commons Development and Distribution License, Version 1.0</license>
+	</artifact>
+	<artifact>
+		<groupId>jdom</groupId>
+		<artifactId>jdom</artifactId>
+		<version>1.0</version>
+		<license>JDOM license: https://github.com/hunterhacker/jdom/blob/master/LICENSE.txt</license>
+	</artifact>
+</license-lookup>

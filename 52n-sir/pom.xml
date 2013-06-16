@@ -25,7 +25,7 @@
 			<organization>${project.organization.name}</organization>
 			<organizationUrl>${project.organization.url}</organizationUrl>
 			<timezone>GMT+1</timezone>
-			<id>JanSchulte</id>
+			<id>janschulte</id>
 		</developer>
 		<developer>
 			<name>Daniel Nüst</name>
@@ -33,7 +33,13 @@
 			<organization>${project.organization.name}</organization>
 			<organizationUrl>${project.organization.url}</organizationUrl>
 			<timezone>GMT+1</timezone>
-			<id>DanielNuest</id>
+			<id>nuest</id>
+		</developer>
+		<developer>
+			<name>Mohammad A. Yakoub</name>
+			<email>m.ahmed.yakoub@gmail.com</email>
+			<timezone>GMT+1</timezone>
+			<id>Moh-Yakoub</id>
 		</developer>
 	</developers>
 

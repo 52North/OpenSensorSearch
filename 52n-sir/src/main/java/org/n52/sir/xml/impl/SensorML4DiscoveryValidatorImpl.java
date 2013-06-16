@@ -1,27 +1,18 @@
 /**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.n52.sir.xml.impl;
 
 import java.io.File;
@@ -338,16 +329,17 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
                 @Override
                 public void run() {
                     // transform the schematron to XSL,
-                    // http://saxon.sourceforge.net/saxon6.5/using-xsl.html#Command-line
+                    // http://www.saxonica.com/documentation/index.html#!using-xsl/commandline
                     Transform trans = new Transform();
-                    String[] arguments = new String[] {"-x",
-                                                       "org.apache.xerces.parsers.SAXParser",
-                                                       "-w1",
-                                                       "-o",
-                                                       tempXSLFile.getAbsolutePath(),
-                                                       profileFile.getAbsolutePath(),
-                                                       svrlFile.getAbsolutePath(), // "docs/iso_svrl_for_xslt2.xsl",
-                                                       "generate-paths=yes"};
+
+                    // http://blog.eight02.com/2011/05/validating-xml-with-iso-schematron-on.html
+                    String[] arguments = new String[] {"-x:org.apache.xerces.parsers.SAXParser",
+                                                       // "-w1",
+                                                       "-o:" + tempXSLFile.getAbsolutePath(),
+                                                       "-s:" + profileFile.getAbsolutePath(),
+                                                       svrlFile.getAbsolutePath() // "docs/iso_svrl_for_xslt2.xsl",
+                    // "generate-paths=yes"
+                    };
                     trans.doTransform(arguments, "java net.sf.saxon.Transform");
 
                     first = false;

@@ -338,16 +338,17 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
                 @Override
                 public void run() {
                     // transform the schematron to XSL,
-                    // http://saxon.sourceforge.net/saxon6.5/using-xsl.html#Command-line
+                    // http://www.saxonica.com/documentation/index.html#!using-xsl/commandline
                     Transform trans = new Transform();
-                    String[] arguments = new String[] {"-x",
-                                                       "org.apache.xerces.parsers.SAXParser",
-                                                       "-w1",
-                                                       "-o",
-                                                       tempXSLFile.getAbsolutePath(),
-                                                       profileFile.getAbsolutePath(),
-                                                       svrlFile.getAbsolutePath(), // "docs/iso_svrl_for_xslt2.xsl",
-                                                       "generate-paths=yes"};
+
+                    // http://blog.eight02.com/2011/05/validating-xml-with-iso-schematron-on.html
+                    String[] arguments = new String[] {"-x:org.apache.xerces.parsers.SAXParser",
+                                                       // "-w1",
+                                                       "-o:" + tempXSLFile.getAbsolutePath(),
+                                                       "-s:" + profileFile.getAbsolutePath(),
+                                                       svrlFile.getAbsolutePath() // "docs/iso_svrl_for_xslt2.xsl",
+                    // "generate-paths=yes"
+                    };
                     trans.doTransform(arguments, "java net.sf.saxon.Transform");
 
                     first = false;

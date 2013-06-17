@@ -71,7 +71,7 @@ public class ValidatorTest {
             TransformerFactoryConfigurationError,
             ParserConfigurationException,
             OwsExceptionReport {
-        File f = new File("/home/daniel/workspace/SIR/data/transformation/AirBase-test.xml");
+        File f = new File("D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/AirBase-test.xml");
 
         validateFileToConsole(f);
     }
@@ -80,7 +80,7 @@ public class ValidatorTest {
             TransformerConfigurationException,
             TransformerFactoryConfigurationError,
             ParserConfigurationException {
-        File f = new File("/home/daniel/workspace/SIR/data/transformation/ifgicam-discoveryprofile.xml");
+        File f = new File("D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/ifgicam-discoveryprofile.xml");
 
         validateFileToConsole(f);
     }
@@ -96,8 +96,8 @@ public class ValidatorTest {
             TransformerFactoryConfigurationError,
             ParserConfigurationException,
             OwsExceptionReport {
-        File schematronFile = new File("/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/SensorML_Profile_for_Discovery.sch");
-        File svrlFile = new File("/home/daniel/workspace/SIR/WebContent/WEB-INF/xslt/iso_svrl_for_xslt2.xsl");
+        File schematronFile = new File("D:/52n/OpenSensorSearch/52n-sir/target/SIR/WEB-INF/classes/SensorML_Profile_for_Discovery.sch");
+        File svrlFile = new File("D:/52n/OpenSensorSearch/52n-sir/target/SIR/WEB-INF/classes/xslt/iso_svrl_for_xslt2.xsl");
         SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
 
         boolean v = validator.validate(f);
@@ -161,7 +161,7 @@ public class ValidatorTest {
      * @throws InstantiationError
      */
     private static void test02() throws InstantiationError {
-        String inputFile = "/home/daniel/workspace/SIR/data/transformation/IFGI_HWS1-discoveryprofile.xml";
+        String inputFile = "D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/IFGI_HWS1-discoveryprofile.xml";
         log.info("Transforming " + inputFile);
 
         try {

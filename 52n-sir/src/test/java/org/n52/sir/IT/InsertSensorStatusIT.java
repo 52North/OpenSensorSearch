@@ -28,96 +28,88 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.servlet.UnavailableException;
-import javax.xml.crypto.dsig.XMLObject;
-
-import net.opengis.ows.ExceptionReportDocument;
-import net.opengis.ows.ExceptionReportDocument.ExceptionReport;
-import net.opengis.sensorML.x101.SensorMLDocument;
-import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.InsertSensorStatus;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirTestCase;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
-import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 import org.x52North.sir.x032.InsertSensorStatusRequestDocument;
-import org.x52North.sir.x032.InsertSensorStatusRequestDocument.InsertSensorStatusRequest;
 import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
-import org.x52North.sir.x032.InsertSensorStatusResponseDocument.InsertSensorStatusResponse;
 
 public class InsertSensorStatusIT {
-	private void failIfFileNotExists(File f) {
-		if (!f.exists())
-			fail(f.getName() + " Is missing!");
-	}
 
-	private void failIfURLNull(String resource) {
-		if (ClassLoader.getSystemResource(resource) == null)
-			fail(resource + " Is missing");
+	public void failIfURLNull(String resource) {
+		assertNotNull(resource + " Is missing",
+				(ClassLoader.getSystemResource(resource)));
 	}
 
 	@Before
-	public void setup() {
+	public void setup() throws Exception {
+		failIfURLNull("Requests/SearchSensor_bySensorIDInSIR.xml");
+		failIfURLNull("Requests/SearchSensor_byServiceDescription.xml");
 
-		failIfURLNull("Requests/InsertSensorStatus.xml");
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
+
 		if (SirConfigurator.getInstance() == null) {
 			InputStream dbStream = ClassLoader
 					.getSystemResourceAsStream("prop/db.PROPERTIES");
 			InputStream sirStream = ClassLoader
 					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			try {
-				// Read configurator if null
-				SirConfigurator.getInstance(sirStream, dbStream, null, null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				fail(e.toString());
-			}
+
+			// Read configurator if null
+			SirConfigurator.getInstance(sirStream, dbStream, null, null);
+
 		}
+
 	}
 
 	@Test
-	public void insertSensorStatus() throws XmlException {
+	public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
 		XmlObject res = null;
-		try {
+	//	try {
+		
+		
 			/*
 			 * Create a sensor insert request from sensorFile
 			 */
 			File sensor_status = new File(ClassLoader.getSystemResource(
 					"Requests/InsertSensorStatus.xml").getFile());
-			InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
-			
-			 res = Client.xSendPostRequest(req);
-			
-			InsertSensorStatusResponseDocument res_doc = InsertSensorStatusResponseDocument.Factory.parse(res.getDomNode());
-			
-			if(!res_doc.getInsertSensorStatusResponse().getSensorIDInSIR().equals(req.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR()))
-					fail("StatusId not equal");
-		} catch (Exception e) {
-			ExceptionReportDocument exception_report = ExceptionReportDocument.Factory.parse(res.getDomNode());
-			if(exception_report.validate())
+			InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory
+					.parse(sensor_status);
+
+			res = Client.xSendPostRequest(req);
+
+			InsertSensorStatusResponseDocument res_doc = InsertSensorStatusResponseDocument.Factory
+					.parse(res.getDomNode());
+
+			assertTrue ("StatusId not equal",res_doc
+					.getInsertSensorStatusResponse()
+					.getSensorIDInSIR()
+					.equals(req.getInsertSensorStatusRequest()
+							.getStatusDescription().getSensorIDInSIR()));
+				
+	/*	} catch (Exception e) {
+			ExceptionReportDocument exception_report = ExceptionReportDocument.Factory
+					.parse(res.getDomNode());
+			if (exception_report.validate())
 				fail("No sensor found");
 			else
-			// TODO Auto-generated catch block
-			fail(e.toString());
+				// TODO Auto-generated catch block
+				fail(e.toString());
 		}
 
+	}*/
 	}
 
 }
-

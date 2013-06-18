@@ -29,30 +29,19 @@ package org.n52.sir.IT;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.InputStream;
 
 import javax.servlet.UnavailableException;
 
-import net.opengis.ows.ExceptionDocument;
-import net.opengis.ows.ExceptionReportDocument;
-import net.opengis.ows.ExceptionReportDocument.ExceptionReport;
 import net.opengis.sensorML.x101.SensorMLDocument;
 
-import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
-import org.n52.sir.client.DescribeSensorBean;
-import org.n52.sir.ows.OWSConstants;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.util.XmlTools;
 import org.x52North.sir.x032.DescribeSensorRequestDocument;
 
 public class DescribeSensorIT {

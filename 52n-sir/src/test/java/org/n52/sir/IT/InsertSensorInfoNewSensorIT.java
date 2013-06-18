@@ -28,17 +28,15 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotEquals;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.UnavailableException;
-import javax.xml.crypto.dsig.XMLObject;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
-import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
@@ -46,45 +44,42 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirTestCase;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 
 public class InsertSensorInfoNewSensorIT {
-	private void failIfFileNotExists(File f) {
-		if (!f.exists())
-			fail(f.getName() + " Is missing!");
+	
+	public void failIfURLNull(String resource) {
+		assertNotNull(resource + " Is missing",
+				(ClassLoader.getSystemResource(resource)));
 	}
-
-	private void failIfURLNull(String resource) {
-		if (ClassLoader.getSystemResource(resource) == null)
-			fail(resource + " Is missing");
-	}
-
 	@Before
-	public void setup() {
-		failIfURLNull("Requests/InsertSensorInfo_newSensor.xml");
+	public void setup() throws Exception {
+		failIfURLNull("Requests/SearchSensor_bySensorIDInSIR.xml");
+		failIfURLNull("Requests/SearchSensor_byServiceDescription.xml");
+
+		failIfURLNull("prop/db.PROPERTIES");
+		failIfURLNull("prop/sir.PROPERTIES");
+
 		if (SirConfigurator.getInstance() == null) {
 			InputStream dbStream = ClassLoader
 					.getSystemResourceAsStream("prop/db.PROPERTIES");
 			InputStream sirStream = ClassLoader
 					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			try {
-				// Read configurator if null
-				SirConfigurator.getInstance(sirStream, dbStream, null, null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				fail(e.toString());
-			}
+
+			// Read configurator if null
+			SirConfigurator.getInstance(sirStream, dbStream, null, null);
+
 		}
+
 	}
 
 	@Test
-	public void insertSampleSensor() {
+	public void insertSampleSensor() throws XmlException, IOException, OwsExceptionReport, HttpException  {
 		
-		try {
+	
 			/*
 			 * Create a sensor insert request from sensorFile
 			 */
@@ -102,8 +97,7 @@ public class InsertSensorInfoNewSensorIT {
 			
 			InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 			
-			if(resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors() == 0)
-				fail("Failure to insert sensors");
+			assertNotEquals("Failed to insert sensor",resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors() == 0);
 			
 			System.out.println("Loaded a sensor , encoded and inserted successfully");
 			/*
@@ -125,16 +119,11 @@ public class InsertSensorInfoNewSensorIT {
 
 			int number = (responseDoc.getInsertSensorInfoResponse()
 					.getNumberOfInsertedSensors());
-			if (number != 0)
-				fail("Sensors are not inserted");
+			assertNotEquals("Failed to insert sensor",number,0);
 
 			
 			System.out.println("Inserted sensor directly");
 		
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			fail(e.toString());
-		}
 
 	}
 

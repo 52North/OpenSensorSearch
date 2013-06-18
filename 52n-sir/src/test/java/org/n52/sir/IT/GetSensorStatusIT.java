@@ -28,12 +28,10 @@
 package org.n52.sir.IT;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.InputStream;
 
-import net.opengis.ows.ExceptionReportDocument;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;

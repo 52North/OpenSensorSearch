@@ -27,12 +27,16 @@
  */
 package org.n52.sir.IT;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
+
+import javax.servlet.UnavailableException;
 
 import net.opengis.ows.ExceptionDocument;
 import net.opengis.ows.ExceptionReportDocument;
@@ -55,14 +59,13 @@ public class DescribeSensorIT {
 
 	private String sensorIDinSIR = "1";
 
-	
 	public void failIfURLNull(String resource) {
-		if (ClassLoader.getSystemResource(resource) == null)
-			fail(resource + " Is missing");
+		assertNotNull (resource + " Is missing",ClassLoader.getSystemResource(resource));
+			
 	}
 
 	@Before
-	public void setup() {
+	public void setup() throws UnavailableException, OwsExceptionReport {
 		failIfURLNull("Requests/DescribeSensor.xml");
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
@@ -72,13 +75,10 @@ public class DescribeSensorIT {
 					.getSystemResourceAsStream("prop/db.PROPERTIES");
 			InputStream sirStream = ClassLoader
 					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			try {
+			
 				// Read configurator if null
 				SirConfigurator.getInstance(sirStream, dbStream, null, null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				fail(e.toString());
-			}
+			
 		}
 
 	}
@@ -86,24 +86,25 @@ public class DescribeSensorIT {
 	@Test
 	public void describeSensor() throws Exception {
 
-		DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory.newInstance();
-		doc.addNewDescribeSensorRequest().setSensorIDInSIR("1");
-		XmlObject response=null;
-		try {
-			
-			response = Client.xSendPostRequest(doc);
-			System.out.println(response);
-			// parse and validate response
-			SensorMLDocument sml = SensorMLDocument.Factory.parse(response.getDomNode());
-			boolean isValid = sml.validate();
-			System.out.println(isValid);
-		} catch (Exception e) {
-			if(response == null)
-				fail("Null response");
-			ExceptionReportDocument r = ExceptionReportDocument.Factory.parse(response.getDomNode());
-			if(r.validate())
-				fail("No sensor returned - Check db");
-			else fail(e.toString());
-		}
+		DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory
+				.newInstance();
+		doc.addNewDescribeSensorRequest().setSensorIDInSIR(sensorIDinSIR);
+		XmlObject response = null;
+		// try {
+
+		response = Client.xSendPostRequest(doc);
+		// parse and validate response
+		SensorMLDocument sml = SensorMLDocument.Factory.parse(response
+				.getDomNode());
+		boolean isValid = sml.validate();
+		assertTrue("Not a valid sensorML returned",isValid);
+		/*
+		 * Check to see if it's enough to throws , or use try catch paradigm
+		 * } catch (Exception e) { if(response == null) fail("Null response");
+		 * ExceptionReportDocument r =
+		 * ExceptionReportDocument.Factory.parse(response.getDomNode());
+		 * if(r.validate()) fail("No sensor returned - Check db"); else
+		 * fail(e.toString()); }
+		 */
 	}
 }

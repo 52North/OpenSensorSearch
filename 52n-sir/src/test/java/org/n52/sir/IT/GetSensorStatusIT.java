@@ -83,12 +83,15 @@ public class GetSensorStatusIT {
 		}
 
 	}
+	
+	
+	
 
-	@Test
-	public void getSensorStatus() throws Exception {
+	public void getSensorStatus(String file,String description) throws Exception {
+		System.out.println(description);
 		File f = new File(
 				(ClassLoader
-						.getSystemResource("Requests/GetSensorStatus_bySearchCriteria.xml")
+						.getSystemResource(file)
 						.getFile()));
 		GetSensorStatusRequestDocument doc = GetSensorStatusRequestDocument.Factory
 				.parse(f);
@@ -113,9 +116,18 @@ public class GetSensorStatusIT {
 			ExceptionReportDocument r = ExceptionReportDocument.Factory
 					.parse(response.getDomNode());
 			if (r.validate())
-				fail(e.toString());
+				fail("Couldnot retrieve sensor data,check the db contain valid sensors");
 			else
 				fail(e.toString());
 		}
 	}
+	@Test
+	public void getSensorStatusAllTests() throws Exception{
+		getSensorStatus("Requests/GetSensorStatus_bySearchCriteria.xml","Getting sensor status by Search criteria");
+		getSensorStatus("Requests/GetSensorStatus_bySensorIDInSIR","Getting sensor status by Sensor ID in SIR");
+		getSensorStatus("Requests/GetSensorStatus_byServiceDescription.xml","Getting sensor status by sensor service description");
+		
+		
+	}
+	
 }

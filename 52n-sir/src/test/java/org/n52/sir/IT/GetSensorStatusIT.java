@@ -27,44 +27,33 @@
  */
 package org.n52.sir.IT;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-
-import java.io.BufferedReader;
+import static org.junit.Assert.assertTrue;
 import java.io.File;
-import java.io.FileReader;
 import java.io.InputStream;
 
-import net.opengis.ows.ExceptionDocument;
 import net.opengis.ows.ExceptionReportDocument;
-import net.opengis.ows.ExceptionReportDocument.ExceptionReport;
-import net.opengis.sensorML.x101.SensorMLDocument;
-
-import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
-import org.n52.sir.client.DescribeSensorBean;
-import org.n52.sir.ows.OWSConstants;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.util.XmlTools;
-import org.x52North.sir.x032.DescribeSensorRequestDocument;
 import org.x52North.sir.x032.GetSensorStatusRequestDocument;
 import org.x52North.sir.x032.GetSensorStatusResponseDocument;
 
 public class GetSensorStatusIT {
 
-	private String sensorIDinSIR = "1";
-
 	public void failIfURLNull(String resource) {
-		if (ClassLoader.getSystemResource(resource) == null)
-			fail(resource + " Is missing");
+		assertNotNull(resource + " Is missing",
+				(ClassLoader.getSystemResource(resource)));
 	}
 
 	@Before
-	public void setup() {
-		failIfURLNull("Requests/GetSensorStatus_bySearchCriteria.xml");
+	public void setup() throws Exception {
+		failIfURLNull("Requests/SearchSensor_bySensorIDInSIR.xml");
+		failIfURLNull("Requests/SearchSensor_byServiceDescription.xml");
+
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
 
@@ -73,61 +62,62 @@ public class GetSensorStatusIT {
 					.getSystemResourceAsStream("prop/db.PROPERTIES");
 			InputStream sirStream = ClassLoader
 					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			try {
-				// Read configurator if null
-				SirConfigurator.getInstance(sirStream, dbStream, null, null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				fail(e.toString());
-			}
+
+			// Read configurator if null
+			SirConfigurator.getInstance(sirStream, dbStream, null, null);
+
 		}
 
 	}
-	
-	
-	
 
-	public void getSensorStatus(String file,String description) throws Exception {
-		System.out.println(description);
-		File f = new File(
-				(ClassLoader
-						.getSystemResource(file)
-						.getFile()));
+	public void getSensorStatus(String file, String description)
+			throws Exception {
+		File f = new File((ClassLoader.getSystemResource(file).getFile()));
 		GetSensorStatusRequestDocument doc = GetSensorStatusRequestDocument.Factory
 				.parse(f);
 
 		XmlObject response = null;
 
-		try {
+		// try {
 
-			response = Client.xSendPostRequest(doc);
-			// parse and validate response
-			GetSensorStatusResponseDocument resp_doc = GetSensorStatusResponseDocument.Factory
-					.parse(response.getDomNode());
-			// validate the respo_doc
-			
-			if(resp_doc.validate()!=true)
-				fail("Invalid  Sensor status");
-			
-			
-		} catch (Exception e) {
-			if (response == null)
-				fail("Null response");
-			ExceptionReportDocument r = ExceptionReportDocument.Factory
-					.parse(response.getDomNode());
-			if (r.validate())
-				fail("Couldnot retrieve sensor data,check the db contain valid sensors");
-			else
-				fail(e.toString());
-		}
+		response = Client.xSendPostRequest(doc);
+		// parse and validate response
+		GetSensorStatusResponseDocument resp_doc = GetSensorStatusResponseDocument.Factory
+				.parse(response.getDomNode());
+		// validate the respo_doc
+
+		assertTrue("Invalid  Sensor status", resp_doc.validate());
+
+		/*
+		 * } catch (Exception e) {
+		 * 
+		 * if (response == null) fail("Null response"); ExceptionReportDocument
+		 * r = ExceptionReportDocument.Factory .parse(response.getDomNode()); if
+		 * (r.validate())
+		 * fail("Couldnot retrieve sensor data,check the db contain valid sensors"
+		 * ); else fail(e.toString()); }
+		 */
 	}
+
 	@Test
-	public void getSensorStatusAllTests() throws Exception{
-		getSensorStatus("Requests/GetSensorStatus_bySearchCriteria.xml","Getting sensor status by Search criteria");
-		getSensorStatus("Requests/GetSensorStatus_bySensorIDInSIR","Getting sensor status by Sensor ID in SIR");
-		getSensorStatus("Requests/GetSensorStatus_byServiceDescription.xml","Getting sensor status by sensor service description");
-		
-		
+	public void getSensorStatusSearchCriteria() throws Exception {
+		getSensorStatus("Requests/GetSensorStatus_bySearchCriteria.xml",
+				"Getting sensor status by Search criteria");
+
 	}
-	
+
+	@Test
+	public void getSensorStatusSearchID() throws Exception {
+		getSensorStatus("Requests/GetSensorStatus_bySensorIDInSIR",
+				"Getting sensor status by Sensor ID in SIR");
+
+	}
+
+	@Test
+	public void getSensorStatusSearchServiceDescription() throws Exception {
+		getSensorStatus("Requests/GetSensorStatus_byServiceDescription.xml",
+				"Getting sensor status by sensor service description");
+
+	}
+
 }

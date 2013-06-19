@@ -71,7 +71,7 @@ public class GetCapabilitiesIT {
 			try {
 				//Read configurator if null 
 				SirConfigurator.getInstance(sirStream, dbStream, null,null);
-			} catch (UnavailableException | OwsExceptionReport e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				fail(e.toString());
 			}

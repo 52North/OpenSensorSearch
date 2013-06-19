@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<InsertSensorStatusRequest service="SIR" version="0.3.0" xmlns="http://52north.org/sir/0.3.2"
+	xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd">
+	<StatusDescription>
+		<SensorIDInSIR>1</SensorIDInSIR>
+		<Status>
+			<PropertyName>urn:osiris:sensorproperties:batterystate</PropertyName>
+			<PropertyValue>55</PropertyValue>
+			<Uom code="%" />
+			<Timestamp gml:id="timestamp_01">
+        		<gml:timePosition>2010-04-16T15:43:06+0200</gml:timePosition>
+		    </Timestamp>
+		</Status>
+	</StatusDescription>
+</InsertSensorStatusRequest>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sir:SearchSensorRequest service="SIR"
+	sir:version="0.3.2" xmlns:sir="http://52north.org/sir/0.3.2" xmlns:ows="http://www.opengis.net/ows/1.1"
+	xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://52north.org/sir/0.3.2
+ http://52north.org/schema/sir/0.3.2/sirAll.xsd">
+	<sir:SensorIdentification>
+		<sir:SensorIDInSIR>1</sir:SensorIDInSIR>
+	</sir:SensorIdentification>
+	<sir:SimpleResponse>true</sir:SimpleResponse>
+</sir:SearchSensorRequest>

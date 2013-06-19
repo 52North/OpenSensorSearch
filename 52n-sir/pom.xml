@@ -77,7 +77,7 @@
 
 		<!-- would like to use filtering here, but I did not get it to work with 
 			Tomcat and Jetty plugins: http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
-		<service.path>/opensensorsearch</service.path>
+		<service.path>/SIR</service.path>
 		<service.endpoint.service>sir</service.endpoint.service>
 		<service.endpoint.rest>rest</service.endpoint.rest>
 		<service.endpoint.opensearch>search</service.endpoint.opensearch>

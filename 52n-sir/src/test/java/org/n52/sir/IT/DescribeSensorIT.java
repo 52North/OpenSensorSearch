@@ -30,7 +30,6 @@ package org.n52.sir.IT;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.InputStream;
 
 import javax.servlet.UnavailableException;
 
@@ -39,7 +38,6 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.DescribeSensorRequestDocument;
@@ -59,17 +57,6 @@ public class DescribeSensorIT {
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
 
-		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			
-				// Read configurator if null
-				SirConfigurator.getInstance(sirStream, dbStream, null, null);
-			
-		}
-
 	}
 
 	@Test
@@ -79,7 +66,6 @@ public class DescribeSensorIT {
 				.newInstance();
 		doc.addNewDescribeSensorRequest().setSensorIDInSIR(sensorIDinSIR);
 		XmlObject response = null;
-		// try {
 
 		response = Client.xSendPostRequest(doc);
 		// parse and validate response
@@ -87,13 +73,5 @@ public class DescribeSensorIT {
 				.getDomNode());
 		boolean isValid = sml.validate();
 		assertTrue("Not a valid sensorML returned",isValid);
-		/*
-		 * Check to see if it's enough to throws , or use try catch paradigm
-		 * } catch (Exception e) { if(response == null) fail("Null response");
-		 * ExceptionReportDocument r =
-		 * ExceptionReportDocument.Factory.parse(response.getDomNode());
-		 * if(r.validate()) fail("No sensor returned - Check db"); else
-		 * fail(e.toString()); }
-		 */
 	}
 }

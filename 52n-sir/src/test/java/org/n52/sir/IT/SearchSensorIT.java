@@ -36,7 +36,6 @@ import java.io.InputStream;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.SearchSensorRequestDocument;
 import org.x52North.sir.x032.SearchSensorResponseDocument;
@@ -56,17 +55,6 @@ public class SearchSensorIT {
 
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
-
-		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-
-			// Read configurator if null
-			SirConfigurator.getInstance(sirStream, dbStream, null, null);
-
-		}
 
 	}
 

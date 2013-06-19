@@ -33,14 +33,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.InsertSensorStatusRequestDocument;
@@ -61,25 +59,11 @@ public class InsertSensorStatusIT {
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
 
-		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-
-			// Read configurator if null
-			SirConfigurator.getInstance(sirStream, dbStream, null, null);
-
-		}
-
 	}
 
 	@Test
 	public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
 		XmlObject res = null;
-	//	try {
-		
-		
 			/*
 			 * Create a sensor insert request from sensorFile
 			 */
@@ -99,17 +83,6 @@ public class InsertSensorStatusIT {
 					.equals(req.getInsertSensorStatusRequest()
 							.getStatusDescription().getSensorIDInSIR()));
 				
-	/*	} catch (Exception e) {
-			ExceptionReportDocument exception_report = ExceptionReportDocument.Factory
-					.parse(res.getDomNode());
-			if (exception_report.validate())
-				fail("No sensor found");
-			else
-				// TODO Auto-generated catch block
-				fail(e.toString());
-		}
-
-	}*/
 	}
 
 }

@@ -30,12 +30,10 @@ package org.n52.sir.IT;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.io.File;
-import java.io.InputStream;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.GetSensorStatusRequestDocument;
 import org.x52North.sir.x032.GetSensorStatusResponseDocument;
@@ -54,17 +52,6 @@ public class GetSensorStatusIT {
 
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
-
-		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-
-			// Read configurator if null
-			SirConfigurator.getInstance(sirStream, dbStream, null, null);
-
-		}
 
 	}
 

@@ -69,16 +69,7 @@ public class GetCapabilitiesIT {
 		failIfURLNull("prop/db.PROPERTIES");
 		failIfURLNull("prop/sir.PROPERTIES");
 
-		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-
-			// Read configurator if null
-			SirConfigurator.getInstance(sirStream, dbStream, null, null);
-
-		}
+		
 
 	}
 	@Test

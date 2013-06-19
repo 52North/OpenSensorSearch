@@ -178,8 +178,7 @@ public class OpenSearchIT {
 	public void testKMLResponseFromOpenSearch() throws IOException, SAXException{
 		String realResult = readResource("Requests/Sensors/testSensor01Result.kml");
 		String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "kml"));
-		assertThat(realResult, SameJSONAs.sameJSONAs(responseResult)
-				.allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
+		assertXMLEqual(realResult,responseResult);
 	}
 	
 	

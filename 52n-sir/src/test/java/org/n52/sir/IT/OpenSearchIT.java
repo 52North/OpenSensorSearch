@@ -111,7 +111,7 @@ public class OpenSearchIT {
 		 * Address already in use.
 		 */
 		StringBuilder query = new StringBuilder();
-		query.append("http://localhost:8080/" + SirConstants.SERVICE_NAME);
+		query.append("http://localhost:8080/SIR");
 		query.append("/search?q=");
 		query.append(q);
 		query.append("&httpAccept=application/");

@@ -6,4 +6,6 @@ target
 
 .settings
 
-buildNumber.properties
+*.buildNumber.properties
+src/main/config/buildNumber.properties
+

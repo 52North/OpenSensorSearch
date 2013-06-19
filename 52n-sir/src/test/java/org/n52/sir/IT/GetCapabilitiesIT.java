@@ -40,12 +40,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
+import net.opengis.sensorML.x101.CapabilitiesDocument.Capabilities;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
+import org.x52North.sir.x032.CapabilitiesDocument;
 
 public class GetCapabilitiesIT {
 	private void failIfFileNotExists(File f) {
@@ -66,6 +69,7 @@ public class GetCapabilitiesIT {
 			InputStream dbStream = ClassLoader.getSystemResourceAsStream("prop/db.PROPERTIES");
 			InputStream sirStream  = ClassLoader.getSystemResourceAsStream("prop/sir.PROPERTIES");
 			try {
+				//Read configurator if null 
 				SirConfigurator.getInstance(sirStream, dbStream, null,null);
 			} catch (UnavailableException | OwsExceptionReport e) {
 				// TODO Auto-generated catch block
@@ -93,9 +97,11 @@ public class GetCapabilitiesIT {
 		
 		while((k=br.readLine())!=null)request.append(k);
 		
-		String response = Client.sendGetRequest(request.toString());
-		System.out.println(request);
-		System.out.println(response);
+		String response = Client.sendPostRequest(request.toString());
+		CapabilitiesDocument doc = CapabilitiesDocument.Factory.parse(response);
+		
+		if(doc.validate()==false)
+			fail("Invalid validator");
 		
 		} catch(Exception e){
 			e.printStackTrace();

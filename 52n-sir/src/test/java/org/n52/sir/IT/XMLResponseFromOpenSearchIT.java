@@ -53,15 +53,16 @@ import org.junit.Test;
 import org.n52.sir.SirConstants;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
+import org.x52North.sir.x032.SearchSensorResponseDocument;
+import org.xml.sax.SAXException;
+
+import static org.custommonkey.xmlunit.XMLAssert.*;
 
 import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
-import com.google.gson.Gson;
-
-public class JSONResponseFromOpenSearchIT {
+public class XMLResponseFromOpenSearchIT {
 
 	public void insertSensor(String sensorDest) throws XmlException,
 			IOException, OwsExceptionReport, HttpException {
@@ -109,16 +110,16 @@ public class JSONResponseFromOpenSearchIT {
 		 * Address already in use.
 		 */
 		StringBuilder query = new StringBuilder();
-		query.append("http://localhost:8080/" + SirConstants.SERVICE_NAME);
+		query.append("http://geoviqua.dev.52north.org/" + SirConstants.SERVICE_NAME);
 		query.append("/search?q=");
 		query.append(q);
-		query.append("&httpAccept=application/json");
+		query.append("&httpAccept=application/xml");
 		return query.toString();
 	}
 
 	@Test
 	public void testJSONOutputOpenSearch() throws ClientProtocolException,
-			IOException, JSONException {
+			IOException, JSONException, XmlException, SAXException {
 		/*
 		 * Here I'm keeping record of the keywords of each file to search for
 		 * them
@@ -132,8 +133,8 @@ public class JSONResponseFromOpenSearchIT {
 		 * TODO Prepare a list of three json sensors and a unique distinct
 		 * keywords for each for reliable results
 		 */
-		File sensor = new File(ClassLoader.getSystemResource(
-				"Requests/testSensor.json").getFile());
+	/*	File sensor = new File(ClassLoader.getSystemResource(
+				"Requests/testSensor.kml").getFile());*/
 		assertEquals(response.getStatusLine().getStatusCode(), 200);
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -141,22 +142,28 @@ public class JSONResponseFromOpenSearchIT {
 		String s = "";
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
+		
 
-		String responseJson = builder.toString();
-
-		builder = new StringBuilder();
+		String responseXML = builder.toString();
+		System.out.println(responseXML);
+		
 		reader.close();
-		reader = new BufferedReader(new FileReader(sensor));
+		/*
+		 * Read the file for comparing
+		 */
+		File results = new File(ClassLoader.getSystemResource(
+				"Requests/SensorsResultXML.xml").getFile());
+		builder = new StringBuilder();
+		reader = new BufferedReader(new FileReader(
+				results));
 		s = "";
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
-
-		String sensorJSON = builder.toString();
-		assertThat(responseJson, SameJSONAs.sameJSONAs(sensorJSON)
-				.allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
-		/*
-		 * Question : Should I delete the added sensors here , after finalization or not.
-		 */
+		
+		String realResults = builder.toString();
+		
+		assertXMLEqual(realResults,responseXML);
+		
 	}
 
 }

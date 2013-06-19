@@ -53,15 +53,12 @@ import org.junit.Test;
 import org.n52.sir.SirConstants;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 
 import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
-import com.google.gson.Gson;
-
-public class JSONResponseFromOpenSearchIT {
+public class KMLResponseFromOpenSearchIT {
 
 	public void insertSensor(String sensorDest) throws XmlException,
 			IOException, OwsExceptionReport, HttpException {
@@ -133,7 +130,7 @@ public class JSONResponseFromOpenSearchIT {
 		 * keywords for each for reliable results
 		 */
 		File sensor = new File(ClassLoader.getSystemResource(
-				"Requests/testSensor.json").getFile());
+				"Requests/testSensor.kml").getFile());
 		assertEquals(response.getStatusLine().getStatusCode(), 200);
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -142,7 +139,7 @@ public class JSONResponseFromOpenSearchIT {
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
 
-		String responseJson = builder.toString();
+		String responseKML = builder.toString();
 
 		builder = new StringBuilder();
 		reader.close();
@@ -151,11 +148,12 @@ public class JSONResponseFromOpenSearchIT {
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
 
-		String sensorJSON = builder.toString();
-		assertThat(responseJson, SameJSONAs.sameJSONAs(sensorJSON)
-				.allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
+		String sensorKML = builder.toString();
+		System.out.println(sensorKML);
+		System.out.println(responseKML);
+
 		/*
-		 * Question : Should I delete the added sensors here , after finalization or not.
+		 * Do a test using XMLUnit
 		 */
 	}
 

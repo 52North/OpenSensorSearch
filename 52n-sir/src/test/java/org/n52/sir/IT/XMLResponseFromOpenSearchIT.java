@@ -55,12 +55,9 @@ import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
-import org.x52North.sir.x032.SearchSensorResponseDocument;
 import org.xml.sax.SAXException;
 
 import static org.custommonkey.xmlunit.XMLAssert.*;
-
-import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
 public class XMLResponseFromOpenSearchIT {
 
@@ -96,11 +93,10 @@ public class XMLResponseFromOpenSearchIT {
 	@Before
 	public void insertSensors() throws XmlException, IOException,
 			OwsExceptionReport, HttpException {
-		/*
-		 * insertSensor("Requests/testSensor.xml");
-		 * insertSensor("Requests/testSensor.xml");
-		 * insertSensor("Requests/testSensor.xml");
-		 */
+
+		insertSensor("Requests/Sensors/testSensor01.xml");
+		insertSensor("Requests/Sensors/testSensor02.xml");
+
 	}
 
 	public String buildQuery(String q) {
@@ -110,7 +106,7 @@ public class XMLResponseFromOpenSearchIT {
 		 * Address already in use.
 		 */
 		StringBuilder query = new StringBuilder();
-		query.append("http://geoviqua.dev.52north.org/" + SirConstants.SERVICE_NAME);
+		query.append("http://localhost:8080/" + SirConstants.SERVICE_NAME);
 		query.append("/search?q=");
 		query.append(q);
 		query.append("&httpAccept=application/xml");
@@ -126,15 +122,21 @@ public class XMLResponseFromOpenSearchIT {
 		 */
 
 		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(buildQuery("berlin"));
+		/*
+		 * I test using the unique ID of testSenosr01
+		 */
+		HttpGet get = new HttpGet(
+				buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059"));
 
 		HttpResponse response = client.execute(get);
 		/*
 		 * TODO Prepare a list of three json sensors and a unique distinct
 		 * keywords for each for reliable results
 		 */
-	/*	File sensor = new File(ClassLoader.getSystemResource(
-				"Requests/testSensor.kml").getFile());*/
+		/*
+		 * File sensor = new File(ClassLoader.getSystemResource(
+		 * "Requests/testSensor.kml").getFile());
+		 */
 		assertEquals(response.getStatusLine().getStatusCode(), 200);
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -142,28 +144,25 @@ public class XMLResponseFromOpenSearchIT {
 		String s = "";
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
-		
 
 		String responseXML = builder.toString();
 		System.out.println(responseXML);
-		
+
 		reader.close();
 		/*
 		 * Read the file for comparing
 		 */
 		File results = new File(ClassLoader.getSystemResource(
-				"Requests/SensorsResultXML.xml").getFile());
+				"Requests/Sensors/testSensor01Result.xml").getFile());
 		builder = new StringBuilder();
-		reader = new BufferedReader(new FileReader(
-				results));
+		reader = new BufferedReader(new FileReader(results));
 		s = "";
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
-		
+
 		String realResults = builder.toString();
-		
-		assertXMLEqual(realResults,responseXML);
-		
+
+		assertXMLEqual(realResults, responseXML);
 	}
 
 }

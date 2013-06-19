@@ -114,8 +114,8 @@ public class XMLResponseFromOpenSearchIT {
 	}
 
 	@Test
-	public void testJSONOutputOpenSearch() throws ClientProtocolException,
-			IOException, JSONException, XmlException, SAXException {
+	public void testXMLOutputOpenSearch() throws ClientProtocolException,
+			IOException, XmlException, SAXException {
 		/*
 		 * Here I'm keeping record of the keywords of each file to search for
 		 * them

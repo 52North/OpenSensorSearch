@@ -34,7 +34,10 @@ import java.io.File;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.Test;
+import org.n52.sir.OpenSearchSIR;
 import org.n52.sir.client.Client;
+import org.n52.sir.opensearch.JsonListener;
+import org.n52.sir.opensearch.OpenSearchConfigurator;
 import org.x52North.sir.x032.GetSensorStatusRequestDocument;
 import org.x52North.sir.x032.GetSensorStatusResponseDocument;
 
@@ -60,7 +63,6 @@ public class GetSensorStatusIT {
 		File f = new File((ClassLoader.getSystemResource(file).getFile()));
 		GetSensorStatusRequestDocument doc = GetSensorStatusRequestDocument.Factory
 				.parse(f);
-
 		XmlObject response = null;
 
 		// try {
@@ -82,6 +84,7 @@ public class GetSensorStatusIT {
 		 * fail("Couldnot retrieve sensor data,check the db contain valid sensors"
 		 * ); else fail(e.toString()); }
 		 */
+
 	}
 
 	@Test

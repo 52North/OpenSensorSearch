@@ -57,12 +57,14 @@ import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 import org.xml.sax.SAXException;
 
+import uk.co.datumedge.hamcrest.json.SameJSONAs;
+
 import static org.custommonkey.xmlunit.XMLAssert.*;
 /*
  * TODO Add all OpenSourceOutputFormats IT to a single OpenSourceIT file
  */
 
-public class RSSResponseFromOpenSearchIT {
+public class OpenSearchIT {
 
 	public void insertSensor(String sensorDest) throws XmlException,
 			IOException, OwsExceptionReport, HttpException {
@@ -102,8 +104,7 @@ public class RSSResponseFromOpenSearchIT {
 		insertSensor("Requests/Sensors/testSensor02.xml");
 
 	}
-
-	public String buildQuery(String q) {
+	public String buildQuery(String q,String format) {
 		/*
 		 * I'm sure that the server will be localhost port : 8080 If it's not
 		 * installed on this the mvn verify will through a BindingException :
@@ -113,35 +114,19 @@ public class RSSResponseFromOpenSearchIT {
 		query.append("http://localhost:8080/" + SirConstants.SERVICE_NAME);
 		query.append("/search?q=");
 		query.append(q);
-		query.append("&httpAccept=application/xml");
+		query.append("&httpAccept=application/");
+		query.append("format");
 		return query.toString();
 	}
-
-	@Test
-	public void testXMLOutputOpenSearch() throws ClientProtocolException,
-			IOException, XmlException, SAXException {
-		/*
-		 * Here I'm keeping record of the keywords of each file to search for
-		 * them
-		 */
 	
+	private String sendRequest(String query) throws ClientProtocolException, IOException{
 		HttpClient client = new DefaultHttpClient();
 		/*
 		 * I test using the unique ID of testSenosr01
 		 */
-		HttpGet get = new HttpGet(
-				buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059"));
+		HttpGet get = new HttpGet(query);
 
 		HttpResponse response = client.execute(get);
-		/*
-		 * TODO Prepare a list of three json sensors and a unique distinct
-		 * keywords for each for reliable results
-		 */
-		/*
-		 * File sensor = new File(ClassLoader.getSystemResource(
-		 * "Requests/testSensor.kml").getFile());
-		 */
-		assertEquals(response.getStatusLine().getStatusCode(), 200);
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				response.getEntity().getContent()));
@@ -149,23 +134,57 @@ public class RSSResponseFromOpenSearchIT {
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
 
-		String responseXML = builder.toString();
-		System.out.println(responseXML);
-
+		String responseString = builder.toString();
 		reader.close();
-		/*
-		 * Read the file for comparing
-		 */
+		return responseString;
+	}
+	
+	private String readResource(String s) throws IOException{
 		File results = new File(ClassLoader.getSystemResource(
 				"Requests/Sensors/testSensor01Result.RSS").getFile());
-		builder = new StringBuilder();
-		reader = new BufferedReader(new FileReader(results));
+		StringBuilder builder = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new FileReader(results));
 		s = "";
 		while ((s = reader.readLine()) != null)
 			builder.append(s);
 		String realResults = builder.toString();
+		reader.close();
+		return realResults;
 
-		assertXMLEqual(realResults, responseXML);
 	}
+	
+	@Test
+	public void testRSSResponseFromOpenSearch() throws IOException, SAXException{
+		String realResult = readResource("Requests/Sensors/testSensor01Result.RSS");
+		String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "rss"));
+		
+		assertXMLEqual(realResult,responseResult);
+	}
+	@Test
+	public void testXMLResponseFromOpenSearch() throws IOException, SAXException{
+		String realResult = readResource("Requests/Sensors/testSensor01Result.XML");
+		String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "xml"));
+		
+		assertXMLEqual(realResult,responseResult);
+	}
+	@Test
+	public void testJSONResponseFromOpenSearch() throws IOException, SAXException{
+		String realResult = readResource("Requests/Sensors/testSensor01Result.json");
+		String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "json"));
+		assertThat(realResult, SameJSONAs.sameJSONAs(responseResult)
+				.allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
+	}
+	@Test
+	public void testKMLResponseFromOpenSearch() throws IOException, SAXException{
+		String realResult = readResource("Requests/Sensors/testSensor01Result.kml");
+		String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "kml"));
+		assertThat(realResult, SameJSONAs.sameJSONAs(responseResult)
+				.allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
+	}
+	
+	
+	
+	
+
 
 }

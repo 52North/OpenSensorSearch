@@ -28,13 +28,11 @@
 package org.n52.sir.IT;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.UnavailableException;
-import javax.xml.crypto.dsig.XMLObject;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -52,11 +50,12 @@ import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 
 public class DescribeSensorIT {
 
-	private String sensorIDinSIR = "1";
+	private String sensorIDinSIR = "42";
 
 	@Before
 	public void setup() throws UnavailableException, OwsExceptionReport,
 			XmlException, IOException, HttpException {
+
 		/*
 		 * To make it self consistent I will add the sensor testsensor.xml
 		 * before doing testing
@@ -66,22 +65,40 @@ public class DescribeSensorIT {
 
 		InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory
 				.parse(f);
-		XmlObject response = Client.xSendPostRequest(doc);
-		System.out.println("response:" + response);
-		assertTrue(response.validate());
+		Client.xSendPostRequest(doc);
 		// The file has the sensor with Id:42
 
 	}
 
 	@Test
-	public void describeSensor() throws Exception {
+	public void describeSensorUsingDocument() throws Exception {
 
 		DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory
 				.newInstance();
 		doc.addNewDescribeSensorRequest().setSensorIDInSIR(sensorIDinSIR);
+
 		XmlObject response = null;
 
 		response = Client.xSendPostRequest(doc);
+		System.out.println("response:" + response);
+		// parse and validate response
+		SensorMLDocument sml = SensorMLDocument.Factory.parse(response
+				.getDomNode());
+		boolean isValid = sml.validate();
+		assertTrue("Not a valid sensorML returned", isValid);
+	}
+
+	@Test
+	public void describeSensor() throws Exception {
+
+		
+		DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory
+				.parse(new File(ClassLoader.getSystemResource(
+						"Requests/DescribeSensor.xml").getFile()));
+		XmlObject response = null;
+
+		response = Client.xSendPostRequest(doc);
+		System.out.println("response:" + response);
 		// parse and validate response
 		SensorMLDocument sml = SensorMLDocument.Factory.parse(response
 				.getDomNode());
@@ -97,6 +114,6 @@ public class DescribeSensorIT {
 						"Requests/DeleteSensorInfo.xml").getFile()));
 		XmlObject response = Client.xSendPostRequest(doc);
 		boolean isValid = response.validate();
-		assertTrue("Warning:SensorId:42 has to be deleted",isValid);
+		assertTrue("Warning:SensorId:42 has to be deleted", isValid);
 	}
 }

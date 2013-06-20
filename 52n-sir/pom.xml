@@ -94,7 +94,7 @@
 				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
 				<db.driver>org.postgresql.Driver</db.driver>
 				<db.user>postgres</db.user>
-				<db.password>postgres</db.password>
+				<db.password>123456789</db.password>
 			</properties>
 		</profile>
 		<profile>

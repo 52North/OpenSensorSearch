@@ -30,32 +30,46 @@ package org.n52.sir.IT;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
+import java.io.IOException;
 
 import javax.servlet.UnavailableException;
+import javax.xml.crypto.dsig.XMLObject;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
+import org.apache.http.HttpException;
+import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
 import org.x52North.sir.x032.DescribeSensorRequestDocument;
+import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 
 public class DescribeSensorIT {
 
 	private String sensorIDinSIR = "1";
 
-	public void failIfURLNull(String resource) {
-		assertNotNull (resource + " Is missing",ClassLoader.getSystemResource(resource));
-			
-	}
-
 	@Before
-	public void setup() throws UnavailableException, OwsExceptionReport {
-		failIfURLNull("Requests/DescribeSensor.xml");
-		failIfURLNull("prop/db.PROPERTIES");
-		failIfURLNull("prop/sir.PROPERTIES");
+	public void setup() throws UnavailableException, OwsExceptionReport,
+			XmlException, IOException, HttpException {
+		/*
+		 * To make it self consistent I will add the sensor testsensor.xml
+		 * before doing testing
+		 */
+		File f = new File(ClassLoader.getSystemResource(
+				"Requests/InsertSensorInfo_newSensor.xml").getFile());
+
+		InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory
+				.parse(f);
+		XmlObject response = Client.xSendPostRequest(doc);
+		System.out.println("response:" + response);
+		assertTrue(response.validate());
+		// The file has the sensor with Id:42
 
 	}
 
@@ -72,6 +86,17 @@ public class DescribeSensorIT {
 		SensorMLDocument sml = SensorMLDocument.Factory.parse(response
 				.getDomNode());
 		boolean isValid = sml.validate();
-		assertTrue("Not a valid sensorML returned",isValid);
+		assertTrue("Not a valid sensorML returned", isValid);
+	}
+
+	@After
+	public void deleteInsertedSensor() throws Exception {
+		// delete the added sensor to keep the system state unchanged
+		DeleteSensorInfoRequestDocument doc = DeleteSensorInfoRequestDocument.Factory
+				.parse(new File(ClassLoader.getSystemResource(
+						"Requests/DeleteSensorInfo.xml").getFile()));
+		XmlObject response = Client.xSendPostRequest(doc);
+		boolean isValid = response.validate();
+		assertTrue("Warning:SensorId:42 has to be deleted",isValid);
 	}
 }

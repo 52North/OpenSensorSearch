@@ -28,7 +28,6 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -45,21 +43,6 @@ import org.x52North.sir.x032.InsertSensorStatusRequestDocument;
 import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
 
 public class InsertSensorStatusIT {
-
-	public void failIfURLNull(String resource) {
-		assertNotNull(resource + " Is missing",
-				(ClassLoader.getSystemResource(resource)));
-	}
-
-	@Before
-	public void setup() throws Exception {
-		failIfURLNull("Requests/SearchSensor_bySensorIDInSIR.xml");
-		failIfURLNull("Requests/SearchSensor_byServiceDescription.xml");
-
-		failIfURLNull("prop/db.PROPERTIES");
-		failIfURLNull("prop/sir.PROPERTIES");
-
-	}
 
 	@Test
 	public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {

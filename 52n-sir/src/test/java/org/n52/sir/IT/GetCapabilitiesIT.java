@@ -28,72 +28,34 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-
-import javax.servlet.UnavailableException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-
-import net.opengis.sensorML.x101.CapabilitiesDocument.Capabilities;
 
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
-import org.junit.Before;
+import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 import org.x52North.sir.x032.CapabilitiesDocument;
+import org.x52North.sir.x032.GetCapabilitiesDocument;
 
 public class GetCapabilitiesIT {
 	
-	public void failIfURLNull(String resource) {
-		assertNotNull(resource + " Is missing",
-				(ClassLoader.getSystemResource(resource)));
-	}
-	@Before
-	public void setup() throws Exception {
-		failIfURLNull("Requests/SearchSensor_bySensorIDInSIR.xml");
-		failIfURLNull("Requests/SearchSensor_byServiceDescription.xml");
-
-		failIfURLNull("prop/db.PROPERTIES");
-		failIfURLNull("prop/sir.PROPERTIES");
-
-		
-
-	}
 	@Test
-	public void readFile() throws IOException, OwsExceptionReport, HttpException, XmlException {
+	public void getCapabilites() throws IOException, OwsExceptionReport,
+			HttpException, XmlException {
 
-		failIfURLNull("Requests/GetCapabilities.xml");
+		File f = new File(ClassLoader.getSystemResource(
+				"Requests/GetCapabilities.xml").getFile());
 
-		File f = new File(ClassLoader.getSystemResource("Requests/GetCapabilities.xml")
-				.getFile());
-		
-		StringBuilder request = new StringBuilder();
-		
-			
-		BufferedReader br = new BufferedReader(new FileReader(f));
-		
-		String k = "";
-		
-		
-		while((k=br.readLine())!=null)request.append(k);
-		
-		String response = Client.sendPostRequest(request.toString());
-		CapabilitiesDocument doc = CapabilitiesDocument.Factory.parse(response);
-		
-		assertTrue("Invalid",(doc.validate()));
-		
+		GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
+		XmlObject response = Client.xSendPostRequest(doc);
+		CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
+
+		assertTrue("Invalid", (resp_doc.validate()));
+
 	}
 }

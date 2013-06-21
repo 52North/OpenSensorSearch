@@ -1,0 +1,210 @@
+<InsertSensorInfoRequest service="SIR" version="0.3.0" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+	<InfoToBeInserted>
+		<SensorDescription xmlns:ns="http://www.opengis.net/sensorML/1.0.1" xsi:type="ns:SystemType">
+			<gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>
+			<ns:keywords>
+				<ns:KeywordList>
+					<ns:keyword>water gage</ns:keyword>
+					<ns:keyword>warning system</ns:keyword>
+				</ns:KeywordList>
+			</ns:keywords>
+			<ns:identification>
+				<ns:IdentifierList>
+					<ns:identifier name="uniqueID">
+						<ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+							<ns:value>urn:ogc:object:feature:Sensor:IFGI:station_4781</ns:value>
+						</ns:Term>
+					</ns:identifier>
+					<ns:identifier name="longName">
+						<ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+							<ns:value>station 4781, a dummy test station near Münster</ns:value>
+						</ns:Term>
+					</ns:identifier>
+					<ns:identifier name="shortName">
+						<ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+							<ns:value>station 4781</ns:value>
+						</ns:Term>
+					</ns:identifier>
+				</ns:IdentifierList>
+			</ns:identification>
+			<ns:classification>
+				<ns:ClassifierList>
+					<ns:classifier name="intendedApplication">
+						<ns:Term>
+							<ns:value>water gauge</ns:value>
+						</ns:Term>
+					</ns:classifier>
+					<ns:classifier name="sensorType">
+						<ns:Term>
+							<ns:value>gauge station</ns:value>
+						</ns:Term>
+					</ns:classifier>
+				</ns:ClassifierList>
+			</ns:classification>
+			<ns:validTime>
+				<gml:TimePeriod>
+					<gml:beginPosition>2010-04-25T00:00:00.000+02:00</gml:beginPosition>
+					<gml:endPosition>2010-04-25T00:00:00.000+02:00</gml:endPosition>
+				</gml:TimePeriod>
+			</ns:validTime>
+			<ns:capabilities>
+				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+					<swe:field name="observedBBOX">
+						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+							<swe:lowerCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree"/>
+											<swe:value>51.77</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree"/>
+											<swe:value>7.3</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:lowerCorner>
+							<swe:upperCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree"/>
+											<swe:value>52.076</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree"/>
+											<swe:value>7.833</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:upperCorner>
+						</swe:Envelope>
+					</swe:field>
+				</swe:DataRecord>
+			</ns:capabilities>
+			<ns:contact>
+				<ns:ResponsibleParty gml:id="WWU_ifgi_test_sensor_data_contact">
+					<ns:individualName>Daniel Nüst</ns:individualName>
+					<ns:organizationName>Institute for Geoinformatics - Westfälische Wilhelms Universität Münster - Sensor Web and Simulation Lab</ns:organizationName>
+					<ns:contactInfo>
+						<ns:address>
+							<ns:deliveryPoint>Weseler Straße 253</ns:deliveryPoint>
+							<ns:city>Münster</ns:city>
+							<ns:postalCode>48151</ns:postalCode>
+							<ns:country>Germany</ns:country>
+							<ns:electronicMailAddress>daniel.nuest@uni-muenster.de</ns:electronicMailAddress>
+						</ns:address>
+					</ns:contactInfo>
+				</ns:ResponsibleParty>
+			</ns:contact>
+			<ns:position name="stationPosition">
+				<swe:Position>
+					<swe:location>
+						<swe:Vector gml:id="SYSTEM_LOCATION">
+							<swe:coordinate name="latitude">
+								<swe:Quantity axisID="y">
+									<swe:uom code="degree"/>
+									<swe:value>51.977160249276004</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="longitude">
+								<swe:Quantity axisID="x">
+									<swe:value>7.357731467853749</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="altitude">
+								<swe:Quantity axisID="z">
+									<swe:value>61.52</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:location>
+				</swe:Position>
+			</ns:position>
+			<ns:interfaces>
+				<ns:InterfaceList>
+					<ns:interface name="WaterSAS_68">
+						<ns:InterfaceDefinition>
+							<ns:serviceLayer>
+								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SAS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>WaterSAS:68</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</ns:serviceLayer>
+						</ns:InterfaceDefinition>
+					</ns:interface>
+					<ns:interface name="SOS6_55">
+						<ns:InterfaceDefinition>
+							<ns:serviceLayer>
+								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SOS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>SOS6:55</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</ns:serviceLayer>
+						</ns:InterfaceDefinition>
+					</ns:interface>
+				</ns:InterfaceList>
+			</ns:interfaces>
+			<ns:inputs>
+				<ns:InputList>
+					<ns:input name="water_level">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+					</ns:input>
+					<ns:input name="current">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current"/>
+					</ns:input>
+				</ns:InputList>
+			</ns:inputs>
+			<ns:outputs>
+				<ns:OutputList>
+					<ns:output name="water_level">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+							<swe:uom code="m"/>
+						</swe:Quantity>
+					</ns:output>
+					<ns:output name="current">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+							<swe:uom code="m"/>
+						</swe:Quantity>
+					</ns:output>
+				</ns:OutputList>
+			</ns:outputs>
+		</SensorDescription>
+		<ServiceReference>
+			<ServiceURL>http://service.url</ServiceURL>
+			<ServiceType>SOS</ServiceType>
+			<ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+		</ServiceReference>
+	</InfoToBeInserted>
+</InsertSensorInfoRequest>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Sensor Search for urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059</title>
+    <link>http://geoviqua.dev.52north.org/SIR/search?q=urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059&amp;httpAccept=application/rss+xml</link>
+    <description>These are the sensors for the keywords 'urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059' from Open Sensor Search (http://geoviqua.dev.52north.org/SIR).</description>
+    <pubDate>Wed, 19 Jun 2013 15:01:33 GMT</pubDate>
+    <dc:creator>Open Sensor Search by 52∞North</dc:creator>
+    <dc:date>2013-06-19T15:01:33Z</dc:date>
+    <image>
+      <title>52∞North Logo</title>
+      <url>http://52north.org/templates/52n/images/52n-logo.gif</url>
+      <link>http://geoviqua.dev.52north.org/SIR</link>
+      <description>Logo of the provider of Open Sensor Search: 52∞North</description>
+    </image>
+    <item>
+      <title>48</title>
+      <link>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=48</link>
+      <description>Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059
+
+longName: Nauen
+
+Berliner Straﬂe
+
+shortName: Nauen
+
+Berliner Straﬂe;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown;
+
+Keywords: GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;</description>
+      <pubDate>Sat, 20 Oct 2012 23:00:00 GMT</pubDate>
+      <guid>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=48</guid>
+      <dc:date>2012-10-20T23:00:00Z</dc:date>
+    </item>
+  </channel>
+</rss>
+

@@ -1,0 +1,3118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sir:SearchSensorResponse xmlns:sir="http://swsl.uni-muenster.de/sir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xsi:schemaLocation="http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>48</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=48</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059
+
+longName: Nauen
+
+Berliner Stra??e
+
+shortName: Nauen
+
+Berliner Stra??e;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown;
+
+Keywords: GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.599998 12.875009</ows:LowerCorner>
+                <ows:UpperCorner>52.599998 12.875009</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>67</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=67</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE001
+
+longName: B Heiligensee-Krantorweg
+
+shortName: B Heiligensee-Krantorweg;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.616665 13.22705</ows:LowerCorner>
+                <ows:UpperCorner>52.616665 13.22705</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE001</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>68</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=68</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE005
+
+longName: B Tegel-Buddestra??e
+
+shortName: B Tegel-Buddestra??e;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.583332 13.288054</ows:LowerCorner>
+                <ows:UpperCorner>52.583332 13.288054</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE005</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>69</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=69</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE006
+
+longName: B Wittenau-R??dernallee
+
+shortName: B Wittenau-R??dernallee;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.583332 13.344852</ows:LowerCorner>
+                <ows:UpperCorner>52.583332 13.344852</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE006</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>70</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=70</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE008
+
+longName: B Haselhorst-Rhenaniastr.
+
+shortName: B Haselhorst-Rhenaniastr.;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+unknown
+
+Unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.559998 13.229622</ows:LowerCorner>
+                <ows:UpperCorner>52.559998 13.229622</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE008</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>71</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=71</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE009
+
+longName: B Tegel-Flughafen
+
+shortName: B Tegel-Flughafen;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.549999 13.288475</ows:LowerCorner>
+                <ows:UpperCorner>52.549999 13.288475</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE009</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>72</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=72</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE010
+
+longName: B Wedding-Amrumer Str.
+
+shortName: B Wedding-Amrumer Str.;
+
+Classifications: air quality
+
+Background
+
+Background
+
+urban
+
+urban
+
+unknown
+
+Unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.543331 13.349119</ows:LowerCorner>
+                <ows:UpperCorner>52.543331 13.349119</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE010</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>73</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=73</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE011
+
+longName: B Wedding/Prenzl. Berg-Behmstr.
+
+shortName: B Wedding/Prenzl. Berg-Behmstr.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+suburban
+
+unknown
+
+Wide street: L/H &amp;gt; 1.5;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.549999 13.396083</ows:LowerCorner>
+                <ows:UpperCorner>52.549999 13.396083</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE011</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>74</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=74</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE014
+
+longName: B Charlottenburg-Stadtautobahn
+
+shortName: B Charlottenburg-Stadtautobahn;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.516666 13.282186</ows:LowerCorner>
+                <ows:UpperCorner>52.516666 13.282186</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE014</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>75</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=75</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE015
+
+longName: B Tiergarten-Bachstra??e
+
+shortName: B Tiergarten-Bachstra??e;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.516666 13.339108</ows:LowerCorner>
+                <ows:UpperCorner>52.516666 13.339108</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE015</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>76</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=76</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE016
+
+longName: B Kreuzberg-Gitschiner Str.
+
+shortName: B Kreuzberg-Gitschiner Str.;
+
+Classifications: air quality
+
+Background
+
+Background
+
+urban
+
+urban
+
+unknown
+
+Unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.493332 13.404471</ows:LowerCorner>
+                <ows:UpperCorner>52.493332 13.404471</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE016</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>77</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=77</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE017
+
+longName: B Schmargendorf-Lentzeallee
+
+shortName: B Schmargendorf-Lentzeallee;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.466667 13.294953</ows:LowerCorner>
+                <ows:UpperCorner>52.466667 13.294953</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE017</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>78</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=78</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE018
+
+longName: B Sch??neberg-Belziger Stra??e
+
+shortName: B Sch??neberg-Belziger Stra??e;
+
+Classifications: air quality
+
+Background
+
+Background
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.483334 13.348413</ows:LowerCorner>
+                <ows:UpperCorner>52.483334 13.348413</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE018</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>79</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=79</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE019
+
+longName: B Hasenheide-Columbiadamm
+
+shortName: B Hasenheide-Columbiadamm;
+
+Classifications: air quality
+
+Background
+
+Background
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.476665 13.415861</ows:LowerCorner>
+                <ows:UpperCorner>52.476665 13.415861</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE019</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>80</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=80</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE020
+
+longName: B Neuk??lln-Ederstra??e
+
+shortName: B Neuk??lln-Ederstra??e;
+
+Classifications: air quality
+
+Background
+
+Background
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.476665 13.455524</ows:LowerCorner>
+                <ows:UpperCorner>52.476665 13.455524</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE020</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>81</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=81</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE023
+
+longName: B Lankwitz-Leonorenstr.
+
+shortName: B Lankwitz-Leonorenstr.;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.443333 13.341258</ows:LowerCorner>
+                <ows:UpperCorner>52.443333 13.341258</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE023</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>82</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=82</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE025
+
+longName: B Britz-Parchimer Allee
+
+shortName: B Britz-Parchimer Allee;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.443333 13.457517</ows:LowerCorner>
+                <ows:UpperCorner>52.443333 13.457517</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE025</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>83</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=83</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE026
+
+longName: B Lichterfelde-Wupperstr.
+
+shortName: B Lichterfelde-Wupperstr.;
+
+Classifications: air quality
+
+Industrial
+
+Industrial
+
+rural
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.41 13.275528</ows:LowerCorner>
+                <ows:UpperCorner>52.41 13.275528</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE026</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>84</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=84</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE027
+
+longName: B Marienfelde-Schichauweg
+
+shortName: B Marienfelde-Schichauweg;
+
+Classifications: air quality
+
+Industrial
+
+Industrial
+
+rural
+
+rural
+
+unknown
+
+Wide street: L/H &amp;gt; 1.5;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.403336 13.370711</ows:LowerCorner>
+                <ows:UpperCorner>52.403336 13.370711</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE027</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>85</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=85</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE032
+
+longName: B Grunewald (3.5 m)
+
+shortName: B Grunewald (3.5 m);
+
+Classifications: air quality
+
+Background
+
+Background
+
+rural
+
+rural
+
+near city;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.476665 13.225842</ows:LowerCorner>
+                <ows:UpperCorner>52.476665 13.225842</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE032</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>86</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=86</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE033
+
+longName: B Siemensstadt-Motardstr.
+
+shortName: B Siemensstadt-Motardstr.;
+
+Classifications: air quality
+
+Industrial
+
+Industrial
+
+urban
+
+urban
+
+unknown
+
+Unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.536667 13.259939</ows:LowerCorner>
+                <ows:UpperCorner>52.536667 13.259939</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE033</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>87</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=87</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE034
+
+longName: B Neuk??lln-Nansenstra??e
+
+shortName: B Neuk??lln-Nansenstra??e;
+
+Classifications: air quality
+
+Background
+
+Background
+
+urban
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.483334 13.434014</ows:LowerCorner>
+                <ows:UpperCorner>52.483334 13.434014</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE034</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>88</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=88</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE035
+
+longName: B Tempelhof-G.-Dunkel-Str.
+
+shortName: B Tempelhof-G.-Dunkel-Str.;
+
+Classifications: air quality
+
+Industrial
+
+Industrial
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.459999 13.415258</ows:LowerCorner>
+                <ows:UpperCorner>52.459999 13.415258</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE035</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>90</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=90</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE044
+
+longName: B Mitte-Parochialstr.
+
+shortName: B Mitte-Parochialstr.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.516666 13.408869</ows:LowerCorner>
+                <ows:UpperCorner>52.516666 13.408869</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE044</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>91</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=91</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE045
+
+longName: B Pankow-Blankenfelder Str.
+
+shortName: B Pankow-Blankenfelder Str.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.59333 13.404019</ows:LowerCorner>
+                <ows:UpperCorner>52.59333 13.404019</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE045</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>92</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=92</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE046
+
+longName: B Wei??ensee-Berliner Allee/Wegenerstr.
+
+shortName: B Wei??ensee-Berliner Allee/Wegenerstr.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.549999 13.468397</ows:LowerCorner>
+                <ows:UpperCorner>52.549999 13.468397</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE046</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>93</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=93</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE047
+
+longName: B Friedrichshain-K.-Marx-Allee
+
+shortName: B Friedrichshain-K.-Marx-Allee;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.52 13.451702</ows:LowerCorner>
+                <ows:UpperCorner>52.52 13.451702</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE047</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>94</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=94</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE049
+
+longName: B Sch??neweide-Wilhelminenhofstr.
+
+shortName: B Sch??neweide-Wilhelminenhofstr.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.459999 13.519758</ows:LowerCorner>
+                <ows:UpperCorner>52.459999 13.519758</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE049</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>95</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=95</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE051
+
+longName: B Buch
+
+shortName: B Buch;
+
+Classifications: air quality
+
+Background
+
+Background
+
+suburban
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.633335 13.494856</ows:LowerCorner>
+                <ows:UpperCorner>52.633335 13.494856</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE051</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>96</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=96</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE053
+
+longName: B Lichtenberg-Rhinstr.
+
+shortName: B Lichtenberg-Rhinstr.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.509998 13.518672</ows:LowerCorner>
+                <ows:UpperCorner>52.509998 13.518672</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE053</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>98</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=98</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE057
+
+longName: B Karlshorst-Treskowallee
+
+shortName: B Karlshorst-Treskowallee;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+suburban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.486668 13.5264</ows:LowerCorner>
+                <ows:UpperCorner>52.486668 13.5264</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE057</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>99</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=99</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE061
+
+longName: B Steglitz-Schildhornstr.
+
+shortName: B Steglitz-Schildhornstr.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown
+
+Canyon street: L/H &amp;lt; 1.5;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.459999 13.318308</ows:LowerCorner>
+                <ows:UpperCorner>52.459999 13.318308</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE061</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>100</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=100</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE062
+
+longName: B Frohnau
+
+Funkturm (3.5 m)
+
+shortName: B Frohnau
+
+Funkturm (3.5 m);
+
+Classifications: air quality
+
+Background
+
+Background
+
+rural
+
+rural
+
+near city;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.650002 13.296353</ows:LowerCorner>
+                <ows:UpperCorner>52.650002 13.296353</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE062</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>101</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=101</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE063
+
+longName: B Neuk??lln-Silbersteinstr.
+
+shortName: B Neuk??lln-Silbersteinstr.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown
+
+Canyon street: L/H &amp;lt; 1.5;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.466667 13.441809</ows:LowerCorner>
+                <ows:UpperCorner>52.466667 13.441809</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE063</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>102</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=102</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE064
+
+longName: B Neuk??lln-Karl-Marx-Str. 76
+
+shortName: B Neuk??lln-Karl-Marx-Str. 76;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown
+
+Canyon street: L/H &amp;lt; 1.5;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.486668 13.433661</ows:LowerCorner>
+                <ows:UpperCorner>52.486668 13.433661</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE064</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>103</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=103</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE065
+
+longName: B Friedrichshain-Frankfurter Allee
+
+shortName: B Friedrichshain-Frankfurter Allee;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown
+
+Canyon street: L/H &amp;lt; 1.5;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.509998 13.469314</ows:LowerCorner>
+                <ows:UpperCorner>52.509998 13.469314</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE065</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>104</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=104</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE066
+
+longName: B Karlshorst-Rheingoldstr./K??nigswinterstr.
+
+shortName: B Karlshorst-Rheingoldstr./K??nigswinterstr.;
+
+Classifications: air quality
+
+Background
+
+Background
+
+urban
+
+unknown;
+
+Keywords: BERLIN
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>52.483334 13.529572</ows:LowerCorner>
+                <ows:UpperCorner>52.483334 13.529572</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBE066</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>1032</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=1032</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DETH002
+
+longName: Gera Berliner Str.
+
+shortName: Gera Berliner Str.;
+
+Classifications: air quality
+
+Traffic
+
+Traffic
+
+urban
+
+unknown
+
+Wide street: L/H &amp;gt; 1.5;
+
+Keywords: GERA
+
+GERMANY
+
+DE
+
+AIRBASE
+
+AIRQUALITY
+
+EEA;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>50.893333 12.079178</ows:LowerCorner>
+                <ows:UpperCorner>50.893333 12.079178</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DETH002</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3111</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3111</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Charlottenburg_Op_582740
+
+longName: Wasserstand an der Station BERLIN-CHARLOTTENBURG OP (582740) bei Kilometer 6 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-CHARLOTTENBURG OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5846903.81429763</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5846903.81429763</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Charlottenburg_Op_582740</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3112</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3112</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Charlottenburg_Up_582750
+
+longName: Wasserstand an der Station BERLIN-CHARLOTTENBURG UP (582750) bei Kilometer 6 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-CHARLOTTENBURG UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5846683.353859807</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5846683.353859807</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Charlottenburg_Up_582750</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3113</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3113</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Koepenick_586290
+
+longName: Wasserstand an der Station BERLIN-K??PENICK (586290) bei Kilometer 35 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-K??PENICK;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5837585.866587445</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5837585.866587445</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Koepenick_586290</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3114</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3114</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Muehlendamm_Schleuse_Op_582720
+
+longName: Wasserstand an der Station BERLIN-M??HLENDAMM SCHLEUSE OP (582720) bei Kilometer 17 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-M??HLENDAMM SCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5845847.241351677</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5845847.241351677</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Muehlendamm_Schleuse_Op_582720</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3115</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3115</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Muehlendamm_Schleuse_Up_582730
+
+longName: Wasserstand an der Station BERLIN-M??HLENDAMM SCHLEUSE UP (582730) bei Kilometer 17 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-M??HLENDAMM SCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5845876.441645063</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5845876.441645063</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Muehlendamm_Schleuse_Up_582730</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3116</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3116</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Oberschleuse_Op_586600
+
+longName: Wasserstand an der Station BERLIN-OBERSCHLEUSE OP (586600) bei Kilometer 10 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-OBERSCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844319.080046896</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844319.080046896</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Oberschleuse_Op_586600</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3117</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3117</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Oberschleuse_Up_586610
+
+longName: Wasserstand an der Station BERLIN-OBERSCHLEUSE UP (586610) bei Kilometer 10 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-OBERSCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844216.214559632</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844216.214559632</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Oberschleuse_Up_586610</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3118</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3118</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Op_586640
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE OP (586640) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848479.862376222</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848479.862376222</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Op_586640</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3119</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3119</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Up_586650
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE UP (586650) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848411.085405143</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848411.085405143</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Up_586650</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3120</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3120</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Spandau_Schleuse_Op_580300
+
+longName: Wasserstand an der Station BERLIN-SPANDAU SCHLEUSE OP (580300) bei Kilometer 0 des Gewaessers HAVEL-ODER-WASSERSTRASSE
+
+shortName: BERLIN-SPANDAU SCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5847493.37041723</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5847493.37041723</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Spandau_Schleuse_Op_580300</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3121</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3121</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Spandau_Schleuse_Up_580310
+
+longName: Wasserstand an der Station BERLIN-SPANDAU SCHLEUSE UP (580310) bei Kilometer 0 des Gewaessers HAVEL-ODER-WASSERSTRASSE
+
+shortName: BERLIN-SPANDAU SCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5847296.523405198</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5847296.523405198</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Spandau_Schleuse_Up_580310</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3122</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3122</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Unterschleuse_Op_586620
+
+longName: Wasserstand an der Station BERLIN-UNTERSCHLEUSE OP (586620) bei Kilometer 1 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-UNTERSCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844986.546178836</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844986.546178836</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Unterschleuse_Op_586620</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>3123</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=3123</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Unterschleuse_Up_586630
+
+longName: Wasserstand an der Station BERLIN-UNTERSCHLEUSE UP (586630) bei Kilometer 1 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-UNTERSCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844999.105188987</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844999.105188987</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Unterschleuse_Up_586630</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5392</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5392</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Charlottenburg_Op_582740
+
+longName: Wasserstand an der Station BERLIN-CHARLOTTENBURG OP (582740) bei Kilometer 6 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-CHARLOTTENBURG OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5846903.81429763</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5846903.81429763</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Charlottenburg_Op_582740</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5393</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5393</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Charlottenburg_Up_582750
+
+longName: Wasserstand an der Station BERLIN-CHARLOTTENBURG UP (582750) bei Kilometer 6 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-CHARLOTTENBURG UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5846683.353859807</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5846683.353859807</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Charlottenburg_Up_582750</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5394</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5394</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Koepenick_586290
+
+longName: Wasserstand an der Station BERLIN-K??PENICK (586290) bei Kilometer 35 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-K??PENICK;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5837585.866587445</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5837585.866587445</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Koepenick_586290</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5395</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5395</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Muehlendamm_Op_582720
+
+longName: Wasserstand an der Station BERLIN-M??HLENDAMM OP (582720) bei Kilometer 17 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-M??HLENDAMM OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5845847.241351677</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5845847.241351677</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Muehlendamm_Op_582720</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5396</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5396</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Muehlendamm_Up_582730
+
+longName: Wasserstand an der Station BERLIN-M??HLENDAMM UP (582730) bei Kilometer 17 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-M??HLENDAMM UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5845876.441645063</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5845876.441645063</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Muehlendamm_Up_582730</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5397</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5397</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Oberschleuse_Op_586600
+
+longName: Wasserstand an der Station BERLIN-OBERSCHLEUSE OP (586600) bei Kilometer 10 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-OBERSCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844319.080046896</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844319.080046896</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Oberschleuse_Op_586600</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5398</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5398</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Oberschleuse_Up_586610
+
+longName: Wasserstand an der Station BERLIN-OBERSCHLEUSE UP (586610) bei Kilometer 10 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-OBERSCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844216.214559632</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844216.214559632</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Oberschleuse_Up_586610</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5399</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5399</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Op_586640
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE OP (586640) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848479.862376222</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848479.862376222</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Op_586640</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5400</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5400</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Up_586650
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE UP (586650) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848411.085405143</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848411.085405143</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Up_586650</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5401</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5401</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Spandau_Schleuse_Op_580300
+
+longName: Wasserstand an der Station BERLIN-SPANDAU SCHLEUSE OP (580300) bei Kilometer 0 des Gewaessers HAVEL-ODER-WASSERSTRASSE
+
+shortName: BERLIN-SPANDAU SCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5847493.37041723</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5847493.37041723</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Spandau_Schleuse_Op_580300</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5402</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5402</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Spandau_Schleuse_Up_580310
+
+longName: Wasserstand an der Station BERLIN-SPANDAU SCHLEUSE UP (580310) bei Kilometer 0 des Gewaessers HAVEL-ODER-WASSERSTRASSE
+
+shortName: BERLIN-SPANDAU SCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5847296.523405198</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5847296.523405198</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Spandau_Schleuse_Up_580310</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5403</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5403</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Unterschleuse_Op_586620
+
+longName: Wasserstand an der Station BERLIN-UNTERSCHLEUSE OP (586620) bei Kilometer 1 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-UNTERSCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844986.546178836</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844986.546178836</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Unterschleuse_Op_586620</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>5404</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=5404</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Unterschleuse_Up_586630
+
+longName: Wasserstand an der Station BERLIN-UNTERSCHLEUSE UP (586630) bei Kilometer 1 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-UNTERSCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844999.105188987</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844999.105188987</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://pegelonline.wsv.de/webservices/gis/gdi-sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Unterschleuse_Up_586630</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6018</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6018</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Op_586640
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE OP (586640) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848479.862376222</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848479.862376222</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Op_586640</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6019</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6019</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Up_586650
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE UP (586650) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848411.085405143</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848411.085405143</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Up_586650</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6340</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6340</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Charlottenburg_Op_582740
+
+longName: Wasserstand an der Station BERLIN-CHARLOTTENBURG OP (582740) bei Kilometer 6 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-CHARLOTTENBURG OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5846903.81429763</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5846903.81429763</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Charlottenburg_Op_582740</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6341</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6341</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Charlottenburg_Up_582750
+
+longName: Wasserstand an der Station BERLIN-CHARLOTTENBURG UP (582750) bei Kilometer 6 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-CHARLOTTENBURG UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5846683.353859807</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5846683.353859807</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Charlottenburg_Up_582750</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6342</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6342</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Koepenick_586290
+
+longName: Wasserstand an der Station BERLIN-K??PENICK (586290) bei Kilometer 35 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-K??PENICK;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5837585.866587445</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5837585.866587445</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Koepenick_586290</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6343</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6343</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Muehlendamm_Op_582720
+
+longName: Wasserstand an der Station BERLIN-M??HLENDAMM OP (582720) bei Kilometer 17 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-M??HLENDAMM OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5845847.241351677</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5845847.241351677</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Muehlendamm_Op_582720</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6344</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6344</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Muehlendamm_Up_582730
+
+longName: Wasserstand an der Station BERLIN-M??HLENDAMM UP (582730) bei Kilometer 17 des Gewaessers SPREE-ODER-WASSERSTRASSE
+
+shortName: BERLIN-M??HLENDAMM UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5845876.441645063</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5845876.441645063</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Muehlendamm_Up_582730</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6345</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6345</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Oberschleuse_Op_586600
+
+longName: Wasserstand an der Station BERLIN-OBERSCHLEUSE OP (586600) bei Kilometer 10 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-OBERSCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844319.080046896</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844319.080046896</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Oberschleuse_Op_586600</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6346</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6346</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Oberschleuse_Up_586610
+
+longName: Wasserstand an der Station BERLIN-OBERSCHLEUSE UP (586610) bei Kilometer 10 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-OBERSCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844216.214559632</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844216.214559632</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Oberschleuse_Up_586610</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6347</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6347</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Op_586640
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE OP (586640) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848479.862376222</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848479.862376222</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Op_586640</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6348</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6348</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Ploetzensee_Up_586650
+
+longName: Wasserstand an der Station BERLIN-PLOETZENSEE UP (586650) bei Kilometer 7 des Gewaessers BERLIN-SPANDAUER-SCHIFFFAHRTSKANAL
+
+shortName: BERLIN-PLOETZENSEE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5848411.085405143</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5848411.085405143</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Ploetzensee_Up_586650</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6349</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6349</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Spandau_Schleuse_Op_580300
+
+longName: Wasserstand an der Station BERLIN-SPANDAU SCHLEUSE OP (580300) bei Kilometer 0 des Gewaessers HAVEL-ODER-WASSERSTRASSE
+
+shortName: BERLIN-SPANDAU SCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5847493.37041723</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5847493.37041723</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Spandau_Schleuse_Op_580300</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6350</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6350</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Spandau_Schleuse_Up_580310
+
+longName: Wasserstand an der Station BERLIN-SPANDAU SCHLEUSE UP (580310) bei Kilometer 0 des Gewaessers HAVEL-ODER-WASSERSTRASSE
+
+shortName: BERLIN-SPANDAU SCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5847296.523405198</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5847296.523405198</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Spandau_Schleuse_Up_580310</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6351</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6351</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Unterschleuse_Op_586620
+
+longName: Wasserstand an der Station BERLIN-UNTERSCHLEUSE OP (586620) bei Kilometer 1 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-UNTERSCHLEUSE OP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844986.546178836</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844986.546178836</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Unterschleuse_Op_586620</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+    <sir:SearchResultElement>
+        <sir:SensorIDInSIR>6352</sir:SensorIDInSIR>
+        <sir:SimpleSensorDescription>
+            <sir:SensorDescriptionURL>http://geoviqua.dev.52north.org/SIR/sir?service=SIR&amp;version=0.3.1&amp;REQUEST=DescribeSensor&amp;SENSORIDINSIR=6352</sir:SensorDescriptionURL>
+            <sir:DescriptionText>![CDATA[
+Identifications: uniqueID: Wasserstand-Berlin-Unterschleuse_Up_586630
+
+longName: Wasserstand an der Station BERLIN-UNTERSCHLEUSE UP (586630) bei Kilometer 1 des Gewaessers LANDWEHRKANAL
+
+shortName: BERLIN-UNTERSCHLEUSE UP;
+
+Classifications: Wasserstand
+
+Pegel
+
+Wasserstand;
+
+Keywords: WASSERSTAND_ROHDATEN
+
+Wasserstand;
+
+]</sir:DescriptionText>
+            <sir:ObservedBoundingBox crs="-1" dimensions="2">
+                <ows:LowerCorner>0.0 5844999.105188987</ows:LowerCorner>
+                <ows:UpperCorner>4.9E-324 5844999.105188987</ows:UpperCorner>
+            </sir:ObservedBoundingBox>
+        </sir:SimpleSensorDescription>
+        <sir:ServiceReference>
+            <sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+            <sir:ServiceType>SOS</sir:ServiceType>
+            <sir:ServiceSpecificSensorID>Wasserstand-Berlin-Unterschleuse_Up_586630</sir:ServiceSpecificSensorID>
+        </sir:ServiceReference>
+    </sir:SearchResultElement>
+</sir:SearchSensorResponse>

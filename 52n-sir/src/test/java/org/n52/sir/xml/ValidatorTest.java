@@ -57,6 +57,7 @@ public class ValidatorTest {
      * @throws TransformerConfigurationException
      * @throws ParserConfigurationException
      */
+    
     public static void main(String[] args) throws OwsExceptionReport,
             TransformerConfigurationException,
             TransformerFactoryConfigurationError,
@@ -71,18 +72,18 @@ public class ValidatorTest {
             TransformerFactoryConfigurationError,
             ParserConfigurationException,
             OwsExceptionReport {
-        File f = new File("D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/AirBase-test.xml");
+    //    File f = new File("D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/AirBase-test.xml");
 
-        validateFileToConsole(f);
+      //  validateFileToConsole(f);
     }
 
     private static void testIfgicam() throws OwsExceptionReport,
             TransformerConfigurationException,
             TransformerFactoryConfigurationError,
             ParserConfigurationException {
-        File f = new File("D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/ifgicam-discoveryprofile.xml");
+        //File f = new File("D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/ifgicam-discoveryprofile.xml");
 
-        validateFileToConsole(f);
+        //validateFileToConsole(f);
     }
 
     /**
@@ -96,13 +97,13 @@ public class ValidatorTest {
             TransformerFactoryConfigurationError,
             ParserConfigurationException,
             OwsExceptionReport {
-        File schematronFile = new File("D:/52n/OpenSensorSearch/52n-sir/target/SIR/WEB-INF/classes/SensorML_Profile_for_Discovery.sch");
-        File svrlFile = new File("D:/52n/OpenSensorSearch/52n-sir/target/SIR/WEB-INF/classes/xslt/iso_svrl_for_xslt2.xsl");
-        SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
+        //File schematronFile = new File("D:/52n/OpenSensorSearch/52n-sir/target/SIR/WEB-INF/classes/SensorML_Profile_for_Discovery.sch");
+        //File svrlFile = new File("D:/52n/OpenSensorSearch/52n-sir/target/SIR/WEB-INF/classes/xslt/iso_svrl_for_xslt2.xsl");
+        //SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
 
-        boolean v = validator.validate(f);
+        //boolean v = validator.validate(f);
 
-        System.out.println("Patterns:");
+        /*System.out.println("Patterns:");
         for (String string : validator.getActivatedPatterns()) {
             System.out.println(string);
         }
@@ -119,14 +120,14 @@ public class ValidatorTest {
         }
         else {
             System.out.println("VALID!!!11");
-        }
+        }*/
     }
 
     private static void test01() throws OwsExceptionReport,
             TransformerConfigurationException,
             TransformerFactoryConfigurationError,
             ParserConfigurationException {
-        File schematronFile = new File("/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/SensorML_Profile_for_Discovery.sch");
+/*        File schematronFile = new File("/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/SensorML_Profile_for_Discovery.sch");
         File svrlFile = new File("/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/iso_svrl_for_xslt2.xsl");
 
         SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
@@ -150,7 +151,7 @@ public class ValidatorTest {
         }
         else {
             System.out.println("VALID!!!11");
-        }
+        }*/
     }
 
     /**
@@ -161,6 +162,7 @@ public class ValidatorTest {
      * @throws InstantiationError
      */
     private static void test02() throws InstantiationError {
+    	/*
         String inputFile = "D:/52n/OpenSensorSearch/52n-sir/target/test-classes/transformation/IFGI_HWS1-discoveryprofile.xml";
         log.info("Transforming " + inputFile);
 
@@ -204,7 +206,7 @@ public class ValidatorTest {
         }
         catch (XmlException e) {
             log.error("", e);
-        }
+        }*/
     }
 
 }

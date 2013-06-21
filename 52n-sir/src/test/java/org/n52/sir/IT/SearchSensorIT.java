@@ -43,21 +43,7 @@ import org.x52North.sir.x032.SearchSensorResponseDocument;
 public class SearchSensorIT {
 
 
-	public void failIfURLNull(String resource) {
-		assertNotNull(resource + " Is missing",
-				(ClassLoader.getSystemResource(resource)));
-	}
-
-	@Before
-	public void setup() throws Exception {
-		failIfURLNull("Requests/SearchSensor_bySensorIDInSIR.xml");
-		failIfURLNull("Requests/SearchSensor_byServiceDescription.xml");
-
-		failIfURLNull("prop/db.PROPERTIES");
-		failIfURLNull("prop/sir.PROPERTIES");
-
-	}
-
+	
 	public void searchSensor(String file, String description) throws Exception {
 		System.out.println(description);
 		File f = new File((ClassLoader.getSystemResource(file).getFile()));

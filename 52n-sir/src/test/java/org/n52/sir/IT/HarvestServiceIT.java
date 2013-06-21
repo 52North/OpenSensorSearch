@@ -65,7 +65,7 @@ public class HarvestServiceIT {
 	@Test
 	public void harvestWeatherServiceDoc() throws Exception {
 		File f = new File(ClassLoader.getSystemResource(
-				"Requests/testSensor.xml").getFile());
+				"Requests/HarvestService_WeatherSOS.xml").getFile());
 		HarvestServiceRequestDocument hsrd = HarvestServiceRequestDocument.Factory
 				.parse(f);
 

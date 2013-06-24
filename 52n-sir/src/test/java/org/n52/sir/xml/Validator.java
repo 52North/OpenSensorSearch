@@ -16,6 +16,7 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.xml;
 
 import static org.junit.Assert.assertTrue;
@@ -30,29 +31,26 @@ import org.junit.Test;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 
-/*
- * The file name to be changed to ValidatorTest
- */
-public class ValidatorUnitTest {
-	@Test
-	public void readFile() throws TransformerConfigurationException, TransformerFactoryConfigurationError, ParserConfigurationException, OwsExceptionReport {
+public class Validator {
 
-		File f = new File(ClassLoader.getSystemResource("AirBase-test.xml")
-				.getFile());
+    @Test
+    public void readFile() throws TransformerConfigurationException,
+            TransformerFactoryConfigurationError,
+            ParserConfigurationException,
+            OwsExceptionReport {
 
-		// Read schema
-		File schematronFile = new File(ClassLoader.getSystemResource(
-				"SensorML_Profile_for_Discovery.sch").getFile());
-		// Read svrl
-		File svrlFile = new File(ClassLoader.getSystemResource(
-				"xslt/iso_svrl_for_xslt2.xsl").getFile());
+        File f = new File(ClassLoader.getSystemResource("/AirBase-test.xml").getFile());
 
-		// Now validate
-		SensorML4DiscoveryValidatorImpl validator;
+        // Read schema
+        File schematronFile = new File(ClassLoader.getSystemResource("/SensorML_Profile_for_Discovery.sch").getFile());
+        // Read svrl
+        File svrlFile = new File(ClassLoader.getSystemResource("/xslt/iso_svrl_for_xslt2.xsl").getFile());
 
-		validator = new SensorML4DiscoveryValidatorImpl(schematronFile,
-				svrlFile);
-		boolean v = validator.validate(f);
-		assertTrue(v);
-	}
+        // Now validate
+        SensorML4DiscoveryValidatorImpl validator;
+
+        validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
+        boolean v = validator.validate(f);
+        assertTrue(v);
+    }
 }

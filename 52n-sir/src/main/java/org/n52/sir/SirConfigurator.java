@@ -434,8 +434,6 @@ public class SirConfigurator {
      *        Inputstream of the db configfile
      * @param basepath
      *        base path for configuration files
-     * @param xsltDir
-     * 
      */
     private SirConfigurator(InputStream configStream,
                             InputStream dbConfigStream,
@@ -800,7 +798,7 @@ public class SirConfigurator {
         this.schemaUrl = this.props.getProperty(SCHEMA_URL);
         this.namespaceUri = this.props.getProperty(NAMESPACE_URI);
         this.namespacePrefix = this.props.getProperty(NAMESPACE_PREFIX);
-        this.testRequestPath = this.basepath + this.props.getProperty(TESTREQUESTS);
+        this.testRequestPath = this.props.getProperty(TESTREQUESTS);
 
         this.extendedDebugToConsole = Boolean.parseBoolean(this.props.getProperty(EXTENDED_DEBUG_TO_CONSOLE));
         this.acceptedVersions = this.props.getProperty(ACCEPTED_SERVICE_VERSIONS).split(VERSION_SPLIT_CHARACTER);
@@ -896,13 +894,13 @@ public class SirConfigurator {
     private void initializeCatalogFactory(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(CATALOGFACTORY);
 
-        this.catalogInitSlotFile = this.basepath + this.configDirectory + sirProps.getProperty(SLOT_INIT_FILENAME);
+        this.catalogInitSlotFile = this.configDirectory + sirProps.getProperty(SLOT_INIT_FILENAME);
 
         // add classification init files
         String[] splitted = sirProps.getProperty(CLASSIFICATION_INIT_FILENAMES).split(CONFIG_FILE_LIST_SEPARATOR);
         this.catalogInitClassificationFiles = new String[splitted.length];
         for (int i = 0; i < splitted.length; i++) {
-            this.catalogInitClassificationFiles[i] = this.basepath + this.configDirectory + splitted[i].trim();
+            this.catalogInitClassificationFiles[i] = this.configDirectory + splitted[i].trim();
         }
 
         // check if given url does not need to be checked
@@ -1227,9 +1225,9 @@ public class SirConfigurator {
             // get Constructor of this class with matching parameter types
             Constructor<ITransformerFactory> constructor = transformerFactoryClass.getConstructor(String.class);
 
-            this.transformerFactory = constructor.newInstance(this.basepath + xsltDir);
+            this.transformerFactory = constructor.newInstance(xsltDir);
 
-            log.info(" ***** " + className + " loaded successfully! Using files from folder " + this.basepath + xsltDir
+            log.info(" ***** " + className + " loaded successfully! Using files from folder " + xsltDir
                     + ". ***** ");
         }
         catch (NoSuchMethodException nsme) {

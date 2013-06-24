@@ -196,6 +196,26 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>reserve-network-port</id>
+						<goals>
+							<goal>reserve-network-port</goal>
+						</goals>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<portNames>
+								<portName>tomcat.http.port</portName>
+							</portNames>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
@@ -249,6 +269,7 @@
 				<version>2.1</version>
 				<configuration>
 					<path>${service.path}</path>
+					<port>8080</port>
 				</configuration>
 				<executions>
 					<execution>
@@ -259,6 +280,8 @@
 						</goals>
 						<configuration>
 							<fork>true</fork>
+							<!-- <port>${tomcat.http.port}</port> -->
+							<port>8099</port>
 							<useTestClasspath>true</useTestClasspath>
 						</configuration>
 					</execution>
@@ -272,14 +295,13 @@
 				</executions>
 			</plugin>
 
-			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.12.4</version>
 				<configuration>
 					<systemPropertyVariables>
-						<sir.url.IT>http://localhost:8080/SIR/sir</sir.url.IT>
+						<sir.url.IT>http://localhost:${tomcat.http.port}/${project.build.finalName}/sir</sir.url.IT>
 					</systemPropertyVariables>
 					<!-- for testing of specific unit tests only: -->
 					<includes>
@@ -541,11 +563,6 @@
 			<version>8.4-702.jdbc4</version>
 		</dependency>
 
-		<!-- <dependency> -->
-		<!-- <groupId>net.sf</groupId> -->
-		<!-- <artifactId>saxon-he</artifactId> -->
-		<!-- <version>9</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>

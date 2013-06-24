@@ -48,29 +48,14 @@ import org.slf4j.LoggerFactory;
  */
 public class SIR extends HttpServlet {
 
-    /**
-     * The init parameter of the configFile
-     */
-    private static final String INIT_PARAM_CONFIG_FILE = "configFile";
+    private static final String CONFIG_FILE = "/sir.properties";
 
-    /**
-     * The init parameter of the database configFile
-     */
-    private static final String INIT_PARAM_DBCONFIG_FILE = "dbConfigFile";
+    private static final String DBCONFIG_FILE = "/db.properties";
 
-    /**
-     * The logger, used to log exceptions and additional information
-     */
     private static Logger log = LoggerFactory.getLogger(SIR.class);
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -8056397366588482503L;
 
-    /**
-     * Handles POST and GET operations
-     */
     private RequestOperator requestOperator;
 
     /*
@@ -174,14 +159,12 @@ public class SIR extends HttpServlet {
         ServletContext context = getServletContext();
         String basepath = context.getRealPath("/");
 
-        String initFile = getInitParameter(INIT_PARAM_CONFIG_FILE);
-        InputStream configStream = context.getResourceAsStream(initFile);
+        InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
         if (configStream == null) {
             throw new UnavailableException("could not open the config file");
         }
 
-        String initFileDB = getInitParameter(INIT_PARAM_DBCONFIG_FILE);
-        InputStream dbConfigStream = context.getResourceAsStream(initFileDB);
+        InputStream dbConfigStream = SIR.class.getResourceAsStream(DBCONFIG_FILE);
         if (dbConfigStream == null) {
             throw new UnavailableException("could not open the database config file");
         }

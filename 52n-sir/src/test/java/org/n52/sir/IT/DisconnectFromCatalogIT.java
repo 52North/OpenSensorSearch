@@ -44,7 +44,7 @@ public class DisconnectFromCatalogIT {
     
     @BeforeClass
     public static void setUpClient() throws MalformedURLException {
-        c  = new Client(Util.getServiceURIforIT());
+        c  = new Client(Util.getSIREndpointForIT());
     }
     
 	@Test

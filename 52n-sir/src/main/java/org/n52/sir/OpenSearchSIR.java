@@ -59,18 +59,6 @@ import org.slf4j.LoggerFactory;
 public class OpenSearchSIR extends HttpServlet {
 
     /**
-     * The init parameter of the configFile
-     */
-    @SuppressWarnings("unused")
-    private static final String INIT_PARAM_CONFIG_FILE = "configFile";
-
-    /**
-     * The init parameter of the database configFile
-     */
-    @SuppressWarnings("unused")
-    private static final String INIT_PARAM_DBCONFIG_FILE = "dbConfigFile";
-
-    /**
      * The logger, used to log exceptions and additional information
      */
     private static Logger log = LoggerFactory.getLogger(OpenSearchSIR.class);
@@ -246,7 +234,7 @@ public class OpenSearchSIR extends HttpServlet {
 
         this.listeners = new HashMap<String, IOpenSearchListener>();
 
-        // TODO move listener configuration to config file
+        // TODO move listener configuration to config mechanism
         IOpenSearchListener jsonListener = new JsonListener(this.configurator);
         this.listeners.put(jsonListener.getMimeType(), jsonListener);
         IOpenSearchListener htmlListener = new HtmlListener(this.configurator);
@@ -259,23 +247,6 @@ public class OpenSearchSIR extends HttpServlet {
         this.listeners.put(atomListener.getMimeType(), atomListener);
         IOpenSearchListener kmlListener = new KmlListener(this.configurator);
         this.listeners.put(kmlListener.getMimeType(), kmlListener);
-
-        // get ServletContext
-        // ServletContext context = getServletContext();
-        // String basepath = context.getRealPath("/");
-
-        // get configFile as Inputstream
-        // InputStream configStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_CONFIG_FILE));
-        // if (configStream == null) {
-        // throw new UnavailableException("could not open the config file");
-        // }
-        //
-        // // get dbconfigFile as Inputstream
-        // InputStream dbConfigStream =
-        // context.getResourceAsStream(getInitParameter(INIT_PARAM_DBCONFIG_FILE));
-        // if (dbConfigStream == null) {
-        // throw new UnavailableException("could not open the database config file");
-        // }
     }
 
     private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws IOException {

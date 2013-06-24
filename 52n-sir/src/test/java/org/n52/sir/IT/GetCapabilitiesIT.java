@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
 import javax.naming.OperationNotSupportedException;
@@ -39,26 +40,45 @@ import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.GetCapabilitiesDocument;
 
 public class GetCapabilitiesIT {
-	
+
     private static Client c = null;
-    
+
     @BeforeClass
     public static void setUpClient() throws MalformedURLException {
-        c  = new Client(Util.getServiceURIforIT());
+        c = new Client(Util.getSIREndpointForIT());
     }
-    
-	@Test
-	public void getCapabilites() throws IOException, OwsExceptionReport,
-			HttpException, XmlException, OperationNotSupportedException {
 
-		File f = new File(ClassLoader.getSystemResource(
-				"Requests/GetCapabilities.xml").getFile());
+    @Test
+    public void getCapabilitiesGET() throws XmlException,
+            UnsupportedEncodingException,
+            OperationNotSupportedException,
+            HttpException,
+            IOException,
+            OwsExceptionReport {
+        StringBuilder request = new StringBuilder();
+        request.append(c.getURL());
+        request.append("?");
+        request.append("request=GetCapabilities&service=SIR");
+        
+        XmlObject response = c.xSendGetRequest(request.toString());
+        CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
+        assertTrue("Invalid XML", resp_doc.validate());
+    }
 
-		GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
-		XmlObject response = c.xSendPostRequest(doc);
-		CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
+    @Test
+    public void getCapabilitesPOST() throws IOException,
+            OwsExceptionReport,
+            HttpException,
+            XmlException,
+            OperationNotSupportedException {
 
-		assertTrue("Invalid", (resp_doc.validate()));
+        File f = new File(GetCapabilitiesIT.class.getResource("/Requests/GetCapabilities.xml").getFile());
 
-	}
+        GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
+        XmlObject response = c.xSendPostRequest(doc);
+
+        CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
+
+        assertTrue("Invalid XML", resp_doc.validate());
+    }
 }

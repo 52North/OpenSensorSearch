@@ -27,6 +27,7 @@ import net.opengis.sos.x10.GetCapabilitiesDocument.GetCapabilities;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -92,7 +93,7 @@ public class Client {
      * @throws HttpException
      * @throws OwsExceptionReport
      */
-    private static XmlObject doSend(String request, String requestMethod, String uri) throws UnsupportedEncodingException,
+    private static XmlObject doSend(String request, String requestMethod, String url) throws UnsupportedEncodingException,
             IOException,
             HttpException,
             OwsExceptionReport {
@@ -109,18 +110,18 @@ public class Client {
         HttpRequestBase method = null;
 
         if (requestMethod.equals(GET_METHOD)) {
-            log.trace("Ignoring request content for GET request: ", request);
+            log.trace("Ignoring url for GET request: ", url);
             
             if (log.isDebugEnabled())
-                log.debug("Client connecting via GET to " + uri);
+                log.debug("Client connecting via GET to " + request);
 
             HttpGet get = new HttpGet(request);
             method = get;
         }
         else if (requestMethod.equals(POST_METHOD)) {
             if (log.isDebugEnabled())
-                log.debug("Client connecting via POST to " + uri);
-            HttpPost postMethod = new HttpPost(uri.toString());
+                log.debug("Client connecting via POST to " + url);
+            HttpPost postMethod = new HttpPost(url.toString());
 
             postMethod.setEntity(new StringEntity(request, ContentType.APPLICATION_XML));
 
@@ -133,8 +134,19 @@ public class Client {
         try {
             HttpResponse httpResponse = client.execute(method);
 
-            XmlObject responseObject = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
-            return responseObject;
+            StatusLine status = httpResponse.getStatusLine();
+            log.debug("Got response, status: {}", status);
+            
+            int code = status.getStatusCode();
+            switch (code) {
+            case 200:
+                XmlObject responseObject = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
+                return responseObject;
+            case 404:
+                throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, method.getURI().toString(), status.toString());
+            default:
+                throw new RuntimeException("Unhandled response code!");
+            }
         }
         catch (XmlException e) {
             log.error("Error parsing response.", e);
@@ -294,10 +306,7 @@ public class Client {
             OwsExceptionReport, OperationNotSupportedException {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + request);
-        URL url = getURL();
-        if(url == null)
-            throw new OperationNotSupportedException("URI is not defined, use setURI().");
-        XmlObject response = doSend(request, GET_METHOD, url.toString());
+        XmlObject response = doSend(request, GET_METHOD, null);
         return response;
     }
 
@@ -341,7 +350,7 @@ public class Client {
     public XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport, HttpException, OperationNotSupportedException {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + request);
-        URL url= getURL();
+        URL url = getURL();
         if(url == null)
             throw new OperationNotSupportedException("URI is not defined, use setURI().");
         return xSendPostRequest(request, url);
@@ -362,7 +371,9 @@ public class Client {
             IOException,
             OwsExceptionReport {
 
-        XmlObject response = doSend(request.xmlText(), POST_METHOD, serviceURL.toString());
+        String requestString = request.xmlText();
+        String url = serviceURL.toString();
+        XmlObject response = doSend(requestString, POST_METHOD, url);
         return response;
     }
 

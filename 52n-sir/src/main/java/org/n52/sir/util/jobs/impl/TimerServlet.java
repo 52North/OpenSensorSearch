@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.util.jobs.impl;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.UnavailableException;
 
 import org.apache.xmlbeans.XmlException;
+import org.n52.sir.SIR;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
@@ -99,43 +101,22 @@ public class TimerServlet extends GenericServlet {
         }
     }
 
-    /**
-     * propertyname of CLASSIFICATION_INIT_FILENAME property
-     */
+    private static final String CONFIG_FILE = "/sir.properties";
+
     private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
 
     private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
 
-    /**
-     * 
-     */
     private static final String DO_NOT_CHECK_CATALOGS = "DO_NOT_CHECK_CATALOGS";
 
-    /**
-     * The init parameter of the configFile
-     */
-    private static final String INIT_PARAM_CONFIG_FILE = "configFile";
-
-    /**
-     * 
-     */
     private static final String IS_DAEMON_INIT_PARAM_NAME = "isDaemon";
 
     private static Logger log = LoggerFactory.getLogger(TimerServlet.class);
 
-    /**
-     * The identifier that can be used to access the instance of this servlet an run-time.
-     */
     public static final String NAME_IN_CONTEXT = "TimerServlet";
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 4704774153636727580L;
 
-    /**
-     * propertyname of SLOT_INIT_FILENAME property
-     */
     private static final String SLOT_INIT_FILENAME = "SLOT_INIT_FILENAME";
 
     /**
@@ -152,9 +133,6 @@ public class TimerServlet extends GenericServlet {
 
     private ICatalogStatusHandler catalogStatusHandler;
 
-    /**
-     * propertyname of CONFIG_DIRECTORY property
-     */
     private final String CONFIG_DIRECTORY = "CONFIG_DIRECTORY";
 
     private Properties props;
@@ -290,7 +268,7 @@ public class TimerServlet extends GenericServlet {
         timer = new Timer(getServletName(), Boolean.parseBoolean(getInitParameter(IS_DAEMON_INIT_PARAM_NAME)));
 
         // get configFile as Inputstream
-        InputStream configStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_CONFIG_FILE));
+        InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
         if (configStream == null) {
             log.error("Could not opoen the config file!");
             throw new UnavailableException("Could not open the config file.");

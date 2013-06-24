@@ -63,6 +63,7 @@ public class CswFactory implements ICatalogFactory {
         XmlObject e;
         this.classificationInitDocs = new ArrayList<XmlObject>();
         for (String filename : classificationInitFiles) {
+            // FIXME for using resources instead of file names
             reader = new FileReader(filename);
             e = XmlObject.Factory.parse(reader);
             this.classificationInitDocs.add(e);

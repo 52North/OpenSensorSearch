@@ -16,6 +16,7 @@
 package org.n52.sir.xml.impl;
 
 import java.io.File;
+import java.util.concurrent.Callable;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;

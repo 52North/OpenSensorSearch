@@ -37,7 +37,7 @@ public class GetSensorStatusIT {
     
     @BeforeClass
     public static void setUpClient() throws MalformedURLException {
-        c  = new Client(Util.getServiceURIforIT());
+        c  = new Client(Util.getSIREndpointForIT());
     }
     
 	public void getSensorStatus(String file)

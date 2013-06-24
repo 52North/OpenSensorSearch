@@ -15,8 +15,14 @@
  */
 package org.n52.sir.xml.impl;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
@@ -119,7 +125,13 @@ public class SMLtoEbRIMTransformer implements ITransformer {
      * 
      */
     public SMLtoEbRIMTransformer(String xsltDir) throws InstantiationError {
-        this.xsltSource = new StreamSource(xsltDir + TRANSFORMATION_FILE_NAME);
+        InputStream in = SMLtoEbRIMTransformer.class.getResourceAsStream(xsltDir + TRANSFORMATION_FILE_NAME);
+        Path p = Paths.get(xsltDir, TRANSFORMATION_FILE_NAME);
+        System.out.println(p);
+        
+        //FIXME
+        
+        this.xsltSource = new StreamSource(in);
 
         try {
             this.transformer = tFactory.newTransformer(this.xsltSource);

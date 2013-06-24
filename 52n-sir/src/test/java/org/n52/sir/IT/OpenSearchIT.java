@@ -58,7 +58,7 @@ public class OpenSearchIT {
     
     @BeforeClass
     public static void setUpClient() throws MalformedURLException {
-        c  = new Client(Util.getServiceURIforIT());
+        c  = new Client(Util.getSIREndpointForIT());
     }
 
 	public void insertSensor(String sensorDest) throws Exception {
@@ -82,7 +82,7 @@ public class OpenSearchIT {
 
 		assertNotEquals(
 				"Failed to insert sensor",
-				resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors() == 0);
+				resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
 
 		System.out
 				.println("Loaded a sensor , encoded and inserted successfully");
@@ -94,6 +94,7 @@ public class OpenSearchIT {
 		insertSensor("Requests/Sensors/testSensor01.xml");
 		insertSensor("Requests/Sensors/testSensor02.xml");
 	}
+	
 	public String buildQuery(String q,String format) {
 		/*
 		 * I'm sure that the server will be localhost port : 8080 If it's not
@@ -171,8 +172,10 @@ public class OpenSearchIT {
 		assertXMLEqual(realResult,responseResult);
 	}
 	
-	
-	
+	@Test
+	public void openSensorSearchDescriptionDocument() {
+	    // TODO implement
+	}
 	
 
 

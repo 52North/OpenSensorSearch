@@ -258,7 +258,7 @@ public class SirConfigurator {
     /**
      * propertyname of XSLT_DIR property
      */
-    private static final String XSTL_DIRECTORY = "XSTL_DIRECTORY";
+    private static final String XSLT_DIRECTORY = "XSLT_DIRECTORY";
 
     /**
      * @return Returns the instance of the SirConfigurator. Null will be returned if the parameterized
@@ -1210,7 +1210,7 @@ public class SirConfigurator {
      */
     @SuppressWarnings("unchecked")
     private void initializeTransformerFactory(Properties p) throws OwsExceptionReport {
-        String xsltDir = p.getProperty(XSTL_DIRECTORY);
+        String xsltDir = p.getProperty(XSLT_DIRECTORY);
         String className = p.getProperty(TRANSFORMERFACTORY);
         try {
             if (className == null) {

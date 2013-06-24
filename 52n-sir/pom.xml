@@ -127,24 +127,6 @@
 
 		<plugins>
 			<plugin>
-				<!-- http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin -->
-				<!-- jetty:run-exploded invoces lifecycle phase package -->
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.1.11.v20130520</version>
-
-				<configuration>
-					<scanIntervalSeconds>2</scanIntervalSeconds>
-					<!-- if you embed the following in <webApp>, then jetty:run-exploded 
-						will result in error "When configuring a basic element the configuration 
-						cannot contain any child elements. Configuration element 'war'." -->
-					<contextPath>${service.path}</contextPath> <!-- is ignored for run-exploded, but used by Webby: Right-click, Debug as, 
-						Webby ... -->
-					<war>target/${project.build.finalName}</war>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.3</version>
@@ -214,25 +196,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.1</version>
-				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir> 
-					</systemProperties> </configuration> -->
-				<configuration>
-					<path>${service.path}</path>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>commons-io</groupId>
-						<artifactId>commons-io</artifactId>
-						<version>2.1</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
@@ -281,32 +244,12 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.12.4</version>
-				<configuration>
-					<systemPropertyVariables>
-						<service.url.for.IT>http://localhost:8080/SIR</service.url.for.IT>
-					</systemPropertyVariables>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>2.0</version>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.1</version>
 				<configuration>
 					<path>${service.path}</path>
 				</configuration>
-
 				<executions>
 					<execution>
 						<id>start-tomcat</id>
@@ -316,6 +259,7 @@
 						</goals>
 						<configuration>
 							<fork>true</fork>
+							<useTestClasspath>true</useTestClasspath>
 						</configuration>
 					</execution>
 					<execution>
@@ -326,13 +270,30 @@
 						</goals>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.surefire</groupId>
-						<artifactId>surefire-junit47</artifactId>
-						<version>2.15</version>
-					</dependency>
-				</dependencies>
+			</plugin>
+
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<systemPropertyVariables>
+						<sir.url.IT>http://localhost:8080/SIR/sir</sir.url.IT>
+					</systemPropertyVariables>
+					<!-- for testing of specific unit tests only: -->
+					<includes>
+						<include>**/GetCapabilitiesIT*</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -637,21 +598,25 @@
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>1.3</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
 			<version>1.2.0</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>uk.co.datumedge</groupId>
 			<artifactId>hamcrest-json</artifactId>
 			<version>0.2</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>xmlunit</groupId>
 			<artifactId>xmlunit</artifactId>
 			<version>1.3</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

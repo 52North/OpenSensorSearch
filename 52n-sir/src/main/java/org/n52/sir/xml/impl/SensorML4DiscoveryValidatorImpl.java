@@ -193,7 +193,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         // this.db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
         if (log.isDebugEnabled())
-            log.debug("NEW SensorML4DiscoveryValidatorImpl");
+            log.debug("NEW SensorML4DiscoveryValidatorImpl with transformer " + this.transformer);
     }
 
     /**

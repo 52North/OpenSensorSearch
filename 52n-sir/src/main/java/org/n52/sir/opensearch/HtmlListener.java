@@ -18,7 +18,6 @@ package org.n52.sir.opensearch;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -634,7 +633,7 @@ public class HtmlListener implements IOpenSearchListener {
         // TODO use threads for this, then update the interface one after the other (loader image and
         // AJAX?)
         try {
-            caps = Client.requestCapabilities(serviceReference.getService().getType(), url.toURI());
+            caps = Client.requestCapabilities(serviceReference.getService().getType(), url);
 
             if (caps instanceof ExceptionReportDocument) {
                 log.debug("Got ExceptionReportDocument as response!\n\n" + caps.xmlText());
@@ -645,10 +644,6 @@ public class HtmlListener implements IOpenSearchListener {
             this.capabilitiesCacheAge.put(url, new Date());
         }
         catch (OwsExceptionReport e) {
-            log.error("Could not get service capabilities.", e);
-            return null;
-        }
-        catch (URISyntaxException e) {
             log.error("Could not get service capabilities.", e);
             return null;
         }

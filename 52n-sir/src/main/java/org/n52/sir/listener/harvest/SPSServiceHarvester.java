@@ -20,6 +20,7 @@
 package org.n52.sir.listener.harvest;
 
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -37,7 +38,6 @@ import org.n52.sir.request.SirHarvestServiceRequest;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
 import org.n52.sir.util.Pair;
-import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +70,9 @@ public class SPSServiceHarvester extends Harvester {
     @Override
     public ISirResponse call() throws Exception {
         // request capabilities
-        URI uri = Tools.url2Uri(this.request);
-        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), uri);
+        URL url = new URL(this.request.getServiceUrl());
+        
+        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), url);
 
         CapabilitiesDocument.Capabilities spsCaps;
         if (caps instanceof CapabilitiesDocument) {

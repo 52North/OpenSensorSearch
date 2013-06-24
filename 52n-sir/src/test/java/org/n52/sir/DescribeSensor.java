@@ -20,6 +20,8 @@ import java.io.File;
 import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.client.DescribeSensorBean;
@@ -34,12 +36,12 @@ import org.x52North.sir.x032.DescribeSensorRequestDocument;
 public class DescribeSensor extends SirTestCase {
 
     private String sensorIDinSIR = "1";
-
+    
     @Test
     public void testGetExample() throws Exception {
         String s = loadGetRequestExample("DescribeSensor");
 
-        String response = Client.sendGetRequest(s);
+        String response = c.sendGetRequest(s);
 
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response);
@@ -55,7 +57,7 @@ public class DescribeSensor extends SirTestCase {
         dsb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(dsb.getRequestString());
+        String response = c.sendPostRequest(dsb.getRequestString());
 
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response);
@@ -69,7 +71,7 @@ public class DescribeSensor extends SirTestCase {
         File f = getPostExampleFile("DescribeSensor.xml");
         DescribeSensorRequestDocument dsd = DescribeSensorRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(dsd);
+        XmlObject response = c.xSendPostRequest(dsd);
 
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response.getDomNode());

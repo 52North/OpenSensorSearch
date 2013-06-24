@@ -44,7 +44,7 @@ public class DisconnectFromCatalog extends SirTestCase {
         dfcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(dfcb.getRequestString());
+        String response = c.sendPostRequest(dfcb.getRequestString());
 
         // parse and validate response
         DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response);
@@ -61,7 +61,7 @@ public class DisconnectFromCatalog extends SirTestCase {
         String sentUrl = dfcrd.getDisconnectFromCatalogRequest().getCatalogURL();
         setUpConnection(sentUrl);
 
-        XmlObject response = Client.xSendPostRequest(dfcrd);
+        XmlObject response = c.xSendPostRequest(dfcrd);
 
         // parse and validate response
         DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response.getDomNode());
@@ -82,7 +82,7 @@ public class DisconnectFromCatalog extends SirTestCase {
         int pushInterval = 3600; // needs to be with repetition, otherwise not saved in database for removal.
         ConnectToCatalogBean ctcb = new ConnectToCatalogBean(url, pushInterval);
         ctcb.buildRequest();
-        Client.sendPostRequest(ctcb.getRequestString());
+        c.sendPostRequest(ctcb.getRequestString());
     }
 
 }

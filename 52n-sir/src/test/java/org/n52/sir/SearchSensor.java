@@ -35,7 +35,7 @@ public class SearchSensor extends SirTestCase {
         File f = getPostExampleFile("SearchSensor_bySensorIDInSIR.xml");
         SearchSensorRequestDocument req = SearchSensorRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         SearchSensorResponseDocument responseDoc = SearchSensorResponseDocument.Factory.parse(response.getDomNode());
@@ -52,7 +52,7 @@ public class SearchSensor extends SirTestCase {
         File f = getPostExampleFile("SearchSensor_byServiceDescription.xml");
         SearchSensorRequestDocument req = SearchSensorRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         SearchSensorResponseDocument responseDoc = SearchSensorResponseDocument.Factory.parse(response.getDomNode());

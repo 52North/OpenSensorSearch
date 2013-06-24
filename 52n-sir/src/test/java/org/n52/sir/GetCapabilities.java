@@ -49,7 +49,7 @@ public class GetCapabilities extends SirTestCase {
     public void testGetExample() throws Exception {
         String s = loadGetRequestExample("GetCapabilities");
 
-        String response = Client.sendGetRequest(s);
+        String response = c.sendGetRequest(s);
 
         // parse and validate response
         CapabilitiesDocument cd = CapabilitiesDocument.Factory.parse(response);
@@ -70,7 +70,7 @@ public class GetCapabilities extends SirTestCase {
         gcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(gcb.getRequestString());
+        String response = c.sendPostRequest(gcb.getRequestString());
 
         // parse and validate response
         CapabilitiesDocument cd = CapabilitiesDocument.Factory.parse(response);
@@ -82,7 +82,7 @@ public class GetCapabilities extends SirTestCase {
         File f = getPostExampleFile("GetCapabilities.xml");
         GetCapabilitiesDocument gcd = GetCapabilitiesDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(gcd);
+        XmlObject response = c.xSendPostRequest(gcd);
 
         // parse and validate response
         CapabilitiesDocument cd = CapabilitiesDocument.Factory.parse(response.getDomNode());

@@ -43,7 +43,7 @@ public class HarvestService extends SirTestCase {
         hsb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(hsb.getRequestString());
+        String response = c.sendPostRequest(hsb.getRequestString());
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response);
@@ -55,7 +55,7 @@ public class HarvestService extends SirTestCase {
         File f = getPostExampleFile("HarvestService_WeatherSOS.xml");
         HarvestServiceRequestDocument hsrd = HarvestServiceRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(hsrd);
+        XmlObject response = c.xSendPostRequest(hsrd);
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response.getDomNode());

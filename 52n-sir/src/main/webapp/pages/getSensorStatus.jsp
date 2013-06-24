@@ -20,7 +20,6 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<%@page import="org.n52.sir.client.Client"%>
 <%@page import="org.n52.sir.datastructure.SirSearchCriteria_Phenomenon"%>
 <%@page import="org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria"%>
 
@@ -35,8 +34,7 @@
 	}
 
 	if (request.getParameter("sendRequest") != null) {
-		getSensorStatus.setResponseString(Client
-				.sendPostRequest(getSensorStatus.getRequestString()));
+		getSensorStatus.setResponseString(getSensorStatus.getClient().sendPostRequest(getSensorStatus.getRequestString()));
 	}
 %>
 

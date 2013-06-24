@@ -36,7 +36,7 @@ public class InsertSensorInfo extends SirTestCase {
         File f = getPostExampleFile("InsertSensorInfo_newSensor.xml");
         InsertSensorInfoRequestDocument isird = InsertSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(isird);
+        XmlObject response = c.xSendPostRequest(isird);
 
         // parse and validate response
         InsertSensorInfoResponseDocument responseDoc = InsertSensorInfoResponseDocument.Factory.parse(response.getDomNode());
@@ -55,7 +55,7 @@ public class InsertSensorInfo extends SirTestCase {
         File f = getPostExampleFile("InsertSensorInfo_addReference.xml");
         InsertSensorInfoRequestDocument isird = InsertSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(isird);
+        XmlObject response = c.xSendPostRequest(isird);
 
         // parse and validate response
         InsertSensorInfoResponseDocument responseDoc = InsertSensorInfoResponseDocument.Factory.parse(response.getDomNode());

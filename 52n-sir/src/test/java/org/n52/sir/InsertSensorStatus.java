@@ -35,7 +35,7 @@ public class InsertSensorStatus extends SirTestCase {
         File f = getPostExampleFile("InsertSensorStatus.xml");
         InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         InsertSensorStatusResponseDocument responseDoc = InsertSensorStatusResponseDocument.Factory.parse(response.getDomNode());

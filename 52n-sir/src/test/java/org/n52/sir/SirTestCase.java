@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import org.junit.BeforeClass;
+import org.n52.sir.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,13 +36,17 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class SirTestCase extends TestCase {
 
+    // FIXME remove this variable
     public static final String REQUEST_EXAMPLES_GET_FILE = "RequestExamples_GET.txt";
 
-    private static final String WEB_CONTENT_FOLDER = "/home/daniel/workspace/SIR/WebContent";
-
+    // FIXME remove this variable
     private static final String CONFIG_FILE_IN_WEB_CONTENT = "/WEB-INF/conf/sir.config";
 
+    // FIXME remove this variable
     private static final String DB_CONFIG_FILE_IN_WEB_CONTENT = "/WEB-INF/conf/dbsir.config";
+
+    // FIXME remove this variable
+    private static final String WEB_CONTENT_FOLDER = null;
 
     private static Logger log = LoggerFactory.getLogger(SirTestCase.class);
 
@@ -48,6 +56,13 @@ public abstract class SirTestCase extends TestCase {
     private static Properties examples;
 
     public static String insertedSensorId;
+    
+    protected static Client c = null;
+    
+    @BeforeClass
+    public static void setUpClient() throws MalformedURLException {
+        c  = new Client(Util.getServiceURL());
+    }
 
     /**
      * 

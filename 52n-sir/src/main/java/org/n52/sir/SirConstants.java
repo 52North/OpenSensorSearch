@@ -75,8 +75,6 @@ public class SirConstants {
      */
     public static final String REQUEST_CONTENT_CHARSET = CHARSET_NAME;
 
-    public static final String REQUEST_CONTENT_TYPE = "text/xml";
-
     /**
      * 
      */

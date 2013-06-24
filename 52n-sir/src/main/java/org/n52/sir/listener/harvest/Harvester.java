@@ -20,13 +20,17 @@
 package org.n52.sir.listener.harvest;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+
+import javax.naming.OperationNotSupportedException;
 
 import net.opengis.ows.x11.ValueType;
 import net.opengis.sensorML.x101.SensorMLDocument;
@@ -86,7 +90,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
         SirConfigurator configurator = SirConfigurator.getInstance();
         this.validatorFactory = configurator.getValidatorFactory();
-
+        
         try {
             IDAOFactory factory = SirConfigurator.getInstance().getFactory();
             this.insertSensorDao = factory.insertSensorInfoDAO();
@@ -116,7 +120,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
                                     Collection<SirSensor> insertedSensorsP,
                                     Collection<SirSensor> updatedSensorsP,
                                     Map<String, String> failedSensorsP,
-                                    URI uri,
+                                    URL url,
                                     String versionType,
                                     String serviceType,
                                     ValueType outputFormatType,
@@ -139,7 +143,9 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
         SensorMLDocument sensorMLDocument = null;
         try {
-            XmlObject xmlResponse = Client.xSendPostRequest(descSensorDoc, uri);
+            Client c = new Client(url);
+            
+            XmlObject xmlResponse = c.xSendPostRequest(descSensorDoc);
             sensorMLDocument = SensorMLDocument.Factory.parse(xmlResponse.getDomNode());
 
             processSensorMLDocument(request.getServiceUrl(),
@@ -148,6 +154,8 @@ public abstract class Harvester implements Callable<ISirResponse> {
                                     updatedSensorsP,
                                     sensorMLDocument,
                                     serviceSpecificSensorId);
+            
+            c = null;
         }
         catch (XmlException xmle) {
             log.error("Error on parsing SensorML document: " + xmle.getMessage());
@@ -161,7 +169,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         }
         catch (IOException ioe) {
             String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
-                    + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + ioe.getMessage();
+                    + url.toString() + " for sensor " + serviceSpecificSensorId + " : " + ioe.getMessage();
             log.error(errMsg);
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
@@ -171,7 +179,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         }
         catch (OwsExceptionReport e) {
             String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
-                    + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
+                    + url.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
             log.error(errMsg);
 
             failedSensorsP.put(serviceSpecificSensorId, e.getMessage());
@@ -179,9 +187,15 @@ public abstract class Harvester implements Callable<ISirResponse> {
         }
         catch (HttpException e) {
             String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
-                    + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
+                    + url.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
             log.error(errMsg);
 
+            failedSensorsP.put(serviceSpecificSensorId, e.getMessage());
+            response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
+        }
+        catch (OperationNotSupportedException e) {
+            log.error("", e);
+            
             failedSensorsP.put(serviceSpecificSensorId, e.getMessage());
             response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
         }
@@ -278,6 +292,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
      * @param updatedSensors
      * @param failedSensors
      * @param currentUri
+     * @throws MalformedURLException 
      * @throws OwsExceptionReport
      */
     protected void processURI(SirHarvestServiceRequest request,
@@ -285,14 +300,15 @@ public abstract class Harvester implements Callable<ISirResponse> {
                               Map<String, String> failedSensorsP,
                               Collection<SirSensor> updatedSensorsP,
                               String sensorID,
-                              URI sensorDefinition) {
+                              URI sensorDefinition) throws MalformedURLException {
         if (log.isDebugEnabled())
             log.debug("Processing URI: " + sensorDefinition);
 
         SensorMLDocument sensorMLDocument = null;
         try {
+            
             // request sensor descriptions
-            XmlObject xmlResponse = Client.xSendGetRequest(sensorDefinition);
+            XmlObject xmlResponse = Client.xSendGetRequest(sensorDefinition.toURL());
 
             if (xmlResponse instanceof SensorMLDocument) {
                 sensorMLDocument = (SensorMLDocument) xmlResponse;

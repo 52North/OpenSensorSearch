@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
 
+import org.n52.sir.SirConfigurator;
+
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public abstract class AbstractBean {
@@ -25,10 +28,16 @@ public abstract class AbstractBean {
 
     protected String responseString = "";
 
+    private Client client = new Client(SirConfigurator.getInstance().getServiceUrl());
+
     /**
      * Build the request based on the user input, then save it in {@link AbstractBean#requestString}.
      */
     public abstract void buildRequest();
+
+    public Client getClient() {
+        return client;
+    }
 
     /**
      * @return the request

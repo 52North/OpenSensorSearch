@@ -171,26 +171,23 @@ public class SIR extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        // get ServletContext
         ServletContext context = getServletContext();
         String basepath = context.getRealPath("/");
 
-        // get configFile as Inputstream
-        InputStream configStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_CONFIG_FILE));
+        String initFile = getInitParameter(INIT_PARAM_CONFIG_FILE);
+        InputStream configStream = context.getResourceAsStream(initFile);
         if (configStream == null) {
             throw new UnavailableException("could not open the config file");
         }
 
-        // get dbconfigFile as Inputstream
-        InputStream dbConfigStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_DBCONFIG_FILE));
+        String initFileDB = getInitParameter(INIT_PARAM_DBCONFIG_FILE);
+        InputStream dbConfigStream = context.getResourceAsStream(initFileDB);
         if (dbConfigStream == null) {
             throw new UnavailableException("could not open the database config file");
         }
 
-        // get the timer servlet
         TimerServlet timerServlet = (TimerServlet) context.getAttribute(TimerServlet.NAME_IN_CONTEXT);
 
-        // initialize configurator
         SirConfigurator configurator;
         try {
             configurator = SirConfigurator.getInstance(configStream, dbConfigStream, basepath, timerServlet);
@@ -200,7 +197,6 @@ public class SIR extends HttpServlet {
             throw new RuntimeException(e);
         }
 
-        // initialize requestOperator
         try {
             this.requestOperator = configurator.buildRequestOperator();
         }

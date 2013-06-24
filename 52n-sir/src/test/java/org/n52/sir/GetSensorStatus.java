@@ -18,6 +18,7 @@ package org.n52.sir;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.GetSensorStatusRequestDocument;
@@ -35,7 +36,7 @@ public class GetSensorStatus extends SirTestCase {
         File f = getPostExampleFile("GetSensorStatus_bySearchCriteria.xml");
         GetSensorStatusRequestDocument req = GetSensorStatusRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         GetSensorStatusResponseDocument responseDoc = GetSensorStatusResponseDocument.Factory.parse(response.getDomNode());
@@ -48,7 +49,7 @@ public class GetSensorStatus extends SirTestCase {
         File f = getPostExampleFile("GetSensorStatus_bySensorIDInSIR.xml");
         GetSensorStatusRequestDocument req = GetSensorStatusRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         GetSensorStatusResponseDocument responseDoc = GetSensorStatusResponseDocument.Factory.parse(response.getDomNode());

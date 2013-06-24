@@ -36,7 +36,7 @@ public class DeleteSensorInfo extends SirTestCase {
         File f = getPostExampleFile("DeleteSensorInfo_deleteReference.xml");
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());
@@ -52,7 +52,7 @@ public class DeleteSensorInfo extends SirTestCase {
         if (SirTestCase.insertedSensorId != null)
             req.getDeleteSensorInfoRequest().getInfoToBeDeletedArray(0).getSensorIdentification().setSensorIDInSIR(SirTestCase.insertedSensorId);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());

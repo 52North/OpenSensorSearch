@@ -19,7 +19,7 @@
 
 package org.n52.sir.listener.harvest;
 
-import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
@@ -40,7 +40,6 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.SirHarvestServiceRequest;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
-import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,10 +84,10 @@ public class SOSServiceHarvester extends Harvester {
         // set service URL in response
         response.setServiceUrl(this.request.getServiceUrl());
 
-        URI uri = Tools.url2Uri(this.request);
+        URL url = new URL(this.request.getServiceUrl());
 
         // request capabilities
-        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), uri);
+        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), url);
         Capabilities sosCaps;
         if (caps instanceof CapabilitiesDocument) {
             CapabilitiesDocument doc = (CapabilitiesDocument) caps;
@@ -169,7 +168,7 @@ public class SOSServiceHarvester extends Harvester {
                              this.insertedSensors,
                              this.updatedSensors,
                              this.failedSensors,
-                             uri,
+                             url,
                              version,
                              service,
                              outputFormatType,

@@ -18,6 +18,7 @@ package org.n52.sir;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.client.ConnectToCatalogBean;
@@ -43,7 +44,7 @@ public class ConnectToCatalog extends SirTestCase {
         ctcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(ctcb.getRequestString());
+        String response = c.sendPostRequest(ctcb.getRequestString());
 
         // parse and validate response
         ConnectToCatalogResponseDocument responseDoc = ConnectToCatalogResponseDocument.Factory.parse(response);
@@ -55,7 +56,7 @@ public class ConnectToCatalog extends SirTestCase {
         File f = getPostExampleFile("ConnectToCatalog.xml");
         ConnectToCatalogRequestDocument ctcrd = ConnectToCatalogRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(ctcrd);
+        XmlObject response = c.xSendPostRequest(ctcrd);
 
         // parse and validate response
         ConnectToCatalogResponseDocument responseDoc = ConnectToCatalogResponseDocument.Factory.parse(response.getDomNode());

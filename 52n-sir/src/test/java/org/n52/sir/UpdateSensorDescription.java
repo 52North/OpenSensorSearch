@@ -39,7 +39,7 @@ public class UpdateSensorDescription extends SirTestCase {
         File f = getPostExampleFile("UpdateSensorDescription.xml");
         UpdateSensorDescriptionRequestDocument req = UpdateSensorDescriptionRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = c.xSendPostRequest(req);
 
         // parse and validate response
         UpdateSensorDescriptionResponseDocument responseDoc = UpdateSensorDescriptionResponseDocument.Factory.parse(response.getDomNode());

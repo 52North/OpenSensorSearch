@@ -112,11 +112,13 @@ public class InsertSensorInfoListener implements ISirRequestListener {
         if (sensor.getSensorMLDocument() != null) {
             IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
             boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
+            log.debug("The sensor is valid: " + isValid);
             if (isValid) {
                 String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
                 if (sensorIdInSir != null) {
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);
                     response.getInsertedSensors().add(sensorIdInSir);
+                    log.debug("Inserted Sensor: " + sensorIdInSir);
 
                     if (log.isDebugEnabled())
                         log.debug("Inserted Sensor: " + sensorIdInSir);

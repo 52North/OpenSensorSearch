@@ -29,16 +29,18 @@ package org.n52.sir.ds.solr;
  */
 import java.io.IOException;
 
+import net.sf.saxon.functions.Concat;
+
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 
 public class SolrConnection {
-	public static final String URL ="http://localhost";
+	
 	private SolrServer server;
 	public SolrConnection(){
-		server = new HttpSolrServer(URL);
+		server = new HttpSolrServer(SolrConstants.SOLR_URL);
 		
 	}
 	

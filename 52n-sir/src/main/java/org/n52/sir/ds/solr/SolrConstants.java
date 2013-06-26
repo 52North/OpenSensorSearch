@@ -9,5 +9,8 @@ public class SolrConstants {
 	public static final String LONG_NAME = "longname";
 	public static final String SHORT_NAME = "shortname";
 	
-
+	/** TODO
+	 * Remove this an configure it later in SIR configurations
+	 */
+	public static final String SOLR_URL = "http://localhost:8983/solr";
 }

@@ -78,22 +78,27 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 					.getSensorMLDocument().getDomNode());
 			// Get the list of keywords
 
+			String id = (document.getSensorML().getMemberArray()[0].getProcess().getIdentificationArray()[0].getIdentifierList().getIdentifierArray()[0].getTerm().getValue());
+			
 			// No keywords found
 			if (document.getSensorML().getMemberArray().length == 0)
 				return null;
-			Keywords[] keywords = document.getSensorML().getMemberArray()[0]
-					.getProcess().getKeywordsArray();
-
+			String[] keywords = document.getSensorML().getMemberArray()[0]
+					.getProcess().getKeywordsArray()[0].getKeywordList().getKeywordArray();
+			
 			// Get the connection of solr Server
 			SolrConnection connection = new SolrConnection();
 			SolrInputDocument inputDocument = new SolrInputDocument();
 
-			for (int i = 0; i < keywords.length; i++)
+			for (int i = 0; i < keywords.length; i++){
+				System.out.println(keywords[i]);
 				inputDocument.addField(SolrConstants.KEYWORD, keywords[i]);
-
+			}
+			inputDocument.addField(SolrConstants.ID,id);
+			
+			
 			connection.addInputDocument(inputDocument);
 			connection.commitChanges();
-
 		} catch (XmlException e) {
 			log.error("Cannot parse sensorML:" + e.getLocalizedMessage());
 			return null;

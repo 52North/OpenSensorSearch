@@ -67,7 +67,6 @@ public class SearchByKeywordTest {
 		/*
 		 * Inserts this sensor
 		 */
-
 		// probably this will take some configuration - haven't decided yet.
 		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
 		dao.insertSensor(sensor);

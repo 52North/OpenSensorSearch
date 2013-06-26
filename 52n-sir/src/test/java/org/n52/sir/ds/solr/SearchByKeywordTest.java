@@ -38,9 +38,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
 import net.opengis.sensorML.x101.SensorMLDocument;
+import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
 import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -103,8 +106,23 @@ public class SearchByKeywordTest {
 
 		Iterator<SirSearchResultElement> iter = results.iterator();
 		SirSearchResultElement result = iter.next();
+		// SensorML is stored in the sensor description value
 		SirSensorDescription description = result.getSensorDescription();
 		assertNotNull(description);
+
+		SensorMLDocument sensorml = SensorMLDocument.Factory.parse(description
+				.toString());
+
+		// Get keywords
+
+		SensorML sensor = sensorml.getSensorML();
+		Keywords[] keywordsarr = sensor.getMemberArray(0).getProcess()
+				.getKeywordsArray();
+		assertNotNull(keywordsarr);
+		assertEquals(keywordsarr.length, 2);
+		assertEquals(keywordsarr[0], keywords.get(0));
+		assertEquals(keywordsarr[1], keywords.get(1));
+
 	}
 
 }

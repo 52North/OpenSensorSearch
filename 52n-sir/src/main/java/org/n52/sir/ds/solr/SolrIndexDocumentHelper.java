@@ -21,33 +21,26 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
-
-
 package org.n52.sir.ds.solr;
-/** @author Yakoub 
+
+import org.apache.solr.common.SolrInputDocument;
+import org.n52.sir.datastructure.SirSensor;
+
+/**
+ * @author Yakoub
+ * @author Yakoub
  * 
  */
-import java.io.IOException;
-
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.common.SolrInputDocument;
-
-public class SolrConnection {
-	public static final String URL ="http://localhost";
-	private SolrServer server;
-	public SolrConnection(){
-		server = new HttpSolrServer(URL);
-		
-	}
+public class SolrIndexDocumentHelper {
+	/*
+	 * A static class for helping in forming input indexing document
+	 */
 	
-	public void addInputDocument(SolrInputDocument doc) throws SolrServerException, IOException{
-		server.add(doc);
+	public static SolrInputDocument prepareDocument(SirSensor sensor){
+		/*TODO check which fields we will store in description
+		 * 
+		 * 
+		 */
+		return null;
 	}
-	
-	public void commitChanges() throws SolrServerException, IOException{
-		server.commit();
-	}
-	
 }

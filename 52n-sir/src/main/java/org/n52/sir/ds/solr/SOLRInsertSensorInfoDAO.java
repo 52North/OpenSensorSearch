@@ -26,14 +26,27 @@
  */
 package org.n52.sir.ds.solr;
 
+import java.io.IOException;
+
+import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
+import net.opengis.sensorML.x101.SensorMLDocument;
+
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrInputDocument;
+import org.apache.xmlbeans.XmlException;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirSensorDescription;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.pgsql.PGSQLInsertSensorInfoDAO;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
+	private static Logger log = LoggerFactory
+			.getLogger(SOLRInsertSensorInfoDAO.class);
 
 	@Override
 	public String addNewReference(SirSensorIdentification sensIdent,
@@ -59,6 +72,39 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 	@Override
 	public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
 		// TODO Auto-generated method stub
+		// Get the keywords first
+		try {
+			SensorMLDocument document = SensorMLDocument.Factory.parse(sensor
+					.getSensorMLDocument().getDomNode());
+			// Get the list of keywords
+
+			// No keywords found
+			if (document.getSensorML().getMemberArray().length == 0)
+				return null;
+			Keywords[] keywords = document.getSensorML().getMemberArray()[0]
+					.getProcess().getKeywordsArray();
+
+			// Get the connection of solr Server
+			SolrConnection connection = new SolrConnection();
+			SolrInputDocument inputDocument = new SolrInputDocument();
+
+			for (int i = 0; i < keywords.length; i++)
+				inputDocument.addField(SolrConstants.KEYWORD, keywords[i]);
+
+			connection.addInputDocument(inputDocument);
+			connection.commitChanges();
+
+		} catch (XmlException e) {
+			log.error("Cannot parse sensorML:" + e.getLocalizedMessage());
+			return null;
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			log.error("SolrException :" + e.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			log.error("IOException :"+e.getLocalizedMessage());
+		}
+
 		return null;
 	}
 

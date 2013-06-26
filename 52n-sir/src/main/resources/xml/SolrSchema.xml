@@ -113,6 +113,8 @@
    <field name="keyword" type="string" indexed="true" stored="true" multiValued="true" />
    <field name="beginPosition" type="string" indexed="true" stored="true" multiValued="false" />
    <field name="endPosition" type="string" indexed="true" stored="true" multiValued="false" />
+   <field name="longitude" type="float" indexed="true" stored="true"/>
+   <field name="latitude" type="float" indexed="true" stored="true"/>
    
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.

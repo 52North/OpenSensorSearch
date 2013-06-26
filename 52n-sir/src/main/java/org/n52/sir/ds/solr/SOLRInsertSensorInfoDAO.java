@@ -97,6 +97,8 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			inputDocument.addField(SolrConstants.ID,id);
 			
 			
+			
+			
 			connection.addInputDocument(inputDocument);
 			connection.commitChanges();
 		} catch (XmlException e) {

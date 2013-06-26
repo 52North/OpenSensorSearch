@@ -43,20 +43,13 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
 import org.apache.xmlbeans.XmlException;
-import org.apache.xmlbeans.XmlObject;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirSensorDescription;
-import org.n52.sir.datastructure.SirSensorIdentification;
-import org.n52.sir.datastructure.SirService;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
-import org.n52.sir.json.SearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria;
 
 public class SearchByKeywordTest {
 	@Before

@@ -43,6 +43,7 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
 import org.apache.solr.client.solrj.SolrRequest;
+import org.apache.solr.common.SolrDocument;
 import org.apache.xmlbeans.XmlException;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,7 +89,7 @@ public class SearchByKeywordTest {
 		List<String> keywords = new ArrayList<String>();
 		keywords.add("testkeyword");
 		keywords.add("test");
-
+		
 		criteria.setSearchText(keywords);
 
 		Collection<SirSearchResultElement> results = searchDAO.searchSensor(
@@ -102,7 +103,8 @@ public class SearchByKeywordTest {
 		// SensorML is stored in the sensor description value
 		SirSensorDescription description = result.getSensorDescription();
 		assertNotNull(description);
-
+		
+		
 		SensorMLDocument sensorml = SensorMLDocument.Factory.parse(description
 				.toString());
 

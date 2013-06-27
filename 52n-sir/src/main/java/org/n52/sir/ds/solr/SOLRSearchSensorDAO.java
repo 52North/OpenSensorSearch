@@ -26,15 +26,29 @@
  */
 package org.n52.sir.ds.solr;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.solr.client.solrj.SolrResponse;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.ModifiableSolrParams;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
+import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class SOLRSearchSensorDAO implements ISearchSensorDAO{
+public class SOLRSearchSensorDAO implements ISearchSensorDAO {
+
+	private static Logger log = LoggerFactory
+			.getLogger(SOLRSearchSensorDAO.class);
 
 	@Override
 	public Collection<SirSearchResultElement> getAllSensors(
@@ -63,8 +77,37 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO{
 			SirSearchCriteria searchCriteria, boolean simpleReponse)
 			throws OwsExceptionReport {
 		// TODO Auto-generated method stub
-		return null;
+		Collection<String> q = searchCriteria.getSearchText();
+		StringBuilder wordslist = new StringBuilder();
+		Iterator<String> iter = q.iterator();
+		while (iter.hasNext())
+			wordslist.append(iter.next());
+
+		// prepare the request
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		params.set("q", wordslist.toString());
+		params.set("defType", "edismax");
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
+
+			List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+			for (int i = 0; i < list.size(); i++) {
+				// create a new result element
+				SirSearchResultElement element = new SirSearchResultElement();
+				SirSimpleSensorDescription desc = new SirSimpleSensorDescription();
+				desc.setDescriptionText(list.get(i).toString());
+				element.setSensorDescription(desc);
+				results.add(element);
+			}
+
+			return results;
+
+		} catch (SolrServerException solrexception) {
+			log.error("SolrException:" + solrexception.getLocalizedMessage());
+			return null;
+		}
 	}
-	
 
 }

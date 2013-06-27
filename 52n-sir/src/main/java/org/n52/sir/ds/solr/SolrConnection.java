@@ -31,10 +31,13 @@ import java.io.IOException;
 
 import net.sf.saxon.functions.Concat;
 
+import org.apache.solr.client.solrj.SolrResponse;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.SolrParams;
 
 public class SolrConnection {
 	
@@ -50,6 +53,10 @@ public class SolrConnection {
 	
 	public void commitChanges() throws SolrServerException, IOException{
 		server.commit();
+	}
+	public QueryResponse SolrQuery(SolrParams params) throws SolrServerException {
+		return server.query(params);
+		
 	}
 	
 }

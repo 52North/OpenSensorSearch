@@ -30,6 +30,7 @@ package org.n52.sir.ds.solr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +106,9 @@ public class SearchByKeywordTest {
 		// SensorML is stored in the sensor description value
 		SirSolrSensorDescription description = (SirSolrSensorDescription)result.getSensorDescription();
 		assertNotNull(description);
+		assertEquals(description.getKeywords().size(), keywords.size());
+		for(String s : keywords)
+			assertTrue(description.getKeywords().contains(s));
 		
 	}
 

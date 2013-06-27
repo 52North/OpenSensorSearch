@@ -106,6 +106,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
 		} catch (SolrServerException solrexception) {
 			log.error("SolrException:" + solrexception.getLocalizedMessage());
+			solrexception.printStackTrace();
 			return null;
 		}
 	}

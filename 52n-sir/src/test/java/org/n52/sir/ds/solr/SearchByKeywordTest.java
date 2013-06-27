@@ -42,6 +42,7 @@ import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
+import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.xmlbeans.XmlException;
 import org.junit.Before;
 import org.junit.Test;
@@ -114,6 +115,8 @@ public class SearchByKeywordTest {
 		assertEquals(keywordsarr.length, 2);
 		assertEquals(keywordsarr[0], keywords.get(0));
 		assertEquals(keywordsarr[1], keywords.get(1));
+		
+		
 
 	}
 

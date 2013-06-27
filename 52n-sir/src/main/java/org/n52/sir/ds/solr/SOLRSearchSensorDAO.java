@@ -34,12 +34,14 @@ import java.util.List;
 import org.apache.solr.client.solrj.SolrResponse;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
+import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
@@ -98,9 +100,21 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			for (int i = 0; i < list.size(); i++) {
 				// create a new result element
 				SirSearchResultElement element = new SirSearchResultElement();
-				SirSimpleSensorDescription desc = new SirSimpleSensorDescription();
-				desc.setDescriptionText(list.get(i).toString());
-				element.setSensorDescription(desc);
+				SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
+				
+				/*
+				 * The results now just takes the keywords and the id
+				 * TODO extends the SirSensorDescription to optimize with the 
+				 * Solr results.
+				 */
+				SolrDocument solrresult = list.get(i);
+				
+				Collection<Object> keywords = solrresult.getFieldValues(SolrConstants.KEYWORD);
+				
+				solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
+				solrDescription.setKeywords(keywords);
+				
+				element.setSensorDescription(solrDescription);
 				results.add(element);
 			}
 

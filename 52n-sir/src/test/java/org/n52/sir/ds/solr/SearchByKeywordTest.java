@@ -51,6 +51,8 @@ import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirSensorDescription;
+import org.n52.sir.datastructure.SirSimpleSensorDescription;
+import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 
 public class SearchByKeywordTest {
@@ -101,25 +103,9 @@ public class SearchByKeywordTest {
 		Iterator<SirSearchResultElement> iter = results.iterator();
 		SirSearchResultElement result = iter.next();
 		// SensorML is stored in the sensor description value
-		SirSensorDescription description = result.getSensorDescription();
+		SirSolrSensorDescription description = (SirSolrSensorDescription)result.getSensorDescription();
 		assertNotNull(description);
 		
-		
-		SensorMLDocument sensorml = SensorMLDocument.Factory.parse(description
-				.toString());
-
-		// Get keywords
-
-		SensorML sensor = sensorml.getSensorML();
-		Keywords[] keywordsarr = sensor.getMemberArray(0).getProcess()
-				.getKeywordsArray();
-		assertNotNull(keywordsarr);
-		assertEquals(keywordsarr.length, 2);
-		assertEquals(keywordsarr[0], keywords.get(0));
-		assertEquals(keywordsarr[1], keywords.get(1));
-		
-		
-
 	}
 
 }

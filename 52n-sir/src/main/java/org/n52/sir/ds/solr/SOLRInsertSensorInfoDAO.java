@@ -112,14 +112,17 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			PositionType p = type.getPosition().getPosition();
 			VectorType vector = (p.getLocation().getVector());
 			Coordinate[] coordinates = vector.getCoordinateArray();
+			StringBuilder latitude = new StringBuilder();
+			StringBuilder longitude = new StringBuilder();
+
 			for (Coordinate cord : coordinates) {
 				if (cord.getName().equals("latitude"))
-					inputDocument.addField(SolrConstants.LATITUDE, cord
-							.getQuantity().getValue());
+					latitude.append(cord.getQuantity().getValue());
 				else if (cord.getName().equals("longitude"))
-					inputDocument.addField(SolrConstants.LONGITUDE, cord
-							.getQuantity().getValue());
+					longitude.append(cord.getQuantity().getValue());
 			}
+			if((latitude.toString().length()) > 0 && (longitude.toString().length()>0))
+					inputDocument.addField(SolrConstants.LOCATION,latitude+","+longitude);
 			
 
 			connection.addInputDocument(inputDocument);

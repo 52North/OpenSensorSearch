@@ -113,8 +113,8 @@
    <field name="keyword" type="text_general_edge_ngram" indexed="true" stored="true" multiValued="true" />
    <field name="beginPosition" type="string" indexed="true" stored="true" multiValued="false" />
    <field name="endPosition" type="string" indexed="true" stored="true" multiValued="false" />
-   <field name="longitude" type="float" indexed="true" stored="true"/>
-   <field name="latitude" type="float" indexed="true" stored="true"/>
+   <field name="location" type="lnglatlocation" indexed="true" stored="true"/>
+
    <field name="_version_" type="long" indexed="true" stored="true"/>
    
    <!-- Common metadata fields, named specifically to match up with
@@ -283,7 +283,7 @@
       		<tokenizer class="solr.LowerCaseTokenizerFactory"/>
    		</analyzer>
 	</fieldType>
-
+    <fieldType name="lnglatlocation" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
 
     <!-- boolean type: "true" or "false" -->
@@ -663,8 +663,8 @@
       <analyzer type="query">
 	<tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
-    </fieldType>
-
+    </fieldType> 
+    <dynamicField name="*_coordinate"  type="tdouble" indexed="true"  stored="false"/>
     <!-- since fields of this type are by default not stored or indexed,
          any data added to them will be ignored outright.  --> 
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />

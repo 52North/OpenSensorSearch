@@ -8,8 +8,7 @@ public class SolrConstants {
 	public static final String UNIQUE_ID = "uniqueID";
 	public static final String LONG_NAME = "longname";
 	public static final String SHORT_NAME = "shortname";
-	public static final String LATITUDE = "latitude";
-	public static final String LONGITUDE = "longitude";
+	public static final String LOCATION = "location";
 	/** TODO
 	 * Remove this an configure it later in SIR configurations
 	 */

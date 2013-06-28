@@ -29,6 +29,7 @@ package org.n52.sir.ds.solr;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.UUID;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SystemType;
@@ -71,57 +72,60 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
     public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
         // TODO Auto-generated method stub
         // Get the keywords first
+
+        // TODO moh-yakoub: implement a mechanism to get access to the various identifiers
+        // Map<String, String> futherIds = sensor.getIdentifiers();
+
+        Collection<String> keywords = sensor.getKeywords();
+
+        // Get the connection of solr Server
+        SolrConnection connection = new SolrConnection();
+        SolrInputDocument inputDocument = new SolrInputDocument();
+
+        for (String s : keywords) {
+            inputDocument.addField(SolrConstants.KEYWORD, s);
+        }
+
+        // FIXME use OSS-wide id generator
+        String id = UUID.randomUUID().toString();
+        inputDocument.addField(SolrConstants.ID, id);
+
+        // Getting position
+        SensorMLDocument document = (SensorMLDocument) sensor.getSensorMLDocument();
+        SystemType type = (SystemType) document.getSensorML().getMemberArray(0).getProcess();
+
+        // TODO moh-yakoub: use center from bounding box
+        double[] center = sensor.getbBox().getCenter();
+
+        // TODO moh-yakoub: move this parsing code to the decoder!
+        PositionType p = type.getPosition().getPosition();
+        VectorType vector = (p.getLocation().getVector());
+        Coordinate[] coordinates = vector.getCoordinateArray();
+        StringBuilder latitude = new StringBuilder();
+        StringBuilder longitude = new StringBuilder();
+
+        for (Coordinate cord : coordinates) {
+            if (cord.getName().equals("latitude"))
+                latitude.append(cord.getQuantity().getValue());
+            else if (cord.getName().equals("longitude"))
+                longitude.append(cord.getQuantity().getValue());
+        }
+
+        if ( (latitude.toString().length()) > 0 && (longitude.toString().length() > 0))
+            inputDocument.addField(SolrConstants.LOCATION, latitude + "," + longitude);
+        
         try {
-            String id = sensor.getSensorIDInSIR();
-            
-            // TODO implement a mechanism to get access to the various identifiers
-            // Map<String, String> futherIds = sensor.getIdentifiers();
-
-            Collection<String> keywords = sensor.getText();
-
-            // Get the connection of solr Server
-            SolrConnection connection = new SolrConnection();
-            SolrInputDocument inputDocument = new SolrInputDocument();
-
-            for (String s : keywords) {
-                inputDocument.addField(SolrConstants.KEYWORD, s);
-            }
-            
-            inputDocument.addField(SolrConstants.ID, id);
-
-            // Getting position
-            SensorMLDocument document = (SensorMLDocument) sensor.getSensorMLDocument();
-            SystemType type = (SystemType) document.getSensorML().getMemberArray(0).getProcess();
-
-            // TODO moh-yakoub: add getPosition method to SirSensor
-            // sensor.getPosition();
-            
-            // TODO moh-yakoub: move this parsing code to the decoder!
-            PositionType p = type.getPosition().getPosition();
-            VectorType vector = (p.getLocation().getVector());
-            Coordinate[] coordinates = vector.getCoordinateArray();
-            StringBuilder latitude = new StringBuilder();
-            StringBuilder longitude = new StringBuilder();
-
-            for (Coordinate cord : coordinates) {
-                if (cord.getName().equals("latitude"))
-                    latitude.append(cord.getQuantity().getValue());
-                else if (cord.getName().equals("longitude"))
-                    longitude.append(cord.getQuantity().getValue());
-            }
-            if ( (latitude.toString().length()) > 0 && (longitude.toString().length() > 0))
-                inputDocument.addField(SolrConstants.LOCATION, latitude + "," + longitude);
-
             connection.addInputDocument(inputDocument);
             connection.commitChanges();
         }
         catch (SolrServerException e) {
-            log.error("SolrException", e);
+            log.error("Could not create connection to Solr.", e);
         }
         catch (IOException e) {
             log.error("IOException", e);
         }
 
+        // TODO add the database ID
         return null;
     }
 

@@ -24,6 +24,7 @@
 
 package org.n52.sir.datastructure;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -76,6 +77,8 @@ public class SirSensor {
      * time period
      */
     private SirTimePeriod timePeriod;
+
+    private Collection<String> keywords = new ArrayList<String>();
 
     /**
      * @return the bBox
@@ -208,6 +211,18 @@ public class SirSensor {
         sb.append(", Timeperiod: " + this.timePeriod);
         sb.append(", Last update: " + this.lastUpdate);
         return sb.toString();
+    }
+
+    public Collection<String> getKeywords() {
+        return this.keywords;
+    }
+
+    public void setKeywords(Collection<String> keywords) {
+        this.keywords = keywords;
+    }
+    
+    public void addKeyword(String keyword) {
+        this.keywords.add(keyword);
     }
 
 }

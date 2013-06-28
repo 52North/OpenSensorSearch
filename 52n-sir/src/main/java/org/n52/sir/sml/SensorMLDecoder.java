@@ -177,7 +177,46 @@ public class SensorMLDecoder {
         // set text
         sensor.setText(getText(sensorML));
 
+        // set keywords
+        sensor.setKeywords(getKeywords(sensorML));
+
         return sensor;
+    }
+
+    private static Collection<String> getKeywords(SensorMLDocument sensorML) {
+        return getKeywords(sensorML.getSensorML());
+    }
+
+    private static Collection<String> getKeywords(SensorML sensorML) {
+        ArrayList<String> keywords = new ArrayList<String>();
+
+        // sensorML.getSensorML().getMemberArray()[0].getProcess().getKeywordsArray()
+        Member[] members = sensorML.getMemberArray();
+
+        Member member = members[0];
+        if (member.getProcess() instanceof SystemType) {
+            SystemType system = (SystemType) member.getProcess();
+            Collection<String> systemsKeywords = getKeywords(system);
+            
+            keywords.addAll(systemsKeywords);
+        }
+        
+        return keywords;
+    }
+
+    private static Collection<String> getKeywords(SystemType system) {
+        ArrayList<String> keywordList = new ArrayList<String>();
+        
+        Keywords[] keywords = system.getKeywordsArray();
+        for (Keywords k : keywords) {
+            String[] kwArray = k.getKeywordList().getKeywordArray();
+            
+            for (String currentKeyword : kwArray) {
+                keywordList.add(currentKeyword);
+            }
+        }
+        
+        return keywordList;
     }
 
     /**

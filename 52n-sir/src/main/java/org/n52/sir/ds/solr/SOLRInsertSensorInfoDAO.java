@@ -75,7 +75,7 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             String id = sensor.getSensorIDInSIR();
             
             // TODO implement a mechanism to get access to the various identifiers
-            // sensor.getIdentifiers();
+            // Map<String, String> futherIds = sensor.getIdentifiers();
 
             Collection<String> keywords = sensor.getText();
 
@@ -96,7 +96,7 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             // TODO moh-yakoub: add getPosition method to SirSensor
             // sensor.getPosition();
             
-            // TODO move this parsing code to the decoder!
+            // TODO moh-yakoub: move this parsing code to the decoder!
             PositionType p = type.getPosition().getPosition();
             VectorType vector = (p.getLocation().getVector());
             Coordinate[] coordinates = vector.getCoordinateArray();

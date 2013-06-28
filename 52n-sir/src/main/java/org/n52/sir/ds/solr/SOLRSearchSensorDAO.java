@@ -51,7 +51,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
 	private static Logger log = LoggerFactory
 			.getLogger(SOLRSearchSensorDAO.class);
-
 	@Override
 	public Collection<SirSearchResultElement> getAllSensors(
 			boolean simpleReponse) throws OwsExceptionReport {
@@ -126,5 +125,51 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			return null;
 		}
 	}
+	/**
+	 * @param lat : Latitude of the desired point
+	 * @param lng : longitude of the desired point
+	 * @param kms : The distance of kms to match against
+	 * 
+	 */
+	public Collection<SirSearchResultElement> searchSensorByLocation(String lat,String lng,double kms){
+		// prepare the request
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		params.set("q", "*:*");
+		params.set("fq","{!geofilt sfield="+SolrConstants.LOCATION+"}");
+		params.set("pt",lat+","+lng);
+		params.set("d",kms+"");
+		System.out.println("Params:"+params);
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
 
+			List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+			for (int i = 0; i < list.size(); i++) {
+				// create a new result element
+				SirSearchResultElement element = new SirSearchResultElement();
+				SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
+				
+				/*
+				 * The results now just takes the keywords and the id
+				 * TODO extends the SirSensorDescription to optimize with the 
+				 * Solr results.
+				 */
+				SolrDocument solrresult = list.get(i);
+				
+				Collection<Object> keywords = solrresult.getFieldValues(SolrConstants.KEYWORD);
+				
+				solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
+				solrDescription.setKeywords(keywords);
+				
+				element.setSensorDescription(solrDescription);
+				results.add(element);
+			}
+
+			return results;
+		}catch(Exception e){
+			log.error(e.getLocalizedMessage());
+			return null;
+		}
+	}
 }

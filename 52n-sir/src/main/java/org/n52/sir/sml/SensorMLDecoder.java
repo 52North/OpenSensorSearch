@@ -160,6 +160,8 @@ public class SensorMLDecoder {
     public static SirSensor decode(SensorMLDocument sensorML) throws OwsExceptionReport {
         SirSensor sensor = new SirSensor();
 
+        // TODO check how this creates the identification part...
+        
         // set sensorML file
         sensor.setSensorMLDocument(sensorML);
 

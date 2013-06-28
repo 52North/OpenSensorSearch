@@ -39,24 +39,20 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
 import net.opengis.sensorML.x101.SensorMLDocument;
-import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
-import org.apache.solr.client.solrj.SolrRequest;
-import org.apache.solr.common.SolrDocument;
 import org.apache.xmlbeans.XmlException;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorDescription;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByKeywordTest {
+    
 	@Before
 	public void insertSensor() throws XmlException, IOException,
 			OwsExceptionReport {
@@ -67,8 +63,8 @@ public class SearchByKeywordTest {
 				"Requests/testsensor.xml").getFile());
 
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-		SirSensor sensor = new SirSensor();
-		sensor.setSensorMLDocument(doc);
+		SirSensor sensor = SensorMLDecoder.decode(doc); 
+		
 		/*
 		 * Inserts this sensor
 		 */
@@ -80,12 +76,9 @@ public class SearchByKeywordTest {
 	@Test
 	public void searchKeywords() throws OwsExceptionReport, XmlException,
 			IOException {
-		File sensor_file = new File(ClassLoader.getSystemResource(
-				"Requests/testsensor.xml").getFile());
-		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-		//
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		SirSearchCriteria criteria = new SirSearchCriteria();
+		
 		/*
 		 * Prepare the list of keywords
 		 */

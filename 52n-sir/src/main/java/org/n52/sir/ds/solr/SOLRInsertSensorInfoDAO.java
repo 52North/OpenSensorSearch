@@ -28,6 +28,7 @@
 package org.n52.sir.ds.solr;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SystemType;
@@ -37,7 +38,6 @@ import net.opengis.swe.x101.VectorType.Coordinate;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.xmlbeans.XmlException;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
@@ -72,29 +72,31 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         // TODO Auto-generated method stub
         // Get the keywords first
         try {
-            SensorMLDocument document = SensorMLDocument.Factory.parse(sensor.getSensorMLDocument().getDomNode());
-            // Get the list of keywords
+            String id = sensor.getSensorIDInSIR();
+            
+            // TODO implement a mechanism to get access to the various identifiers
+            // sensor.getIdentifiers();
 
-            String id = (document.getSensorML().getMemberArray()[0].getProcess().getIdentificationArray()[0].getIdentifierList().getIdentifierArray()[0].getTerm().getValue());
-
-            // No keywords found
-            if (document.getSensorML().getMemberArray().length == 0)
-                return null;
-            String[] keywords = document.getSensorML().getMemberArray()[0].getProcess().getKeywordsArray()[0].getKeywordList().getKeywordArray();
+            Collection<String> keywords = sensor.getText();
 
             // Get the connection of solr Server
             SolrConnection connection = new SolrConnection();
             SolrInputDocument inputDocument = new SolrInputDocument();
 
-            for (int i = 0; i < keywords.length; i++) {
-                System.out.println(keywords[i]);
-                inputDocument.addField(SolrConstants.KEYWORD, keywords[i]);
+            for (String s : keywords) {
+                inputDocument.addField(SolrConstants.KEYWORD, s);
             }
+            
             inputDocument.addField(SolrConstants.ID, id);
 
             // Getting position
+            SensorMLDocument document = (SensorMLDocument) sensor.getSensorMLDocument();
             SystemType type = (SystemType) document.getSensorML().getMemberArray(0).getProcess();
 
+            // TODO moh-yakoub: add getPosition method to SirSensor
+            // sensor.getPosition();
+            
+            // TODO move this parsing code to the decoder!
             PositionType p = type.getPosition().getPosition();
             VectorType vector = (p.getLocation().getVector());
             Coordinate[] coordinates = vector.getCoordinateArray();
@@ -113,17 +115,11 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             connection.addInputDocument(inputDocument);
             connection.commitChanges();
         }
-        catch (XmlException e) {
-            log.error("Cannot parse sensorML:" + e.getLocalizedMessage());
-            return null;
-        }
         catch (SolrServerException e) {
-            // TODO Auto-generated catch block
-            log.error("SolrException :" + e.toString());
+            log.error("SolrException", e);
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
-            log.error("IOException :" + e.getLocalizedMessage());
+            log.error("IOException", e);
         }
 
         return null;

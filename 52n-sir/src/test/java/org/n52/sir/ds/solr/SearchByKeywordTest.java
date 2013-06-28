@@ -72,7 +72,7 @@ public class SearchByKeywordTest {
     }
 
     @Test
-    public void searchKeywords() throws OwsExceptionReport, XmlException, IOException {
+    public void searchKeywords() throws OwsExceptionReport {
         SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
         SirSearchCriteria criteria = new SirSearchCriteria();
 

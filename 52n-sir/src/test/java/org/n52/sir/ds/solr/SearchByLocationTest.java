@@ -46,8 +46,10 @@ import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByLocationTest {
+
     @Before
     public void insertSensor() throws XmlException, IOException, OwsExceptionReport {
         /*
@@ -56,8 +58,8 @@ public class SearchByLocationTest {
         File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
 
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        SirSensor sensor = new SirSensor();
-        sensor.setSensorMLDocument(doc);
+        SirSensor sensor = SensorMLDecoder.decode(doc);
+
         /*
          * Inserts this sensor
          */
@@ -67,7 +69,7 @@ public class SearchByLocationTest {
     }
 
     @Test
-    public void searchByLocation() throws OwsExceptionReport, XmlException, IOException {
+    public void searchByLocation() {
         //
         SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
         /*
@@ -92,7 +94,7 @@ public class SearchByLocationTest {
      * Searches for a sensor but not in the range covered , should return 0
      */
     @Test
-    public void searchByLocationNotInRange() throws OwsExceptionReport, XmlException, IOException {
+    public void searchByLocationNotInRange() {
         //
         SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
         /*

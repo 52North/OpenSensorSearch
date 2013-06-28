@@ -34,91 +34,76 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
-import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
 import net.opengis.sensorML.x101.SensorMLDocument;
-import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
-import org.apache.solr.client.solrj.SolrRequest;
-import org.apache.solr.common.SolrDocument;
 import org.apache.xmlbeans.XmlException;
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorDescription;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 
 public class SearchByLocationTest {
-	@Before
-	public void insertSensor() throws XmlException, IOException,
-			OwsExceptionReport {
-		/*
-		 * Insert testSensor for search
-		 */
-		File sensor_file = new File(ClassLoader.getSystemResource(
-				"Requests/testsensor.xml").getFile());
+    @Before
+    public void insertSensor() throws XmlException, IOException, OwsExceptionReport {
+        /*
+         * Insert testSensor for search
+         */
+        File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
 
-		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-		SirSensor sensor = new SirSensor();
-		sensor.setSensorMLDocument(doc);
-		/*
-		 * Inserts this sensor
-		 */
-		// probably this will take some configuration - haven't decided yet.
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-		dao.insertSensor(sensor);
-	}
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
+        SirSensor sensor = new SirSensor();
+        sensor.setSensorMLDocument(doc);
+        /*
+         * Inserts this sensor
+         */
+        // probably this will take some configuration - haven't decided yet.
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        dao.insertSensor(sensor);
+    }
 
-	@Test
-	public void searchByLocation() throws OwsExceptionReport, XmlException,
-			IOException {
-		//
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-		/*
-		 * Prepare the list of keywords
-		 */
-		String lat = "1.5";
-		String lng = "3.49";
-		Collection<SirSearchResultElement> results = searchDAO
-				.searchSensorByLocation(lat, lng, 10);
+    @Test
+    public void searchByLocation() throws OwsExceptionReport, XmlException, IOException {
+        //
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        /*
+         * Prepare the list of keywords
+         */
+        String lat = "1.5";
+        String lng = "3.49";
+        Collection<SirSearchResultElement> results = searchDAO.searchSensorByLocation(lat, lng, 10);
 
-		assertNotNull(results);
-		assertEquals(results.size(), 1);
+        assertNotNull(results);
+        assertEquals(results.size(), 1);
 
-		Iterator<SirSearchResultElement> iter = results.iterator();
-		SirSearchResultElement result = iter.next();
-		// SensorML is stored in the sensor description value
-		SirSolrSensorDescription description = (SirSolrSensorDescription) result
-				.getSensorDescription();
-		assertNotNull(description);
-		assertTrue("urn:ogc:object:feature:testsensor".equals(description.getId()));
-	}
-	/*
-	 * Searches for a sensor but not in the range covered , should return 0
-	 */
-	@Test
-	public void searchByLocationNotInRange() throws OwsExceptionReport, XmlException,
-			IOException {
-		//
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-		/*
-		 * Prepare the list of keywords
-		 */
-		String lat = "1";
-		String lng = "3";
-		Collection<SirSearchResultElement> results = searchDAO
-				.searchSensorByLocation(lat, lng, 10);
+        Iterator<SirSearchResultElement> iter = results.iterator();
+        SirSearchResultElement result = iter.next();
+        // SensorML is stored in the sensor description value
+        SirSolrSensorDescription description = (SirSolrSensorDescription) result.getSensorDescription();
+        assertNotNull(description);
+        assertTrue("urn:ogc:object:feature:testsensor".equals(description.getId()));
+    }
 
-		assertNotNull(results);
-		assertEquals(results.size(), 0);
+    /*
+     * Searches for a sensor but not in the range covered , should return 0
+     */
+    @Test
+    public void searchByLocationNotInRange() throws OwsExceptionReport, XmlException, IOException {
+        //
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        /*
+         * Prepare the list of keywords
+         */
+        String lat = "1";
+        String lng = "3";
+        Collection<SirSearchResultElement> results = searchDAO.searchSensorByLocation(lat, lng, 10);
 
-		}
+        assertNotNull(results);
+        assertEquals(results.size(), 0);
+
+    }
 }

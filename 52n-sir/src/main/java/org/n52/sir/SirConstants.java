@@ -24,7 +24,6 @@
 
 package org.n52.sir;
 
-
 /**
  * @author Jan Schulte
  * 

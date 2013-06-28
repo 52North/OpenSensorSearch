@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
+
 package org.n52.sir.ds.solr;
 
 import org.apache.solr.common.SolrInputDocument;
@@ -28,19 +29,17 @@ import org.n52.sir.datastructure.SirSensor;
 
 /**
  * @author Yakoub
- * @author Yakoub
  * 
  */
 public class SolrIndexDocumentHelper {
-	/*
-	 * A static class for helping in forming input indexing document
-	 */
-	
-	public static SolrInputDocument prepareDocument(SirSensor sensor){
-		/*TODO check which fields we will store in description
-		 * 
-		 * 
-		 */
-		return null;
-	}
+    /*
+     * A static class for helping in forming input indexing document
+     */
+
+    public static SolrInputDocument prepareDocument(SirSensor sensor) {
+        /*
+         * TODO check which fields we will store in description
+         */
+        return null;
+    }
 }

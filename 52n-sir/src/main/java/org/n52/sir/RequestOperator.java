@@ -169,11 +169,12 @@ public class RequestOperator {
         }
         catch (IllegalArgumentException e) {
             log.error("Illegal argument in request: ", e);
-            
+
             OwsExceptionReport owser = new OwsExceptionReport();
             owser.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 e.getClass().toString(),
-                                 "The request contained an illeagal argument: " + e.getMessage() + "\n\n" + Tools.getStackTrace(e));
+                                    e.getClass().toString(),
+                                    "The request contained an illeagal argument: " + e.getMessage() + "\n\n"
+                                            + Tools.getStackTrace(e));
             return new ExceptionResponse(owser.getDocument());
         }
 

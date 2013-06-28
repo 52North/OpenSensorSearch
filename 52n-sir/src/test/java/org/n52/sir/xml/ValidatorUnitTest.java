@@ -25,17 +25,17 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.xml;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
-import org.junit.Test;
+
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 
@@ -43,24 +43,23 @@ import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
  * The file name to be changed to ValidatorTest
  */
 public class ValidatorUnitTest {
-	public void readFile() throws TransformerConfigurationException, TransformerFactoryConfigurationError, ParserConfigurationException, OwsExceptionReport {
+    public void readFile() throws TransformerConfigurationException,
+            TransformerFactoryConfigurationError,
+            ParserConfigurationException,
+            OwsExceptionReport {
 
-		File f = new File(ClassLoader.getSystemResource("AirBase-test.xml")
-				.getFile());
+        File f = new File(ClassLoader.getSystemResource("AirBase-test.xml").getFile());
 
-		// Read schema
-		File schematronFile = new File(ClassLoader.getSystemResource(
-				"SensorML_Profile_for_Discovery.sch").getFile());
-		// Read svrl
-		File svrlFile = new File(ClassLoader.getSystemResource(
-				"xslt/iso_svrl_for_xslt2.xsl").getFile());
+        // Read schema
+        File schematronFile = new File(ClassLoader.getSystemResource("SensorML_Profile_for_Discovery.sch").getFile());
+        // Read svrl
+        File svrlFile = new File(ClassLoader.getSystemResource("xslt/iso_svrl_for_xslt2.xsl").getFile());
 
-		// Now validate
-		SensorML4DiscoveryValidatorImpl validator;
+        // Now validate
+        SensorML4DiscoveryValidatorImpl validator;
 
-		validator = new SensorML4DiscoveryValidatorImpl(schematronFile,
-				svrlFile);
-		boolean v = validator.validate(f);
-		assertTrue(v);
-	}
+        validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
+        boolean v = validator.validate(f);
+        assertTrue(v);
+    }
 }

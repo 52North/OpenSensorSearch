@@ -44,61 +44,51 @@ import org.x52North.sir.x032.DisconnectFromCatalogResponseDocument;
  */
 public class DisconnectFromCatalogIT {
 
-	private String catalogURL = "http://localhost:8080/ergorr/webservice";
+    private String catalogURL = "http://localhost:8080/ergorr/webservice";
 
-	@Test
-	public void testDisconnectFromCatalogBean() throws Exception {
-		setUpConnection(this.catalogURL);
+    @Test
+    public void testDisconnectFromCatalogBean() throws Exception {
+        setUpConnection(this.catalogURL);
 
-		// buildRequest
-		DisconnectFromCatalogBean dfcb = new DisconnectFromCatalogBean(
-				this.catalogURL);
+        // buildRequest
+        DisconnectFromCatalogBean dfcb = new DisconnectFromCatalogBean(this.catalogURL);
 
-		dfcb.buildRequest();
+        dfcb.buildRequest();
 
-		// send request
-		String response = Client.sendPostRequest(dfcb.getRequestString());
+        // send request
+        String response = Client.sendPostRequest(dfcb.getRequestString());
 
-		// parse and validate response
-		DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory
-				.parse(response);
-		assertTrue(responseDoc.validate());
+        // parse and validate response
+        DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response);
+        assertTrue(responseDoc.validate());
 
-		assertEquals(this.catalogURL, responseDoc
-				.getDisconnectFromCatalogResponse().getCatalogURL());
-	}
+        assertEquals(this.catalogURL, responseDoc.getDisconnectFromCatalogResponse().getCatalogURL());
+    }
 
-	@Test
-	public void testConnectFromCatalogFile() throws Exception {
-		File f = new File(ClassLoader.getSystemResource(
-				"Requests/ConnectToCatalog.xml").getFile());
-		DisconnectFromCatalogRequestDocument dfcrd = DisconnectFromCatalogRequestDocument.Factory
-				.parse(f);
+    @Test
+    public void testConnectFromCatalogFile() throws Exception {
+        File f = new File(ClassLoader.getSystemResource("Requests/ConnectToCatalog.xml").getFile());
+        DisconnectFromCatalogRequestDocument dfcrd = DisconnectFromCatalogRequestDocument.Factory.parse(f);
 
-		String sentUrl = dfcrd.getDisconnectFromCatalogRequest()
-				.getCatalogURL();
-		setUpConnection(sentUrl);
+        String sentUrl = dfcrd.getDisconnectFromCatalogRequest().getCatalogURL();
+        setUpConnection(sentUrl);
 
-		XmlObject response = Client.xSendPostRequest(dfcrd);
+        XmlObject response = Client.xSendPostRequest(dfcrd);
 
-		// parse and validate response
-		DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory
-				.parse(response.getDomNode());
-		assertTrue(responseDoc.validate());
+        // parse and validate response
+        DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response.getDomNode());
+        assertTrue(responseDoc.validate());
 
-		assertEquals(sentUrl, responseDoc.getDisconnectFromCatalogResponse()
-				.getCatalogURL());
-	}
+        assertEquals(sentUrl, responseDoc.getDisconnectFromCatalogResponse().getCatalogURL());
+    }
 
-	private void setUpConnection(String url) throws Exception {
-		System.out
-				.println("Creating temporary conneciton for immediate deletion: "
-						+ url);
-		int pushInterval = 3600; // needs to be with repetition, otherwise not
-									// saved in database for removal.
-		ConnectToCatalogBean ctcb = new ConnectToCatalogBean(url, pushInterval);
-		ctcb.buildRequest();
-		Client.sendPostRequest(ctcb.getRequestString());
-	}
+    private void setUpConnection(String url) throws Exception {
+        System.out.println("Creating temporary conneciton for immediate deletion: " + url);
+        int pushInterval = 3600; // needs to be with repetition, otherwise not
+                                 // saved in database for removal.
+        ConnectToCatalogBean ctcb = new ConnectToCatalogBean(url, pushInterval);
+        ctcb.buildRequest();
+        Client.sendPostRequest(ctcb.getRequestString());
+    }
 
 }

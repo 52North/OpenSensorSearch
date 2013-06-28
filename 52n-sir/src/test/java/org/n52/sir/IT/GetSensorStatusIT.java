@@ -25,10 +25,11 @@
 /**
  * author Yakoub
  */
+
 package org.n52.sir.IT;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
@@ -39,42 +40,38 @@ import org.x52North.sir.x032.GetSensorStatusResponseDocument;
 
 public class GetSensorStatusIT {
 
+    public void getSensorStatus(String file) throws Exception {
+        File f = new File( (ClassLoader.getSystemResource(file).getFile()));
+        GetSensorStatusRequestDocument doc = GetSensorStatusRequestDocument.Factory.parse(f);
+        XmlObject response = null;
 
-	public void getSensorStatus(String file)
-			throws Exception {
-		File f = new File((ClassLoader.getSystemResource(file).getFile()));
-		GetSensorStatusRequestDocument doc = GetSensorStatusRequestDocument.Factory
-				.parse(f);
-		XmlObject response = null;
+        // try {
 
-		// try {
+        response = Client.xSendPostRequest(doc);
+        // parse and validate response
+        GetSensorStatusResponseDocument resp_doc = GetSensorStatusResponseDocument.Factory.parse(response.getDomNode());
+        // validate the respo_doc
 
-		response = Client.xSendPostRequest(doc);
-		// parse and validate response
-		GetSensorStatusResponseDocument resp_doc = GetSensorStatusResponseDocument.Factory
-				.parse(response.getDomNode());
-		// validate the respo_doc
+        assertTrue("Invalid  Sensor status", resp_doc.validate());
 
-		assertTrue("Invalid  Sensor status", resp_doc.validate());
+    }
 
-	}
+    @Test
+    public void getSensorStatusSearchCriteria() throws Exception {
+        getSensorStatus("Requests/GetSensorStatus_bySearchCriteria.xml");
 
-	@Test
-	public void getSensorStatusSearchCriteria() throws Exception {
-		getSensorStatus("Requests/GetSensorStatus_bySearchCriteria.xml");
+    }
 
-	}
+    @Test
+    public void getSensorStatusSearchID() throws Exception {
+        getSensorStatus("Requests/GetSensorStatus_bySensorIDInSIR");
 
-	@Test
-	public void getSensorStatusSearchID() throws Exception {
-		getSensorStatus("Requests/GetSensorStatus_bySensorIDInSIR");
+    }
 
-	}
+    @Test
+    public void getSensorStatusSearchServiceDescription() throws Exception {
+        getSensorStatus("Requests/GetSensorStatus_byServiceDescription.xml");
 
-	@Test
-	public void getSensorStatusSearchServiceDescription() throws Exception {
-		getSensorStatus("Requests/GetSensorStatus_byServiceDescription.xml");
-
-	}
+    }
 
 }

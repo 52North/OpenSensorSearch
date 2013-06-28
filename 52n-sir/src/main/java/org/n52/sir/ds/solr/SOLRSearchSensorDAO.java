@@ -24,6 +24,7 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.ds.solr;
 
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.solr.client.solrj.SolrResponse;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -40,7 +40,6 @@ import org.apache.solr.common.params.ModifiableSolrParams;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -49,127 +48,125 @@ import org.slf4j.LoggerFactory;
 
 public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
-	private static Logger log = LoggerFactory
-			.getLogger(SOLRSearchSensorDAO.class);
-	@Override
-	public Collection<SirSearchResultElement> getAllSensors(
-			boolean simpleReponse) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private static Logger log = LoggerFactory.getLogger(SOLRSearchSensorDAO.class);
 
-	@Override
-	public SirSearchResultElement getSensorBySensorID(String sensorIdInSir,
-			boolean simpleReponse) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Collection<SirSearchResultElement> getAllSensors(boolean simpleReponse) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public SirSearchResultElement getSensorByServiceDescription(
-			SirServiceReference servDesc, boolean simpleReponse)
-			throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public SirSearchResultElement getSensorBySensorID(String sensorIdInSir, boolean simpleReponse) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Collection<SirSearchResultElement> searchSensor(
-			SirSearchCriteria searchCriteria, boolean simpleReponse)
-			throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		Collection<String> q = searchCriteria.getSearchText();
-		StringBuilder wordslist = new StringBuilder();
-		Iterator<String> iter = q.iterator();
-		wordslist.append(SolrConstants.KEYWORD+":"+iter.next());
-		while (iter.hasNext()){
-			wordslist.append("+");
-			wordslist.append(iter.next());
-		}
-		// prepare the request
-		SolrConnection connection = new SolrConnection();
-		ModifiableSolrParams params = new ModifiableSolrParams();
-		params.set("q", wordslist.toString());
-		System.out.println("Parameters:"+params.toString());
-		try {
-			QueryResponse response = connection.SolrQuery(params);
-			SolrDocumentList list = response.getResults();
+    @Override
+    public SirSearchResultElement getSensorByServiceDescription(SirServiceReference servDesc, boolean simpleReponse) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
-			for (int i = 0; i < list.size(); i++) {
-				// create a new result element
-				SirSearchResultElement element = new SirSearchResultElement();
-				SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
-				
-				/*
-				 * The results now just takes the keywords and the id
-				 * TODO extends the SirSensorDescription to optimize with the 
-				 * Solr results.
-				 */
-				SolrDocument solrresult = list.get(i);
-				
-				Collection<Object> keywords = solrresult.getFieldValues(SolrConstants.KEYWORD);
-				
-				solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
-				solrDescription.setKeywords(keywords);
-				
-				element.setSensorDescription(solrDescription);
-				results.add(element);
-			}
+    @Override
+    public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        Collection<String> q = searchCriteria.getSearchText();
+        StringBuilder wordslist = new StringBuilder();
+        Iterator<String> iter = q.iterator();
+        wordslist.append(SolrConstants.KEYWORD + ":" + iter.next());
+        while (iter.hasNext()) {
+            wordslist.append("+");
+            wordslist.append(iter.next());
+        }
+        // prepare the request
+        SolrConnection connection = new SolrConnection();
+        ModifiableSolrParams params = new ModifiableSolrParams();
+        params.set("q", wordslist.toString());
+        System.out.println("Parameters:" + params.toString());
+        try {
+            QueryResponse response = connection.SolrQuery(params);
+            SolrDocumentList list = response.getResults();
 
-			return results;
+            List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+            for (int i = 0; i < list.size(); i++) {
+                // create a new result element
+                SirSearchResultElement element = new SirSearchResultElement();
+                SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
 
-		} catch (SolrServerException solrexception) {
-			log.error("SolrException:" + solrexception.getLocalizedMessage());
-			solrexception.printStackTrace();
-			return null;
-		}
-	}
-	/**
-	 * @param lat : Latitude of the desired point
-	 * @param lng : longitude of the desired point
-	 * @param kms : The distance of kms to match against
-	 * 
-	 */
-	public Collection<SirSearchResultElement> searchSensorByLocation(String lat,String lng,double kms){
-		// prepare the request
-		SolrConnection connection = new SolrConnection();
-		ModifiableSolrParams params = new ModifiableSolrParams();
-		params.set("q", "*:*");
-		params.set("fq","{!geofilt sfield="+SolrConstants.LOCATION+"}");
-		params.set("pt",lat+","+lng);
-		params.set("d",kms+"");
-		System.out.println("Params:"+params);
-		try {
-			QueryResponse response = connection.SolrQuery(params);
-			SolrDocumentList list = response.getResults();
+                /*
+                 * The results now just takes the keywords and the id TODO extends the SirSensorDescription to
+                 * optimize with the Solr results.
+                 */
+                SolrDocument solrresult = list.get(i);
 
-			List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
-			for (int i = 0; i < list.size(); i++) {
-				// create a new result element
-				SirSearchResultElement element = new SirSearchResultElement();
-				SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
-				
-				/*
-				 * The results now just takes the keywords and the id
-				 * TODO extends the SirSensorDescription to optimize with the 
-				 * Solr results.
-				 */
-				SolrDocument solrresult = list.get(i);
-				
-				Collection<Object> keywords = solrresult.getFieldValues(SolrConstants.KEYWORD);
-				
-				solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
-				solrDescription.setKeywords(keywords);
-				
-				element.setSensorDescription(solrDescription);
-				results.add(element);
-			}
+                Collection<Object> keywords = solrresult.getFieldValues(SolrConstants.KEYWORD);
 
-			return results;
-		}catch(Exception e){
-			log.error(e.getLocalizedMessage());
-			return null;
-		}
-	}
+                solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
+                solrDescription.setKeywords(keywords);
+
+                element.setSensorDescription(solrDescription);
+                results.add(element);
+            }
+
+            return results;
+
+        }
+        catch (SolrServerException solrexception) {
+            log.error("SolrException:" + solrexception.getLocalizedMessage());
+            solrexception.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * @param lat
+     *        : Latitude of the desired point
+     * @param lng
+     *        : longitude of the desired point
+     * @param kms
+     *        : The distance of kms to match against
+     * 
+     */
+    public Collection<SirSearchResultElement> searchSensorByLocation(String lat, String lng, double kms) {
+        // prepare the request
+        SolrConnection connection = new SolrConnection();
+        ModifiableSolrParams params = new ModifiableSolrParams();
+        params.set("q", "*:*");
+        params.set("fq", "{!geofilt sfield=" + SolrConstants.LOCATION + "}");
+        params.set("pt", lat + "," + lng);
+        params.set("d", kms + "");
+        System.out.println("Params:" + params);
+        try {
+            QueryResponse response = connection.SolrQuery(params);
+            SolrDocumentList list = response.getResults();
+
+            List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+            for (int i = 0; i < list.size(); i++) {
+                // create a new result element
+                SirSearchResultElement element = new SirSearchResultElement();
+                SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
+
+                /*
+                 * The results now just takes the keywords and the id TODO extends the SirSensorDescription to
+                 * optimize with the Solr results.
+                 */
+                SolrDocument solrresult = list.get(i);
+
+                Collection<Object> keywords = solrresult.getFieldValues(SolrConstants.KEYWORD);
+
+                solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
+                solrDescription.setKeywords(keywords);
+
+                element.setSensorDescription(solrDescription);
+                results.add(element);
+            }
+
+            return results;
+        }
+        catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            return null;
+        }
+    }
 }

@@ -308,9 +308,10 @@ public class TimerServlet extends GenericServlet {
         // load properties file
         try {
             this.props = loadProperties(configStream);
+            configStream.close();
         }
         catch (IOException e) {
-            log.error("Could not load properties file!");
+            log.error("Could not load properties file!", e);
             throw new UnavailableException("Could not load properties file!");
         }
 

@@ -64,6 +64,7 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
      */
     private Collection<SirSearchResultElement> searchResultElements;
 
+    @Override
     public SearchSensorResponseDocument createXml() {
         SearchSensorResponseDocument document = SearchSensorResponseDocument.Factory.newInstance();
         SearchSensorResponse searchSensResp = document.addNewSearchSensorResponse();

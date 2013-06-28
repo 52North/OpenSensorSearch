@@ -43,19 +43,17 @@ import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.GetCapabilitiesDocument;
 
 public class GetCapabilitiesIT {
-	
-	@Test
-	public void getCapabilites() throws IOException, OwsExceptionReport,
-			HttpException, XmlException {
 
-		File f = new File(ClassLoader.getSystemResource(
-				"Requests/GetCapabilities.xml").getFile());
+    @Test
+    public void getCapabilites() throws IOException, OwsExceptionReport, HttpException, XmlException {
 
-		GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
-		XmlObject response = Client.xSendPostRequest(doc);
-		CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
+        File f = new File(ClassLoader.getSystemResource("Requests/GetCapabilities.xml").getFile());
 
-		assertTrue("Invalid", (resp_doc.validate()));
+        GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
+        XmlObject response = Client.xSendPostRequest(doc);
+        CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
 
-	}
+        assertTrue("Invalid", (resp_doc.validate()));
+
+    }
 }

@@ -29,9 +29,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.ComponentsDocument.Components.ComponentList.Component;
 import net.opengis.sensorML.x101.ContactDocument.Contact;
+import net.opengis.sensorML.x101.SensorMLDocument;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)

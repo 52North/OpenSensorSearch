@@ -126,7 +126,9 @@ public class Client {
 
             // postMethod.setRequestEntity(new StringRequestEntity(request, REQUEST_CONTENT_TYPE,
             // REQUEST_CONTENT_CHARSET));
-            postMethod.setEntity(new StringEntity(request, SirConstants.REQUEST_CONTENT_TYPE, SirConstants.REQUEST_CONTENT_CHARSET));
+            postMethod.setEntity(new StringEntity(request,
+                                                  SirConstants.REQUEST_CONTENT_TYPE,
+                                                  SirConstants.REQUEST_CONTENT_CHARSET));
 
             method = postMethod;
         }

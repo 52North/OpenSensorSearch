@@ -161,7 +161,7 @@ public class SensorMLDecoder {
         SirSensor sensor = new SirSensor();
 
         // TODO check how this creates the identification part...
-        
+
         // set sensorML file
         sensor.setSensorMLDocument(sensorML);
 

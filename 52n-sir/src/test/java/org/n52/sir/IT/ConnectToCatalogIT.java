@@ -41,7 +41,7 @@ import org.x52North.sir.x032.ConnectToCatalogResponseDocument;
  * @author Yakoub
  * 
  */
-public class ConnectToCatalogIT  {
+public class ConnectToCatalogIT {
 
     private String catalogURL = "http://localhost:8080/ergorr/webservice";
 
@@ -64,9 +64,8 @@ public class ConnectToCatalogIT  {
 
     @Test
     public void testConnectToDialogFile() throws Exception {
-    	File f = new File(ClassLoader.getSystemResource("Requests/ConnectToCatalog.xml")
-				.getFile());
-		ConnectToCatalogRequestDocument ctcrd = ConnectToCatalogRequestDocument.Factory.parse(f);
+        File f = new File(ClassLoader.getSystemResource("Requests/ConnectToCatalog.xml").getFile());
+        ConnectToCatalogRequestDocument ctcrd = ConnectToCatalogRequestDocument.Factory.parse(f);
 
         XmlObject response = Client.xSendPostRequest(ctcrd);
 

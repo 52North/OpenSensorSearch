@@ -25,16 +25,15 @@
 /**
  * author Yakoub
  */
+
 package org.n52.sir.IT;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.*;
-import java.io.File;
-import java.io.InputStream;
 
+import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
-import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.SearchSensorRequestDocument;
@@ -42,44 +41,37 @@ import org.x52North.sir.x032.SearchSensorResponseDocument;
 
 public class SearchSensorIT {
 
+    public void searchSensor(String file, String description) throws Exception {
+        System.out.println(description);
+        File f = new File( (ClassLoader.getSystemResource(file).getFile()));
+        SearchSensorRequestDocument doc = SearchSensorRequestDocument.Factory.parse(f);
 
-	
-	public void searchSensor(String file, String description) throws Exception {
-		System.out.println(description);
-		File f = new File((ClassLoader.getSystemResource(file).getFile()));
-		SearchSensorRequestDocument doc = SearchSensorRequestDocument.Factory
-				.parse(f);
+        XmlObject response = null;
 
-		XmlObject response = null;
+        response = Client.xSendPostRequest(doc);
+        // parse and validate response
+        SearchSensorResponseDocument resp_doc = SearchSensorResponseDocument.Factory.parse(response.getDomNode());
+        // validate the respo_doc
 
-		response = Client.xSendPostRequest(doc);
-		// parse and validate response
-		SearchSensorResponseDocument resp_doc = SearchSensorResponseDocument.Factory
-				.parse(response.getDomNode());
-		// validate the respo_doc
+        assertTrue("Invalid  Sensor Response", resp_doc.validate());
 
-		assertTrue("Invalid  Sensor Response", resp_doc.validate());
+        int send = doc.getSearchSensorRequest().getSensorIdentificationArray().length;
+        int response_count = resp_doc.getSearchSensorResponse().sizeOfSearchResultElementArray();
+        assertEquals(send, response_count);
 
-		int send = doc.getSearchSensorRequest().getSensorIdentificationArray().length;
-		int response_count = resp_doc.getSearchSensorResponse()
-				.sizeOfSearchResultElementArray();
-		assertEquals(send, response_count);
+    }
 
-	}
+    @Test
+    public void searchSensorbyIDInSIR() throws Exception {
+        searchSensor("Requests/SearchSensor_bySensorIDInSIR.xml", "Search Sensor by ID in SIR");
 
-	@Test
-	public void searchSensorbyIDInSIR() throws Exception {
-		searchSensor("Requests/SearchSensor_bySensorIDInSIR.xml",
-				"Search Sensor by ID in SIR");
+    }
 
-	}
+    @Test
+    public void searchSensorByDescription() throws Exception {
 
-	@Test
-	public void searchSensorByDescription() throws Exception {
+        searchSensor("Requests/SearchSensor_byServiceDescription.xml", "Search Sensor by service Description");
 
-		searchSensor("Requests/SearchSensor_byServiceDescription.xml",
-				"Search Sensor by service Description");
-
-	}
+    }
 
 }

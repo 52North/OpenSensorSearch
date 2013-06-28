@@ -142,7 +142,7 @@ public class HtmlListener implements IOpenSearchListener {
         this.capabilitiesErrorCache = new HashMap<URL, XmlObject>();
 
         this.mappers = new HashMap<String, ICapabilitiesPermalinkMapper>();
-        
+
         // TODO change this to service loaders
         ICapabilitiesPermalinkMapper cpm1 = new PegelOnlineCPM();
         add(cpm1);

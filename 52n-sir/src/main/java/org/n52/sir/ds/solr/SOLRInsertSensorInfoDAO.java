@@ -24,12 +24,11 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.ds.solr;
 
 import java.io.IOException;
 
-import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
-import net.opengis.sensorML.x101.PositionDocument.Position;
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SystemType;
 import net.opengis.swe.x101.PositionType;
@@ -40,112 +39,100 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.xmlbeans.XmlException;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorDescription;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
-import org.n52.sir.ds.pgsql.PGSQLInsertSensorInfoDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
-	private static Logger log = LoggerFactory
-			.getLogger(SOLRInsertSensorInfoDAO.class);
+    private static Logger log = LoggerFactory.getLogger(SOLRInsertSensorInfoDAO.class);
 
-	@Override
-	public String addNewReference(SirSensorIdentification sensIdent,
-			SirServiceReference servRef) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String addNewReference(SirSensorIdentification sensIdent, SirServiceReference servRef) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public String deleteReference(SirSensorIdentification sensIdent,
-			SirServiceReference servRef) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String deleteReference(SirSensorIdentification sensIdent, SirServiceReference servRef) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public String deleteSensor(SirSensorIdentification sensIdent)
-			throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String deleteSensor(SirSensorIdentification sensIdent) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		// Get the keywords first
-		try {
-			SensorMLDocument document = SensorMLDocument.Factory.parse(sensor
-					.getSensorMLDocument().getDomNode());
-			// Get the list of keywords
+    @Override
+    public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        // Get the keywords first
+        try {
+            SensorMLDocument document = SensorMLDocument.Factory.parse(sensor.getSensorMLDocument().getDomNode());
+            // Get the list of keywords
 
-			String id = (document.getSensorML().getMemberArray()[0]
-					.getProcess().getIdentificationArray()[0]
-					.getIdentifierList().getIdentifierArray()[0].getTerm()
-					.getValue());
+            String id = (document.getSensorML().getMemberArray()[0].getProcess().getIdentificationArray()[0].getIdentifierList().getIdentifierArray()[0].getTerm().getValue());
 
-			// No keywords found
-			if (document.getSensorML().getMemberArray().length == 0)
-				return null;
-			String[] keywords = document.getSensorML().getMemberArray()[0]
-					.getProcess().getKeywordsArray()[0].getKeywordList()
-					.getKeywordArray();
+            // No keywords found
+            if (document.getSensorML().getMemberArray().length == 0)
+                return null;
+            String[] keywords = document.getSensorML().getMemberArray()[0].getProcess().getKeywordsArray()[0].getKeywordList().getKeywordArray();
 
-			// Get the connection of solr Server
-			SolrConnection connection = new SolrConnection();
-			SolrInputDocument inputDocument = new SolrInputDocument();
+            // Get the connection of solr Server
+            SolrConnection connection = new SolrConnection();
+            SolrInputDocument inputDocument = new SolrInputDocument();
 
-			for (int i = 0; i < keywords.length; i++) {
-				System.out.println(keywords[i]);
-				inputDocument.addField(SolrConstants.KEYWORD, keywords[i]);
-			}
-			inputDocument.addField(SolrConstants.ID, id);
+            for (int i = 0; i < keywords.length; i++) {
+                System.out.println(keywords[i]);
+                inputDocument.addField(SolrConstants.KEYWORD, keywords[i]);
+            }
+            inputDocument.addField(SolrConstants.ID, id);
 
-			// Getting position
-			SystemType type = (SystemType) document.getSensorML()
-					.getMemberArray(0).getProcess();
+            // Getting position
+            SystemType type = (SystemType) document.getSensorML().getMemberArray(0).getProcess();
 
-			PositionType p = type.getPosition().getPosition();
-			VectorType vector = (p.getLocation().getVector());
-			Coordinate[] coordinates = vector.getCoordinateArray();
-			StringBuilder latitude = new StringBuilder();
-			StringBuilder longitude = new StringBuilder();
+            PositionType p = type.getPosition().getPosition();
+            VectorType vector = (p.getLocation().getVector());
+            Coordinate[] coordinates = vector.getCoordinateArray();
+            StringBuilder latitude = new StringBuilder();
+            StringBuilder longitude = new StringBuilder();
 
-			for (Coordinate cord : coordinates) {
-				if (cord.getName().equals("latitude"))
-					latitude.append(cord.getQuantity().getValue());
-				else if (cord.getName().equals("longitude"))
-					longitude.append(cord.getQuantity().getValue());
-			}
-			if((latitude.toString().length()) > 0 && (longitude.toString().length()>0))
-					inputDocument.addField(SolrConstants.LOCATION,latitude+","+longitude);
-			
+            for (Coordinate cord : coordinates) {
+                if (cord.getName().equals("latitude"))
+                    latitude.append(cord.getQuantity().getValue());
+                else if (cord.getName().equals("longitude"))
+                    longitude.append(cord.getQuantity().getValue());
+            }
+            if ( (latitude.toString().length()) > 0 && (longitude.toString().length() > 0))
+                inputDocument.addField(SolrConstants.LOCATION, latitude + "," + longitude);
 
-			connection.addInputDocument(inputDocument);
-			connection.commitChanges();
-		} catch (XmlException e) {
-			log.error("Cannot parse sensorML:" + e.getLocalizedMessage());
-			return null;
-		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			log.error("SolrException :" + e.toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			log.error("IOException :" + e.getLocalizedMessage());
-		}
+            connection.addInputDocument(inputDocument);
+            connection.commitChanges();
+        }
+        catch (XmlException e) {
+            log.error("Cannot parse sensorML:" + e.getLocalizedMessage());
+            return null;
+        }
+        catch (SolrServerException e) {
+            // TODO Auto-generated catch block
+            log.error("SolrException :" + e.toString());
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            log.error("IOException :" + e.getLocalizedMessage());
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public String updateSensor(SirSensorIdentification sensIdent,
-			SirSensor sensor) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String updateSensor(SirSensorIdentification sensIdent, SirSensor sensor) throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

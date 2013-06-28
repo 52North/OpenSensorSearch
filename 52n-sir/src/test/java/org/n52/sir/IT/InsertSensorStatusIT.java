@@ -44,28 +44,22 @@ import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
 
 public class InsertSensorStatusIT {
 
-	@Test
-	public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
-		XmlObject res = null;
-			/*
-			 * Create a sensor insert request from sensorFile
-			 */
-			File sensor_status = new File(ClassLoader.getSystemResource(
-					"Requests/InsertSensorStatus.xml").getFile());
-			InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory
-					.parse(sensor_status);
+    @Test
+    public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
+        XmlObject res = null;
+        /*
+         * Create a sensor insert request from sensorFile
+         */
+        File sensor_status = new File(ClassLoader.getSystemResource("Requests/InsertSensorStatus.xml").getFile());
+        InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
 
-			res = Client.xSendPostRequest(req);
+        res = Client.xSendPostRequest(req);
 
-			InsertSensorStatusResponseDocument res_doc = InsertSensorStatusResponseDocument.Factory
-					.parse(res.getDomNode());
+        InsertSensorStatusResponseDocument res_doc = InsertSensorStatusResponseDocument.Factory.parse(res.getDomNode());
 
-			assertTrue ("StatusId not equal",res_doc
-					.getInsertSensorStatusResponse()
-					.getSensorIDInSIR()
-					.equals(req.getInsertSensorStatusRequest()
-							.getStatusDescription().getSensorIDInSIR()));
-				
-	}
+        assertTrue("StatusId not equal",
+                   res_doc.getInsertSensorStatusResponse().getSensorIDInSIR().equals(req.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR()));
+
+    }
 
 }

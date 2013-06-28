@@ -51,72 +51,55 @@ import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 
 public class InsertSensorInfoNewSensorIT {
 
-	@Before
-	public void prepare() throws UnavailableException, OwsExceptionReport {
+    @Before
+    public void prepare() throws UnavailableException, OwsExceptionReport {
 
-		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			// Read configurator if null
-			SirConfigurator.getInstance(sirStream, dbStream, null, null);
+        if (SirConfigurator.getInstance() == null) {
+            InputStream dbStream = ClassLoader.getSystemResourceAsStream("prop/db.PROPERTIES");
+            InputStream sirStream = ClassLoader.getSystemResourceAsStream("prop/sir.PROPERTIES");
+            // Read configurator if null
+            SirConfigurator.getInstance(sirStream, dbStream, null, null);
 
-		}
-	}
+        }
+    }
 
-	@Test
-	public void insertSensorDirectly() throws XmlException, IOException,
-			OwsExceptionReport, HttpException {
-		File f = new File(ClassLoader.getSystemResource(
-				"Requests/InsertSensorInfo_newSensor.xml").getFile());
+    @Test
+    public void insertSensorDirectly() throws XmlException, IOException, OwsExceptionReport, HttpException {
+        File f = new File(ClassLoader.getSystemResource("Requests/InsertSensorInfo_newSensor.xml").getFile());
 
-		InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory
-				.parse(f);
+        InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory.parse(f);
 
-		XmlObject response = Client.xSendPostRequest(doc);
+        XmlObject response = Client.xSendPostRequest(doc);
 
-		InsertSensorInfoResponseDocument responseDoc = InsertSensorInfoResponseDocument.Factory
-				.parse(response.getDomNode());
-		// Check the number of inserted sensor
-		int number = (responseDoc.getInsertSensorInfoResponse()
-				.getNumberOfInsertedSensors());
-		assertNotEquals("Failed to insert sensor", number, 0);
-	}
+        InsertSensorInfoResponseDocument responseDoc = InsertSensorInfoResponseDocument.Factory.parse(response.getDomNode());
+        // Check the number of inserted sensor
+        int number = (responseDoc.getInsertSensorInfoResponse().getNumberOfInsertedSensors());
+        assertNotEquals("Failed to insert sensor", number, 0);
+    }
 
-	@Test
-	public void insertSampleSensor() throws XmlException, IOException,
-			OwsExceptionReport, HttpException {
+    @Test
+    public void insertSampleSensor() throws XmlException, IOException, OwsExceptionReport, HttpException {
 
-		/*
-		 * Create a sensor insert request from sensorFile
-		 */
-		File sensor = new File(ClassLoader.getSystemResource(
-				"Requests/testSensor.xml").getFile());
-		SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
+        /*
+         * Create a sensor insert request from sensorFile
+         */
+        File sensor = new File(ClassLoader.getSystemResource("Requests/testSensor.xml").getFile());
+        SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
 
-		InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory
-				.newInstance();
-		req.addNewInsertSensorInfoRequest()
-				.addNewInfoToBeInserted()
-				.setSensorDescription(
-						DOC.getSensorML().getMemberArray(0).getProcess());
-		XmlObject res = Client.xSendPostRequest(req);
-		System.out.println("Response:"+res);
-		InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory
-				.parse(res.getDomNode());
+        InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
+        req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
+        XmlObject res = Client.xSendPostRequest(req);
+        System.out.println("Response:" + res);
+        InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
-		assertNotEquals("Failed to insert sensor", resp
-				.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
+        assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
 
-		System.out
-				.println("Loaded a sensor , encoded and inserted successfully");
+        System.out.println("Loaded a sensor , encoded and inserted successfully");
 
-		/*
-		 * TODO delete the sensor here
-		 */
+        /*
+         * TODO delete the sensor here
+         */
 
-	}
-
+    }
 
 }

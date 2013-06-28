@@ -25,24 +25,19 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.xml;
 
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.transform.Result;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
-import org.apache.xmlbeans.XmlException;
 import org.junit.Test;
 import org.n52.sir.util.XmlTools;
 import org.n52.sir.xml.impl.SMLtoEbRIMTransformer;
@@ -52,63 +47,57 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageType;
 
 public class TransformerIT {
 
-	private void failIfURLNull(String resource) {
-		if (ClassLoader.getSystemResource(resource) == null)
-			fail(resource + " Is missing");
-	}
+    private void failIfURLNull(String resource) {
+        if (ClassLoader.getSystemResource(resource) == null)
+            fail(resource + " Is missing");
+    }
 
-	@Test
-	public void testTransform() {
-		String[] s = new String[] { "IFGI_HWS1-discoveryprofile.xml",
-				"FH_HWS1-discoveryprofile.xml", "FH_HWS1-discoveryprofile.xml" };
+    @Test
+    public void testTransform() {
+        String[] s = new String[] {"IFGI_HWS1-discoveryprofile.xml",
+                                   "FH_HWS1-discoveryprofile.xml",
+                                   "FH_HWS1-discoveryprofile.xml"};
 
-		for (String str : s)
-			failIfURLNull("transformation/" + str);
+        for (String str : s)
+            failIfURLNull("transformation/" + str);
 
-		failIfURLNull("xslt/");
+        failIfURLNull("xslt/");
 
-		
-		File xslt_dir = new File(ClassLoader.getSystemResource("xslt/")
-				.getFile());
-		File transformations = new File(ClassLoader.getSystemResource("transformation/").getFile());
-		
-		for (int i = 0; i < s.length; i++){
-			File file = new File(ClassLoader.getSystemResource(
-					"transformation/" + s[i]).getFile());
-			testTransformation(file.getName(), transformations.getAbsolutePath()+"/", xslt_dir.getAbsolutePath()+"/");
-		}
+        File xslt_dir = new File(ClassLoader.getSystemResource("xslt/").getFile());
+        File transformations = new File(ClassLoader.getSystemResource("transformation/").getFile());
 
-	}
+        for (int i = 0; i < s.length; i++) {
+            File file = new File(ClassLoader.getSystemResource("transformation/" + s[i]).getFile());
+            testTransformation(file.getName(), transformations.getAbsolutePath() + "/", xslt_dir.getAbsolutePath()
+                    + "/");
+        }
 
+    }
 
+    private static void testTransformation(String inputFile, String transformationDir, String dataDir) throws InstantiationError {
 
-	private static void testTransformation(String inputFile,
-			String transformationDir, String dataDir) throws InstantiationError {
+        SMLtoEbRIMTransformer transformer = new SMLtoEbRIMTransformer(transformationDir);
 
-		SMLtoEbRIMTransformer transformer = new SMLtoEbRIMTransformer(
-				transformationDir);
+        try {
+            // test the input document
+            FileReader inputReader = new FileReader(dataDir + inputFile);
+            SensorMLDocument smlDoc = SensorMLDocument.Factory.parse(inputReader);
 
-		try {
-			// test the input document
-			FileReader inputReader = new FileReader(dataDir + inputFile);
-			SensorMLDocument smlDoc = SensorMLDocument.Factory
-					.parse(inputReader);
+            transformer.setValidating(false);
 
-			transformer.setValidating(false);
+            Result r = transformer.transform(dataDir + inputFile);
+            StreamResult sr = (StreamResult) r;
 
-			Result r = transformer.transform(dataDir + inputFile);
-			StreamResult sr = (StreamResult) r;
+            String outputString = sr.getWriter().toString();
 
-			String outputString = sr.getWriter().toString();
+            RegistryPackageDocument rpd = RegistryPackageDocument.Factory.parse(outputString);
+            RegistryPackageType rp = rpd.getRegistryPackage();
 
-			RegistryPackageDocument rpd = RegistryPackageDocument.Factory
-					.parse(outputString);
-			RegistryPackageType rp = rpd.getRegistryPackage();
-
-			String eoInfo = XmlTools.inspect(rp);
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-	}
+            String eoInfo = XmlTools.inspect(rp);
+        }
+        catch (Exception e) {
+            fail(e.toString());
+        }
+    }
 
 }

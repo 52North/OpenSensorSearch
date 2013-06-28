@@ -10,7 +10,7 @@ public class SirSolrSensorDescription extends SirSensorDescription {
     private Collection<Object> keywords;
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {
@@ -18,7 +18,7 @@ public class SirSolrSensorDescription extends SirSensorDescription {
     }
 
     public Collection<Object> getKeywords() {
-        return keywords;
+        return this.keywords;
     }
 
     public void setKeywords(Collection<Object> keywords) {

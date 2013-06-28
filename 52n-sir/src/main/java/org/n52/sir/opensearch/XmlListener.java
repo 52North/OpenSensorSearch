@@ -73,7 +73,7 @@ public class XmlListener implements IOpenSearchListener {
 
         log.debug("Done with XML response.");
     }
-    
+
     private void writeTo(SirSearchSensorResponse sssr, Writer writer) throws OwsExceptionReport {
         SearchSensorResponseDocument searchSensorRespDoc = sssr.createXml();
         try {

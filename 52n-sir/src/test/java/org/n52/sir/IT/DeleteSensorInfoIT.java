@@ -24,7 +24,7 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -41,12 +41,11 @@ import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
  * @author Yakoub
  * 
  */
-public class DeleteSensorInfoIT  {
+public class DeleteSensorInfoIT {
 
     @Test
     public void testPostExampleDeleteReference() throws Exception {
-    	File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo_deleteReference.xml")
-				.getFile());
+        File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo_deleteReference.xml").getFile());
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
         XmlObject response = Client.xSendPostRequest(req);
@@ -59,8 +58,7 @@ public class DeleteSensorInfoIT  {
 
     @Test
     public void testPostExampleDeleteSensor() throws Exception {
-    	File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo.xml")
-				.getFile());
+        File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo.xml").getFile());
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
         XmlObject response = Client.xSendPostRequest(req);

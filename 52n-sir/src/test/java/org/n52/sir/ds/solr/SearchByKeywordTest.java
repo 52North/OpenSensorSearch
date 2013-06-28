@@ -52,56 +52,52 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByKeywordTest {
-    
-	@Before
-	public void insertSensor() throws XmlException, IOException,
-			OwsExceptionReport {
-		/*
-		 * Insert testSensor for search
-		 */
-		File sensor_file = new File(ClassLoader.getSystemResource(
-				"Requests/testsensor.xml").getFile());
 
-		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-		SirSensor sensor = SensorMLDecoder.decode(doc); 
-		
-		/*
-		 * Inserts this sensor
-		 */
-		// probably this will take some configuration - haven't decided yet.
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-		dao.insertSensor(sensor);
-	}
+    @Before
+    public void insertSensor() throws XmlException, IOException, OwsExceptionReport {
+        /*
+         * Insert testSensor for search
+         */
+        File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
 
-	@Test
-	public void searchKeywords() throws OwsExceptionReport, XmlException,
-			IOException {
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-		SirSearchCriteria criteria = new SirSearchCriteria();
-		
-		/*
-		 * Prepare the list of keywords
-		 */
-		List<String> keywords = new ArrayList<String>();
-		keywords.add("testkeyword");
-		keywords.add("test");
-		
-		criteria.setSearchText(keywords);
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
+        SirSensor sensor = SensorMLDecoder.decode(doc);
 
-		Collection<SirSearchResultElement> results = searchDAO.searchSensor(
-				criteria, true);
+        /*
+         * Inserts this sensor
+         */
+        // probably this will take some configuration - haven't decided yet.
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        dao.insertSensor(sensor);
+    }
 
-		assertNotNull(results);
-		assertEquals(results.size(), 1);
+    @Test
+    public void searchKeywords() throws OwsExceptionReport, XmlException, IOException {
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SirSearchCriteria criteria = new SirSearchCriteria();
 
-		Iterator<SirSearchResultElement> iter = results.iterator();
-		SirSearchResultElement result = iter.next();
-		// SensorML is stored in the sensor description value
-		SirSolrSensorDescription description = (SirSolrSensorDescription)result.getSensorDescription();
-		assertNotNull(description);
-		assertEquals(description.getKeywords().size(), keywords.size());
-		for(String s : keywords)
-			assertTrue(description.getKeywords().contains(s));
-	}
+        /*
+         * Prepare the list of keywords
+         */
+        List<String> keywords = new ArrayList<String>();
+        keywords.add("testkeyword");
+        keywords.add("test");
+
+        criteria.setSearchText(keywords);
+
+        Collection<SirSearchResultElement> results = searchDAO.searchSensor(criteria, true);
+
+        assertNotNull(results);
+        assertEquals(results.size(), 1);
+
+        Iterator<SirSearchResultElement> iter = results.iterator();
+        SirSearchResultElement result = iter.next();
+        // SensorML is stored in the sensor description value
+        SirSolrSensorDescription description = (SirSolrSensorDescription) result.getSensorDescription();
+        assertNotNull(description);
+        assertEquals(description.getKeywords().size(), keywords.size());
+        for (String s : keywords)
+            assertTrue(description.getKeywords().contains(s));
+    }
 
 }

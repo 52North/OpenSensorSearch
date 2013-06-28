@@ -25,8 +25,8 @@
 /**
  * @author Yakoub
  */
-package org.n52.sir.xml;
 
+package org.n52.sir.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,52 +45,43 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageType;
 
 public class SMLtoEbRIMTransformerTest {
 
+    @Test
+    public void testTransform() throws InstantiationError, XmlException, IOException, TransformerException {
+        String[] s = new String[] {"IFGI_HWS1-discoveryprofile.xml",
+                                   "FH_HWS1-discoveryprofile.xml",
+                                   "FH_HWS1-discoveryprofile.xml"};
 
-	@Test
-	public void testTransform() throws InstantiationError, XmlException, IOException, TransformerException {
-		String[] s = new String[] { "IFGI_HWS1-discoveryprofile.xml",
-				"FH_HWS1-discoveryprofile.xml", "FH_HWS1-discoveryprofile.xml" };
+        File xslt_dir = new File(ClassLoader.getSystemResource("xslt/").getFile());
+        File transformations = new File(ClassLoader.getSystemResource("transformation/").getFile());
 
-		
-		
-		File xslt_dir = new File(ClassLoader.getSystemResource("xslt/")
-				.getFile());
-		File transformations = new File(ClassLoader.getSystemResource("transformation/").getFile());
-		
-		for (int i = 0; i < s.length; i++){
-			File file = new File(ClassLoader.getSystemResource(
-					"transformation/" + s[i]).getFile());
-			testTransformation(file.getName(), transformations.getAbsolutePath()+"/", xslt_dir.getAbsolutePath()+"/");
-		}
+        for (int i = 0; i < s.length; i++) {
+            File file = new File(ClassLoader.getSystemResource("transformation/" + s[i]).getFile());
+            testTransformation(file.getName(), transformations.getAbsolutePath() + "/", xslt_dir.getAbsolutePath()
+                    + "/");
+        }
 
-	}
+    }
 
+    private static void testTransformation(String inputFile, String transformationDir, String xsltDir) throws InstantiationError,
+            XmlException,
+            IOException,
+            TransformerException {
+        SMLtoEbRIMTransformer transformer = new SMLtoEbRIMTransformer(xsltDir);
 
+        // test the input document
 
-	private static void testTransformation(String inputFile,
-			String transformationDir, String xsltDir) throws InstantiationError, XmlException, IOException, TransformerException {
-		SMLtoEbRIMTransformer transformer = new SMLtoEbRIMTransformer(
-				xsltDir);
+        transformer.setValidating(false);
 
-		
-			// test the input document
-			
+        Result r = transformer.transform(transformationDir + inputFile);
+        StreamResult sr = (StreamResult) r;
 
-			transformer.setValidating(false);
+        String outputString = sr.getWriter().toString();
 
-			Result r = transformer.transform(transformationDir + inputFile);
-			StreamResult sr = (StreamResult) r;
+        RegistryPackageDocument rpd = RegistryPackageDocument.Factory.parse(outputString);
+        RegistryPackageType rp = rpd.getRegistryPackage();
 
-			String outputString = sr.getWriter().toString();
+        System.out.println(XmlTools.validateAndIterateErrors(rp));
 
-			RegistryPackageDocument rpd = RegistryPackageDocument.Factory
-					.parse(outputString);
-			RegistryPackageType rp = rpd.getRegistryPackage();
-
-			
-			System.out.println(XmlTools.validateAndIterateErrors(rp));
-			
-		
-	}
+    }
 
 }

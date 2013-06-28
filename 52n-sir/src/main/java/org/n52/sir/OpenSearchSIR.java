@@ -224,8 +224,10 @@ public class OpenSearchSIR extends HttpServlet {
 
             e.getDocument().save(writer, XmlTools.xmlOptionsForNamespaces());
         }
+        finally {
+            writer.close();
+        }
 
-        writer.close();
         resp.flushBuffer(); // commits the response
 
         log.debug(" *** (GET) Done.");

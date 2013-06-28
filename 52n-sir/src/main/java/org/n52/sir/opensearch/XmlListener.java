@@ -79,6 +79,7 @@ public class XmlListener implements IOpenSearchListener {
         try {
             WriterOutputStream wos = new WriterOutputStream(writer, CharacterSet.UTF_8);
             searchSensorRespDoc.save(wos, XmlTools.xmlOptionsForNamespaces());
+            wos.close();
         }
         catch (IOException e) {
             log.error("Could not write response document to writer.", e);

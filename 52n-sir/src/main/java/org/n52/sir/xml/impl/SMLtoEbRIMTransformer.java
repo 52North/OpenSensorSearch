@@ -25,6 +25,7 @@
 package org.n52.sir.xml.impl;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.xml.namespace.QName;
@@ -178,6 +179,13 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         RegistryPackageDocument regPackDoc = RegistryPackageDocument.Factory.parse(outputString);
 
         // clean up
+        try {
+            sw.close();
+        }
+        catch (IOException e) {
+            log.error("Could not close output writer.", e);
+        }
+        
         input = null;
         sw = null;
         output = null;

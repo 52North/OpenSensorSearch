@@ -85,7 +85,7 @@ public class RequestDismantler {
     }
 
     private SirBoundingBox getBoundingBoxFromGazetteer(String parameter) {
-        log.error("gazetteer not implemented yet!");
+        log.error("gazetteer not implemented yet, discarding parameter {}", parameter);
         return null;
     }
 
@@ -114,7 +114,7 @@ public class RequestDismantler {
     }
 
     public Calendar[] getStartEnd(HttpServletRequest req) {
-        // TODO Auto-generated method stub
+        log.error("start-end not implemented yet, discarding request {}", req);
         return null;
     }
 
@@ -131,7 +131,7 @@ public class RequestDismantler {
     }
 
     public boolean requestContainsTime(HttpServletRequest req) {
-        // TODO Auto-generated method stub
+        log.error("time not implemented yet, discarding req {}", req);
         return false;
     }
 

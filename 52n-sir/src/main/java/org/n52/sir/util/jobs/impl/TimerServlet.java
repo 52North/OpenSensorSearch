@@ -308,11 +308,18 @@ public class TimerServlet extends GenericServlet {
         // load properties file
         try {
             this.props = loadProperties(configStream);
-            configStream.close();
         }
         catch (IOException e) {
             log.error("Could not load properties file!", e);
             throw new UnavailableException("Could not load properties file!");
+        }
+        finally {
+            try {
+                configStream.close();
+            }
+            catch (IOException e) {
+                log.error("could not close stream.", e);
+            }
         }
 
         String basepath = context.getRealPath("/");

@@ -564,6 +564,13 @@ public class SirConfigurator {
         }
         else
             log.error("Cannot find resource " + resourcePath);
+
+        try {
+            resource.close();
+        }
+        catch (IOException e) {
+            log.error("Cannot close checked resource " + resourcePath);
+        }
     }
 
     /**
@@ -1354,7 +1361,16 @@ public class SirConfigurator {
             se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
                                  null,
                                  "Error on loading capabilities skeleton file: " + e.getMessage());
+
             throw se;
+        }
+        finally {
+            try {
+                resource.close();
+            }
+            catch (IOException e1) {
+                log.error("Could not close resource.");
+            }
         }
     }
 

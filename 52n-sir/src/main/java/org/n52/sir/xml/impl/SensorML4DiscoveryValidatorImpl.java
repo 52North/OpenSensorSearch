@@ -245,6 +245,14 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             log.error("Error processing SVRL output!", e);
             return false;
         }
+        finally {
+            try {
+                sw.close();
+            }
+            catch (IOException e) {
+                log.error("Could not close output writer", e);
+            }
+        }
 
         // clean up
         input = null;

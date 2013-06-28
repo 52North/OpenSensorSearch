@@ -151,7 +151,7 @@ public class HtmlListener implements IOpenSearchListener {
     }
 
     private void add(ICapabilitiesPermalinkMapper cpm1) {
-        mappers.put(cpm1.getServiceURL(), cpm1);
+        this.mappers.put(cpm1.getServiceURL(), cpm1);
     }
 
     /**
@@ -616,14 +616,15 @@ public class HtmlListener implements IOpenSearchListener {
         accessURL = linkFactory.createAccessURL(this.conf.getPermalinkBaseURL());
 
         if (accessURL.length() > OpenSearchConstants.MAX_GET_URL_CHARACTER_COUNT && this.conf.isCompressPermalinks()) {
-            AccessLinkCompressor compressor;
+            AccessLinkCompressor compressor = null;
+            log.debug("Not using compressor {}", compressor);
         }
 
         return accessURL;
     }
 
     private ICapabilitiesPermalinkMapper getCPMapper(String serviceURL) {
-        return mappers.get(serviceURL);
+        return this.mappers.get(serviceURL);
     }
 
     private boolean serviceCapabilitiesSupported(String serviceURL) {

@@ -77,7 +77,6 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         // Map<String, String> futherIds = sensor.getIdentifiers();
 
         Collection<String> keywords = sensor.getKeywords();
-
         // Get the connection of solr Server
         SolrConnection connection = new SolrConnection();
         SolrInputDocument inputDocument = new SolrInputDocument();
@@ -85,35 +84,14 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         for (String s : keywords) {
             inputDocument.addField(SolrConstants.KEYWORD, s);
         }
-
         // FIXME use OSS-wide id generator
         String id = UUID.randomUUID().toString();
         inputDocument.addField(SolrConstants.ID, id);
-
-        // Getting position
-        SensorMLDocument document = (SensorMLDocument) sensor.getSensorMLDocument();
-        SystemType type = (SystemType) document.getSensorML().getMemberArray(0).getProcess();
-
-        // TODO moh-yakoub: use center from bounding box
-        double[] center = sensor.getbBox().getCenter();
-
-        // TODO moh-yakoub: move this parsing code to the decoder!
-        PositionType p = type.getPosition().getPosition();
-        VectorType vector = (p.getLocation().getVector());
-        Coordinate[] coordinates = vector.getCoordinateArray();
-        StringBuilder latitude = new StringBuilder();
-        StringBuilder longitude = new StringBuilder();
-
-        for (Coordinate cord : coordinates) {
-            if (cord.getName().equals("latitude"))
-                latitude.append(cord.getQuantity().getValue());
-            else if (cord.getName().equals("longitude"))
-                longitude.append(cord.getQuantity().getValue());
-        }
-
-        if ( (latitude.toString().length()) > 0 && (longitude.toString().length() > 0))
-            inputDocument.addField(SolrConstants.LOCATION, latitude + "," + longitude);
-        
+        String longitude = sensor.getLongitude();
+        String latitude = sensor.getLatitude();
+        if(longitude.length() >0 && latitude.length() >0)
+        	inputDocument.addField(SolrConstants.LOCATION, latitude+","+longitude);
+             
         try {
             connection.addInputDocument(inputDocument);
             connection.commitChanges();

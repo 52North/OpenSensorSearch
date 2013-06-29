@@ -79,6 +79,10 @@ public class SirSensor {
     private SirTimePeriod timePeriod;
 
     private Collection<String> keywords = new ArrayList<String>();
+    
+	private String longitude;
+    
+    private String latitude;
 
     /**
      * @return the bBox
@@ -224,5 +228,22 @@ public class SirSensor {
     public void addKeyword(String keyword) {
         this.keywords.add(keyword);
     }
+    public String getLongitude() {
+		return this.longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return this.latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+    
 
 }

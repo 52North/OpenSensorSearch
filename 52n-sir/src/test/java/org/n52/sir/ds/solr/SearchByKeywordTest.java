@@ -41,7 +41,9 @@ import java.util.List;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchCriteria;
@@ -52,13 +54,13 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByKeywordTest {
+	
+	public String id;
 
-    @Before
-    public void insertSensor() throws XmlException, IOException, OwsExceptionReport {
-        /*
-         * Insert testSensor for search
-         */
-        File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
+    @Test
+    public void searchKeywords() throws OwsExceptionReport, XmlException, IOException {
+    	//Inserts the sensor
+    	File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
 
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
         SirSensor sensor = SensorMLDecoder.decode(doc);
@@ -68,22 +70,22 @@ public class SearchByKeywordTest {
          */
         // probably this will take some configuration - haven't decided yet.
         SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-        dao.insertSensor(sensor);
-    }
-
-    @Test
-    public void searchKeywords() throws OwsExceptionReport {
+        String id = dao.insertSensor(sensor);
+        this.id=id;
+    	
         SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
         SirSearchCriteria criteria = new SirSearchCriteria();
-
         /*
          * Prepare the list of keywords
          */
         List<String> keywords = new ArrayList<String>();
         keywords.add("testkeyword");
         keywords.add("test");
+        keywords.add("another keyword");
 
-        criteria.setSearchText(keywords);
+        ArrayList<String> searchkeywords = new ArrayList<String>();
+        searchkeywords.add("test");
+        criteria.setSearchText(searchkeywords);
 
         Collection<SirSearchResultElement> results = searchDAO.searchSensor(criteria, true);
 
@@ -98,6 +100,17 @@ public class SearchByKeywordTest {
         assertEquals(description.getKeywords().size(), keywords.size());
         for (String s : keywords)
             assertTrue(description.getKeywords().contains(s));
+        //deletes the sensor
+        
+
+    }
+    /**TODO LET the delete delete only by the given id not all  
+     * 
+     */
+    @After
+    public void deleteSensor() throws SolrServerException, IOException{
+        new SolrConnection().deleteByQuery("");
+        
     }
 
 }

@@ -81,6 +81,7 @@
 		<service.endpoint.service>sir</service.endpoint.service>
 		<service.endpoint.rest>rest</service.endpoint.rest>
 		<service.endpoint.opensearch>search</service.endpoint.opensearch>
+		<service.endpoint.autocomplete>autocomplete</service.endpoint.autocomplete>
 	</properties>
 
 	<profiles>
@@ -261,13 +262,13 @@
 						<exclude>**/webapp/codemirror/**</exclude>
 						<exclude>**/buildNumber.properties</exclude>
 						<exclude>**/org/n52/sir/util/ext/**</exclude>
+						<excluse>**/*.xml</excluse>
 					</excludes>
 					<includes>
 						<include>**/*.java</include>
 						<include>**/*.properties</include>
 						<include>**/*.jsp</include>
 						<include>**/*.js</include>
-						<include>**/*.xml</include>
 						<include>**/*.xsl</include>
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>

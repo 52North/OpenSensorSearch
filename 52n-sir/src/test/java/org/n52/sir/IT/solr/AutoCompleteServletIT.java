@@ -79,7 +79,7 @@ public class AutoCompleteServletIT {
 	@Test
 	public  void testServlet() throws ClientProtocolException, IOException {
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:8080/SIR/autocomplete?text=t");
+		HttpGet get = new HttpGet("http://localhost:8080/SIR/autocomplete?text=te");
 		
 		HttpResponse response = client.execute(get);
 		StringBuilder builder = new StringBuilder();

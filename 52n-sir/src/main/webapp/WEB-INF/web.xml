@@ -99,7 +99,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>AutoCompleteServlet</servlet-name>
-		<url-pattern>/${service.endpoint.autocomplete}</url-pattern>
+		<url-pattern>/autocomplete</url-pattern>
 	</servlet-mapping>
 
 </web-app>

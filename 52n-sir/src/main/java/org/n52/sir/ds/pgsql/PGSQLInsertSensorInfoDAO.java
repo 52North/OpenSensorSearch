@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -429,9 +430,14 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             String insertSensor = insertSensorCommand(sensor);
             if (log.isDebugEnabled())
                 log.debug(">>>Database Query: " + insertSensor.toString());
-            ResultSet rs = stmt.executeQuery(insertSensor);
-            if (rs.next()) {
-                sensor.setSensorIDInSIR(rs.getString(PGDAOConstants.sensorIdSir));
+
+            if (sensor.getSensorIDInSIR() == null) {
+                log.debug("SensorIDinSIR is not set, using database identifier.");
+                try (ResultSet rs = stmt.executeQuery(insertSensor)) {
+                    if (rs.next()) {
+                        sensor.setSensorIDInSIR(rs.getString(PGDAOConstants.sensorIdSir));
+                    }
+                }
             }
 
             if (sensor.getSensorIDInSIR() != null) {
@@ -441,25 +447,29 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                     String insertPhenomenon = insertPhenomenonCommand(phenom);
                     if (log.isDebugEnabled())
                         log.debug(">>>Database Query: " + insertPhenomenon);
-                    rs = stmt.executeQuery(insertPhenomenon);
-                    while (rs.next()) {
-                        phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
-                    }
-                    if (phenomenonID.isEmpty()) {
-                        // phenomenon ID query
-                        String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                        if (log.isDebugEnabled())
-                            log.debug(">>>Database Query: " + phenomenonIDQuery);
-                        rs = stmt.executeQuery(phenomenonIDQuery);
+
+                    try (ResultSet rs = stmt.executeQuery(insertPhenomenon)) {
                         while (rs.next()) {
                             phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
                         }
+                        if (phenomenonID.isEmpty()) {
+                            // phenomenon ID query
+                            String phenomenonIDQuery = phenomenonIDQuery(phenom);
+                            if (log.isDebugEnabled())
+                                log.debug(">>>Database Query: " + phenomenonIDQuery);
+
+                            try (ResultSet rsPhen = stmt.executeQuery(phenomenonIDQuery)) {
+                                while (rsPhen.next()) {
+                                    phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
+                                }
+                            }
+                        }
+                        // insert in sensor/phenomenon table
+                        String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensor, phenomenonID);
+                        if (log.isDebugEnabled())
+                            log.debug(">>>Database Query: " + insertSensorPhenomenon);
+                        stmt.execute(insertSensorPhenomenon);
                     }
-                    // insert in sensor/phenomenon table
-                    String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensor, phenomenonID);
-                    if (log.isDebugEnabled())
-                        log.debug(">>>Database Query: " + insertSensorPhenomenon);
-                    stmt.execute(insertSensorPhenomenon);
                 }
             }
 

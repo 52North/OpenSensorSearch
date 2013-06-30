@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.util.Collection;
@@ -20,6 +21,7 @@ import java.util.Date;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
+import org.n52.sir.api.IdentifierGenerator;
 import org.n52.sir.datastructure.SirInfoToBeInserted;
 import org.n52.sir.datastructure.SirInfoToBeInserted_SensorDescription;
 import org.n52.sir.datastructure.SirInfoToBeInserted_ServiceReference;
@@ -40,28 +42,24 @@ import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
  */
 public class InsertSensorInfoListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(InsertSensorInfoListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorInfo.name();
 
-    /**
-     * the data access object for the insertSensorInfo operation
-     */
     private IInsertSensorInfoDAO insSensInfoDao;
 
-    /**
-     * the factory for validators
-     */
     private IValidatorFactory validatorFactory;
+
+    @Inject
+    private IdentifierGenerator idGen;
 
     public InsertSensorInfoListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();
@@ -104,6 +102,10 @@ public class InsertSensorInfoListener implements ISirRequestListener {
             IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
             boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
             if (isValid) {
+                String id = this.idGen.generate();
+                sensor.setSensorIDInSIR(id);
+                // TODO add test if id is already taken
+
                 String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
                 if (sensorIdInSir != null) {
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);

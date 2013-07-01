@@ -20,6 +20,8 @@ import org.n52.sir.util.jobs.IJobSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * 
  * Factory for creating instances of {@link IJobScheduler} that work with the timer given in the constructor.
@@ -31,11 +33,11 @@ public class JobSchedulerFactoryImpl implements IJobSchedulerFactory {
 
     private static Logger log = LoggerFactory.getLogger(JobSchedulerFactoryImpl.class);
 
+    @Inject
     private TimerServlet timerServlet;
 
-    public JobSchedulerFactoryImpl(TimerServlet timer) {
-        this.timerServlet = timer;
-        log.info("NEW " + this);
+    public JobSchedulerFactoryImpl() {
+        log.info("NEW {}", this);
     }
 
     /*

@@ -21,6 +21,7 @@ package org.n52.sir.client;
 
 import java.util.Date;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
@@ -52,7 +53,7 @@ public class ServiceStatusBean {
      * 
      */
     public ServiceStatusBean() {
-        SirConfigurator instance = SirConfigurator.getInstance();
+        SirConfig instance = SirConfigurator.getInstance();
 
         if (instance != null) {
             IDAOFactory factory = instance.getFactory();

@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.n52.sir.SirConfigurator;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator.Section;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ds.IDAOFactory;
@@ -35,6 +36,8 @@ import org.n52.sir.util.GMLDateParser;
 import org.n52.sir.util.ListenersTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 public class GetCapabilitiesListener implements ISirRequestListener {
 
@@ -53,13 +56,16 @@ public class GetCapabilitiesListener implements ISirRequestListener {
      */
     private IGetCapabilitiesDAO capDao;
 
+    @Inject
+    private SirConfig configurator;
+
     public GetCapabilitiesListener() throws OwsExceptionReport {
 
         // get sir configurator
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        // SirConfig configurator = SirConfigurator.getInstance();
 
         // setting up DAOFactory
-        IDAOFactory factory = configurator.getFactory();
+        IDAOFactory factory = this.configurator.getFactory();
 
         try {
             this.capDao = factory.getCapabilitiesDAO();
@@ -82,7 +88,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
     }
 
     private ArrayList<Section> checkSections(String[] sections) throws OwsExceptionReport {
-        ArrayList<Section> responseSection = new ArrayList<Section>();
+        ArrayList<Section> responseSection = new ArrayList<>();
         for (String section : sections) {
             if (section.equalsIgnoreCase(Section.Contents.name())) {
                 responseSection.add(Section.Contents);
@@ -121,7 +127,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
 
             try {
                 Calendar usDate = GMLDateParser.getInstance().parseString(updateSequence);
-                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(SirConfigurator.getInstance().getUpdateSequence());
+                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(this.configurator.getUpdateSequence());
                 if (usDate.equals(sorUpdateSequence)) {
                     return true;
                 }
@@ -171,7 +177,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
                 response.setSections(checkSections(sirRequest.getSections()));
             }
             else {
-                ArrayList<Section> temp = new ArrayList<Section>();
+                ArrayList<Section> temp = new ArrayList<>();
                 temp.add(Section.All);
                 response.setSections(temp);
             }

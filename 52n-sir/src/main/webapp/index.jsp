@@ -61,7 +61,7 @@
 <link href="sir.css" rel="stylesheet" type="text/css" />
 <link rel="search" type="application/opensearchdescription+xml"
 	title="Sensor Search"
-	href="${service.url}${service.path}/OpenSearchDoc.xml" />
+	href="${service.url}/${service.path}/OpenSearchDoc.xml" />
 <link rel="shortcut icon"
 	href="https://52north.org/templates/52n/favicon.ico" />
 

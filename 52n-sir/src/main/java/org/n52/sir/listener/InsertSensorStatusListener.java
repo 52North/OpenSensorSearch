@@ -15,6 +15,7 @@
  */
 package org.n52.sir.listener;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ds.IDAOFactory;
@@ -48,7 +49,7 @@ public class InsertSensorStatusListener implements ISirRequestListener {
     private IInsertSensorStatusDAO insSensStatDao;
 
     public InsertSensorStatusListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
 
         IDAOFactory factory = configurator.getFactory();
 

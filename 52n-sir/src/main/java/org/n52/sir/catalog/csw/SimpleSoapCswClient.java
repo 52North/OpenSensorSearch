@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalog.csw;
 
 import java.io.StringWriter;
@@ -37,6 +38,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
@@ -46,6 +48,8 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.google.inject.Inject;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
@@ -66,6 +70,9 @@ public class SimpleSoapCswClient {
 
     private URL url;
 
+    @Inject
+    private SirConfig configurator;
+
     /**
      * 
      * @param url
@@ -83,7 +90,7 @@ public class SimpleSoapCswClient {
             throw new OwsExceptionReport("Could not instantiate a TransformerFactory!", e);
         }
 
-        this.extendedDebugToConsole = SirConfigurator.getInstance().isExtendedDebugToConsole();
+        this.extendedDebugToConsole = this.configurator.isExtendedDebugToConsole();
         if (this.extendedDebugToConsole)
             log.warn("*** Extended logging of all outgoing and incoming message is ENABLED. Be aware of large logfiles! ***");
 

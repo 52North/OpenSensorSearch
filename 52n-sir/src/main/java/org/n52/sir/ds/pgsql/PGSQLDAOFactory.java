@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
-import java.util.Properties;
-
+import org.n52.oss.sir.SirConfig;
+import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.ICatalogStatusHandlerDAO;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
@@ -29,6 +30,8 @@ import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.IInsertSensorStatusDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
+
+import com.google.inject.Inject;
 
 /**
  * DAO factory for PostgreSQL
@@ -43,17 +46,18 @@ public class PGSQLDAOFactory implements IDAOFactory {
      */
     private PGConnectionPool cpool;
 
-    /**
-     * constructor
-     * 
-     * @param daoProps
-     *        Properties of the Dao config file
-     * @throws OwsExceptionReport
-     */
-    public PGSQLDAOFactory(Properties daoProps) throws OwsExceptionReport {
+    @Inject
+    private SirConfig configurator;
 
+    public PGSQLDAOFactory() {
+        SirConfig instance = SirConfigurator.getInstance();
+        System.out.println(instance);
         // initializeDAOConstants;
-        PGDAOConstants.getInstance(daoProps);
+
+        PGDAOConstants.getInstance(instance.getDaoProps());
+
+        // FIXME use DI:
+        // PGDAOConstants.getInstance(this.configurator.getDaoProps());
 
         String connection = PGDAOConstants.connectionString;
         String user = PGDAOConstants.user;

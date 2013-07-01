@@ -16,7 +16,7 @@
 
 package org.n52.sir.client;
 
-import org.n52.sir.SirConfigurator;
+import com.google.inject.Inject;
 
 /**
  * @author Jan Schulte, Daniel Nüst
@@ -28,7 +28,9 @@ public abstract class AbstractBean {
 
     protected String responseString = "";
 
-    private Client client = new Client(SirConfigurator.getInstance().getServiceUrl());
+    @Inject
+    private Client client;
+//    private Client client = new Client(SirConfigurator.getInstance().getServiceUrl());
 
     /**
      * Build the request based on the user input, then save it in {@link AbstractBean#requestString}.
@@ -36,7 +38,7 @@ public abstract class AbstractBean {
     public abstract void buildRequest();
 
     public Client getClient() {
-        return client;
+        return this.client;
     }
 
     /**

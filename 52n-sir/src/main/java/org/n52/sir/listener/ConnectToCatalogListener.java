@@ -17,6 +17,7 @@ package org.n52.sir.listener;
 
 import java.net.URL;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalog;
@@ -35,6 +36,8 @@ import org.n52.sir.util.jobs.IJobSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
@@ -46,9 +49,12 @@ public class ConnectToCatalogListener implements ISirRequestListener {
     private static final String OPERATION_NAME = SirConstants.Operations.ConnectToCatalog.name();
 
     private IConnectToCatalogDAO conToCatDao;
+    
+    @Inject
+    private SirConfig configurator;
 
     public ConnectToCatalogListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+//        SirConfig configurator = SirConfigurator.getInstance();
         IDAOFactory factory = configurator.getFactory();
         try {
             this.conToCatDao = factory.connectToCatalogDAO();
@@ -86,7 +92,7 @@ public class ConnectToCatalogListener implements ISirRequestListener {
         int pushInterval = conToCatReq.getPushInterval();
         URL url = conToCatReq.getCswUrl();
 
-        IJobSchedulerFactory schedulerFact = SirConfigurator.getInstance().getJobSchedulerFactory();
+        IJobSchedulerFactory schedulerFact = this.configurator.getJobSchedulerFactory();
         IJobScheduler scheduler = schedulerFact.getJobScheduler();
 
         try {

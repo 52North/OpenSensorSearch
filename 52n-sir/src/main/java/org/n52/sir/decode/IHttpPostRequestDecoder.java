@@ -15,8 +15,11 @@
  */
 package org.n52.sir.decode;
 
+import org.n52.sir.decode.impl.HttpPostRequestDecoder;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
+
+import com.google.inject.ImplementedBy;
 
 /**
  * interface offers method to receive a request. Returns internal SIR representation of request
@@ -24,6 +27,7 @@ import org.n52.sir.request.AbstractSirRequest;
  * @author Jan Schulte
  * 
  */
+@ImplementedBy(HttpPostRequestDecoder.class)
 public interface IHttpPostRequestDecoder {
 
     /**

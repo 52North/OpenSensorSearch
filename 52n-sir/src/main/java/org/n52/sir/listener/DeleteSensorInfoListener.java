@@ -18,6 +18,7 @@ package org.n52.sir.listener;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirInfoToBeDeleted;
@@ -50,7 +51,7 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
     private IInsertSensorInfoDAO insertSensorInfoDAO;
 
     public DeleteSensorInfoListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
 
         IDAOFactory factory = configurator.getFactory();
 

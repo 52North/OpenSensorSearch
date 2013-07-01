@@ -18,6 +18,7 @@ package org.n52.sir.listener;
 import java.util.Collection;
 import java.util.Date;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirInfoToBeInserted;
@@ -64,7 +65,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
     private IValidatorFactory validatorFactory;
 
     public InsertSensorInfoListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
 
         IDAOFactory factory = configurator.getFactory();
         this.validatorFactory = configurator.getValidatorFactory();

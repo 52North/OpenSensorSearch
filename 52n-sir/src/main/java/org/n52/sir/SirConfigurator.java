@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.File;
@@ -25,7 +26,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -34,6 +34,7 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.UnavailableException;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
@@ -41,7 +42,6 @@ import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.listener.ISirRequestListener;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
@@ -55,13 +55,17 @@ import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.VersionAttribute;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
  * 
  * @author Jan Schulte
  * 
  */
-public class SirConfigurator {
+@Singleton
+public class SirConfigurator implements SirConfig {
 
     /** Sections for the Capabilities */
     public enum Section {
@@ -144,11 +148,6 @@ public class SirConfigurator {
     private static final String JOBSCHEDULERFACTORY = "JOBSCHEDULERFACTORY";
 
     /**
-     * propertyname of listeners
-     */
-    private static final String LISTENERS = "LISTENERS";
-
-    /**
      * logger
      */
     protected static Logger log = LoggerFactory.getLogger(SirConfigurator.class);
@@ -192,11 +191,6 @@ public class SirConfigurator {
      * 
      */
     private static final String SCHEMATRON_DOWNLOAD = "SCHEMATRON_DOWNLOAD";
-
-    /**
-     * propertyname of service url
-     */
-    private static final String SERVICEURL = "SERVICEURL";
 
     /**
      * propertyname of the SIR service version
@@ -264,7 +258,7 @@ public class SirConfigurator {
      * @return Returns the instance of the SirConfigurator. Null will be returned if the parameterized
      *         getInstance method was not invoked before. Usuallex this will be done in the SIR
      */
-    public static SirConfigurator getInstance() {
+    public static SirConfig getInstance() {
         return instance;
     }
 
@@ -278,13 +272,10 @@ public class SirConfigurator {
      *         if the configFile could not be loaded
      * @throws OwsExceptionReport
      */
-    public synchronized static SirConfigurator getInstance(InputStream configStream,
-                                                           InputStream dbConfigStream,
-                                                           String basepath,
-                                                           TimerServlet timerServlet) throws UnavailableException,
+    public synchronized static SirConfig getInstance(Properties props, Properties dbProps) throws UnavailableException,
             OwsExceptionReport {
         if (instance == null) {
-            instance = new SirConfigurator(configStream, dbConfigStream, basepath, timerServlet);
+            instance = new SirConfigurator(props, dbProps);
             instance.initialize();
         }
         return instance;
@@ -295,7 +286,7 @@ public class SirConfigurator {
     /**
      * base path for configuration file
      */
-    private String basepath;
+    // private String basepath;
 
     /**
      * The skeleton of a standart capabilities response document
@@ -395,18 +386,12 @@ public class SirConfigurator {
      */
     private URL serviceUrl;
 
-    /**
-     * Service version of the SIR
-     */
     private String serviceVersion;
 
     private String svrlSchema;
 
     private String testRequestPath;
 
-    /**
-     * servlet for scheduling tasks
-     */
     private TimerServlet timerServlet;
 
     /**
@@ -425,34 +410,15 @@ public class SirConfigurator {
 
     private IValidatorFactory validatorFactory;
 
-    /**
-     * private constructor due to the singleton pattern.
-     * 
-     * @param configStream
-     *        Inputstream of the configfile
-     * @param dbConfigStream
-     *        Inputstream of the db configfile
-     * @param basepath
-     *        base path for configuration files
-     */
-    private SirConfigurator(InputStream configStream,
-                            InputStream dbConfigStream,
-                            String basepath,
-                            TimerServlet timerServlet) throws UnavailableException {
-        try {
-            this.basepath = basepath;
-            this.timerServlet = timerServlet;
+    @Inject
+    private SirConfigurator(Properties props, Properties dbProps) {
+        // this.basepath = basepath;
+        // this.timerServlet = timerServlet;
 
-            // creating common SIR properties object from inputstream
-            this.props = loadProperties(configStream);
-            this.daoProps = loadProperties(dbConfigStream);
+        this.props = props;
+        this.daoProps = dbProps;
 
-            log.info(" ***** Config Files loaded successfully! ***** ");
-        }
-        catch (IOException ioe) {
-            log.error("Error while loading config file.", ioe);
-            throw new UnavailableException(ioe.getMessage());
-        }
+        log.info(" ***** Config Files loaded successfully! ***** ");
     }
 
     /**
@@ -460,66 +426,65 @@ public class SirConfigurator {
      * @return
      * @throws OwsExceptionReport
      */
-    public RequestOperator buildRequestOperator() throws OwsExceptionReport {
-
-        // initialize RequestOperator
-        RequestOperator ro = new RequestOperator();
-
-        // loading names of listeners
-        ArrayList<String> listeners = loadListeners();
-
-        Iterator<String> iter = listeners.iterator();
-
-        // initialize listeners and add them to the RequestOperator
-        while (iter.hasNext()) {
-
-            // classname of the listener
-            String classname = iter.next();
-
-            try {
-                // get Class of the Listener
-                @SuppressWarnings("unchecked")
-                Class<ISirRequestListener> listenerClass = (Class<ISirRequestListener>) Class.forName(classname);
-
-                Class< ? >[] constrArgs = {};
-
-                Object[] args = {};
-
-                // get Constructor of this class with matching parameter types,
-                // throws a NoSuchMethodException
-                Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
-
-                // add new requestListener to RequestOperator throws a
-                // Instantiation, IllegalAccess and InvocationTargetException
-                ro.addRequestListener(constructor.newInstance(args));
-
-            }
-            catch (ClassNotFoundException cnfe) {
-                log.error("Error while loading RequestListeners, required class could not be loaded: "
-                        + cnfe.toString());
-                throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
-            }
-            catch (NoSuchMethodException nsme) {
-                log.error("Error while loading RequestListeners," + " no required constructor available: "
-                        + nsme.toString());
-                throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-            }
-            catch (InvocationTargetException ite) {
-                log.error("The instatiation of a RequestListener failed: " + ite.toString());
-                throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-            }
-            catch (InstantiationException ie) {
-                log.error("The instatiation of a RequestListener failed: " + ie.toString());
-                throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-            }
-            catch (IllegalAccessException iace) {
-                log.error("The instatiation of a RequestListener failed: " + iace.toString());
-                throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
-            }
-        }
-
-        return ro;
-    }
+    // public RequestOperator buildRequestOperator() throws OwsExceptionReport {
+    // // initialize RequestOperator
+    // // RequestOperator ro = new RequestOperator();
+    //
+    // // loading names of listeners
+    // ArrayList<String> listeners = loadListeners();
+    //
+    // Iterator<String> iter = listeners.iterator();
+    //
+    // // initialize listeners and add them to the RequestOperator
+    // while (iter.hasNext()) {
+    //
+    // // classname of the listener
+    // String classname = iter.next();
+    //
+    // try {
+    // // get Class of the Listener
+    // @SuppressWarnings("unchecked")
+    // Class<ISirRequestListener> listenerClass = (Class<ISirRequestListener>) Class.forName(classname);
+    //
+    // Class< ? >[] constrArgs = {};
+    //
+    // Object[] args = {};
+    //
+    // // get Constructor of this class with matching parameter types,
+    // // throws a NoSuchMethodException
+    // Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
+    //
+    // // add new requestListener to RequestOperator throws a
+    // // Instantiation, IllegalAccess and InvocationTargetException
+    // ro.addRequestListener(constructor.newInstance(args));
+    //
+    // }
+    // catch (ClassNotFoundException cnfe) {
+    // log.error("Error while loading RequestListeners, required class could not be loaded: "
+    // + cnfe.toString());
+    // throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
+    // }
+    // catch (NoSuchMethodException nsme) {
+    // log.error("Error while loading RequestListeners," + " no required constructor available: "
+    // + nsme.toString());
+    // throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
+    // }
+    // catch (InvocationTargetException ite) {
+    // log.error("The instatiation of a RequestListener failed: " + ite.toString());
+    // throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
+    // }
+    // catch (InstantiationException ie) {
+    // log.error("The instatiation of a RequestListener failed: " + ie.toString());
+    // throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
+    // }
+    // catch (IllegalAccessException iace) {
+    // log.error("The instatiation of a RequestListener failed: " + iace.toString());
+    // throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
+    // }
+    // }
+    //
+    // return ro;
+    // }
 
     /**
      * 
@@ -537,47 +502,54 @@ public class SirConfigurator {
      * 
      * @param resourcePath
      */
-    @SuppressWarnings("unused")
     private void checkResource(String resourcePath) {
-        InputStream resource = SirConfigurator.class.getResourceAsStream(resourcePath);
+        try (InputStream resource = SirConfigurator.class.getResourceAsStream(resourcePath)) {
 
-        if (resource != null) {
-            try {
-                int i = resource.read();
-                if (i == -1)
-                    log.error("Resource is empty.");
+            if (resource != null) {
+                try {
+                    int i = resource.read();
+                    if (i == -1)
+                        log.error("Resource is empty.");
+                }
+                catch (IOException e) {
+                    log.error("Cannot read resource " + resourcePath);
+                }
             }
-            catch (IOException e) {
-                log.error("Cannot read resource " + resourcePath);
-            }
+            else
+                log.error("Cannot find resource " + resourcePath);
         }
-        else
-            log.error("Cannot find resource " + resourcePath);
+        catch (Exception e) {
+            log.error("Error checking resource", e);
+        }
+
     }
 
-    /**
-     * @return the acceptedVersions
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getAcceptedServiceVersions()
      */
+    @Override
     public String[] getAcceptedServiceVersions() {
         return this.acceptedVersions;
     }
 
-    /**
-     * @return the capabilitiesSkeleton
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getCapabilitiesSkeleton()
      */
+    @Override
     public CapabilitiesDocument getCapabilitiesSkeleton() {
         return this.capabilitiesSkeleton;
     }
 
-    /**
+    /*
+     * (non-Javadoc)
      * 
-     * Creates an CatalogFactory (an instance of the class provided in the sir.config file) for the service
-     * located at the given URL.
-     * 
-     * @param url
-     * @return
-     * @throws OwsExceptionReport
+     * @see org.n52.sir.SirConfig#getCatalogFactory(java.net.URL)
      */
+    @Override
     public ICatalogFactory getCatalogFactory(URL url) throws OwsExceptionReport {
         try {
             return this.catalogFactoryConstructor.newInstance(url,
@@ -592,142 +564,192 @@ public class SirConfigurator {
         }
     }
 
-    /**
+    /*
+     * (non-Javadoc)
      * 
-     * @return the status handler for external access (not from within this SIR instance)
+     * @see org.n52.sir.SirConfig#getCatalogStatusHandler()
      */
+    @Override
     public ICatalogStatusHandler getCatalogStatusHandler() {
         return this.catalogStatusHandler;
     }
 
-    /**
-     * @return the characterEncoding
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getCharacterEncoding()
      */
+    @Override
     public String getCharacterEncoding() {
         return this.characterEncoding;
     }
 
-    /**
+    /*
+     * (non-Javadoc)
      * 
-     * @return
+     * @see org.n52.sir.SirConfig#getExecutor()
      */
+    @Override
     public ExecutorService getExecutor() {
         return this.exec;
     }
 
-    /**
-     * @return the DaoFactory
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getFactory()
      */
+    @Override
     public IDAOFactory getFactory() {
         return this.factory;
     }
 
-    /**
-     * @return the homepage
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getFullServicePath()
      */
+    @Override
     public URL getFullServicePath() {
         return this.fullServicePath;
     }
 
-    /**
-     * @return the gmlDateFormat
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getGmlDateFormat()
      */
+    @Override
     public String getGmlDateFormat() {
         return this.gmlDateFormat;
     }
 
-    /**
-     * @return the httpGetDecoder
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getHttpGetDecoder()
      */
+    @Override
     public IHttpGetRequestDecoder getHttpGetDecoder() {
         return this.httpGetDecoder;
     }
 
-    /**
-     * @return the httpPostDecoder
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getHttpPostDecoder()
      */
+    @Override
     public IHttpPostRequestDecoder getHttpPostDecoder() {
         return this.httpPostDecoder;
     }
 
-    /**
-     * @return the jobSchedulerFactory
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getJobSchedulerFactory()
      */
+    @Override
     public IJobSchedulerFactory getJobSchedulerFactory() {
         return this.jobSchedulerFactory;
     }
 
-    /**
-     * @return the namespacePrefix
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getNamespacePrefix()
      */
+    @Override
     public String getNamespacePrefix() {
         return this.namespacePrefix;
     }
 
-    /**
-     * @return the namespaceUri
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getNamespaceUri()
      */
+    @Override
     public String getNamespaceUri() {
         return this.namespaceUri;
     }
 
-    /**
-     * @return the openSearchUrl
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getOpenSearchPath()
      */
+    @Override
     public String getOpenSearchPath() {
         return this.openSearchPath;
     }
 
-    /**
-     * @return the profile4Discovery
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getProfile4Discovery()
      */
+    @Override
     public String getProfile4Discovery() {
         return this.profile4Discovery;
     }
 
-    /**
+    /*
+     * (non-Javadoc)
      * 
-     * @return
+     * @see org.n52.sir.SirConfig#getProfile4DiscoveryDownloadPath()
      */
+    @Override
     public String getProfile4DiscoveryDownloadPath() {
         return this.props.getProperty(PROFILE4DISCOVERY);
     }
 
-    /**
+    /*
+     * (non-Javadoc)
      * 
-     * @return
+     * @see org.n52.sir.SirConfig#getSchemaDownloadLink()
      */
+    @Override
     public String getSchemaDownloadLink() {
         return this.props.getProperty(SCHEMATRON_DOWNLOAD);
     }
 
-    /**
-     * @return the schemaUrl
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getSchemaUrl()
      */
+    @Override
     public String getSchemaUrl() {
         return this.schemaUrl;
     }
 
-    /**
-     * @return the serviceUrl of the sir.config in the form "host:port/path"
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getServiceUrl()
      */
+    @Override
     public URL getServiceUrl() {
         return this.serviceUrl;
     }
 
-    /**
-     * @return the serviceVersion
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getServiceVersion()
      */
+    @Override
     public String getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /**
-     * does the translation from String representation of version number (to be optained by
-     * getServiceVersion()) to enum of schema.
+    /*
+     * (non-Javadoc)
      * 
-     * @return
+     * @see org.n52.sir.SirConfig#getServiceVersionEnum()
      */
+    @Override
     public org.x52North.sir.x032.VersionAttribute.Version.Enum getServiceVersionEnum() {
         String sv = getServiceVersion();
 
@@ -740,37 +762,52 @@ public class SirConfigurator {
         throw new RuntimeException("Not a supported version!");
     }
 
-    /**
-     * @return the svrlSchema
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getSvrlSchema()
      */
+    @Override
     public String getSvrlSchema() {
         return this.svrlSchema;
     }
 
-    /**
-     * @return the testRequestPath
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getTestRequestPath()
      */
+    @Override
     public String getTestRequestPath() {
         return this.testRequestPath;
     }
 
-    /**
-     * @return the transformerFactory
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getTransformerFactory()
      */
+    @Override
     public ITransformerFactory getTransformerFactory() {
         return this.transformerFactory;
     }
 
-    /**
-     * @return the updateSequence
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getUpdateSequence()
      */
+    @Override
     public String getUpdateSequence() {
         return this.updateSequence;
     }
 
-    /**
-     * @return the validatorFactory
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#getValidatorFactory()
      */
+    @Override
     public IValidatorFactory getValidatorFactory() {
         return this.validatorFactory;
     }
@@ -833,27 +870,19 @@ public class SirConfigurator {
         try {
             url = this.props.getProperty(SERVICEURL);
             this.serviceUrl = new URL(url);
+            log.debug("Using service URL {}", this.serviceUrl);
         }
         catch (MalformedURLException e) {
-            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "No valid service url is defined in the config file: " + url);
-            log.error("No valid service url is defined in the config file: " + url);
-            throw se;
+            log.error("No valid service url is defined in the config file: {}", url);
         }
 
+        url = null;
         try {
             url = this.props.getProperty(FULL_SERVICE_PATH);
             this.fullServicePath = new URL(url);
         }
         catch (MalformedURLException e) {
-            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "No valid service url is defined in the config file: " + url);
-            log.error("No valid service url is defined in the config file: " + url);
-            throw se;
+            log.error("No valid service path is defined in the config file: {}", url);
         }
 
         this.openSearchPath = this.props.getProperty(OPENSEARCH_ENDPOINT);
@@ -862,7 +891,7 @@ public class SirConfigurator {
         newUpdateSequence();
 
         // initialize DAO Factory
-        initializeDAOFactory(this.daoProps);
+        initializeDAOFactory();
 
         // initialize CatalogFactory
         initializeCatalogFactory(this.props);
@@ -904,7 +933,7 @@ public class SirConfigurator {
         }
 
         // check if given url does not need to be checked
-        this.doNotCheckCatalogsList = new ArrayList<URL>();
+        this.doNotCheckCatalogsList = new ArrayList<>();
         splitted = sirProps.getProperty(DO_NOT_CHECK_CATALOGS).split(CONFIG_FILE_LIST_SEPARATOR);
         if (splitted.length > 0) {
             for (String s : splitted) {
@@ -953,8 +982,7 @@ public class SirConfigurator {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void initializeDAOFactory(Properties daoPropsP) throws OwsExceptionReport {
+    private void initializeDAOFactory() throws OwsExceptionReport {
         try {
             String daoName = this.props.getProperty(DAOFACTORY);
 
@@ -971,45 +999,22 @@ public class SirConfigurator {
             Class<IDAOFactory> daoFactoryClass = (Class<IDAOFactory>) Class.forName(daoName);
 
             // types of the constructor arguments
-            Class< ? >[] constrArgs = {Properties.class};
-
-            Object[] args = {daoPropsP};
+            // Class< ? >[] constrArgs = {Properties.class};
+            // Object[] args = {daoPropsP};
 
             // get Constructor of this class with matching parameter types
-            Constructor<IDAOFactory> constructor = daoFactoryClass.getConstructor(constrArgs);
+            // Constructor<IDAOFactory> constructor = daoFactoryClass.getConstructor(constrArgs);
+            Constructor<IDAOFactory> constructor = daoFactoryClass.getConstructor();
 
-            this.factory = constructor.newInstance(args);
+            // this.factory = constructor.newInstance(args);
+            this.factory = constructor.newInstance();
 
             log.info(" ***** " + daoName + " loaded successfully! ***** ");
 
         }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading DaoFactory, required class could not be loaded: " + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
-        }
-        catch (SecurityException se) {
-            log.error("Error while loading DAOFactory: " + se.toString());
-            throw new OwsExceptionReport(se.getMessage(), se.getCause());
-        }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading DAOFactory, no required constructor available: ");
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (IllegalArgumentException iae) {
-            log.error("Error while loading DAOFactory, parameters for the constructor are illegal: " + iae.toString());
-            throw new OwsExceptionReport(iae.getMessage(), iae.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instantiation of a DAOFactory failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iace) {
-            log.error("The instantiation of a DAOFactory failed: " + iace.toString());
-            throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("The instantiation of a DAOFactory failed: " + ite.toString());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
+        catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Error while loading DaoFactory, required class could not be loaded", e);
         }
     }
 
@@ -1037,27 +1042,9 @@ public class SirConfigurator {
             log.info(" ***** " + className + " loaded successfully! ***** ");
 
         }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading getRequestDecoder, required class could not be loaded: " + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
-        }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading getRequestDecoder, no required constructor available: " + nsme.toString());
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instatiation of a getRequestDecoder failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-
-        }
-        catch (IllegalAccessException iace) {
-            log.error("The instatiation of an getRequestDecoder failed: " + iace.toString());
-            throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("the instatiation of an getRequestDecoder failed: " + ite.toString() + ite.getLocalizedMessage()
-                    + ite.getCause());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
+        catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Instatiation of an getRequestDecoder failed", e);
         }
     }
 
@@ -1085,26 +1072,9 @@ public class SirConfigurator {
             log.info(" ***** " + className + " loaded successfully! ***** ");
 
         }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading getRequestDecoder, required class could not be loaded: " + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
-        }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading getRequestDecoder, no required constructor available: " + nsme.toString());
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instatiation of a getRequestDecoder failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iace) {
-            log.error("The instatiation of an getRequestDecoder failed: " + iace.toString());
-            throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("the instatiation of an getRequestDecoder failed: " + ite.toString() + ite.getLocalizedMessage()
-                    + ite.getCause());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
+        catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Error while loading POST request decoder, required class could not be loaded", e);
         }
     }
 
@@ -1124,38 +1094,20 @@ public class SirConfigurator {
             Class<IJobSchedulerFactory> jobSchedulerFactoryClass = (Class<IJobSchedulerFactory>) Class.forName(className);
 
             // get Constructor of this class with matching parameter types
-            Constructor<IJobSchedulerFactory> constructor = jobSchedulerFactoryClass.getConstructor(TimerServlet.class);
-
-            this.jobSchedulerFactory = constructor.newInstance(timer);
+            // Constructor<IJobSchedulerFactory> constructor =
+            // jobSchedulerFactoryClass.getConstructor(TimerServlet.class);
+            // this.jobSchedulerFactory = constructor.newInstance(timer);
+            Constructor<IJobSchedulerFactory> constructor = jobSchedulerFactoryClass.getConstructor();
+            this.jobSchedulerFactory = constructor.newInstance();
 
             log.info(" ***** " + className + " loaded successfully! ***** ");
         }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading jobSchedulerFactoryClass, no required constructor available: "
-                    + nsme.toString());
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instatiation of a jobSchedulerFactoryClass failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iae) {
-            log.error("The instatiation of an jobSchedulerFactoryClass failed: " + iae.toString());
-            throw new OwsExceptionReport(iae.getMessage(), iae.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("The instatiation of an jobSchedulerFactoryClass failed: " + ite.toString()
-                    + ite.getLocalizedMessage() + ite.getCause());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-        }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading jobSchedulerFactoryClass, required class could not be loaded: "
-                    + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
+        catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Error while loading job scheduler", e);
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void initializeStatusHandler(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(STATUS_HANDLER);
         try {
@@ -1177,27 +1129,9 @@ public class SirConfigurator {
 
             log.info(" ***** " + className + " loaded successfully! ***** ");
         }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading catalogStatusHandler, no required constructor available: " + nsme.toString());
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instatiation of a catalogStatusHandler failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iae) {
-            log.error("The instatiation of an catalogStatusHandler failed: " + iae.toString());
-            throw new OwsExceptionReport(iae.getMessage(), iae.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("The instatiation of an catalogStatusHandler failed: " + ite.toString()
-                    + ite.getLocalizedMessage() + ite.getCause());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-        }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading catalogStatusHandler, required class could not be loaded: "
-                    + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
+        catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Error while loading catalog status handler, required class could not be loaded", e);
         }
     }
 
@@ -1227,31 +1161,11 @@ public class SirConfigurator {
 
             this.transformerFactory = constructor.newInstance(xsltDir);
 
-            log.info(" ***** " + className + " loaded successfully! Using files from folder " + xsltDir
-                    + ". ***** ");
+            log.info(" ***** " + className + " loaded successfully! Using files from folder " + xsltDir + ". ***** ");
         }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading transformerFactoryClass, no required constructor available: "
-                    + nsme.toString());
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instatiation of a transformerFactoryClass failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iae) {
-            log.error("The instatiation of an transformerFactoryClass failed: " + iae.toString());
-            throw new OwsExceptionReport(iae.getMessage(), iae.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("The instatiation of an transformerFactoryClass failed: " + ite.toString()
-                    + ite.getLocalizedMessage() + ite.getCause());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-        }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading transformerFactoryClass, required class could not be loaded: "
-                    + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
+        catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Error while loading transformer factory, required class could not be loaded", e);
         }
     }
 
@@ -1282,83 +1196,59 @@ public class SirConfigurator {
 
             log.info(" ***** " + className + " loaded successfully! ***** ");
         }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading validatorFactoryClass, no required constructor available: "
-                    + nsme.toString());
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instatiation of a validatorFactoryClass failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iae) {
-            log.error("The instatiation of an validatorFactoryClass failed: " + iae.toString());
-            throw new OwsExceptionReport(iae.getMessage(), iae.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("The instatiation of an validatorFactoryClass failed: " + ite.toString()
-                    + ite.getLocalizedMessage() + ite.getCause());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-        }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading validatorFactoryClass, required class could not be loaded: "
-                    + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
+        catch (ClassNotFoundException | SecurityException | NoSuchMethodException | IllegalArgumentException
+                | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Error while loading validator factory", e);
         }
     }
 
-    /**
-     * @return the extendedDebugToConsole
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#isExtendedDebugToConsole()
      */
+    @Override
     public boolean isExtendedDebugToConsole() {
         return this.extendedDebugToConsole;
     }
 
-    /**
-     * @return the validateRequests
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#isValidateRequests()
      */
+    @Override
     public boolean isValidateRequests() {
         return this.validateRequests;
     }
 
-    /**
-     * @return the validateResponses
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#isValidateResponses()
      */
+    @Override
     public boolean isValidateResponses() {
         return this.validateResponses;
     }
 
-    private void loadCapabilitiesSkeleton(Properties sirProps) throws OwsExceptionReport {
+    private void loadCapabilitiesSkeleton(Properties sirProps) {
         String skeletonPath = sirProps.getProperty(CAPABILITIESSKELETON_FILENAME);
-        InputStream resource = SirConfigurator.class.getResourceAsStream(skeletonPath);
-
-        log.info("Loading capabilities skeleton from " + skeletonPath);
-
-        try {
+        try (InputStream resource = SirConfigurator.class.getResourceAsStream(skeletonPath)) {
+            log.info("Loading capabilities skeleton from " + skeletonPath);
             this.capabilitiesSkeleton = CapabilitiesDocument.Factory.parse(resource);
         }
         catch (Exception e) {
             log.error("Error on loading capabilities skeleton file: " + e.getMessage());
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "Error on loading capabilities skeleton file: " + e.getMessage());
-            throw se;
         }
     }
 
-    private ArrayList<String> loadListeners() throws OwsExceptionReport {
-
-        ArrayList<String> listeners = new ArrayList<String>();
+    private ArrayList<String> loadListeners() {
+        ArrayList<String> listeners = new ArrayList<>();
         String listenersList = this.props.getProperty(LISTENERS);
 
         if (listenersList == null) {
-            log.error("No RequestListeners are defined in the ConfigFile!");
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                 "SirConfigurator.loadListeners()",
-                                 "No request listeners are defined in the config file!");
-            throw se;
+            log.error("No RequestListeners are defined in the ConfigFile, property {}", LISTENERS);
         }
         StringTokenizer tokenizer = new StringTokenizer(listenersList, ",");
         while (tokenizer.hasMoreTokens()) {
@@ -1382,6 +1272,12 @@ public class SirConfigurator {
         return properties;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.n52.sir.SirConfig#newUpdateSequence()
+     */
+    @Override
     public void newUpdateSequence() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(this.gmlDateFormat);
         this.updateSequence = dateFormat.format(new Date());
@@ -1441,6 +1337,11 @@ public class SirConfigurator {
             }
 
         });
+    }
+
+    @Override
+    public Properties getDaoProps() {
+        return this.daoProps;
     }
 
 }

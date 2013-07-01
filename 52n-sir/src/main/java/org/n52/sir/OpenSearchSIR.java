@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.IOException;
@@ -52,10 +53,14 @@ import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 /**
  * 
  * @author Jan Schulte (j.schulte@52north.org), Daniel Nüst (d.nuest@52north.org)
  */
+@Singleton
 public class OpenSearchSIR extends HttpServlet {
 
     /**
@@ -65,11 +70,13 @@ public class OpenSearchSIR extends HttpServlet {
 
     private static final long serialVersionUID = 3051953359478226492L;
 
+    @Inject
     private OpenSearchConfigurator configurator;
 
+    @Inject
     private RequestDismantler dismantler;
 
-    private HashMap<String, IOpenSearchListener> listeners;
+    private HashMap<String, IOpenSearchListener> listeners = new HashMap<>();
 
     private SearchSensorListener sensorSearcher;
 
@@ -84,7 +91,7 @@ public class OpenSearchSIR extends HttpServlet {
         log.info("destroy() called...");
 
         super.destroy();
-        SirConfigurator.getInstance().getExecutor().shutdown();
+        // SirConfigurator.getInstance().getExecutor().shutdown();
 
         log.info("done destroy()");
     }
@@ -110,7 +117,7 @@ public class OpenSearchSIR extends HttpServlet {
             httpAccept = httpAccept.replace(" ", "+");
 
         // must be set before getWriter() is called.
-        resp.setCharacterEncoding(SirConfigurator.getInstance().getCharacterEncoding());
+        resp.setCharacterEncoding(this.configurator.getCharacterEncoding());
         PrintWriter writer = resp.getWriter();
 
         Collection<SirSearchResultElement> searchResult = null;
@@ -219,7 +226,7 @@ public class OpenSearchSIR extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        this.configurator = new OpenSearchConfigurator();
+        // this.configurator = new OpenSearchConfigurator();
 
         try {
             this.sensorSearcher = new SearchSensorListener();
@@ -230,9 +237,7 @@ public class OpenSearchSIR extends HttpServlet {
             throw new ServletException(e);
         }
 
-        this.dismantler = new RequestDismantler();
-
-        this.listeners = new HashMap<String, IOpenSearchListener>();
+        // this.dismantler = new RequestDismantler();
 
         // TODO move listener configuration to config mechanism
         IOpenSearchListener jsonListener = new JsonListener(this.configurator);

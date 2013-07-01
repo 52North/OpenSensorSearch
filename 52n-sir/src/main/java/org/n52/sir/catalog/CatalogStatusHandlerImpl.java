@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalog;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.ICatalogStatusHandlerDAO;
 import org.n52.sir.ds.IDAOFactory;
@@ -43,12 +45,16 @@ public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
 
     private ArrayList<String> runtimeInfo;
 
-    public CatalogStatusHandlerImpl() {
-        SirConfigurator configurator = SirConfigurator.getInstance();
-        IDAOFactory factory = configurator.getFactory();
+    // @Inject
+    private IDAOFactory factory;
 
-        this.catStatHandlerDao = factory.catalogStatusHandlerDAO();
-        this.runtimeInfo = new ArrayList<String>();
+    public CatalogStatusHandlerImpl() {
+        // FIXME use DI
+        SirConfig configurator = SirConfigurator.getInstance();
+        this.factory = configurator.getFactory();
+
+        this.catStatHandlerDao = this.factory.catalogStatusHandlerDAO();
+        this.runtimeInfo = new ArrayList<>();
     }
 
     @Override
@@ -58,7 +64,7 @@ public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
 
     @Override
     public Collection<String> getRuntimeInfo() {
-        ArrayList<String> infolist = new ArrayList<String>(this.runtimeInfo);
+        ArrayList<String> infolist = new ArrayList<>(this.runtimeInfo);
         if (infolist.size() == MAXIMUM_INFOLIST_SIZE) {
             infolist.add(0, "(Status information of the last " + MAXIMUM_INFOLIST_SIZE + " events only.)");
             infolist.add(1, " ");

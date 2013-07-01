@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalog.csw;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -70,6 +72,8 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.google.inject.Inject;
 
 import x0.oasisNamesTcEbxmlRegrepXsdRim3.ClassificationNodeDocument;
 import x0.oasisNamesTcEbxmlRegrepXsdRim3.ClassificationNodeType;
@@ -119,6 +123,9 @@ public class CswCatalog implements ICatalog {
 
     private IValidatorFactory validatorFactory;
 
+    @Inject
+    private SirConfig configurator;
+
     /**
      * 
      * @param c
@@ -137,7 +144,7 @@ public class CswCatalog implements ICatalog {
      * @param classificationInitDoc
      */
     public CswCatalog(SimpleSoapCswClient c, XmlObject classificationInitDoc, XmlObject slotInitDoc) {
-        ArrayList<XmlObject> docs = new ArrayList<XmlObject>();
+        ArrayList<XmlObject> docs = new ArrayList<>();
         docs.add(classificationInitDoc);
         initialize(c, docs, slotInitDoc);
     }
@@ -210,7 +217,7 @@ public class CswCatalog implements ICatalog {
         // get all sensor descriptions
         Collection<SirSearchResultElement> sensors;
         try {
-            ISearchSensorDAO searchDAO = SirConfigurator.getInstance().getFactory().searchSensorDAO();
+            ISearchSensorDAO searchDAO = this.configurator.getFactory().searchSensorDAO();
             sensors = searchDAO.getAllSensors(false);
         }
         catch (OwsExceptionReport e) {
@@ -357,7 +364,7 @@ public class CswCatalog implements ICatalog {
         try {
             regObjListDoc = RegistryObjectListDocument.Factory.parse(sb.toString());
 
-            if (SirConfigurator.getInstance().isValidateRequests()) {
+            if (this.configurator.isValidateRequests()) {
                 if ( !regObjListDoc.validate()) {
                     log.warn("Created invalid RegistryObjectListDocument, possibly rejected by the service! Set the logging level to DEBUG for more information on the document.");
                     if (log.isDebugEnabled())
@@ -562,7 +569,7 @@ public class CswCatalog implements ICatalog {
         this.identifiableCache = new CswCatalogCache();
 
         this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
-        this.validatorFactory = SirConfigurator.getInstance().getValidatorFactory();
+        this.validatorFactory = this.configurator.getValidatorFactory();
 
         if (log.isDebugEnabled())
             log.debug("Initialized " + this.toString());
@@ -742,7 +749,7 @@ public class CswCatalog implements ICatalog {
     private Hashtable<String, RegistryPackageDocument> transformSensorDescriptions(Collection<SirSearchResultElement> sensors) {
         Hashtable<String, RegistryPackageDocument> transformedDocs = new Hashtable<String, RegistryPackageDocument>();
         XmlObject description;
-        ITransformer transformer = SirConfigurator.getInstance().getTransformerFactory().getSensorMLtoCatalogXMLTransformer();
+        ITransformer transformer = this.configurator.getTransformerFactory().getSensorMLtoCatalogXMLTransformer();
         for (SirSearchResultElement sensorResultElem : sensors) {
             if (log.isDebugEnabled())
                 log.debug("Transforming sensor description of sensor " + sensorResultElem.getSensorIdInSir());

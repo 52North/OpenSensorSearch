@@ -15,6 +15,7 @@
  */
 package org.n52.sir.listener;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalogStatusHandler;
@@ -44,7 +45,7 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
     private IDisconnectFromCatalogDAO disconFromCatDao;
 
     public DisconnectFromCatalogListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
         IDAOFactory factory = configurator.getFactory();
         try {
             this.disconFromCatDao = factory.disconnectFromCatalogDAO();

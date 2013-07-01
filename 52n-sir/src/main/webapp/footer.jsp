@@ -28,7 +28,7 @@
 	<p class="infotext">
 		<a href="./">Home</a> | <a href="client.jsp">Extended Client</a> | <a
 			href="formClient.html">Form Client</a> | <a href="javascript:void(0)"
-			onclick="window.external.AddSearchProvider('${service.url}${service.path}/OpenSearchDoc.xml');">Add
+			onclick="window.external.AddSearchProvider('${service.url}/${service.path}/OpenSearchDoc.xml');">Add
 			search to browser</a> | <a href="mailto:${sir.deploy.contact}">Contact</a>
 	</p>
 	<p class="infotext">

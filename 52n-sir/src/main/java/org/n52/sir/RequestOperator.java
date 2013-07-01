@@ -13,10 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.listener.ConnectToCatalogListener;
@@ -51,6 +58,9 @@ import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 /**
  * 
  * @author Jan Schulte, Daniel Nüst (d.nuest@52north.org)
@@ -60,27 +70,73 @@ public class RequestOperator {
 
     private static Logger log = LoggerFactory.getLogger(RequestOperator.class);
 
-    /**
-     * decoder for http get requests
-     */
+    @Inject
     private IHttpGetRequestDecoder httpGetDecoder;
 
-    /**
-     * decoder for http post requests
-     */
+    @Inject
     private IHttpPostRequestDecoder httpPostDecoder;
 
-    /**
-     * container of the requestListener
-     */
-    private HashMap<String, ISirRequestListener> reqListener;
+    private HashMap<String, ISirRequestListener> reqListener = new HashMap<>();
 
-    /**
-     * constructor
-     */
-    public RequestOperator() {
-        this.httpGetDecoder = SirConfigurator.getInstance().getHttpGetDecoder();
-        this.httpPostDecoder = SirConfigurator.getInstance().getHttpPostDecoder();
+    @Inject
+    public RequestOperator(@Named(SirConfig.LISTENERS)
+    String listenersList) {
+        init(listenersList);
+
+        log.info("NEW {}", this);
+    }
+
+    private void init(String listenersList) {
+        // loading names of listeners
+        ArrayList<String> listeners = loadListeners(listenersList);
+
+        Iterator<String> iter = listeners.iterator();
+
+        // initialize listeners and add them to the RequestOperator
+        while (iter.hasNext()) {
+
+            // classname of the listener
+            String classname = iter.next();
+
+            try {
+                @SuppressWarnings("unchecked")
+                Class<ISirRequestListener> listenerClass = (Class<ISirRequestListener>) Class.forName(classname);
+
+                Class< ? >[] constrArgs = {};
+
+                Object[] args = {};
+
+                // get Constructor of this class with matching parameter types,
+                // throws a NoSuchMethodException
+                Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
+
+                // add new requestListener to RequestOperator throws a
+                // Instantiation, IllegalAccess and InvocationTargetException
+                addRequestListener(constructor.newInstance(args));
+
+            }
+            catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException
+                    | IllegalAccessException e) {
+                log.error("Error while loading RequestListener {}, required class could not be loaded: " + e.toString(),
+                          classname);
+            }
+        }
+    }
+
+    private ArrayList<String> loadListeners(String listenersList) {
+        ArrayList<String> listeners = new ArrayList<>();
+
+        if (listenersList == null) {
+            log.error("No RequestListeners are defined in the ConfigFile!");
+        }
+        else {
+            StringTokenizer tokenizer = new StringTokenizer(listenersList, ",");
+            while (tokenizer.hasMoreTokens()) {
+                listeners.add(tokenizer.nextToken());
+            }
+        }
+
+        return listeners;
     }
 
     /**
@@ -90,9 +146,6 @@ public class RequestOperator {
      *        the requestListener which should be added
      */
     public void addRequestListener(ISirRequestListener listener) {
-        if (this.reqListener == null) {
-            this.reqListener = new HashMap<String, ISirRequestListener>();
-        }
         this.reqListener.put(listener.getOperationName(), listener);
     }
 
@@ -160,11 +213,12 @@ public class RequestOperator {
         }
         catch (IllegalArgumentException e) {
             log.error("Illegal argument in request: ", e);
-            
+
             OwsExceptionReport owser = new OwsExceptionReport();
             owser.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 e.getClass().toString(),
-                                 "The request contained an illeagal argument: " + e.getMessage() + "\n\n" + Tools.getStackTrace(e));
+                                    e.getClass().toString(),
+                                    "The request contained an illeagal argument: " + e.getMessage() + "\n\n"
+                                            + Tools.getStackTrace(e));
             return new ExceptionResponse(owser.getDocument());
         }
 

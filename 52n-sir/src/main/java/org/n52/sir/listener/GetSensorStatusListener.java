@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
@@ -54,7 +55,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
     private IGetSensorStatusDAO getSensStatDao;
 
     public GetSensorStatusListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
 
         IDAOFactory factory = configurator.getFactory();
 

@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -88,7 +89,7 @@ public class ListenersTools {
      * @throws UnsupportedEncodingException
      */
     public static String createSensorDescriptionURL(String sensorIdInSir) throws UnsupportedEncodingException {
-        SirConfigurator sc = SirConfigurator.getInstance();
+        SirConfig sc = SirConfigurator.getInstance();
 
         StringBuilder sb = new StringBuilder();
         sb.append(sc.getServiceUrl());

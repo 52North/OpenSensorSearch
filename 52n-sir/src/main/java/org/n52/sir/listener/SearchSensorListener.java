@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
@@ -55,7 +56,7 @@ public class SearchSensorListener implements ISirRequestListener {
 
     private static final String OPERATION_NAME = SirConstants.Operations.SearchSensor.name();
 
-    private SirConfigurator configurator;
+    private SirConfig configurator;
 
     private boolean encodeURLs = true;
 

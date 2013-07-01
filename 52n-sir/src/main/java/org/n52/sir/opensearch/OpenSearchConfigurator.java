@@ -20,7 +20,9 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.n52.sir.SirConfigurator;
+import org.n52.oss.sir.SirConfig;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -33,7 +35,8 @@ public class OpenSearchConfigurator {
 
     public static final String HOME_URL = "/SIR";
 
-    private static SirConfigurator sirConfigurator = SirConfigurator.getInstance();
+    @Inject
+    private SirConfig sirConfigurator;
 
     private int capabilitiesCacheMaximumAgeSeconds = 60 * 60;
 
@@ -51,7 +54,7 @@ public class OpenSearchConfigurator {
 
     private SimpleDateFormat permalinkDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    HashMap<String, String> responseFormats = new HashMap<String, String>();
+    HashMap<String, String> responseFormats = new HashMap<>();
 
     public void addResponseFormat(IOpenSearchListener listener) {
         this.responseFormats.put(listener.getMimeType(), listener.getName());
@@ -62,7 +65,7 @@ public class OpenSearchConfigurator {
     }
 
     public String getCharacterEncoding() {
-        return sirConfigurator.getCharacterEncoding();
+        return this.sirConfigurator.getCharacterEncoding();
     }
 
     public String getCssFile() {
@@ -78,7 +81,7 @@ public class OpenSearchConfigurator {
     }
 
     public URL getFullServicePath() {
-        return sirConfigurator.getFullServicePath();
+        return this.sirConfigurator.getFullServicePath();
     }
 
     public String getHomeUrl() {
@@ -86,7 +89,7 @@ public class OpenSearchConfigurator {
     }
 
     public String getOpenSearchPath() {
-        return sirConfigurator.getOpenSearchPath();
+        return this.sirConfigurator.getOpenSearchPath();
     }
 
     public String getPermalinkBaseURL() {

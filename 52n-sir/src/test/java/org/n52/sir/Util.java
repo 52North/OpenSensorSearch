@@ -23,7 +23,7 @@ public class Util {
 
     private static final String SERVICE_URL_PROPERTY = "service.url";
 
-    private static final String SIR_URL_PROPERTY_IT = "sir.url.IT";
+    private static final String SIR_URL_PROPERTY_IT = "sir.url.it";
 
     public static URL getServiceURL() throws MalformedURLException {
         String s = System.getProperty(SERVICE_URL_PROPERTY);

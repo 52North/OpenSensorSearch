@@ -56,12 +56,12 @@ public abstract class SirTestCase extends TestCase {
     private static Properties examples;
 
     public static String insertedSensorId;
-    
+
     protected static Client c = null;
-    
+
     @BeforeClass
     public static void setUpClient() throws MalformedURLException {
-        c  = new Client(Util.getServiceURL());
+        c = new Client(Util.getServiceURL());
     }
 
     /**
@@ -74,7 +74,7 @@ public abstract class SirTestCase extends TestCase {
             String basepath = WEB_CONTENT_FOLDER;
             InputStream configStream = new FileInputStream(basepath + CONFIG_FILE_IN_WEB_CONTENT);
             InputStream dbConfigStream = new FileInputStream(basepath + DB_CONFIG_FILE_IN_WEB_CONTENT);
-            SirConfigurator.getInstance(configStream, dbConfigStream, basepath, null);
+            // SirConfigurator.getInstance(configStream, dbConfigStream, basepath, null);
 
             InputStream exampleStream = new FileInputStream(SirConfigurator.getInstance().getTestRequestPath()
                     + REQUEST_EXAMPLES_GET_FILE);

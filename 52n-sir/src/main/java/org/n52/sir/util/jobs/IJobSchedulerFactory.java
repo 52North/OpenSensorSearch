@@ -15,6 +15,10 @@
  */
 package org.n52.sir.util.jobs;
 
+import org.n52.sir.util.jobs.impl.JobSchedulerFactoryImpl;
+
+import com.google.inject.ImplementedBy;
+
 /**
  * 
  * Factory class for encapsulation of {@link IJobScheduler} instances.
@@ -22,6 +26,7 @@ package org.n52.sir.util.jobs;
  * @author Daniel Nüst (daniel.neust@uni-muenster.de)
  * 
  */
+@ImplementedBy(JobSchedulerFactoryImpl.class)
 public interface IJobSchedulerFactory {
 
     /**

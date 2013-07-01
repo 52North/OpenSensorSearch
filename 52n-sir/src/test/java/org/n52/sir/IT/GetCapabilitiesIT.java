@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -45,7 +46,8 @@ public class GetCapabilitiesIT {
 
     @BeforeClass
     public static void setUpClient() throws MalformedURLException {
-        c = new Client(Util.getSIREndpointForIT());
+        URL url = Util.getSIREndpointForIT();
+        c = new Client(url);
     }
 
     @Test
@@ -59,13 +61,13 @@ public class GetCapabilitiesIT {
         request.append(c.getURL());
         request.append("?");
         request.append("request=GetCapabilities&service=SIR");
-        
+
         XmlObject response = c.xSendGetRequest(request.toString());
         CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
         assertTrue("Invalid XML", resp_doc.validate());
     }
 
-    @Test
+//    @Test
     public void getCapabilitesPOST() throws IOException,
             OwsExceptionReport,
             HttpException,
@@ -76,9 +78,10 @@ public class GetCapabilitiesIT {
 
         GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
         XmlObject response = c.xSendPostRequest(doc);
+        System.out.println(response.xmlText());
 
         CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
-
         assertTrue("Invalid XML", resp_doc.validate());
+
     }
 }

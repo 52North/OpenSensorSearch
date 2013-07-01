@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.BufferedReader;
@@ -28,35 +29,41 @@ import java.util.jar.Manifest;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.TransformerException;
 
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.catalog.ICatalogStatusHandler;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.response.ISirResponse;
-import org.n52.sir.util.jobs.impl.TimerServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * 
  * @author Jan Schulte, Daniel Nüst
  * 
  */
+@Singleton
 public class SIR extends HttpServlet {
 
-    private static final String CONFIG_FILE = "/sir.properties";
-
-    private static final String DBCONFIG_FILE = "/db.properties";
+    // private static final String CONFIG_FILE = "/sir.properties";
+    //
+    // private static final String DBCONFIG_FILE = "/db.properties";
 
     private static Logger log = LoggerFactory.getLogger(SIR.class);
 
     private static final long serialVersionUID = -8056397366588482503L;
 
+    @Inject
     private RequestOperator requestOperator;
+
+    @Inject
+    private SirConfig configurator;
 
     /*
      * (non-Javadoc)
@@ -68,7 +75,7 @@ public class SIR extends HttpServlet {
         log.info("destroy() called...");
 
         super.destroy();
-        SirConfigurator.getInstance().getExecutor().shutdown();
+        this.configurator.getExecutor().shutdown();
 
         log.info("done destroy()");
     }
@@ -100,18 +107,23 @@ public class SIR extends HttpServlet {
         if (log.isDebugEnabled())
             log.debug(" ****** (POST) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
 
-        // Read the request
-        InputStream in = req.getInputStream();
         String inputString = "";
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String line;
-        StringBuffer sb = new StringBuffer();
-        while ( (line = br.readLine()) != null) {
-            sb.append(line + "\n");
+        // Read the request
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()))) {
+            InputStream in = req.getInputStream();
+
+            String line;
+            StringBuffer sb = new StringBuffer();
+            while ( (line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            inputString = sb.toString();
         }
-        br.close();
-        inputString = sb.toString();
+        catch (Exception e) {
+            log.error("Could not read input stream.", e);
+            return;
+        }
 
         // discard "request="
         if (inputString.startsWith("request=")) {
@@ -129,12 +141,11 @@ public class SIR extends HttpServlet {
      * @param sirResp
      */
     private void doResponse(HttpServletResponse resp, ISirResponse sirResp) {
-        try {
+        try (OutputStream out = resp.getOutputStream()) {
             String contentType = sirResp.getContentType();
             int contentLength = sirResp.getContentLength();
             byte[] bytes = sirResp.getByteArray();
             resp.setContentLength(contentLength);
-            OutputStream out = resp.getOutputStream();
             resp.setContentType(contentType);
             out.write(bytes);
             out.close();
@@ -157,47 +168,47 @@ public class SIR extends HttpServlet {
         super.init();
 
         ServletContext context = getServletContext();
-        String basepath = context.getRealPath("/");
+        // String basepath = context.getRealPath("/");
 
-        InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
-        if (configStream == null) {
-            throw new UnavailableException("could not open the config file");
-        }
+        // InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
+        // if (configStream == null) {
+        // throw new UnavailableException("could not open the config file");
+        // }
+        //
+        // InputStream dbConfigStream = SIR.class.getResourceAsStream(DBCONFIG_FILE);
+        // if (dbConfigStream == null) {
+        // throw new UnavailableException("could not open the database config file");
+        // }
 
-        InputStream dbConfigStream = SIR.class.getResourceAsStream(DBCONFIG_FILE);
-        if (dbConfigStream == null) {
-            throw new UnavailableException("could not open the database config file");
-        }
+        // TimerServlet timerServlet = (TimerServlet) context.getAttribute(TimerServlet.NAME_IN_CONTEXT);
 
-        TimerServlet timerServlet = (TimerServlet) context.getAttribute(TimerServlet.NAME_IN_CONTEXT);
+        // SirConfigurator configurator;
+        // try {
+        // configurator = SirConfigurator.getInstance(configStream, dbConfigStream, basepath, timerServlet);
+        // }
+        // catch (OwsExceptionReport e) {
+        // log.error("Error instantiating SirConfigurator.", e);
+        // throw new RuntimeException(e);
+        // }
 
-        SirConfigurator configurator;
-        try {
-            configurator = SirConfigurator.getInstance(configStream, dbConfigStream, basepath, timerServlet);
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Error instantiating SirConfigurator.", e);
-            throw new RuntimeException(e);
-        }
-
-        try {
-            this.requestOperator = configurator.buildRequestOperator();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("the instantiation of RequestOperator failed");
-            throw new UnavailableException(se.getMessage());
-        }
+        // try {
+        // this.requestOperator = this.configurator.buildRequestOperator();
+        // }
+        // catch (OwsExceptionReport se) {
+        // log.error("the instantiation of RequestOperator failed");
+        // throw new UnavailableException(se.getMessage());
+        // }
 
         // put handler for status updated into context (where it is used by
         // other servlets)
-        ICatalogStatusHandler handler = configurator.getCatalogStatusHandler();
+        ICatalogStatusHandler handler = this.configurator.getCatalogStatusHandler();
         context.setAttribute(ICatalogStatusHandler.NAME_IN_CONTEXT, handler);
 
-        File manifestFile = new File(basepath, "META-INF/MANIFEST.MF");
+        File manifestFile = new File(context.getRealPath("/"), "META-INF/MANIFEST.MF");
         Manifest mf = null;
-        try {
+        try (FileInputStream fis = new FileInputStream(manifestFile)) {
             mf = new Manifest();
-            mf.read(new FileInputStream(manifestFile));
+            mf.read(fis);
 
             Attributes atts = mf.getMainAttributes();
             log.info("Version: {} | Build: {}",

@@ -16,6 +16,7 @@
 package org.n52.sir.listener;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ds.IDAOFactory;
@@ -56,7 +57,7 @@ public class DescribeSensorListener implements ISirRequestListener {
      * @throws OwsExceptionReport
      */
     public DescribeSensorListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
 
         IDAOFactory factory = configurator.getFactory();
         IDescribeSensorDAO descSensDAO = null;

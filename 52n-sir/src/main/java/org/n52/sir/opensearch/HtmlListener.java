@@ -643,8 +643,8 @@ public class HtmlListener implements IOpenSearchListener {
             this.capabilitiesCache.put(url, caps);
             this.capabilitiesCacheAge.put(url, new Date());
         }
-        catch (OwsExceptionReport e) {
-            log.error("Could not get service capabilities.", e);
+        catch (Exception e) {
+            log.error("Could not update service capabilities.", e);
             return null;
         }
 

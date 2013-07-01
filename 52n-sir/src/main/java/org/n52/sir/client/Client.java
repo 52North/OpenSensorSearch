@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.naming.OperationNotSupportedException;
@@ -39,12 +41,14 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.name.Named;
 
 /**
  * @author Jan Schulte, Daniel Nüst (daniel.nuest@uni-muenster.de)
@@ -61,9 +65,14 @@ public class Client {
     private static final int CONNECTION_TIMEOUT = 1000 * 30;
 
     private URL url;
-    
+
     public Client(URL url) {
         this.url = url;
+    }
+
+    public Client(@Named(SirConfig.SERVICEURL)
+    String url) throws MalformedURLException {
+        this.url = new URL(url);
     }
 
     private static String createGetCapabilities(String serviceType) {
@@ -111,7 +120,7 @@ public class Client {
 
         if (requestMethod.equals(GET_METHOD)) {
             log.trace("Ignoring url for GET request: ", url);
-            
+
             if (log.isDebugEnabled())
                 log.debug("Client connecting via GET to " + request);
 
@@ -136,14 +145,14 @@ public class Client {
 
             StatusLine status = httpResponse.getStatusLine();
             log.debug("Got response, status: {}", status);
-            
+
             int code = status.getStatusCode();
             switch (code) {
             case 200:
                 XmlObject responseObject = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
                 return responseObject;
             case 404:
-                throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, method.getURI().toString(), status.toString());
+                throw new RuntimeException(method.getURI().toString() + " --- " + status.toString());
             default:
                 throw new RuntimeException("Unhandled response code!");
             }
@@ -159,35 +168,23 @@ public class Client {
             String msg = "Could not parse response (received via " + requestMethod + ") to the request " + request
                     + "\n\n\n" + Tools.getStackTrace(e);
             // msg = msg + "\n\nRESPONSE STRING:\n<![CDATA[" + responseObject.xmlText() + "]]>";
-
-            OwsExceptionReport er = new OwsExceptionReport(ExceptionCode.NoApplicableCode, "Client.doSend()", msg);
-            return er.getDocument();
-        }
-        catch (Exception e) {
-            log.error("Error executing method on httpClient.", e);
-            return new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", e.getMessage()).getDocument();
+            log.error(msg, e);
+            throw new RuntimeException(msg, e);
         }
     }
 
     public URL getURL() {
         return this.url;
         /*
-        try {
-            SirConfigurator conf = SirConfigurator.getInstance();
-            if(conf == null)
-                throw new RuntimeException("SirConfigurator is null, cannot use this client: ");
-            
-            URL url = conf.getServiceUrl();
-            URI uri = url.toURI();
-            return uri;
-        }
-        catch (URISyntaxException e) {
-            throw new OwsExceptionReport("Could not transform service URL to URI", e);
-        }
-        */
+         * try { SirConfigurator conf = SirConfigurator.getInstance(); if(conf == null) throw new
+         * RuntimeException("SirConfigurator is null, cannot use this client: ");
+         * 
+         * URL url = conf.getServiceUrl(); URI uri = url.toURI(); return uri; } catch (URISyntaxException e) {
+         * throw new OwsExceptionReport("Could not transform service URL to URI", e); }
+         */
     }
 
-    public static XmlObject requestCapabilities(String serviceType, URL url) throws OwsExceptionReport {
+    public static XmlObject requestCapabilities(String serviceType, URL url) {
         // create getCapabilities request
         String gcDoc = createGetCapabilities(serviceType);
 
@@ -201,33 +198,14 @@ public class Client {
             XmlObject obj = XmlObject.Factory.parse(gcDoc);
             getCapXmlResponse = xSendPostRequest(obj, url);
             caps = XmlObject.Factory.parse(getCapXmlResponse.getDomNode());
+            return caps;
         }
-        catch (XmlException xmle) {
-            String msg = "Error on parsing Capabilities document: " + xmle.getMessage()
+        catch (XmlException | OwsExceptionReport | IOException | HttpException e) {
+            String msg = "Error on parsing Capabilities document: " + e.getMessage()
                     + (getCapXmlResponse == null ? "" : "\n" + getCapXmlResponse.xmlText());
-            log.warn(msg);
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, msg);
-            throw se;
+            log.error(msg, e);
+            throw new RuntimeException(msg, e);
         }
-        catch (IOException ioe) {
-            String errMsg = "Error sending GetCapabilities to " + serviceType + " @ " + url.toString() + " : "
-                    + ioe.getMessage();
-            log.warn(errMsg);
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
-            throw se;
-        }
-        catch (Exception e) {
-            String errMsg = "Error doing GetCapabilities to " + serviceType + " @ " + url.toString() + " : "
-                    + e.getMessage();
-            log.warn(errMsg);
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, errMsg);
-            throw se;
-        }
-
-        return caps;
     }
 
     /**
@@ -238,12 +216,13 @@ public class Client {
      * @throws HttpException
      * @throws IOException
      * @throws OwsExceptionReport
-     * @throws OperationNotSupportedException 
+     * @throws OperationNotSupportedException
      */
     public String sendGetRequest(String request) throws UnsupportedEncodingException,
             HttpException,
             IOException,
-            OwsExceptionReport, OperationNotSupportedException {
+            OwsExceptionReport,
+            OperationNotSupportedException {
         if (request.isEmpty()) {
             return "The request is empty!";
         }
@@ -259,13 +238,16 @@ public class Client {
      * @throws IOException
      * @throws OwsExceptionReport
      * @throws HttpException
-     * @throws OperationNotSupportedException 
+     * @throws OperationNotSupportedException
      */
-    public String sendPostRequest(String request) throws IOException, OwsExceptionReport, HttpException, OperationNotSupportedException {
-        URL url = getURL();
-        if(url == null)
+    public String sendPostRequest(String request) throws IOException,
+            OwsExceptionReport,
+            HttpException,
+            OperationNotSupportedException {
+        URL u = getURL();
+        if (u == null)
             throw new OperationNotSupportedException("URL is not defined.");
-        return sendPostRequest(request, url);
+        return sendPostRequest(request, u);
     }
 
     /**
@@ -298,12 +280,13 @@ public class Client {
      * @throws HttpException
      * @throws IOException
      * @throws OwsExceptionReport
-     * @throws OperationNotSupportedException 
+     * @throws OperationNotSupportedException
      */
     public XmlObject xSendGetRequest(String request) throws UnsupportedEncodingException,
             HttpException,
             IOException,
-            OwsExceptionReport, OperationNotSupportedException {
+            OwsExceptionReport,
+            OperationNotSupportedException {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + request);
         XmlObject response = doSend(request, GET_METHOD, null);
@@ -345,15 +328,18 @@ public class Client {
      * @throws IOException
      * @throws OwsExceptionReport
      * @throws HttpException
-     * @throws OperationNotSupportedException 
+     * @throws OperationNotSupportedException
      */
-    public XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport, HttpException, OperationNotSupportedException {
+    public XmlObject xSendPostRequest(XmlObject request) throws IOException,
+            OwsExceptionReport,
+            HttpException,
+            OperationNotSupportedException {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + request);
-        URL url = getURL();
-        if(url == null)
+        URL u = getURL();
+        if (u == null)
             throw new OperationNotSupportedException("URI is not defined, use setURI().");
-        return xSendPostRequest(request, url);
+        return xSendPostRequest(request, u);
     }
 
     /**

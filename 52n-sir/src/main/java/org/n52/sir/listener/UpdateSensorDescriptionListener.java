@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirDescriptionToBeUpdated;
@@ -57,7 +58,7 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
     private IValidatorFactory validatorFactory;
 
     public UpdateSensorDescriptionListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
 
         IDAOFactory factory = configurator.getFactory();
         this.insertSensorInfoDAO = factory.insertSensorInfoDAO();

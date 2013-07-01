@@ -47,6 +47,7 @@ import net.sf.saxon.lib.StandardErrorListener;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.datastructure.SirSensorDescription;
 import org.n52.sir.datastructure.SirXmlSensorDescription;
@@ -136,7 +137,7 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         try {
             this.transformer = tFactory.newTransformer(this.xsltSource);
             this.transformer.setOutputProperty(OutputKeys.INDENT, INDENT_OUTPUT_PROPERTY_VALUE);
-            SirConfigurator configurator = SirConfigurator.getInstance();
+            SirConfig configurator = SirConfigurator.getInstance();
             if (configurator != null) {
                 this.transformer.setOutputProperty(OutputKeys.ENCODING,
                                                    SirConfigurator.getInstance().getCharacterEncoding());

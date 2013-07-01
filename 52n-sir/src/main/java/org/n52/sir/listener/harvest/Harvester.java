@@ -40,6 +40,7 @@ import net.opengis.sos.x10.DescribeSensorDocument.DescribeSensor;
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -88,7 +89,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         this.updatedSensors = new ArrayList<SirSensor>();
         this.failedSensors = new HashMap<String, String>();
 
-        SirConfigurator configurator = SirConfigurator.getInstance();
+        SirConfig configurator = SirConfigurator.getInstance();
         this.validatorFactory = configurator.getValidatorFactory();
         
         try {

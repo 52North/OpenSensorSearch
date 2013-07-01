@@ -36,6 +36,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.UnavailableException;
+import javax.servlet.http.HttpServlet;
 
 import org.apache.xmlbeans.XmlException;
 import org.n52.sir.SIR;
@@ -48,6 +49,8 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Singleton;
+
 /**
  * 
  * This class can be used to execute {@link TimerTask} instances. It runs as a servlet and can be accessed by
@@ -58,7 +61,8 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class TimerServlet extends GenericServlet {
+@Singleton
+public class TimerServlet extends HttpServlet {
 
     /**
      * Inner class to handle storage and cancelling of tasks at runtime.
@@ -101,7 +105,7 @@ public class TimerServlet extends GenericServlet {
         }
     }
 
-    private static final String CONFIG_FILE = "/sir.properties";
+    // private static final String CONFIG_FILE = "/sir.properties";
 
     private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
 
@@ -268,20 +272,20 @@ public class TimerServlet extends GenericServlet {
         timer = new Timer(getServletName(), Boolean.parseBoolean(getInitParameter(IS_DAEMON_INIT_PARAM_NAME)));
 
         // get configFile as Inputstream
-        InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
-        if (configStream == null) {
-            log.error("Could not opoen the config file!");
-            throw new UnavailableException("Could not open the config file.");
-        }
+//        InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
+//        if (configStream == null) {
+//            log.error("Could not opoen the config file!");
+//            throw new UnavailableException("Could not open the config file.");
+//        }
 
         // load properties file
-        try {
-            this.props = loadProperties(configStream);
-        }
-        catch (IOException e) {
-            log.error("Could not load properties file!");
-            throw new UnavailableException("Could not load properties file!");
-        }
+//        try {
+//            this.props = loadProperties(configStream);
+//        }
+//        catch (IOException e) {
+//            log.error("Could not load properties file!");
+//            throw new UnavailableException("Could not load properties file!");
+//        }
 
         String basepath = context.getRealPath("/");
         String configDirectory = this.props.getProperty(this.CONFIG_DIRECTORY);
@@ -368,7 +372,7 @@ public class TimerServlet extends GenericServlet {
             log.debug("Submitted: " + task + " to run at " + date);
         }
     }
-
+    
     /*
      * (non-Javadoc)
      * 

@@ -47,7 +47,7 @@
 	<Query role="example" searchTerms="Muenster" />
 
 	<Url type="text/html" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		template="${service.url}/${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
 		<Param name="l" value="{geo:name?}" />
 		<Param name="lat" value="{geo:lat?}" />
@@ -56,7 +56,7 @@
 		<Param name="httpAccept" value="text/html" />
 	</Url>
 	<Url type="application/xml" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		template="${service.url}/${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
 		<Param name="l" value="{geo:name?}" />
 		<Param name="lat" value="{geo:lat?}" />
@@ -65,7 +65,7 @@
 		<Param name="httpAccept" value="application/xml" />
 	</Url>
 	<Url type="application/json" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		template="${service.url}/${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
 		<Param name="l" value="{geo:name?}" />
 		<Param name="lat" value="{geo:lat?}" />
@@ -74,7 +74,7 @@
 		<Param name="httpAccept" value="application/json" />
 	</Url>
 	<Url type="application/vnd.google-earth.kml+xml" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		template="${service.url}/${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
 		<Param name="l" value="{geo:name?}" />
 		<Param name="lat" value="{geo:lat?}" />
@@ -83,7 +83,7 @@
 		<Param name="httpAccept" value="application/vnd.google-earth.kml+xml" />
 	</Url>
 	<Url type="application/rss+xml" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		template="${service.url}/${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
 		<Param name="l" value="{geo:name?}" />
 		<Param name="lat" value="{geo:lat?}" />
@@ -92,7 +92,7 @@
 		<Param name="httpAccept" value="application/rss+xml" />
 	</Url>
 	<Url type="application/atom+xml" method="GET"
-		template="${service.url}${service.path}/${service.endpoint.opensearch}">
+		template="${service.url}/${service.path}/${service.endpoint.opensearch}">
 		<Param name="q" value="{searchTerms}" />
 		<Param name="l" value="{geo:name?}" />
 		<Param name="lat" value="{geo:lat?}" />
@@ -102,7 +102,7 @@
 	</Url>
 
 	<Url type="application/opensearchdescription+xml" rel="self"
-		template="${service.url}${service.path}/OpenSearchDoc.xml" />
+		template="${service.url}/${service.path}/OpenSearchDoc.xml" />
 
-	<moz:SearchForm>${service.url}${service.path}/</moz:SearchForm>
+	<moz:SearchForm>${service.url}/${service.path}/</moz:SearchForm>
 </OpenSearchDescription>

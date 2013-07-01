@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration debug="true">
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
@@ -7,6 +7,9 @@
 			</Pattern>
 		</layout>
 	</appender>
+
+	<!-- sends logs to logback-beagle -->
+	<consolePlugin />
 
 	<logger name="org.n52.oss" level="TRACE" />
 

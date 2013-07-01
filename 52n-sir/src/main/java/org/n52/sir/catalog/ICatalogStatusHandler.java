@@ -17,6 +17,8 @@ package org.n52.sir.catalog;
 
 import java.util.Collection;
 
+import com.google.inject.ImplementedBy;
+
 /**
  * 
  * Interface for updating the status of a saved catalog connection.
@@ -24,6 +26,7 @@ import java.util.Collection;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
+@ImplementedBy(CatalogStatusHandlerImpl.class)
 public interface ICatalogStatusHandler {
 
     /**

@@ -15,8 +15,11 @@
  */
 package org.n52.sir.decode;
 
+import org.n52.sir.decode.impl.HttpGetRequestDecoder;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
+
+import com.google.inject.ImplementedBy;
 
 /**
  * interface offers parsing method to parse the String representing a Get request and create a Sir request
@@ -24,6 +27,7 @@ import org.n52.sir.request.AbstractSirRequest;
  * @author Jan Schulte
  * 
  */
+@ImplementedBy(HttpGetRequestDecoder.class)
 public interface IHttpGetRequestDecoder {
 
     /**

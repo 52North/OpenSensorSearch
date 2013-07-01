@@ -29,6 +29,7 @@ package org.n52.sir.ds.solr;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
+import org.joda.time.DateTime;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -177,5 +179,4 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
     public Collection<SirSearchResultElement> searchSensorByLocation(String lat, String lng, double kms) {
     	return spatialSearch(lat, lng, kms, SolrConstants.LOCATION);
     }
-   
 }

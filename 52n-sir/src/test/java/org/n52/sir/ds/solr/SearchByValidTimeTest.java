@@ -33,7 +33,9 @@ import java.io.IOException;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSensor;
@@ -56,6 +58,15 @@ public class SearchByValidTimeTest {
     public void searchByValidTime(){
     	
     }
-    
 
+    /**TODO LET the delete delete only by the given id not all  
+     * 
+     */
+ /*   
+    @After
+    public void deleteSensor() throws SolrServerException, IOException{
+        new SolrConnection().deleteByQuery("");
+        
+    }
+*/
 }

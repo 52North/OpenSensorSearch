@@ -30,6 +30,8 @@ package org.n52.sir.ds.solr;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Collection;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -38,35 +40,40 @@ import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByValidTimeTest {
 
+	@Before
+	public void insertTestSensor() throws XmlException, IOException,
+			OwsExceptionReport {
+		File sensor_file = new File(ClassLoader.getSystemResource(
+				"Requests/testsensor.xml").getFile());
+		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
+		SirSensor sensor = SensorMLDecoder.decode(doc);
+		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+		dao.insertSensor(sensor);
+	}
 
-    @Before
-    public void insertTestSensor() throws XmlException, IOException, OwsExceptionReport {
-        File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
-        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        SirSensor sensor = SensorMLDecoder.decode(doc);
-        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-        dao.insertSensor(sensor);
-    }
-    
-    @Test
-    public void searchByValidTime(){
-    	
-    }
+	@Test
+	public void searchByValidTime() {
+		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+		Collection<SirSearchResultElement> results = dao.searchByValidTimeRange(new Date(2009, 12, 31), new java.util.Date(
+				2010, 1, 30));
+		
+	}
 
-    /**TODO LET the delete delete only by the given id not all  
-     * 
-     */
- /*   
-    @After
-    public void deleteSensor() throws SolrServerException, IOException{
-        new SolrConnection().deleteByQuery("");
-        
-    }
-*/
+	/**
+	 * TODO LET the delete delete only by the given id not all
+	 * 
+	 */
+	/*
+	 * @After public void deleteSensor() throws SolrServerException,
+	 * IOException{ new SolrConnection().deleteByQuery("");
+	 * 
+	 * }
+	 */
 }

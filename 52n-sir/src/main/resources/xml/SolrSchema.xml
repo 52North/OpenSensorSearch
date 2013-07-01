@@ -122,7 +122,7 @@
    <field name="beginPosition" type="string" indexed="true" stored="true" multiValued="false" />
    <field name="endPosition" type="string" indexed="true" stored="true" multiValued="false" />
    <field name="location" type="lnglatlocation" indexed="true" stored="true"/>
-
+   <field name="bboxcenter" type="lnglatlocation" indexed="true" stored="true"/>
    <field name="_version_" type="long" indexed="true" stored="true"/>
    
    <!-- Common metadata fields, named specifically to match up with
@@ -692,8 +692,8 @@
 
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
     <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
-	<fieldType name="bboxcenter" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
-    <!-- An alternative geospatial field type new to Solr 4.  It supports multiValued and polygon shapes.
+	
+	<!-- An alternative geospatial field type new to Solr 4.  It supports multiValued and polygon shapes.
       For more information about this and other Spatial fields new to Solr 4, see:
       http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4
     -->

@@ -89,6 +89,15 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         inputDocument.addField(SolrConstants.ID, id);
         String longitude = sensor.getLongitude();
         String latitude = sensor.getLatitude();
+        if(sensor.getbBox()!=null){
+        	double [] center = sensor.getbBox().getCenter();
+        	if(center!=null){
+        		String center_cords = center[0]+","+center[1];
+        		inputDocument.addField(SolrConstants.BBOX_CENTER,center_cords);
+        	}
+        }
+        
+       
         if(longitude.length() >0 && latitude.length() >0)
         	inputDocument.addField(SolrConstants.LOCATION, latitude+","+longitude);
              

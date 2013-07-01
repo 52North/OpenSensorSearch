@@ -6,7 +6,7 @@
 	<artifactId>52n-sir</artifactId>
 
 	<name>SIR</name>
-	<description>52North Sensor Instance Registry</description>
+	<description>52North open sensor discovery platform</description>
 	<packaging>war</packaging>
 	<version>0.6</version>
 
@@ -78,27 +78,32 @@
 
 	<properties>
 		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+		<!-- <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory> -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<restlet.version>2.1.1</restlet.version>
 		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
-		<!-- would like to use filtering here, but I did not get it to work with 
+		<!-- would like to use filtering here, but I did not get it to work with
 			Tomcat and Jetty plugins: http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
-		<service.path>/SIR</service.path>
+		<service.path>mysir</service.path>
+		<service.port>8081</service.port>
 		<service.endpoint.service>sir</service.endpoint.service>
 		<service.endpoint.rest>rest</service.endpoint.rest>
 		<service.endpoint.opensearch>search</service.endpoint.opensearch>
+
+		<guice-version>3.0</guice-version>
+		<slf4j.version>1.7.5</slf4j.version>
+		<logback.version>1.0.13</logback.version>
 	</properties>
 
 	<profiles>
 		<profile>
-			<id>sir.dev</id>
+			<id>devel</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<service.url>http://localhost:8080</service.url>
+				<service.url>http://localhost:${service.port}</service.url>
 				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
 				<db.driver>org.postgresql.Driver</db.driver>
 				<db.user>postgres</db.user>
@@ -106,12 +111,19 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>sir.deploy</id>
+			<id>deploy</id>
 			<properties>
-				<!-- add these to your settings.xml file to ensure passwords are not 
-					uploaded to SCM: <profile> <id>sir.deploy</id> <properties> <sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server> 
-					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user> <sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password> 
-					</properties> </profile> -->
+				<!-- add these to your settings.xml file to ensure passwords are not
+					uploaded to SCM:
+					<profile>
+					<id>sir.deploy</id>
+					<properties>
+					<sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server>
+					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user>
+					<sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password>
+					</properties>
+					</profile>
+				-->
 				<service.url>${sir.deploy.server}</service.url>
 				<service.contact>${sir.deploy.contact}</service.contact>
 				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
@@ -119,6 +131,111 @@
 				<db.user>${sir.deploy.database.user}</db.user>
 				<db.password>${sir.deploy.database.password}</db.password>
 			</properties>
+		</profile>
+
+		<profile>
+			<id>it</id>
+			<properties>
+				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
+				<db.driver>org.postgresql.Driver</db.driver>
+				<db.user>postgres</db.user>
+				<db.password>postgres</db.password>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/test/it-resources/</directory>
+						<includes>
+							<include>sir.properties</include>
+							<include>db.properties</include>
+						</includes>
+						<filtering>true</filtering>
+					</resource>
+					<resource>
+						<directory>src/main/resources/</directory>
+						<excludes>
+							<exclude>sir.properties</exclude>
+							<exclude>db.properties</exclude>
+						</excludes>
+						<filtering>true</filtering>
+					</resource>
+				</resources>
+
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<id>reserve-network-port</id>
+								<goals>
+									<goal>reserve-network-port</goal>
+								</goals>
+								<phase>pre-integration-test</phase>
+								<configuration>
+									<portNames>
+										<portName>tomcat.http.port</portName>
+									</portNames>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.tomcat.maven</groupId>
+						<artifactId>tomcat7-maven-plugin</artifactId>
+						<version>2.1</version>
+						<executions>
+							<execution>
+								<id>start-tomcat</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<fork>true</fork>
+									<path>/${service.path}</path>
+									<port>${tomcat.http.port}</port>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-tomcat</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>shutdown</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.15</version>
+						<configuration>
+							<systemPropertyVariables>
+								<sir.url.it>http://localhost:${tomcat.http.port}/${service.path}/${service.endpoint.service}</sir.url.it>
+							</systemPropertyVariables>
+							<!-- for testing of specific unit tests only: -->
+							<includes>
+								<include>**/GetCapabilitiesIT*</include>
+							</includes>
+							<excludes>
+								<exclude>**/ConnectToCatalogIT*</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 
@@ -132,23 +249,23 @@
 				<version>2.3</version>
 
 				<configuration>
-					<!-- have to explicitly add resources and target paths if I want to 
+					<!-- have to explicitly add resources and target paths if I want to
 						do filtering on different resources -->
 					<!-- http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
-					<webResources>
-						<resource>
-							<directory>src/main/webapp</directory>
-							<filtering>true</filtering>
-						</resource>
-						<resource>
-							<directory>src/main/resources</directory>
-							<filtering>true</filtering>
-							<targetPath>WEB-INF/classes</targetPath>
-						</resource>
-					</webResources>
+					<!-- <webResources> -->
+					<!-- <resource> -->
+					<!-- <directory>src/main/webapp</directory> -->
+					<!-- <filtering>true</filtering> -->
+					<!-- </resource> -->
+					<!-- <resource> -->
+					<!-- <directory>src/main/resources</directory> -->
+					<!-- <filtering>true</filtering> -->
+					<!-- <targetPath>WEB-INF/classes</targetPath> -->
+					<!-- </resource> -->
+					<!-- </webResources> -->
 
-					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
-					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+					<!-- <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml> -->
+					<!-- <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors> -->
 
 					<archive>
 						<manifest>
@@ -181,7 +298,10 @@
 						<item>buildNumber</item>
 					</items>
 					<buildNumberPropertiesFileLocation>${basedir}/src/main/resources/buildNumber.properties</buildNumberPropertiesFileLocation>
-					<revisionOnScmFailure>svm-NA</revisionOnScmFailure>
+					<revisionOnScmFailure>scm-NA</revisionOnScmFailure>
+					<configuration>
+						<shortRevisionLength>7</shortRevisionLength>
+					</configuration>
 				</configuration>
 			</plugin>
 
@@ -196,33 +316,13 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<id>reserve-network-port</id>
-						<goals>
-							<goal>reserve-network-port</goal>
-						</goals>
-						<phase>pre-integration-test</phase>
-						<configuration>
-							<portNames>
-								<portName>tomcat.http.port</portName>
-							</portNames>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
 				<configuration>
 					<header>src/main/resources/license_header.txt</header>
 					<excludes>
-						<exclude>**/log4j*</exclude>
+						<exclude>**/logback*</exclude>
 						<exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
 						<exclude>**/iso_svrl_for_xslt2.xsl</exclude>
 						<exclude>**/test/resources/**</exclude>
@@ -254,65 +354,11 @@
 				<executions>
 					<execution>
 						<phase>test</phase>
-						<!-- test will fail if license headers are not correct, run license:format 
+						<!-- test will fail if license headers are not correct, run license:format
 							to add the headers. -->
 						<goals>
 							<goal>check</goal>
 							<!-- <goal>format</goal> -->
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<path>${service.path}</path>
-					<port>8080</port>
-				</configuration>
-				<executions>
-					<execution>
-						<id>start-tomcat</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<fork>true</fork>
-							<!-- <port>${tomcat.http.port}</port> -->
-							<port>8099</port>
-							<useTestClasspath>true</useTestClasspath>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-tomcat</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>shutdown</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.12.4</version>
-				<configuration>
-					<systemPropertyVariables>
-						<sir.url.IT>http://localhost:${tomcat.http.port}/${project.build.finalName}/sir</sir.url.IT>
-					</systemPropertyVariables>
-					<!-- for testing of specific unit tests only: -->
-					<includes>
-						<include>**/GetCapabilitiesIT*</include>
-					</includes>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -345,31 +391,6 @@
 		</plugins>
 	</build>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>apache-snapshots</id>
-			<name>Apache Snapshots</name>
-			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>Codehaus Snapshots</id>
-			<url>http://nexus.codehaus.org/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>  <!-- Workaround for MNG-2974, see note below -->
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<repositories>
 		<repository>
 			<id>maven-restlet</id>
@@ -378,30 +399,11 @@
 		</repository>
 
 		<repository>
-			<!-- Tentative local repo for libs that are not migrated to Maven dependency 
+			<!-- Tentative local repo for libs that are not migrated to Maven dependency
 				mechanism and available in online repositories. -->
 			<id>lib-repository</id>
 			<name>Local Repository</name>
 			<url>file:///${basedir}/lib-repository/</url>
-		</repository>
-
-		<!-- for postgis -->
-		<repository>
-			<id>sonatype-postgis-releases</id>
-			<name>Sonatype Postgis Releases Repo</name>
-			<url>http://oss.sonatype.org/content/repositories/postgis-releases</url>
-		</repository>
-
-		<!-- for buildnumber-maven-plugin -->
-		<repository>
-			<id>Codehaus Snapshots</id>
-			<url>http://nexus.codehaus.org/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
 		</repository>
 
 		<repository>
@@ -430,13 +432,19 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.5</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<dependency>
@@ -459,11 +467,9 @@
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<!-- it’s just the api and the implementation should be provided by the 
-				application server/web container -->
-			<scope>provided</scope> <!-- for running with tomcat-maven-plugin, see http://singztechmusings.wordpress.com/2011/06/17/java-lang-classcastexception-cannot-be-cast-to-javax-servlet-servlet-how-to-resolve/ -->
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -634,6 +640,17 @@
 			<artifactId>xmlunit</artifactId>
 			<version>1.3</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${guice-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+			<version>${guice-version}</version>
 		</dependency>
 	</dependencies>
 

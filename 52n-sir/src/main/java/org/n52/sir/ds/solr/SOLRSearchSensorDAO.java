@@ -231,13 +231,17 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 				solrDescription.setId(solrresult.get(SolrConstants.ID)
 						.toString());
 				solrDescription.setKeywords(keywords);
+				solrDescription.setBegineDate(Long.parseLong(solrresult
+						.getFieldValue(SolrConstants.START_DATE).toString()));
+				solrDescription.setEndDate(Long.parseLong(solrresult
+						.getFieldValue(SolrConstants.END_DATE).toString()));
 
 				element.setSensorDescription(solrDescription);
 				results.add(element);
 			}
 
 			return results;
-		} catch (SolrServerException e){
+		} catch (SolrServerException e) {
 			log.error("Cannot search by query", e);
 			return null;
 		}

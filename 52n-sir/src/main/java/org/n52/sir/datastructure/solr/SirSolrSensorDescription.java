@@ -31,6 +31,25 @@ import org.n52.sir.datastructure.SirSensorDescription;
 public class SirSolrSensorDescription extends SirSensorDescription {
     private String id;
     private Collection<Object> keywords;
+    private long begineDate;
+    public long getBegineDate() {
+		return begineDate;
+	}
+
+	public void setBegineDate(long begineDate) {
+		this.begineDate = begineDate;
+	}
+
+	public long getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(long endDate) {
+		this.endDate = endDate;
+	}
+
+	private long endDate;
+    
 
     public String getId() {
         return this.id;

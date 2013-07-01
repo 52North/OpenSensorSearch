@@ -28,6 +28,8 @@
 
 package org.n52.sir.ds.solr;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
@@ -42,6 +44,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
+import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
@@ -61,19 +64,29 @@ public class SearchByValidTimeTest {
 	@Test
 	public void searchByValidTime() {
 		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-		Collection<SirSearchResultElement> results = dao.searchByValidTimeRange(new Date(2009, 12, 31), new java.util.Date(
-				2010, 1, 30));
-		
+		Date start = new Date(1262296800000l);
+		Date end = new Date(1325282400000l);
+
+		Collection<SirSearchResultElement> results = dao
+				.searchByValidTimeRange(start, end);
+		for (SirSearchResultElement element : results) {
+			SirSolrSensorDescription description = (SirSolrSensorDescription) element
+					.getSensorDescription();
+			assertTrue(description.getBegineDate() >= start.getTime());
+			assertTrue(description.getEndDate() <= end.getTime());
+		}
+
 	}
 
 	/**
 	 * TODO LET the delete delete only by the given id not all
 	 * 
 	 */
-	/*
-	 * @After public void deleteSensor() throws SolrServerException,
-	 * IOException{ new SolrConnection().deleteByQuery("");
-	 * 
-	 * }
-	 */
+
+	@After
+	public void deleteSensor() throws SolrServerException, IOException {
+		new SolrConnection().deleteByQuery("");
+
+	}
+
 }

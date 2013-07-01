@@ -64,10 +64,6 @@ public class SearchByKeywordTest {
 
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
         SirSensor sensor = SensorMLDecoder.decode(doc);
-
-        /*
-         * Inserts this sensor
-         */
         // probably this will take some configuration - haven't decided yet.
         SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
         String id = dao.insertSensor(sensor);
@@ -107,6 +103,7 @@ public class SearchByKeywordTest {
     /**TODO LET the delete delete only by the given id not all  
      *
      */
+    
     @After
     public void deleteSensor() throws SolrServerException, IOException{
         new SolrConnection().deleteByQuery("");   

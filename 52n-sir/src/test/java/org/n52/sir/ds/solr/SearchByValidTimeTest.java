@@ -22,22 +22,40 @@
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
 
+/**
+ * @author Yakoub
+ */
+
 package org.n52.sir.ds.solr;
 
-public class SolrConstants {
-    // All the fields names of the Solr Index
+import java.io.File;
+import java.io.IOException;
 
-    public static final String ID = "id";
-    public static final String KEYWORD = "keyword";
-    public static final String UNIQUE_ID = "uniqueID";
-    public static final String LONG_NAME = "longname";
-    public static final String SHORT_NAME = "shortname";
-    public static final String LOCATION = "location";
-    public static final String BBOX_CENTER = "bboxcenter";
-    public static final String START_DATE = "beginPosition";
-    public static final String END_DATE = "endPosition";
-    /**
-     * TODO Remove this an configure it later in SIR configurations
-     */
-    public static final String SOLR_URL = "http://localhost:8983/solr";
+import net.opengis.sensorML.x101.SensorMLDocument;
+
+import org.apache.xmlbeans.XmlException;
+import org.junit.Before;
+import org.junit.Test;
+import org.n52.sir.datastructure.SirSensor;
+import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.sml.SensorMLDecoder;
+
+public class SearchByValidTimeTest {
+
+
+    @Before
+    public void insertTestSensor() throws XmlException, IOException, OwsExceptionReport {
+        File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
+        SirSensor sensor = SensorMLDecoder.decode(doc);
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        dao.insertSensor(sensor);
+    }
+    
+    @Test
+    public void searchByValidTime(){
+    	
+    }
+    
+
 }

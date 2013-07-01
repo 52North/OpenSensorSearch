@@ -37,6 +37,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
+import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
@@ -128,12 +129,12 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
      *        : The distance of kms to match against
      * 
      */
-    public Collection<SirSearchResultElement> searchSensorByLocation(String lat, String lng, double kms) {
+    private Collection<SirSearchResultElement> spatialSearch(String lat, String lng, double kms,String column) {
         // prepare the request
         SolrConnection connection = new SolrConnection();
         ModifiableSolrParams params = new ModifiableSolrParams();
         params.set("q", "*:*");
-        params.set("fq", "{!geofilt sfield=" + SolrConstants.LOCATION + "}");
+        params.set("fq", "{!geofilt sfield=" + column + "}");
         params.set("pt", lat + "," + lng);
         params.set("d", kms + "");
         System.out.println("Params:" + params);
@@ -169,4 +170,12 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
             return null;
         }
     }
+    public Collection<SirSearchResultElement> searchSensorByBoundingBox(SirBoundingBox bbox){
+    	double [] center = bbox.getCenter();
+    	return spatialSearch(center[0]+"",center[1]+"", 10, SolrConstants.BBOX_CENTER);
+    }
+    public Collection<SirSearchResultElement> searchSensorByLocation(String lat, String lng, double kms) {
+    	return spatialSearch(lat, lng, kms, SolrConstants.LOCATION);
+    }
+   
 }

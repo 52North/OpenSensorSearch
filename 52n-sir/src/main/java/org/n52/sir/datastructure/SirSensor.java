@@ -81,6 +81,8 @@ public class SirSensor {
     private Collection<String> keywords = new ArrayList<String>();
     
 	private String longitude;
+	
+	private String description;
     
     private String latitude;
 
@@ -242,6 +244,14 @@ public class SirSensor {
 
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
+	}
+
+	public void setDescription(Object description) {
+		this.description = description.toString();
+	}
+	
+	public String getDescription(){
+		return this.description;
 	}
 
     

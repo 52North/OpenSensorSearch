@@ -201,8 +201,20 @@ public class SensorMLDecoder {
 
 		// set latitude
 		sensor.setLongitude(getLongitude(sensorML));
+		
+		//set Description
+		sensor.setDescription(getDescription(sensorML));
 
 		return sensor;
+	}
+
+	private static Object getDescription(SensorMLDocument sensorML) {
+		if(sensorML.getSensorML().getMemberArray().length == 0)
+			return "";
+		SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0)
+				.getProcess();
+		return type.getDescription().getStringValue();
+		
 	}
 
 	private static String getLatitude(SensorMLDocument sensorML) {

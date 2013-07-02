@@ -32,7 +32,16 @@ public class SirSolrSensorDescription extends SirSensorDescription {
     private String id;
     private Collection<Object> keywords;
     private long begineDate;
-    public long getBegineDate() {
+    private String description;
+    public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public long getBegineDate() {
 		return begineDate;
 	}
 

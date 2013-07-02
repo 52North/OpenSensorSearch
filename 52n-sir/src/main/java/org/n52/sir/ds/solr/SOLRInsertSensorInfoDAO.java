@@ -116,6 +116,8 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 		if (longitude.length() > 0 && latitude.length() > 0)
 			inputDocument.addField(SolrConstants.LOCATION, latitude + ","
 					+ longitude);
+		if(sensor.getDescription()!=null)
+			inputDocument.addField(SolrConstants.DESCRIPTION,sensor.getDescription());
 
 		try {
 			connection.addInputDocument(inputDocument);

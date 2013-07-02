@@ -36,6 +36,7 @@ public class SolrConstants {
     public static final String BBOX_CENTER = "bboxcenter";
     public static final String START_DATE = "beginPosition";
     public static final String END_DATE = "endPosition";
+    public static final String DESCRIPTION = "description";
     /**
      * TODO Remove this an configure it later in SIR configurations
      */

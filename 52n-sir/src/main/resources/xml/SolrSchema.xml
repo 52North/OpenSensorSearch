@@ -123,7 +123,7 @@
    <field name="endPosition" type="long" indexed="true" stored="true" multiValued="false" />
    <field name="location" type="lnglatlocation" indexed="true" stored="true"/>
    <field name="bboxcenter" type="lnglatlocation" indexed="true" stored="true"/>
-   
+   <field name="description" type="string" indexed="true" stored="true"/>   
    <field name="_version_" type="long" indexed="true" stored="true"/>
    
    <!-- Common metadata fields, named specifically to match up with

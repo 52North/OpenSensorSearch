@@ -32,12 +32,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import net.opengis.sensorML.x101.SensorMLDocument;
-import net.opengis.sensorML.x101.SystemType;
-import net.opengis.swe.x101.PositionType;
-import net.opengis.swe.x101.VectorType;
-import net.opengis.swe.x101.VectorType.Coordinate;
-
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.n52.sir.datastructure.SirSensor;
@@ -128,12 +122,18 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			for (String classifier : classifiers)
 				inputDocument.addField(SolrConstants.CLASSIFIER, classifier);
 		}
-		System.out.println(sensor.getIdentificationsList());
 		if(sensor.getIdentificationsList() != null && sensor.getIdentificationsList().size() !=0){
 			Collection<Object> ids = sensor.getIdentificationsList();
 			for(Object iden : ids)
 				inputDocument.addField(SolrConstants.IDENTIFICATION, iden);
 		}
+		if(sensor.getContacts()!=null && sensor.getContacts().size()>0)
+		{
+			Collection<String> contacts = sensor.getContacts();
+			for(String contact : contacts)
+				inputDocument.addField(SolrConstants.CONTACTS,contact);
+		}
+		
 
 		try {
 			connection.addInputDocument(inputDocument);

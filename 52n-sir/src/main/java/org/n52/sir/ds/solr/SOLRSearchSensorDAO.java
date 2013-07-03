@@ -38,7 +38,6 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
-import org.joda.time.DateTime;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -223,6 +222,15 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			solrDescription.setDescription(solrresult.get(SolrConstants.DESCRIPTION).toString());
 			solrDescription.setClassifiers(solrresult.getFieldValues(SolrConstants.CLASSIFIER));
 			solrDescription.setIdentifiers(solrresult.getFieldValues(SolrConstants.IDENTIFICATION));
+			if(solrresult.getFieldValues(SolrConstants.CONTACTS)!=null){
+				Iterator<Object> it = solrresult.getFieldValues(SolrConstants.CONTACTS).iterator();
+				Collection<String> results_contacts = new ArrayList<String>();
+				while(it.hasNext())
+					results_contacts.add(it.next().toString());
+				System.out.println(results_contacts);
+				solrDescription.setContacts(results_contacts);
+			}
+			
 			element.setSensorDescription(solrDescription);
 			results.add(element);
 		}
@@ -259,6 +267,27 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		builder.append(classifer);
 		builder.append('"');
 		params.set("q", builder.toString());
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
+			return encodeResult(list);
+			} catch (Exception e) {
+			log.error("Solr exception",e);
+			return null;
+		}
+		
+	}
+	public Collection<SirSearchResultElement> searchByContact(String contact){
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SolrConstants.CONTACTS);
+		builder.append(":");
+		builder.append('"');
+		builder.append(contact);
+		builder.append('"');
+		params.set("q", builder.toString());
+		System.out.println(params);
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();

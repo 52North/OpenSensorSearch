@@ -35,12 +35,15 @@ import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sensorML.x101.CapabilitiesDocument.Capabilities;
 import net.opengis.sensorML.x101.ClassificationDocument.Classification;
 import net.opengis.sensorML.x101.ClassificationDocument.Classification.ClassifierList.Classifier;
+import net.opengis.sensorML.x101.ContactDocument.Contact;
 import net.opengis.sensorML.x101.IdentificationDocument.Identification;
 import net.opengis.sensorML.x101.IdentificationDocument.Identification.IdentifierList.Identifier;
 import net.opengis.sensorML.x101.IoComponentPropertyType;
 import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
 import net.opengis.sensorML.x101.OutputsDocument.Outputs;
 import net.opengis.sensorML.x101.OutputsDocument.Outputs.OutputList;
+import net.opengis.sensorML.x101.PersonDocument.Person;
+import net.opengis.sensorML.x101.ResponsiblePartyDocument.ResponsibleParty;
 import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML.Member;
@@ -208,27 +211,56 @@ public class SensorMLDecoder {
 
 		// set Classification
 		sensor.setClassificationList(getClassificationList(sensorML));
-		
-		//set Identifications
+
+		// set Identifications
 		sensor.setIdentificationsList(getIdentificationList(sensorML));
+
+		// set Contacts
+		sensor.setContacts(getContacts(sensorML));
 
 		return sensor;
 	}
-	private static Collection<Object> getIdentificationList(SensorMLDocument sensorML) {
+
+	private static Collection<String> getContacts(SensorMLDocument sensorML) {
+		List<String> contacts = new ArrayList<String>();
+		if (sensorML.getSensorML().getMemberArray().length != 0) {
+			SystemType type = (SystemType) sensorML.getSensorML()
+					.getMemberArray()[0].getProcess();
+			Contact[] contactsarr = type.getContactArray();
+			for (Contact m : contactsarr) {
+				if (m.getPerson() != null) {
+					Person p = m.getPerson();
+					System.out.println(p);
+					contacts.add(p.getName());
+					contacts.add(p.getEmail());
+					contacts.add(p.getPhoneNumber());
+				}
+				if (m.getResponsibleParty() != null) {
+					ResponsibleParty party = m.getResponsibleParty();
+					contacts.add(party.getIndividualName());
+					contacts.add(party.getOrganizationName());
+				}
+			}
+
+		}
+		return contacts;
+	}
+
+	private static Collection<Object> getIdentificationList(
+			SensorMLDocument sensorML) {
 		List<Object> identifications = new ArrayList<Object>();
 		if (sensorML.getSensorML().getMemberArray().length != 0) {
 			SystemType type = (SystemType) sensorML.getSensorML()
 					.getMemberArray(0).getProcess();
-			Identification [] ids = type.getIdentificationArray();
-			for(Identification id : ids){
-				Identifier [] iden = id.getIdentifierList().getIdentifierArray();
-				for(int i=0;i<iden.length;i++)
+			Identification[] ids = type.getIdentificationArray();
+			for (Identification id : ids) {
+				Identifier[] iden = id.getIdentifierList().getIdentifierArray();
+				for (int i = 0; i < iden.length; i++)
 					identifications.add(iden[i].getTerm().getValue());
 			}
 		}
 		return identifications;
 
-		
 	}
 
 	private static Object getClassificationList(SensorMLDocument sensorML) {

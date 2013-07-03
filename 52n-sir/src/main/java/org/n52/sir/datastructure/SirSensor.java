@@ -90,6 +90,8 @@ public class SirSensor {
 
 	private Collection<Object> identificationList;
 
+	private Collection<String> contactsList;
+
     /**
      * @return the bBox
      */
@@ -273,4 +275,11 @@ public class SirSensor {
 	public Collection<Object>  getIdentificationsList(){
 		return this.identificationList;
 	}
+	public void setContacts(Collection<String> contacts) {
+		 this.contactsList = contacts;
+	}
+	public Collection<String> getContacts(){
+		return this.contactsList;
+	}
+	
 }

@@ -29,11 +29,12 @@ import java.util.Collection;
 import org.n52.sir.datastructure.SirSensorDescription;
 
 public class SirSolrSensorDescription extends SirSensorDescription {
-    private String id;
-    private Collection<Object> keywords;
-    private long begineDate;
-    private String description;
-    public String getDescription() {
+	private String id;
+	private Collection<Object> keywords;
+	private long begineDate;
+	private String description;
+
+	public String getDescription() {
 		return description;
 	}
 
@@ -60,40 +61,51 @@ public class SirSolrSensorDescription extends SirSensorDescription {
 	private long endDate;
 	private Collection<Object> classifiers;
 	private Collection<? extends Object> identifiers;
-    
+	private Collection<String> contacts;
 
-    public String getId() {
-        return this.id;
-    }
+	public String getId() {
+		return this.id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Collection<Object> getKeywords() {
-        return this.keywords;
-    }
+	public Collection<Object> getKeywords() {
+		return this.keywords;
+	}
 
-    public void setKeywords(Collection<Object> keywords) {
-        this.keywords = keywords;
-    }
+	public void setKeywords(Collection<Object> keywords) {
+		this.keywords = keywords;
+	}
 
-    public SirSolrSensorDescription() {
-        // TODO Auto-generated constructor stub
-    }
+	public SirSolrSensorDescription() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public void setClassifiers(Collection<Object> classifiers) {
 		this.classifiers = classifiers;
 	}
-	public Collection<Object> getClassifiers(){
+
+	public Collection<Object> getClassifiers() {
 		return this.classifiers;
 	}
 
 	public Collection<? extends Object> getIdentifiers() {
 		return this.identifiers;
 	}
-	public void setIdentifiers(Collection<? extends Object> Identifiers){
+
+	public void setIdentifiers(Collection<? extends Object> Identifiers) {
 		this.identifiers = Identifiers;
+	}
+
+	public void setContacts(Collection<String> contacts) {
+		this.contacts = contacts;
+	}
+
+	public Collection<String> getContacts() {
+		return this.contacts;
+
 	}
 
 }

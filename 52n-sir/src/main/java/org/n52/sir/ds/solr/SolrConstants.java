@@ -38,6 +38,7 @@ public class SolrConstants {
     public static final String END_DATE = "endPosition";
     public static final String DESCRIPTION = "description";
     public static final String CLASSIFIER = "classifier";
+    public static final String IDENTIFICATION = "identification";
     /**
      * TODO Remove this an configure it later in SIR configurations
      */

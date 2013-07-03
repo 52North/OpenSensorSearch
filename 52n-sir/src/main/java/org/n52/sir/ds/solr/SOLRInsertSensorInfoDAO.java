@@ -128,6 +128,12 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			for (String classifier : classifiers)
 				inputDocument.addField(SolrConstants.CLASSIFIER, classifier);
 		}
+		System.out.println(sensor.getIdentificationsList());
+		if(sensor.getIdentificationsList() != null && sensor.getIdentificationsList().size() !=0){
+			Collection<Object> ids = sensor.getIdentificationsList();
+			for(Object iden : ids)
+				inputDocument.addField(SolrConstants.IDENTIFICATION, iden);
+		}
 
 		try {
 			connection.addInputDocument(inputDocument);

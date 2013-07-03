@@ -208,13 +208,32 @@ public class SensorMLDecoder {
 
 		// set Classification
 		sensor.setClassificationList(getClassificationList(sensorML));
+		
+		//set Identifications
+		sensor.setIdentificationsList(getIdentificationList(sensorML));
 
 		return sensor;
+	}
+	private static Collection<Object> getIdentificationList(SensorMLDocument sensorML) {
+		List<Object> identifications = new ArrayList<Object>();
+		if (sensorML.getSensorML().getMemberArray().length != 0) {
+			SystemType type = (SystemType) sensorML.getSensorML()
+					.getMemberArray(0).getProcess();
+			Identification [] ids = type.getIdentificationArray();
+			for(Identification id : ids){
+				Identifier [] iden = id.getIdentifierList().getIdentifierArray();
+				for(int i=0;i<iden.length;i++)
+					identifications.add(iden[i].getTerm().getValue());
+			}
+		}
+		return identifications;
+
+		
 	}
 
 	private static Object getClassificationList(SensorMLDocument sensorML) {
 		List<String> classifications = new ArrayList<String>();
-		if (sensorML.getSensorML().getMemberArray().length == 0) {
+		if (sensorML.getSensorML().getMemberArray().length != 0) {
 			SystemType type = (SystemType) sensorML.getSensorML()
 					.getMemberArray(0).getProcess();
 			Classification cs[] = type.getClassificationArray();

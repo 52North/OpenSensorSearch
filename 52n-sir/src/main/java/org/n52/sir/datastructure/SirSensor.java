@@ -88,6 +88,8 @@ public class SirSensor {
     
     private Collection<String> classifications;
 
+	private Collection<Object> identificationList;
+
     /**
      * @return the bBox
      */
@@ -264,6 +266,11 @@ public class SirSensor {
 		return this.classifications;
 	}
 
-    
-
+	public void setIdentificationsList(Collection<Object> identificationList) {
+		this.identificationList = identificationList;
+		
+	}
+	public Collection<Object>  getIdentificationsList(){
+		return this.identificationList;
+	}
 }

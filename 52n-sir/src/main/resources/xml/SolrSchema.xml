@@ -113,7 +113,6 @@
       and back compatibility is not guaranteed.  Names with both leading and
       trailing underscores (e.g. _version_) are reserved.
    -->
-        
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="uniqueID" type="string" indexed="true" stored="true"/>
    <field name="longName" type="string" indexed="true" stored="true"/>
@@ -124,6 +123,7 @@
    <field name="location" type="lnglatlocation" indexed="true" stored="true"/>
    <field name="bboxcenter" type="lnglatlocation" indexed="true" stored="true"/>
    <field name="description" type="string" indexed="true" stored="true"/>
+   <field name="identification" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="classifier" type="string" indexed="true" stored="true" multiValued="true"/>   
    <field name="_version_" type="long" indexed="true" stored="true"/>
    <!-- Common metadata fields, named specifically to match up with

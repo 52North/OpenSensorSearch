@@ -64,6 +64,7 @@ public class SearchByKeywordTest {
 
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
         SirSensor sensor = SensorMLDecoder.decode(doc);
+        System.out.println(sensor.getText().toArray()[0]);
         // probably this will take some configuration - haven't decided yet.
         SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
         String id = dao.insertSensor(sensor);

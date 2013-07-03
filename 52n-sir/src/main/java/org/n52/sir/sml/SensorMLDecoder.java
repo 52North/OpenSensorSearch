@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sensorML.x101.CapabilitiesDocument.Capabilities;
@@ -201,20 +202,34 @@ public class SensorMLDecoder {
 
 		// set latitude
 		sensor.setLongitude(getLongitude(sensorML));
-		
-		//set Description
+
+		// set Description
 		sensor.setDescription(getDescription(sensorML));
+
+		// set Classification
+		sensor.setClassificationList(getClassificationList(sensorML));
 
 		return sensor;
 	}
 
+	private static Object getClassificationList(SensorMLDocument sensorML) {
+		List<String> classifications = new ArrayList<String>();
+		if (sensorML.getSensorML().getMemberArray().length == 0) {
+			SystemType type = (SystemType) sensorML.getSensorML()
+					.getMemberArray(0).getProcess();
+			Classification cs[] = type.getClassificationArray();
+			for (Classification c : cs)
+				classifications.add(c.getClassifierList().getId());
+		}
+		return classifications;
+	}
+
 	private static Object getDescription(SensorMLDocument sensorML) {
-		if(sensorML.getSensorML().getMemberArray().length == 0)
+		if (sensorML.getSensorML().getMemberArray().length == 0)
 			return "";
 		SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0)
 				.getProcess();
 		return type.getDescription().getStringValue();
-		
 	}
 
 	private static String getLatitude(SensorMLDocument sensorML) {

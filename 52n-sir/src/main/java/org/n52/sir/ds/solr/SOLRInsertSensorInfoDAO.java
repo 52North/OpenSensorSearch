@@ -118,6 +118,13 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 					+ longitude);
 		if(sensor.getDescription()!=null)
 			inputDocument.addField(SolrConstants.DESCRIPTION,sensor.getDescription());
+		
+		if(sensor.getClassificationList()!=null){
+			Collection<String> classifiers = sensor.getClassificationList();
+			for(String classifier:classifiers)
+				inputDocument.addField(SolrConstants.CLASSIFIER, classifier);
+		}
+		
 
 		try {
 			connection.addInputDocument(inputDocument);

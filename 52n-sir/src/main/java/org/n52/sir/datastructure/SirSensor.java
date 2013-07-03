@@ -85,6 +85,8 @@ public class SirSensor {
 	private String description;
     
     private String latitude;
+    
+    private Collection<String> classifications;
 
     /**
      * @return the bBox
@@ -252,6 +254,14 @@ public class SirSensor {
 	
 	public String getDescription(){
 		return this.description;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setClassificationList(Object classificationList) {
+		this.classifications = (Collection<String>)classificationList;		
+	}
+	public Collection<String> getClassificationList(){
+		return this.classifications;
 	}
 
     

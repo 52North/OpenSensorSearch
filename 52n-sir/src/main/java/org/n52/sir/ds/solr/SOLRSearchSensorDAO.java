@@ -221,6 +221,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			solrDescription.setEndDate(Long.parseLong(solrresult
 					.getFieldValue(SolrConstants.END_DATE).toString()));
 			solrDescription.setDescription(solrresult.get(SolrConstants.DESCRIPTION).toString());
+			solrDescription.setClassifiers(solrresult.getFieldValues(SolrConstants.CLASSIFIER));
 			element.setSensorDescription(solrDescription);
 			results.add(element);
 		}
@@ -247,4 +248,25 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		}
 		
 	}
+	public Collection<SirSearchResultElement> searchByClassifer(String classifer){
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SolrConstants.CLASSIFIER);
+		builder.append(":");
+		builder.append('"');
+		builder.append(classifer);
+		builder.append('"');
+		params.set("q", builder.toString());
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
+			return encodeResult(list);
+			} catch (Exception e) {
+			log.error("Solr exception",e);
+			return null;
+		}
+		
+	}
+
 }

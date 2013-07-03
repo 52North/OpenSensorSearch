@@ -58,6 +58,7 @@ public class SirSolrSensorDescription extends SirSensorDescription {
 	}
 
 	private long endDate;
+	private Collection<Object> classifiers;
     
 
     public String getId() {
@@ -79,5 +80,12 @@ public class SirSolrSensorDescription extends SirSensorDescription {
     public SirSolrSensorDescription() {
         // TODO Auto-generated constructor stub
     }
+
+	public void setClassifiers(Collection<Object> classifiers) {
+		this.classifiers = classifiers;
+	}
+	public Collection<Object> getClassifiers(){
+		return this.classifiers;
+	}
 
 }

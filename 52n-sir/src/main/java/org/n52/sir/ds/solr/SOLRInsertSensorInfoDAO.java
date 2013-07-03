@@ -109,22 +109,25 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			Date startDate = timePeriod.getStartTime();
 			Date endDate = timePeriod.getEndTime();
 			if (startDate != null)
-				inputDocument.addField(SolrConstants.START_DATE, startDate.getTime());
+				inputDocument.addField(SolrConstants.START_DATE,
+						startDate.getTime());
 			if (endDate != null)
-				inputDocument.addField(SolrConstants.END_DATE, endDate.getTime());
+				inputDocument.addField(SolrConstants.END_DATE,
+						endDate.getTime());
 		}
-		if (longitude.length() > 0 && latitude.length() > 0)
-			inputDocument.addField(SolrConstants.LOCATION, latitude + ","
-					+ longitude);
-		if(sensor.getDescription()!=null)
-			inputDocument.addField(SolrConstants.DESCRIPTION,sensor.getDescription());
-		
-		if(sensor.getClassificationList()!=null){
+		if (longitude != null && latitude != null)
+			if (longitude.length() > 0 && latitude.length() > 0)
+				inputDocument.addField(SolrConstants.LOCATION, latitude + ","
+						+ longitude);
+		if (sensor.getDescription() != null)
+			inputDocument.addField(SolrConstants.DESCRIPTION,
+					sensor.getDescription());
+
+		if (sensor.getClassificationList() != null) {
 			Collection<String> classifiers = sensor.getClassificationList();
-			for(String classifier:classifiers)
+			for (String classifier : classifiers)
 				inputDocument.addField(SolrConstants.CLASSIFIER, classifier);
 		}
-		
 
 		try {
 			connection.addInputDocument(inputDocument);

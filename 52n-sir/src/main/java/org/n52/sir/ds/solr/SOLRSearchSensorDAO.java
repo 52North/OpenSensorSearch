@@ -157,7 +157,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
 			return encodeResult(list);
-			} catch (Exception e) {
+		} catch (Exception e) {
 			log.error(e.getLocalizedMessage());
 			return null;
 		}
@@ -204,40 +204,53 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		}
 
 	}
-	private List<SirSearchResultElement> encodeResult(SolrDocumentList doc){
+
+	private List<SirSearchResultElement> encodeResult(SolrDocumentList doc) {
 		List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
-		for(int i=0;i<doc.size();i++){
+		for (int i = 0; i < doc.size(); i++) {
 			SirSearchResultElement element = new SirSearchResultElement();
 			SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
 			SolrDocument solrresult = doc.get(i);
 			Collection<Object> keywords = solrresult
 					.getFieldValues(SolrConstants.KEYWORD);
-			solrDescription.setId(solrresult.get(SolrConstants.ID)
-					.toString());
+			solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
 			solrDescription.setKeywords(keywords);
 			solrDescription.setBegineDate(Long.parseLong(solrresult
 					.getFieldValue(SolrConstants.START_DATE).toString()));
-			solrDescription.setEndDate(Long.parseLong(solrresult
-					.getFieldValue(SolrConstants.END_DATE).toString()));
-			solrDescription.setDescription(solrresult.get(SolrConstants.DESCRIPTION).toString());
-			solrDescription.setClassifiers(solrresult.getFieldValues(SolrConstants.CLASSIFIER));
-			solrDescription.setIdentifiers(solrresult.getFieldValues(SolrConstants.IDENTIFICATION));
-			if(solrresult.getFieldValues(SolrConstants.CONTACTS)!=null){
-				Iterator<Object> it = solrresult.getFieldValues(SolrConstants.CONTACTS).iterator();
+			solrDescription.setEndDate(Long.parseLong(solrresult.getFieldValue(
+					SolrConstants.END_DATE).toString()));
+			solrDescription.setDescription(solrresult.get(
+					SolrConstants.DESCRIPTION).toString());
+			solrDescription.setClassifiers(solrresult
+					.getFieldValues(SolrConstants.CLASSIFIER));
+			solrDescription.setIdentifiers(solrresult
+					.getFieldValues(SolrConstants.IDENTIFICATION));
+			if (solrresult.getFieldValues(SolrConstants.CONTACTS) != null) {
+				Iterator<Object> it = solrresult.getFieldValues(
+						SolrConstants.CONTACTS).iterator();
 				Collection<String> results_contacts = new ArrayList<String>();
-				while(it.hasNext())
+				while (it.hasNext())
 					results_contacts.add(it.next().toString());
-				System.out.println(results_contacts);
 				solrDescription.setContacts(results_contacts);
 			}
-			
+			System.out.println(solrresult.getFieldValue(SolrConstants.INPUT));
+			if(solrresult.getFieldValues(SolrConstants.INPUT)!=null){
+				Iterator<Object> it = solrresult.getFieldValues(SolrConstants.INPUT).iterator();
+				Collection<String> inputs = new ArrayList<String>();
+				while(it.hasNext())
+					inputs.add(it.next().toString());
+				solrDescription.setInputs(inputs);
+				
+			}
+
 			element.setSensorDescription(solrDescription);
 			results.add(element);
 		}
 		return results;
 	}
-	
-	public Collection<SirSearchResultElement> searchByDescription(String description){
+
+	public Collection<SirSearchResultElement> searchByDescription(
+			String description) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
@@ -251,13 +264,14 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
 			return encodeResult(list);
-			} catch (Exception e) {
-			log.error("Solr exception",e);
+		} catch (Exception e) {
+			log.error("Solr exception", e);
 			return null;
 		}
-		
+
 	}
-	public Collection<SirSearchResultElement> searchByClassifer(String classifer){
+
+	public Collection<SirSearchResultElement> searchByClassifer(String classifer) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
@@ -271,13 +285,14 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
 			return encodeResult(list);
-			} catch (Exception e) {
-			log.error("Solr exception",e);
+		} catch (Exception e) {
+			log.error("Solr exception", e);
 			return null;
 		}
-		
+
 	}
-	public Collection<SirSearchResultElement> searchByContact(String contact){
+
+	public Collection<SirSearchResultElement> searchByContact(String contact) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
@@ -292,11 +307,11 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
 			return encodeResult(list);
-			} catch (Exception e) {
-			log.error("Solr exception",e);
+		} catch (Exception e) {
+			log.error("Solr exception", e);
 			return null;
 		}
-		
+
 	}
 
 	public Collection<SirSearchResultElement> searchByIdentification(
@@ -314,8 +329,28 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
 			return encodeResult(list);
-			} catch (Exception e) {
-			log.error("Solr exception",e);
+		} catch (Exception e) {
+			log.error("Solr exception", e);
+			return null;
+		}
+	}
+
+	public Collection<SirSearchResultElement> searchByInput(String input) {
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SolrConstants.INPUT);
+		builder.append(":");
+		builder.append('"');
+		builder.append(input);
+		builder.append('"');
+		params.set("q", builder.toString());
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
+			return encodeResult(list);
+		} catch (Exception e) {
+			log.error("Solr exception", e);
 			return null;
 		}
 	}

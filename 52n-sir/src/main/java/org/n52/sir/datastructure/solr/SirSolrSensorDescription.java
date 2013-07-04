@@ -62,6 +62,7 @@ public class SirSolrSensorDescription extends SirSensorDescription {
 	private Collection<Object> classifiers;
 	private Collection<? extends Object> identifiers;
 	private Collection<String> contacts;
+	private Collection<String> inputs;
 
 	public String getId() {
 		return this.id;
@@ -106,6 +107,13 @@ public class SirSolrSensorDescription extends SirSensorDescription {
 	public Collection<String> getContacts() {
 		return this.contacts;
 
+	}
+
+	public void setInputs(Collection<String> inputs) {
+		this.inputs=inputs;
+	}
+	public Collection<String> getInputs(){
+		return this.inputs;
 	}
 
 }

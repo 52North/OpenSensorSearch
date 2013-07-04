@@ -61,7 +61,6 @@ public class SearchByKeywordTest {
     public void searchKeywords() throws OwsExceptionReport, XmlException, IOException {
     	//Inserts the sensor
     	File sensor_file = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
-
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
         SirSensor sensor = SensorMLDecoder.decode(doc);
         System.out.println(sensor.getText().toArray()[0]);
@@ -108,5 +107,5 @@ public class SearchByKeywordTest {
     @After
     public void deleteSensor() throws SolrServerException, IOException{
         new SolrConnection().deleteByQuery("");   
-    }
+    } 
 }

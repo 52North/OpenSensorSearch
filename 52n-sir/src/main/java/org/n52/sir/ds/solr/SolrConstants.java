@@ -41,6 +41,7 @@ public class SolrConstants {
     public static final String IDENTIFICATION = "identification";
     public static final String CONTACTS = "contact";
     public static final String INTERFACE = "interface";
+    public static final String INPUT = "input";
     /**
      * TODO Remove this an configure it later in SIR configurations
      */

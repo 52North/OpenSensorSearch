@@ -94,6 +94,8 @@ public class SirSensor {
 
 	private Collection<String> interfaces;
 
+	private Collection<String> inputs;
+
     /**
      * @return the bBox
      */
@@ -289,5 +291,12 @@ public class SirSensor {
 	}
 	public Collection<String> getInterfaces(){
 		return this.interfaces;
+	}
+
+	public void setInputs(Collection<String> inputs) {
+		this.inputs = inputs;	
+	}
+	public Collection<String> getInputs(){
+		return this.inputs;
 	}
 }

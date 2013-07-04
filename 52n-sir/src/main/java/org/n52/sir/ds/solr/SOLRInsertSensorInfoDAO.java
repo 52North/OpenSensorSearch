@@ -138,6 +138,11 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			for(String interfacestr : interfaces)
 				inputDocument.addField(SolrConstants.INTERFACE, interfacestr);
 		}
+		if(sensor.getInputs()!=null && sensor.getInputs().size() >0){
+			Collection<String> inputs = sensor.getInputs();
+			for(String inputstr : inputs)
+				inputDocument.addField(SolrConstants.INPUT, inputstr);
+		}
 		
 
 		try {

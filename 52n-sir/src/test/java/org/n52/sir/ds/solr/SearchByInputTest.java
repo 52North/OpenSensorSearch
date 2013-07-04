@@ -38,7 +38,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
-import net.opengis.sensorML.x101.SystemType;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
@@ -51,8 +50,8 @@ import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
-public class SearchByContactTest {
-
+public class SearchByInputTest {
+	
 	@Before
 	public void insertSensor() throws XmlException, IOException,
 			OwsExceptionReport {
@@ -65,25 +64,33 @@ public class SearchByContactTest {
 	}
 
 	@Test
-	public void searchByContact() {
+	public void searchByInput() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-		String contact = "Me";
+		String input = "precipitation";
 		Collection<SirSearchResultElement> results = searchDAO
-				.searchByContact(contact);
+				.searchByInput(input);
 
 		assertNotNull(results);
 		Iterator<SirSearchResultElement> iter = results.iterator();
-		ArrayList<Object> resultsContacts = new ArrayList<Object>();
+		ArrayList<String> resultsInputs = new ArrayList<String>();
 		while (iter.hasNext()) {
 			SirSearchResultElement element = iter.next();
-			resultsContacts.addAll(((SirSolrSensorDescription) element
-					.getSensorDescription()).getContacts());
+			resultsInputs.addAll(((SirSolrSensorDescription) element
+					.getSensorDescription()).getInputs());
 		}
-		if (resultsContacts.size() > 0)
-			assertFalse(resultsContacts.indexOf(contact) == -1);
+		if (resultsInputs.size() > 0){
+			Iterator<String> it = resultsInputs.iterator();
+			int index=-1;
+			while(it.hasNext())
+				if(it.next().indexOf(input)>=0){
+					index=0;
+					break;
+				}
+			
+			assertFalse(index == -1);
+		}
 
 	}
-
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");

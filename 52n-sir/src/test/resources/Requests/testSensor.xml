@@ -126,6 +126,36 @@
 					</swe:location>
 				</swe:Position>
 			</position>
+			<interfaces>
+				<InterfaceList>
+					<interface name="SOS1">
+						<InterfaceDefinition>
+							<serviceLayer>
+								<swe:DataRecord
+									definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://v-swe.uni- muenster.de:8080/WeatherSOS/sos</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SOS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field
+										name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>sensor02</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</serviceLayer>
+						</InterfaceDefinition>
+					</interface>
+				</InterfaceList>
+			</interfaces>
+
 			<inputs>
 				<InputList>
 					<input name="precipitation">

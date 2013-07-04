@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
+import net.opengis.sensorML.x101.SystemType;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;

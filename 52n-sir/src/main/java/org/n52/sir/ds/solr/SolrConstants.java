@@ -40,6 +40,7 @@ public class SolrConstants {
     public static final String CLASSIFIER = "classifier";
     public static final String IDENTIFICATION = "identification";
     public static final String CONTACTS = "contact";
+    public static final String INTERFACE = "interface";
     /**
      * TODO Remove this an configure it later in SIR configurations
      */

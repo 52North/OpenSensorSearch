@@ -125,7 +125,8 @@
    <field name="description" type="string" indexed="true" stored="true"/>
    <field name="identification" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="contact" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="classifier" type="string" indexed="true" stored="true" multiValued="true"/>   
+   <field name="classifier" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="interface" type="string" indexed="true" stored="true" multiValued="true"/>      
    <field name="_version_" type="long" indexed="true" stored="true"/>
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.

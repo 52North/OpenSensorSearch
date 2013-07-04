@@ -133,6 +133,11 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			for(String contact : contacts)
 				inputDocument.addField(SolrConstants.CONTACTS,contact);
 		}
+		if(sensor.getInterfaces()!=null && sensor.getInterfaces().size() >0){
+			Collection<String> interfaces = sensor.getInterfaces();
+			for(String interfacestr : interfaces)
+				inputDocument.addField(SolrConstants.INTERFACE, interfacestr);
+		}
 		
 
 		try {

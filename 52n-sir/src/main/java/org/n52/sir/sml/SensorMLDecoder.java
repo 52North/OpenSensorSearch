@@ -38,6 +38,9 @@ import net.opengis.sensorML.x101.ClassificationDocument.Classification.Classifie
 import net.opengis.sensorML.x101.ContactDocument.Contact;
 import net.opengis.sensorML.x101.IdentificationDocument.Identification;
 import net.opengis.sensorML.x101.IdentificationDocument.Identification.IdentifierList.Identifier;
+import net.opengis.sensorML.x101.InterfaceDocument.Interface;
+import net.opengis.sensorML.x101.InterfacesDocument.Interfaces;
+import net.opengis.sensorML.x101.InterfacesDocument.Interfaces.InterfaceList;
 import net.opengis.sensorML.x101.IoComponentPropertyType;
 import net.opengis.sensorML.x101.KeywordsDocument.Keywords;
 import net.opengis.sensorML.x101.OutputsDocument.Outputs;
@@ -218,9 +221,31 @@ public class SensorMLDecoder {
 		// set Contacts
 		sensor.setContacts(getContacts(sensorML));
 
+		// set Interfaces
+		sensor.setInterfaces(getInterfaces(sensorML));
+
 		return sensor;
 	}
 
+	private static Collection<String> getInterfaces(SensorMLDocument sensorML) {
+		List<String> interfaces_result = new ArrayList<String>();
+		if (sensorML.getSensorML().getMemberArray().length != 0) {
+			SystemType type = (SystemType) sensorML.getSensorML()
+					.getMemberArray()[0].getProcess();
+			Interfaces interfaces = type.getInterfaces();
+			InterfaceList list = interfaces.getInterfaceList();
+			Interface [] interfacearr = list.getInterfaceArray();
+			for(int i=0;i<interfacearr.length;i++)
+			{
+			DataRecordType t = 	(DataRecordType)(interfacearr[i].getInterfaceDefinition().getServiceLayer().getAbstractDataRecord());
+			DataComponentPropertyType fields [] = t.getFieldArray();
+			for(int j=0;j<fields.length;j++)
+				interfaces_result.add(fields[j].getText().getValue().toString());
+			}
+	    }
+		return interfaces_result;
+	}
+		
 	private static Collection<String> getContacts(SensorMLDocument sensorML) {
 		List<String> contacts = new ArrayList<String>();
 		if (sensorML.getSensorML().getMemberArray().length != 0) {

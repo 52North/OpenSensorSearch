@@ -38,55 +38,55 @@ import org.apache.xmlbeans.XmlObject;
  */
 public class SirSensor {
 
-    /**
-     * bounding box of the observed area
-     */
-    private SirBoundingBox bBox;
+	/**
+	 * bounding box of the observed area
+	 */
+	private SirBoundingBox bBox;
 
-    /**
-     * time period
-     */
-    private Date lastUpdate;
+	/**
+	 * time period
+	 */
+	private Date lastUpdate;
 
-    /**
-     * observed phenomenon
-     */
-    private Collection<SirPhenomenon> phenomenon;
+	/**
+	 * observed phenomenon
+	 */
+	private Collection<SirPhenomenon> phenomenon;
 
-    /**
-     * sensor ID in SIR
-     */
-    private String sensorIDInSIR;
+	/**
+	 * sensor ID in SIR
+	 */
+	private String sensorIDInSIR;
 
-    /**
-     * sensorML document
-     */
-    private XmlObject sensorMLDocument;
+	/**
+	 * sensorML document
+	 */
+	private XmlObject sensorMLDocument;
 
-    /**
-     * service descriptions
-     */
-    private Collection<SirServiceReference> servDescs;
+	/**
+	 * service descriptions
+	 */
+	private Collection<SirServiceReference> servDescs;
 
-    /**
-     * searchwords for this sensor
-     */
-    private Collection<String> text;
+	/**
+	 * searchwords for this sensor
+	 */
+	private Collection<String> text;
 
-    /**
-     * time period
-     */
-    private SirTimePeriod timePeriod;
+	/**
+	 * time period
+	 */
+	private SirTimePeriod timePeriod;
 
-    private Collection<String> keywords = new ArrayList<String>();
-    
+	private Collection<String> keywords = new ArrayList<String>();
+
 	private String longitude;
-	
+
 	private String description;
-    
-    private String latitude;
-    
-    private Collection<String> classifications;
+
+	private String latitude;
+
+	private Collection<String> classifications;
 
 	private Collection<Object> identificationList;
 
@@ -96,151 +96,154 @@ public class SirSensor {
 
 	private Collection<String> inputs;
 
-    /**
-     * @return the bBox
-     */
-    public SirBoundingBox getbBox() {
-        return this.bBox;
-    }
+	private Collection<String> outputs;
 
-    /**
-     * @return the lastUpdate
-     */
-    public Date getLastUpdate() {
-        return this.lastUpdate;
-    }
+	/**
+	 * @return the bBox
+	 */
+	public SirBoundingBox getbBox() {
+		return this.bBox;
+	}
 
-    /**
-     * @return the phenomenon
-     */
-    public Collection<SirPhenomenon> getPhenomenon() {
-        return this.phenomenon;
-    }
+	/**
+	 * @return the lastUpdate
+	 */
+	public Date getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    /**
-     * @return the sensorIDInSIR
-     */
-    public String getSensorIDInSIR() {
-        return this.sensorIDInSIR;
-    }
+	/**
+	 * @return the phenomenon
+	 */
+	public Collection<SirPhenomenon> getPhenomenon() {
+		return this.phenomenon;
+	}
 
-    /**
-     * @return the sensorMLDocument
-     */
-    public XmlObject getSensorMLDocument() {
-        return this.sensorMLDocument;
-    }
+	/**
+	 * @return the sensorIDInSIR
+	 */
+	public String getSensorIDInSIR() {
+		return this.sensorIDInSIR;
+	}
 
-    /**
-     * @return the servDescs
-     */
-    public Collection<SirServiceReference> getServDescs() {
-        return this.servDescs;
-    }
+	/**
+	 * @return the sensorMLDocument
+	 */
+	public XmlObject getSensorMLDocument() {
+		return this.sensorMLDocument;
+	}
 
-    /**
-     * @return the text
-     */
-    public Collection<String> getText() {
-        return this.text;
-    }
+	/**
+	 * @return the servDescs
+	 */
+	public Collection<SirServiceReference> getServDescs() {
+		return this.servDescs;
+	}
 
-    /**
-     * @return the timePeriod
-     */
-    public SirTimePeriod getTimePeriod() {
-        return this.timePeriod;
-    }
+	/**
+	 * @return the text
+	 */
+	public Collection<String> getText() {
+		return this.text;
+	}
 
-    /**
-     * @param bBox
-     *        the bBox to set
-     */
-    public void setbBox(SirBoundingBox bBox) {
-        this.bBox = bBox;
-    }
+	/**
+	 * @return the timePeriod
+	 */
+	public SirTimePeriod getTimePeriod() {
+		return this.timePeriod;
+	}
 
-    /**
-     * @param lastUpdate
-     *        the lastUpdate to set
-     */
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	/**
+	 * @param bBox
+	 *            the bBox to set
+	 */
+	public void setbBox(SirBoundingBox bBox) {
+		this.bBox = bBox;
+	}
 
-    /**
-     * @param phenomenon
-     *        the phenomenon to set
-     */
-    public void setPhenomenon(Collection<SirPhenomenon> phenomenon) {
-        this.phenomenon = phenomenon;
-    }
+	/**
+	 * @param lastUpdate
+	 *            the lastUpdate to set
+	 */
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    /**
-     * @param sensorIDInSIR
-     *        the sensorIDInSIR to set
-     */
-    public void setSensorIDInSIR(String sensorIDInSIR) {
-        this.sensorIDInSIR = sensorIDInSIR;
-    }
+	/**
+	 * @param phenomenon
+	 *            the phenomenon to set
+	 */
+	public void setPhenomenon(Collection<SirPhenomenon> phenomenon) {
+		this.phenomenon = phenomenon;
+	}
 
-    /**
-     * @param sensorMLDocument
-     *        the sensorMLDocument to set
-     */
-    public void setSensorMLDocument(XmlObject sensorMLDocument) {
-        this.sensorMLDocument = sensorMLDocument;
-    }
+	/**
+	 * @param sensorIDInSIR
+	 *            the sensorIDInSIR to set
+	 */
+	public void setSensorIDInSIR(String sensorIDInSIR) {
+		this.sensorIDInSIR = sensorIDInSIR;
+	}
 
-    /**
-     * @param servDescs
-     *        the servDescs to set
-     */
-    public void setServDescs(Collection<SirServiceReference> servDescs) {
-        this.servDescs = servDescs;
-    }
+	/**
+	 * @param sensorMLDocument
+	 *            the sensorMLDocument to set
+	 */
+	public void setSensorMLDocument(XmlObject sensorMLDocument) {
+		this.sensorMLDocument = sensorMLDocument;
+	}
 
-    /**
-     * @param text
-     *        the text to set
-     */
-    public void setText(Collection<String> text) {
-        this.text = text;
-    }
+	/**
+	 * @param servDescs
+	 *            the servDescs to set
+	 */
+	public void setServDescs(Collection<SirServiceReference> servDescs) {
+		this.servDescs = servDescs;
+	}
 
-    /**
-     * @param timePeriod
-     *        the timePeriod to set
-     */
-    public void setTimePeriod(SirTimePeriod timePeriod) {
-        this.timePeriod = timePeriod;
-    }
+	/**
+	 * @param text
+	 *            the text to set
+	 */
+	public void setText(Collection<String> text) {
+		this.text = text;
+	}
 
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirSensor: ");
-        sb.append("SensorID in SIR: " + this.sensorIDInSIR);
-        sb.append(", Service description: " + this.servDescs);
-        sb.append(", " + this.phenomenon);
-        sb.append(", " + this.bBox);
-        sb.append(", Timeperiod: " + this.timePeriod);
-        sb.append(", Last update: " + this.lastUpdate);
-        return sb.toString();
-    }
+	/**
+	 * @param timePeriod
+	 *            the timePeriod to set
+	 */
+	public void setTimePeriod(SirTimePeriod timePeriod) {
+		this.timePeriod = timePeriod;
+	}
 
-    public Collection<String> getKeywords() {
-        return this.keywords;
-    }
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("SirSensor: ");
+		sb.append("SensorID in SIR: " + this.sensorIDInSIR);
+		sb.append(", Service description: " + this.servDescs);
+		sb.append(", " + this.phenomenon);
+		sb.append(", " + this.bBox);
+		sb.append(", Timeperiod: " + this.timePeriod);
+		sb.append(", Last update: " + this.lastUpdate);
+		return sb.toString();
+	}
 
-    public void setKeywords(Collection<String> keywords) {
-        this.keywords = keywords;
-    }
-    
-    public void addKeyword(String keyword) {
-        this.keywords.add(keyword);
-    }
-    public String getLongitude() {
+	public Collection<String> getKeywords() {
+		return this.keywords;
+	}
+
+	public void setKeywords(Collection<String> keywords) {
+		this.keywords = keywords;
+	}
+
+	public void addKeyword(String keyword) {
+		this.keywords.add(keyword);
+	}
+
+	public String getLongitude() {
 		return this.longitude;
 	}
 
@@ -259,44 +262,58 @@ public class SirSensor {
 	public void setDescription(Object description) {
 		this.description = description.toString();
 	}
-	
-	public String getDescription(){
+
+	public String getDescription() {
 		return this.description;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void setClassificationList(Object classificationList) {
-		this.classifications = (Collection<String>)classificationList;		
+		this.classifications = (Collection<String>) classificationList;
 	}
-	public Collection<String> getClassificationList(){
+
+	public Collection<String> getClassificationList() {
 		return this.classifications;
 	}
 
 	public void setIdentificationsList(Collection<Object> identificationList) {
 		this.identificationList = identificationList;
-		
+
 	}
-	public Collection<Object>  getIdentificationsList(){
+
+	public Collection<Object> getIdentificationsList() {
 		return this.identificationList;
 	}
+
 	public void setContacts(Collection<String> contacts) {
-		 this.contactsList = contacts;
+		this.contactsList = contacts;
 	}
-	public Collection<String> getContacts(){
+
+	public Collection<String> getContacts() {
 		return this.contactsList;
 	}
 
 	public void setInterfaces(Collection<String> interfaces) {
 		this.interfaces = interfaces;
 	}
-	public Collection<String> getInterfaces(){
+
+	public Collection<String> getInterfaces() {
 		return this.interfaces;
 	}
 
 	public void setInputs(Collection<String> inputs) {
-		this.inputs = inputs;	
+		this.inputs = inputs;
 	}
-	public Collection<String> getInputs(){
+
+	public Collection<String> getInputs() {
 		return this.inputs;
+	}
+
+	public void setOutputs(Collection<String> outputs) {
+		this.outputs = outputs;
+	}
+
+	public Collection<String> getOutputs() {
+		return this.outputs;
 	}
 }

@@ -127,7 +127,8 @@
    <field name="contact" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="classifier" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="interface" type="text_general_edge_ngram" indexed="true" stored="true" multiValued="true"/>
-   <field name="input" type="text_general_edge_ngram" indexed="true" stored="true" multiValued="true"/>      
+   <field name="input" type="text_general_edge_ngram" indexed="true" stored="true" multiValued="true"/>
+   <field name="output" type="text_general_edge_ngram" indexed="true" stored="true" multiValued="true"/>            
    <field name="_version_" type="long" indexed="true" stored="true"/>
    <!-- Common metadata fields, named specifically to match up with
      SolrCell metadata when parsing rich documents such as Word, PDF.

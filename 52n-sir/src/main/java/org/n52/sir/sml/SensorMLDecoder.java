@@ -229,7 +229,32 @@ public class SensorMLDecoder {
 		// set Inputs
 		sensor.setInputs(getInputs(sensorML));
 
+		// set Outputs
+		sensor.setOutputs(getOutputs(sensorML));
+
 		return sensor;
+	}
+
+	private static Collection<String> getOutputs(SensorMLDocument sensorML) {
+		List<String> output_results = new ArrayList<String>();
+		if (sensorML.getSensorML().getMemberArray().length != 0) {
+			SystemType type = (SystemType) sensorML.getSensorML()
+					.getMemberArray()[0].getProcess();
+			Outputs inputs = type.getOutputs();
+			OutputList list = inputs.getOutputList();
+			IoComponentPropertyType[] outputsarr = list.getOutputArray();
+			for (int i = 0; i < outputsarr.length; i++) {
+				StringBuilder builder = new StringBuilder();
+				builder.append(outputsarr[i].getName());
+				builder.append(" ");
+				if (outputsarr[i].getQuantity() != null)
+					builder.append(outputsarr[i].getQuantity().getUom().getCode()
+							.toString());
+				output_results.add(builder.toString());
+			}
+		}
+		return output_results;
+
 	}
 
 	private static Collection<String> getInputs(SensorMLDocument sensorML) {
@@ -244,8 +269,9 @@ public class SensorMLDecoder {
 				StringBuilder builder = new StringBuilder();
 				builder.append(inputsarr[i].getName());
 				builder.append(" ");
-				if(inputsarr[i].getQuantity()!=null)
-					builder.append(inputsarr[i].getQuantity().getUom().toString());
+				if (inputsarr[i].getQuantity() != null)
+					builder.append(inputsarr[i].getQuantity().getUom().getCode()
+							.toString());
 				inputs_results.add(builder.toString());
 			}
 		}

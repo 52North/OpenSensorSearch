@@ -50,7 +50,7 @@ import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
-public class SearchByInputTest {
+public class SearchByInputOutputTest {
 	
 	@Before
 	public void insertSensor() throws XmlException, IOException,
@@ -91,8 +91,38 @@ public class SearchByInputTest {
 		}
 
 	}
+	@Test
+	public void searchByOutput() {
+		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+		String input = "precipitation";
+		Collection<SirSearchResultElement> results = searchDAO
+				.searchByOutput(input);
+
+		assertNotNull(results);
+		Iterator<SirSearchResultElement> iter = results.iterator();
+		ArrayList<String> resultsOutputs = new ArrayList<String>();
+		while (iter.hasNext()) {
+			SirSearchResultElement element = iter.next();
+			resultsOutputs.addAll(((SirSolrSensorDescription) element
+					.getSensorDescription()).getOutputs());
+		}
+		if (resultsOutputs.size() > 0){
+			Iterator<String> it = resultsOutputs.iterator();
+			int index=-1;
+			while(it.hasNext())
+				if(it.next().indexOf(input)>=0){
+					index=0;
+					break;
+				}
+			
+			assertFalse(index == -1);
+		}
+
+	}
+	
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");
 	}
+	
 }

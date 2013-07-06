@@ -158,7 +158,7 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 		}
 
 		// TODO add the database ID
-		return null;
+		return id;
 	}
 
 	@Override

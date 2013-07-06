@@ -37,6 +37,7 @@ import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirInsertSensorInfoRequest;
@@ -114,7 +115,12 @@ public class InsertSensorInfoListener implements ISirRequestListener {
             boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
             log.debug("The sensor is valid: " + isValid);
             if (isValid) {
-                String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
+            	/*
+            	 * Inserts into solr
+            	 */
+            	SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+            	String sensorIdInSir = dao.insertSensor(sensor);
+               // String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
                 if (sensorIdInSir != null) {
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);
                     response.getInsertedSensors().add(sensorIdInSir);
@@ -149,6 +155,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
             se.addCodedException(OwsExceptionReport.ExceptionCode.MissingParameterValue,
                                  "InsertSensorInfoListener.receiveRequest()",
                                  "Missing parameter: To insert a sensor, a sensorInfo element is required!");
+            log.error("OWS:",se);
             throw se;
         }
     }

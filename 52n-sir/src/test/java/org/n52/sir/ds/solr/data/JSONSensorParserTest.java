@@ -51,7 +51,7 @@ import com.google.gson.Gson;
 public class JSONSensorParserTest {
 	@Test
 	public void parseJsonSensorsAndInsert() throws IOException, OwsExceptionReport {
-		File sensor_file = new File(ClassLoader.getSystemResource(
+		/*File sensor_file = new File(ClassLoader.getSystemResource(
 				"data/randomSensors.json").getFile());
 		Gson gson = new Gson();
 		StringBuilder builder = new StringBuilder();
@@ -80,6 +80,6 @@ public class JSONSensorParserTest {
 			period.setEndTime(end.toDate());
 			SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
 			dao.insertSensor(sensor);
-		}
+		}*/
 	}
 }

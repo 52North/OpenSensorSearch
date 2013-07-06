@@ -96,36 +96,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
-
-			List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
-			for (int i = 0; i < list.size(); i++) {
-				// create a new result element
-				SirSearchResultElement element = new SirSearchResultElement();
-				SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
-
-				/*
-				 * The results now just takes the keywords and the id TODO
-				 * extends the SirSensorDescription to optimize with the Solr
-				 * results.
-				 */
-				SolrDocument solrresult = list.get(i);
-
-				Collection<Object> keywords = solrresult
-						.getFieldValues(SolrConstants.KEYWORD);
-
-				solrDescription.setId(solrresult.get(SolrConstants.ID)
-						.toString());
-				solrDescription.setKeywords(keywords);
-				solrDescription.setBegineDate(Long.parseLong(solrresult
-						.getFieldValue(SolrConstants.START_DATE).toString()));
-				solrDescription.setEndDate(Long.parseLong(solrresult
-						.getFieldValue(SolrConstants.END_DATE).toString()));
-
-				element.setSensorDescription(solrDescription);
-				results.add(element);
-			}
-
-			return results;
+			return encodeResult(list);
 
 		} catch (SolrServerException solrexception) {
 			log.error("SolrException:" + solrexception.getLocalizedMessage());
@@ -213,17 +184,17 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			SolrDocument solrresult = doc.get(i);
 			Collection<Object> keywords = solrresult
 					.getFieldValues(SolrConstants.KEYWORD);
-			solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
+			if(solrresult.getFieldValue(SolrConstants.ID)!=null)solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
 			solrDescription.setKeywords(keywords);
-			solrDescription.setBegineDate(Long.parseLong(solrresult
+			if(solrresult.getFieldValue(SolrConstants.START_DATE)!=null)solrDescription.setBegineDate(Long.parseLong(solrresult
 					.getFieldValue(SolrConstants.START_DATE).toString()));
-			solrDescription.setEndDate(Long.parseLong(solrresult.getFieldValue(
+			if(solrresult.getFieldValue(SolrConstants.END_DATE)!=null)solrDescription.setEndDate(Long.parseLong(solrresult.getFieldValue(
 					SolrConstants.END_DATE).toString()));
-			solrDescription.setDescription(solrresult.get(
+			if(solrresult.getFieldValue(SolrConstants.DESCRIPTION)!=null)solrDescription.setDescription(solrresult.get(
 					SolrConstants.DESCRIPTION).toString());
-			solrDescription.setClassifiers(solrresult
+			if(solrresult.getFieldValues(SolrConstants.CLASSIFIER)!=null)solrDescription.setClassifiers(solrresult
 					.getFieldValues(SolrConstants.CLASSIFIER));
-			solrDescription.setIdentifiers(solrresult
+			if(solrresult.getFieldValues(SolrConstants.IDENTIFICATION)!=null)solrDescription.setIdentifiers(solrresult
 					.getFieldValues(SolrConstants.IDENTIFICATION));
 			if (solrresult.getFieldValues(SolrConstants.CONTACTS) != null) {
 				Iterator<Object> it = solrresult.getFieldValues(

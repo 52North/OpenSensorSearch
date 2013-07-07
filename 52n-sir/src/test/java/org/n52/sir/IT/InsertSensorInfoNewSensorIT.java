@@ -72,6 +72,7 @@ public class InsertSensorInfoNewSensorIT {
         XmlObject response = Client.xSendPostRequest(doc);
 
         InsertSensorInfoResponseDocument responseDoc = InsertSensorInfoResponseDocument.Factory.parse(response.getDomNode());
+        System.out.println(responseDoc);
         // Check the number of inserted sensor
         int number = (responseDoc.getInsertSensorInfoResponse().getNumberOfInsertedSensors());
         assertNotEquals("Failed to insert sensor", number, 0);

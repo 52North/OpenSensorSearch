@@ -110,6 +110,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
     private void insertSensor(SirInsertSensorInfoResponse response,
                               Collection<SirServiceReference> serviceRefs,
                               SirSensor sensor) throws OwsExceptionReport {
+    	log.info("InsertSensorCalled");
         if (sensor.getSensorMLDocument() != null) {
             IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
             boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
@@ -120,7 +121,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
             	 */
             	SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
             	String sensorIdInSir = dao.insertSensor(sensor);
-               // String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
+            	// String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
                 if (sensorIdInSir != null) {
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);
                     response.getInsertedSensors().add(sensorIdInSir);

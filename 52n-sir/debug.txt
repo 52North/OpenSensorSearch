@@ -1,0 +1,2903 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.n52.sensorweb:52n-sir:war:0.5.3
+[WARNING] 'build.plugins.plugin.(groupId:artifactId)' must be unique but found duplicate declaration of plugin org.apache.tomcat.maven:tomcat6-maven-plugin @ line 317, column 12
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building SIR 0.5.3
+[INFO] ------------------------------------------------------------------------
+[WARNING] The POM for woodstox:wstx-asl:jar:3.2.7 is missing, no dependency information available
+[WARNING] The POM for org.n52.sensorweb:52n-xml-gml-v321:jar:1.0.0 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[INFO] 
+[INFO] --- buildnumber-maven-plugin:1.2:create (default) @ 52n-sir ---
+[INFO] Storing buildNumber: 178 at timestamp: 1373236194604
+[INFO] Executing: cmd.exe /X /C "svn --non-interactive info"
+[INFO] Working directory: D:\52n\OpenSensorSearch\52n-sir
+[INFO] Storing buildScmBranch: UNKNOWN_BRANCH
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ 52n-sir ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 21 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:compile (default-compile) @ 52n-sir ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ 52n-sir ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 68 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:testCompile (default-testCompile) @ 52n-sir ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.10:test (default-test) @ 52n-sir ---
+[INFO] Surefire report directory: D:\52n\OpenSensorSearch\52n-sir\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.n52.sir.ds.solr.data.JSONSensorParserTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 sec
+Running org.n52.sir.ds.solr.SearchByBoundingBoxTest
+2013-07-08 00:29:56,597 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:56,603 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Params:q=*%3A*&fq=%7B%21geofilt+sfield%3Dbboxcenter%7D&pt=2.0%2C3.0&d=10.0
+2013-07-08 00:29:57,458 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:57,458 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Params:q=*%3A*&fq=%7B%21geofilt+sfield%3Dbboxcenter%7D&pt=7.0%2C6.0&d=10.0
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.826 sec
+Running org.n52.sir.ds.solr.SearchByClassifierTest
+2013-07-08 00:29:57,847 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:57,847 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.383 sec
+Running org.n52.sir.ds.solr.SearchByContactTest
+2013-07-08 00:29:58,232 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:58,233 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+q=contact%3A%22Me%22
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.377 sec
+Running org.n52.sir.ds.solr.SearchByIdentifierTest
+2013-07-08 00:29:58,617 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:58,618 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.337 sec
+Running org.n52.sir.ds.solr.SearchByInputOutputTest
+2013-07-08 00:29:58,955 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:58,956 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+2013-07-08 00:29:59,339 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:59,339 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.737 sec
+Running org.n52.sir.ds.solr.SearchByKeywordTest
+2013-07-08 00:29:59,700 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:29:59,701 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Identifications: uniqueID: urn:ogc:object:feature:testsensor, longName: A Test Sensor, shortName: TEST;
+Parameters:q=keyword%3Atest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.343 sec
+Running org.n52.sir.ds.solr.SearchByLocationTest
+2013-07-08 00:30:00,039 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:30:00,039 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Params:q=*%3A*&fq=%7B%21geofilt+sfield%3Dlocation%7D&pt=1.5%2C3.49&d=10.0
+2013-07-08 00:30:00,570 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:30:00,571 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Params:q=*%3A*&fq=%7B%21geofilt+sfield%3Dlocation%7D&pt=1%2C3&d=10.0
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.853 sec
+Running org.n52.sir.ds.solr.SearchByValidTimeTest
+2013-07-08 00:30:00,896 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:30:00,897 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+beginPosition:[1262296800000 TO *] AND endPosition:[* TO 1325282400000]
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.295 sec
+Running org.n52.sir.xml.SMLtoEbRIMTransformerTest
+2013-07-08 00:30:01,910 INFO  (SMLtoEbRIMTransformer.java:265) - Transformation of D:\52n\OpenSensorSearch\52n-sir\target\test-classes\transformation/IFGI_HWS1-discoveryprofile.xml
+2013-07-08 00:30:01,999 DEBUG (SMLtoEbRIMTransformer.java:278) - Transformation Done.
+XmlObject RegistryPackageTypeImpl (<xml-fragment xsi:schemaLocation="http:/...) is valid!
+2013-07-08 00:30:02,325 INFO  (SMLtoEbRIMTransformer.java:265) - Transformation of D:\52n\OpenSensorSearch\52n-sir\target\test-classes\transformation/FH_HWS1-discoveryprofile.xml
+2013-07-08 00:30:02,359 DEBUG (SMLtoEbRIMTransformer.java:278) - Transformation Done.
+XmlObject RegistryPackageTypeImpl (<xml-fragment xsi:schemaLocation="http:/...) is valid!
+2013-07-08 00:30:02,559 INFO  (SMLtoEbRIMTransformer.java:265) - Transformation of D:\52n\OpenSensorSearch\52n-sir\target\test-classes\transformation/FH_HWS1-discoveryprofile.xml
+2013-07-08 00:30:02,595 DEBUG (SMLtoEbRIMTransformer.java:278) - Transformation Done.
+XmlObject RegistryPackageTypeImpl (<xml-fragment xsi:schemaLocation="http:/...) is valid!
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.462 sec
+
+Results :
+
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-license-plugin:1.9.0:check (default) @ 52n-sir ---
+[INFO] Checking licenses...
+[INFO] 
+[INFO] --- maven-war-plugin:2.3:war (default-war) @ 52n-sir ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [52n-sir] in [D:\52n\OpenSensorSearch\52n-sir\target\SIR]
+[INFO] Processing war project
+[INFO] Copying webapp webResources [D:\52n\OpenSensorSearch\52n-sir\src/main/webapp] to [D:\52n\OpenSensorSearch\52n-sir\target\SIR]
+[INFO] Copying webapp webResources [D:\52n\OpenSensorSearch\52n-sir\src/main/resources] to [D:\52n\OpenSensorSearch\52n-sir\target\SIR]
+[INFO] Copying webapp resources [D:\52n\OpenSensorSearch\52n-sir\src\main\webapp]
+[INFO] Webapp assembled in [630 msecs]
+[INFO] Building war: D:\52n\OpenSensorSearch\52n-sir\target\SIR.war
+[INFO] 
+[INFO] >>> tomcat6-maven-plugin:2.0:run (start-tomcat) @ 52n-sir >>>
+[INFO] 
+[INFO] --- buildnumber-maven-plugin:1.2:create (default) @ 52n-sir ---
+[INFO] Storing buildNumber: 179 at timestamp: 1373236207217
+[INFO] Executing: cmd.exe /X /C "svn --non-interactive info"
+[INFO] Working directory: D:\52n\OpenSensorSearch\52n-sir
+[INFO] Storing buildScmBranch: UNKNOWN_BRANCH
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ 52n-sir ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 21 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:compile (default-compile) @ 52n-sir ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] <<< tomcat6-maven-plugin:2.0:run (start-tomcat) @ 52n-sir <<<
+[INFO] 
+[INFO] --- tomcat6-maven-plugin:2.0:run (start-tomcat) @ 52n-sir ---
+[INFO] Running war on http://localhost:8080/SIR
+[INFO] Using existing Tomcat server configuration at D:\52n\OpenSensorSearch\52n-sir\target\tomcat
+2013-07-08 00:30:08,701 INFO  (TimerServlet.java:291) -  * Initializing Timer ... 
+2013-07-08 00:30:08,705 INFO  (TimerServlet.java:352) -  ***** Timer initiated successfully! ***** 
+2013-07-08 00:30:08,712 INFO  (SirConfigurator.java:461) -  ***** Config Files loaded successfully! ***** 
+2013-07-08 00:30:08,712 INFO  (SirConfigurator.java:797) -  * Initializing SirConfigurator ... 
+2013-07-08 00:30:08,875 ERROR (SirConfigurator.java:860) - No valid service url is defined in the config file: ${service.url}${service.path}/${service.endpoint.service}
+2013-07-08 00:30:08,876 ERROR (SIR.java:208) - Error instantiating SirConfigurator.
+org.n52.sir.ows.OwsExceptionReport: [[No valid service url is defined in the config file: ${service.url}${service.path}/${service.endpoint.service}]]
+	at org.n52.sir.SirConfigurator.initialize(SirConfigurator.java:856)
+	at org.n52.sir.SirConfigurator.getInstance(SirConfigurator.java:297)
+	at org.n52.sir.SIR.init(SIR.java:205)
+	at javax.servlet.GenericServlet.init(GenericServlet.java:212)
+	at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1206)
+	at org.apache.catalina.core.StandardWrapper.load(StandardWrapper.java:1026)
+	at org.apache.catalina.core.StandardContext.loadOnStartup(StandardContext.java:4421)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:4734)
+	at org.apache.catalina.core.ContainerBase.start(ContainerBase.java:1057)
+	at org.apache.catalina.core.StandardHost.start(StandardHost.java:840)
+	at org.apache.catalina.core.ContainerBase.start(ContainerBase.java:1057)
+	at org.apache.catalina.core.StandardEngine.start(StandardEngine.java:463)
+	at org.apache.catalina.startup.Embedded.start(Embedded.java:825)
+	at org.apache.tomcat.maven.plugin.tomcat6.AbstractRunMojo.startContainer(AbstractRunMojo.java:850)
+	at org.apache.tomcat.maven.plugin.tomcat6.AbstractRunMojo.execute(AbstractRunMojo.java:429)
+	at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo(DefaultBuildPluginManager.java:101)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:209)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:153)
+	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:145)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:84)
+	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:59)
+	at org.apache.maven.lifecycle.internal.LifecycleStarter.singleThreadedBuild(LifecycleStarter.java:183)
+	at org.apache.maven.lifecycle.internal.LifecycleStarter.execute(LifecycleStarter.java:161)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:320)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:156)
+	at org.apache.maven.cli.MavenCli.execute(MavenCli.java:537)
+	at org.apache.maven.cli.MavenCli.doMain(MavenCli.java:196)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:141)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:290)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:230)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:409)
+	at org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:352)
+2013-07-08 00:30:08,886 INFO  (OpenSearchSIR.java:100) - NEW OpenSearchSIR []
+[INFO] 
+[INFO] --- maven-failsafe-plugin:2.12.4:integration-test (default) @ 52n-sir ---
+[INFO] Failsafe report directory: D:\52n\OpenSensorSearch\52n-sir\target\failsafe-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.n52.sir.IT.ConnectToCatalogIT
+2013-07-08 00:30:10,235 DEBUG (Client.java:331) - Sending request: <ConnectToCatalogRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!--push all data to catalog only once-->
+  <CatalogURL>http://giv-genesis.uni-muenster.de:8080/ergorr/webservice</CatalogURL>
+</ConnectToCatalogRequest>
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.545 sec <<< FAILURE!
+testConnectToDialogBean(org.n52.sir.IT.ConnectToCatalogIT)  Time elapsed: 0.446 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.ConnectToCatalogBean.buildRequest(ConnectToCatalogBean.java:71)
+	at org.n52.sir.IT.ConnectToCatalogIT.testConnectToDialogBean(ConnectToCatalogIT.java:55)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+testConnectToDialogFile(org.n52.sir.IT.ConnectToCatalogIT)  Time elapsed: 0.067 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.ConnectToCatalogIT.testConnectToDialogFile(ConnectToCatalogIT.java:70)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.DeleteSensorInfoIT
+2013-07-08 00:30:10,244 DEBUG (Client.java:331) - Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>1</SensorIDInSIR>
+    </SensorIdentification>
+    <ServiceInfo>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:017</ServiceSpecificSensorID>
+      </ServiceReference>
+    </ServiceInfo>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+2013-07-08 00:30:10,249 DEBUG (Client.java:331) - Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>3</SensorIDInSIR>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+      </ServiceReference>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.003 sec <<< FAILURE!
+testPostExampleDeleteReference(org.n52.sir.IT.DeleteSensorInfoIT)  Time elapsed: 0.001 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.DeleteSensorInfoIT.testPostExampleDeleteReference(DeleteSensorInfoIT.java:51)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+testPostExampleDeleteSensor(org.n52.sir.IT.DeleteSensorInfoIT)  Time elapsed: 0.002 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.DeleteSensorInfoIT.testPostExampleDeleteSensor(DeleteSensorInfoIT.java:64)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.DescribeSensorIT
+2013-07-08 00:30:10,283 DEBUG (Client.java:331) - Sending request: <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>water gage</ns:keyword>
+          <ns:keyword>warning system</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:Sensor:IFGI:station_4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>station 4781, a dummy test station near Münster</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>station 4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:classification>
+        <ns:ClassifierList>
+          <ns:classifier name="intendedApplication">
+            <ns:Term>
+              <ns:value>water gauge</ns:value>
+            </ns:Term>
+          </ns:classifier>
+          <ns:classifier name="sensorType">
+            <ns:Term>
+              <ns:value>gauge station</ns:value>
+            </ns:Term>
+          </ns:classifier>
+        </ns:ClassifierList>
+      </ns:classification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-04-25T00:00:00.000+02:00</gml:beginPosition>
+          <gml:endPosition>2010-04-25T00:00:00.000+02:00</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>51.77</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>52.076</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.833</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="WWU_ifgi_test_sensor_data_contact">
+          <ns:individualName>Daniel Nüst</ns:individualName>
+          <ns:organizationName>Institute for Geoinformatics - Westfälische Wilhelms Universität Münster - Sensor Web and Simulation Lab</ns:organizationName>
+          <ns:contactInfo>
+            <ns:address>
+              <ns:deliveryPoint>Weseler Straße 253</ns:deliveryPoint>
+              <ns:city>Münster</ns:city>
+              <ns:postalCode>48151</ns:postalCode>
+              <ns:country>Germany</ns:country>
+              <ns:electronicMailAddress>daniel.nuest@uni-muenster.de</ns:electronicMailAddress>
+            </ns:address>
+          </ns:contactInfo>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position>
+          <swe:location>
+            <swe:Vector gml:id="SYSTEM_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="degree"/>
+                  <swe:value>51.977160249276004</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:value>7.357731467853749</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:value>61.52</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="WaterSAS_68">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>WaterSAS:68</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+          <ns:interface name="SOS6_55">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>SOS6:55</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="water_level">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+          </ns:input>
+          <ns:input name="current">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="water_level">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="current">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+    <ServiceReference>
+      <ServiceURL>http://service.url</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+    </ServiceReference>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-07-08 00:30:10,293 DEBUG (Client.java:331) - Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>3</SensorIDInSIR>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+      </ServiceReference>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+2013-07-08 00:30:10,321 DEBUG (Client.java:331) - Sending request: <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>water gage</ns:keyword>
+          <ns:keyword>warning system</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:Sensor:IFGI:station_4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>station 4781, a dummy test station near Münster</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>station 4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:classification>
+        <ns:ClassifierList>
+          <ns:classifier name="intendedApplication">
+            <ns:Term>
+              <ns:value>water gauge</ns:value>
+            </ns:Term>
+          </ns:classifier>
+          <ns:classifier name="sensorType">
+            <ns:Term>
+              <ns:value>gauge station</ns:value>
+            </ns:Term>
+          </ns:classifier>
+        </ns:ClassifierList>
+      </ns:classification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-04-25T00:00:00.000+02:00</gml:beginPosition>
+          <gml:endPosition>2010-04-25T00:00:00.000+02:00</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>51.77</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>52.076</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.833</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="WWU_ifgi_test_sensor_data_contact">
+          <ns:individualName>Daniel Nüst</ns:individualName>
+          <ns:organizationName>Institute for Geoinformatics - Westfälische Wilhelms Universität Münster - Sensor Web and Simulation Lab</ns:organizationName>
+          <ns:contactInfo>
+            <ns:address>
+              <ns:deliveryPoint>Weseler Straße 253</ns:deliveryPoint>
+              <ns:city>Münster</ns:city>
+              <ns:postalCode>48151</ns:postalCode>
+              <ns:country>Germany</ns:country>
+              <ns:electronicMailAddress>daniel.nuest@uni-muenster.de</ns:electronicMailAddress>
+            </ns:address>
+          </ns:contactInfo>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position>
+          <swe:location>
+            <swe:Vector gml:id="SYSTEM_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="degree"/>
+                  <swe:value>51.977160249276004</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:value>7.357731467853749</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:value>61.52</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="WaterSAS_68">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>WaterSAS:68</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+          <ns:interface name="SOS6_55">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>SOS6:55</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="water_level">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+          </ns:input>
+          <ns:input name="current">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="water_level">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="current">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+    <ServiceReference>
+      <ServiceURL>http://service.url</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+    </ServiceReference>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-07-08 00:30:10,325 DEBUG (Client.java:331) - Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>3</SensorIDInSIR>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+      </ServiceReference>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.073 sec <<< FAILURE!
+describeSensorUsingDocument(org.n52.sir.IT.DescribeSensorIT)  Time elapsed: 0.042 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.DescribeSensorIT.setup(DescribeSensorIT.java:65)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+describeSensorUsingDocument(org.n52.sir.IT.DescribeSensorIT)  Time elapsed: 0.043 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.DescribeSensorIT.deleteInsertedSensor(DescribeSensorIT.java:104)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+describeSensor(org.n52.sir.IT.DescribeSensorIT)  Time elapsed: 0.028 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.DescribeSensorIT.setup(DescribeSensorIT.java:65)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+describeSensor(org.n52.sir.IT.DescribeSensorIT)  Time elapsed: 0.03 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.DescribeSensorIT.deleteInsertedSensor(DescribeSensorIT.java:104)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.DisconnectFromCatalogIT
+Creating temporary conneciton for immediate deletion: http://localhost:8080/ergorr/webservice
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.003 sec <<< FAILURE!
+testConnectFromCatalogFile(org.n52.sir.IT.DisconnectFromCatalogIT)  Time elapsed: 0.001 sec  <<< ERROR!
+org.apache.xmlbeans.XmlException: Element ConnectToCatalogRequest@http://52north.org/sir/0.3.2 is not a valid DisconnectFromCatalogRequest@http://52north.org/sir/0.3.2 document or a valid substitution.
+	at org.apache.xmlbeans.impl.store.Locale.autoTypeDocument(Locale.java:328)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1279)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:252)
+	at org.x52North.sir.x032.DisconnectFromCatalogRequestDocument$Factory.parse(DisconnectFromCatalogRequestDocument.java:146)
+	at org.n52.sir.IT.DisconnectFromCatalogIT.testConnectFromCatalogFile(DisconnectFromCatalogIT.java:71)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+testDisconnectFromCatalogBean(org.n52.sir.IT.DisconnectFromCatalogIT)  Time elapsed: 0.001 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.ConnectToCatalogBean.buildRequest(ConnectToCatalogBean.java:71)
+	at org.n52.sir.IT.DisconnectFromCatalogIT.setUpConnection(DisconnectFromCatalogIT.java:90)
+	at org.n52.sir.IT.DisconnectFromCatalogIT.testDisconnectFromCatalogBean(DisconnectFromCatalogIT.java:51)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.GetCapabilitiesIT
+2013-07-08 00:30:10,340 DEBUG (Client.java:331) - Sending request: <sir:GetCapabilities service="SIR" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd" xmlns:sir="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/ows/1.1">
+  <AcceptVersions>
+    <Version>0.3.0</Version>
+  </AcceptVersions>
+  <Sections>
+    <Section>Operationsmetadata</Section>
+    <Section>Contents</Section>
+  </Sections>
+</sir:GetCapabilities>
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.004 sec <<< FAILURE!
+getCapabilites(org.n52.sir.IT.GetCapabilitiesIT)  Time elapsed: 0.004 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.GetCapabilitiesIT.getCapabilites(GetCapabilitiesIT.java:53)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.GetSensorStatusIT
+2013-07-08 00:30:10,349 DEBUG (Client.java:331) - Sending request: <GetSensorStatusRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SensorIdentification>
+    <ServiceReference>
+      <ServiceURL>http://mars.uni-muenster.de:8080/OWS5SOS/sos</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>urn:ogc:object:procedure:CITE:WeatherService:NYC</ServiceSpecificSensorID>
+    </ServiceReference>
+  </SensorIdentification>
+  <PropertyFilter>
+    <PropertyName>urn:osiris:sensorproperties:batterystate</PropertyName>
+    <PropertyConstraint>
+      <Constraint>
+        <IsEqualTo>full</IsEqualTo>
+      </Constraint>
+    </PropertyConstraint>
+  </PropertyFilter>
+</GetSensorStatusRequest>
+2013-07-08 00:30:10,352 DEBUG (Client.java:331) - Sending request: <GetSensorStatusRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SearchCriteria>
+    <BoundingBox crs="urn:ogc:def:crs:EPSG:6.14:4326" dimensions="2">
+      <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+      <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+    </BoundingBox>
+  </SearchCriteria>
+  <PropertyFilter>
+    <PropertyName>urn:osiris:sensorproperties:batterystate</PropertyName>
+    <PropertyConstraint>
+      <Constraint>
+        <IsEqualTo>55</IsEqualTo>
+      </Constraint>
+      <Uom code="%"/>
+    </PropertyConstraint>
+  </PropertyFilter>
+</GetSensorStatusRequest>
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.009 sec <<< FAILURE!
+getSensorStatusSearchID(org.n52.sir.IT.GetSensorStatusIT)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.IT.GetSensorStatusIT.getSensorStatus(GetSensorStatusIT.java:44)
+	at org.n52.sir.IT.GetSensorStatusIT.getSensorStatusSearchID(GetSensorStatusIT.java:67)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+getSensorStatusSearchServiceDescription(org.n52.sir.IT.GetSensorStatusIT)  Time elapsed: 0.006 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.GetSensorStatusIT.getSensorStatus(GetSensorStatusIT.java:50)
+	at org.n52.sir.IT.GetSensorStatusIT.getSensorStatusSearchServiceDescription(GetSensorStatusIT.java:73)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+getSensorStatusSearchCriteria(org.n52.sir.IT.GetSensorStatusIT)  Time elapsed: 0.003 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.GetSensorStatusIT.getSensorStatus(GetSensorStatusIT.java:50)
+	at org.n52.sir.IT.GetSensorStatusIT.getSensorStatusSearchCriteria(GetSensorStatusIT.java:61)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.HarvestServiceIT
+2013-07-08 00:30:10,359 DEBUG (Client.java:331) - Sending request: <HarvestServiceRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ServiceURL>http://v-swe.uni-muenster.de:8080/WeatherSOS/sos</ServiceURL>
+  <ServiceType>SOS</ServiceType>
+</HarvestServiceRequest>
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.01 sec <<< FAILURE!
+harvestWeatherServiceDoc(org.n52.sir.IT.HarvestServiceIT)  Time elapsed: 0.005 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.Client.getSirURI(Client.java:168)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:332)
+	at org.n52.sir.IT.HarvestServiceIT.harvestWeatherServiceDoc(HarvestServiceIT.java:68)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+harvestWeatherServiceBean(org.n52.sir.IT.HarvestServiceIT)  Time elapsed: 0.005 sec  <<< ERROR!
+java.lang.NullPointerException
+	at org.n52.sir.client.HarvestServiceBean.buildRequest(HarvestServiceBean.java:73)
+	at org.n52.sir.IT.HarvestServiceIT.harvestWeatherServiceBean(HarvestServiceIT.java:53)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.InsertSensorInfoNewSensorIT
+2013-07-08 00:30:10,370 INFO  (SirConfigurator.java:461) -  ***** Config Files loaded successfully! ***** 
+2013-07-08 00:30:10,370 INFO  (SirConfigurator.java:797) -  * Initializing SirConfigurator ... 
+2013-07-08 00:30:10,399 INFO  (SirConfigurator.java:1001) -  ***** org.n52.sir.ds.pgsql.PGSQLDAOFactory loaded successfully! ***** 
+2013-07-08 00:30:10,401 INFO  (SirConfigurator.java:962) -  ***** org.n52.sir.catalog.csw.CswFactory loaded successfully! ***** 
+2013-07-08 00:30:10,404 INFO  (SirConfigurator.java:1055) -  ***** org.n52.sir.decode.impl.HttpGetRequestDecoder loaded successfully! ***** 
+2013-07-08 00:30:10,413 INFO  (SirConfigurator.java:1103) -  ***** org.n52.sir.decode.impl.HttpPostRequestDecoder loaded successfully! ***** 
+2013-07-08 00:30:10,414 INFO  (SirConfigurator.java:1353) - Loading capabilities skeleton from /xml/sirCapabilitiesSkeleton.xml
+2013-07-08 00:30:10,427 INFO  (SirConfigurator.java:1196) -  ***** org.n52.sir.catalog.CatalogStatusHandlerImpl loaded successfully! ***** 
+2013-07-08 00:30:10,432 INFO  (JobSchedulerFactoryImpl.java:47) - NEW JobSchedulerFactory [timerServlet=null]
+2013-07-08 00:30:10,432 INFO  (SirConfigurator.java:1149) -  ***** org.n52.sir.util.jobs.impl.JobSchedulerFactoryImpl loaded successfully! ***** 
+2013-07-08 00:30:10,432 DEBUG (SirConfigurator.java:1424) -  ***** Starting Thread for catalog connections with a delay of 10 seconds ***** 
+2013-07-08 00:30:10,436 INFO  (SirConfigurator.java:1248) -  ***** org.n52.sir.xml.impl.TransformerFactoryImpl loaded successfully! Using files from folder null/xslt/. ***** 
+2013-07-08 00:30:10,439 INFO  (ValidatorFactoryImpl.java:58) - NEW ValidatorFactoryImpl.
+2013-07-08 00:30:10,658 DEBUG (SensorML4DiscoveryValidatorImpl.java:336) - Creating XSL from Schematron profile: D:\52n\OpenSensorSearch\52n-sir\target\test-classes\SensorML_Profile_for_Discovery.sch
+2013-07-08 00:30:10,659 DEBUG (SensorML4DiscoveryValidatorImpl.java:367) - Created Stream Source of svrl xsl file.
+2013-07-08 00:30:11,173 DEBUG (SensorML4DiscoveryValidatorImpl.java:205) - NEW SensorML4DiscoveryValidatorImpl
+2013-07-08 00:30:11,173 INFO  (SirConfigurator.java:1301) -  ***** org.n52.sir.xml.impl.ValidatorFactoryImpl loaded successfully! ***** 
+2013-07-08 00:30:11,173 INFO  (SirConfigurator.java:908) -  ***** Initialized SirConfigurator successfully! ***** 
+2013-07-08 00:30:11,357 INFO  (SensorML4DiscoveryValidatorImpl.java:362) - Created XSL file for validation: C:\Users\Yakoub\AppData\Local\Temp\SensorML_Profile_for_Discovery.sch.xsl
+2013-07-08 00:30:11,411 DEBUG (Client.java:331) - Sending request: <InsertSensorInfoRequest xmlns="http://52north.org/sir/0.3.2">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>A test sensor.</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>testkeyword</ns:keyword>
+          <ns:keyword>test</ns:keyword>
+          <ns:keyword>another keyword</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <!--~~~~~~~~~~~~~~-->
+      <!--Identification-->
+      <!--~~~~~~~~~~~~~~-->
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:testsensor</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>A Test Sensor</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>TEST</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-01-01</gml:beginPosition>
+          <gml:endPosition>2011-12-31</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <!--station is NOT collecting data-->
+          <swe:field name="status">
+            <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
+              <swe:value>false</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="mobile">
+            <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isMobile">
+              <swe:value>false</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>1</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>2</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>4</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="contact">
+          <ns:individualName>Me</ns:individualName>
+          <ns:organizationName>My Org</ns:organizationName>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+          <swe:location>
+            <swe:Vector gml:id="STATION_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                  <swe:value>1.5</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                  <swe:value>3.5</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
+                  <swe:value>42</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="SOS1">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://v-swe.uni- muenster.de:8080/WeatherSOS/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>sensor02</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="precipitation">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Precipitation"/>
+          </ns:input>
+          <ns:input name="atmosphericTemperature">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::AirTemperature"/>
+          </ns:input>
+          <ns:input name="atmosphericPressure">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::AtmosphericPressure"/>
+          </ns:input>
+          <ns:input name="wind">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Wind"/>
+          </ns:input>
+          <ns:input name="luminance">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Luminance"/>
+          </ns:input>
+          <ns:input name="humidity">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::RelativeHumidity"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="precipitation">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Precipitation1Hour">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>RAIN_GAUGE</ns:id>
+                  <ns:name>Rain</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="mm" xlink:href="urn:ogc:def:uom:UCUM::mm"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="windDirection">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::WindDirection">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>WIND_DIRECTION</ns:id>
+                  <ns:name>Direction of the wind</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="windSpeed">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::WindSpeed">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>WIND_SPEED</ns:id>
+                  <ns:name>Speed of the wind</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="m/s" xlink:href="urn:ogc:def:uom:UCUM::m_s"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="barometricPressure">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::BarometricPressure">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>ATMOSPHERIC_PRESSURE</ns:id>
+                  <ns:name>Pressure of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="hPa" xlink:href="urn:ogc:def:uom:UCUM::hPa"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="temperature">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Temperature">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>ATMOSPHERIC_TEMPERATURE</ns:id>
+                  <ns:name>Temperature of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="Cel" xlink:href="urn:ogc:def:uom:UCUM::degC"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="luminance">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Luminance">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>LUMINANCE</ns:id>
+                  <ns:name>Luminance</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="lx" xlink:href="urn:ogc:def:uom:UCUM::lx"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="relativeHumidity">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::RelativeHumidity">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>HUMIDITY</ns:id>
+                  <ns:name>Humidity of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="%" xlink:href="urn:ogc:def:uom:UCUM::%25"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-07-08 00:30:11,420 DEBUG (Client.java:104) - Sending request (first 100 characters): <ns:InsertSensorInfoRequest xmlns:ns="http://52north.org/sir/0.3.2"><ns:InfoToBeInserted><ns1:Sensor
+2013-07-08 00:30:11,446 DEBUG (Client.java:124) - Client connecting via POST to http://localhost:8080/SIR/sir
+2013-07-08 00:30:11,754 ERROR (Client.java:146) - Error parsing response.
+org.apache.xmlbeans.XmlException: error: </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3486)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:663)
+	at org.n52.sir.client.Client.doSend(Client.java:142)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:351)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:333)
+	at org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertSampleSensor(InsertSensorInfoNewSensorIT.java:91)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.xml.sax.SAXParseException; systemId: file:; lineNumber: 1; columnNumber: 966; </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	... 38 more
+Response:<ExceptionReport version="1.0.0" xsi:schemaLocation="http://www.opengis.net/ows http://schemas.opengis.net/ows/1.0.0/owsAll.xsd" xmlns="http://www.opengis.net/ows" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Exception exceptionCode="NoApplicableCode" locator="Client.doSend()">
+    <ExceptionText><![CDATA[Could not parse response (received via POST) to the request <ns:InsertSensorInfoRequest xmlns:ns="http://52north.org/sir/0.3.2"><ns:InfoToBeInserted><ns1:SensorDescription xsi:type="ns:SystemType" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://www.opengis.net/sensorML/1.0.1" xmlns:ns1="http://52north.org/sir/0.3.2">
+			<gml:description>A test sensor.</gml:description>
+			<ns:keywords>
+				<ns:KeywordList>
+					<ns:keyword>testkeyword</ns:keyword>
+					<ns:keyword>test</ns:keyword>
+					<ns:keyword>another keyword</ns:keyword>
+				</ns:KeywordList>
+			</ns:keywords>
+			<!--~~~~~~~~~~~~~~ -->
+			<!--Identification -->
+			<!--~~~~~~~~~~~~~~ -->
+			<ns:identification>
+				<ns:IdentifierList>
+					<ns:identifier name="uniqueID">
+						<ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+							<ns:value>urn:ogc:object:feature:testsensor</ns:value>
+						</ns:Term>
+					</ns:identifier>
+					<ns:identifier name="longName">
+						<ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+							<ns:value>A Test Sensor</ns:value>
+						</ns:Term>
+					</ns:identifier>
+					<ns:identifier name="shortName">
+						<ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+							<ns:value>TEST</ns:value>
+						</ns:Term>
+					</ns:identifier>
+				</ns:IdentifierList>
+			</ns:identification>
+			<ns:validTime>
+				<gml:TimePeriod>
+					<gml:beginPosition>2010-01-01</gml:beginPosition>
+					<gml:endPosition>2011-12-31</gml:endPosition>
+				</gml:TimePeriod>
+			</ns:validTime>
+			<ns:capabilities>
+				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+					<!--station is NOT collecting data -->
+					<swe:field name="status">
+						<swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
+							<swe:value>false</swe:value>
+						</swe:Boolean>
+					</swe:field>
+					<swe:field name="mobile">
+						<swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isMobile">
+							<swe:value>false</swe:value>
+						</swe:Boolean>
+					</swe:field>
+					<swe:field name="observedBBOX">
+						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+							<swe:lowerCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>1</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>2</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:lowerCorner>
+							<swe:upperCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>3</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+											<swe:value>4</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:upperCorner>
+						</swe:Envelope>
+					</swe:field>
+				</swe:DataRecord>
+			</ns:capabilities>
+			<ns:contact>
+				<ns:ResponsibleParty gml:id="contact">
+					<ns:individualName>Me</ns:individualName>
+					<ns:organizationName>My Org</ns:organizationName>
+				</ns:ResponsibleParty>
+			</ns:contact>
+			<ns:position name="stationPosition">
+				<swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+					<swe:location>
+						<swe:Vector gml:id="STATION_LOCATION">
+							<swe:coordinate name="latitude">
+								<swe:Quantity axisID="y">
+									<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+									<swe:value>1.5</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="longitude">
+								<swe:Quantity axisID="x">
+									<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+									<swe:value>3.5</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="altitude">
+								<swe:Quantity axisID="z">
+									<swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
+									<swe:value>42</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:location>
+				</swe:Position>
+			</ns:position>
+			<ns:interfaces>
+				<ns:InterfaceList>
+					<ns:interface name="SOS1">
+						<ns:InterfaceDefinition>
+							<ns:serviceLayer>
+								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://v-swe.uni- muenster.de:8080/WeatherSOS/sos</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SOS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>sensor02</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</ns:serviceLayer>
+						</ns:InterfaceDefinition>
+					</ns:interface>
+				</ns:InterfaceList>
+			</ns:interfaces>
+
+			<ns:inputs>
+				<ns:InputList>
+					<ns:input name="precipitation">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Precipitation"/>
+					</ns:input>
+					<ns:input name="atmosphericTemperature">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::AirTemperature"/>
+					</ns:input>
+					<ns:input name="atmosphericPressure">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::AtmosphericPressure"/>
+					</ns:input>
+					<ns:input name="wind">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Wind"/>
+					</ns:input>
+					<ns:input name="luminance">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::Luminance"/>
+					</ns:input>
+					<ns:input name="humidity">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC::RelativeHumidity"/>
+					</ns:input>
+				</ns:InputList>
+			</ns:inputs>
+			<ns:outputs>
+				<ns:OutputList>
+					<ns:output name="precipitation">
+						<swe:Quantity definition="urn:ogc:def:property:OGC::Precipitation1Hour">
+							<gml:metaDataProperty>
+								<ns:offering>
+									<ns:id>RAIN_GAUGE</ns:id>
+									<ns:name>Rain</ns:name>
+								</ns:offering>
+							</gml:metaDataProperty>
+							<swe:uom code="mm" xlink:href="urn:ogc:def:uom:UCUM::mm"/>
+						</swe:Quantity>
+					</ns:output>
+					<ns:output name="windDirection">
+						<swe:Quantity definition="urn:ogc:def:property:OGC::WindDirection">
+							<gml:metaDataProperty>
+								<ns:offering>
+									<ns:id>WIND_DIRECTION</ns:id>
+									<ns:name>Direction of the wind</ns:name>
+								</ns:offering>
+							</gml:metaDataProperty>
+							<swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+						</swe:Quantity>
+					</ns:output>
+					<ns:output name="windSpeed">
+						<swe:Quantity definition="urn:ogc:def:property:OGC::WindSpeed">
+							<gml:metaDataProperty>
+								<ns:offering>
+									<ns:id>WIND_SPEED</ns:id>
+									<ns:name>Speed of the wind</ns:name>
+								</ns:offering>
+							</gml:metaDataProperty>
+							<swe:uom code="m/s" xlink:href="urn:ogc:def:uom:UCUM::m_s"/>
+						</swe:Quantity>
+					</ns:output>
+					<ns:output name="barometricPressure">
+						<swe:Quantity definition="urn:ogc:def:property:OGC::BarometricPressure">
+							<gml:metaDataProperty>
+								<ns:offering>
+									<ns:id>ATMOSPHERIC_PRESSURE</ns:id>
+									<ns:name>Pressure of the atmosphere</ns:name>
+								</ns:offering>
+							</gml:metaDataProperty>
+							<swe:uom code="hPa" xlink:href="urn:ogc:def:uom:UCUM::hPa"/>
+						</swe:Quantity>
+					</ns:output>
+					<ns:output name="temperature">
+						<swe:Quantity definition="urn:ogc:def:property:OGC::Temperature">
+							<gml:metaDataProperty>
+								<ns:offering>
+									<ns:id>ATMOSPHERIC_TEMPERATURE</ns:id>
+									<ns:name>Temperature of the atmosphere</ns:name>
+								</ns:offering>
+							</gml:metaDataProperty>
+							<swe:uom code="Cel" xlink:href="urn:ogc:def:uom:UCUM::degC"/>
+						</swe:Quantity>
+					</ns:output>
+					<ns:output name="luminance">
+						<swe:Quantity definition="urn:ogc:def:property:OGC::Luminance">
+							<gml:metaDataProperty>
+								<ns:offering>
+									<ns:id>LUMINANCE</ns:id>
+									<ns:name>Luminance</ns:name>
+								</ns:offering>
+							</gml:metaDataProperty>
+							<swe:uom code="lx" xlink:href="urn:ogc:def:uom:UCUM::lx"/>
+						</swe:Quantity>
+					</ns:output>
+					<ns:output name="relativeHumidity">
+						<swe:Quantity definition="urn:ogc:def:property:OGC::RelativeHumidity">
+							<gml:metaDataProperty>
+								<ns:offering>
+									<ns:id>HUMIDITY</ns:id>
+									<ns:name>Humidity of the atmosphere</ns:name>
+								</ns:offering>
+							</gml:metaDataProperty>
+							<swe:uom code="%" xlink:href="urn:ogc:def:uom:UCUM::%25"/>
+						</swe:Quantity>
+					</ns:output>
+				</ns:OutputList>
+			</ns:outputs>
+		</ns1:SensorDescription></ns:InfoToBeInserted></ns:InsertSensorInfoRequest>
+
+
+STACKTRACE: org.apache.xmlbeans.XmlException: error: </body> does not close tag <HR>.
+org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3486)
+org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:663)
+org.n52.sir.client.Client.doSend(Client.java:142)
+org.n52.sir.client.Client.xSendPostRequest(Client.java:351)
+org.n52.sir.client.Client.xSendPostRequest(Client.java:333)
+org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertSampleSensor(InsertSensorInfoNewSensorIT.java:91)
+sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+java.lang.reflect.Method.invoke(Method.java:601)
+org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+java.lang.reflect.Method.invoke(Method.java:601)
+org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)]]></ExceptionText>
+  </Exception>
+</ExceptionReport>
+2013-07-08 00:30:11,807 DEBUG (Client.java:331) - Sending request: <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>water gage</ns:keyword>
+          <ns:keyword>warning system</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:Sensor:IFGI:station_4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>station 4781, a dummy test station near Münster</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>station 4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:classification>
+        <ns:ClassifierList>
+          <ns:classifier name="intendedApplication">
+            <ns:Term>
+              <ns:value>water gauge</ns:value>
+            </ns:Term>
+          </ns:classifier>
+          <ns:classifier name="sensorType">
+            <ns:Term>
+              <ns:value>gauge station</ns:value>
+            </ns:Term>
+          </ns:classifier>
+        </ns:ClassifierList>
+      </ns:classification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-04-25T00:00:00.000+02:00</gml:beginPosition>
+          <gml:endPosition>2010-04-25T00:00:00.000+02:00</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>51.77</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>52.076</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.833</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="WWU_ifgi_test_sensor_data_contact">
+          <ns:individualName>Daniel Nüst</ns:individualName>
+          <ns:organizationName>Institute for Geoinformatics - Westfälische Wilhelms Universität Münster - Sensor Web and Simulation Lab</ns:organizationName>
+          <ns:contactInfo>
+            <ns:address>
+              <ns:deliveryPoint>Weseler Straße 253</ns:deliveryPoint>
+              <ns:city>Münster</ns:city>
+              <ns:postalCode>48151</ns:postalCode>
+              <ns:country>Germany</ns:country>
+              <ns:electronicMailAddress>daniel.nuest@uni-muenster.de</ns:electronicMailAddress>
+            </ns:address>
+          </ns:contactInfo>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position>
+          <swe:location>
+            <swe:Vector gml:id="SYSTEM_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="degree"/>
+                  <swe:value>51.977160249276004</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:value>7.357731467853749</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:value>61.52</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="WaterSAS_68">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>WaterSAS:68</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+          <ns:interface name="SOS6_55">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>SOS6:55</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="water_level">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+          </ns:input>
+          <ns:input name="current">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="water_level">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="current">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+    <ServiceReference>
+      <ServiceURL>http://service.url</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+    </ServiceReference>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-07-08 00:30:11,814 DEBUG (Client.java:104) - Sending request (first 100 characters): <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-07-08 00:30:11,815 DEBUG (Client.java:124) - Client connecting via POST to http://localhost:8080/SIR/sir
+2013-07-08 00:30:11,823 ERROR (Client.java:146) - Error parsing response.
+org.apache.xmlbeans.XmlException: error: </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3486)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:663)
+	at org.n52.sir.client.Client.doSend(Client.java:142)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:351)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:333)
+	at org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertSensorDirectly(InsertSensorInfoNewSensorIT.java:72)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.xml.sax.SAXParseException; systemId: file:; lineNumber: 1; columnNumber: 966; </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	... 38 more
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 1.458 sec <<< FAILURE!
+insertSampleSensor(org.n52.sir.IT.InsertSensorInfoNewSensorIT)  Time elapsed: 1.421 sec  <<< ERROR!
+org.apache.xmlbeans.XmlException: Element ExceptionReport@http://www.opengis.net/ows is not a valid InsertSensorInfoResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+	at org.apache.xmlbeans.impl.store.Locale.autoTypeDocument(Locale.java:328)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1390)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1369)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:370)
+	at org.x52North.sir.x032.InsertSensorInfoResponseDocument$Factory.parse(InsertSensorInfoResponseDocument.java:268)
+	at org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertSampleSensor(InsertSensorInfoNewSensorIT.java:93)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+insertSensorDirectly(org.n52.sir.IT.InsertSensorInfoNewSensorIT)  Time elapsed: 0.036 sec  <<< ERROR!
+org.apache.xmlbeans.XmlException: Element ExceptionReport@http://www.opengis.net/ows is not a valid InsertSensorInfoResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+	at org.apache.xmlbeans.impl.store.Locale.autoTypeDocument(Locale.java:328)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1390)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1369)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:370)
+	at org.x52North.sir.x032.InsertSensorInfoResponseDocument$Factory.parse(InsertSensorInfoResponseDocument.java:268)
+	at org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertSensorDirectly(InsertSensorInfoNewSensorIT.java:74)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.InsertSensorStatusIT
+2013-07-08 00:30:11,833 DEBUG (Client.java:331) - Sending request: <InsertSensorStatusRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <StatusDescription>
+    <SensorIDInSIR>1</SensorIDInSIR>
+    <Status>
+      <PropertyName>urn:osiris:sensorproperties:batterystate</PropertyName>
+      <PropertyValue>55</PropertyValue>
+      <Uom code="%"/>
+      <Timestamp gml:id="timestamp_01">
+        <gml:timePosition>2010-04-16T15:43:06+0200</gml:timePosition>
+      </Timestamp>
+    </Status>
+  </StatusDescription>
+</InsertSensorStatusRequest>
+2013-07-08 00:30:11,834 DEBUG (Client.java:104) - Sending request (first 100 characters): <InsertSensorStatusRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/
+2013-07-08 00:30:11,835 DEBUG (Client.java:124) - Client connecting via POST to http://localhost:8080/SIR/sir
+2013-07-08 00:30:11,843 ERROR (Client.java:146) - Error parsing response.
+org.apache.xmlbeans.XmlException: error: </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3486)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:663)
+	at org.n52.sir.client.Client.doSend(Client.java:142)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:351)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:333)
+	at org.n52.sir.IT.InsertSensorStatusIT.insertSensorStatus(InsertSensorStatusIT.java:56)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.xml.sax.SAXParseException; systemId: file:; lineNumber: 1; columnNumber: 966; </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	... 37 more
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.016 sec <<< FAILURE!
+insertSensorStatus(org.n52.sir.IT.InsertSensorStatusIT)  Time elapsed: 0.016 sec  <<< ERROR!
+org.apache.xmlbeans.XmlException: Element ExceptionReport@http://www.opengis.net/ows is not a valid InsertSensorStatusResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+	at org.apache.xmlbeans.impl.store.Locale.autoTypeDocument(Locale.java:328)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1390)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1369)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:370)
+	at org.x52North.sir.x032.InsertSensorStatusResponseDocument$Factory.parse(InsertSensorStatusResponseDocument.java:136)
+	at org.n52.sir.IT.InsertSensorStatusIT.insertSensorStatus(InsertSensorStatusIT.java:58)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.OpenSearchIT
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.004 sec <<< FAILURE!
+testJSONResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT)  Time elapsed: 0 sec  <<< ERROR!
+java.io.CharConversionException: Malformed UTF-8 character: 0xdf 0x65
+	at org.apache.xmlbeans.impl.piccolo.xml.UTF8XMLDecoder.decode(UTF8XMLDecoder.java:80)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader$FastStreamDecoder.read(XMLStreamReader.java:762)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader.read(XMLStreamReader.java:162)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yy_refill(PiccoloLexer.java:3474)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yylex(PiccoloLexer.java:3958)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yylex(Piccolo.java:1290)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yyparse(Piccolo.java:1400)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:714)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:252)
+	at net.opengis.sensorML.x101.SensorMLDocument$Factory.parse(SensorMLDocument.java:898)
+	at org.n52.sir.IT.OpenSearchIT.insertSensor(OpenSearchIT.java:72)
+	at org.n52.sir.IT.OpenSearchIT.insertSensors(OpenSearchIT.java:89)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+testXMLResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT)  Time elapsed: 0.001 sec  <<< ERROR!
+java.io.CharConversionException: Malformed UTF-8 character: 0xdf 0x65
+	at org.apache.xmlbeans.impl.piccolo.xml.UTF8XMLDecoder.decode(UTF8XMLDecoder.java:80)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader$FastStreamDecoder.read(XMLStreamReader.java:762)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader.read(XMLStreamReader.java:162)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yy_refill(PiccoloLexer.java:3474)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yylex(PiccoloLexer.java:3958)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yylex(Piccolo.java:1290)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yyparse(Piccolo.java:1400)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:714)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:252)
+	at net.opengis.sensorML.x101.SensorMLDocument$Factory.parse(SensorMLDocument.java:898)
+	at org.n52.sir.IT.OpenSearchIT.insertSensor(OpenSearchIT.java:72)
+	at org.n52.sir.IT.OpenSearchIT.insertSensors(OpenSearchIT.java:89)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+testKMLResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT)  Time elapsed: 0.001 sec  <<< ERROR!
+java.io.CharConversionException: Malformed UTF-8 character: 0xdf 0x65
+	at org.apache.xmlbeans.impl.piccolo.xml.UTF8XMLDecoder.decode(UTF8XMLDecoder.java:80)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader$FastStreamDecoder.read(XMLStreamReader.java:762)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader.read(XMLStreamReader.java:162)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yy_refill(PiccoloLexer.java:3474)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yylex(PiccoloLexer.java:3958)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yylex(Piccolo.java:1290)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yyparse(Piccolo.java:1400)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:714)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:252)
+	at net.opengis.sensorML.x101.SensorMLDocument$Factory.parse(SensorMLDocument.java:898)
+	at org.n52.sir.IT.OpenSearchIT.insertSensor(OpenSearchIT.java:72)
+	at org.n52.sir.IT.OpenSearchIT.insertSensors(OpenSearchIT.java:89)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+testRSSResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT)  Time elapsed: 0.001 sec  <<< ERROR!
+java.io.CharConversionException: Malformed UTF-8 character: 0xdf 0x65
+	at org.apache.xmlbeans.impl.piccolo.xml.UTF8XMLDecoder.decode(UTF8XMLDecoder.java:80)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader$FastStreamDecoder.read(XMLStreamReader.java:762)
+	at org.apache.xmlbeans.impl.piccolo.xml.XMLStreamReader.read(XMLStreamReader.java:162)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yy_refill(PiccoloLexer.java:3474)
+	at org.apache.xmlbeans.impl.piccolo.xml.PiccoloLexer.yylex(PiccoloLexer.java:3958)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yylex(Piccolo.java:1290)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.yyparse(Piccolo.java:1400)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:714)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:252)
+	at net.opengis.sensorML.x101.SensorMLDocument$Factory.parse(SensorMLDocument.java:898)
+	at org.n52.sir.IT.OpenSearchIT.insertSensor(OpenSearchIT.java:72)
+	at org.n52.sir.IT.OpenSearchIT.insertSensors(OpenSearchIT.java:89)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.SearchSensorIT
+Search Sensor by service Description
+2013-07-08 00:30:11,861 DEBUG (Client.java:331) - Sending request: <SearchSensorRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SensorIdentification>
+    <ServiceReference>
+      <ServiceURL>http://mars.uni-muenster.de:8080/OWS5SOS/sos</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>urn:ogc:object:procedure:CITE:WeatherService:NYC</ServiceSpecificSensorID>
+    </ServiceReference>
+  </SensorIdentification>
+  <SensorIdentification>
+    <ServiceReference>
+      <ServiceURL>http://mars.uni-muenster.de:8080/OWS5SOS/sos</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>urn:ogc:object:procedure:CITE:WeatherService:JFK</ServiceSpecificSensorID>
+    </ServiceReference>
+  </SensorIdentification>
+  <SimpleResponse>true</SimpleResponse>
+</SearchSensorRequest>
+2013-07-08 00:30:11,862 DEBUG (Client.java:104) - Sending request (first 100 characters): <SearchSensorRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 
+2013-07-08 00:30:11,863 DEBUG (Client.java:124) - Client connecting via POST to http://localhost:8080/SIR/sir
+2013-07-08 00:30:11,872 ERROR (Client.java:146) - Error parsing response.
+org.apache.xmlbeans.XmlException: error: </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3486)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:663)
+	at org.n52.sir.client.Client.doSend(Client.java:142)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:351)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:333)
+	at org.n52.sir.IT.SearchSensorIT.searchSensor(SearchSensorIT.java:51)
+	at org.n52.sir.IT.SearchSensorIT.searchSensorByDescription(SearchSensorIT.java:73)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.xml.sax.SAXParseException; systemId: file:; lineNumber: 1; columnNumber: 966; </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	... 38 more
+Search Sensor by ID in SIR
+2013-07-08 00:30:11,878 DEBUG (Client.java:331) - Sending request: <sir:SearchSensorRequest service="SIR" sir:version="0.3.2" xsi:schemaLocation="http://52north.org/sir/0.3.2  http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns:sir="http://52north.org/sir/0.3.2" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <sir:SensorIdentification>
+    <sir:SensorIDInSIR>1</sir:SensorIDInSIR>
+  </sir:SensorIdentification>
+  <sir:SimpleResponse>true</sir:SimpleResponse>
+</sir:SearchSensorRequest>
+2013-07-08 00:30:11,879 DEBUG (Client.java:104) - Sending request (first 100 characters): <sir:SearchSensorRequest service="SIR" sir:version="0.3.2" xsi:schemaLocation="http://52north.org/si
+2013-07-08 00:30:11,879 DEBUG (Client.java:124) - Client connecting via POST to http://localhost:8080/SIR/sir
+2013-07-08 00:30:11,887 ERROR (Client.java:146) - Error parsing response.
+org.apache.xmlbeans.XmlException: error: </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3486)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1276)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1263)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345)
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:663)
+	at org.n52.sir.client.Client.doSend(Client.java:142)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:351)
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:333)
+	at org.n52.sir.IT.SearchSensorIT.searchSensor(SearchSensorIT.java:51)
+	at org.n52.sir.IT.SearchSensorIT.searchSensorbyIDInSIR(SearchSensorIT.java:66)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: org.xml.sax.SAXParseException; systemId: file:; lineNumber: 1; columnNumber: 966; </body> does not close tag <HR>.
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038)
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723)
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3454)
+	... 38 more
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.03 sec <<< FAILURE!
+searchSensorByDescription(org.n52.sir.IT.SearchSensorIT)  Time elapsed: 0.015 sec  <<< ERROR!
+org.apache.xmlbeans.XmlException: Element ExceptionReport@http://www.opengis.net/ows is not a valid SearchSensorResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+	at org.apache.xmlbeans.impl.store.Locale.autoTypeDocument(Locale.java:328)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1390)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1369)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:370)
+	at org.x52North.sir.x032.SearchSensorResponseDocument$Factory.parse(SearchSensorResponseDocument.java:293)
+	at org.n52.sir.IT.SearchSensorIT.searchSensor(SearchSensorIT.java:53)
+	at org.n52.sir.IT.SearchSensorIT.searchSensorByDescription(SearchSensorIT.java:73)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+searchSensorbyIDInSIR(org.n52.sir.IT.SearchSensorIT)  Time elapsed: 0.014 sec  <<< ERROR!
+org.apache.xmlbeans.XmlException: Element ExceptionReport@http://www.opengis.net/ows is not a valid SearchSensorResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+	at org.apache.xmlbeans.impl.store.Locale.autoTypeDocument(Locale.java:328)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1390)
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1369)
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:370)
+	at org.x52North.sir.x032.SearchSensorResponseDocument$Factory.parse(SearchSensorResponseDocument.java:293)
+	at org.n52.sir.IT.SearchSensorIT.searchSensor(SearchSensorIT.java:53)
+	at org.n52.sir.IT.SearchSensorIT.searchSensorbyIDInSIR(SearchSensorIT.java:66)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.IT.solr.AutoCompleteServletIT
+2013-07-08 00:30:11,931 DEBUG (SensorMLDecoder.java:605) - A data record, check if bbox!
+2013-07-08 00:30:11,932 DEBUG (SensorMLDecoder.java:613) - Found bbox!
+Parameters:q=keyword%3Ate
+2013-07-08 00:30:12,772 DEBUG (AutoCompleteServletIT.java:91) - another keyword,test,testkeyword
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.188 sec
+Running org.n52.sir.xml.TransformerIT
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.004 sec <<< FAILURE!
+testTransform(org.n52.sir.xml.TransformerIT)  Time elapsed: 0.004 sec  <<< ERROR!
+java.lang.InstantiationError: Could not instantiate Transformer from file javax.xml.transform.stream.StreamSource@d41abaf
+	at org.n52.sir.xml.impl.SMLtoEbRIMTransformer.<init>(SMLtoEbRIMTransformer.java:147)
+	at org.n52.sir.xml.TransformerIT.testTransformation(TransformerIT.java:79)
+	at org.n52.sir.xml.TransformerIT.testTransform(TransformerIT.java:71)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+
+Running org.n52.sir.xml.ValidatorIT
+2013-07-08 00:30:13,089 DEBUG (SensorML4DiscoveryValidatorImpl.java:372) - Reusing existing XSL file C:\Users\Yakoub\AppData\Local\Temp\SensorML_Profile_for_Discovery.sch.xsl for D:\52n\OpenSensorSearch\52n-sir\target\test-classes\SensorML_Profile_for_Discovery.sch.
+2013-07-08 00:30:13,182 DEBUG (SensorML4DiscoveryValidatorImpl.java:205) - NEW SensorML4DiscoveryValidatorImpl
+2013-07-08 00:30:13,188 DEBUG (SensorML4DiscoveryValidatorImpl.java:215) - Validating SensorMLDocument against Discovery Profile...
+2013-07-08 00:30:13,301 DEBUG (SensorML4DiscoveryValidatorImpl.java:263) - Validation result: 0 failures, 3 activated patterns, and 40 fired rules.
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.21 sec
+
+Results :
+
+Tests in error: 
+  testConnectToDialogBean(org.n52.sir.IT.ConnectToCatalogIT)
+  testConnectToDialogFile(org.n52.sir.IT.ConnectToCatalogIT)
+  testPostExampleDeleteReference(org.n52.sir.IT.DeleteSensorInfoIT)
+  testPostExampleDeleteSensor(org.n52.sir.IT.DeleteSensorInfoIT)
+  describeSensorUsingDocument(org.n52.sir.IT.DescribeSensorIT)
+  describeSensorUsingDocument(org.n52.sir.IT.DescribeSensorIT)
+  describeSensor(org.n52.sir.IT.DescribeSensorIT)
+  describeSensor(org.n52.sir.IT.DescribeSensorIT)
+  testConnectFromCatalogFile(org.n52.sir.IT.DisconnectFromCatalogIT): Element ConnectToCatalogRequest@http://52north.org/sir/0.3.2 is not a valid DisconnectFromCatalogRequest@http://52north.org/sir/0.3.2 document or a valid substitution.
+  testDisconnectFromCatalogBean(org.n52.sir.IT.DisconnectFromCatalogIT)
+  getCapabilites(org.n52.sir.IT.GetCapabilitiesIT)
+  getSensorStatusSearchID(org.n52.sir.IT.GetSensorStatusIT)
+  getSensorStatusSearchServiceDescription(org.n52.sir.IT.GetSensorStatusIT)
+  getSensorStatusSearchCriteria(org.n52.sir.IT.GetSensorStatusIT)
+  harvestWeatherServiceDoc(org.n52.sir.IT.HarvestServiceIT)
+  harvestWeatherServiceBean(org.n52.sir.IT.HarvestServiceIT)
+  insertSampleSensor(org.n52.sir.IT.InsertSensorInfoNewSensorIT): Element ExceptionReport@http://www.opengis.net/ows is not a valid InsertSensorInfoResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+  insertSensorDirectly(org.n52.sir.IT.InsertSensorInfoNewSensorIT): Element ExceptionReport@http://www.opengis.net/ows is not a valid InsertSensorInfoResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+  insertSensorStatus(org.n52.sir.IT.InsertSensorStatusIT): Element ExceptionReport@http://www.opengis.net/ows is not a valid InsertSensorStatusResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+  testJSONResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT): Malformed UTF-8 character: 0xdf 0x65
+  testXMLResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT): Malformed UTF-8 character: 0xdf 0x65
+  testKMLResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT): Malformed UTF-8 character: 0xdf 0x65
+  testRSSResponseFromOpenSearch(org.n52.sir.IT.OpenSearchIT): Malformed UTF-8 character: 0xdf 0x65
+  searchSensorByDescription(org.n52.sir.IT.SearchSensorIT): Element ExceptionReport@http://www.opengis.net/ows is not a valid SearchSensorResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+  searchSensorbyIDInSIR(org.n52.sir.IT.SearchSensorIT): Element ExceptionReport@http://www.opengis.net/ows is not a valid SearchSensorResponse@http://52north.org/sir/0.3.2 document or a valid substitution.
+  testTransform(org.n52.sir.xml.TransformerIT): Could not instantiate Transformer from file javax.xml.transform.stream.StreamSource@d41abaf
+
+Tests run: 28, Failures: 0, Errors: 26, Skipped: 0
+
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] 
+[INFO] --- tomcat6-maven-plugin:2.0:shutdown (stop-tomcat) @ 52n-sir ---
+2013-07-08 00:30:13,382 INFO  (TimerServlet.java:209) - called destroy()...
+2013-07-08 00:30:13,382 INFO  (TimerServlet.java:214) - destroyed.
+[INFO] 
+[INFO] --- maven-failsafe-plugin:2.12.4:verify (default) @ 52n-sir ---
+[INFO] Failsafe report directory: D:\52n\OpenSensorSearch\52n-sir\target\failsafe-reports
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 20.535s
+[INFO] Finished at: Mon Jul 08 00:30:13 EET 2013
+[INFO] Final Memory: 25M/251M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-failsafe-plugin:2.12.4:verify (default) on project 52n-sir: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\52n\OpenSensorSearch\52n-sir\target\failsafe-reports for the individual test results.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.n52.sensorweb:52n-sir:war:0.5.3
+[WARNING] 'build.plugins.plugin.(groupId:artifactId)' must be unique but found duplicate declaration of plugin org.apache.tomcat.maven:tomcat6-maven-plugin @ line 317, column 12
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building SIR 0.5.3
+[INFO] ------------------------------------------------------------------------
+[WARNING] The POM for woodstox:wstx-asl:jar:3.2.7 is missing, no dependency information available
+[WARNING] The POM for org.n52.sensorweb:52n-xml-gml-v321:jar:1.0.0 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[INFO] 
+[INFO] --- buildnumber-maven-plugin:1.2:create (default) @ 52n-sir ---
+[INFO] Storing buildNumber: 180 at timestamp: 1373236886955
+[INFO] Executing: cmd.exe /X /C "svn --non-interactive info"
+[INFO] Working directory: D:\52n\OpenSensorSearch\52n-sir
+[INFO] Storing buildScmBranch: UNKNOWN_BRANCH
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ 52n-sir ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 21 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:compile (default-compile) @ 52n-sir ---
+Terminate batch job (Y/N)? 

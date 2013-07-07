@@ -26,8 +26,11 @@
  */
 package org.n52.sir.ds.solr.data;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sos.x10.RegisterSensorDocument.RegisterSensor.SensorDescription;
@@ -37,7 +40,9 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sir.client.Client;
+import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
+import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.json.SearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
@@ -63,22 +68,15 @@ public class HarvestSensor {
 		HarvestServiceRequestDocument doc = HarvestServiceRequestDocument.Factory
 				.parse(f);
 		XmlObject resp = Client.xSendPostRequest(doc);
-		HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory.parse(resp.getDomNode());
-		InsertedSensor [] sensors = respDoc.getHarvestServiceResponse().getInsertedSensorArray();
-		for(int i=0;i<sensors.length;i++){
+		HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory
+				.parse(resp.getDomNode());
+		InsertedSensor[] sensors = respDoc.getHarvestServiceResponse()
+				.getInsertedSensorArray();
+		for (int i = 0; i < sensors.length; i++) {
 			String id = sensors[i].getSensorIDInSIR();
-			SearchSensorRequestDocument requestDoc = SearchSensorRequestDocument.Factory.newInstance();
-			requestDoc.addNewSearchSensorRequest().addNewSensorIdentification().setSensorIDInSIR(id);
-			
-			XmlObject searchResponse = Client.xSendPostRequest(requestDoc);
-			SearchSensorResponseDocument respDocument = SearchSensorResponseDocument.Factory.parse(searchResponse.getDomNode());
-			org.x52North.sir.x032.SearchSensorResponseDocument.SearchSensorResponse.SearchResultElement[] resultElements = respDocument.getSearchSensorResponse().getSearchResultElementArray();
-			for(int j=0;j<resultElements.length;j++){
-				SirSensor sensor = new SirSensor();
-				AbstractProcessType description = resultElements[j].getSensorDescription();
-				sensor.setDescription(description);
-				sensor.setSensorIDInSIR(id);
-			}
+			SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+			Collection<SirSearchResultElement> elements = dao.searchByID(id);
+			assertTrue(elements.size() > 0 );
 		}
 	}
 }

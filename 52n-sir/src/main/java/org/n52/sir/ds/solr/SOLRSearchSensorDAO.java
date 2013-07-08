@@ -371,5 +371,25 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			return null;
 		}
 	}
+	public Collection<SirSearchResultElement> searchByAll(String query){
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		StringBuilder builder = new StringBuilder();
+		builder.append('"');
+		builder.append(query);
+		builder.append('"');
+		params.set("q", builder.toString());
+		params.set("defType", "dismax");
+		params.set("qf",SolrConstants.EDISMAX);
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
+			return encodeResult(list);
+		} catch (Exception e) {
+			log.error("Solr exception", e);
+			return null;
+		}
+		
+	}
 
 }

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.BufferedReader;
@@ -69,17 +70,20 @@ public class TestSIR {
                 URLConnection conn = url.openConnection();
 
                 // Get the response
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuffer sb = new StringBuffer();
-                String line;
-                while ( (line = rd.readLine()) != null) {
-                    sb.append(line);
+                try (BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    StringBuffer sb = new StringBuffer();
+                    String line;
+                    while ( (line = rd.readLine()) != null) {
+                        sb.append(line);
+                    }
+
+                    System.out.println(XmlObject.Factory.parse(sb.toString()));
+
+                    result = sb.toString();
                 }
-                rd.close();
-
-                System.out.println(XmlObject.Factory.parse(sb.toString()));
-
-                result = sb.toString();
+                catch (Exception e) {
+                    log.error("Could not send GET.", e);
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -116,35 +120,21 @@ public class TestSIR {
             urlc.setAllowUserInteraction(false);
             urlc.setRequestProperty("Content-type", "text/xml; charset=" + "UTF-8");
 
-            OutputStream out = urlc.getOutputStream();
-
-            try {
-                Writer writer = new OutputStreamWriter(out, "UTF-8");
+            try (OutputStream out = urlc.getOutputStream(); Writer writer = new OutputStreamWriter(out, "UTF-8")) {
                 pipe(data, writer);
                 writer.close();
             }
             catch (IOException e) {
                 throw new Exception("IOException while posting data", e);
             }
-            finally {
-                if (out != null)
-                    out.close();
-            }
 
-            InputStream in = urlc.getInputStream();
-            try {
-                Reader reader = new InputStreamReader(in);
+            try (InputStream in = urlc.getInputStream(); Reader reader = new InputStreamReader(in)) {
                 pipe(reader, output);
                 reader.close();
             }
             catch (IOException e) {
                 throw new Exception("IOException while reading response", e);
             }
-            finally {
-                if (in != null)
-                    in.close();
-            }
-
         }
         catch (IOException e) {
             throw new Exception("Connection error (is server running at " + endpoint + " ?): " + e);
@@ -217,6 +207,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testInsertSensorStatus(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {
@@ -275,6 +266,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testInsertSensorInfo(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {
@@ -325,6 +317,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testSearchSensor(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {
@@ -367,6 +360,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testDescribeSensor(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {
@@ -407,6 +401,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testHarvestService(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {
@@ -441,6 +436,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testGetAllServices(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {
@@ -463,6 +459,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testGetCapabilities(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {
@@ -518,6 +515,7 @@ public class TestSIR {
      * @throws Exception
      * @throws MalformedURLException
      */
+    @SuppressWarnings("resource")
     private static void testGetSensorStatus(String url, String path, Writer out) throws FileNotFoundException,
             Exception,
             MalformedURLException {

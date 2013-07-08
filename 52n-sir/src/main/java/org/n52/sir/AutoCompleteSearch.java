@@ -27,27 +27,20 @@ package org.n52.sir;
  */
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
-import org.n52.sir.json.SearchResultElement;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
 
 public class AutoCompleteSearch extends HttpServlet {
 
@@ -63,13 +56,9 @@ public class AutoCompleteSearch extends HttpServlet {
 		// I'm using a set to avoid duplications
 		Collection<Object> results = new HashSet<Object>();
 		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-		SirSearchCriteria criteria = new SirSearchCriteria();
-		List<String> crit = new ArrayList<String>();
-		crit.add(text);
-		criteria.setSearchText(crit);
 		try {
 			Collection<SirSearchResultElement> search_results = dao
-					.searchSensor(criteria, true);
+					.searchByAll(text);
 			Iterator<SirSearchResultElement> it = search_results.iterator();
 
 			while (it.hasNext()) {
@@ -77,6 +66,12 @@ public class AutoCompleteSearch extends HttpServlet {
 				SirSolrSensorDescription desc = (SirSolrSensorDescription) element
 						.getSensorDescription();
 				results.addAll(desc.getKeywords());
+				if(desc.getContacts()!=null)results.addAll(desc.getContacts());
+				if(desc.getDescription()!=null)results.add(desc.getDescription().toString());
+				if(desc.getInputs()!=null)results.addAll(desc.getInputs());
+				if(desc.getOutputs()!=null)results.addAll(desc.getOutputs());
+				if(desc.getIdentifiers()!=null)results.addAll(desc.getIdentifiers());
+				if(desc.getClassifiers()!=null)results.addAll(desc.getClassifiers());
 			}
 
 			// returns the result as json array
@@ -95,7 +90,7 @@ public class AutoCompleteSearch extends HttpServlet {
 			pw.flush();
 			resp.flushBuffer();
 			log.debug("Done serving servlet");
-		} catch (OwsExceptionReport e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.error("error on searching", e);
 		}

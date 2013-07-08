@@ -49,6 +49,7 @@ import org.n52.sir.ows.OwsExceptionReport;
 import com.google.gson.Gson;
 
 public class JSONSensorParserTest {
+	
 	@Test
 	public void parseJsonSensorsAndInsert() throws IOException, OwsExceptionReport {
 		File sensor_file = new File(ClassLoader.getSystemResource(
@@ -82,4 +83,5 @@ public class JSONSensorParserTest {
 			dao.insertSensor(sensor);
 		}
 	}
+	
 }

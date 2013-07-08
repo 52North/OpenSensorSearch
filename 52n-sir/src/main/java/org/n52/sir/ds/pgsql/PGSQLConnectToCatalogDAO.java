@@ -82,6 +82,8 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
                 String status = rs.getString(PGDAOConstants.catalogStatus);
                 connections.add(new CatalogConnectionImpl(connectionID, url, pushInterval, status));
             }
+            
+            rs.close();
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();
@@ -132,6 +134,7 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
             while (rs.next()) {
                 connectionID = rs.getString(PGDAOConstants.catalogIdSir);
             }
+            rs.close();
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();

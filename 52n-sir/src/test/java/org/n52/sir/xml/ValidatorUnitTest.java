@@ -36,6 +36,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
+import org.junit.Test;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 
@@ -43,6 +44,7 @@ import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
  * The file name to be changed to ValidatorTest
  */
 public class ValidatorUnitTest {
+	@Test
     public void readFile() throws TransformerConfigurationException,
             TransformerFactoryConfigurationError,
             ParserConfigurationException,

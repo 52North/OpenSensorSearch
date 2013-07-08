@@ -30,7 +30,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
+
+import javax.servlet.UnavailableException;
 
 import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sos.x10.RegisterSensorDocument.RegisterSensor.SensorDescription;
@@ -38,7 +41,9 @@ import net.opengis.sos.x10.RegisterSensorDocument.RegisterSensor.SensorDescripti
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.junit.Before;
 import org.junit.Test;
+import org.n52.sir.SirConfigurator;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
@@ -58,6 +63,18 @@ public class HarvestSensor {
 	private String serviceURL = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos";
 
 	private String serviceType = "SOS";
+
+    @Before
+    public void prepare() throws UnavailableException, OwsExceptionReport {
+
+        if (SirConfigurator.getInstance() == null) {
+            InputStream dbStream = ClassLoader.getSystemResourceAsStream("prop/db.PROPERTIES");
+            InputStream sirStream = ClassLoader.getSystemResourceAsStream("prop/sir.PROPERTIES");
+            // Read configurator if null
+            SirConfigurator.getInstance(sirStream, dbStream, null, null);
+
+        }
+    }
 
 	@Test
 	public void harvestService() throws IOException, OwsExceptionReport,

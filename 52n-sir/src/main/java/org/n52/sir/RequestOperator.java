@@ -16,14 +16,9 @@
 
 package org.n52.sir;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.util.Map;
 
-import org.n52.oss.sir.SirConfig;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.listener.ConnectToCatalogListener;
@@ -59,7 +54,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * 
@@ -76,77 +70,15 @@ public class RequestOperator {
     @Inject
     private IHttpPostRequestDecoder httpPostDecoder;
 
-    private HashMap<String, ISirRequestListener> reqListener = new HashMap<>();
+    private Map<String, ISirRequestListener> reqListener;
 
     @Inject
-    public RequestOperator(@Named(SirConfig.LISTENERS)
-    String listenersList) {
-        init(listenersList);
+    public RequestOperator(Map<String, ISirRequestListener> requestListeners) {
+        this.reqListener = requestListeners;
+
+        // init(listenersList);
 
         log.info("NEW {}", this);
-    }
-
-    private void init(String listenersList) {
-        // loading names of listeners
-        ArrayList<String> listeners = loadListeners(listenersList);
-
-        Iterator<String> iter = listeners.iterator();
-
-        // initialize listeners and add them to the RequestOperator
-        while (iter.hasNext()) {
-
-            // classname of the listener
-            String classname = iter.next();
-
-            try {
-                @SuppressWarnings("unchecked")
-                Class<ISirRequestListener> listenerClass = (Class<ISirRequestListener>) Class.forName(classname);
-
-                Class< ? >[] constrArgs = {};
-
-                Object[] args = {};
-
-                // get Constructor of this class with matching parameter types,
-                // throws a NoSuchMethodException
-                Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
-
-                // add new requestListener to RequestOperator throws a
-                // Instantiation, IllegalAccess and InvocationTargetException
-                addRequestListener(constructor.newInstance(args));
-
-            }
-            catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException
-                    | IllegalAccessException e) {
-                log.error("Error while loading RequestListener {}, required class could not be loaded: " + e.toString(),
-                          classname);
-            }
-        }
-    }
-
-    private ArrayList<String> loadListeners(String listenersList) {
-        ArrayList<String> listeners = new ArrayList<>();
-
-        if (listenersList == null) {
-            log.error("No RequestListeners are defined in the ConfigFile!");
-        }
-        else {
-            StringTokenizer tokenizer = new StringTokenizer(listenersList, ",");
-            while (tokenizer.hasMoreTokens()) {
-                listeners.add(tokenizer.nextToken());
-            }
-        }
-
-        return listeners;
-    }
-
-    /**
-     * adds a requestListener to the listener collection
-     * 
-     * @param listener
-     *        the requestListener which should be added
-     */
-    public void addRequestListener(ISirRequestListener listener) {
-        this.reqListener.put(listener.getOperationName(), listener);
     }
 
     /**
@@ -157,41 +89,47 @@ public class RequestOperator {
      * @return the related ISirResponse
      */
     public ISirResponse doGetOperation(String queryString) {
-        ISirResponse response = null;
-
         AbstractSirRequest request = null;
 
         try {
             request = this.httpGetDecoder.receiveRequest(queryString);
+
+            if (request == null) {
+                log.error("Invalid Get request!");
+                OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
+                se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
+                                     "HttpGetRequestDecoder.receiveRequest()",
+                                     "Invalid Get request!");
+                return new ExceptionResponse(se.getDocument());
+            }
         }
         catch (OwsExceptionReport se) {
             return new ExceptionResponse(se.getDocument());
         }
 
-        // getCapabilities request
-        if (request instanceof SirGetCapabilitiesRequest) {
-            GetCapabilitiesListener capListener = (GetCapabilitiesListener) this.reqListener.get(SirConstants.Operations.GetCapabilities.name());
-            log.info("Listener: " + capListener);
-            response = capListener.receiveRequest(request);
-        }
+        ISirRequestListener l = null;
 
-        // describeSensor request
-        if (request instanceof SirDescribeSensorRequest) {
-            DescribeSensorListener descSensListener = (DescribeSensorListener) this.reqListener.get(SirConstants.Operations.DescribeSensor.name());
-            log.info("Listener: " + descSensListener);
-            response = descSensListener.receiveRequest(request);
-        }
+        if (request instanceof SirGetCapabilitiesRequest)
+            l = this.reqListener.get(SirConstants.Operations.GetCapabilities.name());
+        if (request instanceof SirDescribeSensorRequest)
+            l = this.reqListener.get(SirConstants.Operations.DescribeSensor.name());
+        log.info("Listener: " + l);
 
-        if (request == null) {
-            log.error("Invalid Get request!");
-            OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 "HttpGetRequestDecoder.receiveRequest()",
-                                 "Invalid Get request!");
-            return new ExceptionResponse(se.getDocument());
-        }
+        if (l == null)
+            return opNotImplementedResponse(request.getOperation());
+
+        ISirResponse response = l.receiveRequest(request);
+        log.debug("Response: {}", response);
 
         return response;
+    }
+
+    private ISirResponse opNotImplementedResponse(Operations operation) {
+        OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
+        se.addCodedException(OwsExceptionReport.ExceptionCode.OperationNotSupported,
+                             operation.name(),
+                             "No internal implementation found for requested operation.");
+        return new ExceptionResponse(se.getDocument());
     }
 
     /**

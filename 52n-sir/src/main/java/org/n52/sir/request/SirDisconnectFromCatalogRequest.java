@@ -15,6 +15,9 @@
  */
 package org.n52.sir.request;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
+
 /**
  * Internal request to disconnect a CSW catalog service
  * 
@@ -49,5 +52,10 @@ public class SirDisconnectFromCatalogRequest extends AbstractSirRequest {
         sb.append("DisconnectToCatalogRequest: ");
         sb.append("CswURL: " + this.cswURL);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.DisconnectFromCatalog;
     }
 }

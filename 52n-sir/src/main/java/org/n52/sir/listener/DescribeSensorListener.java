@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import org.apache.xmlbeans.XmlObject;
@@ -89,26 +90,33 @@ public class DescribeSensorListener implements ISirRequestListener {
      */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
-        SirDescribeSensorRequest descSensReq = (SirDescribeSensorRequest) request;
-
-        SirDescribeSensorResponse response = new SirDescribeSensorResponse();
-
         try {
-            XmlObject sensorML = this.descSensDao.getSensorDescription(descSensReq.getSensorIdInSir());
+            SirDescribeSensorRequest descSensReq = (SirDescribeSensorRequest) request;
+            String id = descSensReq.getSensorIdInSir();
+            log.trace("Requesting sensor ID {}", id);
+            if (id == null) {
+                OwsExceptionReport e = new OwsExceptionReport(ExceptionCode.MissingParameterValue,
+                                                              "SensorIDInSIR",
+                                                              "Missing sensor identifier.");
+                throw e;
+            }
+
+            SirDescribeSensorResponse response = new SirDescribeSensorResponse();
+
+            XmlObject sensorML = this.descSensDao.getSensorDescription(id);
             if (sensorML != null) {
                 response.setSensorML(sensorML);
+                return response;
             }
-            else {
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(ExceptionCode.InvalidRequest, null, "Unknown sensor ID in Sir! Given ID: "
-                        + descSensReq.getSensorIdInSir());
-                log.debug("Unknown sensor ID in Sir! Given ID: " + descSensReq.getSensorIdInSir());
-                throw se;
-            }
+
+            OwsExceptionReport e = new OwsExceptionReport();
+            e.addCodedException(ExceptionCode.InvalidRequest, null, "Unknown sensor ID in Sir! Given ID: "
+                    + descSensReq.getSensorIdInSir());
+            log.debug("Unknown sensor ID in Sir! Given ID: " + descSensReq.getSensorIdInSir());
+            throw e;
         }
         catch (OwsExceptionReport se) {
             return new ExceptionResponse(se.getDocument());
         }
-        return response;
     }
 }

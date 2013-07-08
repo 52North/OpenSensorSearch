@@ -15,6 +15,8 @@
  */
 package org.n52.sir.request;
 
+import org.n52.sir.SirConstants.Operations;
+
 /**
  * abstract super class for all sir request classes
  * 
@@ -62,5 +64,7 @@ public abstract class AbstractSirRequest {
     public void setVersion(String version) {
         this.version = version;
     }
+    
+    public abstract Operations getOperation();
 
 }

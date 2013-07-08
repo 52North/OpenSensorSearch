@@ -17,6 +17,8 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirStatus;
 
@@ -73,5 +75,10 @@ public class SirInsertSensorStatusRequest extends AbstractSirRequest {
         sb.append("Identification: " + this.sensIdent);
         sb.append(" Status: " + this.status);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.InsertSensorStatus;
     }
 }

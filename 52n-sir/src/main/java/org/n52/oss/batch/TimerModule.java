@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.n52.sir.util.jobs.impl.TimerServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.servlet.ServletModule;
 
@@ -29,12 +31,14 @@ import com.google.inject.servlet.ServletModule;
  * 
  */
 public class TimerModule extends ServletModule {
+    
+    private static Logger log = LoggerFactory.getLogger(TimerModule.class);
 
     @Override
     protected void configureServlets() {
         // super.configureServlets();
 
-        System.out.println("Here...");
+        log.debug("Configuring TimerModule");
 
         Map<String, String> params = new HashMap<>();
         params.put("isDaemon", "true");

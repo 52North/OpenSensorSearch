@@ -15,6 +15,9 @@
  */
 package org.n52.sir.request;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
+
 /**
  * Internal request to response with a sensorML by given sensor ID in Sir
  * 
@@ -49,6 +52,11 @@ public class SirDescribeSensorRequest extends AbstractSirRequest {
         sb.append("DescribeSensor: ");
         sb.append("SensorID in SIR: " + this.sensorIdInSir);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.DescribeSensor;
     }
 
 }

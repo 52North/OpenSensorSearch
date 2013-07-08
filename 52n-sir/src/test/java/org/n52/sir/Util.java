@@ -25,6 +25,8 @@ public class Util {
 
     private static final String SIR_URL_PROPERTY_IT = "sir.url.it";
 
+    private static final String OPENSEARCH_URL_PROPERTY_IT = "opensearch.url.it";
+
     public static URL getServiceURL() throws MalformedURLException {
         String s = System.getProperty(SERVICE_URL_PROPERTY);
         URL url = new URL(s);
@@ -33,6 +35,12 @@ public class Util {
 
     public static URL getSIREndpointForIT() throws MalformedURLException {
         String s = System.getProperty(SIR_URL_PROPERTY_IT);
+        URL url = new URL(s);
+        return url;
+    }
+    
+    public static URL getOpenSearchEndpointForIT() throws MalformedURLException {
+        String s = System.getProperty(OPENSEARCH_URL_PROPERTY_IT);
         URL url = new URL(s);
         return url;
     }

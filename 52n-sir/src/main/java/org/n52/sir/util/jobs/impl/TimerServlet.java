@@ -17,7 +17,6 @@
 package org.n52.sir.util.jobs.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,20 +25,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.xmlbeans.XmlException;
-import org.n52.sir.SIR;
+import org.n52.oss.sir.SirConfig;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
@@ -49,6 +45,7 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 /**
@@ -74,13 +71,6 @@ public class TimerServlet extends HttpServlet {
         protected long period;
         protected TimerTask task;
 
-        /**
-         * 
-         * @param identifier
-         * @param task
-         * @param delay
-         * @param period
-         */
         protected TaskElement(String identifier, TimerTask task, long delay, long period) {
             this.id = identifier;
             this.task = task;
@@ -105,14 +95,6 @@ public class TimerServlet extends HttpServlet {
         }
     }
 
-    // private static final String CONFIG_FILE = "/sir.properties";
-
-    private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
-
-    private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
-
-    private static final String DO_NOT_CHECK_CATALOGS = "DO_NOT_CHECK_CATALOGS";
-
     private static final String IS_DAEMON_INIT_PARAM_NAME = "isDaemon";
 
     private static Logger log = LoggerFactory.getLogger(TimerServlet.class);
@@ -121,15 +103,13 @@ public class TimerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 4704774153636727580L;
 
-    private static final String SLOT_INIT_FILENAME = "SLOT_INIT_FILENAME";
-
     /**
      * Inner {@link Timer} that might run as a daemon according to the init parameter
      * {@link TimerServlet#IS_DAEMON_INIT_PARAM_NAME} in the servlet defintion (web.xml).
      */
     private static Timer timer;
 
-    private Map<URI, ICatalog> catalogCache = new HashMap<URI, ICatalog>();
+    private Map<URI, ICatalog> catalogCache = new HashMap<>();
 
     private String[] catalogInitClassificationFiles;
 
@@ -137,9 +117,8 @@ public class TimerServlet extends HttpServlet {
 
     private ICatalogStatusHandler catalogStatusHandler;
 
-    private final String CONFIG_DIRECTORY = "CONFIG_DIRECTORY";
-
-    private Properties props;
+    @Inject
+    private SirConfig configurator;
 
     /**
      * list from config file, NOT changed during runtime
@@ -151,17 +130,10 @@ public class TimerServlet extends HttpServlet {
      */
     private ArrayList<TaskElement> tasks;
 
-    /**
-     * Default constructor.
-     */
     public TimerServlet() {
         super();
     }
 
-    /**
-     * 
-     * @param identifier
-     */
     public void cancel(String identifier) {
         for (TaskElement te : this.tasks) {
             if (te.id.equals(identifier)) {
@@ -172,11 +144,6 @@ public class TimerServlet extends HttpServlet {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#destroy()
-     */
     @Override
     public void destroy() {
         log.info("called destroy()...");
@@ -266,46 +233,51 @@ public class TimerServlet extends HttpServlet {
         ServletContext context = getServletContext();
         context.setAttribute(NAME_IN_CONTEXT, this);
 
-        this.tasks = new ArrayList<TaskElement>();
+        this.tasks = new ArrayList<>();
 
         // create inner Timer
-        timer = new Timer(getServletName(), Boolean.parseBoolean(getInitParameter(IS_DAEMON_INIT_PARAM_NAME)));
+        String isDaemonParam = getInitParameter(IS_DAEMON_INIT_PARAM_NAME);
+        timer = new Timer(getServletName(), Boolean.parseBoolean(isDaemonParam));
 
         // get configFile as Inputstream
-//        InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
-//        if (configStream == null) {
-//            log.error("Could not opoen the config file!");
-//            throw new UnavailableException("Could not open the config file.");
-//        }
+        // InputStream configStream = SIR.class.getResourceAsStream(CONFIG_FILE);
+        // if (configStream == null) {
+        // log.error("Could not opoen the config file!");
+        // throw new UnavailableException("Could not open the config file.");
+        // }
 
         // load properties file
-//        try {
-//            this.props = loadProperties(configStream);
-//        }
-//        catch (IOException e) {
-//            log.error("Could not load properties file!");
-//            throw new UnavailableException("Could not load properties file!");
-//        }
+        // try {
+        // this.props = loadProperties(configStream);
+        // }
+        // catch (IOException e) {
+        // log.error("Could not load properties file!");
+        // throw new UnavailableException("Could not load properties file!");
+        // }
 
         String basepath = context.getRealPath("/");
-        String configDirectory = this.props.getProperty(this.CONFIG_DIRECTORY);
+        // String configDirectory = this.props.getProperty(CONFIG_DIRECTORY);
 
         // add classification init files
-        String[] splitted = this.props.getProperty(CLASSIFICATION_INIT_FILENAMES).split(CONFIG_FILE_LIST_SEPARATOR);
+        String[] splitted = this.configurator.getClassificationInitFileNames();
         this.catalogInitClassificationFiles = new String[splitted.length];
         for (int i = 0; i < splitted.length; i++) {
-            this.catalogInitClassificationFiles[i] = basepath + configDirectory + splitted[i].trim();
+            String file = basepath + splitted[i].trim();
+            this.catalogInitClassificationFiles[i] = file;
+            log.debug("Found catalog init file {}", file);
         }
 
-        this.catalogSlotInitFile = basepath + configDirectory + this.props.getProperty(SLOT_INIT_FILENAME);
+        this.catalogSlotInitFile = this.configurator.getCatalogSlotInitFile();
 
         // check if given url does not need to be checked
-        this.staticDoNotCheckCatalogsList = new ArrayList<URL>();
-        splitted = this.props.getProperty(DO_NOT_CHECK_CATALOGS).split(",");
+        this.staticDoNotCheckCatalogsList = new ArrayList<>();
+        splitted = this.configurator.getCatalogsUnchecked();
         for (String s : splitted) {
             if ( !s.isEmpty()) {
                 try {
-                    this.staticDoNotCheckCatalogsList.add(new URL(s.trim()));
+                    URL url = new URL(s.trim());
+                    this.staticDoNotCheckCatalogsList.add(url);
+                    log.debug("Added URL to 'do not check'-List: {}", url);
                 }
                 catch (MalformedURLException e) {
                     log.warn("Could not parse catalog url from 'do not check' list, was '" + s
@@ -317,26 +289,6 @@ public class TimerServlet extends HttpServlet {
         log.info(" ***** Timer initiated successfully! ***** ");
     }
 
-    /**
-     * method loads the config file
-     * 
-     * @param is
-     *        InputStream containing the config file
-     * @return Returns properties of the given config file
-     * @throws IOException
-     */
-    private Properties loadProperties(InputStream is) throws IOException {
-        Properties properties = new Properties();
-        properties.load(is);
-
-        return properties;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
-     */
     @Override
     public void service(ServletRequest req, ServletResponse res) {
         throw new UnsupportedOperationException("Not supperted by TimerServlet!");
@@ -361,23 +313,13 @@ public class TimerServlet extends HttpServlet {
         this.tasks.add(new TaskElement(identifier, task, delay, period));
     }
 
-    /**
-     * 
-     * @param task
-     * @param date
-     */
     public void submit(TimerTask task, Date date) {
         timer.schedule(task, date);
         if (log.isDebugEnabled()) {
             log.debug("Submitted: " + task + " to run at " + date);
         }
     }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

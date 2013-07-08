@@ -17,6 +17,8 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSensorIdentification;
 
@@ -95,5 +97,10 @@ public class SirSearchSensorRequest extends AbstractSirRequest {
         sb.append(" " + this.sensIdent);
         sb.append(", SimpleResponse: " + this.simpleResponse);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.SearchSensor;
     }
 }

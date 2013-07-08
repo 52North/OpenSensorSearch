@@ -15,6 +15,9 @@
  */
 package org.n52.sir.request;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
+
 /**
  * Internal request to harvest a service
  * 
@@ -75,6 +78,11 @@ public class SirHarvestServiceRequest extends AbstractSirRequest {
         sb.append("ServiceType: " + this.serviceType);
         sb.append(", ServiceURL: " + this.serviceUrl);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.HarvestService;
     }
 
 }

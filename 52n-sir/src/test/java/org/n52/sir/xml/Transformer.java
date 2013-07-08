@@ -17,6 +17,9 @@
 package org.n52.sir.xml;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -31,8 +34,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sir.util.XmlTools;
 import org.n52.sir.xml.impl.SMLtoEbRIMTransformer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;
@@ -43,35 +44,35 @@ public class Transformer {
     @Test
     public void sensorML2ebRIM() throws XmlException, TransformerException, IOException, SAXException {
         // test the input document
-        InputStream in = Transformer.class.getResourceAsStream("SensorML_Profile_for_Discovery_Example.xml");
-        SensorMLDocument smlDoc = SensorMLDocument.Factory.parse(in);
+        try (InputStream in = Transformer.class.getResourceAsStream("/transformation/SensorML_Profile_for_Discovery_Example.xml")) {
+            SensorMLDocument smlDoc = SensorMLDocument.Factory.parse(in);
 
-        String result = XmlTools.validateAndIterateErrors(smlDoc);
-        assertTrue(result.isEmpty()); // TODO use hamcrest matcher
+            String result = XmlTools.validateAndIterateErrors(smlDoc);
+            assertThat(result, containsString("is valid"));
 
-        ITransformer transformer = new SMLtoEbRIMTransformer("/xslt");
-        transformer.setValidating(false);
+            ITransformer transformer = new SMLtoEbRIMTransformer("/xslt/");
+            transformer.setValidating(false);
 
-        XmlObject transformed = transformer.transform(smlDoc);
+            XmlObject transformed = transformer.transform(smlDoc);
 
-        RegistryPackageDocument rpd = RegistryPackageDocument.Factory.parse(transformed.xmlText());
-        RegistryPackageType rp = rpd.getRegistryPackage();
+            RegistryPackageDocument rpd = RegistryPackageDocument.Factory.parse(transformed.xmlText());
+            RegistryPackageType rp = rpd.getRegistryPackage();
 
-        result = XmlTools.validateAndIterateErrors(rp);
-        assertTrue(result.isEmpty()); // TODO use hamcrest matcher
+            result = XmlTools.validateAndIterateErrors(rp);
+            assertTrue(result.isEmpty()); // TODO use hamcrest matcher
 
-        RegistryPackageDocument control = RegistryPackageDocument.Factory.parse(Transformer.class.getResourceAsStream("SensorML_Profile_for_Discovery_Example_OUT.xml"));
+            RegistryPackageDocument control = RegistryPackageDocument.Factory.parse(Transformer.class.getResourceAsStream("SensorML_Profile_for_Discovery_Example_OUT.xml"));
 
-        assertXMLEqual(control.xmlText(), rpd.xmlText());
+            assertXMLEqual(control.xmlText(), rpd.xmlText());
+        }
     }
-
-    @Test
-    public static void moreFiles() {
-        String[] s = new String[] {"IFGI_HWS1-discoveryprofile.xml",
-                                   "FH_HWS1-discoveryprofile.xml",
-                                   "FH_HWS1-discoveryprofile.xml"};
-
-        assertTrue(true);
-    }
+    // @Test
+    // public static void moreFiles() {
+    // String[] s = new String[] {"IFGI_HWS1-discoveryprofile.xml",
+    // "FH_HWS1-discoveryprofile.xml",
+    // "FH_HWS1-discoveryprofile.xml"};
+    //
+    // assertTrue(true);
+    // }
 
 }

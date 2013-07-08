@@ -15,6 +15,9 @@
  */
 package org.n52.sir.request;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
+
 /**
  * 
  * An empty mockup request to handle unimplemented operations
@@ -36,6 +39,11 @@ public class SirSubscriptionRequest extends AbstractSirRequest {
 
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.SubscribeSensorStatus;
     }
 
 }

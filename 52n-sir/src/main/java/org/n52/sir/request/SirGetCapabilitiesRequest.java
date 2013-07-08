@@ -15,6 +15,9 @@
  */
 package org.n52.sir.request;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
+
 /**
  * class represents a GetCapabilities request and encapsulates the parameters
  * 
@@ -89,6 +92,11 @@ public class SirGetCapabilitiesRequest extends AbstractSirRequest {
      */
     public void setUpdateSequence(String updateSequence) {
         this.updateSequence = updateSequence;
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.GetCapabilities;
     }
 
 }

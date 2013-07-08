@@ -17,6 +17,8 @@ package org.n52.sir.request;
 
 import java.net.URL;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.catalog.ICatalogConnection;
 
 /**
@@ -74,5 +76,10 @@ public class SirConnectToCatalogRequest extends AbstractSirRequest {
         sb.append("CswURL: " + this.cswUrl);
         sb.append(", PushInterval: " + this.pushInterval);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.ConnectToCatalog;
     }
 }

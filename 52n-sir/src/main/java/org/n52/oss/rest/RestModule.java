@@ -31,5 +31,7 @@ public class RestModule extends ServletModule {
         params.put("org.restlet.application", "org.n52.sir.rest.SirApplication");
 
         serve("/rest*").with(ServerServlet.class, params);
+        
+        // TODO checkout alternative with jersey:  RESTful API > https://github.com/sunnygleason/j4-minimal
     }
 }

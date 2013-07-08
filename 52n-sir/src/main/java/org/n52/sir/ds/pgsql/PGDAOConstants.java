@@ -35,21 +35,21 @@ public class PGDAOConstants {
 
     public static String connectionString;
 
-    private static final String CONNECTIONSTRING = "CONNECTIONSTRING";
+    private static final String CONNECTIONSTRING = "DB_CONNECTIONSTRING";
 
     // other constants
     public static String daoFactory;
 
     // other propertynames
-    private static final String DAOFACTORY = "DAOFACTORY";
+    private static final String DAOFACTORY = "DB_DAOFACTORY";
 
     public static String driver;
 
-    private static final String DRIVER = "DRIVER";
+    private static final String DRIVER = "DB_DRIVER";
 
     public static int initcon = 0;
 
-    private static final String INITCON = "INITCON";
+    private static final String INITCON = "DB_INITCON";
 
     /**
      * instance attribute due to singleton pattern
@@ -65,11 +65,11 @@ public class PGDAOConstants {
 
     public static int maxcon = 0;
 
-    private static final String MAXCON = "MAXCON";
+    private static final String MAXCON = "DB_MAXCON";
 
     public static String password;
 
-    private static final String PASSWORD = "PASSWORD";
+    private static final String PASSWORD = "DB_PASSWORD";
 
     // table names
     public static String phenomenon;
@@ -115,10 +115,8 @@ public class PGDAOConstants {
 
     public static String service;
 
-    // column names of service
     public static String serviceId;
 
-    // column names of sensor_service
     public static String serviceIdOfSensServ;
 
     public static String serviceSpecId;
@@ -129,7 +127,6 @@ public class PGDAOConstants {
 
     public static String status;
 
-    // column names of status
     public static String statusId;
 
     public static String time;
@@ -138,7 +135,7 @@ public class PGDAOConstants {
 
     public static String user;
 
-    private static final String USER = "USER";
+    private static final String USER = "DB_USER";
 
     /**
      * getInstance method due to singleton pattern
@@ -155,77 +152,77 @@ public class PGDAOConstants {
         return instance;
     }
 
-    private final String CATALOGIDSIR = "CATALOGIDSIR";
+    private final String CATALOGIDSIR = "CN_CATALOGIDSIR";
 
-    private final String CATALOGSTATUS = "CATALOGSTATUS";
+    private final String CATALOGSTATUS = "CN_CATALOGSTATUS";
 
     // propertynames of column names
-    private final String CATALOGURL = "CATALOGURL";
+    private final String CATALOGURL = "CN_CATALOGURL";
 
-    private final String PHENOMENONID = "PHENOMENONID";
+    private final String PHENOMENONID = "CN_PHENOMENONID";
 
-    private final String PHENOMENONUOM = "PHENOMENONUOM";
+    private final String PHENOMENONUOM = "CN_PHENOMENONUOM";
 
-    private final String PHENOMENONURN = "PHENOMENONURN";
+    private final String PHENOMENONURN = "CN_PHENOMENONURN";
 
-    private final String PUSHINTERVAL = "PUSHINTERVAL";
+    private final String PUSHINTERVAL = "CN_PUSHINTERVAL";
 
-    private final String SENSORBBOX = "SENSORBBOX";
+    private final String SENSORBBOX = "CN_SENSORBBOX";
 
-    private final String SENSORIDSIR = "SENSORIDSIR";
+    private final String SENSORIDSIR = "CN_SENSORIDSIR";
 
-    private final String SENSORLASTUPDATE = "SENSORLASTUPDATE";
+    private final String SENSORLASTUPDATE = "CN_SENSORLASTUPDATE";
 
-    private final String SENSORSENSORML = "SENSORSENSORML";
+    private final String SENSORSENSORML = "CN_SENSORSENSORML";
 
-    private final String SENSORTEXT = "SENSORTEXT";
+    private final String SENSORTEXT = "CN_SENSORTEXT";
 
-    private final String SENSORTIMEEND = "SENSORTIMEEND";
+    private final String SENSORTIMEEND = "CN_SENSORTIMEEND";
 
-    private final String SENSORTIMESTART = "SENSORTIMESTART";
+    private final String SENSORTIMESTART = "CN_SENSORTIMESTART";
 
-    private final String SENSPHENPHENOMENONID = "SENSPHENPHENOMENONID";
+    private final String SENSPHENPHENOMENONID = "CN_SENSPHENPHENOMENONID";
 
-    private final String SENSPHENSENSORIDSIR = "SENSPHENSENSORIDSIR";
+    private final String SENSPHENSENSORIDSIR = "CN_SENSPHENSENSORIDSIR";
 
-    private final String SENSSERVSENSORIDSIR = "SENSSERVSENSORIDSIR";
+    private final String SENSSERVSENSORIDSIR = "CN_SENSSERVSENSORIDSIR";
 
-    private final String SENSSERVSERVICESID = "SENSSERVSERVICESID";
+    private final String SENSSERVSERVICESID = "CN_SENSSERVSERVICESID";
 
-    private final String SENSSERVSERVICESPECID = "SENSSERVSERVICESPECID";
+    private final String SENSSERVSERVICESPECID = "CN_SENSSERVSERVICESPECID";
 
-    private final String SERVICEID = "SERVICEID";
+    private final String SERVICEID = "CN_SERVICEID";
 
-    private final String SERVICETYPE = "SERVICETYPE";
+    private final String SERVICETYPE = "CN_SERVICETYPE";
 
-    private final String SERVICEURL = "SERVICEURL";
+    private final String SERVICEURL = "CN_SERVICEURL";
 
-    private final String STATUSID = "STATUSID";
+    private final String STATUSID = "CN_STATUSID";
 
-    private final String STATUSPROPERTYNAME = "STATUSPROPERTYNAME";
+    private final String STATUSPROPERTYNAME = "CN_STATUSPROPERTYNAME";
 
-    private final String STATUSPROPERTYVALUE = "STATUSPROPERTYVALUE";
+    private final String STATUSPROPERTYVALUE = "CN_STATUSPROPERTYVALUE";
 
-    private final String STATUSSENSORIDSIR = "STATUSSENSORIDSIR";
+    private final String STATUSSENSORIDSIR = "CN_STATUSSENSORIDSIR";
 
-    private final String STATUSTIME = "STATUSTIME";
+    private final String STATUSTIME = "CN_STATUSTIME";
 
-    private final String STATUSUOM = "STATUSUOM";
+    private final String STATUSUOM = "CN_STATUSUOM";
 
-    private final String TNCATALOG = "TNCATALOG";
+    private final String TNCATALOG = "TN_CATALOG";
 
     // propertyNames of table names
-    private final String TNPHENOMENON = "TNPHENOMENON";
+    private final String TNPHENOMENON = "TN_PHENOMENON";
 
-    private final String TNSENSOR = "TNSENSOR";
+    private final String TNSENSOR = "TN_SENSOR";
 
-    private final String TNSENSOR_PHEN = "TNSENSOR_PHEN";
+    private final String TNSENSOR_PHEN = "TN_SENSOR_PHEN";
 
-    private final String TNSENSOR_SERVICE = "TNSENSOR_SERVICE";
+    private final String TNSENSOR_SERVICE = "TN_SENSOR_SERVICE";
 
-    private final String TNSERVICE = "TNSERVICE";
+    private final String TNSERVICE = "TN_SERVICE";
 
-    private final String TNSTATUS = "TNSTATUS";
+    private final String TNSTATUS = "TN_STATUS";
 
     /**
      * constructor

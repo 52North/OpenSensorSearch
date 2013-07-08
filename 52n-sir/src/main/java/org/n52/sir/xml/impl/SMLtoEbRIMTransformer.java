@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml.impl;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -125,16 +124,12 @@ public class SMLtoEbRIMTransformer implements ITransformer {
      * @throws InstantiationException
      * 
      */
-    public SMLtoEbRIMTransformer(String xsltDir) throws InstantiationError {
-        InputStream in = SMLtoEbRIMTransformer.class.getResourceAsStream(xsltDir + TRANSFORMATION_FILE_NAME);
-        Path p = Paths.get(xsltDir, TRANSFORMATION_FILE_NAME);
-        System.out.println(p);
-        
-        //FIXME
-        
-        this.xsltSource = new StreamSource(in);
+    public SMLtoEbRIMTransformer(String xsltDir) {
+        try (InputStream in = SMLtoEbRIMTransformer.class.getResourceAsStream(xsltDir + TRANSFORMATION_FILE_NAME)) {
+            Path p = Paths.get(xsltDir, TRANSFORMATION_FILE_NAME);
 
-        try {
+            this.xsltSource = new StreamSource(in);
+
             this.transformer = tFactory.newTransformer(this.xsltSource);
             this.transformer.setOutputProperty(OutputKeys.INDENT, INDENT_OUTPUT_PROPERTY_VALUE);
             SirConfig configurator = SirConfigurator.getInstance();
@@ -147,7 +142,10 @@ public class SMLtoEbRIMTransformer implements ITransformer {
             }
         }
         catch (TransformerConfigurationException e) {
-            throw new InstantiationError("Could not instantiate Transformer from file " + this.xsltSource);
+            throw new RuntimeException("Could not instantiate Transformer from file " + this.xsltSource, e);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Could not instantiate Transformer from file " + this.xsltSource, e);
         }
     }
 
@@ -170,33 +168,32 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         Source input = new DOMSource(smlDoc.getDomNode());
 
         // create output string
-        StringWriter sw = new StringWriter();
-        StreamResult output = new StreamResult(sw);
+        try (StringWriter sw = new StringWriter()) {
+            StreamResult output = new StreamResult(sw);
 
-        // do the transformation
-        this.transformer.transform(input, output);
+            // do the transformation
+            this.transformer.transform(input, output);
 
-        // create output document
-        String outputString = output.getWriter().toString();
+            // create output document
+            String outputString = output.getWriter().toString();
 
-        RegistryPackageDocument regPackDoc = RegistryPackageDocument.Factory.parse(outputString);
+            RegistryPackageDocument regPackDoc = RegistryPackageDocument.Factory.parse(outputString);
 
-        // clean up
-        input = null;
-        sw = null;
-        output = null;
-        outputString = null;
-
-        if (SirConfigurator.getInstance().isValidateRequests()) {
-            if ( !regPackDoc.validate()) {
-                log.warn("Created RegistryPackageDocument is not valid!");
+            if (SirConfigurator.getInstance().isValidateRequests()) {
+                if ( !regPackDoc.validate()) {
+                    log.warn("Created RegistryPackageDocument is not valid!");
+                }
             }
+
+            if (log.isDebugEnabled())
+                log.debug("Finished transformation: " + XmlTools.inspect(regPackDoc));
+
+            return regPackDoc;
         }
-
-        if (log.isDebugEnabled())
-            log.debug("Finished transformation: " + XmlTools.inspect(regPackDoc));
-
-        return regPackDoc;
+        catch (Exception e) {
+            log.error("Could not transform document.", e);
+            throw new TransformerException(e);
+        }
     }
 
     @Override

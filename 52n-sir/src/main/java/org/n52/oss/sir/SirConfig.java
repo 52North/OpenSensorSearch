@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.decode.IHttpGetRequestDecoder;
@@ -32,27 +31,19 @@ import org.n52.sir.xml.ITransformerFactory;
 import org.n52.sir.xml.IValidatorFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;
 
-import com.google.inject.ImplementedBy;
-
-@ImplementedBy(SirConfigurator.class)
 public interface SirConfig {
 
     public static final String LISTENERS = "LISTENERS";
-    
+
     public static final String SERVICEURL = "SERVICEURL";
 
-    /**
-     * @return the acceptedVersions
-     */
+    public static final String CONFIG_FILE_LIST_SEPARATOR = ",";
+
     public abstract String[] getAcceptedServiceVersions();
 
-    /**
-     * @return the capabilitiesSkeleton
-     */
     public abstract CapabilitiesDocument getCapabilitiesSkeleton();
 
     /**
-     * 
      * Creates an CatalogFactory (an instance of the class provided in the sir.config file) for the service
      * located at the given URL.
      * 
@@ -63,87 +54,38 @@ public interface SirConfig {
     public abstract ICatalogFactory getCatalogFactory(URL url) throws OwsExceptionReport;
 
     /**
-     * 
      * @return the status handler for external access (not from within this SIR instance)
      */
     public abstract ICatalogStatusHandler getCatalogStatusHandler();
 
-    /**
-     * @return the characterEncoding
-     */
     public abstract String getCharacterEncoding();
 
-    /**
-     * 
-     * @return
-     */
     public abstract ExecutorService getExecutor();
 
-    /**
-     * @return the DaoFactory
-     */
     public abstract IDAOFactory getFactory();
 
-    /**
-     * @return the homepage
-     */
     public abstract URL getFullServicePath();
 
-    /**
-     * @return the gmlDateFormat
-     */
     public abstract String getGmlDateFormat();
 
-    /**
-     * @return the httpGetDecoder
-     */
     public abstract IHttpGetRequestDecoder getHttpGetDecoder();
 
-    /**
-     * @return the httpPostDecoder
-     */
     public abstract IHttpPostRequestDecoder getHttpPostDecoder();
 
-    /**
-     * @return the jobSchedulerFactory
-     */
     public abstract IJobSchedulerFactory getJobSchedulerFactory();
 
-    /**
-     * @return the namespacePrefix
-     */
     public abstract String getNamespacePrefix();
 
-    /**
-     * @return the namespaceUri
-     */
     public abstract String getNamespaceUri();
 
-    /**
-     * @return the openSearchUrl
-     */
     public abstract String getOpenSearchPath();
 
-    /**
-     * @return the profile4Discovery
-     */
     public abstract String getProfile4Discovery();
 
-    /**
-     * 
-     * @return
-     */
     public abstract String getProfile4DiscoveryDownloadPath();
 
-    /**
-     * 
-     * @return
-     */
     public abstract String getSchemaDownloadLink();
 
-    /**
-     * @return the schemaUrl
-     */
     public abstract String getSchemaUrl();
 
     /**
@@ -151,9 +93,6 @@ public interface SirConfig {
      */
     public abstract URL getServiceUrl();
 
-    /**
-     * @return the serviceVersion
-     */
     public abstract String getServiceVersion();
 
     /**
@@ -164,48 +103,40 @@ public interface SirConfig {
      */
     public abstract org.x52North.sir.x032.VersionAttribute.Version.Enum getServiceVersionEnum();
 
-    /**
-     * @return the svrlSchema
-     */
     public abstract String getSvrlSchema();
 
-    /**
-     * @return the testRequestPath
-     */
     public abstract String getTestRequestPath();
 
-    /**
-     * @return the transformerFactory
-     */
     public abstract ITransformerFactory getTransformerFactory();
 
-    /**
-     * @return the updateSequence
-     */
     public abstract String getUpdateSequence();
 
-    /**
-     * @return the validatorFactory
-     */
     public abstract IValidatorFactory getValidatorFactory();
 
-    /**
-     * @return the extendedDebugToConsole
-     */
     public abstract boolean isExtendedDebugToConsole();
 
-    /**
-     * @return the validateRequests
-     */
     public abstract boolean isValidateRequests();
 
-    /**
-     * @return the validateResponses
-     */
     public abstract boolean isValidateResponses();
 
     public abstract void newUpdateSequence();
 
-    Properties getDaoProps();
+    public abstract Properties getDaoProps();
+
+    /**
+     * @return a list of relative file paths pointing at all files needed for catalog preparation
+     */
+    public abstract String[] getClassificationInitFileNames();
+
+    /**
+     * @return a file to initialize the slots in a catalog instance
+     */
+    public abstract String getCatalogSlotInitFile();
+
+    /**
+     * @return a list of identifiers whichs catalogs are not checked, i.e. they are already instantiated and
+     *         prepared for sensor descriptions coming from OSS
+     */
+    public abstract String[] getCatalogsUnchecked();
 
 }

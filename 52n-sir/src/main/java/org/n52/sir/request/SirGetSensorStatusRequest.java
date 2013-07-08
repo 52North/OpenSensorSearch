@@ -17,6 +17,8 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.datastructure.SirPropertyFilter;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSensorIdentification;
@@ -88,5 +90,10 @@ public class SirGetSensorStatusRequest extends AbstractSirRequest {
         sb.append(" SearchCriteria: " + this.searchCriteria);
         sb.append(" PropertyFilter: " + this.propertyFilter);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.GetSensorStatus;
     }
 }

@@ -20,7 +20,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator.Section;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ds.IDAOFactory;
@@ -57,18 +56,9 @@ public class GetCapabilitiesListener implements ISirRequestListener {
     private IGetCapabilitiesDAO capDao;
 
     @Inject
-    private SirConfig configurator;
-
-    public GetCapabilitiesListener() throws OwsExceptionReport {
-
-        // get sir configurator
-        // SirConfig configurator = SirConfigurator.getInstance();
-
-        // setting up DAOFactory
-        IDAOFactory factory = this.configurator.getFactory();
-
+    public GetCapabilitiesListener(IDAOFactory daoFactory) throws OwsExceptionReport {
         try {
-            this.capDao = factory.getCapabilitiesDAO();
+            this.capDao = daoFactory.getCapabilitiesDAO();
         }
         catch (OwsExceptionReport se) {
             log.error("Error while creating the getCapabilitiesDAO", se);
@@ -127,7 +117,11 @@ public class GetCapabilitiesListener implements ISirRequestListener {
 
             try {
                 Calendar usDate = GMLDateParser.getInstance().parseString(updateSequence);
-                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(this.configurator.getUpdateSequence());
+                // Calendar sorUpdateSequence =
+                // GMLDateParser.getInstance().parseString(this.configurator.getUpdateSequence());
+                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(null); // FIXME once the
+                                                                                            // configuration
+                                                                                            // works
                 if (usDate.equals(sorUpdateSequence)) {
                     return true;
                 }

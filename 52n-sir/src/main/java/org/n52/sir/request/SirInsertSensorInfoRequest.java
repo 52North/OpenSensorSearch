@@ -17,6 +17,8 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.datastructure.SirInfoToBeInserted;
 
 /**
@@ -48,6 +50,11 @@ public class SirInsertSensorInfoRequest extends AbstractSirRequest {
         sb.append("InsertSensorStatusRequest: ");
         sb.append(" Inserted Infos: " + this.infoToBeInserted);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.InsertSensorInfo;
     }
 
 }

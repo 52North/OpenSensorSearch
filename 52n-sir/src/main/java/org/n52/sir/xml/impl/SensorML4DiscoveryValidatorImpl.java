@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml.impl;
 
 import java.io.File;
@@ -168,11 +169,11 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     private static TransformerFactory tFactory = TransformerFactory.newInstance();
 
-    private List<String> activatedPatterns = new ArrayList<String>();
+    private List<String> activatedPatterns = new ArrayList<>();
 
-    private List<String> assertionFailures = new ArrayList<String>();
+    private List<String> assertionFailures = new ArrayList<>();
 
-    private List<String> firedRules = new ArrayList<String>();
+    private List<String> firedRules = new ArrayList<>();
 
     private Transformer transformer;
 
@@ -210,11 +211,9 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         Source input = new DOMSource(smlDoc.getDomNode());
 
         // create output string
-        StringWriter sw = new StringWriter();
-        StreamResult output = new StreamResult(sw);
+        try (StringWriter sw = new StringWriter()) {
+            StreamResult output = new StreamResult(sw);
 
-        // do the transformation
-        try {
             this.transformer.transform(input, output);
 
             String outputString = output.getWriter().toString();
@@ -236,11 +235,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             log.error("Error processing SVRL output!", e);
             return false;
         }
-
-        // clean up
-        input = null;
-        sw = null;
-        output = null;
 
         if (log.isDebugEnabled()) {
             log.debug("Validation result: " + this.getAssertionFailures().size() + " failures, "

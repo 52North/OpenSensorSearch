@@ -17,6 +17,8 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.datastructure.SirInfoToBeDeleted;
 
 /**
@@ -48,6 +50,11 @@ public class SirDeleteSensorInfoRequest extends AbstractSirRequest {
         sb.append("SirDeleteSensorInfoRequest: ");
         sb.append("\nDelete Infos: " + this.infoToBeDeleted);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.DeleteSensorInfo;
     }
 
 }

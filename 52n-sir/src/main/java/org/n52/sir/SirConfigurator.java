@@ -56,7 +56,6 @@ import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.VersionAttribute;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
@@ -64,7 +63,7 @@ import com.google.inject.Singleton;
  * @author Jan Schulte
  * 
  */
-@Singleton
+// @Singleton
 public class SirConfigurator implements SirConfig {
 
     /** Sections for the Capabilities */
@@ -95,12 +94,7 @@ public class SirConfigurator implements SirConfig {
     /**
      * propertyname of CLASSIFICATION_INIT_FILENAME property
      */
-    private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
-
-    /**
-     * propertyname of CONFIG_DIRECTORY property
-     */
-    private static final String CONFIG_DIRECTORY = "CONFIG_DIRECTORY";
+    private static final String RIM_CLASSIFICATION_INIT_FILENAMES = "RIM_CLASSIFICATION_INIT_FILENAMES";
 
     /**
      * the separator for config properties with more than one value
@@ -200,7 +194,7 @@ public class SirConfigurator implements SirConfig {
     /**
      * propertyname of SLOT_INIT_FILENAME property
      */
-    private static final String SLOT_INIT_FILENAME = "SLOT_INIT_FILENAME";
+    private static final String RIM_SLOT_INIT_FILENAME = "RIM_SLOT_INIT_FILENAME";
 
     /**
      * Delay (in seconds) for scheduling the first run of repeated catalog connections on startup.
@@ -249,9 +243,6 @@ public class SirConfigurator implements SirConfig {
      */
     private static final String VERSION_SPLIT_CHARACTER = ",";
 
-    /**
-     * propertyname of XSLT_DIR property
-     */
     private static final String XSLT_DIRECTORY = "XSLT_DIRECTORY";
 
     /**
@@ -272,10 +263,9 @@ public class SirConfigurator implements SirConfig {
      *         if the configFile could not be loaded
      * @throws OwsExceptionReport
      */
-    public synchronized static SirConfig getInstance(Properties props, Properties dbProps) throws UnavailableException,
-            OwsExceptionReport {
+    public synchronized static SirConfig getInstance(Properties props) throws UnavailableException, OwsExceptionReport {
         if (instance == null) {
-            instance = new SirConfigurator(props, dbProps);
+            instance = new SirConfigurator(props);
             instance.initialize();
         }
         return instance;
@@ -319,11 +309,6 @@ public class SirConfigurator implements SirConfig {
      * character encoding for responses
      */
     private String characterEncoding;
-
-    /**
-     * 
-     */
-    private String configDirectory;
 
     /**
      * properties for DAO implementation
@@ -394,14 +379,8 @@ public class SirConfigurator implements SirConfig {
 
     private TimerServlet timerServlet;
 
-    /**
-     * Implementation of the ITransformerFactory, used to access transformers for XML documents
-     */
     private ITransformerFactory transformerFactory;
 
-    /**
-     * update sequence
-     */
     private String updateSequence;
 
     private boolean validateRequests;
@@ -411,12 +390,12 @@ public class SirConfigurator implements SirConfig {
     private IValidatorFactory validatorFactory;
 
     @Inject
-    private SirConfigurator(Properties props, Properties dbProps) {
+    private SirConfigurator(Properties props) {
         // this.basepath = basepath;
         // this.timerServlet = timerServlet;
 
         this.props = props;
-        this.daoProps = dbProps;
+        this.daoProps = props;
 
         log.info(" ***** Config Files loaded successfully! ***** ");
     }
@@ -486,10 +465,6 @@ public class SirConfigurator implements SirConfig {
     // return ro;
     // }
 
-    /**
-     * 
-     * @param path
-     */
     private void checkFile(String path) {
         File f = new File(path);
         if ( !f.exists())
@@ -498,10 +473,6 @@ public class SirConfigurator implements SirConfig {
         f = null;
     }
 
-    /**
-     * 
-     * @param resourcePath
-     */
     private void checkResource(String resourcePath) {
         try (InputStream resource = SirConfigurator.class.getResourceAsStream(resourcePath)) {
 
@@ -524,38 +495,25 @@ public class SirConfigurator implements SirConfig {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getAcceptedServiceVersions()
-     */
     @Override
     public String[] getAcceptedServiceVersions() {
         return this.acceptedVersions;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getCapabilitiesSkeleton()
-     */
     @Override
     public CapabilitiesDocument getCapabilitiesSkeleton() {
         return this.capabilitiesSkeleton;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getCatalogFactory(java.net.URL)
-     */
     @Override
     public ICatalogFactory getCatalogFactory(URL url) throws OwsExceptionReport {
         try {
-            return this.catalogFactoryConstructor.newInstance(url,
-                                                              this.catalogInitClassificationFiles,
-                                                              this.catalogInitSlotFile,
-                                                              Boolean.valueOf(this.doNotCheckCatalogsList.contains(url)));
+            Object onNotCheckList = Boolean.valueOf(this.doNotCheckCatalogsList.contains(url));
+            ICatalogFactory cf = this.catalogFactoryConstructor.newInstance(url,
+                                                                            this.catalogInitClassificationFiles,
+                                                                            this.catalogInitSlotFile,
+                                                                            onNotCheckList);
+            return cf;
         }
         catch (Exception e) {
             log.error("The instatiation of a catalog factory failed." + e.toString());
@@ -564,171 +522,86 @@ public class SirConfigurator implements SirConfig {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getCatalogStatusHandler()
-     */
     @Override
     public ICatalogStatusHandler getCatalogStatusHandler() {
         return this.catalogStatusHandler;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getCharacterEncoding()
-     */
     @Override
     public String getCharacterEncoding() {
         return this.characterEncoding;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getExecutor()
-     */
     @Override
     public ExecutorService getExecutor() {
         return this.exec;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getFactory()
-     */
     @Override
     public IDAOFactory getFactory() {
         return this.factory;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getFullServicePath()
-     */
     @Override
     public URL getFullServicePath() {
         return this.fullServicePath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getGmlDateFormat()
-     */
     @Override
     public String getGmlDateFormat() {
         return this.gmlDateFormat;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getHttpGetDecoder()
-     */
     @Override
     public IHttpGetRequestDecoder getHttpGetDecoder() {
         return this.httpGetDecoder;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getHttpPostDecoder()
-     */
     @Override
     public IHttpPostRequestDecoder getHttpPostDecoder() {
         return this.httpPostDecoder;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getJobSchedulerFactory()
-     */
     @Override
     public IJobSchedulerFactory getJobSchedulerFactory() {
         return this.jobSchedulerFactory;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getNamespacePrefix()
-     */
     @Override
     public String getNamespacePrefix() {
         return this.namespacePrefix;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getNamespaceUri()
-     */
     @Override
     public String getNamespaceUri() {
         return this.namespaceUri;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getOpenSearchPath()
-     */
     @Override
     public String getOpenSearchPath() {
         return this.openSearchPath;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getProfile4Discovery()
-     */
     @Override
     public String getProfile4Discovery() {
         return this.profile4Discovery;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getProfile4DiscoveryDownloadPath()
-     */
     @Override
     public String getProfile4DiscoveryDownloadPath() {
         return this.props.getProperty(PROFILE4DISCOVERY);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getSchemaDownloadLink()
-     */
     @Override
     public String getSchemaDownloadLink() {
         return this.props.getProperty(SCHEMATRON_DOWNLOAD);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getSchemaUrl()
-     */
     @Override
     public String getSchemaUrl() {
         return this.schemaUrl;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getServiceUrl()
-     */
     @Override
     public URL getServiceUrl() {
         return this.serviceUrl;
@@ -772,11 +645,6 @@ public class SirConfigurator implements SirConfig {
         return this.svrlSchema;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#getTestRequestPath()
-     */
     @Override
     public String getTestRequestPath() {
         return this.testRequestPath;
@@ -831,7 +699,6 @@ public class SirConfigurator implements SirConfig {
         this.characterEncoding = characterEncodingString;
         this.serviceVersion = this.props.getProperty(SERVICEVERSION);
         this.gmlDateFormat = this.props.getProperty(GMLDATEFORMAT);
-        this.configDirectory = this.props.getProperty(CONFIG_DIRECTORY);
         this.schemaUrl = this.props.getProperty(SCHEMA_URL);
         this.namespaceUri = this.props.getProperty(NAMESPACE_URI);
         this.namespacePrefix = this.props.getProperty(NAMESPACE_PREFIX);
@@ -894,7 +761,7 @@ public class SirConfigurator implements SirConfig {
         initializeDAOFactory();
 
         // initialize CatalogFactory
-        initializeCatalogFactory(this.props);
+        initializeCatalogFactory();
 
         // initialize decoders
         initializeHttpGetRequestDecoder(this.props);
@@ -919,22 +786,21 @@ public class SirConfigurator implements SirConfig {
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
     }
 
-    @SuppressWarnings("unchecked")
-    private void initializeCatalogFactory(Properties sirProps) throws OwsExceptionReport {
-        String className = sirProps.getProperty(CATALOGFACTORY);
+    private void initializeCatalogFactory() throws OwsExceptionReport {
+        String className = this.props.getProperty(CATALOGFACTORY);
 
-        this.catalogInitSlotFile = this.configDirectory + sirProps.getProperty(SLOT_INIT_FILENAME);
+        this.catalogInitSlotFile = this.props.getProperty(RIM_SLOT_INIT_FILENAME);
 
         // add classification init files
-        String[] splitted = sirProps.getProperty(CLASSIFICATION_INIT_FILENAMES).split(CONFIG_FILE_LIST_SEPARATOR);
+        String[] splitted = this.props.getProperty(RIM_CLASSIFICATION_INIT_FILENAMES).split(SirConfig.CONFIG_FILE_LIST_SEPARATOR);
         this.catalogInitClassificationFiles = new String[splitted.length];
         for (int i = 0; i < splitted.length; i++) {
-            this.catalogInitClassificationFiles[i] = this.configDirectory + splitted[i].trim();
+            this.catalogInitClassificationFiles[i] = splitted[i].trim();
         }
 
         // check if given url does not need to be checked
         this.doNotCheckCatalogsList = new ArrayList<>();
-        splitted = sirProps.getProperty(DO_NOT_CHECK_CATALOGS).split(CONFIG_FILE_LIST_SEPARATOR);
+        splitted = getCatalogsUnchecked();
         if (splitted.length > 0) {
             for (String s : splitted) {
                 try {
@@ -1018,7 +884,6 @@ public class SirConfigurator implements SirConfig {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void initializeHttpGetRequestDecoder(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(GETREQUESTDECODER);
         try {
@@ -1048,7 +913,6 @@ public class SirConfigurator implements SirConfig {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void initializeHttpPostRequestDecoder(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(POSTREQUESTDECODER);
         try {
@@ -1135,12 +999,6 @@ public class SirConfigurator implements SirConfig {
         }
     }
 
-    /**
-     * 
-     * @param p
-     * @throws OwsExceptionReport
-     */
-    @SuppressWarnings("unchecked")
     private void initializeTransformerFactory(Properties p) throws OwsExceptionReport {
         String xsltDir = p.getProperty(XSLT_DIRECTORY);
         String className = p.getProperty(TRANSFORMERFACTORY);
@@ -1169,12 +1027,6 @@ public class SirConfigurator implements SirConfig {
         }
     }
 
-    /**
-     * 
-     * @param p
-     * @throws OwsExceptionReport
-     */
-    @SuppressWarnings("unchecked")
     private void initializeValidatorFactory(Properties p) throws OwsExceptionReport {
         String className = p.getProperty(VALIDATORFACTORY);
         try {
@@ -1202,31 +1054,16 @@ public class SirConfigurator implements SirConfig {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#isExtendedDebugToConsole()
-     */
     @Override
     public boolean isExtendedDebugToConsole() {
         return this.extendedDebugToConsole;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#isValidateRequests()
-     */
     @Override
     public boolean isValidateRequests() {
         return this.validateRequests;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#isValidateResponses()
-     */
     @Override
     public boolean isValidateResponses() {
         return this.validateResponses;
@@ -1257,26 +1094,6 @@ public class SirConfigurator implements SirConfig {
         return listeners;
     }
 
-    /**
-     * method loads the config file
-     * 
-     * @param is
-     *        InputStream containing the config file
-     * @return Returns properties of the given config file
-     * @throws IOException
-     */
-    private Properties loadProperties(InputStream is) throws IOException {
-        Properties properties = new Properties();
-        properties.load(is);
-
-        return properties;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.SirConfig#newUpdateSequence()
-     */
     @Override
     public void newUpdateSequence() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(this.gmlDateFormat);
@@ -1313,7 +1130,8 @@ public class SirConfigurator implements SirConfig {
                 // run tasks for existing catalogs
                 int i = 0;
                 try {
-                    IConnectToCatalogDAO catalogDao = getFactory().connectToCatalogDAO();
+                    IDAOFactory f = getFactory();
+                    IConnectToCatalogDAO catalogDao = f.connectToCatalogDAO();
                     List<ICatalogConnection> savedConnections = catalogDao.getCatalogConnectionList();
 
                     IJobScheduler scheduler = SirConfigurator.getInstance().getJobSchedulerFactory().getJobScheduler();
@@ -1330,7 +1148,7 @@ public class SirConfigurator implements SirConfig {
                     }
                 }
                 catch (OwsExceptionReport e) {
-                    log.error("Could not run tasks for saved catalog connections.", e.getCause());
+                    log.error("Could not run tasks for saved catalog connections.", e);
                 }
 
                 log.info(" ***** Scheduled " + i + " task(s) from the database. ***** ");
@@ -1342,6 +1160,24 @@ public class SirConfigurator implements SirConfig {
     @Override
     public Properties getDaoProps() {
         return this.daoProps;
+    }
+
+    @Override
+    public String[] getClassificationInitFileNames() {
+        String files = this.props.getProperty(RIM_CLASSIFICATION_INIT_FILENAMES);
+        return files.split(CONFIG_FILE_LIST_SEPARATOR);
+    }
+
+    @Override
+    public String getCatalogSlotInitFile() {
+        // maybe must be basepath + configDirectory + this.props.getProperty(RIM_SLOT_INIT_FILENAME);
+        return this.catalogInitSlotFile;
+    }
+
+    @Override
+    public String[] getCatalogsUnchecked() {
+        String cats = this.props.getProperty(DO_NOT_CHECK_CATALOGS);
+        return cats.split(",");
     }
 
 }

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.net.URL;
 
-import org.n52.oss.sir.SirConfig;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalog;
@@ -49,15 +49,14 @@ public class ConnectToCatalogListener implements ISirRequestListener {
     private static final String OPERATION_NAME = SirConstants.Operations.ConnectToCatalog.name();
 
     private IConnectToCatalogDAO conToCatDao;
-    
-    @Inject
-    private SirConfig configurator;
 
-    public ConnectToCatalogListener() throws OwsExceptionReport {
-//        SirConfig configurator = SirConfigurator.getInstance();
-        IDAOFactory factory = configurator.getFactory();
+    private IJobSchedulerFactory schedulerFactory;
+
+    @Inject
+    public ConnectToCatalogListener(IDAOFactory daoFactory, IJobSchedulerFactory schedulerFactory) throws OwsExceptionReport {
+        this.schedulerFactory = schedulerFactory;
         try {
-            this.conToCatDao = factory.connectToCatalogDAO();
+            this.conToCatDao = daoFactory.connectToCatalogDAO();
         }
         catch (OwsExceptionReport se) {
             log.error("Error while creating the connectToCatalogDao", se);
@@ -65,21 +64,11 @@ public class ConnectToCatalogListener implements ISirRequestListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return ConnectToCatalogListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request .AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         if (log.isDebugEnabled())
@@ -92,8 +81,7 @@ public class ConnectToCatalogListener implements ISirRequestListener {
         int pushInterval = conToCatReq.getPushInterval();
         URL url = conToCatReq.getCswUrl();
 
-        IJobSchedulerFactory schedulerFact = this.configurator.getJobSchedulerFactory();
-        IJobScheduler scheduler = schedulerFact.getJobScheduler();
+        IJobScheduler scheduler = this.schedulerFactory.getJobScheduler();
 
         try {
             ICatalogFactory catFact = SirConfigurator.getInstance().getCatalogFactory(url);

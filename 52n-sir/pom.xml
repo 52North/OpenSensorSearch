@@ -86,12 +86,15 @@
 		<!-- would like to use filtering here, but I did not get it to work with
 			Tomcat and Jetty plugins: http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
 		<service.path>mysir</service.path>
-		<service.port>8081</service.port>
-		<service.endpoint.service>sir</service.endpoint.service>
+		<service.port>8080</service.port>
+		<service.endpoint.sir>sir</service.endpoint.sir>
 		<service.endpoint.rest>rest</service.endpoint.rest>
 		<service.endpoint.opensearch>search</service.endpoint.opensearch>
 
-		<guice-version>3.0</guice-version>
+		<config.logger.fileappender.filepath>D:/logs</config.logger.fileappender.filepath>
+		<config.logger.level>DEBUG</config.logger.level>
+
+		<guice.version>3.0</guice.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<logback.version>1.0.13</logback.version>
 	</properties>
@@ -130,33 +133,46 @@
 				<db.driver>org.postgresql.Driver</db.driver>
 				<db.user>${sir.deploy.database.user}</db.user>
 				<db.password>${sir.deploy.database.password}</db.password>
+
+				<config.logger.level>WARN</config.logger.level>
 			</properties>
 		</profile>
 
 		<profile>
 			<id>it</id>
 			<properties>
+				<service.url>http://localhost:${tomcat.http.port}</service.url>
 				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
 				<db.driver>org.postgresql.Driver</db.driver>
 				<db.user>postgres</db.user>
 				<db.password>postgres</db.password>
 			</properties>
 			<build>
+				<!-- <resources> -->
+				<!-- <resource> -->
+				<!-- <directory>src/test/it-resources/</directory> -->
+				<!-- <includes> -->
+				<!-- <include>sir.properties</include> -->
+				<!-- <include>db.properties</include> -->
+				<!-- </includes> -->
+				<!-- <filtering>true</filtering> -->
+				<!-- </resource> -->
+				<!-- <resource> -->
+				<!-- <directory>src/main/resources/</directory> -->
+				<!-- <excludes> -->
+				<!-- <exclude>sir.properties</exclude> -->
+				<!-- <exclude>db.properties</exclude> -->
+				<!-- </excludes> -->
+				<!-- <filtering>true</filtering> -->
+				<!-- </resource> -->
+				<!-- </resources> -->
 				<resources>
 					<resource>
-						<directory>src/test/it-resources/</directory>
-						<includes>
-							<include>sir.properties</include>
-							<include>db.properties</include>
-						</includes>
+						<directory>src/main/webapp</directory>
 						<filtering>true</filtering>
 					</resource>
 					<resource>
-						<directory>src/main/resources/</directory>
-						<excludes>
-							<exclude>sir.properties</exclude>
-							<exclude>db.properties</exclude>
-						</excludes>
+						<directory>src/test/resources</directory>
 						<filtering>true</filtering>
 					</resource>
 				</resources>
@@ -215,12 +231,13 @@
 						<version>2.15</version>
 						<configuration>
 							<systemPropertyVariables>
-								<sir.url.it>http://localhost:${tomcat.http.port}/${service.path}/${service.endpoint.service}</sir.url.it>
+								<sir.url.it>http://localhost:${tomcat.http.port}/${service.path}/${service.endpoint.sir}</sir.url.it>
+								<opensearch.url.it>http://localhost:${tomcat.http.port}/${service.path}/${service.endpoint.sir}</opensearch.url.it>
 							</systemPropertyVariables>
 							<!-- for testing of specific unit tests only: -->
-							<includes>
-								<include>**/GetCapabilitiesIT*</include>
-							</includes>
+							<!-- <includes> -->
+							<!-- <include>**/GetCapabilitiesIT*</include> -->
+							<!-- </includes> -->
 							<excludes>
 								<exclude>**/ConnectToCatalogIT*</exclude>
 							</excludes>
@@ -241,6 +258,17 @@
 
 	<build>
 		<finalName>${project.name}</finalName>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/webapp</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 
 		<plugins>
 			<plugin>
@@ -645,12 +673,17 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>${guice-version}</version>
+			<version>${guice.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-servlet</artifactId>
-			<version>${guice-version}</version>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+			<version>${guice.version}</version>
 		</dependency>
 	</dependencies>
 

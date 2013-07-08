@@ -16,11 +16,15 @@
 
 package org.n52.oss.guice;
 
+import java.util.Arrays;
+
 import javax.servlet.annotation.WebListener;
 
 import org.n52.oss.batch.TimerModule;
 import org.n52.oss.opensearch.OpenSearchModule;
+import org.n52.oss.sir.SirConfig;
 import org.n52.oss.sir.SirModule;
+import org.n52.oss.sir.operations.OperationsModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,12 +50,14 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
     @Override
     protected Injector getInjector() {
-        Injector inj = Guice.createInjector(new ConfigModule(),
-                                            new SirModule(),
+        Injector inj = Guice.createInjector(new SirModule(),
+                                            new OperationsModule(),
                                             new OpenSearchModule(),
                                             new TimerModule());
+        System.out.println("All bindings inj: " + Arrays.toString(inj.getAllBindings().entrySet().toArray()));
 
-        System.out.println(inj.getAllBindings().entrySet().toArray());
+        SirConfig instance = inj.getInstance(SirConfig.class);
+        System.out.println(instance);
 
         return inj;
     }

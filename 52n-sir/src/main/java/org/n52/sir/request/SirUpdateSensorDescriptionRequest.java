@@ -17,6 +17,8 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
+import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.Operations;
 import org.n52.sir.datastructure.SirDescriptionToBeUpdated;
 
 /**
@@ -48,6 +50,11 @@ public class SirUpdateSensorDescriptionRequest extends AbstractSirRequest {
         sb.append("SirUpdateSensorDescriptionRequest: ");
         sb.append("Update Infos: " + this.descrToBeUpdated);
         return sb.toString();
+    }
+
+    @Override
+    public Operations getOperation() {
+        return SirConstants.Operations.UpdateSensorDescription;
     }
 
 }

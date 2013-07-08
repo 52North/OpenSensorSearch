@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.jar.Attributes;
@@ -34,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.TransformerException;
 
+import org.junit.experimental.theories.ParametersSuppliedBy;
 import org.n52.oss.sir.SirConfig;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.response.ISirResponse;
@@ -50,10 +50,6 @@ import com.google.inject.Singleton;
  */
 @Singleton
 public class SIR extends HttpServlet {
-
-    // private static final String CONFIG_FILE = "/sir.properties";
-    //
-    // private static final String DBCONFIG_FILE = "/db.properties";
 
     private static Logger log = LoggerFactory.getLogger(SIR.class);
 
@@ -111,8 +107,6 @@ public class SIR extends HttpServlet {
 
         // Read the request
         try (BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()))) {
-            InputStream in = req.getInputStream();
-
             String line;
             StringBuffer sb = new StringBuffer();
             while ( (line = br.readLine()) != null) {

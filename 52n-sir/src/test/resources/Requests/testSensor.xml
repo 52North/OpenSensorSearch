@@ -6,7 +6,9 @@
 	xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
 	<member>
 		<System>
+
 			<gml:description>A test sensor.</gml:description>
+
 			<keywords>
 				<KeywordList>
 					<keyword>testkeyword</keyword>
@@ -14,6 +16,7 @@
 					<keyword>another keyword</keyword>
 				</KeywordList>
 			</keywords>
+
 			<!--~~~~~~~~~~~~~~ -->
 			<!--Identification -->
 			<!--~~~~~~~~~~~~~~ -->
@@ -36,12 +39,22 @@
 					</identifier>
 				</IdentifierList>
 			</identification>
+			<classification>
+				<ClassifierList>
+					<classifier>
+						<Term definition="urn:test:classification">
+							<value>aSpecialTestSensor</value>
+						</Term>
+					</classifier>
+				</ClassifierList>
+			</classification>
 			<validTime>
 				<gml:TimePeriod>
 					<gml:beginPosition>2010-01-01</gml:beginPosition>
 					<gml:endPosition>2011-12-31</gml:endPosition>
 				</gml:TimePeriod>
 			</validTime>
+
 			<capabilities>
 				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
 					<!--station is NOT collecting data -->
@@ -94,6 +107,7 @@
 					</swe:field>
 				</swe:DataRecord>
 			</capabilities>
+
 			<contact>
 				<ResponsibleParty gml:id="contact">
 					<individualName>Me</individualName>
@@ -135,7 +149,8 @@
 									definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
 									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
 										<swe:Text>
-											<swe:value>http://v-swe.uni- muenster.de:8080/WeatherSOS/sos</swe:value>
+											<swe:value>http://v-swe.uni- muenster.de:8080/WeatherSOS/sos
+											</swe:value>
 										</swe:Text>
 									</swe:field>
 									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">

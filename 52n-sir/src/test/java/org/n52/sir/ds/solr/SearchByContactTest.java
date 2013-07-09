@@ -83,9 +83,9 @@ public class SearchByContactTest {
 			assertFalse(resultsContacts.indexOf(contact) == -1);
 
 	}
-/*
+
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");
-	}*/
+	}
 }

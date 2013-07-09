@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SensorML xmlns="http://www.opengis.net/sensorML/1.0.1"
 	xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1"
-	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://www.opengis.net/sensorML/1.0.1" 
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	version="1.0.1"
 	xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
 	<member>
@@ -39,20 +39,20 @@
 					</identifier>
 				</IdentifierList>
 			</identification>
-			<ns:classification>
-				<ns:ClassifierList>
-					<ns:classifier name="intendedApplication">
-						<ns:Term>
-							<ns:value>water gauge</ns:value>
-						</ns:Term>
-					</ns:classifier>
-					<ns:classifier name="sensorType">
-						<ns:Term>
-							<ns:value>gauge station</ns:value>
-						</ns:Term>
-					</ns:classifier>
-				</ns:ClassifierList>
-			</ns:classification>
+			<classification>
+				<ClassifierList>
+					<classifier name="intendedApplication">
+						<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+							<value>water gauge</value>
+						</Term>
+					</classifier>
+					<classifier name="sensorType">
+						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+							<value>gauge station</value>
+						</Term>
+					</classifier>
+				</ClassifierList>
+			</classification>
 			<validTime>
 				<gml:TimePeriod>
 					<gml:beginPosition>2010-01-01</gml:beginPosition>

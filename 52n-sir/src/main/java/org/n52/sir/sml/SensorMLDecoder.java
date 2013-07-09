@@ -248,8 +248,8 @@ public class SensorMLDecoder {
 				builder.append(outputsarr[i].getName());
 				builder.append(" ");
 				if (outputsarr[i].getQuantity() != null)
-					builder.append(outputsarr[i].getQuantity().getUom().getCode()
-							.toString());
+					builder.append(outputsarr[i].getQuantity().getUom()
+							.getCode().toString());
 				output_results.add(builder.toString());
 			}
 		}
@@ -270,8 +270,8 @@ public class SensorMLDecoder {
 				builder.append(inputsarr[i].getName());
 				builder.append(" ");
 				if (inputsarr[i].getQuantity() != null)
-					builder.append(inputsarr[i].getQuantity().getUom().getCode()
-							.toString());
+					builder.append(inputsarr[i].getQuantity().getUom()
+							.getCode().toString());
 				inputs_results.add(builder.toString());
 			}
 		}
@@ -285,7 +285,11 @@ public class SensorMLDecoder {
 			SystemType type = (SystemType) sensorML.getSensorML()
 					.getMemberArray()[0].getProcess();
 			Interfaces interfaces = type.getInterfaces();
+			if (interfaces == null)
+				return null;
 			InterfaceList list = interfaces.getInterfaceList();
+			if (list == null)
+				return null;
 			Interface[] interfacearr = list.getInterfaceArray();
 			for (int i = 0; i < interfacearr.length; i++) {
 				DataRecordType t = (DataRecordType) (interfacearr[i]
@@ -305,23 +309,9 @@ public class SensorMLDecoder {
 		if (sensorML.getSensorML().getMemberArray().length != 0) {
 			SystemType type = (SystemType) sensorML.getSensorML()
 					.getMemberArray()[0].getProcess();
-			Contact[] contactsarr = type.getContactArray();
-			for (Contact m : contactsarr) {
-				if (m.getPerson() != null) {
-					Person p = m.getPerson();
-					System.out.println(p);
-					contacts.add(p.getName());
-					contacts.add(p.getEmail());
-					contacts.add(p.getPhoneNumber());
-				}
-				if (m.getResponsibleParty() != null) {
-					ResponsibleParty party = m.getResponsibleParty();
-					contacts.add(party.getIndividualName());
-					contacts.add(party.getOrganizationName());
-				}
-			}
-
+			contacts.addAll(getContacts(type));
 		}
+
 		return contacts;
 	}
 
@@ -331,13 +321,9 @@ public class SensorMLDecoder {
 		if (sensorML.getSensorML().getMemberArray().length != 0) {
 			SystemType type = (SystemType) sensorML.getSensorML()
 					.getMemberArray(0).getProcess();
-			Identification[] ids = type.getIdentificationArray();
-			for (Identification id : ids) {
-				Identifier[] iden = id.getIdentifierList().getIdentifierArray();
-				for (int i = 0; i < iden.length; i++)
-					identifications.add(iden[i].getTerm().getValue());
-			}
+			identifications.addAll(getIdentificationList(type));
 		}
+
 		return identifications;
 
 	}
@@ -347,9 +333,7 @@ public class SensorMLDecoder {
 		if (sensorML.getSensorML().getMemberArray().length != 0) {
 			SystemType type = (SystemType) sensorML.getSensorML()
 					.getMemberArray(0).getProcess();
-			Classification cs[] = type.getClassificationArray();
-			for (Classification c : cs)
-				classifications.add(c.getClassifierList().getId());
+			return getClassificationList(type);
 		}
 		return classifications;
 	}
@@ -359,7 +343,7 @@ public class SensorMLDecoder {
 			return "";
 		SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0)
 				.getProcess();
-		return type.getDescription().getStringValue();
+		return getDescription(type);
 	}
 
 	private static String getLatitude(SensorMLDocument sensorML) {
@@ -369,23 +353,7 @@ public class SensorMLDecoder {
 				.getProcess();
 		if (type.getPosition() == null)
 			return "";
-		PositionType p = type.getPosition().getPosition();
-		if (p == null)
-			return "";
-		VectorType vector = (p.getLocation().getVector());
-		if (vector == null)
-			return "";
-		Coordinate[] coordinates = vector.getCoordinateArray();
-		if (coordinates.length == 0)
-			return "";
-		StringBuilder latitude = new StringBuilder();
-		for (Coordinate cord : coordinates) {
-			if (cord.getName().equals("latitude")) {
-				latitude.append(cord.getQuantity().getValue());
-				break;
-			}
-		}
-		return latitude.toString();
+		return getLatitude(type);
 	}
 
 	private static String getLongitude(SensorMLDocument sensorML) {
@@ -395,23 +363,7 @@ public class SensorMLDecoder {
 				.getProcess();
 		if (type.getPosition() == null)
 			return "";
-		PositionType p = type.getPosition().getPosition();
-		if (p == null)
-			return "";
-		VectorType vector = (p.getLocation().getVector());
-		if (vector == null)
-			return "";
-		Coordinate[] coordinates = vector.getCoordinateArray();
-		if (coordinates.length == 0)
-			return "";
-		StringBuilder latitude = new StringBuilder();
-		for (Coordinate cord : coordinates) {
-			if (cord.getName().equals("longitude")) {
-				latitude.append(cord.getQuantity().getValue());
-				break;
-			}
-		}
-		return latitude.toString();
+		return getLongitude(type);
 	}
 
 	private static Collection<String> getKeywords(SensorMLDocument sensorML) {
@@ -503,7 +455,121 @@ public class SensorMLDecoder {
 		// set text
 		sensor.setText(getText(system));
 
+		sensor.setLatitude(getLatitude(system));
+
+		// set latitude
+		sensor.setLongitude(getLongitude(system));
+
+		// set Description
+		sensor.setDescription(getDescription(system));
+
+		// set Classification
+		sensor.setClassificationList(getClassificationList(system));
+
+		// set Identifications
+		sensor.setIdentificationsList(getIdentificationList(system));
+
+		// set Contacts
+		sensor.setContacts(getContacts(system));
+/*
+		// set Interfaces
+		sensor.setInterfaces(getInterfaces(system));
+
+		// set Inputs
+		sensor.setInputs(getInputs(system));
+
+		// set Outputs
+		sensor.setOutputs(getOutputs(system));
+*/
 		return sensor;
+	}
+
+	private static Collection<String> getContacts(SystemType system) {
+		Collection<String> contacts = new ArrayList<String>();
+		Contact[] contactsarr = system.getContactArray();
+		for (Contact m : contactsarr) {
+			if (m.getPerson() != null) {
+				Person p = m.getPerson();
+				System.out.println(p);
+				contacts.add(p.getName());
+				contacts.add(p.getEmail());
+				contacts.add(p.getPhoneNumber());
+			}
+			if (m.getResponsibleParty() != null) {
+				ResponsibleParty party = m.getResponsibleParty();
+				contacts.add(party.getIndividualName());
+				contacts.add(party.getOrganizationName());
+			}
+		}
+		return contacts;
+		
+	}
+
+	private static Collection<Object> getIdentificationList(SystemType system) {
+		Collection<Object> identifications = new ArrayList<Object>();
+		Identification[] ids = system.getIdentificationArray();
+		for (Identification id : ids) {
+			Identifier[] iden = id.getIdentifierList().getIdentifierArray();
+			for (int i = 0; i < iden.length; i++)
+				identifications.add(iden[i].getTerm().getValue());
+		}
+		return identifications;
+
+	}
+
+	private static Object getClassificationList(SystemType system) {
+		List<String> classifications = new ArrayList<String>();
+		Classification cs[] = system.getClassificationArray();
+		for (Classification c : cs)
+			classifications.add(c.getClassifierList().getId());
+		return classifications;
+
+	}
+
+	private static String getLongitude(SystemType system) {
+		PositionType p = system.getPosition().getPosition();
+		if (p == null)
+			return "";
+		VectorType vector = (p.getLocation().getVector());
+		if (vector == null)
+			return "";
+		Coordinate[] coordinates = vector.getCoordinateArray();
+		if (coordinates.length == 0)
+			return "";
+		StringBuilder latitude = new StringBuilder();
+		for (Coordinate cord : coordinates) {
+			if (cord.getName().equals("longitude")) {
+				latitude.append(cord.getQuantity().getValue());
+				break;
+			}
+		}
+		return latitude.toString();
+	}
+
+	private static String getLatitude(SystemType system) {
+		PositionType p = system.getPosition().getPosition();
+		if (p == null)
+			return "";
+		VectorType vector = (p.getLocation().getVector());
+		if (vector == null)
+			return "";
+		Coordinate[] coordinates = vector.getCoordinateArray();
+		if (coordinates.length == 0)
+			return "";
+		StringBuilder latitude = new StringBuilder();
+		for (Coordinate cord : coordinates) {
+			if (cord.getName().equals("latitude")) {
+				latitude.append(cord.getQuantity().getValue());
+				break;
+			}
+		}
+		return latitude.toString();
+
+	}
+
+	private static Object getDescription(SystemType system) {
+		// TODO Auto-generated method stub
+		return system.getDescription().getStringValue();
 	}
 
 	/**

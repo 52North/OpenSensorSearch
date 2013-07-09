@@ -196,6 +196,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                 if (infoToBeInserted instanceof SirInfoToBeInserted_SensorDescription) {
                     SirInfoToBeInserted_SensorDescription newSensor = (SirInfoToBeInserted_SensorDescription) infoToBeInserted;
                     SirSensor sensor = SensorMLDecoder.decode(newSensor.getSensorDescription());
+                    
                     sensor.setLastUpdate(new Date());
 
                     Collection<SirServiceReference> serviceReferences = newSensor.getServiceReferences();

@@ -31,8 +31,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.joda.time.DateTime;
@@ -52,7 +54,7 @@ public class JSONSensorParserTest {
 	
 	@Test
 	public void parseJsonSensorsAndInsert() throws IOException, OwsExceptionReport {
-	/*	File sensor_file = new File(ClassLoader.getSystemResource(
+		File sensor_file = new File(ClassLoader.getSystemResource(
 				"data/randomSensors.json").getFile());
 		Gson gson = new Gson();
 		StringBuilder builder = new StringBuilder();
@@ -79,10 +81,15 @@ public class JSONSensorParserTest {
 			}
 			period.setStartTime(begin.toDate());
 			period.setEndTime(end.toDate());
+			sensor.setTimePeriod(period);
+			sensor.setIdentificationsList(jsensor.Identifiers);
+			List<String> contacts = new ArrayList<String>();
+			contacts.add(jsensor.contacts);
+			sensor.setContacts(contacts);
 			SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
 			dao.insertSensor(sensor);
 		}
-		*/
+		
 	}
 	
 }

@@ -31,6 +31,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 import javax.servlet.UnavailableException;
@@ -51,6 +53,7 @@ import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.json.SearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
+import org.x52North.sir.x032.HarvestServiceRequestDocument.HarvestServiceRequest;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.InsertedSensor;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
@@ -75,16 +78,18 @@ public class HarvestSensor {
 
         }
     }
+ 
 
 	@Test
 	public void harvestService() throws IOException, OwsExceptionReport,
-			HttpException, XmlException {
+			HttpException, XmlException, URISyntaxException {
 		File f = new File(ClassLoader.getSystemResource(
 				"Requests/HarvestService_WeatherSOS.xml").getFile());
-
 		HarvestServiceRequestDocument doc = HarvestServiceRequestDocument.Factory
 				.parse(f);
-		XmlObject resp = Client.xSendPostRequest(doc);
+		XmlObject resp = Client.xSendPostRequest(doc,new URI(serviceURL));
+		System.out.println(resp);
+		
 		HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory
 				.parse(resp.getDomNode());
 		InsertedSensor[] sensors = respDoc.getHarvestServiceResponse()

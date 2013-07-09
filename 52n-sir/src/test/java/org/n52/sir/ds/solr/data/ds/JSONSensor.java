@@ -38,6 +38,8 @@ public class JSONSensor {
 	public String beginPosition;
 	public String endPosition;
 	public List<String> keywords;
+	public String contacts;
+	public List<Object> Identifiers;
 	
 	
 

@@ -40,6 +40,7 @@ import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirSearchSensorRequest;
@@ -170,9 +171,11 @@ public class SearchSensorListener implements ISirRequestListener {
                         log.debug("Adding phenomena to search criteria: " + Arrays.toString(newPhenomena.toArray()));
                     phenomena.addAll(newPhenomena);
                 }
-
-                searchResElements = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                                        searchSensReq.isSimpleResponse());
+                SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+                searchResElements = (ArrayList<SirSearchResultElement>)  dao.searchSensor(searchSensReq.getSearchCriteria(),
+                        searchSensReq.isSimpleResponse());
+               // searchResElements = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                         //                                               searchSensReq.isSimpleResponse());
             }
             catch (OwsExceptionReport e) {
                 return new ExceptionResponse(e.getDocument());
@@ -187,7 +190,7 @@ public class SearchSensorListener implements ISirRequestListener {
             boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
 
             for (SirSearchResultElement sirSearchResultElement : searchResElements) {
-                SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
+                //SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
 
                 String descriptionURL;
                 try {
@@ -206,10 +209,10 @@ public class SearchSensorListener implements ISirRequestListener {
                     log.debug("Created description URL for sensor " + sirSearchResultElement.getSensorIdInSir() + ": "
                             + descriptionURL);
 
-                sensorDescription.setSensorDescriptionURL(descriptionURL);
+                //sensorDescription.setSensorDescriptionURL(descriptionURL);
 
-                if (removeBBoxes)
-                    sensorDescription.setBoundingBox(null);
+                //if (removeBBoxes)
+                  //  sensorDescription.setBoundingBox(null);
             }
 
         }

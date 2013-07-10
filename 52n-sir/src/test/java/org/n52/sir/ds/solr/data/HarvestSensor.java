@@ -64,7 +64,7 @@ import org.x52North.sir.x032.SearchSensorRequestDocument;
 import org.x52North.sir.x032.SearchSensorResponseDocument;
 
 public class HarvestSensor {
-	private String serviceURL = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos";
+	private String serviceURL = "http://sensorweb.demo.52north.org/EO2HeavenSOS/sos";
 
 	private String serviceType = "SOS";
 

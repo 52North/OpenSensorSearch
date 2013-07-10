@@ -79,6 +79,7 @@ public class JsonListener implements IOpenSearchListener {
                                Collection<SirSearchResultElement> searchResult,
                                PrintWriter writer,
                                String searchText) throws OwsExceptionReport {
+    	log.info("createResponse called");
         resp.setContentType(MIME_TYPE);
 
         // TODO move this somewhere where all listeners can use it
@@ -121,6 +122,7 @@ public class JsonListener implements IOpenSearchListener {
                                                responseDescription,
                                                "52°North",
                                                new Date());
+        log.info(searchResult.size()+" :Results found");
         for (SirSearchResultElement sirSearchResultElement : searchResult) {
             SearchResultElement sre = new SearchResultElement();
             sre.setSensorIdInSir(sirSearchResultElement.getSensorIdInSir());

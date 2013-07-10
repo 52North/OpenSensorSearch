@@ -65,7 +65,7 @@ public class XmlListener implements IOpenSearchListener {
                                PrintWriter writer,
                                String searchText) throws OwsExceptionReport {
         log.debug("Creating XML response for {}", searchText);
-
+        
         resp.setContentType(MIME_TYPE);
         SirSearchSensorResponse sssr = new SirSearchSensorResponse();
         sssr.setSearchResultElements(searchResult);

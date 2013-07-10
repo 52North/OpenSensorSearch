@@ -79,7 +79,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 	public Collection<SirSearchResultElement> searchSensor(
 			SirSearchCriteria searchCriteria, boolean simpleReponse)
 			throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		Collection<String> q = searchCriteria.getSearchText();
 		StringBuilder wordslist = new StringBuilder();
 		Iterator<String> iter = q.iterator();
@@ -92,7 +91,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		params.set("q", wordslist.toString());
-		System.out.println("Parameters:" + params.toString());
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();

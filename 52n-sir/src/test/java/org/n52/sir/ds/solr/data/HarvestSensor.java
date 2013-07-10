@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -67,18 +68,20 @@ public class HarvestSensor {
 
 	private String serviceType = "SOS";
 
-    @Before
-    public void prepare() throws UnavailableException, OwsExceptionReport {
+	@Before
+	public void prepare() throws UnavailableException, OwsExceptionReport {
 
-        if (SirConfigurator.getInstance() == null) {
-            InputStream dbStream = ClassLoader.getSystemResourceAsStream("prop/db.PROPERTIES");
-            InputStream sirStream = ClassLoader.getSystemResourceAsStream("prop/sir.PROPERTIES");
-            // Read configurator if null
-            SirConfigurator.getInstance(sirStream, dbStream, null, null);
+		if (SirConfigurator.getInstance() == null) {
+			InputStream dbStream = ClassLoader
+					.getSystemResourceAsStream("prop/db.PROPERTIES");
+			InputStream sirStream = ClassLoader
+					.getSystemResourceAsStream("prop/sir.PROPERTIES");
+			// Read configurator if null
+			SirConfigurator.getInstance(sirStream, dbStream, null, null);
 
-        }
-    }
- 
+		}
+	}
+
 
 	@Test
 	public void harvestService() throws IOException, OwsExceptionReport,
@@ -87,9 +90,9 @@ public class HarvestSensor {
 				"Requests/HarvestService_WeatherSOS.xml").getFile());
 		HarvestServiceRequestDocument doc = HarvestServiceRequestDocument.Factory
 				.parse(f);
-		XmlObject resp = Client.xSendPostRequest(doc,new URI(serviceURL));
+		XmlObject resp = Client.xSendPostRequest(doc, new URI(serviceURL));
 		System.out.println(resp);
-		
+
 		HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory
 				.parse(resp.getDomNode());
 		InsertedSensor[] sensors = respDoc.getHarvestServiceResponse()
@@ -98,7 +101,7 @@ public class HarvestSensor {
 			String id = sensors[i].getSensorIDInSIR();
 			SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
 			Collection<SirSearchResultElement> elements = dao.searchByID(id);
-			assertTrue(elements.size() > 0 );
+			assertTrue(elements.size() > 0);
 		}
 	}
 }

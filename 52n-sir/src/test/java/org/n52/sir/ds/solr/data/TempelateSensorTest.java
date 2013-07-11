@@ -78,7 +78,6 @@ public class TempelateSensorTest {
 		}
 	}
 
-	@Test
 	public void parseJsonSensorsAndInsert() throws IOException,
 			OwsExceptionReport, XmlException, HttpException {
 

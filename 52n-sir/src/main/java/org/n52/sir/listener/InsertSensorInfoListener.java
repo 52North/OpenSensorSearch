@@ -120,13 +120,13 @@ public class InsertSensorInfoListener implements ISirRequestListener {
             	 * Inserts into solr
             	 */
             	SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-            	String sensorIdInSir = dao.insertSensor(sensor);
-            	// String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
+            	String sensorIdInSirSolr = dao.insertSensor(sensor);
+            	String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
                 if (sensorIdInSir != null) {
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);
                     response.getInsertedSensors().add(sensorIdInSir);
                     log.debug("Inserted Sensor: " + sensorIdInSir);
-
+                    log.debug("Inserted sensor in solr:"+sensorIdInSirSolr);
                     if (log.isDebugEnabled())
                         log.debug("Inserted Sensor: " + sensorIdInSir);
 

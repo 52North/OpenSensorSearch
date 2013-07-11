@@ -513,7 +513,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(", ");
         cmd.append(PGDAOConstants.lastUpdate);
-        cmd.append(") SELECT GeometryFromText('POLYGON((");
+        cmd.append(") SELECT ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());
@@ -563,7 +563,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(PGDAOConstants.sensor);
         cmd.append(" WHERE (");
         cmd.append(PGDAOConstants.bBox);
-        cmd.append(" = GeometryFromText('POLYGON((");
+        cmd.append(" = ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());
@@ -819,7 +819,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(" SET ");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(" = ");
-        cmd.append("GeometryFromText('POLYGON((");
+        cmd.append("ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());

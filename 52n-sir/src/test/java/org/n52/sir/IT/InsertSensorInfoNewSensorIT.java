@@ -33,6 +33,8 @@ import static org.junit.Assert.assertNotEquals;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.servlet.UnavailableException;
 
@@ -66,13 +68,15 @@ public class InsertSensorInfoNewSensorIT {
     }
     
     @Test
-    public void insertNewSensor() throws XmlException, IOException, OwsExceptionReport, HttpException{
+    public void insertNewSensor() throws XmlException, IOException, OwsExceptionReport, HttpException, URISyntaxException{
     	File sensor = new File(ClassLoader.getSystemResource("AirBase-test.xml").getFile());
     	SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
         req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
         XmlObject res = Client.xSendPostRequest(req);
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
+        
+        System.out.println(resp);
         assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
     }
 

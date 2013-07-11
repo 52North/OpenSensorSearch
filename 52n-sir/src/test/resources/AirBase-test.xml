@@ -7,7 +7,7 @@
 	<sml:member>
 		<sml:System>
 			<gml:description>Sensor of the European air quality database
-				'AirBase' in BELGIUM</gml:description>
+				AirBase in BELGIUM</gml:description>
 			<sml:keywords>
 				<sml:KeywordList>
 					<sml:keyword>MECHELEN</sml:keyword>

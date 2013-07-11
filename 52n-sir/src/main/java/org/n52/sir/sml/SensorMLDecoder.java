@@ -471,6 +471,8 @@ public class SensorMLDecoder {
 
 		// set Contacts
 		sensor.setContacts(getContacts(system));
+		
+		sensor.setKeywords(getKeywords(system));
 /*
 		// set Interfaces
 		sensor.setInterfaces(getInterfaces(system));

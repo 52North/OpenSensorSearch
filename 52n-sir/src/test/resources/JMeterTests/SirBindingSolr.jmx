@@ -90,7 +90,7 @@
                 <bytes>true</bytes>
               </value>
             </objProp>
-            <stringProp name="filename">C:\Users\Yakoub\Desktop\SirBindingSolr.csv</stringProp>
+            <stringProp name="filename">C:\Users\Yakoub\Desktop\SirBindingPGSQL.csv</stringProp>
           </ResultCollector>
           <hashTree/>
           <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">

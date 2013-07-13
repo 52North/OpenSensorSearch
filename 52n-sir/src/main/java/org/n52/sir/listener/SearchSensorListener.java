@@ -171,11 +171,11 @@ public class SearchSensorListener implements ISirRequestListener {
                         log.debug("Adding phenomena to search criteria: " + Arrays.toString(newPhenomena.toArray()));
                     phenomena.addAll(newPhenomena);
                 }
-               // SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-               // searchResElements = (ArrayList<SirSearchResultElement>)  dao.searchSensor(searchSensReq.getSearchCriteria(),
-                 //       searchSensReq.isSimpleResponse());
-                searchResElements = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                                      searchSensReq.isSimpleResponse());
+                SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+                searchResElements = (ArrayList<SirSearchResultElement>)  dao.searchSensor(searchSensReq.getSearchCriteria(),
+                      searchSensReq.isSimpleResponse());
+          //      searchResElements = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+            //                                                                                          searchSensReq.isSimpleResponse());
             }
             catch (OwsExceptionReport e) {
                 return new ExceptionResponse(e.getDocument());

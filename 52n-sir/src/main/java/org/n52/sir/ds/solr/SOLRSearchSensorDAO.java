@@ -82,25 +82,12 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		Collection<String> q = searchCriteria.getSearchText();
 		StringBuilder wordslist = new StringBuilder();
 		Iterator<String> iter = q.iterator();
-		wordslist.append(SolrConstants.KEYWORD + ":" + iter.next());
+		wordslist.append(iter.next());
 		while (iter.hasNext()) {
 			wordslist.append("+");
 			wordslist.append(iter.next());
 		}
-		// prepare the request
-		SolrConnection connection = new SolrConnection();
-		ModifiableSolrParams params = new ModifiableSolrParams();
-		params.set("q", wordslist.toString());
-		try {
-			QueryResponse response = connection.SolrQuery(params);
-			SolrDocumentList list = response.getResults();
-			return encodeResult(list);
-
-		} catch (SolrServerException solrexception) {
-			log.error("SolrException:" + solrexception.getLocalizedMessage());
-			solrexception.printStackTrace();
-			return null;
-		}
+		return searchByAll(wordslist.toString());
 	}
 
 	/**

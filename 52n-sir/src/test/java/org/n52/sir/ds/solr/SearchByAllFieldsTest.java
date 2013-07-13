@@ -62,6 +62,7 @@ public class SearchByAllFieldsTest {
 		Collection<SirSearchResultElement> results = searchDAO
 				.searchByAll("precipitation");
 		Iterator<SirSearchResultElement> resultsIterator = results.iterator();
+		System.out.println(results.size());
 		boolean found = false;
 		while(resultsIterator.hasNext()){
 			SirSolrSensorDescription description = (SirSolrSensorDescription)resultsIterator.next().getSensorDescription();
@@ -73,10 +74,10 @@ public class SearchByAllFieldsTest {
 		assertTrue(found);
 		
 	}
-
+/*
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");
 	}
-
+*/
 }

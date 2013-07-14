@@ -108,7 +108,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		params.set("fq", "{!geofilt sfield=" + column + "}");
 		params.set("pt", lat + "," + lng);
 		params.set("d", kms + "");
-		System.out.println("Params:" + params);
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
@@ -145,7 +144,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		query.append(":[* TO ");
 		query.append(endMillis);
 		query.append("]");
-		System.out.println(query);
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		params.set("q", query.toString());
@@ -266,7 +264,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		builder.append(contact);
 		builder.append('"');
 		params.set("q", builder.toString());
-		System.out.println(params);
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
@@ -360,9 +357,21 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
-		builder.append('"');
-		builder.append(query);
-		builder.append('"');
+		String [] qs = query.split("[+]");
+		StringBuilder qualified = new StringBuilder();
+		qualified.append('"');
+		qualified.append(qs[0]);
+		qualified.append('"');
+	
+		for(int i=1;i<qs.length;i++)
+		{
+			qualified.append("+");
+			qualified.append('"');
+			qualified.append(qs[i]);
+			qualified.append('"');
+			
+		}
+		builder.append(qualified.toString());
 		params.set("q", builder.toString());
 		params.set("defType", "dismax");
 		params.set("qf",SolrConstants.EDISMAX);

@@ -60,7 +60,7 @@ public class SearchByAllFieldsTest {
 		String id = dao.insertSensor(sensor);
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		Collection<SirSearchResultElement> results = searchDAO
-				.searchByAll("precipitation");
+				.searchByAll("precipitation+keyword");
 		Iterator<SirSearchResultElement> resultsIterator = results.iterator();
 		System.out.println(results.size());
 		boolean found = false;

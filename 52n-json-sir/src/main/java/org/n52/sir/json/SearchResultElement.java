@@ -40,6 +40,28 @@ public class SearchResultElement { // implements JsonSerializableWithType {
     private String sensorIdInSir;
 
     private Collection<ServiceReference> serviceReferences;
+    
+    public long getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(long beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public long getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(long endDate) {
+		this.endDate = endDate;
+	}
+
+
+
+	private long beginDate;
+    
+    private long endDate;
 
     public SearchResultElement() {
         // empty constructor for deserialization
@@ -104,6 +126,8 @@ public class SearchResultElement { // implements JsonSerializableWithType {
     public void setServiceReferences(Collection<ServiceReference> serviceReferences) {
         this.serviceReferences = serviceReferences;
     }
+    
+    
 
     @Override
     public String toString() {

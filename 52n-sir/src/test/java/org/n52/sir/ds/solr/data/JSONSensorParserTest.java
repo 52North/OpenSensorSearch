@@ -54,7 +54,7 @@ public class JSONSensorParserTest {
 	
 	@Test
 	public void parseJsonSensorsAndInsert() throws IOException, OwsExceptionReport {
-		
+		/*
 		File sensor_file = new File(ClassLoader.getSystemResource(
 				"data/randomSensors.json").getFile());
 		Gson gson = new Gson();
@@ -90,7 +90,7 @@ public class JSONSensorParserTest {
 			SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
 			dao.insertSensor(sensor);
 		}
-	
+	*/
 	}
 	
 }

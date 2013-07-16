@@ -33,16 +33,73 @@ import java.util.Date;
  */
 public class SearchResultElement { // implements JsonSerializableWithType {
 
-    private Date lastUpdate;
+	private Date lastUpdate;
 
-    private SensorDescription sensorDescription;
+	private SensorDescription sensorDescription;
 
-    private String sensorIdInSir;
+	private String sensorIdInSir;
 
-    private Collection<ServiceReference> serviceReferences;
-    
-    public long getBeginDate() {
-		return beginDate;
+	private Collection<ServiceReference> serviceReferences;
+
+	private Collection<Object> classifiers;
+	private Collection<Object> keywords;
+	
+
+	public Collection<Object> getKeywords() {
+		return this.keywords;
+	}
+
+	public void setKeywords(Collection<Object> keywords) {
+		this.keywords = keywords;
+	}
+
+	public Collection<Object> getClassifiers() {
+		return this.classifiers;
+	}
+
+	public void setClassifiers(Collection<Object> classifiers) {
+		this.classifiers = classifiers;
+	}
+
+	public Collection<? extends Object> getIdentifiers() {
+		return this.identifiers;
+	}
+
+	public void setIdentifiers(Collection<? extends Object> identifiers) {
+		this.identifiers = identifiers;
+	}
+
+	public Collection<String> getContacts() {
+		return this.contacts;
+	}
+
+	public void setContacts(Collection<String> contacts) {
+		this.contacts = contacts;
+	}
+
+	public Collection<String> getInputs() {
+		return this.inputs;
+	}
+
+	public void setInputs(Collection<String> inputs) {
+		this.inputs = inputs;
+	}
+
+	public Collection<String> getOutputs() {
+		return this.outputs;
+	}
+
+	public void setOutputs(Collection<String> outputs) {
+		this.outputs = outputs;
+	}
+
+	private Collection<? extends Object> identifiers;
+	private Collection<String> contacts;
+	private Collection<String> inputs;
+	private Collection<String> outputs;
+
+	public long getBeginDate() {
+		return this.beginDate;
 	}
 
 	public void setBeginDate(long beginDate) {
@@ -50,107 +107,106 @@ public class SearchResultElement { // implements JsonSerializableWithType {
 	}
 
 	public long getEndDate() {
-		return endDate;
+		return this.endDate;
 	}
 
 	public void setEndDate(long endDate) {
 		this.endDate = endDate;
 	}
 
-
-
 	private long beginDate;
-    
-    private long endDate;
 
-    public SearchResultElement() {
-        // empty constructor for deserialization
-    }
+	private long endDate;
 
-    /**
-     * @return the lastUpdate
-     */
-    public Date getLastUpdate() {
-        return this.lastUpdate;
-    }
+	public SearchResultElement() {
+		// empty constructor for deserialization
+	}
 
-    /**
-     * @return the sensorDescription
-     */
-    public SensorDescription getSensorDescription() {
-        return this.sensorDescription;
-    }
+	/**
+	 * @return the lastUpdate
+	 */
+	public Date getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
-    }
+	/**
+	 * @return the sensorDescription
+	 */
+	public SensorDescription getSensorDescription() {
+		return this.sensorDescription;
+	}
 
-    /**
-     * @return the serviceDescriptions
-     */
-    public Collection<ServiceReference> getServiceReferences() {
-        return this.serviceReferences;
-    }
+	/**
+	 * @return the sensorIdInSir
+	 */
+	public String getSensorIdInSir() {
+		return this.sensorIdInSir;
+	}
 
-    /**
-     * @param lastUpdate
-     *        the lastUpdate to set
-     */
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	/**
+	 * @return the serviceDescriptions
+	 */
+	public Collection<ServiceReference> getServiceReferences() {
+		return this.serviceReferences;
+	}
 
-    /**
-     * @param sensorDescription
-     *        the sensorDescription to set
-     */
-    public void setSensorDescription(SensorDescription sensorDescription) {
-        this.sensorDescription = sensorDescription;
-    }
+	/**
+	 * @param lastUpdate
+	 *            the lastUpdate to set
+	 */
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
-    }
+	/**
+	 * @param sensorDescription
+	 *            the sensorDescription to set
+	 */
+	public void setSensorDescription(SensorDescription sensorDescription) {
+		this.sensorDescription = sensorDescription;
+	}
 
-    /**
-     * @param serviceDescriptions
-     *        the serviceDescriptions to set
-     */
-    public void setServiceReferences(Collection<ServiceReference> serviceReferences) {
-        this.serviceReferences = serviceReferences;
-    }
-    
-    
+	/**
+	 * @param sensorIdInSir
+	 *            the sensorIdInSir to set
+	 */
+	public void setSensorIdInSir(String sensorIdInSir) {
+		this.sensorIdInSir = sensorIdInSir;
+	}
 
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SearchResultElement: ");
-        sb.append(", SensorID in SIR: " + this.sensorIdInSir);
-        sb.append(", ServiceDescription: " + this.serviceReferences);
-        sb.append(", Last update: " + this.lastUpdate);
-        return sb.toString();
-    }
+	/**
+	 * @param serviceDescriptions
+	 *            the serviceDescriptions to set
+	 */
+	public void setServiceReferences(
+			Collection<ServiceReference> serviceReferences) {
+		this.serviceReferences = serviceReferences;
+	}
 
-    // @Override
-    // public void serialize(JsonGenerator arg0, SerializerProvider arg1) throws IOException,
-    // JsonProcessingException {
-    // // TODO Auto-generated method stub
-    //
-    // }
-    //
-    // @Override
-    // public void serializeWithType(JsonGenerator arg0, SerializerProvider arg1, TypeSerializer arg2) throws
-    // IOException,
-    // JsonProcessingException {
-    // // TODO Auto-generated method stub
-    //
-    // }
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("SearchResultElement: ");
+		sb.append(", SensorID in SIR: " + this.sensorIdInSir);
+		sb.append(", ServiceDescription: " + this.serviceReferences);
+		sb.append(", Last update: " + this.lastUpdate);
+		return sb.toString();
+	}
+
+	// @Override
+	// public void serialize(JsonGenerator arg0, SerializerProvider arg1) throws
+	// IOException,
+	// JsonProcessingException {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void serializeWithType(JsonGenerator arg0, SerializerProvider
+	// arg1, TypeSerializer arg2) throws
+	// IOException,
+	// JsonProcessingException {
+	// // TODO Auto-generated method stub
+	//
+	// }
 }

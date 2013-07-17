@@ -33,7 +33,7 @@ import org.n52.sir.datastructure.SirSensorDescription;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.datastructure.SirXmlSensorDescription;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,14 +70,14 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
 					.addNewSearchResultElement();
 
 			if (searchResult.getSensorIdInSir() != null
-					|| searchResult.getSensorDescription() instanceof SirSolrSensorDescription) {
+					|| searchResult.getSensorDescription() instanceof SirDetailedSensorDescription) {
 				// sensorID in SIR
 				if (searchResult.getSensorIdInSir() != null)
 					elem.setSensorIDInSIR(searchResult.getSensorIdInSir());
 
-				if (searchResult.getSensorDescription() instanceof SirSolrSensorDescription) {
+				if (searchResult.getSensorDescription() instanceof SirDetailedSensorDescription) {
 					log.info("A result from Solr");
-					elem.setSensorIDInSIR(((SirSolrSensorDescription) searchResult
+					elem.setSensorIDInSIR(((SirDetailedSensorDescription) searchResult
 							.getSensorDescription()).getId());
 				}
 
@@ -153,9 +153,9 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
 							bbox.setUpperCorner(uu);
 						} else
 							log.debug("No bounding box given, possibly not supported in service version.");
-					} else if (description instanceof SirSolrSensorDescription) {
+					} else if (description instanceof SirDetailedSensorDescription) {
 						isSimple = true;
-						SirSolrSensorDescription solr_description = (SirSolrSensorDescription) description;
+						SirDetailedSensorDescription solr_description = (SirDetailedSensorDescription) description;
 						SimpleSensorDescription newSSDescr = elem
 								.addNewSimpleSensorDescription();
 						log.info("Solr_Description:"

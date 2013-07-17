@@ -43,7 +43,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
@@ -65,7 +65,7 @@ public class SearchByAllFieldsTest {
 		System.out.println(results.size());
 		boolean found = false;
 		while(resultsIterator.hasNext()){
-			SirSolrSensorDescription description = (SirSolrSensorDescription)resultsIterator.next().getSensorDescription();
+			SirDetailedSensorDescription description = (SirDetailedSensorDescription)resultsIterator.next().getSensorDescription();
 			if(description.getId().equals(id)){
 				found=true;
 				break;

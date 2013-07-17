@@ -42,7 +42,7 @@ import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
@@ -163,7 +163,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
 		for (int i = 0; i < doc.size(); i++) {
 			SirSearchResultElement element = new SirSearchResultElement();
-			SirSolrSensorDescription solrDescription = new SirSolrSensorDescription();
+			SirDetailedSensorDescription solrDescription = new SirDetailedSensorDescription();
 			SolrDocument solrresult = doc.get(i);
 			Collection<Object> keywords = solrresult
 					.getFieldValues(SolrConstants.KEYWORD);

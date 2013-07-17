@@ -44,7 +44,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
@@ -70,7 +70,7 @@ public class SearchByValidTimeTest {
 		Collection<SirSearchResultElement> results = dao
 				.searchByValidTimeRange(start, end);
 		for (SirSearchResultElement element : results) {
-			SirSolrSensorDescription description = (SirSolrSensorDescription) element
+			SirDetailedSensorDescription description = (SirDetailedSensorDescription) element
 					.getSensorDescription();
 			assertTrue(description.getBegineDate() >= start.getTime());
 			assertTrue(description.getEndDate() <= end.getTime());

@@ -46,7 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
@@ -87,7 +87,7 @@ public class SearchByLocationTest {
         Iterator<SirSearchResultElement> iter = results.iterator();
         SirSearchResultElement result = iter.next();
         // SensorML is stored in the sensor description value
-        SirSolrSensorDescription description = (SirSolrSensorDescription) result.getSensorDescription();
+        SirDetailedSensorDescription description = (SirDetailedSensorDescription) result.getSensorDescription();
         assertNotNull(description);
     //    assertTrue("urn:ogc:object:feature:testsensor".equals(description.getId()));
     }

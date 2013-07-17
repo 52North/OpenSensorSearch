@@ -43,7 +43,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
@@ -68,7 +68,7 @@ public class IndexDescriptionTest {
 		assertTrue(results.size() > 0);
 		for (SirSearchResultElement element : results)
 			assertEquals(
-					((SirSolrSensorDescription) element.getSensorDescription())
+					((SirDetailedSensorDescription) element.getSensorDescription())
 							.getDescription(),
 					"A test sensor.");
 

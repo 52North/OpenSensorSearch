@@ -38,7 +38,7 @@ import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirService;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.json.BoundingBox;
 import org.n52.sir.json.MapperFactory;
 import org.n52.sir.json.SearchResult;
@@ -128,10 +128,10 @@ public class JsonListener implements IOpenSearchListener {
 				"52°North", new Date());
 		log.info(searchResult.size() + " :Results found");
 		for (SirSearchResultElement sirSearchResultElement : searchResult) {
-			if (sirSearchResultElement.getSensorDescription() instanceof SirSolrSensorDescription) {
+			if (sirSearchResultElement.getSensorDescription() instanceof SirDetailedSensorDescription) {
 				log.info("This is a detailed sensor profile");
 				SearchResultElement element = new SearchResultElement();
-				SirSolrSensorDescription desc = (SirSolrSensorDescription)sirSearchResultElement.getSensorDescription();
+				SirDetailedSensorDescription desc = (SirDetailedSensorDescription)sirSearchResultElement.getSensorDescription();
 				element.setSensorIdInSir(desc.getId());
 				log.info("Begin date:"+desc.getBegineDate());
 				element.setBeginDate(desc.getBegineDate());

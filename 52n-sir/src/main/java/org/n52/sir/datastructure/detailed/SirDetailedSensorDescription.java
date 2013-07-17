@@ -22,13 +22,13 @@
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
 
-package org.n52.sir.datastructure.solr;
+package org.n52.sir.datastructure.detailed;
 
 import java.util.Collection;
 
 import org.n52.sir.datastructure.SirSensorDescription;
 
-public class SirSolrSensorDescription extends SirSensorDescription {
+public class SirDetailedSensorDescription extends SirSensorDescription {
 	private String id;
 	private Collection<Object> keywords;
 	private long begineDate;
@@ -81,7 +81,7 @@ public class SirSolrSensorDescription extends SirSensorDescription {
 		this.keywords = keywords;
 	}
 
-	public SirSolrSensorDescription() {
+	public SirDetailedSensorDescription() {
 		// TODO Auto-generated constructor stub
 	}
 

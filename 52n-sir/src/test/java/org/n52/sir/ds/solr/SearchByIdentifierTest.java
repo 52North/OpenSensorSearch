@@ -46,7 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
@@ -78,7 +78,7 @@ public class SearchByIdentifierTest {
 		ArrayList<Object> resultsIdentifiers = new ArrayList<Object>();
 		while (iter.hasNext()) {
 			SirSearchResultElement element = iter.next();
-			resultsIdentifiers.addAll(((SirSolrSensorDescription) element
+			resultsIdentifiers.addAll(((SirDetailedSensorDescription) element
 					.getSensorDescription()).getIdentifiers());
 		}
 		if (resultsIdentifiers.size() > 0)

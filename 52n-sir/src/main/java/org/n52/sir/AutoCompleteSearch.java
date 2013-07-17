@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.solr.SirSolrSensorDescription;
+import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public class AutoCompleteSearch extends HttpServlet {
 
 			while (it.hasNext()) {
 				SirSearchResultElement element = it.next();
-				SirSolrSensorDescription desc = (SirSolrSensorDescription) element
+				SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element
 						.getSensorDescription();
 				results.addAll(desc.getKeywords());
 				if(desc.getContacts()!=null)results.addAll(desc.getContacts());

@@ -1,4 +1,4 @@
-#OpenSensorSearch#
+﻿#OpenSensorSearch#
 
 Open Sensor Search (OSS) is a platform for discovery of in-situ sensor data. It spans across large scale networks based on heavyweight OGC Sensor Web standards and protocols (SensorObservationService, SensorML, ...) and grassroots platforms and the internet of things (IoT) with a modular and open architecture. Open Sensor Search is based on the SensorInstanceRegistry and can be seen as its next version
 

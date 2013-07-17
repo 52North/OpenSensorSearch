@@ -34,16 +34,21 @@ import java.util.UUID;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
+import org.n52.sir.api.IdentifierGenerator;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirTimePeriod;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
+	private IdentifierGenerator idenGen = new ShortAlphanumericIdentifierGenerator();
 	private static Logger log = LoggerFactory
 			.getLogger(SOLRInsertSensorInfoDAO.class);
 
@@ -86,7 +91,7 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			inputDocument.addField(SolrConstants.KEYWORD, s);
 		}
 		// FIXME use OSS-wide id generator
-		String id = UUID.randomUUID().toString();
+		String id = this.idenGen.generate();
 		inputDocument.addField(SolrConstants.ID, id);
 		String longitude = sensor.getLongitude();
 		String latitude = sensor.getLatitude();

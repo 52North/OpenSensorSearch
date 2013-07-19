@@ -72,8 +72,8 @@ public class SearchByValidTimeTest {
 		for (SirSearchResultElement element : results) {
 			SirDetailedSensorDescription description = (SirDetailedSensorDescription) element
 					.getSensorDescription();
-			assertTrue(description.getBegineDate() >= start.getTime());
-			assertTrue(description.getEndDate() <= end.getTime());
+			assertTrue(description.getBegineDate().getTime() >= start.getTime());
+			assertTrue(description.getEndDate().getTime() <= end.getTime());
 		}
 
 	}

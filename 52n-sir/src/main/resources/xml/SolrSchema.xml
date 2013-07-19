@@ -118,8 +118,8 @@
    <field name="longName" type="string" indexed="true" stored="true"/>
    <field name="shortName" type="string" indexed="true" stored="true"/>
    <field name="keyword" type="text_general_edge_ngram" indexed="true" stored="true" multiValued="true" />
-   <field name="beginPosition" type="tdate" indexed="true" stored="true" multiValued="false" />
-   <field name="endPosition" type="tdate" indexed="true" stored="true" multiValued="false" />
+   <field name="dtstart" type="tdate" indexed="true" stored="true" multiValued="false" />
+   <field name="dtend" type="tdate" indexed="true" stored="true" multiValued="false" />
    <field name="location" type="lnglatlocation" indexed="true" stored="true"/>
    <field name="bboxcenter" type="lnglatlocation" indexed="true" stored="true"/>
    <field name="description" type="text_general_edge_ngram" indexed="true" stored="true"/>

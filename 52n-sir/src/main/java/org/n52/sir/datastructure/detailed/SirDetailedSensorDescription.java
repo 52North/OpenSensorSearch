@@ -25,13 +25,14 @@
 package org.n52.sir.datastructure.detailed;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.n52.sir.datastructure.SirSensorDescription;
 
 public class SirDetailedSensorDescription extends SirSensorDescription {
 	private String id;
 	private Collection<Object> keywords;
-	private long begineDate;
+	private Date begineDate;
 	private String description;
 
 	public String getDescription() {
@@ -42,23 +43,23 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
 		this.description = description;
 	}
 
-	public long getBegineDate() {
+	public Date getBegineDate() {
 		return begineDate;
 	}
 
-	public void setBegineDate(long begineDate) {
+	public void setBegineDate(Date begineDate) {
 		this.begineDate = begineDate;
 	}
 
-	public long getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(long endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-	private long endDate;
+	private Date endDate;
 	private Collection<Object> classifiers;
 	private Collection<? extends Object> identifiers;
 	private Collection<String> contacts;

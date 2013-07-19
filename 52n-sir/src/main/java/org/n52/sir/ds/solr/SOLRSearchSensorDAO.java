@@ -132,17 +132,17 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
 	public Collection<SirSearchResultElement> searchByValidTimeRange(
 			Date start, Date end) {
-		long startMillis = start.getTime();
-		long endMillis = end.getTime();
+		String startDate = SolrUtils.getISO8601UTCString(start);
+		String endDate = SolrUtils.getISO8601UTCString(end);
 		StringBuilder query = new StringBuilder();
 		query.append(SolrConstants.START_DATE);
 		query.append(":[");
-		query.append(startMillis);
+		query.append(startDate);
 		query.append(" TO *]");
 		query.append(" AND ");
 		query.append(SolrConstants.END_DATE);
 		query.append(":[* TO ");
-		query.append(endMillis);
+		query.append(endDate);
 		query.append("]");
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
@@ -169,10 +169,10 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 					.getFieldValues(SolrConstants.KEYWORD);
 			if(solrresult.getFieldValue(SolrConstants.ID)!=null)solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
 			solrDescription.setKeywords(keywords);
-			if(solrresult.getFieldValue(SolrConstants.START_DATE)!=null)solrDescription.setBegineDate(Long.parseLong(solrresult
-					.getFieldValue(SolrConstants.START_DATE).toString()));
-			if(solrresult.getFieldValue(SolrConstants.END_DATE)!=null)solrDescription.setEndDate(Long.parseLong(solrresult.getFieldValue(
-					SolrConstants.END_DATE).toString()));
+			if(solrresult.get(SolrConstants.START_DATE)!=null)solrDescription.setBegineDate((Date)(solrresult
+					.get(SolrConstants.START_DATE)));
+			if(solrresult.get(SolrConstants.END_DATE)!=null)solrDescription.setEndDate((Date)(solrresult
+					.get(SolrConstants.END_DATE)));
 			if(solrresult.getFieldValue(SolrConstants.DESCRIPTION)!=null)solrDescription.setDescription(solrresult.get(
 					SolrConstants.DESCRIPTION).toString());
 			if(solrresult.getFieldValues(SolrConstants.CLASSIFIER)!=null)solrDescription.setClassifiers(solrresult

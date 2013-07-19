@@ -109,10 +109,10 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			Date endDate = timePeriod.getEndTime();
 			if (startDate != null)
 				inputDocument.addField(SolrConstants.START_DATE,
-						startDate.getTime());
+						SolrUtils.getISO8601UTCString(startDate));
 			if (endDate != null)
 				inputDocument.addField(SolrConstants.END_DATE,
-						endDate.getTime());
+						SolrUtils.getISO8601UTCString(endDate));
 		}
 		if (longitude != null && latitude != null)
 			if (longitude.length() > 0 && latitude.length() > 0)

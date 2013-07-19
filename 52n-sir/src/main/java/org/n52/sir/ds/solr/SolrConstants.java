@@ -34,8 +34,8 @@ public class SolrConstants {
     public static final String SHORT_NAME = "shortname";
     public static final String LOCATION = "location";
     public static final String BBOX_CENTER = "bboxcenter";
-    public static final String START_DATE = "beginPosition";
-    public static final String END_DATE = "endPosition";
+    public static final String START_DATE = "dtstart";
+    public static final String END_DATE = "dtend";
     public static final String DESCRIPTION = "description";
     public static final String CLASSIFIER = "classifier";
     public static final String IDENTIFICATION = "identification";

@@ -98,25 +98,25 @@ public class SearchResultElement { // implements JsonSerializableWithType {
 	private Collection<String> inputs;
 	private Collection<String> outputs;
 
-	public long getBeginDate() {
+	public Date getBeginDate() {
 		return this.beginDate;
 	}
 
-	public void setBeginDate(long beginDate) {
+	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}
 
-	public long getEndDate() {
+	public Date getEndDate() {
 		return this.endDate;
 	}
 
-	public void setEndDate(long endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-	private long beginDate;
+	private Date beginDate;
 
-	private long endDate;
+	private Date endDate;
 
 	public SearchResultElement() {
 		// empty constructor for deserialization

@@ -130,6 +130,43 @@ public class SearchByQueryTest {
 		}
 
 	}
+	
+	@Test
+	public void temporalSpatialSearch() {
+		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+		// Search by keywords and By StartDate
+		Map<String, String> map = new HashMap<String, String>();
+		Calendar c = Calendar.getInstance();
+		c.set(2009, 11, 31);
+		Date start = c.getTime();
+
+		c = Calendar.getInstance();
+		c.set(2012, 0, 30);
+		Date end = c.getTime();
+
+		map.put("latitude", "1");
+		map.put("longitude", "1");
+		map.put("dtstart", SolrUtils.getISO8601UTCString(start));
+		map.put("dtend", SolrUtils.getISO8601UTCString(end));
+		Collection<SirSearchResultElement> results = searchDAO.searchByQuery(
+				map, SolrConstants.OR_OP);
+		assertTrue(results.size() > 0);
+		assertNotNull(results);
+		Iterator<SirSearchResultElement> iterator = results.iterator();
+		while (iterator.hasNext()) {
+			SirSearchResultElement result = iterator.next();
+			SirDetailedSensorDescription desc = (SirDetailedSensorDescription) result
+					.getSensorDescription();
+
+			assertTrue((((desc.getBegineDate().getTime() >= start.getTime()) && (desc
+							.getBegineDate().getTime() <= end.getTime())) && ((desc
+							.getEndDate().getTime() >= start.getTime()) && (desc
+							.getEndDate().getTime() <= end.getTime()))));
+		}
+
+
+	}
+
 
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {

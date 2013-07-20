@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -167,18 +168,25 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			SolrDocument solrresult = doc.get(i);
 			Collection<Object> keywords = solrresult
 					.getFieldValues(SolrConstants.KEYWORD);
-			if(solrresult.getFieldValue(SolrConstants.ID)!=null)solrDescription.setId(solrresult.get(SolrConstants.ID).toString());
+			if (solrresult.getFieldValue(SolrConstants.ID) != null)
+				solrDescription.setId(solrresult.get(SolrConstants.ID)
+						.toString());
 			solrDescription.setKeywords(keywords);
-			if(solrresult.get(SolrConstants.START_DATE)!=null)solrDescription.setBegineDate((Date)(solrresult
-					.get(SolrConstants.START_DATE)));
-			if(solrresult.get(SolrConstants.END_DATE)!=null)solrDescription.setEndDate((Date)(solrresult
-					.get(SolrConstants.END_DATE)));
-			if(solrresult.getFieldValue(SolrConstants.DESCRIPTION)!=null)solrDescription.setDescription(solrresult.get(
-					SolrConstants.DESCRIPTION).toString());
-			if(solrresult.getFieldValues(SolrConstants.CLASSIFIER)!=null)solrDescription.setClassifiers(solrresult
-					.getFieldValues(SolrConstants.CLASSIFIER));
-			if(solrresult.getFieldValues(SolrConstants.IDENTIFICATION)!=null)solrDescription.setIdentifiers(solrresult
-					.getFieldValues(SolrConstants.IDENTIFICATION));
+			if (solrresult.get(SolrConstants.START_DATE) != null)
+				solrDescription.setBegineDate((Date) (solrresult
+						.get(SolrConstants.START_DATE)));
+			if (solrresult.get(SolrConstants.END_DATE) != null)
+				solrDescription.setEndDate((Date) (solrresult
+						.get(SolrConstants.END_DATE)));
+			if (solrresult.getFieldValue(SolrConstants.DESCRIPTION) != null)
+				solrDescription.setDescription(solrresult.get(
+						SolrConstants.DESCRIPTION).toString());
+			if (solrresult.getFieldValues(SolrConstants.CLASSIFIER) != null)
+				solrDescription.setClassifiers(solrresult
+						.getFieldValues(SolrConstants.CLASSIFIER));
+			if (solrresult.getFieldValues(SolrConstants.IDENTIFICATION) != null)
+				solrDescription.setIdentifiers(solrresult
+						.getFieldValues(SolrConstants.IDENTIFICATION));
 			if (solrresult.getFieldValues(SolrConstants.CONTACTS) != null) {
 				Iterator<Object> it = solrresult.getFieldValues(
 						SolrConstants.CONTACTS).iterator();
@@ -187,23 +195,24 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 					results_contacts.add(it.next().toString());
 				solrDescription.setContacts(results_contacts);
 			}
-			if(solrresult.getFieldValues(SolrConstants.INPUT)!=null){
-				Iterator<Object> it = solrresult.getFieldValues(SolrConstants.INPUT).iterator();
+			if (solrresult.getFieldValues(SolrConstants.INPUT) != null) {
+				Iterator<Object> it = solrresult.getFieldValues(
+						SolrConstants.INPUT).iterator();
 				Collection<String> inputs = new ArrayList<String>();
-				while(it.hasNext())
+				while (it.hasNext())
 					inputs.add(it.next().toString());
 				solrDescription.setInputs(inputs);
-				
+
 			}
-			if(solrresult.getFieldValues(SolrConstants.OUTPUT)!=null){
-				Iterator<Object> it = solrresult.getFieldValues(SolrConstants.OUTPUT).iterator();
+			if (solrresult.getFieldValues(SolrConstants.OUTPUT) != null) {
+				Iterator<Object> it = solrresult.getFieldValues(
+						SolrConstants.OUTPUT).iterator();
 				Collection<String> outputs = new ArrayList<String>();
-				while(it.hasNext())
+				while (it.hasNext())
 					outputs.add(it.next().toString());
 				solrDescription.setOutputs(outputs);
-				
-			}
 
+			}
 
 			element.setSensorDescription(solrDescription);
 			results.add(element);
@@ -315,6 +324,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			return null;
 		}
 	}
+
 	public Collection<SirSearchResultElement> searchByOutput(String output) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
@@ -334,7 +344,8 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			return null;
 		}
 	}
-	public Collection<SirSearchResultElement> searchByID(String ID){
+
+	public Collection<SirSearchResultElement> searchByID(String ID) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
@@ -353,28 +364,28 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			return null;
 		}
 	}
-	public Collection<SirSearchResultElement> searchByAll(String query){
+
+	public Collection<SirSearchResultElement> searchByAll(String query) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
-		String [] qs = query.split("[+]");
+		String[] qs = query.split("[+]");
 		StringBuilder qualified = new StringBuilder();
 		qualified.append('"');
 		qualified.append(qs[0]);
 		qualified.append('"');
-	
-		for(int i=1;i<qs.length;i++)
-		{
+
+		for (int i = 1; i < qs.length; i++) {
 			qualified.append("+");
 			qualified.append('"');
 			qualified.append(qs[i]);
 			qualified.append('"');
-			
+
 		}
 		builder.append(qualified.toString());
 		params.set("q", builder.toString());
 		params.set("defType", "dismax");
-		params.set("qf",SolrConstants.EDISMAX);
+		params.set("qf", SolrConstants.EDISMAX);
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
@@ -383,7 +394,68 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			log.error("Solr exception", e);
 			return null;
 		}
-		
+
+	}
+
+	public Collection<SirSearchResultElement> searchByQuery(
+			Map<String, String> queryMap, String delimiter) {
+		Collection<String> keys = queryMap.keySet();
+		if (queryMap.size() == 0)
+			return null;
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		StringBuilder builder = new StringBuilder();
+		Iterator<String> iterator = keys.iterator();
+		String k = iterator.next();
+		builder.append(k);
+		builder.append(':');
+		if (k.equals(SolrConstants.START_DATE)) {
+			builder.append('[');
+			builder.append(queryMap.get(k));
+			builder.append(" TO * ]");
+		} else if (k.equals(SolrConstants.END_DATE)) {
+			builder.append("[ * TO ");
+			builder.append(queryMap.get(k));
+			builder.append(" ]");
+		} else {
+			builder.append('"');
+			builder.append(queryMap.get(k));
+			builder.append('"');
+		}
+		while (iterator.hasNext()) {
+			k = iterator.next();
+			builder.append(' ');
+			builder.append(delimiter);
+			builder.append(' ');
+			builder.append(k);
+			builder.append(':');
+			if (k.equals(SolrConstants.START_DATE)) {
+				builder.append('[');
+				builder.append(queryMap.get(k));
+				builder.append(" TO * ]");
+			} else if (k.equals(SolrConstants.END_DATE)) {
+				builder.append("[ * TO ");
+				builder.append(queryMap.get(k));
+				builder.append(" ]");
+			} else {
+				builder.append('"');
+				builder.append(queryMap.get(k));
+				builder.append('"');
+			}
+
+		}
+
+		params.set("q", builder.toString());
+		log.info(params.toString());
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
+			return encodeResult(list);
+		} catch (Exception e) {
+			log.error("Solr exception", e);
+			return null;
+		}
+
 	}
 
 }

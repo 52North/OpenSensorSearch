@@ -44,6 +44,9 @@ public class SolrConstants {
     public static final String INPUT = "input";
     public static final String OUTPUT = "output";
     public static final String EDISMAX = "keyword^1 uniqueID^1 location^1 bboxcenter^1 dtstart^1 dtend^1 description^1 classifier^1 identification^1 contact^1 interface^1 input^1 output^1";
+    public static final String AND_OP ="AND";
+    public static final String OR_OP = "OR";
+    
     /**
      * TODO Remove this an configure it later in SIR configurations
      */

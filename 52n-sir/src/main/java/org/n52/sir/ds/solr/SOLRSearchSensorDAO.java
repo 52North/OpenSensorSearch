@@ -114,7 +114,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		params.set("pt", lat + "," + lng);
 		params.set("d", kms + "");
 		try {
-			System.out.println(params);
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
 			return encodeResult(list);
@@ -504,7 +503,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		} else {
 			params.set("q", builder.toString());
 			log.info(params.toString());
-			System.out.println(builder.toString());
 			try {
 				QueryResponse response = connection.SolrQuery(params);
 				SolrDocumentList list = response.getResults();

@@ -102,10 +102,14 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 	 */
 	private Collection<SirSearchResultElement> spatialSearch(String lat,
 			String lng, double kms, String column) {
-		// prepare the request
+		return spatialSearchWithQuery("*:*", lat, lng, kms, column);
+	}
+
+	private Collection<SirSearchResultElement> spatialSearchWithQuery(
+			String query, String lat, String lng, double kms, String column) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
-		params.set("q", "*:*");
+		params.set("q", query);
 		params.set("fq", "{!geofilt sfield=" + column + "}");
 		params.set("pt", lat + "," + lng);
 		params.set("d", kms + "");
@@ -117,6 +121,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			log.error(e.getLocalizedMessage());
 			return null;
 		}
+
 	}
 
 	public Collection<SirSearchResultElement> searchSensorByBoundingBox(
@@ -134,22 +139,32 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 	public Collection<SirSearchResultElement> searchSensorByGeoBox(float west,
 			float south, float east, float north) {
 		// params : minX,minY,maxX,maxY
+		return searchSensorByGeoBoxWithQuery("*:*", west, south, east, north);
+	}
+
+	public Collection<SirSearchResultElement> searchSensorByGeoBoxWithQuery(
+			String query, float west, float south, float east, float north) {
 		SirBoundingBox geoBox = new SirBoundingBox(east, south, west, north);
 		double[] center = geoBox.getCenter();
 		// getting radius
 		double centerX = center[0];
 		double centerY = center[1];
-		double dist = Math.sqrt(Math.pow(east-centerX,2)+Math.pow(north-centerY,2));
-		Collection<SirSearchResultElement>results = new ArrayList<SirSearchResultElement>();
-		Collection<SirSearchResultElement> allResults = spatialSearch(centerX+"", centerY+"",dist, SolrConstants.BBOX_CENTER);
-		if(allResults.size()==0)return allResults;
+		double dist = Math.sqrt(Math.pow(east - centerX, 2)
+				+ Math.pow(north - centerY, 2));
+		Collection<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+		Collection<SirSearchResultElement> allResults = spatialSearchWithQuery(
+				query, centerX + "", centerY + "", dist,
+				SolrConstants.BBOX_CENTER);
+		if (allResults.size() == 0)
+			return allResults;
 		Iterator<SirSearchResultElement> iterator = allResults.iterator();
-		while(iterator.hasNext()){
+		while (iterator.hasNext()) {
 			SirSearchResultElement result = iterator.next();
-			SirDetailedSensorDescription desc = (SirDetailedSensorDescription)result.getSensorDescription();
+			SirDetailedSensorDescription desc = (SirDetailedSensorDescription) result
+					.getSensorDescription();
 			double x = desc.getbbox_x();
 			double y = desc.getbbox_y();
-			if(x>= west && x<=east && y>=south && y<=north)
+			if (x >= west && x <= east && y >= south && y <= north)
 				results.add(result);
 		}
 		return results;
@@ -238,9 +253,10 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 				solrDescription.setOutputs(outputs);
 
 			}
-			if(solrresult.getFieldValue(SolrConstants.BBOX_CENTER)!=null){
-				String s = solrresult.getFieldValue(SolrConstants.BBOX_CENTER).toString();
-				String d [] = s.split(",");
+			if (solrresult.getFieldValue(SolrConstants.BBOX_CENTER) != null) {
+				String s = solrresult.getFieldValue(SolrConstants.BBOX_CENTER)
+						.toString();
+				String d[] = s.split(",");
 				solrDescription.setbbox_x(Double.parseDouble(d[0]));
 				solrDescription.setbbox_y(Double.parseDouble(d[1]));
 			}

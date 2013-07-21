@@ -127,8 +127,33 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 	}
 
 	public Collection<SirSearchResultElement> searchSensorByLocation(
-			String lat, String lng, double kms) {
-		return spatialSearch(lat, lng, kms, SolrConstants.LOCATION);
+			String lat, String lng, double radius) {
+		return spatialSearch(lat, lng, radius, SolrConstants.LOCATION);
+	}
+
+	public Collection<SirSearchResultElement> searchSensorByGeoBox(float west,
+			float south, float east, float north) {
+		// params : minX,minY,maxX,maxY
+		SirBoundingBox geoBox = new SirBoundingBox(east, south, west, north);
+		double[] center = geoBox.getCenter();
+		// getting radius
+		double centerX = center[0];
+		double centerY = center[1];
+		double dist = Math.sqrt(Math.pow(east-centerX,2)+Math.pow(north-centerY,2));
+		Collection<SirSearchResultElement>results = new ArrayList<SirSearchResultElement>();
+		Collection<SirSearchResultElement> allResults = spatialSearch(centerX+"", centerY+"",dist, SolrConstants.BBOX_CENTER);
+		if(allResults.size()==0)return allResults;
+		Iterator<SirSearchResultElement> iterator = allResults.iterator();
+		while(iterator.hasNext()){
+			SirSearchResultElement result = iterator.next();
+			SirDetailedSensorDescription desc = (SirDetailedSensorDescription)result.getSensorDescription();
+			double x = desc.getbbox_x();
+			double y = desc.getbbox_y();
+			if(x>= west && x<=east && y>=south && y<=north)
+				results.add(result);
+		}
+		return results;
+
 	}
 
 	public Collection<SirSearchResultElement> searchByValidTimeRange(
@@ -212,6 +237,12 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 					outputs.add(it.next().toString());
 				solrDescription.setOutputs(outputs);
 
+			}
+			if(solrresult.getFieldValue(SolrConstants.BBOX_CENTER)!=null){
+				String s = solrresult.getFieldValue(SolrConstants.BBOX_CENTER).toString();
+				String d [] = s.split(",");
+				solrDescription.setbbox_x(Double.parseDouble(d[0]));
+				solrDescription.setbbox_y(Double.parseDouble(d[1]));
 			}
 
 			element.setSensorDescription(solrDescription);

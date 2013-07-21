@@ -34,6 +34,25 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
 	private Collection<Object> keywords;
 	private Date begineDate;
 	private String description;
+	private double bbox_x;
+
+	public double getbbox_x() {
+		return this.bbox_x;
+	}
+
+	public void setbbox_x(double bbox_x) {
+		this.bbox_x = bbox_x;
+	}
+
+	public double getbbox_y() {
+		return this.bbox_y;
+	}
+
+	public void setbbox_y(double bbox_y) {
+		this.bbox_y = bbox_y;
+	}
+
+	private double bbox_y;
 
 	public String getDescription() {
 		return description;
@@ -112,16 +131,18 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
 	}
 
 	public void setInputs(Collection<String> inputs) {
-		this.inputs=inputs;
+		this.inputs = inputs;
 	}
-	public Collection<String> getInputs(){
+
+	public Collection<String> getInputs() {
 		return this.inputs;
 	}
 
 	public void setOutputs(Collection<String> outputs) {
 		this.outputs = outputs;
 	}
-	public Collection<String>getOutputs(){
+
+	public Collection<String> getOutputs() {
 		return this.outputs;
 	}
 

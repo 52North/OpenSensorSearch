@@ -113,9 +113,10 @@ public class SearchByLocationTest {
     /**TODO LET the delete delete only by the given id not all  
      * 
      */
+    /*
     @After
     public void deleteSensor() throws SolrServerException, IOException{
         new SolrConnection().deleteByQuery("");
         
-    }
+    }*/
 }

@@ -135,6 +135,7 @@ public class SearchByQueryTest {
 
 	}
 
+	@Test
 	public void temporalSpatialSearch() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
@@ -147,8 +148,9 @@ public class SearchByQueryTest {
 		c.set(2012, 0, 30);
 		Date end = c.getTime();
 
-		map.put("latitude", "1");
-		map.put("longitude", "1");
+		map.put("lat", "1.5");
+		map.put("lng", "3.49");
+		map.put("radius", "2");
 		map.put("dtstart", SolrUtils.getISO8601UTCString(start));
 		map.put("dtend", SolrUtils.getISO8601UTCString(end));
 		Collection<SirSearchResultElement> results = searchDAO.searchByQuery(
@@ -160,11 +162,18 @@ public class SearchByQueryTest {
 			SirSearchResultElement result = iterator.next();
 			SirDetailedSensorDescription desc = (SirDetailedSensorDescription) result
 					.getSensorDescription();
-
+			String loc = desc.getLocation();
+			String[] latlng = loc.split(",");
+			String lat = latlng[0];
+			String lng = latlng[1];
+			double dist = (haversine(1.5, 3.49, Double.parseDouble(lat),
+					Double.parseDouble(lng)));
+			
 			assertTrue((((desc.getBegineDate().getTime() >= start.getTime()) && (desc
 					.getBegineDate().getTime() <= end.getTime())) && ((desc
 					.getEndDate().getTime() >= start.getTime()) && (desc
 					.getEndDate().getTime() <= end.getTime()))));
+			assertTrue(dist<2);
 		}
 
 	}

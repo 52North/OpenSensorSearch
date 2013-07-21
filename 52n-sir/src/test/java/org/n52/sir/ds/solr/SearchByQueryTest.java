@@ -28,13 +28,11 @@
 
 package org.n52.sir.ds.solr;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -44,10 +42,7 @@ import java.util.Map;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -59,6 +54,7 @@ import org.n52.sir.sml.SensorMLDecoder;
 public class SearchByQueryTest {
 
 	public String id;
+	public static final double R = 6372.8; // In kilometers
 
 	@Before
 	public void insertSensor() throws XmlException, IOException,
@@ -112,9 +108,10 @@ public class SearchByQueryTest {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("keyword", "TEST");
-		map.put("latitude", "1");
-		map.put("longitude", "1");
+		map.put("keyword", "test");
+		map.put("lat", "1.5");
+		map.put("lng", "3.49");
+		map.put("radius", "2");
 
 		Collection<SirSearchResultElement> results = searchDAO.searchByQuery(
 				map, SolrConstants.OR_OP);
@@ -125,13 +122,16 @@ public class SearchByQueryTest {
 			SirSearchResultElement result = iterator.next();
 			SirDetailedSensorDescription desc = (SirDetailedSensorDescription) result
 					.getSensorDescription();
-
-			assertTrue(desc.getKeywords().contains("TEST"));
+			String loc = desc.getLocation();
+			String[] latlng = loc.split(",");
+			String lat = latlng[0];
+			String lng = latlng[1];
+			double dist=(haversine(1.5, 3.49, Double.parseDouble(lat),Double.parseDouble(lng)));
+			assertTrue(desc.getKeywords().contains("test") && dist<2);
 		}
 
 	}
-	
-	@Test
+
 	public void temporalSpatialSearch() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
@@ -159,14 +159,13 @@ public class SearchByQueryTest {
 					.getSensorDescription();
 
 			assertTrue((((desc.getBegineDate().getTime() >= start.getTime()) && (desc
-							.getBegineDate().getTime() <= end.getTime())) && ((desc
-							.getEndDate().getTime() >= start.getTime()) && (desc
-							.getEndDate().getTime() <= end.getTime()))));
+					.getBegineDate().getTime() <= end.getTime())) && ((desc
+					.getEndDate().getTime() >= start.getTime()) && (desc
+					.getEndDate().getTime() <= end.getTime()))));
 		}
 
-
 	}
-	@Test
+
 	public void keywordTemporalSpatialSearch() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
@@ -181,7 +180,7 @@ public class SearchByQueryTest {
 
 		map.put("keyword", "TEST");
 		map.put("latitude", "1");
-		map.put("longitude", "1");
+		map.put("longitude", "3");
 		map.put("dtstart", SolrUtils.getISO8601UTCString(start));
 		map.put("dtend", SolrUtils.getISO8601UTCString(end));
 		Collection<SirSearchResultElement> results = searchDAO.searchByQuery(
@@ -195,18 +194,30 @@ public class SearchByQueryTest {
 					.getSensorDescription();
 
 			assertTrue((((desc.getBegineDate().getTime() >= start.getTime()) && (desc
-							.getBegineDate().getTime() <= end.getTime())) && ((desc
-							.getEndDate().getTime() >= start.getTime()) && (desc
-							.getEndDate().getTime() <= end.getTime()))));
+					.getBegineDate().getTime() <= end.getTime())) && ((desc
+					.getEndDate().getTime() >= start.getTime()) && (desc
+					.getEndDate().getTime() <= end.getTime()))));
 		}
 
-
 	}
 
+	public  double haversine(double lat1, double lon1, double lat2,
+			double lon2) {
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLon = Math.toRadians(lon2 - lon1);
+		lat1 = Math.toRadians(lat1);
+		lat2 = Math.toRadians(lat2);
 
-	@After
-	public void deleteSensor() throws SolrServerException, IOException {
-		new SolrConnection().deleteByQuery("");
-
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2)
+				* Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+		double c = 2 * Math.asin(Math.sqrt(a));
+		return R * c;
 	}
+
+	/*
+	 * @After public void deleteSensor() throws SolrServerException, IOException
+	 * { new SolrConnection().deleteByQuery("");
+	 * 
+	 * }
+	 */
 }

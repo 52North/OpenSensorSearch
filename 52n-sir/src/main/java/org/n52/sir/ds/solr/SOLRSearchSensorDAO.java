@@ -114,6 +114,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		params.set("pt", lat + "," + lng);
 		params.set("d", kms + "");
 		try {
+			System.out.println(params);
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
 			return encodeResult(list);
@@ -259,6 +260,9 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 				String d[] = s.split(",");
 				solrDescription.setbbox_x(Double.parseDouble(d[0]));
 				solrDescription.setbbox_y(Double.parseDouble(d[1]));
+			}
+			if(solrresult.getFieldValue(SolrConstants.LOCATION)!=null){
+				solrDescription.setLocation(solrresult.getFieldValue(SolrConstants.LOCATION).toString());
 			}
 
 			element.setSensorDescription(solrDescription);
@@ -444,16 +448,9 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
 	}
 
-	public Collection<SirSearchResultElement> searchByQuery(
-			Map<String, String> queryMap, String delimiter) {
-		Collection<String> keys = queryMap.keySet();
-		if (queryMap.size() == 0)
-			return null;
-		SolrConnection connection = new SolrConnection();
-		ModifiableSolrParams params = new ModifiableSolrParams();
-		StringBuilder builder = new StringBuilder();
-		Iterator<String> iterator = keys.iterator();
-		String k = iterator.next();
+	private void appendParameter(StringBuilder builder, String k,
+			Map<String, String> queryMap) {
+		if(k.equals("lng")||k.equals("lat")||k.equals("radius"))return;
 		builder.append(k);
 		builder.append(':');
 		if (k.equals(SolrConstants.START_DATE)) {
@@ -469,40 +466,55 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			builder.append(queryMap.get(k));
 			builder.append('"');
 		}
+
+	}
+
+	public Collection<SirSearchResultElement> searchByQuery(
+			Map<String, String> queryMap, String delimiter) {
+		Collection<String> keys = queryMap.keySet();
+		if (queryMap.size() == 0)
+			return null;
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		StringBuilder builder = new StringBuilder();
+		Iterator<String> iterator = keys.iterator();
+		String k = iterator.next();
+		appendParameter(builder, k, queryMap);
 		while (iterator.hasNext()) {
 			k = iterator.next();
+			if(k.equals("lng")||k.equals("lat")||k.equals("radius"))continue;
 			builder.append(' ');
 			builder.append(delimiter);
 			builder.append(' ');
-			builder.append(k);
-			builder.append(':');
-			if (k.equals(SolrConstants.START_DATE)) {
-				builder.append('[');
-				builder.append(queryMap.get(k));
-				builder.append(" TO * ]");
-			} else if (k.equals(SolrConstants.END_DATE)) {
-				builder.append("[ * TO ");
-				builder.append(queryMap.get(k));
-				builder.append(" ]");
-			} else {
-				builder.append('"');
-				builder.append(queryMap.get(k));
-				builder.append('"');
+			appendParameter(builder, k, queryMap);
+		}
+		if (keys.contains("radius")) {
+			// Search by radius
+			String lat = (queryMap.get("lat"));
+			String lng = (queryMap.get("lng"));
+			double radius = Double.parseDouble(queryMap.get("radius"));
+			return spatialSearchWithQuery(builder.toString(), lat, lng, radius,
+					SolrConstants.LOCATION);
+		} else if (keys.contains("b")) {
+			// search by bounding box
+			/**
+			 * TODO Implement GeoBox searchByQuery
+			 * 
+			 */
+		} else {
+			params.set("q", builder.toString());
+			log.info(params.toString());
+			System.out.println(builder.toString());
+			try {
+				QueryResponse response = connection.SolrQuery(params);
+				SolrDocumentList list = response.getResults();
+				return encodeResult(list);
+			} catch (Exception e) {
+				log.error("Solr exception", e);
+				return null;
 			}
-
 		}
-
-		params.set("q", builder.toString());
-		log.info(params.toString());
-		try {
-			QueryResponse response = connection.SolrQuery(params);
-			SolrDocumentList list = response.getResults();
-			return encodeResult(list);
-		} catch (Exception e) {
-			log.error("Solr exception", e);
-			return null;
-		}
-
+		return null;
 	}
 
 }

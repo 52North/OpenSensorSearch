@@ -164,8 +164,9 @@ public class OpenSearchSIR extends HttpServlet {
         }*/
         if(keys.contains(OpenSearchConstants.TIME_START_PARAMETER)){
         	//contains a temporal query
-        	start = map.get(OpenSearchConstants.TIME_START_PARAMETER);
-        	end = map.get(OpenSearchConstants.TIME_END_PARAMETER);
+        	log.debug(req.getParameter(OpenSearchConstants.TIME_START_PARAMETER));
+        	start = req.getParameter(OpenSearchConstants.TIME_START_PARAMETER);
+        	end = req.getParameter(OpenSearchConstants.TIME_END_PARAMETER);
             log.debug("Temporal extension used: {} - {}", start, end);
         }
 

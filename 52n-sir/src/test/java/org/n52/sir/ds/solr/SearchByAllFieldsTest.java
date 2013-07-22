@@ -74,10 +74,9 @@ public class SearchByAllFieldsTest {
 		assertTrue(found);
 		
 	}
-/*
+
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");
 	}
-*/
 }

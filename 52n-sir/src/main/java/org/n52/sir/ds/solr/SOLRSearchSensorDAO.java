@@ -445,9 +445,9 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			filter.append(SolrConstants.START_DATE);
 			filter.append(":[");
 			filter.append(dstart);
-			filter.append("] AND ");
+			filter.append(" TO * ] AND ");
 			filter.append(SolrConstants.END_DATE);
-			filter.append(":[");
+			filter.append(":[ * TO ");
 			filter.append(dtend);
 			filter.append("]");
 			params.set("fq", filter.toString());

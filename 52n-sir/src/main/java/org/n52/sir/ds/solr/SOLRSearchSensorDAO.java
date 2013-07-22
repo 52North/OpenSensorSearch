@@ -88,8 +88,9 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			wordslist.append("+");
 			wordslist.append(iter.next());
 		}
-		return searchByAll(wordslist.toString());
+		return searchByAll(wordslist.toString(),searchCriteria.getDtstart(),searchCriteria.getDtend());
 	}
+	
 
 	/**
 	 * @param lat
@@ -170,9 +171,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		return results;
 
 	}
-
-	public Collection<SirSearchResultElement> searchByValidTimeRange(
-			Date start, Date end) {
+	private String temporalQuery(Date start,Date end){
 		String startDate = SolrUtils.getISO8601UTCString(start);
 		String endDate = SolrUtils.getISO8601UTCString(end);
 		StringBuilder query = new StringBuilder();
@@ -185,9 +184,14 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		query.append(":[* TO ");
 		query.append(endDate);
 		query.append("]");
+		return query.toString();
+	}
+
+	public Collection<SirSearchResultElement> searchByValidTimeRange(
+			Date start, Date end) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
-		params.set("q", query.toString());
+		params.set("q", temporalQuery(start, end));
 		QueryResponse response;
 		try {
 			response = connection.SolrQuery(params);
@@ -199,7 +203,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		}
 
 	}
-
+	
 	private List<SirSearchResultElement> encodeResult(SolrDocumentList doc) {
 		List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
 		for (int i = 0; i < doc.size(); i++) {
@@ -415,7 +419,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		}
 	}
 
-	public Collection<SirSearchResultElement> searchByAll(String query) {
+	public Collection<SirSearchResultElement> searchByAll(String query,String dstart,String dtend) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
@@ -436,6 +440,19 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		params.set("q", builder.toString());
 		params.set("defType", "dismax");
 		params.set("qf", SolrConstants.EDISMAX);
+		if(dstart!=null && dtend!=null){
+			StringBuilder filter = new StringBuilder();
+			filter.append(SolrConstants.START_DATE);
+			filter.append(":[");
+			filter.append(dstart);
+			filter.append("] AND ");
+			filter.append(SolrConstants.END_DATE);
+			filter.append(":[");
+			filter.append(dtend);
+			filter.append("]");
+			params.set("fq", filter.toString());
+		}
+		System.out.println(builder.toString());
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();

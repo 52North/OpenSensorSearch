@@ -36,6 +36,24 @@ public class SirSearchCriteria {
     private Collection<SirService> serviceCriteria;
 
     private Calendar start;
+    public String getDtstart() {
+		return this.dtstart;
+	}
+
+	public void setDtstart(String dtstart) {
+		this.dtstart = dtstart;
+	}
+
+	public String getDtend() {
+		return this.dtend;
+	}
+
+	public void setDtend(String dtend) {
+		this.dtend = dtend;
+	}
+
+	private String dtstart;
+    private String dtend;
 
     private Collection<String> uom;
 

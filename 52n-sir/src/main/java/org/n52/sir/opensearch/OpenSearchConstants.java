@@ -51,6 +51,10 @@ public class OpenSearchConstants {
     public static final String NAME_PARAM = "name";
 
     public static final String QUERY_PARAMETER = "q";
+    
+    public static final String TIME_START_PARAMETER = "dtstart";
+    
+    public static final String TIME_END_PARAMETER = "dtend";
 
     public static final String RADIUS_PARAM = "radius";
 

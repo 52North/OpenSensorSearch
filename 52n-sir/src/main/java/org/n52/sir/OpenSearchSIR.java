@@ -18,10 +18,11 @@ package org.n52.sir;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -112,7 +113,13 @@ public class OpenSearchSIR extends HttpServlet {
         // log.debug("Accept header 2: " + httpAccept);
 
         String searchText = req.getParameter(OpenSearchConstants.QUERY_PARAMETER);
-
+        
+        Map<String,String> map = req.getParameterMap();
+        
+        Set<String> keys = map.keySet();
+        
+        //check for temporal query
+        
         // redirect if httpAccept is missing
         if (httpAccept == null || httpAccept.isEmpty()) {
             redirectMissingHttpAccept(req, resp);
@@ -147,13 +154,19 @@ public class OpenSearchSIR extends HttpServlet {
 
         // TODO see if time extension is used:
         // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
-        Calendar start = null;
-        Calendar end = null;
-        if (this.dismantler.requestContainsTime(req)) {
+        String start = null;
+        String end = null;
+        /*if (this.dismantler.requestContainsTime(req)) {
             Calendar[] startEnd = this.dismantler.getStartEnd(req);
             start = startEnd[0];
             end = startEnd[1];
             log.debug("Time extension used: {} - {}", start, end);
+        }*/
+        if(keys.contains(OpenSearchConstants.TIME_START_PARAMETER)){
+        	//contains a temporal query
+        	start = map.get(OpenSearchConstants.TIME_START_PARAMETER);
+        	end = map.get(OpenSearchConstants.TIME_END_PARAMETER);
+            log.debug("Temporal extension used: {} - {}", start, end);
         }
 
         // create search criteria
@@ -168,8 +181,8 @@ public class OpenSearchSIR extends HttpServlet {
             searchCriteria.setBoundingBox(boundingBox);
 
         if (start != null && end != null) {
-            searchCriteria.setEnd(end);
-            searchCriteria.setStart(start);
+            searchCriteria.setDtend(end);
+            searchCriteria.setDtstart(start);
         }
 
         // create search request

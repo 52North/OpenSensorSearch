@@ -156,6 +156,9 @@ public class OpenSearchSIR extends HttpServlet {
         // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
         String start = null;
         String end = null;
+        String lat = null;
+        String lng = null;
+        String radius = null;
         /*if (this.dismantler.requestContainsTime(req)) {
             Calendar[] startEnd = this.dismantler.getStartEnd(req);
             start = startEnd[0];
@@ -168,6 +171,11 @@ public class OpenSearchSIR extends HttpServlet {
         	start = req.getParameter(OpenSearchConstants.TIME_START_PARAMETER);
         	end = req.getParameter(OpenSearchConstants.TIME_END_PARAMETER);
             log.debug("Temporal extension used: {} - {}", start, end);
+        }
+        if(keys.contains(OpenSearchConstants.LAT_PARAM)&&keys.contains(OpenSearchConstants.LON_PARAM)&&keys.contains(OpenSearchConstants.RADIUS_PARAM)){
+        	lat = req.getParameter(OpenSearchConstants.LAT_PARAM);
+        	lng = req.getParameter(OpenSearchConstants.LON_PARAM);
+        	radius = req.getParameter(OpenSearchConstants.RADIUS_PARAM);
         }
 
         // create search criteria
@@ -184,6 +192,11 @@ public class OpenSearchSIR extends HttpServlet {
         if (start != null && end != null) {
             searchCriteria.setDtend(end);
             searchCriteria.setDtstart(start);
+        }
+        if(lat!=null && lng!=null && radius!=null){
+        	searchCriteria.setLat(lat);
+        	searchCriteria.setLng(lng);
+        	searchCriteria.setRadius(radius);
         }
 
         // create search request

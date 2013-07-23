@@ -88,7 +88,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			wordslist.append("+");
 			wordslist.append(iter.next());
 		}
-		return searchByAll(wordslist.toString(),searchCriteria.getDtstart(),searchCriteria.getDtend());
+		return searchByAll(wordslist.toString(),searchCriteria.getDtstart(),searchCriteria.getDtend(),searchCriteria.getLng(),searchCriteria.getLat(),searchCriteria.getRadius());
 	}
 	
 
@@ -419,7 +419,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		}
 	}
 
-	public Collection<SirSearchResultElement> searchByAll(String query,String dstart,String dtend) {
+	public Collection<SirSearchResultElement> searchByAll(String query,String dstart,String dtend,String lng,String lat,String radius) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
@@ -440,17 +440,34 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		params.set("q", builder.toString());
 		params.set("defType", "dismax");
 		params.set("qf", SolrConstants.EDISMAX);
+		StringBuilder temporalFilter = new StringBuilder();
+		StringBuilder locationFilter = new StringBuilder();
 		if(dstart!=null && dtend!=null){
-			StringBuilder filter = new StringBuilder();
-			filter.append(SolrConstants.START_DATE);
-			filter.append(":[");
-			filter.append(dstart);
-			filter.append(" TO * ] AND ");
-			filter.append(SolrConstants.END_DATE);
-			filter.append(":[ * TO ");
-			filter.append(dtend);
-			filter.append("]");
-			params.set("fq", filter.toString());
+			temporalFilter.append(SolrConstants.START_DATE);
+			temporalFilter.append(":[");
+			temporalFilter.append(dstart);
+			temporalFilter.append(" TO * ] AND ");
+			temporalFilter.append(SolrConstants.END_DATE);
+			temporalFilter.append(":[ * TO ");
+			temporalFilter.append(dtend);
+			temporalFilter.append("]");
+		}
+		if(lat!=null && lng!=null && radius!=null){
+			locationFilter.append("{!geofilt sfield=");
+			locationFilter.append(SolrConstants.LOCATION);
+			locationFilter.append("}");
+			//set spatialParams
+			params.set("pt", lat + "," + lng);
+			params.set("d", radius + "");
+		}
+		
+		if(locationFilter.toString().length()!=0 ){
+			if(temporalFilter.toString().length()!=0)
+				params.set("fq", locationFilter.toString()+" AND "+temporalFilter.toString());
+			else params.set("fq",locationFilter.toString());
+		}else{
+			if(temporalFilter.toString().length()!=0)
+				params.set("fq",temporalFilter.toString());
 		}
 		System.out.println(builder.toString());
 		try {

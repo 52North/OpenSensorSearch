@@ -88,9 +88,10 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			wordslist.append("+");
 			wordslist.append(iter.next());
 		}
-		return searchByAll(wordslist.toString(),searchCriteria.getDtstart(),searchCriteria.getDtend(),searchCriteria.getLng(),searchCriteria.getLat(),searchCriteria.getRadius());
+		return searchByAll(wordslist.toString(), searchCriteria.getDtstart(),
+				searchCriteria.getDtend(), searchCriteria.getLng(),
+				searchCriteria.getLat(), searchCriteria.getRadius(),searchCriteria.getBoundingBox());
 	}
-	
 
 	/**
 	 * @param lat
@@ -104,6 +105,27 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 	private Collection<SirSearchResultElement> spatialSearch(String lat,
 			String lng, double kms, String column) {
 		return spatialSearchWithQuery("*:*", lat, lng, kms, column);
+	}
+
+	private Collection<SirSearchResultElement> spatialSearchWithAllQuery(
+			String query, String lat, String lng, double kms, String column) {
+		SolrConnection connection = new SolrConnection();
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		params.set("q", query);
+		params.set("fq", "{!geofilt sfield=" + column + "}");
+		params.set("pt", lat + "," + lng);
+		params.set("d", kms + "");
+		params.set("defType", "dismax");
+		params.set("qf", SolrConstants.EDISMAX);
+
+		try {
+			QueryResponse response = connection.SolrQuery(params);
+			SolrDocumentList list = response.getResults();
+			return encodeResult(list);
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage());
+			return null;
+		}
 	}
 
 	private Collection<SirSearchResultElement> spatialSearchWithQuery(
@@ -171,7 +193,8 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		return results;
 
 	}
-	private String temporalQuery(Date start,Date end){
+
+	private String temporalQuery(Date start, Date end) {
 		String startDate = SolrUtils.getISO8601UTCString(start);
 		String endDate = SolrUtils.getISO8601UTCString(end);
 		StringBuilder query = new StringBuilder();
@@ -203,7 +226,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		}
 
 	}
-	
+
 	private List<SirSearchResultElement> encodeResult(SolrDocumentList doc) {
 		List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
 		for (int i = 0; i < doc.size(); i++) {
@@ -264,8 +287,9 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 				solrDescription.setbbox_x(Double.parseDouble(d[0]));
 				solrDescription.setbbox_y(Double.parseDouble(d[1]));
 			}
-			if(solrresult.getFieldValue(SolrConstants.LOCATION)!=null){
-				solrDescription.setLocation(solrresult.getFieldValue(SolrConstants.LOCATION).toString());
+			if (solrresult.getFieldValue(SolrConstants.LOCATION) != null) {
+				solrDescription.setLocation(solrresult.getFieldValue(
+						SolrConstants.LOCATION).toString());
 			}
 
 			element.setSensorDescription(solrDescription);
@@ -419,7 +443,9 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		}
 	}
 
-	public Collection<SirSearchResultElement> searchByAll(String query,String dstart,String dtend,String lng,String lat,String radius) {
+	public Collection<SirSearchResultElement> searchByAll(String query,
+			String dstart, String dtend, String lng, String lat, String radius,
+			SirBoundingBox bbox) {
 		SolrConnection connection = new SolrConnection();
 		ModifiableSolrParams params = new ModifiableSolrParams();
 		StringBuilder builder = new StringBuilder();
@@ -442,7 +468,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		params.set("qf", SolrConstants.EDISMAX);
 		StringBuilder temporalFilter = new StringBuilder();
 		StringBuilder locationFilter = new StringBuilder();
-		if(dstart!=null && dtend!=null){
+		if (dstart != null && dtend != null) {
 			temporalFilter.append(SolrConstants.START_DATE);
 			temporalFilter.append(":[");
 			temporalFilter.append(dstart);
@@ -452,28 +478,60 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 			temporalFilter.append(dtend);
 			temporalFilter.append("]");
 		}
-		if(lat!=null && lng!=null && radius!=null){
+		if (lat != null && lng != null && radius != null) {
 			locationFilter.append("{!geofilt sfield=");
 			locationFilter.append(SolrConstants.LOCATION);
 			locationFilter.append("}");
-			//set spatialParams
+			// set spatialParams
 			params.set("pt", lat + "," + lng);
 			params.set("d", radius + "");
 		}
-		
-		if(locationFilter.toString().length()!=0 ){
-			if(temporalFilter.toString().length()!=0)
-				params.set("fq", locationFilter.toString()+" AND "+temporalFilter.toString());
-			else params.set("fq",locationFilter.toString());
-		}else{
-			if(temporalFilter.toString().length()!=0)
-				params.set("fq",temporalFilter.toString());
+
+		if (locationFilter.toString().length() != 0) {
+			if (temporalFilter.toString().length() != 0)
+				params.set("fq", locationFilter.toString() + " AND "
+						+ temporalFilter.toString());
+			else
+				params.set("fq", locationFilter.toString());
+		} else {
+			if (temporalFilter.toString().length() != 0)
+				params.set("fq", temporalFilter.toString());
 		}
-		System.out.println(builder.toString());
 		try {
 			QueryResponse response = connection.SolrQuery(params);
 			SolrDocumentList list = response.getResults();
-			return encodeResult(list);
+			Collection<SirSearchResultElement> result = encodeResult(list);
+			if (bbox == null)
+				return result;
+			double[] center = bbox.getCenter();
+			double centerX = center[0];
+			double centerY = center[1];
+			double east = bbox.getEast();
+			double west = bbox.getWest();
+			double south = bbox.getSouth();
+			double north = bbox.getNorth();
+			double dist = Math.sqrt(Math.pow(east - centerX, 2)
+					+ Math.pow(north - centerY, 2));
+			
+			Collection<SirSearchResultElement> bbox_result = spatialSearchWithAllQuery(query, centerX + "", centerY + "", dist,
+					SolrConstants.BBOX_CENTER);
+			result.addAll(bbox_result);
+			Collection<SirSearchResultElement> filtered_Result = new ArrayList<SirSearchResultElement>();
+			Iterator<SirSearchResultElement> iterator = bbox_result.iterator();
+			log.info(bbox_result +" :results found");
+			if(bbox_result.size()==0)return bbox_result;
+			while (iterator.hasNext()) {
+				SirSearchResultElement resultelement = iterator.next();
+				SirDetailedSensorDescription desc = (SirDetailedSensorDescription) resultelement
+						.getSensorDescription();
+				double x = desc.getbbox_x();
+				double y = desc.getbbox_y();
+				if (x >= west && x <= east && y >= south && y <= north)
+					filtered_Result.add(resultelement);
+			}
+			return filtered_Result;
+			
+			
 		} catch (Exception e) {
 			log.error("Solr exception", e);
 			return null;
@@ -483,7 +541,8 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
 	private void appendParameter(StringBuilder builder, String k,
 			Map<String, String> queryMap) {
-		if(k.equals("lng")||k.equals("lat")||k.equals("radius"))return;
+		if (k.equals("lng") || k.equals("lat") || k.equals("radius"))
+			return;
 		builder.append(k);
 		builder.append(':');
 		if (k.equals(SolrConstants.START_DATE)) {
@@ -515,7 +574,8 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 		appendParameter(builder, k, queryMap);
 		while (iterator.hasNext()) {
 			k = iterator.next();
-			if(k.equals("lng")||k.equals("lat")||k.equals("radius"))continue;
+			if (k.equals("lng") || k.equals("lat") || k.equals("radius"))
+				continue;
 			builder.append(' ');
 			builder.append(delimiter);
 			builder.append(' ');

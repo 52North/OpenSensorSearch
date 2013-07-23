@@ -144,14 +144,20 @@ public class OpenSearchSIR extends HttpServlet {
         // see if Geo Extension is used:
         // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
         SirBoundingBox boundingBox = null;
-        if (this.dismantler.requestContainsGeoParameters(req)) {
+        /*if (this.dismantler.requestContainsGeoParameters(req)) {
             boundingBox = this.dismantler.getBoundingBox(req);
             log.info("Geo extension used: bounding box {} from query {} (source: {})",
                      new Object[] {boundingBox, req.getQueryString(), req.getRemoteAddr()});
         }
         else
             log.info("Searching with query {} (source: {})", new Object[] {req.getQueryString(), req.getRemoteAddr()});
-
+*/
+        if(keys.contains(OpenSearchConstants.BOX_PARAM))
+        {
+        	String bbox = req.getParameter(OpenSearchConstants.BOX_PARAM);
+        	String [] s = bbox.split(",");
+        	boundingBox = new SirBoundingBox(Double.parseDouble(s[2]),Double.parseDouble(s[1]), Double.parseDouble(s[0]),Double.parseDouble(s[3]));
+        }
         // TODO see if time extension is used:
         // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
         String start = null;

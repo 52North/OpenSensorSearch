@@ -58,7 +58,7 @@ public class AutoCompleteSearch extends HttpServlet {
 		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
 		try {
 			Collection<SirSearchResultElement> search_results = dao
-					.searchByAll(text,null,null,null,null,null);
+					.searchByAll(text,null,null,null,null,null,null);
 			Iterator<SirSearchResultElement> it = search_results.iterator();
 
 			while (it.hasNext()) {

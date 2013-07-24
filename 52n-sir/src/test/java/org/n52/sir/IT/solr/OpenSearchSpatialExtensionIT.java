@@ -48,6 +48,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.ds.solr.SolrConnection;
@@ -102,12 +103,14 @@ public class OpenSearchSpatialExtensionIT {
 		log.debug(builder.toString());
 		ObjectMapper mapper = new ObjectMapper();
 		SearchResult result = mapper.readValue(builder.toString(),SearchResult.class);
+
 		Iterator<SearchResultElement> iter = result.getResults().iterator();
 		while(iter.hasNext()){
 			SearchResultElement element = iter.next();
 			/**TODO 
 			 * Add LngLat to searchResult and assert here
 			 */
+			
 		}
 		
 	}

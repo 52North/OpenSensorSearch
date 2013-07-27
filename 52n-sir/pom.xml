@@ -83,7 +83,7 @@
 		<service.endpoint.opensearch>search</service.endpoint.opensearch>
 		<service.endpoint.autocomplete>autocomplete</service.endpoint.autocomplete>
 		<guice.version>3.0</guice.version>
-
+		<jersey.version>1.7</jersey.version>
 	</properties>
 
 	<profiles>
@@ -247,56 +247,25 @@
 			</plugin>
 
 			<!-- <plugin> -->
-				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
-				<!-- run "mvn license:check -Dyear=2011" to check -->
-				<!-- run "mvn license:format -Dyear=2011" to add to the files -->
-				<!-- 
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<version>1.9.0</version>
-				<configuration>
-					<header>src/main/resources/52n_license.txt</header>
-					<excludes>
-						<exclude>**/log4j*</exclude>
-						<exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
-						<exclude>**/iso_svrl_for_xslt2.xsl</exclude>
-						<exclude>**/test/resources/**</exclude>
-						<exclude>**/webapp/TestRequests/**</exclude>
-						<exclude>**/webapp/codemirror/**</exclude>
-						<exclude>**/buildNumber.properties</exclude>
-						<exclude>**/org/n52/sir/util/ext/**</exclude>
-						<excluse>**/*.xml</excluse>
-					</excludes>
-					<includes>
-						<include>**/*.java</include>
-						<include>**/*.properties</include>
-						<include>**/*.jsp</include>
-						<include>**/*.js</include>
-						<include>**/*.xsl</include>
-						<include>**/*.sch</include>
-						<include>**/*.sql</include>
-						<<include>**/*.css</include> 
-						<include>**/*.html</include>
-					</includes>
-					<strictCheck>true</strictCheck>
-					<properties>
-						<year>${project.inceptionYear}</year>
-					</properties>
-					<mapping>
-						<sch>XML_STYLE</sch>
-					</mapping>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>test</phase> -->
-						<!-- test will fail if license headers are not correct, run license:format 
-							to add the headers. -->
-	<!-- 					<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
+			<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
+			<!-- run "mvn license:check -Dyear=2011" to check -->
+			<!-- run "mvn license:format -Dyear=2011" to add to the files -->
+			<!-- <groupId>com.mycila.maven-license-plugin</groupId> <artifactId>maven-license-plugin</artifactId> 
+				<version>1.9.0</version> <configuration> <header>src/main/resources/52n_license.txt</header> 
+				<excludes> <exclude>**/log4j*</exclude> <exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude> 
+				<exclude>**/iso_svrl_for_xslt2.xsl</exclude> <exclude>**/test/resources/**</exclude> 
+				<exclude>**/webapp/TestRequests/**</exclude> <exclude>**/webapp/codemirror/**</exclude> 
+				<exclude>**/buildNumber.properties</exclude> <exclude>**/org/n52/sir/util/ext/**</exclude> 
+				<excluse>**/*.xml</excluse> </excludes> <includes> <include>**/*.java</include> 
+				<include>**/*.properties</include> <include>**/*.jsp</include> <include>**/*.js</include> 
+				<include>**/*.xsl</include> <include>**/*.sch</include> <include>**/*.sql</include> 
+				<<include>**/*.css</include> <include>**/*.html</include> </includes> <strictCheck>true</strictCheck> 
+				<properties> <year>${project.inceptionYear}</year> </properties> <mapping> 
+				<sch>XML_STYLE</sch> </mapping> </configuration> <executions> <execution> 
+				<phase>test</phase> -->
+			<!-- test will fail if license headers are not correct, run license:format 
+				to add the headers. -->
+			<!-- <goals> <goal>check</goal> </goals> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -680,7 +649,16 @@
 			<artifactId>js</artifactId>
 			<version>1.7R2</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-guice</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>

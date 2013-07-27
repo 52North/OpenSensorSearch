@@ -84,6 +84,12 @@
 		<load-on-startup>5</load-on-startup>
 	</servlet>
 
+	<!-- Harvest servlet -->
+	<servlet>
+		<servlet-name>harvestServlet</servlet-name>
+		<servlet-class>org.n52.sir.script.HarvestApplication</servlet-class>
+	</servlet>
+
 	<!-- fixed endpoints for the servlets -->
 	<servlet-mapping>
 		<servlet-name>RestletServlet</servlet-name>
@@ -100,6 +106,10 @@
 	<servlet-mapping>
 		<servlet-name>AutoCompleteServlet</servlet-name>
 		<url-pattern>/autocomplete</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>harvestServlet</servlet-name>
+		<url-pattern>/harvest</url-pattern>
 	</servlet-mapping>
 
 </web-app>

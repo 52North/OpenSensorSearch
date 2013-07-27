@@ -83,7 +83,7 @@
 		<service.endpoint.opensearch>search</service.endpoint.opensearch>
 		<service.endpoint.autocomplete>autocomplete</service.endpoint.autocomplete>
 		<guice.version>3.0</guice.version>
-		<jersey.version>1.7</jersey.version>
+		<jersey.version>1.8</jersey.version>
 	</properties>
 
 	<profiles>
@@ -659,6 +659,11 @@
 			<artifactId>jersey-guice</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		
 	</dependencies>
-
 </project>

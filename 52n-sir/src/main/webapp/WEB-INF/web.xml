@@ -124,8 +124,4 @@
 		<url-pattern>/autocomplete</url-pattern>
 	</servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>harvestServlet</servlet-name>
-		<url-pattern>/harvest/*</url-pattern>
-	</servlet-mapping>
 </web-app>

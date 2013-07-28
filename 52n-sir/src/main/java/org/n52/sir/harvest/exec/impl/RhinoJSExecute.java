@@ -9,6 +9,14 @@ import org.n52.sir.harvest.exec.IJSExecute;
 
 public class RhinoJSExecute implements IJSExecute {
 
+	public RhinoJSExecute() {
+
+	}
+
+	public RhinoJSExecute(String s) {
+
+	}
+
 	@Override
 	public String execute(String s) {
 		Context cn = Context.enter();

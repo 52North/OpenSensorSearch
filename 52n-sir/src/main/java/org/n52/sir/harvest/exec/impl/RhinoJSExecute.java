@@ -3,6 +3,7 @@ package org.n52.sir.harvest.exec.impl;
 import java.io.File;
 import java.io.FileReader;
 
+import org.mozilla.javascript.ClassShutter;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.n52.sir.harvest.exec.IJSExecute;
@@ -47,4 +48,20 @@ public class RhinoJSExecute implements IJSExecute {
 		}
 	}
 
+	private void setClassShutter(Context c) {
+		c.setClassShutter(new ClassShutter() {
+
+			@Override
+			public boolean visibleToScripts(String arg0) {
+				if (arg0.startsWith("org.n52")) {
+					for (String s : RhinoConstants.allowed) {
+						if(arg0.contains(s))return true;
+					}
+					return false;
+					//TODO modify the security to be more aware of suspicious methods and classes
+				}else return true;
+			}
+		});
+
+	}
 }

@@ -90,4 +90,6 @@ public interface IDAOFactory {
      * @throws OwsExceptionReport
      */
     ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport;
+    
+    IInsertHarvestScriptDAO insertHarvestScriptDAO() ;
 }

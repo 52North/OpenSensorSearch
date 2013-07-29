@@ -42,20 +42,53 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 	 * Connection pool for creating connections to the DB
 	 */
 	private PGConnectionPool cpool;
+	
+	public PGSQLInsertHarvestScriptDAO(PGConnectionPool cpool){
+		this.cpool = cpool;
+	}
 
 	@Override
 	public String insertScript(String path, String username, int version) {
 		String insert;
 		Connection con = null;
 		Statement stmt = null;
-
+		
 		try {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
-			return null;
+			String insertQuery = insertScriptString(path, username, version);
+			stmt.execute(insertQuery);
+			return path;
 		} catch (Exception e) {
+			log.error("Cannot insert harvest Script",e);
 			return null;
 		}
+	}
+	
+	private String insertScriptString(String path,String username,int version){
+		StringBuilder query = new StringBuilder();
+		query.append("INSERT INTO ");
+		query.append(PGDAOConstants.harvestScript);
+		query.append("(");
+		query.append(PGDAOConstants.SCRIPT_OWNER_USERNAME);
+		query.append(",");
+		query.append(PGDAOConstants.PATH_URL);
+		query.append(",");
+		query.append(PGDAOConstants.SCRIPT_VERSION);
+		query.append(") values(");
+		query.append('"');
+		query.append(username);
+		query.append('"');
+		query.append(",");
+		query.append('"');
+		query.append(path);
+		query.append('"');
+		query.append(",");
+		query.append('"');
+		query.append(version);
+		query.append('"');
+		query.append(");");
+		return query.toString();
 	}
 
 	@Override

@@ -112,7 +112,7 @@ CREATE TABLE catalog
   PRIMARY KEY (catalog_url)
 );
 
---Table: harvestSctipy
+--Table: harvestSctipt
 --represents information about scripts uploaded to server
 CREATE TABLE harvestScript
 (
@@ -122,6 +122,7 @@ CREATE TABLE harvestScript
    lastRunDate time with time zone, 
    uploadDate time with time zone, 
    lastRunResult text,
+   username text,
    PRIMARY KEY(scriptId)
 ) ;
 

@@ -22,6 +22,8 @@
  * visit the Free Software Foundation web page, http://www.fsf.org.
  */
 
+/** @author Yakoub
+ */
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -57,6 +59,8 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
 			String insertQuery = insertScriptString(path, username, version);
+			System.out.println(insertQuery);
+			log.info(insertQuery);
 			stmt.execute(insertQuery);
 			return path;
 		} catch (Exception e) {

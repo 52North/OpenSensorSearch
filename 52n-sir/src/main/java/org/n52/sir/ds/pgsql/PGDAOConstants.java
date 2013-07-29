@@ -140,6 +140,18 @@ public class PGDAOConstants {
 
     private static final String USER = "USER";
 
+    
+    //harvestScript tables;
+    public static String harvestScript;
+    
+    public static String SCRIPTID;
+    public static String SCRIPT_VERSION;
+    public static String PATH_URL;
+    public static String SCRIPT_LAST_RUN_DATE;
+    public static String SCRIPT_LAST_RUN_RESULT;
+    public static String SCRIPT_UPLOAD_TIME;
+    public static String SCRIPT_OWNER_USERNAME;
+    
     /**
      * getInstance method due to singleton pattern
      * 
@@ -277,6 +289,14 @@ public class PGDAOConstants {
         driver = props.getProperty(DRIVER);
         initcon = new Integer(props.getProperty(INITCON)).intValue();
         maxcon = new Integer(props.getProperty(MAXCON)).intValue();
+        harvestScript = props.getProperty("TNSCRIPT");
+        SCRIPTID = props.getProperty("SCRIPTID");
+        SCRIPT_VERSION = props.getProperty("SCRIPTVERSION");
+        PATH_URL =props.getProperty("PATHURL");
+        SCRIPT_LAST_RUN_DATE = props.getProperty("LASTRUN");
+        SCRIPT_UPLOAD_TIME = props.getProperty("UPLOADTIME");
+        SCRIPT_LAST_RUN_RESULT = props.getProperty("lastRunResult");
+        SCRIPT_OWNER_USERNAME = props.getProperty("USERNAME");
 
         log.info("PGDAOConstants initialized successfully!");
     }

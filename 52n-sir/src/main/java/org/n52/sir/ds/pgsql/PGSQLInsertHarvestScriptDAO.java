@@ -27,7 +27,10 @@
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 import org.n52.sir.ds.IInsertHarvestScriptDAO;
 import org.slf4j.Logger;
@@ -62,7 +65,12 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 			System.out.println(insertQuery);
 			log.info(insertQuery);
 			stmt.execute(insertQuery);
-			return path;
+			String id = null;
+			ResultSet rs = stmt.executeQuery(searchByPath(path));
+			if(rs.next()){
+				id = rs.getString(PGDAOConstants.SCRIPTID);
+			}
+			return id;
 		} catch (Exception e) {
 			log.error("Cannot insert harvest Script",e);
 			return null;
@@ -80,19 +88,33 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		query.append(",");
 		query.append(PGDAOConstants.SCRIPT_VERSION);
 		query.append(") values(");
-		query.append('"');
+		query.append("'");
 		query.append(username);
-		query.append('"');
+		query.append("'");
 		query.append(",");
-		query.append('"');
+		query.append("'");
 		query.append(path);
-		query.append('"');
+		query.append("'");
 		query.append(",");
-		query.append('"');
+		query.append("'");
 		query.append(version);
-		query.append('"');
+		query.append("'");
 		query.append(");");
 		return query.toString();
+	}
+	private String searchByPath(String path){
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT ");
+		builder.append(PGDAOConstants.SCRIPTID);
+		builder.append(" FROM ");
+		builder.append(PGDAOConstants.harvestScript);
+		builder.append(" WHERE ");
+		builder.append(PGDAOConstants.PATH_URL);
+		builder.append(" LIKE ");
+		builder.append("'");
+		builder.append(path);
+		builder.append("'");
+		return builder.toString();
 	}
 
 	@Override

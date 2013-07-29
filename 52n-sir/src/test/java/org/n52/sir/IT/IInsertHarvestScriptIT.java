@@ -1,5 +1,7 @@
 package org.n52.sir.IT;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.InputStream;
 
 import javax.servlet.UnavailableException;
@@ -24,7 +26,8 @@ public class IInsertHarvestScriptIT {
 					.getSystemResourceAsStream("prop/sir.PROPERTIES");
 			// Read configurator if null
 			IInsertHarvestScriptDAO dao = SirConfigurator.getInstance(sirStream, dbStream, null, null).getFactory().insertHarvestScriptDAO();
-			dao.insertScript("/scripts/one.js","test", 1);
+			String id = dao.insertScript("/scripts/one.js","test", 1);
+			assertNotNull(id);
 			
 		}
 		

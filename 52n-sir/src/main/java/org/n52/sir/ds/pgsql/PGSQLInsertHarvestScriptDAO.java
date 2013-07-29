@@ -48,6 +48,10 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 	 */
 	private PGConnectionPool cpool;
 	
+	public PGSQLInsertHarvestScriptDAO(){
+		
+	}
+	
 	public PGSQLInsertHarvestScriptDAO(PGConnectionPool cpool){
 		this.cpool = cpool;
 	}

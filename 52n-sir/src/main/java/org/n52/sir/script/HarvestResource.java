@@ -7,6 +7,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
+import org.n52.sir.SirConfigurator;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +34,12 @@ public class HarvestResource {
 		String fileName = fileDetail.getFileName();
 		String type = fileDetail.getType();
 		log.info("Sample js:"+this.jsEngine.execute("2+2"));
+		String id = "";
+		if(SirConfigurator.getInstance()!=null){
+			id = SirConfigurator.getInstance().getFactory().insertHarvestScriptDAO().insertScript(fileName, fileName, 1);
+		}
 		log.info(fileName+"."+type+":was uploaded at:"+System.currentTimeMillis());
-		return fileName;
+		return id;
 	}
 	
 }

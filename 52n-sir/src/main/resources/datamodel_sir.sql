@@ -1,4 +1,4 @@
---
+﻿--
 -- ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,6 +111,20 @@ CREATE TABLE catalog
   -- last_complete_push timestamptz,
   PRIMARY KEY (catalog_url)
 );
+
+--Table: harvestSctipy
+--represents information about scripts uploaded to server
+CREATE TABLE harvestScript
+(
+   scriptId bigserial NOT NULL, 
+   scriptVersion integer, 
+   pathURL text, 
+   lastRunDate time with time zone, 
+   uploadDate time with time zone, 
+   lastRunResult text,
+   PRIMARY KEY(scriptId)
+) ;
+
 
 -----------------------------------------------------------------------------------------------------------------------
 --add indices

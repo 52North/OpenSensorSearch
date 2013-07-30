@@ -1,9 +1,14 @@
 package org.n52.sir.script;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import javax.ws.rs.Consumes;
@@ -42,30 +47,31 @@ public class HarvestResource {
 		String fileName = fileDetail.getFileName();
 		String type = fileDetail.getType();
 		String id = "";
-		if (SirConfigurator.getInstance() != null) {
-			String pathStr = SirConfigurator.getInstance().getScriptsPath();
-			File f = new File(pathStr + user);
-			if (!f.exists())
-				f.mkdir();
+		SirConfigurator config = SirConfigurator.getInstance();
+		if (config != null) {
+			String pathStr = config.getScriptsPath();
+			log.info(pathStr);
+			File dir = new File(pathStr + user);
+			if (!dir.exists())
+				dir.mkdir();
+
 			File script = new File(pathStr + user + "/" + fileName);
+
 			try {
-				PrintWriter pw = new PrintWriter(script);
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(uploadedInputStream));
-				String s = null;
-				while ((s = reader.readLine()) != null)
-					pw.println(s);
-				pw.flush();
-//				pw.close();
-//				reader.close();
-				id = SirConfigurator.getInstance().getFactory()
-						.insertHarvestScriptDAO()
+				OutputStream writer = new FileOutputStream(script);
+				int read =0 ;
+				byte [] bytes = new byte[1024];
+				while((read=uploadedInputStream.read(bytes))!=-1)
+					writer.write(bytes,0,read);
+				writer.flush();
+				writer.close();
+				id = config.getFactory().insertHarvestScriptDAO()
 						.insertScript(fileName, fileName, 1);
 				log.info("Executing script");
 				String result = jsEngine.execute(script);
-				log.info("Script result:"+result);
+				log.info("Script result:" + result);
 			} catch (Exception e) {
-				log.error("Exception on executing script:",e);
+				log.error("Exception on executing script:", e);
 				return "";
 			}
 		}

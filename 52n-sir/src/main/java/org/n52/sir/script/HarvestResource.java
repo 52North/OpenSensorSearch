@@ -1,6 +1,10 @@
 package org.n52.sir.script;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -18,28 +22,56 @@ import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/script")
 public class HarvestResource {
-    private static Logger log = LoggerFactory.getLogger(HarvestResource.class);
-    
-    private IJSExecute jsEngine;
-    @Inject
-    public HarvestResource(IJSExecute exec) {
-    	this.jsEngine=exec;
+	private static Logger log = LoggerFactory.getLogger(HarvestResource.class);
+
+	private IJSExecute jsEngine;
+
+	@Inject
+	public HarvestResource(IJSExecute exec) {
+		this.jsEngine = exec;
 	}
+
 	@POST
 	@Path("/submit")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public String uploadHarvester(@FormDataParam("file") InputStream uploadedInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) {
-		
+	public String uploadHarvester(
+			@FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileDetail,
+			@FormDataParam("user") String user) {
+
 		String fileName = fileDetail.getFileName();
 		String type = fileDetail.getType();
-		log.info("Sample js:"+this.jsEngine.execute("2+2"));
 		String id = "";
-		if(SirConfigurator.getInstance()!=null){
-			id = SirConfigurator.getInstance().getFactory().insertHarvestScriptDAO().insertScript(fileName, fileName, 1);
+		if (SirConfigurator.getInstance() != null) {
+			String pathStr = SirConfigurator.getInstance().getScriptsPath();
+			File f = new File(pathStr + user);
+			if (!f.exists())
+				f.mkdir();
+			File script = new File(pathStr + user + "/" + fileName);
+			try {
+				PrintWriter pw = new PrintWriter(script);
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(uploadedInputStream));
+				String s = null;
+				while ((s = reader.readLine()) != null)
+					pw.println(s);
+				pw.flush();
+//				pw.close();
+//				reader.close();
+				id = SirConfigurator.getInstance().getFactory()
+						.insertHarvestScriptDAO()
+						.insertScript(fileName, fileName, 1);
+				log.info("Executing script");
+				String result = jsEngine.execute(script);
+				log.info("Script result:"+result);
+			} catch (Exception e) {
+				log.error("Exception on executing script:",e);
+				return "";
+			}
 		}
-		log.info(fileName+"."+type+":was uploaded at:"+System.currentTimeMillis());
+		log.info(fileName + "." + type + ":was uploaded at:"
+				+ System.currentTimeMillis());
 		return id;
 	}
-	
+
 }

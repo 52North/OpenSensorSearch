@@ -259,6 +259,8 @@ public class SirConfigurator {
      * propertyname of XSLT_DIR property
      */
     private static final String XSTL_DIRECTORY = "XSTL_DIRECTORY";
+    
+    private static final String SCRIPTS_PATH = "SCRIPTS_PATH";
 
     /**
      * @return Returns the instance of the SirConfigurator. Null will be returned if the parameterized
@@ -413,6 +415,9 @@ public class SirConfigurator {
      * Implementation of the ITransformerFactory, used to access transformers for XML documents
      */
     private ITransformerFactory transformerFactory;
+    
+    
+    private String ScriptsPath ; 
 
     /**
      * update sequence
@@ -813,6 +818,8 @@ public class SirConfigurator {
         this.acceptedVersions = this.props.getProperty(ACCEPTED_SERVICE_VERSIONS).split(VERSION_SPLIT_CHARACTER);
         this.validateRequests = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_REQUESTS));
         this.validateResponses = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_RESPONSES));
+        
+        this.ScriptsPath = this.props.getProperty(SCRIPTS_PATH);
 
         String resourceName = this.props.getProperty(PROFILE4DISCOVERY);
         URL location = this.getClass().getResource(resourceName);
@@ -1321,6 +1328,10 @@ public class SirConfigurator {
      */
     public boolean isExtendedDebugToConsole() {
         return this.extendedDebugToConsole;
+    }
+    
+    public String getScriptsPath(){
+    	return this.ScriptsPath;
     }
 
     /**

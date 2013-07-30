@@ -35,4 +35,10 @@
 		&copy; <%=new java.text.SimpleDateFormat("yyyy").format(new java.util.Date())%> <a href="http://52north.org">52&deg;North Initiative
 			for Geospatial Software GmbH</a>
 	</p>
+	<p class="infotext">
+		For harvesting your sensor  <a
+			href="/scriptUpload.jsp"
+			>Upload here</a>.
+	</p>
+	
 </div>

@@ -15,6 +15,9 @@
 		<p>
 			Select a file : <input type="file" name="file" size="45" />
 		</p>
+		<p>
+		Username : <input type="text" name="user"/>
+		</p>
 
 		<input type="submit" value="Upload It" />
 	</form>

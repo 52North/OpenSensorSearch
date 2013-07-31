@@ -3,6 +3,8 @@ package org.n52.sir;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 import org.n52.sir.script.HarvestResource;
+import org.quartz.SchedulerFactory;
+import org.quartz.impl.StdSchedulerFactory;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -21,6 +23,7 @@ public class GuiceConfigurator extends GuiceServletContextListener {
 			protected void configureServlets() {
 				bind(HarvestResource.class);
 				bind(IJSExecute.class).to(RhinoJSExecute.class);
+				bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 				bind(
 						com.sun.jersey.spi.container.servlet.ServletContainer.class)
 						.in(Singleton.class);

@@ -10,14 +10,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.harvest.exec.IJSExecute;
+import org.n52.sir.scheduler.HarvestJob;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +41,12 @@ public class HarvestResource {
 	private static Logger log = LoggerFactory.getLogger(HarvestResource.class);
 
 	private IJSExecute jsEngine;
+	private SchedulerFactory schedulerFactory;
 
 	@Inject
-	public HarvestResource(IJSExecute exec) {
+	public HarvestResource(IJSExecute exec,SchedulerFactory schedulerFactory) {
 		this.jsEngine = exec;
+		this.schedulerFactory = schedulerFactory;
 	}
 
 	@POST
@@ -79,5 +92,23 @@ public class HarvestResource {
 				+ System.currentTimeMillis());
 		return id;
 	}
-
+	@GET
+	@Path("/schedule")
+	public String scheduleHarvest(@QueryParam("id")int sensorId,@QueryParam("date")long when){
+		Date d = new Date(when);
+		JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J"+sensorId).build();
+		try{
+			Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T"+sensorId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();
+			Scheduler sch = schedulerFactory.getScheduler();
+			sch.scheduleJob(detail, tr);
+			sch.start();
+			log.info("Scheduled successfully :_J"+sensorId);
+			return "_J"+sensorId;
+		}catch(Exception e){
+			log.error("Error on scheduling",e);
+			return "fail";
+		}
+		
+	}
+	
 }

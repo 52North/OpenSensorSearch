@@ -6,7 +6,7 @@ public class RhinoConstants {
 	// access
 	// belonging to the packages of org.n52
 	
-	public static final String [] allowed = new String[] {"SOLRInsertSensorInfoDAO","org.n52.sir.ds"};
+	public static final String [] allowed = new String[] {"SOLRInsertSensorInfoDAO","org.n52.sir.ds","HTTPRequest"};
 	
 	
 	

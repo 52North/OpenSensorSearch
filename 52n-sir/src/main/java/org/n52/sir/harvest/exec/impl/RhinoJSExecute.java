@@ -32,6 +32,7 @@ public class RhinoJSExecute implements IJSExecute {
 			Object result = cn.evaluateString(scope, s, "<cmd>", 1, null);
 			return Context.toString(result);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		} finally {
 			cn.exit();
@@ -53,6 +54,7 @@ public class RhinoJSExecute implements IJSExecute {
 			
 		} catch (Exception e) {
 			System.out.println(e);
+			e.printStackTrace();
 			return null;
 		} finally {
 			cn.exit();

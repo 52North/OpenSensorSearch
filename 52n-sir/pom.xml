@@ -645,9 +645,9 @@
 			<version>${guice.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>rhino</groupId>
-			<artifactId>js</artifactId>
-			<version>1.7R2</version>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+			<version>1.7R3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>

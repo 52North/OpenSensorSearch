@@ -8,7 +8,9 @@ function harvestSmartCitizenChannel(id){
 			if(obj['devices']){
 				var devices = obj['devices'];
 				var count = 0;
+				var ids = [];
 				for(var i=0;i<devices.length;i++){
+					var channel = devices[i]
 					var description = channel['description'];
 					var id = channel['id'];
 					var latitude = channel['geo_lat'];
@@ -19,6 +21,7 @@ function harvestSmartCitizenChannel(id){
 					sensor.setLongitude(longitude);
 					sensor.setLatitude(latitude);
 					insert = new org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO();
+					insert.insertSensor(sensor);
 					count++ ;
 				}
 				return count;
@@ -27,5 +30,5 @@ function harvestSmartCitizenChannel(id){
 		}else return -1;
 	}else return -1;
 }
-harvestChannel("6e0428e19cf2bff1a9c05d14d0400bf4");
+harvestSmartCitizenChannel("6e0428e19cf2bff1a9c05d14d0400bf4");
 

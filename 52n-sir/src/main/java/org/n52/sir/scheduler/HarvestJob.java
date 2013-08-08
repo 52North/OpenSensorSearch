@@ -26,7 +26,7 @@ public class HarvestJob implements Job {
 		SirConfigurator config = SirConfigurator.getInstance();
 		String path = config.getFactory().insertHarvestScriptDAO().getScriptPath(sensorId);
 		if(path !=null){
-			File f = new File(path);
+			File f = new File(config.getScriptsPath()+path);
 			IJSExecute executeEngine = new RhinoJSExecute();
 			executeEngine.execute(f);
 		}

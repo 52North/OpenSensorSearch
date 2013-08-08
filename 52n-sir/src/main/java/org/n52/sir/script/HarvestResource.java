@@ -1,15 +1,9 @@
 package org.n52.sir.script;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -69,7 +63,7 @@ public class HarvestResource {
 			if (!dir.exists())
 				dir.mkdir();
 
-			File script = new File(pathStr + user + '\'' + fileName);
+			File script = new File(pathStr + user + '\\' + fileName);
 
 			try {
 				OutputStream writer = new FileOutputStream(script);
@@ -80,7 +74,7 @@ public class HarvestResource {
 				writer.flush();
 				writer.close();
 				id = config.getFactory().insertHarvestScriptDAO()
-						.insertScript(script.getAbsolutePath(),user, 1);
+						.insertScript(fileName,user, 1);
 				log.info("Storing for script at:"+script.getAbsolutePath());
 				log.info("Executing script");
 				String result = jsEngine.execute(script);

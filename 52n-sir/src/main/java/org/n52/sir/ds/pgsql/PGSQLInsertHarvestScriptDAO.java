@@ -93,10 +93,12 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 			log.info(searchQuery);
 			String path = null;
 			ResultSet rs = stmt.executeQuery(searchQuery);
+			String user = null;
 			if(rs.next()){
 				path = rs.getString(PGDAOConstants.PATH_URL);
+				user = rs.getString(PGDAOConstants.SCRIPT_OWNER_USERNAME);
 			}
-			return path;
+			return user+"/"+path;
 		} catch (Exception e) {
 			log.error("Cannot search for harvest Script",e);
 			return null;
@@ -148,6 +150,8 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT ");
 		builder.append(PGDAOConstants.PATH_URL);
+		builder.append(",");
+		builder.append(PGDAOConstants.SCRIPT_OWNER_USERNAME);
 		builder.append (" FROM ");
 		builder.append(PGDAOConstants.harvestScript);
 		builder.append(" WHERE ");

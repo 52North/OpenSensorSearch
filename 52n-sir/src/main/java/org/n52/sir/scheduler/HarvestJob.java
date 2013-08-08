@@ -1,8 +1,11 @@
 package org.n52.sir.scheduler;
 
+import java.io.File;
 import java.util.Date;
 
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.harvest.exec.IJSExecute;
+import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -22,6 +25,11 @@ public class HarvestJob implements Job {
 		log.info("Executed at : "+new Date().getTime());
 		SirConfigurator config = SirConfigurator.getInstance();
 		String path = config.getFactory().insertHarvestScriptDAO().getScriptPath(sensorId);
+		if(path !=null){
+			File f = new File(path);
+			IJSExecute executeEngine = new RhinoJSExecute();
+			executeEngine.execute(f);
+		}
 		log.info("Harvesting sensor:"+path);
 		try {
 			arg0.getScheduler().unscheduleJob(arg0.getTrigger().getKey());

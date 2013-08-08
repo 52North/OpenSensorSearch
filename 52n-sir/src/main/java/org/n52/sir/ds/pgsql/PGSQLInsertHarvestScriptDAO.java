@@ -98,7 +98,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 			}
 			return path;
 		} catch (Exception e) {
-			log.error("Cannot insert harvest Script",e);
+			log.error("Cannot search for harvest Script",e);
 			return null;
 		}
 	}
@@ -126,6 +126,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		query.append(version);
 		query.append("'");
 		query.append(");");
+		log.info(query.toString());
 		return query.toString();
 	}
 	private String searchByPath(String path){

@@ -10,7 +10,7 @@ import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 
 public class OWSHarvestTest {
 
-	@Test
+//	@Test
 	public void harvestOWS(){
 		File harvestScript = new File(ClassLoader.getSystemResource(
 				"Requests/harvestOWS.js").getFile());

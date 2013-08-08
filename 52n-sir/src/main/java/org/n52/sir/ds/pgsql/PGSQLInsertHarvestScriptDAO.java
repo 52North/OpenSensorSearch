@@ -81,7 +81,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		}
 	}
 	
-	public String getPathById(String id) {
+	private String getPathById(String id) {
 		String query;
 		Connection con = null;
 		Statement stmt = null;
@@ -89,7 +89,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		try {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
-			String searchQuery = getPathById(id);
+			String searchQuery = searchPathById(id);
 			log.info(searchQuery);
 			String path = null;
 			ResultSet rs = stmt.executeQuery(searchQuery);
@@ -127,6 +127,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		query.append("'");
 		query.append(");");
 		log.info(query.toString());
+		System.out.println(query.toString());
 		return query.toString();
 	}
 	private String searchByPath(String path){
@@ -147,20 +148,21 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT ");
 		builder.append(PGDAOConstants.PATH_URL);
-		builder.append (" FROM");
+		builder.append (" FROM ");
 		builder.append(PGDAOConstants.harvestScript);
 		builder.append(" WHERE ");
 		builder.append(PGDAOConstants.SCRIPTID);
 		builder.append("=");
 		builder.append(Id);
+
+		System.out.println(builder.toString());
 		return builder.toString();
 		
 	}
 
 	@Override
 	public String getScriptPath(String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		return getPathById(identifier);
 	}
 
 }

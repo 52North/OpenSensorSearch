@@ -97,8 +97,10 @@ public class HarvestResource {
 	@GET
 	@Path("/schedule")
 	public String scheduleHarvest(@QueryParam("id")int sensorId,@QueryParam("date")long when){
-		Date d = new Date(when);
-		JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J"+sensorId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,sensorId).build();
+		Date d ;
+		if(when == 0 )d= new Date();
+		else d = new Date(when);
+		JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J"+sensorId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,sensorId+"").build();
 		
 		try{
 			Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T"+sensorId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();

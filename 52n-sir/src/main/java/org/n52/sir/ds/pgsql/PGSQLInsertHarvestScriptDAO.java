@@ -81,6 +81,28 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		}
 	}
 	
+	public String getPathById(String id) {
+		String query;
+		Connection con = null;
+		Statement stmt = null;
+		
+		try {
+			con = this.cpool.getConnection();
+			stmt = con.createStatement();
+			String searchQuery = getPathById(id);
+			log.info(searchQuery);
+			String path = null;
+			ResultSet rs = stmt.executeQuery(searchQuery);
+			if(rs.next()){
+				path = rs.getString(PGDAOConstants.PATH_URL);
+			}
+			return path;
+		} catch (Exception e) {
+			log.error("Cannot insert harvest Script",e);
+			return null;
+		}
+	}
+	
 	private String insertScriptString(String path,String username,int version){
 		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO ");
@@ -119,6 +141,19 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		builder.append(path);
 		builder.append("'");
 		return builder.toString();
+	}
+	private String searchPathById(String Id){
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT ");
+		builder.append(PGDAOConstants.PATH_URL);
+		builder.append (" FROM");
+		builder.append(PGDAOConstants.harvestScript);
+		builder.append(" WHERE ");
+		builder.append(PGDAOConstants.SCRIPTID);
+		builder.append("=");
+		builder.append(Id);
+		return builder.toString();
+		
 	}
 
 	@Override

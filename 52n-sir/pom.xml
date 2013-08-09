@@ -168,34 +168,7 @@
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
-						<manifestEntries>
-							<Implementation-Build>${buildNumber}</Implementation-Build>
-						</manifestEntries>
 					</archive>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-				<version>1.2</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<doCheck>true</doCheck>
-					<doUpdate>true</doUpdate>
-					<format>{0,number}</format>
-					<items>
-						<item>buildNumber</item>
-					</items>
-					<buildNumberPropertiesFileLocation>${basedir}/src/main/config/buildNumber.properties</buildNumberPropertiesFileLocation>
-					<revisionOnScmFailure>svm-NA</revisionOnScmFailure>
 				</configuration>
 			</plugin>
 
@@ -256,7 +229,6 @@
 				<excludes> <exclude>**/log4j*</exclude> <exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
 				<exclude>**/iso_svrl_for_xslt2.xsl</exclude> <exclude>**/test/resources/**</exclude>
 				<exclude>**/webapp/TestRequests/**</exclude> <exclude>**/webapp/codemirror/**</exclude>
-				<exclude>**/buildNumber.properties</exclude> <exclude>**/org/n52/sir/util/ext/**</exclude>
 				<excluse>**/*.xml</excluse> </excludes> <includes> <include>**/*.java</include>
 				<include>**/*.properties</include> <include>**/*.jsp</include> <include>**/*.js</include>
 				<include>**/*.xsl</include> <include>**/*.sch</include> <include>**/*.sql</include>
@@ -370,18 +342,6 @@
 			<id>sonatype-postgis-releases</id>
 			<name>Sonatype Postgis Releases Repo</name>
 			<url>http://oss.sonatype.org/content/repositories/postgis-releases</url>
-		</repository>
-
-		<!-- for buildnumber-maven-plugin -->
-		<repository>
-			<id>Codehaus Snapshots</id>
-			<url>http://nexus.codehaus.org/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
 		</repository>
 
 		<repository>

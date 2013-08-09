@@ -81,6 +81,30 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		}
 	}
 	
+	private String getPathById(String id) {
+		String query;
+		Connection con = null;
+		Statement stmt = null;
+		
+		try {
+			con = this.cpool.getConnection();
+			stmt = con.createStatement();
+			String searchQuery = searchPathById(id);
+			log.info(searchQuery);
+			String path = null;
+			ResultSet rs = stmt.executeQuery(searchQuery);
+			String user = null;
+			if(rs.next()){
+				path = rs.getString(PGDAOConstants.PATH_URL);
+				user = rs.getString(PGDAOConstants.SCRIPT_OWNER_USERNAME);
+			}
+			return user+"/"+path;
+		} catch (Exception e) {
+			log.error("Cannot search for harvest Script",e);
+			return null;
+		}
+	}
+	
 	private String insertScriptString(String path,String username,int version){
 		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO ");
@@ -104,6 +128,8 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		query.append(version);
 		query.append("'");
 		query.append(");");
+		log.info(query.toString());
+		System.out.println(query.toString());
 		return query.toString();
 	}
 	private String searchByPath(String path){
@@ -120,11 +146,27 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		builder.append("'");
 		return builder.toString();
 	}
+	private String searchPathById(String Id){
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT ");
+		builder.append(PGDAOConstants.PATH_URL);
+		builder.append(",");
+		builder.append(PGDAOConstants.SCRIPT_OWNER_USERNAME);
+		builder.append (" FROM ");
+		builder.append(PGDAOConstants.harvestScript);
+		builder.append(" WHERE ");
+		builder.append(PGDAOConstants.SCRIPTID);
+		builder.append("=");
+		builder.append(Id);
+
+		System.out.println(builder.toString());
+		return builder.toString();
+		
+	}
 
 	@Override
 	public String getScriptPath(String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		return getPathById(identifier);
 	}
 
 }

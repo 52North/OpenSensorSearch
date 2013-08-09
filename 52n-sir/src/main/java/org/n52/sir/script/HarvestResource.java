@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -43,6 +44,27 @@ public class HarvestResource {
 		this.jsEngine = exec;
 		this.schedulerFactory = schedulerFactory;
 	}
+	
+	@GET
+    @Path("/")
+	public Object showHarvester() {
+	    // FIXME implement full CRUD
+	    return null;
+	}
+	
+	@DELETE
+	@Path("/<scriptid>")
+    public Object deleteHarvester() {
+        // FIXME implement full CRUD
+        return null;
+    }
+	
+	@POST
+    @Path("/<scriptid>/update")
+    public Object updateHarvester() {
+        // FIXME implement full CRUD
+        return null;
+    }
 
 	@POST
 	@Path("/submit")

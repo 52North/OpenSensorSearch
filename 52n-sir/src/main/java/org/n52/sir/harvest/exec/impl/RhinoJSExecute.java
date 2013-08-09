@@ -24,11 +24,10 @@ public class RhinoJSExecute implements IJSExecute {
 	public String execute(String s) {
 		Context cn = Context.enter();
 		try {
-			Scriptable scope = cn.initStandardObjects();
+			Global global = new Global();
+			global.init(cn);
+			Scriptable scope = cn.initStandardObjects(global);
 			cn.setOptimizationLevel(-1);
-			Global g = Main.getGlobal();
-			g.init(cn);
-			Main.processSource(cn, "d:/env.rhino.js");
 			Object result = cn.evaluateString(scope, s, "<cmd>", 1, null);
 			return Context.toString(result);
 		} catch (Exception e) {

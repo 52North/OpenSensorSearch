@@ -1,15 +1,9 @@
 package org.n52.sir.script;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -22,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.scheduler.HarvestJob;
+import org.n52.sir.scheduler.QuartzConstants;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -68,7 +63,7 @@ public class HarvestResource {
 			if (!dir.exists())
 				dir.mkdir();
 
-			File script = new File(pathStr + user + "/" + fileName);
+			File script = new File(pathStr + user + '\\' + fileName);
 
 			try {
 				OutputStream writer = new FileOutputStream(script);
@@ -79,7 +74,8 @@ public class HarvestResource {
 				writer.flush();
 				writer.close();
 				id = config.getFactory().insertHarvestScriptDAO()
-						.insertScript(fileName, fileName, 1);
+						.insertScript(fileName,user, 1);
+				log.info("Storing for script at:"+script.getAbsolutePath());
 				log.info("Executing script");
 				String result = jsEngine.execute(script);
 				log.info("Script result:" + result);
@@ -95,8 +91,11 @@ public class HarvestResource {
 	@GET
 	@Path("/schedule")
 	public String scheduleHarvest(@QueryParam("id")int sensorId,@QueryParam("date")long when){
-		Date d = new Date(when);
-		JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J"+sensorId).build();
+		Date d ;
+		if(when == 0 )d= new Date();
+		else d = new Date(when);
+		JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J"+sensorId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,sensorId+"").build();
+		
 		try{
 			Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T"+sensorId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();
 			Scheduler sch = schedulerFactory.getScheduler();

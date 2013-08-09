@@ -81,7 +81,7 @@ public class HarvestResource {
 				log.info("Script result:" + result);
 			} catch (Exception e) {
 				log.error("Exception on executing script:", e);
-				return "";
+				return ""; // FIXME return HTTP error with a message
 			}
 		}
 		log.info(fileName + "." + type + ":was uploaded at:"

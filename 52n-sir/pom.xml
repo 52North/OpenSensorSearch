@@ -75,7 +75,7 @@
 		<restlet.version>2.1.1</restlet.version>
 		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
-		<!-- would like to use filtering here, but I did not get it to work with 
+		<!-- would like to use filtering here, but I did not get it to work with
 			Tomcat and Jetty plugins: http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
 		<service.path>/SIR</service.path>
 		<service.endpoint.service>sir</service.endpoint.service>
@@ -84,6 +84,7 @@
 		<service.endpoint.autocomplete>autocomplete</service.endpoint.autocomplete>
 		<guice.version>3.0</guice.version>
 		<jersey.version>1.8</jersey.version>
+		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
 	</properties>
 
 	<profiles>
@@ -103,9 +104,9 @@
 		<profile>
 			<id>sir.deploy</id>
 			<properties>
-				<!-- add these to your settings.xml file to ensure passwords are not 
-					uploaded to SCM: <profile> <id>sir.deploy</id> <properties> <sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server> 
-					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user> <sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password> 
+				<!-- add these to your settings.xml file to ensure passwords are not
+					uploaded to SCM: <profile> <id>sir.deploy</id> <properties> <sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server>
+					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user> <sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password>
 					</properties> </profile> -->
 				<service.url>${sir.deploy.server}</service.url>
 				<service.contact>${sir.deploy.contact}</service.contact>
@@ -130,10 +131,10 @@
 
 				<configuration>
 					<scanIntervalSeconds>2</scanIntervalSeconds>
-					<!-- if you embed the following in <webApp>, then jetty:run-exploded 
-						will result in error "When configuring a basic element the configuration 
+					<!-- if you embed the following in <webApp>, then jetty:run-exploded
+						will result in error "When configuring a basic element the configuration
 						cannot contain any child elements. Configuration element 'war'." -->
-					<contextPath>${service.path}</contextPath> <!-- is ignored for run-exploded, but used by Webby: Right-click, Debug as, 
+					<contextPath>${service.path}</contextPath> <!-- is ignored for run-exploded, but used by Webby: Right-click, Debug as,
 						Webby ... -->
 					<war>target/${project.build.finalName}</war>
 				</configuration>
@@ -145,7 +146,7 @@
 				<version>2.3</version>
 
 				<configuration>
-					<!-- have to explicitly add resources and target paths if I want to 
+					<!-- have to explicitly add resources and target paths if I want to
 						do filtering on different resources -->
 					<!-- http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
 					<webResources>
@@ -213,7 +214,7 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.0-beta-1</version>
 				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir> 
+				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir>
 					</systemProperties> </configuration> -->
 				<configuration>
 					<path>${service.path}</path>
@@ -232,7 +233,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.0-beta-1</version>
 				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir> 
+				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir>
 					</systemProperties> </configuration> -->
 				<configuration>
 					<path>${service.path}</path>
@@ -250,20 +251,21 @@
 			<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
 			<!-- run "mvn license:check -Dyear=2011" to check -->
 			<!-- run "mvn license:format -Dyear=2011" to add to the files -->
-			<!-- <groupId>com.mycila.maven-license-plugin</groupId> <artifactId>maven-license-plugin</artifactId> 
-				<version>1.9.0</version> <configuration> <header>src/main/resources/52n_license.txt</header> 
-				<excludes> <exclude>**/log4j*</exclude> <exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude> 
-				<exclude>**/iso_svrl_for_xslt2.xsl</exclude> <exclude>**/test/resources/**</exclude> 
-				<exclude>**/webapp/TestRequests/**</exclude> <exclude>**/webapp/codemirror/**</exclude> 
-				<exclude>**/buildNumber.properties</exclude> <exclude>**/org/n52/sir/util/ext/**</exclude> 
-				<excluse>**/*.xml</excluse> </excludes> <includes> <include>**/*.java</include> 
-				<include>**/*.properties</include> <include>**/*.jsp</include> <include>**/*.js</include> 
-				<include>**/*.xsl</include> <include>**/*.sch</include> <include>**/*.sql</include> 
-				<<include>**/*.css</include> <include>**/*.html</include> </includes> <strictCheck>true</strictCheck> 
-				<properties> <year>${project.inceptionYear}</year> </properties> <mapping> 
-				<sch>XML_STYLE</sch> </mapping> </configuration> <executions> <execution> 
+			<!-- <groupId>com.mycila.maven-license-plugin</groupId> <artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version> <configuration> <header>src/main/resources/52n_license.txt</header>
+				<excludes> <exclude>**/log4j*</exclude> <exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
+				<exclude>**/iso_svrl_for_xslt2.xsl</exclude> <exclude>**/test/resources/**</exclude>
+				<exclude>**/webapp/TestRequests/**</exclude> <exclude>**/webapp/codemirror/**</exclude>
+				<exclude>**/buildNumber.properties</exclude> <exclude>**/org/n52/sir/util/ext/**</exclude>
+				<excluse>**/*.xml</excluse> </excludes> <includes> <include>**/*.java</include>
+				<include>**/*.properties</include> <include>**/*.jsp</include> <include>**/*.js</include>
+				<include>**/*.xsl</include> <include>**/*.sch</include> <include>**/*.sql</include>
+				<<include>**/*.css</include> <include>**/*.html</include> </includes>
+				<strictCheck>true</strictCheck>
+				<properties> <year>${project.inceptionYear}</year> </properties> <mapping>
+				<sch>XML_STYLE</sch> </mapping> </configuration> <executions> <execution>
 				<phase>test</phase> -->
-			<!-- test will fail if license headers are not correct, run license:format 
+			<!-- test will fail if license headers are not correct, run license:format
 				to add the headers. -->
 			<!-- <goals> <goal>check</goal> </goals> </execution> </executions> </plugin> -->
 			<plugin>
@@ -356,7 +358,7 @@
 		</repository>
 
 		<repository>
-			<!-- Tentative local repo for libs that are not migrated to Maven dependency 
+			<!-- Tentative local repo for libs that are not migrated to Maven dependency
 				mechanism and available in online repositories. -->
 			<id>lib-repository</id>
 			<name>Local Repository</name>
@@ -439,7 +441,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-			<!-- it’s just the api and the implementation should be provided by the 
+			<!-- it’s just the api and the implementation should be provided by the
 				application server/web container -->
 			<scope>provided</scope> <!-- for running with tomcat-maven-plugin, see http://singztechmusings.wordpress.com/2011/06/17/java-lang-classcastexception-cannot-be-cast-to-javax-servlet-servlet-how-to-resolve/ -->
 		</dependency>
@@ -503,8 +505,23 @@
 
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-wrs-v101</artifactId>
+			<version>${sensorweb.schemas.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-sir-v032</artifactId>
+			<version>${sensorweb.schemas.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
+			<artifactId>52n-xml-sor-v031</artifactId>
+			<version>${sensorweb.schemas.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-sps-v100</artifactId>
-			<version>1.0.0</version>
+			<version>${sensorweb.schemas.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.n52.sensorweb</groupId>
@@ -512,11 +529,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-sos-v100</artifactId>
-			<version>1.0.0</version>
+			<version>${sensorweb.schemas.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.n52.sensorweb</groupId>
@@ -524,17 +540,15 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-gml</artifactId>
-			<version>3.2-patched</version>
+			<artifactId>52n-xml-gml-v321</artifactId>
+			<version>${sensorweb.schemas.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-kml-v220</artifactId>
-			<version>1.0.0</version>
+			<version>${sensorweb.schemas.version}</version>
 		</dependency>
 
 		<dependency>
@@ -594,21 +608,7 @@
 			<artifactId>52n-json-sir</artifactId>
 			<version>0.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-wrs-v101</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-sir-v032</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-sor-v031</artifactId>
-			<version>1.1.1</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>

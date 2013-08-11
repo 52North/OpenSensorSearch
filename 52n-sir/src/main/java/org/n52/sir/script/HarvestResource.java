@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.harvest.exec.IJSExecute;
@@ -47,7 +48,7 @@ public class HarvestResource {
 	@POST
 	@Path("/submit")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public String uploadHarvester(
+	public Response uploadHarvester(
 			@FormDataParam("file") InputStream uploadedInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileDetail,
 			@FormDataParam("user") String user) {
@@ -81,12 +82,12 @@ public class HarvestResource {
 				log.info("Script result:" + result);
 			} catch (Exception e) {
 				log.error("Exception on executing script:", e);
-				return "";
+				return Response.status(500).build();
 			}
 		}
 		log.info(fileName + "." + type + ":was uploaded at:"
 				+ System.currentTimeMillis());
-		return id;
+		return Response.ok(id).build();
 	}
 	@GET
 	@Path("/schedule")

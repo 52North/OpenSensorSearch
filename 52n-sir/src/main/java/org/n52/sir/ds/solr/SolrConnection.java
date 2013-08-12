@@ -61,7 +61,7 @@ public class SolrConnection {
     	commitChanges();
     }
     public void deleteByQuery(String query) throws SolrServerException, IOException{
-    	this.server.deleteByQuery("*:*");
+    	this.server.deleteByQuery(query);
     	commitChanges();
     }
 

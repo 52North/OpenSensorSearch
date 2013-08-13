@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
@@ -87,7 +88,7 @@ public class HarvestResource {
 		}
 		log.info(fileName + "." + type + ":was uploaded at:"
 				+ System.currentTimeMillis());
-		return Response.ok(id).build();
+		return Response.ok(new Viewable("/success")).build();
 	}
 	@GET
 	@Path("/schedule")

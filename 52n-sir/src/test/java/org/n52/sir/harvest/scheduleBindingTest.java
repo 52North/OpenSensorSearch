@@ -35,7 +35,7 @@ import org.n52.sir.ds.solr.SolrConnection;
 
 public class scheduleBindingTest {
 	public static final String randomString = "z7ecmioktu";
-	@Test
+	//@Test
 	public void testBinding() throws HttpException, IOException, InterruptedException, SolrServerException {
 		File harvestScript = new File(ClassLoader.getSystemResource(
 				"Requests/randomSensor.js").getFile());

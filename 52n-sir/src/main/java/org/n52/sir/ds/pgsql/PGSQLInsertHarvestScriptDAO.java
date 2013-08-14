@@ -30,8 +30,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.n52.sir.ds.IInsertHarvestScriptDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -52,8 +52,8 @@ public class SearchByAllFieldsTest {
 	
 	@Test
 	public void searchByAllFields() throws XmlException, IOException, OwsExceptionReport {
-		File sensor_file = new File(ClassLoader.getSystemResource(
-				"Requests/testsensor.xml").getFile());
+		String basePath = (this.getClass().getResource("/Requests").getFile());
+		File sensor_file = new File(basePath+"/testSensor.xml");
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
 		SirSensor sensor = SensorMLDecoder.decode(doc);
 		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();

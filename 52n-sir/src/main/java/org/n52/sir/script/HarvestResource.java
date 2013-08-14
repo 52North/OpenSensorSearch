@@ -111,5 +111,15 @@ public class HarvestResource {
 		}
 		
 	}
+	@POST
+	@Path("/remote/server")
+	public Response putServer(@QueryParam("url")String serverURL){
+		SirConfigurator config = SirConfigurator.getInstance();
+		if(config !=null){
+			String auth_token = config.getFactory().insertRemoteHarvestSensor().insertRemoteServer(serverURL);
+			return Response.ok(auth_token).build();
+		}else return Response.status(500).build();
+		
+	}
 	
 }

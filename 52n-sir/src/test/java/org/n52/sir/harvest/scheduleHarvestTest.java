@@ -29,8 +29,8 @@ public class scheduleHarvestTest {
 			String basePath = (this.getClass().getResource("/prop").getFile());
 			
 			
-			InputStream dbStream = new FileInputStream(new File(basePath+"/db.properties"));
-			InputStream sirStream = new FileInputStream(new File(basePath+"/sir.properties"));
+			InputStream dbStream = new FileInputStream(new File(basePath+"db.properties"));
+			InputStream sirStream = new FileInputStream(new File(basePath+"/sir.PROPERTIES"));
 			
 //			InputStream sirStream = ClassLoader
 //					.getSystemResourceAsStream("prop/sir.PROPERTIES");

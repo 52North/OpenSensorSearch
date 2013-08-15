@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
+import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,7 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 		try {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
-			String insertQuery = insertRemoteServer(url);
+			String insertQuery = insertRemoteServerString(url);
 			log.info(insertQuery);
 			stmt.execute(insertQuery);
 			String authtoken = null;
@@ -62,9 +63,13 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 		
 	}
 
-	private String insertScriptString(String url){
+	private String insertRemoteServerString(String url){
 		String hash = new Date().getTime()+url;
-		int _hash = hash.hashCode();
+		String _hash = new ShortAlphanumericIdentifierGenerator().generate(hash);
+		if(_hash == null){
+			log.error("Cannot create SHA1 hash");
+			return null;
+		}
 		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO ");
 		query.append(PGDAOConstants.remoteHarvestSensor);

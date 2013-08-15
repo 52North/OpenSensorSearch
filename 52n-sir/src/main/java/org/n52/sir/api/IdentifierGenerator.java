@@ -23,5 +23,7 @@ public interface IdentifierGenerator {
     public abstract String generate();
 
     public abstract Collection<String> generate(int count);
+    
+    public String generate(String s);
 
 }

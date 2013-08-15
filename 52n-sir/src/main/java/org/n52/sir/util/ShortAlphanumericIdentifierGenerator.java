@@ -16,6 +16,8 @@
 
 package org.n52.sir.util;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,34 +26,59 @@ import org.n52.sir.api.IdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ShortAlphanumericIdentifierGenerator implements IdentifierGenerator {
+public class ShortAlphanumericIdentifierGenerator implements
+		IdentifierGenerator {
 
-    private static Logger log = LoggerFactory.getLogger(ShortAlphanumericIdentifierGenerator.class);
+	private static Logger log = LoggerFactory
+			.getLogger(ShortAlphanumericIdentifierGenerator.class);
 
-    public static final int ID_LENGTH = 10;
+	public static final int ID_LENGTH = 10;
 
-    public ShortAlphanumericIdentifierGenerator() {
-        log.debug("NEW {}", this);
-    }
+	public ShortAlphanumericIdentifierGenerator() {
+		log.debug("NEW {}", this);
+	}
 
-    /* (non-Javadoc)
-     * @see org.n52.sir.util.IdentifierGenerator#generate()
-     */
-    @Override
-    public String generate() {
-        return RandomStringUtils.randomAlphanumeric(ID_LENGTH).toLowerCase();
-    }
-    
-    /* (non-Javadoc)
-     * @see org.n52.sir.util.IdentifierGenerator#generate(int)
-     */
-    @Override
-    public Collection<String> generate(int count) {
-        ArrayList<String> ids = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            ids.add(generate());
-        }
-        return ids;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.n52.sir.util.IdentifierGenerator#generate()
+	 */
+	@Override
+	public String generate() {
+		return RandomStringUtils.randomAlphanumeric(ID_LENGTH).toLowerCase();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.n52.sir.util.IdentifierGenerator#generate(int)
+	 */
+	@Override
+	public Collection<String> generate(int count) {
+		ArrayList<String> ids = new ArrayList<String>();
+		for (int i = 0; i < count; i++) {
+			ids.add(generate());
+		}
+		return ids;
+	}
+
+	public String generate(String s) {
+		try {
+			// create an identifier based on SHA-1 for a string
+			MessageDigest digest = MessageDigest.getInstance("SHA1");
+			digest.update(s.getBytes());
+			byte[] mdbytes = digest.digest();
+
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < mdbytes.length; i++) {
+				sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16)
+						.substring(1));
+			}
+			return sb.toString();
+		} catch (NoSuchAlgorithmException exception) {
+			return null;
+		}
+
+	}
 
 }

@@ -19,6 +19,7 @@ import org.n52.sir.api.IdentifierGenerator;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;
+import org.n52.sir.scheduler.RemoteHarvestJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -121,6 +122,24 @@ public class HarvestResource {
 			return Response.ok(auth_token).build();
 		}else return Response.status(500).build();
 		
+	}
+	@POST
+	@Path("/remote/server/harvest")
+	public Response harvestServer(@QueryParam("auth_token")String auth_token){
+		JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I"+auth_token).usingJobData(QuartzConstants.REMOTE_SENSOR_AUTH_TOKEN,auth_token).build();
+		
+		try{
+			Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T"+auth_token).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();
+			Scheduler sch = schedulerFactory.getScheduler();
+			sch.scheduleJob(detail, tr);
+			sch.start();
+			log.info("Scheduled successfully :_J"+auth_token);
+			return Response.ok().build();
+	
+		}catch(Exception e){
+			log.error("Error on scheduling",e);
+			return Response.status(500).build();		
+		}
 	}
 	
 }

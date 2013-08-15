@@ -50,6 +50,26 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 		}
 
 	}
+	
+	public String getRemoteSensorServer(String auth_token){
+		Connection con = null;
+		Statement stmt = null;
+		
+		try {
+			con = this.cpool.getConnection();
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(searchByAuthTokenQuery(auth_token));
+			String url = null;;
+			if(rs.next()){
+				 url = rs.getString(PGDAOConstants.SERVER_URL);
+			}
+			return url;
+		} catch (Exception e) {
+			log.error("Cannot insert harvest Script",e);
+			return null;
+		}
+
+	}
 
 	@Override
 	public int getRemoteServerHarvestState(String authToken) {
@@ -58,9 +78,8 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 	}
 
 	@Override
-	public void harvestRemoteServer(String authToken) {
-		// TODO Auto-generated method stub
-		
+	public String harvestRemoteServer(String authToken) {
+		return getRemoteSensorServer(authToken);
 	}
 
 	private String insertRemoteServerString(String url){

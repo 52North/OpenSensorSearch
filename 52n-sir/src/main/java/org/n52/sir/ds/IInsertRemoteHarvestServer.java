@@ -7,7 +7,8 @@ public interface IInsertRemoteHarvestServer {
 	//returns one of pending - harvested (Successfully | failure )- not harvested 
 	public int getRemoteServerHarvestState(String authToken);
 	//harvest
-	public void harvestRemoteServer(String authToken);
+	public String harvestRemoteServer(String authToken);
 	//schedule to be added
+	
 
 }

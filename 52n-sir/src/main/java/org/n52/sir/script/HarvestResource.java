@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.api.IdentifierGenerator;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;

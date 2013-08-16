@@ -236,7 +236,11 @@
 						<exclude>**/test/resources/**</exclude>
 						<exclude>**/webapp/TestRequests/**</exclude>
 						<exclude>**/webapp/codemirror/**</exclude>
-						<excluse>**/*.xml</excluse>
+						<exclude>**/*.xml</exclude>
+						<exclude>**/libs/env*.js</exclude>
+						<exclude>**/libs/jquery.js</exclude>
+						<exclude>**/webapp/js/bootstrap*.js</exclude>
+						<exclude>**/webapp/css/bootstrap*.css</exclude>
 					</excludes>
 					<includes>
 						<include>**/*.java</include>

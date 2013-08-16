@@ -58,7 +58,14 @@ public class RemoteHarvestJob implements Job {
 						
 						SirDetailedSensorDescription description = gson.fromJson(builder.toString(),SirDetailedSensorDescription.class);
 						//insert here
-						
+						log.info(description.getId());
+						log.info(description.getKeywords().toString());
+						try {
+							arg0.getScheduler().unscheduleJob(arg0.getTrigger().getKey());
+						} catch (SchedulerException e) {
+							log.error("Cannot unscedule ",e);
+						}
+					
 					}
 				}
 			} catch (ClientProtocolException e) {

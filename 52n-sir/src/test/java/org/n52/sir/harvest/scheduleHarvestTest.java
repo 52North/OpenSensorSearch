@@ -30,7 +30,7 @@ public class scheduleHarvestTest {
 			
 			
 			InputStream dbStream = new FileInputStream(new File(basePath+"/db.properties"));
-			InputStream sirStream = new FileInputStream(new File(basePath+"/sir.PROPERTIES"));
+			InputStream sirStream = new FileInputStream(new File(basePath+"/sir.properties"));
 			
 //			InputStream sirStream = ClassLoader
 //					.getSystemResourceAsStream("prop/sir.PROPERTIES");

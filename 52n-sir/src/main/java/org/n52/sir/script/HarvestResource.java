@@ -66,8 +66,8 @@ public class HarvestResource {
 			File dir = new File(pathStr + user);
 			if (!dir.exists())
 				dir.mkdir();
-
-			File script = new File(pathStr + user + '\\' + fileName);
+			
+			File script = new File(pathStr + user + '/' + fileName);
 
 			try {
 				OutputStream writer = new FileOutputStream(script);

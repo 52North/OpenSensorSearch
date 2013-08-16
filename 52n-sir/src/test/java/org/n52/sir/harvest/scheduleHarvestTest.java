@@ -1,5 +1,8 @@
 package org.n52.sir.harvest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Date;
 
@@ -21,13 +24,17 @@ import org.quartz.impl.StdSchedulerFactory;
 
 public class scheduleHarvestTest {
 	@Test
-	public void harvestAtTime() throws UnavailableException, OwsExceptionReport{
+	public void harvestAtTime() throws UnavailableException, OwsExceptionReport, FileNotFoundException{
 		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			// Read configurator if null
+			String basePath = (this.getClass().getResource("/prop").getFile());
+			
+			
+			InputStream dbStream = new FileInputStream(new File(basePath+"/db.properties"));
+			InputStream sirStream = new FileInputStream(new File(basePath+"/sir.properties"));
+			
+//			InputStream sirStream = ClassLoader
+//					.getSystemResourceAsStream("prop/sir.PROPERTIES");
+//			// Read configurator if null
 			SirConfigurator.getInstance(sirStream, dbStream, null, null);
 
 		}

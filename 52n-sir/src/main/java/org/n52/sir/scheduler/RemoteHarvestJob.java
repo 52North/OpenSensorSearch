@@ -27,7 +27,7 @@ public class RemoteHarvestJob implements Job {
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		JobDetail details = arg0.getJobDetail();
 		//get sensor id from here
-		String auth_token = details.getJobDataMap().getString(QuartzConstants.REMOTE_SENSOR_URL);
+		String auth_token = details.getJobDataMap().getString(QuartzConstants.REMOTE_SENSOR_AUTH_TOKEN);
 		System.out.println("Executed");
 		log.info("Executed at : "+new Date().getTime());
 		SirConfigurator config = SirConfigurator.getInstance();

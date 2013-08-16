@@ -125,7 +125,7 @@ public class HarvestResource {
 	}
 	@POST
 	@Path("/remote/server/harvest")
-	public Response harvestServer(@QueryParam("auth_token")String auth_token){
+	public Response harvestServer(@FormParam("auth_token")String auth_token){
 		JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I"+auth_token).usingJobData(QuartzConstants.REMOTE_SENSOR_AUTH_TOKEN,auth_token).build();
 		
 		try{

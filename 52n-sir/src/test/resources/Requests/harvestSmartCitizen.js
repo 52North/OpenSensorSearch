@@ -15,6 +15,16 @@ function harvestSmartCitizenChannel(id){
 					var id = channel['id'];
 					var latitude = channel['geo_lat'];
 					var longitude = channel['geo_long'];
+					
+					// TODO add an interface that hides the DAO
+					// oss = new org.n52.sir.script.Sensors();
+					// var keywords = ["keyword", "keyword1"];
+					// oss.insertSensor(id, description, latitude, longitude, keywords, ...);
+					
+					// alternative:
+					// Sensor newSensor = new org.n52.sir.script.Sensor();
+					// newSensor.set(...);
+					
 					dao = new org.n52.sir.ds.solr.SOLRSearchSensorDAO();
 					sensor = new org.n52.sir.datastructure.SirSensor();
 					sensor.setDescription(description);

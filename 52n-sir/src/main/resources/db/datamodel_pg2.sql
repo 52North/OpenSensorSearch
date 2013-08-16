@@ -14,10 +14,10 @@
 -- limitations under the License.
 --
 
---FILE CREATES TABLE STRUCTURE OF DATABASE
+-- Database structure for PostGIS 2
 
--- last change: 2009-05-11
--- last change by: Jan Schulte
+-- last change: 2013-08
+-- last change by: Moh-Yakoub
 
 -- Dropping Tables
 ----------------------
@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS sensor_phen CASCADE;
 DROP TABLE IF EXISTS sensor_service CASCADE;
 DROP TABLE IF EXISTS service CASCADE;
 DROP TABLE IF EXISTS status CASCADE;
+DROP TABLE IF EXISTS harvestScript CASCADE;
 
 -----------------------------------------------------------------------------------------------------------------------
 -- Creating the tables
@@ -132,7 +133,7 @@ CREATE TABLE harvestScript
 -----------------------------------------------------------------------------------------------------------------------
 CREATE INDEX phenIndex ON phenomenon(phenomenon_urn);
 CREATE INDEX bbox_index ON sensor USING
-        GIST (bbox GIST_GEOMETRY_OPS); 
+        GIST (bbox);
 
 -----------------------------------------------------------------------------------------------------------------------
 -- add references and foreign keys

@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -114,7 +115,7 @@ public class HarvestResource {
 	}
 	@POST
 	@Path("/remote/server")
-	public Response putServer(@QueryParam("url")String serverURL){
+	public Response putServer(@FormParam("url")String serverURL){
 		SirConfigurator config = SirConfigurator.getInstance();
 		if(config !=null){
 			String auth_token = config.getFactory().insertRemoteHarvestSensor().insertRemoteServer(serverURL);

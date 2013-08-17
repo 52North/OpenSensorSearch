@@ -19,16 +19,16 @@
 
 package org.n52.sir.ds.solr;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -43,36 +43,40 @@ import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SearchByKeywordTest {
-	
-	public String id;
+
+    private static Logger log = LoggerFactory.getLogger(SearchByKeywordTest.class);
+
+    public String id;
+
+    private SirSensor sensor;
+
+    @Before
+    public void insertTestSensor() throws OwsExceptionReport, XmlException, IOException {
+        // Inserts the sensor
+        String basePath = (this.getClass().getResource("/Requests").getFile());
+        File sensor_file = new File(basePath + "/testSensor.xml");
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
+        this.sensor = SensorMLDecoder.decode(doc);
+        log.trace(this.sensor.getText().toArray()[0].toString());
+
+        // FIXME Moh-Yakoub: probably this will take some configuration - haven't decided yet.
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        this.id = dao.insertSensor(this.sensor);
+    }
 
     @Test
-    public void searchKeywords() throws OwsExceptionReport, XmlException, IOException {
-    	//Inserts the sensor
-    	String basePath = (this.getClass().getResource("/Requests").getFile());
-		File sensor_file = new File(basePath+"/testSensor.xml");
-		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        SirSensor sensor = SensorMLDecoder.decode(doc);
-        System.out.println(sensor.getText().toArray()[0]);
-        // probably this will take some configuration - haven't decided yet.
-        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-        String id = dao.insertSensor(sensor);
-        this.id=id;
-    	
+    public void searchKeywords() throws OwsExceptionReport {
         SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
         SirSearchCriteria criteria = new SirSearchCriteria();
-        /*
-         * Prepare the list of keywords
-         */
-        List<String> keywords = new ArrayList<String>();
-        keywords.add("testkeyword");
-        keywords.add("test");
-        keywords.add("another keyword");
 
-        ArrayList<String> searchkeywords = new ArrayList<String>();
-        searchkeywords.add("test");
+        ArrayList<String> searchkeywords = new ArrayList<>();
+        for (String keyword : this.sensor.getKeywords()) {
+            searchkeywords.add(keyword);
+        }
         criteria.setSearchText(searchkeywords);
 
         Collection<SirSearchResultElement> results = searchDAO.searchSensor(criteria, true);
@@ -82,22 +86,23 @@ public class SearchByKeywordTest {
 
         Iterator<SirSearchResultElement> iter = results.iterator();
         SirSearchResultElement result = iter.next();
+
         // SensorML is stored in the sensor description value
         SirDetailedSensorDescription description = (SirDetailedSensorDescription) result.getSensorDescription();
         assertNotNull(description);
-        assertEquals(description.getKeywords().size(), keywords.size());
-        for (String s : keywords)
-            assertTrue(description.getKeywords().contains(s));
-        //deletes the sensor
-        
 
+        Collection<String> actual = description.getKeywords();
+        Collection<String> expected = this.sensor.getKeywords();
+
+        assertEquals(actual.size(), expected.size());
+
+        assertThat("keywords used for search are given in the returned sensor",
+                   actual,
+                   containsInAnyOrder(expected.toArray()));
     }
-    /**TODO LET the delete delete only by the given id not all  
-     *
-     */
-   
+
     @After
-    public void deleteSensor() throws SolrServerException, IOException{
-        new SolrConnection().deleteByQuery("");   
-    } 
+    public void deleteSensor() throws SolrServerException, IOException {
+        new SolrConnection().deleteByQuery(this.id);
+    }
 }

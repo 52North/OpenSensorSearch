@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.datastructure.detailed;
 
 import java.util.Collection;
@@ -21,129 +22,131 @@ import java.util.Date;
 import org.n52.sir.datastructure.SirSensorDescription;
 
 public class SirDetailedSensorDescription extends SirSensorDescription {
-	private String id;
-	private Collection<Object> keywords;
-	private Date begineDate;
-	private String location;
-	public String getLocation() {
-		return location;
-	}
+    
+    private String id;
+    private Collection<String> keywords;
+    private Date begineDate;
+    private String location;
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public String getLocation() {
+        return this.location;
+    }
 
-	private String description;
-	private double bbox_x;
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	public double getbbox_x() {
-		return this.bbox_x;
-	}
+    private String description;
+    private double bbox_x;
 
-	public void setbbox_x(double bbox_x) {
-		this.bbox_x = bbox_x;
-	}
+    public double getbbox_x() {
+        return this.bbox_x;
+    }
 
-	public double getbbox_y() {
-		return this.bbox_y;
-	}
+    public void setbbox_x(double bbox_x) {
+        this.bbox_x = bbox_x;
+    }
 
-	public void setbbox_y(double bbox_y) {
-		this.bbox_y = bbox_y;
-	}
+    public double getbbox_y() {
+        return this.bbox_y;
+    }
 
-	private double bbox_y;
+    public void setbbox_y(double bbox_y) {
+        this.bbox_y = bbox_y;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    private double bbox_y;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public Date getBegineDate() {
-		return begineDate;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setBegineDate(Date begineDate) {
-		this.begineDate = begineDate;
-	}
+    public Date getBegineDate() {
+        return this.begineDate;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public void setBegineDate(Date begineDate) {
+        this.begineDate = begineDate;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+    public Date getEndDate() {
+        return this.endDate;
+    }
 
-	private Date endDate;
-	private Collection<Object> classifiers;
-	private Collection<? extends Object> identifiers;
-	private Collection<String> contacts;
-	private Collection<String> inputs;
-	private Collection<String> outputs;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-	public String getId() {
-		return this.id;
-	}
+    private Date endDate;
+    private Collection<Object> classifiers;
+    private Collection< ? extends Object> identifiers;
+    private Collection<String> contacts;
+    private Collection<String> inputs;
+    private Collection<String> outputs;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return this.id;
+    }
 
-	public Collection<Object> getKeywords() {
-		return this.keywords;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setKeywords(Collection<Object> keywords) {
-		this.keywords = keywords;
-	}
+    public Collection<String> getKeywords() {
+        return this.keywords;
+    }
 
-	public SirDetailedSensorDescription() {
-		// TODO Auto-generated constructor stub
-	}
+    public void setKeywords(Collection<String> keywords) {
+        this.keywords = keywords;
+    }
 
-	public void setClassifiers(Collection<Object> classifiers) {
-		this.classifiers = classifiers;
-	}
+    public SirDetailedSensorDescription() {
+        //
+    }
 
-	public Collection<Object> getClassifiers() {
-		return this.classifiers;
-	}
+    public void setClassifiers(Collection<Object> classifiers) {
+        this.classifiers = classifiers;
+    }
 
-	public Collection<? extends Object> getIdentifiers() {
-		return this.identifiers;
-	}
+    public Collection<Object> getClassifiers() {
+        return this.classifiers;
+    }
 
-	public void setIdentifiers(Collection<? extends Object> Identifiers) {
-		this.identifiers = Identifiers;
-	}
+    public Collection< ? extends Object> getIdentifiers() {
+        return this.identifiers;
+    }
 
-	public void setContacts(Collection<String> contacts) {
-		this.contacts = contacts;
-	}
+    public void setIdentifiers(Collection< ? extends Object> Identifiers) {
+        this.identifiers = Identifiers;
+    }
 
-	public Collection<String> getContacts() {
-		return this.contacts;
+    public void setContacts(Collection<String> contacts) {
+        this.contacts = contacts;
+    }
 
-	}
+    public Collection<String> getContacts() {
+        return this.contacts;
 
-	public void setInputs(Collection<String> inputs) {
-		this.inputs = inputs;
-	}
+    }
 
-	public Collection<String> getInputs() {
-		return this.inputs;
-	}
+    public void setInputs(Collection<String> inputs) {
+        this.inputs = inputs;
+    }
 
-	public void setOutputs(Collection<String> outputs) {
-		this.outputs = outputs;
-	}
+    public Collection<String> getInputs() {
+        return this.inputs;
+    }
 
-	public Collection<String> getOutputs() {
-		return this.outputs;
-	}
+    public void setOutputs(Collection<String> outputs) {
+        this.outputs = outputs;
+    }
+
+    public Collection<String> getOutputs() {
+        return this.outputs;
+    }
 
 }

@@ -13,13 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.ds.solr.data.ds;
+package org.n52.oss.testdata.sml;
+
 /**
- * @author Yakoub
+ * @author Daniel Nüst (d.nuest@52north.org)
+ * 
  */
-import java.util.List;
+public class SensorMLEncoderFactory {
 
-public class JSONSensorsCollection {
-	public List<JSONSensor> sensors;
+    private static SensorMLEncoderFactory fact = new SensorMLEncoderFactory();
 
+    private static SensorMLEncoder encoder = new SensorMLEncoder();
+
+    private SensorMLEncoderFactory() {
+        //
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public static SensorMLEncoderFactory getFactory() {
+        return fact;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public SensorMLEncoder getEncoder() {
+        return encoder;
+    }
 }

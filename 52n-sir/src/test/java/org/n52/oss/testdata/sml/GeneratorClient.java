@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.data;
+package org.n52.oss.testdata.sml;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

@@ -34,14 +34,6 @@ public class ValidatorTest {
 
     private static Logger log = LoggerFactory.getLogger(ValidatorTest.class);
 
-    /**
-     * @param args
-     * @throws OwsExceptionReport
-     * @throws TransformerFactoryConfigurationError
-     * @throws TransformerConfigurationException
-     * @throws ParserConfigurationException
-     */
-
     public static void main(String[] args) throws OwsExceptionReport,
             TransformerConfigurationException,
             TransformerFactoryConfigurationError,

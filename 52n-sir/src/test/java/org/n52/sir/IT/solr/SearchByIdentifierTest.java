@@ -17,14 +17,16 @@
  * @author Yakoub
  */
 
-package org.n52.sir.ds.solr;
+package org.n52.sir.IT.solr;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -36,13 +38,18 @@ import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
+import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
-public class SearchByValidTimeTest {
+public class SearchByIdentifierTest {
+
+	public String id;
 
 	@Before
-	public void insertTestSensor() throws XmlException, IOException,
+	public void insertSensor() throws XmlException, IOException,
 			OwsExceptionReport {
 		String basePath = (this.getClass().getResource("/Requests").getFile());
 		File sensor_file = new File(basePath+"/testSensor.xml");
@@ -53,31 +60,28 @@ public class SearchByValidTimeTest {
 	}
 
 	@Test
-	public void searchByValidTime() {
-		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-		Date start = new Date(1262296800000l);
-		Date end = new Date(1325282400000l);
+	public void searchByIdentification() {
+		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+		String identifier = "TEST";
+		Collection<SirSearchResultElement> results = searchDAO
+				.searchByIdentification(identifier);
 
-		Collection<SirSearchResultElement> results = dao
-				.searchByValidTimeRange(start, end);
-		for (SirSearchResultElement element : results) {
-			SirDetailedSensorDescription description = (SirDetailedSensorDescription) element
-					.getSensorDescription();
-			assertTrue(description.getBegineDate().getTime() >= start.getTime());
-			assertTrue(description.getEndDate().getTime() <= end.getTime());
+		assertNotNull(results);
+
+		Iterator<SirSearchResultElement> iter = results.iterator();
+		ArrayList<Object> resultsIdentifiers = new ArrayList<Object>();
+		while (iter.hasNext()) {
+			SirSearchResultElement element = iter.next();
+			resultsIdentifiers.addAll(((SirDetailedSensorDescription) element
+					.getSensorDescription()).getIdentifiers());
 		}
-
+		if (resultsIdentifiers.size() > 0)
+			assertFalse(resultsIdentifiers.indexOf("TEST") == -1);
 	}
-
-	/**
-	 * TODO LET the delete delete only by the given id not all
-	 * 
-	 */
 
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");
 
 	}
-
 }

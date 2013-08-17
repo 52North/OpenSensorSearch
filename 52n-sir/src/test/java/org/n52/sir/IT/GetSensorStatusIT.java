@@ -50,19 +50,19 @@ public class GetSensorStatusIT {
     @Test
     public void getSensorStatusSearchCriteria() throws Exception {
         getSensorStatus("Requests/GetSensorStatus_bySearchCriteria.xml");
-
+        // TODO implement test
     }
 
     @Test
     public void getSensorStatusSearchID() throws Exception {
         getSensorStatus("Requests/GetSensorStatus_bySensorIDInSIR");
-
+        // TODO implement test
     }
 
     @Test
     public void getSensorStatusSearchServiceDescription() throws Exception {
         getSensorStatus("Requests/GetSensorStatus_byServiceDescription.xml");
-
+        // TODO implement test
     }
 
 }

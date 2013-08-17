@@ -29,6 +29,7 @@ import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.junit.After;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -50,6 +51,11 @@ public class InsertSensorStatusIT {
         String actual = response.getInsertSensorStatusResponse().getSensorIDInSIR();
 
         assertThat("sensor IDs equal", actual, is(equalTo(expected)));
+    }
+    
+    @After
+    public void cleanUp() {
+        // TODO remove the inserted status again
     }
 
 }

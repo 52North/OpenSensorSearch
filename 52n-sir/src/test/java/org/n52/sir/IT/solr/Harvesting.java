@@ -16,7 +16,7 @@
 /**
  * @author Yakoub
  */
-package org.n52.sir.ds.solr.data;
+package org.n52.sir.IT.solr;
 
 import static org.junit.Assert.assertTrue;
 
@@ -55,7 +55,7 @@ import org.x52North.sir.x032.SimpleSensorDescriptionDocument.SimpleSensorDescrip
 import org.x52North.sir.x032.SearchSensorRequestDocument;
 import org.x52North.sir.x032.SearchSensorResponseDocument;
 
-public class HarvestSensor {
+public class Harvesting {
 	private String serviceURL = "http://sensorweb.demo.52north.org/EO2HeavenSOS/sos";
 
 	private String serviceType = "SOS";

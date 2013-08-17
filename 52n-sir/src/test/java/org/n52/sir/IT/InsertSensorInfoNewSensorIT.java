@@ -34,6 +34,7 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.SirConfigurator;
@@ -48,25 +49,26 @@ public class InsertSensorInfoNewSensorIT {
 
     @Before
     public void prepare() throws UnavailableException, OwsExceptionReport {
-
         if (SirConfigurator.getInstance() == null) {
             InputStream dbStream = ClassLoader.getSystemResourceAsStream("prop/db.PROPERTIES");
             InputStream sirStream = ClassLoader.getSystemResourceAsStream("prop/sir.PROPERTIES");
-            // Read configurator if null
             SirConfigurator.getInstance(sirStream, dbStream, null, null);
-
         }
     }
-    
+
     @Test
-    public void insertNewSensor() throws XmlException, IOException, OwsExceptionReport, HttpException, URISyntaxException{
-    	File sensor = new File(ClassLoader.getSystemResource("AirBase-test.xml").getFile());
-    	SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
+    public void insertNewSensor() throws XmlException,
+            IOException,
+            OwsExceptionReport,
+            HttpException,
+            URISyntaxException {
+        File sensor = new File(ClassLoader.getSystemResource("AirBase-test.xml").getFile());
+        SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
         req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
         XmlObject res = Client.xSendPostRequest(req);
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
-        
+
         System.out.println(resp);
         assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
     }
@@ -85,10 +87,6 @@ public class InsertSensorInfoNewSensorIT {
 
     @Test
     public void insertSampleSensor() throws XmlException, IOException, OwsExceptionReport, HttpException {
-
-        /*
-         * Create a sensor insert request from sensorFile
-         */
         File sensor = new File(ClassLoader.getSystemResource("Requests/testSensor.xml").getFile());
         SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
 
@@ -98,10 +96,13 @@ public class InsertSensorInfoNewSensorIT {
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
         assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
+    }
+
+    @After
+    public void cleanUp() {
         /*
          * TODO delete the sensor here
          */
-
     }
 
 }

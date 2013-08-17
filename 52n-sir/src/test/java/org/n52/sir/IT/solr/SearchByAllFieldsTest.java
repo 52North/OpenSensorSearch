@@ -17,13 +17,12 @@
  * @author Yakoub
  */
 
-package org.n52.sir.ds.solr;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+package org.n52.sir.IT.solr;
+
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -32,54 +31,46 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
+import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
-public class SearchByClassifierTest {
+public class SearchByAllFieldsTest {
 
-	public String id;
-
-	@Before
-	public void insertSensor() throws XmlException, IOException,
-			OwsExceptionReport {
+	
+	@Test
+	public void searchByAllFields() throws XmlException, IOException, OwsExceptionReport {
 		String basePath = (this.getClass().getResource("/Requests").getFile());
 		File sensor_file = new File(basePath+"/testSensor.xml");
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
 		SirSensor sensor = SensorMLDecoder.decode(doc);
 		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-		dao.insertSensor(sensor);
-	}
-
-	@Test
-	public void searchByClassifer() {
-
+		String id = dao.insertSensor(sensor);
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-		String classifer = "classifer";
 		Collection<SirSearchResultElement> results = searchDAO
-				.searchByClassifer(classifer);
-
-		assertNotNull(results);
-
-		Iterator<SirSearchResultElement> iter = results.iterator();
-		ArrayList<Object> resultsClassifiers = new ArrayList<Object>();
-		while (iter.hasNext()) {
-			SirSearchResultElement element = iter.next();
-			resultsClassifiers.addAll(((SirDetailedSensorDescription) element
-					.getSensorDescription()).getClassifiers());
+				.searchByAll("precipitation+keyword",null,null,null,null,null,null);
+		Iterator<SirSearchResultElement> resultsIterator = results.iterator();
+		boolean found = false;
+		while(resultsIterator.hasNext()){
+			SirDetailedSensorDescription description = (SirDetailedSensorDescription)resultsIterator.next().getSensorDescription();
+			if(description.getId().equals(id)){
+				found=true;
+				break;
+			}
 		}
-		if(resultsClassifiers.size() > 0)
-		assertFalse(resultsClassifiers.indexOf("classifer") == -1);
+		assertTrue(found);
+		
 	}
 
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");
-
 	}
-
+	
 }

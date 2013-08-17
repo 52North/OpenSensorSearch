@@ -45,6 +45,6 @@ public class GetCapabilitiesIT {
         CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
 
         assertTrue("Invalid", (resp_doc.validate()));
-
+        // FIXME test is not checking anything
     }
 }

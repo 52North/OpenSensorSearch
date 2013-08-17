@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.IT;
 
 import static org.junit.Assert.assertTrue;
@@ -32,6 +33,7 @@ import org.x52North.sir.x032.HarvestServiceResponseDocument;
  */
 public class HarvestServiceIT {
 
+    // FIXME use a mocked up webservice to test harvesting
     private String serviceURL = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos";
 
     private String serviceType = "SOS";
@@ -40,7 +42,6 @@ public class HarvestServiceIT {
     public void harvestWeatherServiceBean() throws Exception {
         // buildRequest
         HarvestServiceBean hsb = new HarvestServiceBean(this.serviceURL, this.serviceType);
-
         hsb.buildRequest();
 
         // send request
@@ -49,6 +50,8 @@ public class HarvestServiceIT {
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response);
         assertTrue(cd.validate());
+
+        // FIXME test must check whether the correct number of sensors was added, and more
     }
 
     @Test
@@ -61,6 +64,8 @@ public class HarvestServiceIT {
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response.getDomNode());
         assertTrue(cd.validate());
+
+        // FIXME test must check whether the correct number of sensors was added, and more
     }
 
 }

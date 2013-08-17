@@ -21,7 +21,8 @@ package org.n52.sir.IT;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNotEquals;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -43,10 +43,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
-import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.json.MapperFactory;
 import org.n52.sir.json.SearchResult;
 import org.n52.sir.json.SearchResultElement;
@@ -55,9 +54,9 @@ import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 import org.xml.sax.SAXException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import uk.co.datumedge.hamcrest.json.SameJSONAs;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * TODO Add all OpenSourceOutputFormats IT to a single OpenSourceIT file
@@ -65,159 +64,130 @@ import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
 public class OpenSearchIT {
 
-	public void insertSensor(String sensorDest) throws XmlException,
-			IOException, OwsExceptionReport, HttpException {
-		/*
-		 * Inserts a Sensor First
-		 */
-		File sensor = new File(ClassLoader.getSystemResource(sensorDest)
-				.getFile());
-		SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
+    private void insertSensor(String path) throws XmlException, IOException, OwsExceptionReport, HttpException {
+        File sensor = new File(ClassLoader.getSystemResource(path).getFile());
+        SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
 
-		InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory
-				.newInstance();
-		req.addNewInsertSensorInfoRequest()
-				.addNewInfoToBeInserted()
-				.setSensorDescription(
-						DOC.getSensorML().getMemberArray(0).getProcess());
-		XmlObject res = Client.xSendPostRequest(req);
+        InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
+        req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
+        XmlObject res = Client.xSendPostRequest(req);
 
-		InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory
-				.parse(res.getDomNode());
+        InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
-		assertNotEquals(
-				"Failed to insert sensor",
-				resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors() == 0);
+        assertThat("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), is(not(0)));
+    }
 
-		System.out
-				.println("Loaded a sensor , encoded and inserted successfully");
+    @BeforeClass
+    public void insertSensors() throws XmlException, IOException, OwsExceptionReport, HttpException {
 
-	}
+        insertSensor("Requests/testsensor.xml");
+        // insertSensor("Requests/Sensors/testSensor02.xml");
+    }
 
-	@Before
-	public void insertSensors() throws XmlException, IOException,
-			OwsExceptionReport, HttpException {
+    public String buildQuery(String q, String format) {
+        /*
+         * I'm sure that the server will be localhost port : 8080 If it's not installed on this the mvn verify
+         * will through a BindingException : Address already in use.
+         */
+        StringBuilder query = new StringBuilder();
+        query.append("http://localhost:8080/SIR");
+        // FIXME Daniel: get to run integration tests
+        query.append("/search?q=");
+        query.append(q);
+        query.append("&httpAccept=");
+        query.append(format);
+        return query.toString();
+    }
 
-		insertSensor("Requests/testsensor.xml");
-		// insertSensor("Requests/Sensors/testSensor02.xml");
+    private String sendRequest(String query) throws ClientProtocolException, IOException {
+        HttpClient client = new DefaultHttpClient();
+        /*
+         * I test using the unique ID of testSenosr01
+         */
+        HttpGet get = new HttpGet(query);
 
-	}
+        HttpResponse response = client.execute(get);
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        String s = "";
+        while ( (s = reader.readLine()) != null)
+            builder.append(s);
 
-	public String buildQuery(String q, String format) {
-		/*
-		 * I'm sure that the server will be localhost port : 8080 If it's not
-		 * installed on this the mvn verify will through a BindingException :
-		 * Address already in use.
-		 */
-		StringBuilder query = new StringBuilder();
-		query.append("http://localhost:8080/SIR");
-		query.append("/search?q=");
-		query.append(q);
-		query.append("&httpAccept=application/");
-		query.append("format");
-		return query.toString();
-	}
+        String responseString = builder.toString();
+        reader.close();
+        return responseString;
+    }
 
-	private String sendRequest(String query) throws ClientProtocolException,
-			IOException {
-		HttpClient client = new DefaultHttpClient();
-		/*
-		 * I test using the unique ID of testSenosr01
-		 */
-		HttpGet get = new HttpGet(query);
+    private String readResource(String s) throws IOException {
+        File results = new File(ClassLoader.getSystemResource("Requests/Sensors/testSensor01Result.RSS").getFile());
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(results));
+        s = "";
+        while ( (s = reader.readLine()) != null)
+            builder.append(s);
+        String realResults = builder.toString();
+        reader.close();
+        return realResults;
+    }
 
-		HttpResponse response = client.execute(get);
-		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				response.getEntity().getContent()));
-		String s = "";
-		while ((s = reader.readLine()) != null)
-			builder.append(s);
+    @Test
+    public void testRSSResponseFromOpenSearch() throws IOException, SAXException {
+        String realResult = readResource("Requests/Sensors/testSensor01Result.rss");
+        String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059",
+                                                       "application/rss"));
 
-		String responseString = builder.toString();
-		reader.close();
-		return responseString;
-	}
+        assertXMLEqual(realResult, responseResult);
+    }
 
-	private String readResource(String s) throws IOException {
-		File results = new File(ClassLoader.getSystemResource(
-				"Requests/Sensors/testSensor01Result.RSS").getFile());
-		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new FileReader(results));
-		s = "";
-		while ((s = reader.readLine()) != null)
-			builder.append(s);
-		String realResults = builder.toString();
-		reader.close();
-		return realResults;
+    @Test
+    public void testXMLResponseFromOpenSearch() throws IOException, SAXException {
+        String realResult = readResource("Requests/Sensors/testSensor01Result.XML");
+        String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059",
+                                                       "application/xml"));
 
-	}
+        assertXMLEqual(realResult, responseResult);
+    }
 
-	@Test
-	public void testRSSResponseFromOpenSearch() throws IOException,
-			SAXException {
-		String realResult = readResource("Requests/Sensors/testSensor01Result.RSS");
-		String responseResult = sendRequest(buildQuery(
-				"urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "rss"));
+    @Test
+    public void testJSONResponseFromOpenSearch() throws IOException, SAXException {
+        String realResult = readResource("Requests/Sensors/jsonSensor.json");
 
-		assertXMLEqual(realResult, responseResult);
-	}
+        ObjectMapper mapper = MapperFactory.getMapper();
 
-	@Test
-	public void testXMLResponseFromOpenSearch() throws IOException,
-			SAXException {
-		String realResult = readResource("Requests/Sensors/testSensor01Result.XML");
-		String responseResult = sendRequest(buildQuery(
-				"urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "xml"));
+        SearchResult realResultObj = mapper.readValue(realResult, SearchResult.class);
 
-		assertXMLEqual(realResult, responseResult);
-	}
+        // Get the sensor
+        Collection<SearchResultElement> sensors = realResultObj.getResults();
 
-	@Test
-	public void testJSONResponseFromOpenSearch() throws IOException,
-			SAXException {
-		String realResult = readResource("Requests/Sensors/jsonSensor.json");
+        SearchResultElement sensorJson = sensors.iterator().next();
 
-		ObjectMapper mapper = MapperFactory.getMapper();
+        String sensorJsonStr = mapper.writeValueAsString(sensorJson);
 
-		SearchResult realResultObj = mapper.readValue(realResult,
-				SearchResult.class);
+        String responseResult = sendRequest(buildQuery("test", "application/json"));
 
-		// Get the sensor
-		Collection<SearchResultElement> sensors = realResultObj.getResults();
+        SearchResult result = mapper.readValue(responseResult, SearchResult.class);
+        Collection<SearchResultElement> results = result.getResults();
+        assertTrue(results.size() > 0);
 
-		SearchResultElement sensorJson = sensors.iterator().next();
+        Iterator<SearchResultElement> it = results.iterator();
 
-		String sensorJsonStr = mapper.writeValueAsString(sensorJson);
+        while (it.hasNext()) {
+            SearchResultElement elem = it.next();
+            String resultsensor = mapper.writeValueAsString(elem);
+            if (elem.getSensorIdInSir() == sensorJson.getSensorIdInSir())
+                assertThat(resultsensor,
+                           SameJSONAs.sameJSONAs(sensorJsonStr).allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
 
-		String responseResult = sendRequest(buildQuery("test", "json"));
+        }
 
-		SearchResult result = mapper.readValue(responseResult,
-				SearchResult.class);
-		Collection<SearchResultElement> results = result.getResults();
-		assertTrue(results.size() > 0);
+    }
 
-		Iterator<SearchResultElement> it = results.iterator();
-
-		while (it.hasNext()) {
-			SearchResultElement elem = it.next();
-			String resultsensor = mapper.writeValueAsString(elem);
-			if (elem.getSensorIdInSir() == sensorJson.getSensorIdInSir())
-				assertThat(resultsensor, SameJSONAs.sameJSONAs(sensorJsonStr)
-						.allowingExtraUnexpectedFields()
-						.allowingAnyArrayOrdering());
-
-		}
-
-	}
-
-	@Test
-	public void testKMLResponseFromOpenSearch() throws IOException,
-			SAXException {
-		String realResult = readResource("Requests/Sensors/testSensor01Result.kml");
-		String responseResult = sendRequest(buildQuery(
-				"urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059", "kml"));
-		assertXMLEqual(realResult, responseResult);
-	}
+    @Test
+    public void testKMLResponseFromOpenSearch() throws IOException, SAXException {
+        String realResult = readResource("Requests/Sensors/testSensor01Result.kml");
+        String responseResult = sendRequest(buildQuery("urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059",
+                                                       "application/kml"));
+        assertXMLEqual(realResult, responseResult);
+    }
 
 }

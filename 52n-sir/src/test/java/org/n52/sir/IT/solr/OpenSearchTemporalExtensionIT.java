@@ -75,8 +75,8 @@ public class OpenSearchTemporalExtensionIT {
 		
 		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
 		dao.insertSensor(SensorMLDecoder.decode(doc));
-			
 	}
+	
 	@Test
 	public  void testTemporal() throws ClientProtocolException, IOException {
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();

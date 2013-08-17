@@ -24,8 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import javax.servlet.UnavailableException;
-
 import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.http.HttpException;
@@ -45,7 +43,7 @@ public class DescribeSensorIT {
     private String sensorIDinSIR = "42";
 
     @Before
-    public void setup() throws UnavailableException, OwsExceptionReport, XmlException, IOException, HttpException {
+    public void setup() throws OwsExceptionReport, XmlException, IOException, HttpException {
 
         /*
          * To make it self consistent I will add the sensor testsensor.xml before doing testing
@@ -55,14 +53,13 @@ public class DescribeSensorIT {
         InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory.parse(f);
         Client.xSendPostRequest(doc);
         // The file has the sensor with Id:42
-
     }
 
     @Test
     public void describeSensorUsingDocument() throws Exception {
 
         DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory.newInstance();
-        doc.addNewDescribeSensorRequest().setSensorIDInSIR(sensorIDinSIR);
+        doc.addNewDescribeSensorRequest().setSensorIDInSIR(this.sensorIDinSIR);
 
         XmlObject response = null;
 
@@ -94,6 +91,7 @@ public class DescribeSensorIT {
         DeleteSensorInfoRequestDocument doc = DeleteSensorInfoRequestDocument.Factory.parse(new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo.xml").getFile()));
         XmlObject response = Client.xSendPostRequest(doc);
         boolean isValid = response.validate();
+        // FIXME must check if the response actually reports that the sensor is deleted
         assertTrue("Warning:SensorId:42 has to be deleted", isValid);
     }
 }

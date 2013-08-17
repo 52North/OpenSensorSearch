@@ -35,7 +35,7 @@ import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
 public class DeleteSensorInfoIT {
 
     @Test
-    public void testPostExampleDeleteReference() throws Exception {
+    public void deleteReference() throws Exception {
         File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo_deleteReference.xml").getFile());
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
@@ -45,10 +45,12 @@ public class DeleteSensorInfoIT {
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());
 
         assertTrue(responseDoc.validate());
+        
+        // FIXME test must check whether the reference was actually deleted
     }
 
     @Test
-    public void testPostExampleDeleteSensor() throws Exception {
+    public void deleteSensor() throws Exception {
         File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo.xml").getFile());
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
@@ -58,8 +60,8 @@ public class DeleteSensorInfoIT {
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());
         assertTrue(responseDoc.validate());
 
-        int inserted = responseDoc.getDeleteSensorInfoResponse().getNumberOfDeletedSensors();
-        assertEquals(countServiceReferences(req), inserted);
+        int deleted = responseDoc.getDeleteSensorInfoResponse().getNumberOfDeletedSensors();
+        assertEquals(countServiceReferences(req), deleted);
     }
 
     private int countServiceReferences(DeleteSensorInfoRequestDocument isird) {

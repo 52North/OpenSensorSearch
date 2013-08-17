@@ -16,23 +16,24 @@
 /**
  * @author Yakoub
  */
-package org.n52.sir.ds.solr.data.ds;
 
-import java.util.Date;
+package org.n52.oss.testdata.json;
+
 import java.util.List;
 
+/**
+ * A utility class that's used to parse random generated sensor data encoded as json.
+ * 
+ * @author Daniel
+ * 
+ */
 public class JSONSensor {
-	/*
-	 * A utility class that's used to parse random generated sensor data encoded
-	 * as json
-	 */
-	public int uniqueId;
-	public String beginPosition;
-	public String endPosition;
-	public List<String> keywords;
-	public String contacts;
-	public List<Object> Identifiers;
-	
-	
+
+    public int uniqueId;
+    public String beginPosition;
+    public String endPosition;
+    public List<String> keywords;
+    public String contacts;
+    public List<Object> Identifiers;
 
 }

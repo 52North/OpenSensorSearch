@@ -17,7 +17,7 @@
  * @author Yakoub
  */
 
-package org.n52.sir.ds.solr;
+package org.n52.sir.IT.solr;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -41,6 +41,11 @@ import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
+import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
+import org.n52.sir.ds.solr.SolrConstants;
+import org.n52.sir.ds.solr.SolrUtils;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 

@@ -64,8 +64,8 @@ public class AutoCompleteServletIT {
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_status);
 		
 		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-		dao.insertSensor(SensorMLDecoder.decode(doc));
-			
+		String insertSensor = dao.insertSensor(SensorMLDecoder.decode(doc));
+		log.debug("inserted test sensor: {}", insertSensor);
 	}
 	@Test
 	public  void testServlet() throws ClientProtocolException, IOException {

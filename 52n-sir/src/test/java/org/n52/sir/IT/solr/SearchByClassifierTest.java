@@ -17,8 +17,7 @@
  * @author Yakoub
  */
 
-package org.n52.sir.ds.solr;
-
+package org.n52.sir.IT.solr;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -38,10 +37,13 @@ import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
+import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
-public class SearchByIdentifierTest {
+public class SearchByClassifierTest {
 
 	public String id;
 
@@ -57,23 +59,24 @@ public class SearchByIdentifierTest {
 	}
 
 	@Test
-	public void searchByIdentification() {
+	public void searchByClassifer() {
+
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-		String identifier = "TEST";
+		String classifer = "classifer";
 		Collection<SirSearchResultElement> results = searchDAO
-				.searchByIdentification(identifier);
+				.searchByClassifer(classifer);
 
 		assertNotNull(results);
 
 		Iterator<SirSearchResultElement> iter = results.iterator();
-		ArrayList<Object> resultsIdentifiers = new ArrayList<Object>();
+		ArrayList<Object> resultsClassifiers = new ArrayList<Object>();
 		while (iter.hasNext()) {
 			SirSearchResultElement element = iter.next();
-			resultsIdentifiers.addAll(((SirDetailedSensorDescription) element
-					.getSensorDescription()).getIdentifiers());
+			resultsClassifiers.addAll(((SirDetailedSensorDescription) element
+					.getSensorDescription()).getClassifiers());
 		}
-		if (resultsIdentifiers.size() > 0)
-			assertFalse(resultsIdentifiers.indexOf("TEST") == -1);
+		if(resultsClassifiers.size() > 0)
+		assertFalse(resultsClassifiers.indexOf("classifer") == -1);
 	}
 
 	@After
@@ -81,4 +84,5 @@ public class SearchByIdentifierTest {
 		new SolrConnection().deleteByQuery("");
 
 	}
+
 }

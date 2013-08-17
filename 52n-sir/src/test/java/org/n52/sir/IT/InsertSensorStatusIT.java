@@ -19,7 +19,9 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,20 +39,17 @@ public class InsertSensorStatusIT {
 
     @Test
     public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
-        XmlObject res = null;
-        /*
-         * Create a sensor insert request from sensorFile
-         */
         File sensor_status = new File(ClassLoader.getSystemResource("Requests/InsertSensorStatus.xml").getFile());
-        InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
+        InsertSensorStatusRequestDocument request = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
 
-        res = Client.xSendPostRequest(req);
+        XmlObject res = Client.xSendPostRequest(request);
 
-        InsertSensorStatusResponseDocument res_doc = InsertSensorStatusResponseDocument.Factory.parse(res.getDomNode());
+        InsertSensorStatusResponseDocument response = InsertSensorStatusResponseDocument.Factory.parse(res.getDomNode());
 
-        assertTrue("StatusId not equal",
-                   res_doc.getInsertSensorStatusResponse().getSensorIDInSIR().equals(req.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR()));
+        String expected = request.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR();
+        String actual = response.getInsertSensorStatusResponse().getSensorIDInSIR();
 
+        assertThat("sensor IDs equal", actual, is(equalTo(expected)));
     }
 
 }

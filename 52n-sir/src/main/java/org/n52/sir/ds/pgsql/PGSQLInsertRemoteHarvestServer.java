@@ -54,7 +54,6 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 	public String getRemoteSensorServer(String auth_token){
 		Connection con = null;
 		Statement stmt = null;
-		
 		try {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
@@ -110,6 +109,7 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 		return query.toString();
 	}
 	private String searchByAuthTokenQuery(String auth_token){
+		System.out.println(auth_token);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT ");
 		builder.append(PGDAOConstants.SERVER_URL);
@@ -121,6 +121,7 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 		builder.append("'");
 		builder.append(auth_token);
 		builder.append("'");
+		System.out.println("Query:"+builder.toString());
 		return builder.toString();
 	}
 	private String searchByURLQuery(String url){

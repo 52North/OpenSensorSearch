@@ -15,6 +15,8 @@
  */
 package org.n52.sir.xml.impl;
 
+import java.nio.file.Paths;
+
 import org.n52.sir.xml.ITransformer;
 import org.n52.sir.xml.ITransformerFactory;
 
@@ -47,7 +49,7 @@ public class TransformerFactoryImpl implements ITransformerFactory {
      */
     @Override
     public ITransformer getSensorMLtoCatalogXMLTransformer() {
-        ITransformer t = new SMLtoEbRIMTransformer(this.xsltDir);
+        ITransformer t = new SMLtoEbRIMTransformer(Paths.get(this.xsltDir));
         t.setValidating(IS_TRANSFORMER_VALIDATING);
         return t;
     }

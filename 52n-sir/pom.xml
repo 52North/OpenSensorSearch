@@ -184,25 +184,6 @@
 
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>2.0-beta-1</version>
-				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir>
-					</systemProperties> </configuration> -->
-				<configuration>
-					<path>${service.path}</path>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>commons-io</groupId>
-						<artifactId>commons-io</artifactId>
-						<version>2.1</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
 				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
@@ -359,14 +340,6 @@
 			<id>maven-restlet</id>
 			<name>Public online Restlet repository</name>
 			<url>http://maven.restlet.org</url>
-		</repository>
-
-		<repository>
-			<!-- Tentative local repo for libs that are not migrated to Maven dependency
-				mechanism and available in online repositories. -->
-			<id>lib-repository</id>
-			<name>Local Repository</name>
-			<url>file:///${basedir}/lib-repository/</url>
 		</repository>
 
 		<!-- for postgis -->
@@ -619,11 +592,6 @@
 			<groupId>xmlunit</groupId>
 			<artifactId>xmlunit</artifactId>
 			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf</groupId>
-			<artifactId>saxon-he</artifactId>
-			<version>9</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject</groupId>

@@ -141,8 +141,9 @@ public class OpenSearchSIR extends HttpServlet {
                 log.debug("No search text given.");
             }
 
-            // see if Geo Extension is used:
-            // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
+            /*
+             *  Geo Extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
+             */
             SirBoundingBox boundingBox = null;
             /*
              * if (this.dismantler.requestContainsGeoParameters(req)) { boundingBox =
@@ -159,14 +160,24 @@ public class OpenSearchSIR extends HttpServlet {
                                                  Double.parseDouble(s[1]),
                                                  Double.parseDouble(s[0]),
                                                  Double.parseDouble(s[3]));
+                log.debug("Geo extension used: {}", boundingBox);
             }
-            // TODO see if time extension is used:
-            // http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
-            String start = null;
-            String end = null;
+
             String lat = null;
             String lng = null;
             String radius = null;
+            if (keys.contains(OpenSearchConstants.LAT_PARAM) && keys.contains(OpenSearchConstants.LON_PARAM)
+                    && keys.contains(OpenSearchConstants.RADIUS_PARAM)) {
+                lat = req.getParameter(OpenSearchConstants.LAT_PARAM);
+                lng = req.getParameter(OpenSearchConstants.LON_PARAM);
+                radius = req.getParameter(OpenSearchConstants.RADIUS_PARAM);
+            }
+            
+            /*
+             * Time extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
+             */
+            String start = null;
+            String end = null;
             /*
              * if (this.dismantler.requestContainsTime(req)) { Calendar[] startEnd =
              * this.dismantler.getStartEnd(req); start = startEnd[0]; end = startEnd[1];
@@ -177,13 +188,7 @@ public class OpenSearchSIR extends HttpServlet {
                 log.debug(req.getParameter(OpenSearchConstants.TIME_START_PARAMETER));
                 start = req.getParameter(OpenSearchConstants.TIME_START_PARAMETER);
                 end = req.getParameter(OpenSearchConstants.TIME_END_PARAMETER);
-                log.debug("Temporal extension used: {} - {}", start, end);
-            }
-            if (keys.contains(OpenSearchConstants.LAT_PARAM) && keys.contains(OpenSearchConstants.LON_PARAM)
-                    && keys.contains(OpenSearchConstants.RADIUS_PARAM)) {
-                lat = req.getParameter(OpenSearchConstants.LAT_PARAM);
-                lng = req.getParameter(OpenSearchConstants.LON_PARAM);
-                radius = req.getParameter(OpenSearchConstants.RADIUS_PARAM);
+                log.debug("Time extension used: {} - {}", start, end);
             }
 
             // create search criteria

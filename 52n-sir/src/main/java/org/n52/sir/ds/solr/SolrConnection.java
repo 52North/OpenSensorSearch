@@ -47,10 +47,12 @@ public class SolrConnection {
         return this.server.query(params);
 
     }
+    
     public void deleteSensorWithID(String sensorID) throws SolrServerException, IOException {
     	this.server.deleteByQuery(SolrConstants.ID+":"+sensorID);
     	commitChanges();
     }
+    
     public void deleteByQuery(String query) throws SolrServerException, IOException{
     	this.server.deleteByQuery("*:*");
     	commitChanges();

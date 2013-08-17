@@ -82,8 +82,8 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
     }
 
     private Date endDate;
-    private Collection<Object> classifiers;
-    private Collection< ? extends Object> identifiers;
+    private Collection<String> classifiers;
+    private Collection<String> identifiers;
     private Collection<String> contacts;
     private Collection<String> inputs;
     private Collection<String> outputs;
@@ -108,11 +108,11 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
         //
     }
 
-    public void setClassifiers(Collection<Object> classifiers) {
+    public void setClassifiers(Collection<String> classifiers) {
         this.classifiers = classifiers;
     }
 
-    public Collection<Object> getClassifiers() {
+    public Collection<String> getClassifiers() {
         return this.classifiers;
     }
 
@@ -120,8 +120,8 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
         return this.identifiers;
     }
 
-    public void setIdentifiers(Collection< ? extends Object> Identifiers) {
-        this.identifiers = Identifiers;
+    public void setIdentifiers(Collection<String> identifiers) {
+        this.identifiers = identifiers;
     }
 
     public void setContacts(Collection<String> contacts) {

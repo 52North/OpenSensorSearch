@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.guice;
 
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
@@ -33,18 +33,7 @@ public class GuiceConfigurator extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		return Guice.createInjector(new JerseyServletModule() {
-			@Override
-			protected void configureServlets() {
-				bind(HarvestResource.class);
-				bind(IJSExecute.class).to(RhinoJSExecute.class);
-				bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
-				bind(
-						com.sun.jersey.spi.container.servlet.ServletContainer.class)
-						.in(Singleton.class);
-				serve("/harvest/*").with(GuiceContainer.class);
-			}
-
-		});
+	    
+		return Guice.createInjector(new OssServletModule());
 	}
 }

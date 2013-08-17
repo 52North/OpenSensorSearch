@@ -19,13 +19,13 @@ $(document).ready(function() {
 		var written = (p.val());
 		if (written.toString().length > 1) {
 			var tokens = written.toString().split(" ");
-			var first = tokens.slice(0,tokens.length-1).join(" ");
-			var value = "/SIR/autocomplete?text=" + tokens[tokens.length-1];
+			var first = tokens.slice(0, tokens.length - 1).join(" ");
+			var value = "/SIR/autocomplete?text=" + tokens[tokens.length - 1];
 			$.get(value, function(data) {
 				var d = data.toString();
 				var available = d.split(",");
-				for(var i=0;i<available.length;i++)
-					available[i]=first+" "+available[i];
+				for ( var i = 0; i < available.length; i++)
+					available[i] = first + " " + available[i];
 				$(".search-input").autocomplete({
 					source : available
 				});

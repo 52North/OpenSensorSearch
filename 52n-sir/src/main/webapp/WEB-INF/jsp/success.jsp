@@ -1,6 +1,6 @@
 <%--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+    ï»¿Copyright (C) 2012 52Â°North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
     limitations under the License.
 
 --%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>

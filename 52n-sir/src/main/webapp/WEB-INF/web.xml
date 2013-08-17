@@ -32,7 +32,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<listener>
-		<listener-class>org.n52.sir.GuiceConfigurator</listener-class>
+		<listener-class>org.n52.sir.guice.GuiceConfigurator</listener-class>
 	</listener>
 	<servlet>
 		<servlet-name>Timer</servlet-name>

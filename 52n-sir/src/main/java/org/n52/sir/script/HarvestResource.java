@@ -124,8 +124,8 @@ public class HarvestResource {
 			String auth_token = config.getFactory().insertRemoteHarvestSensor().insertRemoteServer(serverURL);
 			auth_token token = new auth_token();
 			token.setAuthtoken(auth_token);
-			String result = "{auth_token:'"+auth_token+"'}";
-			return Response.ok().entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
+			String result = "{"+'"'+"auth_token"+'"'+":"+'"'+auth_token+'"'+"}";
+			return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
 		}else return Response.status(500).build();
 		
 	}

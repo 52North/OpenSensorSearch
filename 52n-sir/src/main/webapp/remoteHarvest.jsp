@@ -18,21 +18,28 @@ body {
 }
 </style>
 <script>
-function uploadServer(){
-	  $("#remoteServer").prop("disabled",true);
-			$.ajax({
-			  type: "POST",
-			  url: "http://localhost:8080/SIR/harvest/script/remote/server",
-			  data: $("#harvest-form").serialize(),
-			  success: function(data){
-	        if(data){
-	          var auth_token = data['auth_token'];
-	          $("#authtokenval").val(auth_token);
-	        }
-	      },
-	      error : function(){alert("error");}
-			});
-}
+	function uploadServer() {
+		$("#remoteServer").prop("disabled", true);
+		$("#uploadserverbtn").prop("disabled", true);
+		$.ajax({
+			type : "POST",
+			url : "http://localhost:8080/SIR/harvest/script/remote/server",
+			data : $("#harvest-form").serialize(),
+			success : function(data) {
+				if (data) {
+					var auth_token = data['auth_token'];
+					$("#authtokenval").val(auth_token);
+				}
+				$("#remoteServer").prop("disabled", true);
+				$("#uploadserverbtn").prop("disabled", true);
+			},
+			error : function() {
+				alert("error");
+				$("#remoteServer").prop("disabled", true);
+				$("#uploadserverbtn").prop("disabled", true);
+			}
+		});
+	}
 </script>
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -103,11 +110,12 @@ function uploadServer(){
 					<p>In the specified field , please enter a valid sensor
 						provider for harvesting</p>
 					<form id="harvest-form">
-						<input type="text" class="span4" name="url"></input>
+						<input type="text" class="span6" name="url"></input>
 					</form>
-					<input type="text" class="span4" id="authtokenval" disabled="true" value="Auth token"></input>
+					<input type="text" class="span6" id="authtokenval"
+						value="Auth token" readonly></input>
 					<p>
-						<a href="#" class="btn btn-primary btn-large"
+						<a id="uploadserverbtn" href="#" class="btn btn-primary btn-large"
 							onclick="uploadServer()">Add server &raquo;</a>
 					</p>
 				</div>

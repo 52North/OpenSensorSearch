@@ -85,7 +85,7 @@ public class remoteHarvestingTest {
 
 	}
 
-	@Test
+//	@Test
 	public void testRemoteServer() throws ClientProtocolException, IOException {
 		HttpClient client = new DefaultHttpClient();
 

@@ -11,7 +11,9 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -115,11 +117,15 @@ public class HarvestResource {
 	}
 	@POST
 	@Path("/remote/server")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response putServer(@FormParam("url")String serverURL){
 		SirConfigurator config = SirConfigurator.getInstance();
 		if(config !=null){
 			String auth_token = config.getFactory().insertRemoteHarvestSensor().insertRemoteServer(serverURL);
-			return Response.ok(auth_token).build();
+			auth_token token = new auth_token();
+			token.setAuthtoken(auth_token);
+			String result = "{auth_token:'"+auth_token+"'}";
+			return Response.ok().entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
 		}else return Response.status(500).build();
 		
 	}
@@ -140,6 +146,17 @@ public class HarvestResource {
 			log.error("Error on scheduling",e);
 			return Response.status(500).build();		
 		}
+	}
+	
+	public class auth_token{
+		String authtoken;
+		public String getAuthtoken(){
+			return authtoken;
+		}
+		public void setAuthtoken(String authtoken){
+			this.authtoken = authtoken;
+		}
+		
 	}
 	
 }

@@ -95,7 +95,7 @@ public class HarvestResource {
 		}
 		log.info(fileName + "." + type + ":was uploaded at:"
 				+ System.currentTimeMillis());
-		return Response.ok(new Viewable("/success")).build();
+		return Response.ok(id).build();
 	}
 	@GET
 	@Path("/schedule")

@@ -38,6 +38,7 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 public class scheduleHarvestTest {
+    
 	@Test
 	public void harvestAtTime() throws UnavailableException, OwsExceptionReport, FileNotFoundException{
 		if (SirConfigurator.getInstance() == null) {
@@ -54,6 +55,7 @@ public class scheduleHarvestTest {
 
 		}
 		// TODO replace the value with a returned value
+		
 		SchedulerFactory factory = new StdSchedulerFactory();
 		JobDetail detail = JobBuilder.newJob(HarvestJob.class)
 				.withIdentity("_J59")

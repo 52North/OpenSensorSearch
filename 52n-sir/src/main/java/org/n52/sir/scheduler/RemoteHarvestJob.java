@@ -12,13 +12,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
-import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
-import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -34,11 +33,13 @@ public class RemoteHarvestJob implements Job {
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		JobDetail details = arg0.getJobDetail();
 		//get sensor id from here
-		String auth_token = details.getJobDataMap().getString(QuartzConstants.REMOTE_SENSOR_AUTH_TOKEN);
+		JobDataMap params = details.getJobDataMap();
+		String url = params.getString(QuartzConstants.REMOTE_SENSOR_URL);		
+		IInsertSensorInfoDAO insertDAO = (IInsertSensorInfoDAO)params.get(QuartzConstants.INSERTION_INTERFACE);
+
+		
 		log.info("Executed at : "+new Date().getTime());
-		log.info(auth_token);
-		SirConfigurator config = SirConfigurator.getInstance();
-		String url = config.getFactory().insertRemoteHarvestSensor().harvestRemoteServer(auth_token);
+		log.info(url);
 		log.info("Harvesting server:"+url);
 		
 		if(url!=null){
@@ -69,21 +70,15 @@ public class RemoteHarvestJob implements Job {
 						log.info(description.getKeywords().toString());
 						
 						SirSensor sensor = new SirSensor();
-						//TODO change teh signature of setKeywords to take strings not object
-						
-						//TODO replace this mechanism by a translator utility class
 						Collection<String> keywords = new ArrayList<String>();
 						Iterator<Object> it = description.getKeywords().iterator();
 						while(it.hasNext())keywords.add(it.next().toString());
 						
 						sensor.setKeywords(keywords);
 						
-						//TODO replace this mechanism bya  generic insertion mechanism
-						SOLRInsertSensorInfoDAO dao  = new SOLRInsertSensorInfoDAO();
 						try {
-							dao.insertSensor(sensor);
+							insertDAO.insertSensor(sensor);
 						} catch (OwsExceptionReport e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 						
@@ -107,7 +102,6 @@ public class RemoteHarvestJob implements Job {
 		try {
 			arg0.getScheduler().unscheduleJob(arg0.getTrigger().getKey());
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
 			log.error("Cannot unscedule ",e);
 		}
 		

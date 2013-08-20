@@ -116,6 +116,10 @@
 		<url-pattern>/${service.endpoint.rest}/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>jsp</servlet-name>
+		<url-pattern>*.jsp</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>SIR</servlet-name>
 		<url-pattern>/${service.endpoint.service}</url-pattern>
 	</servlet-mapping>

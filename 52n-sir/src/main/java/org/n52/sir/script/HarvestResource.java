@@ -18,12 +18,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;
 import org.n52.sir.scheduler.RemoteHarvestJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
@@ -43,11 +45,12 @@ public class HarvestResource {
 
 	private IJSExecute jsEngine;
 	private SchedulerFactory schedulerFactory;
-
+	private IInsertSensorInfoDAO insertSensorInfoDao;
 	@Inject
-	public HarvestResource(IJSExecute exec,SchedulerFactory schedulerFactory) {
+	public HarvestResource(IJSExecute exec,SchedulerFactory schedulerFactory,IInsertSensorInfoDAO insertSensorInfoDao) {
 		this.jsEngine = exec;
 		this.schedulerFactory = schedulerFactory;
+		this.insertSensorInfoDao = insertSensorInfoDao;
 	}
 
 	@POST
@@ -132,7 +135,17 @@ public class HarvestResource {
 	@POST
 	@Path("/remote/server/harvest")
 	public Response harvestServer(@FormParam("auth_token")String auth_token){
-		JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I"+auth_token).usingJobData(QuartzConstants.REMOTE_SENSOR_AUTH_TOKEN,auth_token).build();
+		JobDataMap dataMap = new JobDataMap();
+		SirConfigurator config = SirConfigurator.getInstance();
+		String url = config.getFactory().insertRemoteHarvestSensor().harvestRemoteServer(auth_token);
+		if(url==null){
+			//TODO Yakoub sets the status to fail : HAR31
+			return null;
+		}
+		dataMap.put(QuartzConstants.INSERTION_INTERFACE,this.insertSensorInfoDao);
+		dataMap.put(QuartzConstants.REMOTE_SENSOR_URL,url);
+		
+		JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I"+auth_token).usingJobData(dataMap).build();
 		
 		try{
 			Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T"+auth_token).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();

@@ -103,7 +103,19 @@ public class HarvestResource {
 		Date d ;
 		if(when == 0 )d= new Date();
 		else d = new Date(when);
-		JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J"+sensorId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,sensorId+"").build();
+		
+		JobDataMap dataMap = new JobDataMap();
+		SirConfigurator config = SirConfigurator.getInstance();
+		String p = config.getFactory().insertHarvestScriptDAO().getScriptPath(sensorId+"");
+		
+		String path = config.getScriptsPath()+p;
+		
+		
+		dataMap.put(QuartzConstants.SCRIPT_PATH, path);
+		dataMap.put(QuartzConstants.SCRIPT_ENGINE, this.jsEngine);
+		
+		JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J"+sensorId).usingJobData(dataMap).build();
+		
 		
 		try{
 			Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T"+sensorId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();

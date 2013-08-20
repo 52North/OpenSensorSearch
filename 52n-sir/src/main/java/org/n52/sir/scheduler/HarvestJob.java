@@ -7,6 +7,7 @@ import org.n52.sir.SirConfigurator;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -19,16 +20,15 @@ public class HarvestJob implements Job {
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		JobDetail details = arg0.getJobDetail();
-		//get sensor id from here
-		String sensorId = details.getJobDataMap().getString(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA);
-		System.out.println("Executed");
+		
+		JobDataMap map = details.getJobDataMap();
+		
 		log.info("Executed at : "+new Date().getTime());
-		SirConfigurator config = SirConfigurator.getInstance();
-		String path = config.getFactory().insertHarvestScriptDAO().getScriptPath(sensorId);
+		String path = map.getString(QuartzConstants.SCRIPT_PATH);
+		IJSExecute engine = (IJSExecute) map.get(QuartzConstants.SCRIPT_ENGINE);
 		if(path !=null){
-			File f = new File(config.getScriptsPath()+path);
-			IJSExecute executeEngine = new RhinoJSExecute();
-			executeEngine.execute(f);
+			File f = new File(path);
+			engine.execute(f);
 		}
 		log.info("Harvesting sensor:"+path);
 		try {

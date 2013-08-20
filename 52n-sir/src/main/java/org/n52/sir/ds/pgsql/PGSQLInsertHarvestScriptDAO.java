@@ -64,7 +64,6 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
 			String insertQuery = insertScriptString(path, username, version);
-			System.out.println(insertQuery);
 			log.info(insertQuery);
 			stmt.execute(insertQuery);
 			String id = null;
@@ -127,7 +126,6 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		query.append("'");
 		query.append(");");
 		log.info(query.toString());
-		System.out.println(query.toString());
 		return query.toString();
 	}
 	private String searchByPath(String path){
@@ -157,7 +155,6 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		builder.append("=");
 		builder.append(Id);
 
-		System.out.println(builder.toString());
 		return builder.toString();
 		
 	}

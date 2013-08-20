@@ -109,7 +109,6 @@ public class remoteHarvestingTest {
 		// Get the list of ids
 		String auth_token = (builder.toString());
 
-		System.out.println("auth_token:" + auth_token);
 		SchedulerFactory factory = new StdSchedulerFactory();
 		JobDetail detail = JobBuilder
 				.newJob(RemoteHarvestJob.class)

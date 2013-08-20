@@ -78,7 +78,6 @@ public class DisconnectFromCatalog extends SirTestCase {
      * @throws Exception
      */
     private void setUpConnection(String url) throws Exception {
-        System.out.println("Creating temporary conneciton for immediate deletion: " + url);
         int pushInterval = 3600; // needs to be with repetition, otherwise not saved in database for removal.
         ConnectToCatalogBean ctcb = new ConnectToCatalogBean(url, pushInterval);
         ctcb.buildRequest();

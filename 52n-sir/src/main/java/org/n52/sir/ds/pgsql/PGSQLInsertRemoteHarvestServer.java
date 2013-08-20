@@ -105,11 +105,9 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 		query.append("'");
 		query.append(");");
 		log.info(query.toString());
-		System.out.println(query.toString());
 		return query.toString();
 	}
 	private String searchByAuthTokenQuery(String auth_token){
-		System.out.println(auth_token);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT ");
 		builder.append(PGDAOConstants.SERVER_URL);
@@ -121,7 +119,6 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 		builder.append("'");
 		builder.append(auth_token);
 		builder.append("'");
-		System.out.println("Query:"+builder.toString());
 		return builder.toString();
 	}
 	private String searchByURLQuery(String url){

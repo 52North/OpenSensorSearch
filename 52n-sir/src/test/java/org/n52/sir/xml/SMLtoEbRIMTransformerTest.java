@@ -80,8 +80,7 @@ public class SMLtoEbRIMTransformerTest {
         RegistryPackageDocument rpd = RegistryPackageDocument.Factory.parse(outputString);
         RegistryPackageType rp = rpd.getRegistryPackage();
 
-        System.out.println(XmlTools.validateAndIterateErrors(rp));
-
+  
     }
 
 }

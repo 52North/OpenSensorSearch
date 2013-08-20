@@ -91,8 +91,7 @@ public class HarvestSensor {
 		HarvestServiceRequestDocument doc = HarvestServiceRequestDocument.Factory
 				.parse(f);
 		XmlObject resp = Client.xSendPostRequest(doc, new URI(serviceURL));
-		System.out.println(resp);
-
+	
 		HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory
 				.parse(resp.getDomNode());
 		InsertedSensor[] sensors = respDoc.getHarvestServiceResponse()

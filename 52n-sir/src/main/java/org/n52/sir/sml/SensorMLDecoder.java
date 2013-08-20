@@ -483,7 +483,6 @@ public class SensorMLDecoder {
 		for (Contact m : contactsarr) {
 			if (m.getPerson() != null) {
 				Person p = m.getPerson();
-				System.out.println(p);
 				contacts.add(p.getName());
 				contacts.add(p.getEmail());
 				contacts.add(p.getPhoneNumber());

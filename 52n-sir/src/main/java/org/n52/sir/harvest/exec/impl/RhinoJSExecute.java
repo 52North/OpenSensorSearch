@@ -52,7 +52,6 @@ public class RhinoJSExecute implements IJSExecute {
 			return Context.toString(result);
 			
 		} catch (Exception e) {
-			System.out.println(e);
 			e.printStackTrace();
 			return null;
 		} finally {

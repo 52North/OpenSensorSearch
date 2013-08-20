@@ -19,7 +19,6 @@ public class SmartCitizenTest {
 		IJSExecute execEngine = new RhinoJSExecute();
 		String id = execEngine.execute(harvestScript);
 		assertFalse(id.equals("-1"));
-		System.out.println(id);
 		
 				
 	}

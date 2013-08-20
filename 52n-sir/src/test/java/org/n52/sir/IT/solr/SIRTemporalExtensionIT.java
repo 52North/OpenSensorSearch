@@ -46,7 +46,7 @@ public class SIRTemporalExtensionIT {
 		SearchCriteria crit = SearchCriteria.Factory.newInstance();
 		crit.setSearchTextArray(new String[]{"pre"});
 		request.setSearchCriteria(crit);
-		System.out.println(Client.xSendPostRequest(doc,new URI("http://localhost:8080/SIR")));
+		Client.xSendPostRequest(doc,new URI("http://localhost:8080/SIR"));
 	}
 
 }

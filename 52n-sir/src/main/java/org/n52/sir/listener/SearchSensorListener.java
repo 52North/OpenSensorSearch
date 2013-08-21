@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.io.UnsupportedEncodingException;
@@ -28,7 +29,6 @@ import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
@@ -43,6 +43,8 @@ import org.n52.sir.util.SORTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
@@ -56,30 +58,37 @@ public class SearchSensorListener implements ISirRequestListener {
 
     private static final String OPERATION_NAME = SirConstants.Operations.SearchSensor.name();
 
-    private SirConfigurator configurator;
-
     private boolean encodeURLs = true;
 
-    /**
-     * the data access object for the searchSensor operation
-     */
     private ISearchSensorDAO searchSensDao;
 
+    private String urlCharacterEncoding = null;
+
     /**
+     * TODO implement injection mechanism for search DAO so that only that what needed is injected, not the
+     * complete configurator
      * 
      * @throws OwsExceptionReport
      */
-    public SearchSensorListener() throws OwsExceptionReport {
-        this.configurator = SirConfigurator.getInstance();
+    @Inject
+    public SearchSensorListener(SirConfigurator config) throws OwsExceptionReport { // public
+                                                                                    // SearchSensorListener(ISearchSensorDAO
+                                                                                    // searchDao) throws
+                                                                                    // OwsExceptionReport {
+        // TODO move character encoding to injection-based config mechanism
+        this.urlCharacterEncoding = "UTF-8"; // config.getCharacterEncoding();
 
-        IDAOFactory factory = this.configurator.getFactory();
-        try {
-            this.searchSensDao = factory.searchSensorDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the searchSensorDAO", se);
-            throw se;
-        }
+        IDAOFactory f = config.getInstance().getFactory();
+        this.searchSensDao = f.searchSensorDAO();
+
+        // IDAOFactory factory = this.configurator.getFactory();
+        // try {
+        // this.searchSensDao = factory.searchSensorDAO();
+        // }
+        // catch (OwsExceptionReport se) {
+        // log.error("Error while creating the searchSensorDAO", se);
+        // throw se;
+        // }
     }
 
     /*
@@ -163,10 +172,11 @@ public class SearchSensorListener implements ISirRequestListener {
                     phenomena.addAll(newPhenomena);
                 }
                 SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-                searchResElements = (ArrayList<SirSearchResultElement>)  dao.searchSensor(searchSensReq.getSearchCriteria(),
-                      searchSensReq.isSimpleResponse());
-          //      searchResElements = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-            //                                                                                          searchSensReq.isSimpleResponse());
+                searchResElements = (ArrayList<SirSearchResultElement>) dao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                                         searchSensReq.isSimpleResponse());
+                // searchResElements = (ArrayList<SirSearchResultElement>)
+                // this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+                // searchSensReq.isSimpleResponse());
             }
             catch (OwsExceptionReport e) {
                 return new ExceptionResponse(e.getDocument());
@@ -181,7 +191,8 @@ public class SearchSensorListener implements ISirRequestListener {
             boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
 
             for (SirSearchResultElement sirSearchResultElement : searchResElements) {
-                //SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
+                // SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription)
+                // sirSearchResultElement.getSensorDescription();
 
                 String descriptionURL;
                 try {
@@ -189,7 +200,7 @@ public class SearchSensorListener implements ISirRequestListener {
 
                     if (this.encodeURLs) {
                         // must be encoded for XML:
-                        descriptionURL = URLEncoder.encode(descriptionURL, this.configurator.getCharacterEncoding());
+                        descriptionURL = URLEncoder.encode(descriptionURL, this.urlCharacterEncoding);
                     }
                 }
                 catch (UnsupportedEncodingException e) {
@@ -200,10 +211,10 @@ public class SearchSensorListener implements ISirRequestListener {
                     log.debug("Created description URL for sensor " + sirSearchResultElement.getSensorIdInSir() + ": "
                             + descriptionURL);
 
-                //sensorDescription.setSensorDescriptionURL(descriptionURL);
+                // sensorDescription.setSensorDescriptionURL(descriptionURL);
 
-                //if (removeBBoxes)
-                  //  sensorDescription.setBoundingBox(null);
+                // if (removeBBoxes)
+                // sensorDescription.setBoundingBox(null);
             }
 
         }

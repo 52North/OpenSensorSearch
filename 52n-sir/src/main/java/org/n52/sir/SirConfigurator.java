@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.File;
@@ -55,12 +56,17 @@ import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.VersionAttribute;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
  * 
  * @author Jan Schulte
  * 
  */
+@Singleton
 public class SirConfigurator {
 
     /** Sections for the Capabilities */
@@ -259,7 +265,7 @@ public class SirConfigurator {
      * propertyname of XSLT_DIR property
      */
     private static final String XSTL_DIRECTORY = "XSTL_DIRECTORY";
-    
+
     private static final String SCRIPTS_PATH = "SCRIPTS_PATH";
 
     /**
@@ -415,9 +421,8 @@ public class SirConfigurator {
      * Implementation of the ITransformerFactory, used to access transformers for XML documents
      */
     private ITransformerFactory transformerFactory;
-    
-    
-    private String ScriptsPath ; 
+
+    private String ScriptsPath;
 
     /**
      * update sequence
@@ -429,6 +434,34 @@ public class SirConfigurator {
     private boolean validateResponses;
 
     private IValidatorFactory validatorFactory;
+
+    private boolean startCatalogConnectionsOnStartup = true;
+
+    /**
+     * public constructor for transition to dependency injected properties.
+     * 
+     * TODO Daniel: remove this after new configuration mechanism is in place.
+     * 
+     * @throws UnavailableException
+     * @throws OwsExceptionReport
+     * @throws IOException
+     */
+    @Inject
+    public SirConfigurator(@Named("context.basepath")
+    String basepath) throws UnavailableException, OwsExceptionReport, IOException {
+        try (InputStream dbStream = SirConfigurator.class.getResourceAsStream("/prop/db.properties");
+                InputStream configStream = SirConfigurator.class.getResourceAsStream("/prop/sir.properties");) {
+
+            if (instance == null) {
+                instance = new SirConfigurator(configStream, dbStream, basepath, null);
+                instance.initialize();
+            }
+        }
+        catch (Exception e) {
+            log.error("could not init SirConfigurator with properties files.", e);
+        }
+
+    }
 
     /**
      * private constructor due to the singleton pattern.
@@ -818,7 +851,7 @@ public class SirConfigurator {
         this.acceptedVersions = this.props.getProperty(ACCEPTED_SERVICE_VERSIONS).split(VERSION_SPLIT_CHARACTER);
         this.validateRequests = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_REQUESTS));
         this.validateResponses = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_RESPONSES));
-        
+
         this.ScriptsPath = this.props.getProperty(SCRIPTS_PATH);
 
         String resourceName = this.props.getProperty(PROFILE4DISCOVERY);
@@ -1329,9 +1362,9 @@ public class SirConfigurator {
     public boolean isExtendedDebugToConsole() {
         return this.extendedDebugToConsole;
     }
-    
-    public String getScriptsPath(){
-    	return this.ScriptsPath;
+
+    public String getScriptsPath() {
+        return this.ScriptsPath;
     }
 
     /**
@@ -1422,6 +1455,11 @@ public class SirConfigurator {
      * context.
      */
     private void startCatalogConnections() {
+        if ( !this.startCatalogConnectionsOnStartup) {
+            log.warn("Catalog connections are disabled on startup.");
+            return;
+        }
+
         if (log.isDebugEnabled())
             log.debug(" ***** Starting Thread for catalog connections with a delay of "
                     + STARTUP_CATALOG_CONNECTION_DELAY_SECS + " seconds ***** ");
@@ -1446,7 +1484,13 @@ public class SirConfigurator {
                 // run tasks for existing catalogs
                 int i = 0;
                 try {
-                    IConnectToCatalogDAO catalogDao = getFactory().connectToCatalogDAO();
+                    IDAOFactory f = getFactory();
+                    if (f == null) {
+                        log.error("Factory is null");
+                        throw new RuntimeException("Could not get factory");
+                    }
+
+                    IConnectToCatalogDAO catalogDao = f.connectToCatalogDAO();
                     List<ICatalogConnection> savedConnections = catalogDao.getCatalogConnectionList();
 
                     IJobScheduler scheduler = SirConfigurator.getInstance().getJobSchedulerFactory().getJobScheduler();
@@ -1463,7 +1507,7 @@ public class SirConfigurator {
                     }
                 }
                 catch (OwsExceptionReport e) {
-                    log.error("Could not run tasks for saved catalog connections.", e.getCause());
+                    log.error("Could not run tasks for saved catalog connections: {}", e.getMessage());
                 }
 
                 log.info(" ***** Scheduled " + i + " task(s) from the database. ***** ");

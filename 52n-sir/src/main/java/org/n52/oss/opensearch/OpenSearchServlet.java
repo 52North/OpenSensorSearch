@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.sir;
+package org.n52.oss.opensearch;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,6 +30,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.n52.oss.config.ApplicationConstants;
+import org.n52.sir.SirConfigurator;
+import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -54,30 +57,25 @@ import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 /**
  * 
- * @author Jan Schulte (j.schulte@52north.org), Daniel Nüst (d.nuest@52north.org)
+ * @author Daniel Nüst (d.nuest@52north.org)
  */
-public class OpenSearchSIR extends HttpServlet {
+@Singleton
+public class OpenSearchServlet extends HttpServlet {
 
-    /**
-     * The init parameter of the configFile
-     */
+    private static final long serialVersionUID = -3235081570449109985L;
+
     @SuppressWarnings("unused")
     private static final String INIT_PARAM_CONFIG_FILE = "configFile";
 
-    /**
-     * The init parameter of the database configFile
-     */
     @SuppressWarnings("unused")
     private static final String INIT_PARAM_DBCONFIG_FILE = "dbConfigFile";
 
-    /**
-     * The logger, used to log exceptions and additional information
-     */
-    private static Logger log = LoggerFactory.getLogger(OpenSearchSIR.class);
-
-    private static final long serialVersionUID = 3051953359478226492L;
+    private static Logger log = LoggerFactory.getLogger(OpenSearchServlet.class);
 
     private OpenSearchConfigurator configurator;
 
@@ -87,10 +85,13 @@ public class OpenSearchSIR extends HttpServlet {
 
     private SearchSensorListener sensorSearcher;
 
-    public OpenSearchSIR() {
+    @Inject
+    public OpenSearchServlet(ApplicationConstants constants, SearchSensorListener listener) {
         super();
 
-        log.info("NEW " + this);
+        this.sensorSearcher = listener;
+
+        log.info("NEW {} based on {}", this, constants);
     }
 
     @Override
@@ -98,13 +99,17 @@ public class OpenSearchSIR extends HttpServlet {
         log.info("destroy() called...");
 
         super.destroy();
-        SirConfigurator.getInstance().getExecutor().shutdown();
+
+        // do nothing...
 
         log.info("done destroy()");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // FIXME Daniel: the open search functionality must be extracted to a testable class, preferably with
+        // an event bus or a listener model.
+
         if (log.isDebugEnabled())
             log.debug(" ****** (GET) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
 
@@ -142,7 +147,7 @@ public class OpenSearchSIR extends HttpServlet {
             }
 
             /*
-             *  Geo Extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
+             * Geo Extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
              */
             SirBoundingBox boundingBox = null;
             /*
@@ -172,7 +177,7 @@ public class OpenSearchSIR extends HttpServlet {
                 lng = req.getParameter(OpenSearchConstants.LON_PARAM);
                 radius = req.getParameter(OpenSearchConstants.RADIUS_PARAM);
             }
-            
+
             /*
              * Time extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
              */
@@ -269,14 +274,14 @@ public class OpenSearchSIR extends HttpServlet {
 
         this.configurator = new OpenSearchConfigurator();
 
-        try {
-            this.sensorSearcher = new SearchSensorListener();
-            this.sensorSearcher.setEncodeURLs(false);
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Could not create SearchSensorListener.", e);
-            throw new ServletException(e);
-        }
+        // try {
+        // this.sensorSearcher = new SearchSensorListener();
+        this.sensorSearcher.setEncodeURLs(false);
+        // }
+        // catch (OwsExceptionReport e) {
+        // log.error("Could not create SearchSensorListener.", e);
+        // throw new ServletException(e);
+        // }
 
         this.dismantler = new RequestDismantler();
 

@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.guice;
 
-import org.n52.sir.harvest.exec.IJSExecute;
-import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
-import org.n52.sir.script.HarvestResource;
-import org.quartz.SchedulerFactory;
-import org.quartz.impl.StdSchedulerFactory;
+package org.n52.oss.guice;
+
+import org.n52.oss.config.ConfigModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.servlet.GuiceServletContextListener;
-import com.sun.jersey.guice.JerseyServletModule;
-import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 @Singleton
 public class GuiceConfigurator extends GuiceServletContextListener {
 
-	@Override
-	protected Injector getInjector() {
-	    
-		return Guice.createInjector(new OssServletModule());
-	}
+    @Override
+    protected Injector getInjector() {
+        return Guice.createInjector(new UtilModule(), new ConfigModule(), new OssServletModule());
+    }
 }

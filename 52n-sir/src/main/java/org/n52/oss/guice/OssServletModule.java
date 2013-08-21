@@ -14,23 +14,38 @@
  * limitations under the License.
  */
 
-package org.n52.sir.guice;
+package org.n52.oss.guice;
 
+import org.n52.oss.opensearch.OpenSearchServlet;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
-import org.n52.sir.opensearch.OpenSearchServlet;
 import org.n52.sir.script.HarvestResource;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Singleton;
+import com.google.inject.name.Names;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 public class OssServletModule extends JerseyServletModule {
 
+    private static Logger log = LoggerFactory.getLogger(OssServletModule.class);
+
+    public OssServletModule() {
+        super();
+    }
+
     @Override
     protected void configureServlets() {
+        String basepath = getServletContext().getRealPath("/");
+        bindConstant().annotatedWith(Names.named("context.basepath")).to(basepath);
+
+        // install(new FactoryModuleBuilder().implement(ApplicationConstants.class,
+        // PropertyApplicationConstants.class).build(ConfigFactory.class));
+
         bind(HarvestResource.class);
         bind(IJSExecute.class).to(RhinoJSExecute.class);
         bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
@@ -38,8 +53,16 @@ public class OssServletModule extends JerseyServletModule {
 
         serve("/harvest/*").with(GuiceContainer.class);
 
+        // http://code.google.com/p/google-guice/wiki/ServletModule
+
+        serve("/autocomplete*").with(GuiceContainer.class);
+
         // TODO Daniel: get opensearchservlet to run with guice
-        // serve("/opensearch*").with(OpenSearchServlet.class);
+        // bind(ISearchSensorDAO.class).to(PGSQLSearchSensorDAO.class);
+
+        serve("/opensearch*").with(OpenSearchServlet.class);
+
+        log.info("configured {} with context {}", this, getServletContext());
     }
 
 }

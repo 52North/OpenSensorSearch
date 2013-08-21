@@ -552,7 +552,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 			<exclusions>
-				<!-- included via solrj, and there the correct groupId is used so that 
+				<!-- included via solrj, and there the correct groupId is used so that
 					the pom can be found. -->
 				<exclusion>
 					<artifactId>wstx-asl</artifactId>
@@ -695,6 +695,12 @@
 			<artifactId>guice-servlet</artifactId>
 			<version>${guice.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.mozilla</groupId>
 			<artifactId>rhino</artifactId>

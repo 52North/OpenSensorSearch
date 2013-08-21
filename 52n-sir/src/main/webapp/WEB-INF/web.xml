@@ -1,16 +1,3 @@
-<!-- ﻿Copyright (C) 2012 by 52 North Initiative for Geospatial Open Source
-	Software GmbH Contact: Andreas Wytzisk 52 North Initiative for Geospatial
-	Open Source Software GmbH Martin-Luther-King-Weg 24 48155 Muenster, Germany
-	info@52north.org This program is free software; you can redistribute and/or
-	modify it under the terms of the GNU General Public License version 2 as
-	published by the Free Software Foundation. This program is distributed WITHOUT
-	ANY WARRANTY; even without the implied WARRANTY OF MERCHANTABILITY or FITNESS
-	FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-	You should have received a copy of the GNU General Public License along
-	with
-	this program (see gnu-gpl v2.txt). If not, write to the Free Software Foundation,
-	Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or visit the
-	Free Software Foundation web page, http://www.fsf.org. -->
 <!DOCTYPE web-app PUBLIC
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
@@ -21,6 +8,7 @@
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+
 	<filter>
 		<filter-name>guiceFilter</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
@@ -48,19 +36,19 @@
 	<!-- <load-on-startup>10</load-on-startup> -->
 	<!-- </servlet> -->
 
-	<servlet>
-		<servlet-name>SIR</servlet-name>
-		<servlet-class>org.n52.sir.SIR</servlet-class>
-		<init-param>
-			<param-name>configFile</param-name>
-			<param-value>/WEB-INF/sir.properties</param-value>
-		</init-param>
-		<init-param>
-			<param-name>dbConfigFile</param-name>
-			<param-value>/WEB-INF/db.properties</param-value>
-		</init-param>
-		<load-on-startup>20</load-on-startup>
-	</servlet>
+	<!-- <servlet> -->
+	<!-- <servlet-name>SIR</servlet-name> -->
+	<!-- <servlet-class>org.n52.sir.SIR</servlet-class> -->
+	<!-- <init-param> -->
+	<!-- <param-name>configFile</param-name> -->
+	<!-- <param-value>/WEB-INF/sir.properties</param-value> -->
+	<!-- </init-param> -->
+	<!-- <init-param> -->
+	<!-- <param-name>dbConfigFile</param-name> -->
+	<!-- <param-value>/WEB-INF/db.properties</param-value> -->
+	<!-- </init-param> -->
+	<!-- <load-on-startup>20</load-on-startup> -->
+	<!-- </servlet> -->
 
 	<!-- <servlet> -->
 	<!-- <servlet-name>OpenSearchSIR</servlet-name> -->
@@ -84,32 +72,29 @@
 	</servlet>
 
 	<!-- Harvest servlet -->
-	<servlet>
-		<servlet-name>harvestServlet</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-		<init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>org.n52.sir.script</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+	<!-- <servlet> -->
+	<!-- <servlet-name>harvestServlet</servlet-name> -->
+	<!-- <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class> -->
+	<!-- <init-param> -->
+	<!-- <param-name>com.sun.jersey.config.property.packages</param-name> -->
+	<!-- <param-value>org.n52.sir.script</param-value> -->
+	<!-- </init-param> -->
+	<!-- <load-on-startup>1</load-on-startup> -->
+	<!-- </servlet> -->
 
 	<!-- fixed endpoints for the servlets -->
-	<servlet-mapping>
-		<servlet-name>RestletServlet</servlet-name>
-		<url-pattern>/${service.endpoint.rest}/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>SIR</servlet-name>
-		<url-pattern>/${service.endpoint.service}</url-pattern>
-	</servlet-mapping>
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>SIR</servlet-name> -->
+	<!-- <url-pattern>/${service.endpoint.service}</url-pattern> -->
+	<!-- </servlet-mapping> -->
 	<!-- <servlet-mapping> -->
 	<!-- <servlet-name>OpenSearchSIR</servlet-name> -->
 	<!-- <url-pattern>/${service.endpoint.opensearch}</url-pattern> -->
 	<!-- </servlet-mapping> -->
-	<servlet-mapping>
-		<servlet-name>AutoCompleteServlet</servlet-name>
-		<url-pattern>/autocomplete</url-pattern>
-	</servlet-mapping>
+
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>AutoCompleteServlet</servlet-name> -->
+	<!-- <url-pattern>/autocomplete</url-pattern> -->
+	<!-- </servlet-mapping> -->
 
 </web-app>

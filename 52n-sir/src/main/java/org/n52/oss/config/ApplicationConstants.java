@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package org.n52.sir.script;
+package org.n52.oss.config;
 
-import java.util.HashSet;
-import java.util.Set;
+public interface ApplicationConstants {
 
-import javax.ws.rs.core.Application;
+    public abstract String getApplicationVersion();
 
-public class HarvestApplication extends Application {
-    @Override
-    public Set<Class< ? >> getClasses() {
-        Set<Class< ? >> s = new HashSet<Class< ? >>();
-        s.add(HarvestResource.class);
-        return s;
-    }
+    public abstract String getApplicationCommit();
+
+    public abstract String getApplicationTimestampt();
+
 }

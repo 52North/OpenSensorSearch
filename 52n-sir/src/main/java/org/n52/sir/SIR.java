@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.BufferedReader;
@@ -40,6 +41,8 @@ import org.n52.sir.response.ISirResponse;
 import org.n52.sir.util.jobs.impl.TimerServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -72,6 +75,13 @@ public class SIR extends HttpServlet {
      * Handles POST and GET operations
      */
     private RequestOperator requestOperator;
+
+    private SirConfigurator configurator;
+
+    @Inject
+    public SIR(SirConfigurator config) {
+        this.configurator = config;
+    }
 
     /*
      * (non-Javadoc)
@@ -170,7 +180,7 @@ public class SIR extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        
+
         // get ServletContext
         ServletContext context = getServletContext();
         String basepath = context.getRealPath("/");
@@ -191,18 +201,18 @@ public class SIR extends HttpServlet {
         TimerServlet timerServlet = (TimerServlet) context.getAttribute(TimerServlet.NAME_IN_CONTEXT);
 
         // initialize configurator
-        SirConfigurator configurator;
-        try {
-            configurator = SirConfigurator.getInstance(configStream, dbConfigStream, basepath, timerServlet);
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Error instantiating SirConfigurator.", e);
-            throw new RuntimeException(e);
-        }
+        // SirConfigurator configurator;
+        // try {
+        // configurator = SirConfigurator.getInstance(configStream, dbConfigStream, basepath, timerServlet);
+        // }
+        // catch (OwsExceptionReport e) {
+        // log.error("Error instantiating SirConfigurator.", e);
+        // throw new RuntimeException(e);
+        // }
 
         // initialize requestOperator
         try {
-            this.requestOperator = configurator.buildRequestOperator();
+            this.requestOperator = this.configurator.buildRequestOperator();
         }
         catch (OwsExceptionReport se) {
             log.error("the instantiation of RequestOperator failed");
@@ -211,7 +221,7 @@ public class SIR extends HttpServlet {
 
         // put handler for status updated into context (where it is used by
         // other servlets)
-        ICatalogStatusHandler handler = configurator.getCatalogStatusHandler();
+        ICatalogStatusHandler handler = this.configurator.getCatalogStatusHandler();
         context.setAttribute(ICatalogStatusHandler.NAME_IN_CONTEXT, handler);
 
         File manifestFile = new File(basepath, "META-INF/MANIFEST.MF");

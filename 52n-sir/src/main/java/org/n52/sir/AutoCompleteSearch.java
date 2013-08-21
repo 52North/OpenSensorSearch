@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
+
 /**
  * @author Yakoub 
  */
@@ -36,57 +38,73 @@ import org.slf4j.LoggerFactory;
 
 public class AutoCompleteSearch extends HttpServlet {
 
-	private static Logger log = LoggerFactory
-			.getLogger(SOLRSearchSensorDAO.class);
-	private static final String AUTOCOMPLETE = "text";
+    private static final long serialVersionUID = 5313315792207485425L;
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String text = req.getParameter(AUTOCOMPLETE);
-		PrintWriter pw = resp.getWriter();
-		// I'm using a set to avoid duplications
-		Collection<Object> results = new HashSet<Object>();
-		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-		try {
-			Collection<SirSearchResultElement> search_results = dao
-					.searchByAll(text,null,null,null,null,null,null);
-			Iterator<SirSearchResultElement> it = search_results.iterator();
+    private static Logger log = LoggerFactory.getLogger(SOLRSearchSensorDAO.class);
 
-			while (it.hasNext()) {
-				SirSearchResultElement element = it.next();
-				SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element
-						.getSensorDescription();
-				results.addAll(desc.getKeywords());
-				if(desc.getContacts()!=null)results.addAll(desc.getContacts());
-				if(desc.getDescription()!=null)results.add(desc.getDescription().toString());
-				if(desc.getInputs()!=null)results.addAll(desc.getInputs());
-				if(desc.getOutputs()!=null)results.addAll(desc.getOutputs());
-				if(desc.getIdentifiers()!=null)results.addAll(desc.getIdentifiers());
-				if(desc.getClassifiers()!=null)results.addAll(desc.getClassifiers());
-			}
+    private static final String REQUEST_PARAM_AUTOCOMPLETE = "text";
 
-			// returns the result as json array
-			if (results.size() == 0)
-				pw.println("");
-			else {
-				Iterator<Object> iterator = results.iterator();
-				StringBuilder res = new StringBuilder();
-				res.append(iterator.next());
-				while(iterator.hasNext()){
-					res.append(",");
-					res.append(iterator.next());
-				}
-				pw.println(res.toString());
-			}
-			pw.flush();
-			resp.flushBuffer();
-			log.debug("Done serving servlet");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			log.error("error on searching", e);
-		}
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String text = req.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
+        log.trace("new GET request for autocomplete: {}", text);
 
-	}
+        // TODO return reasonable error message and status code
+        if (text == null)
+            throw new RuntimeException("Query parameter " + REQUEST_PARAM_AUTOCOMPLETE + " must be given.");
+
+        try (PrintWriter pw = resp.getWriter();) {
+            // I'm using a set to avoid duplications
+            Collection<Object> results = new HashSet<>();
+            SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+            Collection<SirSearchResultElement> search_results = dao.searchByAll(text,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null);
+            Iterator<SirSearchResultElement> it = search_results.iterator();
+
+            while (it.hasNext()) {
+                SirSearchResultElement element = it.next();
+                SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element.getSensorDescription();
+                results.addAll(desc.getKeywords());
+                if (desc.getContacts() != null)
+                    results.addAll(desc.getContacts());
+                if (desc.getDescription() != null)
+                    results.add(desc.getDescription().toString());
+                if (desc.getInputs() != null)
+                    results.addAll(desc.getInputs());
+                if (desc.getOutputs() != null)
+                    results.addAll(desc.getOutputs());
+                if (desc.getIdentifiers() != null)
+                    results.addAll(desc.getIdentifiers());
+                if (desc.getClassifiers() != null)
+                    results.addAll(desc.getClassifiers());
+            }
+
+            // returns the result as json array
+            if (results.size() == 0)
+                pw.println(""); // FIXME more helpful response message
+            else {
+                Iterator<Object> iterator = results.iterator();
+                StringBuilder res = new StringBuilder();
+                res.append(iterator.next());
+                while (iterator.hasNext()) {
+                    res.append(",");
+                    res.append(iterator.next());
+                }
+                pw.println(res.toString());
+            }
+            pw.flush();
+            resp.flushBuffer();
+            log.debug("Done serving servlet");
+        }
+        catch (Exception e) {
+            log.error("error on searching", e);
+        }
+
+    }
 
 }

@@ -31,21 +31,22 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<listener>
-		<listener-class>org.n52.sir.guice.GuiceConfigurator</listener-class>
+		<listener-class>org.n52.oss.guice.GuiceConfigurator</listener-class>
 	</listener>
-	<servlet>
-		<servlet-name>Timer</servlet-name>
-		<servlet-class>org.n52.sir.util.jobs.impl.TimerServlet</servlet-class>
-		<init-param>
-			<param-name>isDaemon</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		<init-param>
-			<param-name>configFile</param-name>
-			<param-value>/WEB-INF/sir.properties</param-value>
-		</init-param>
-		<load-on-startup>10</load-on-startup>
-	</servlet>
+
+	<!-- <servlet> -->
+	<!-- <servlet-name>Timer</servlet-name> -->
+	<!-- <servlet-class>org.n52.sir.util.jobs.impl.TimerServlet</servlet-class> -->
+	<!-- <init-param> -->
+	<!-- <param-name>isDaemon</param-name> -->
+	<!-- <param-value>true</param-value> -->
+	<!-- </init-param> -->
+	<!-- <init-param> -->
+	<!-- <param-name>configFile</param-name> -->
+	<!-- <param-value>/WEB-INF/sir.properties</param-value> -->
+	<!-- </init-param> -->
+	<!-- <load-on-startup>10</load-on-startup> -->
+	<!-- </servlet> -->
 
 	<servlet>
 		<servlet-name>SIR</servlet-name>
@@ -61,31 +62,19 @@
 		<load-on-startup>20</load-on-startup>
 	</servlet>
 
-	<servlet>
-		<servlet-name>OpenSearchSIR</servlet-name>
-		<servlet-class>org.n52.sir.OpenSearchSIR</servlet-class>
-		<init-param>
-			<param-name>configFile</param-name>
-			<param-value>/WEB-INF/sir.properties</param-value>
-		</init-param>
-		<init-param>
-			<param-name>dbConfigFile</param-name>
-			<param-value>/WEB-INF/db.properties</param-value>
-		</init-param>
-		<load-on-startup>30</load-on-startup>
-	</servlet>
-
-	<!-- Restlet adapter, using ServerServlet configuration mode 3 -->
-	<servlet>
-		<servlet-name>RestletServlet</servlet-name>
-		<servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
-		<init-param>
-			<!-- Application class name -->
-			<param-name>org.restlet.application</param-name>
-			<param-value>org.n52.sir.rest.SirApplication</param-value>
-		</init-param>
-		<load-on-startup>50</load-on-startup>
-	</servlet>
+	<!-- <servlet> -->
+	<!-- <servlet-name>OpenSearchSIR</servlet-name> -->
+	<!-- <servlet-class>org.n52.sir.OpenSearchSIR</servlet-class> -->
+	<!-- <init-param> -->
+	<!-- <param-name>configFile</param-name> -->
+	<!-- <param-value>/WEB-INF/sir.properties</param-value> -->
+	<!-- </init-param> -->
+	<!-- <init-param> -->
+	<!-- <param-name>dbConfigFile</param-name> -->
+	<!-- <param-value>/WEB-INF/db.properties</param-value> -->
+	<!-- </init-param> -->
+	<!-- <load-on-startup>30</load-on-startup> -->
+	<!-- </servlet> -->
 
 	<!-- AutoComplete servlet -->
 	<servlet>
@@ -114,10 +103,10 @@
 		<servlet-name>SIR</servlet-name>
 		<url-pattern>/${service.endpoint.service}</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>OpenSearchSIR</servlet-name>
-		<url-pattern>/${service.endpoint.opensearch}</url-pattern>
-	</servlet-mapping>
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>OpenSearchSIR</servlet-name> -->
+	<!-- <url-pattern>/${service.endpoint.opensearch}</url-pattern> -->
+	<!-- </servlet-mapping> -->
 	<servlet-mapping>
 		<servlet-name>AutoCompleteServlet</servlet-name>
 		<url-pattern>/autocomplete</url-pattern>

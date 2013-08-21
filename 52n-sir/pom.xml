@@ -5,9 +5,11 @@
 	<groupId>org.n52.sensorweb</groupId>
 	<artifactId>52n-sir</artifactId>
 
-	<name>SIR</name>
-	<description>52North Sensor Instance Registry</description>
+	<name>OpenSensorSearch</name>
+	<description>52North Open Sensor Search</description>
 	<packaging>war</packaging>
+
+	<!-- http://semver.org/ -->
 	<version>0.5.4</version>
 
 	<url>http://52north.org/communities/sensorweb/discovery/</url>
@@ -200,13 +202,34 @@
 				<configuration>
 					<path>${service.path}</path>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>commons-io</groupId>
-						<artifactId>commons-io</artifactId>
-						<version>2.1</version>
-					</dependency>
-				</dependencies>
+
+				<executions>
+					<execution>
+						<id>start-tomcat</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<fork>true</fork>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-tomcat</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>shutdown</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<!-- <dependencies> -->
+				<!-- <dependency> -->
+				<!-- <groupId>org.apache.maven.surefire</groupId> -->
+				<!-- <artifactId>surefire-junit47</artifactId> -->
+				<!-- <version>2.15</version> -->
+				<!-- </dependency> -->
+				<!-- </dependencies> -->
 			</plugin>
 
 			<plugin>
@@ -280,7 +303,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.jasig.maven</groupId>
 				<artifactId>maven-notice-plugin</artifactId>
@@ -292,7 +315,7 @@
 					</licenseMapping>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>com.github.danielflower.mavenplugins</groupId>
 				<artifactId>maven-gitlog-plugin</artifactId>
@@ -307,41 +330,54 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<path>${service.path}</path>
-				</configuration>
-
+				<groupId>com.code54.mojo</groupId>
+				<artifactId>buildversion-plugin</artifactId>
+				<version>1.0.3</version>
 				<executions>
 					<execution>
-						<id>start-tomcat</id>
-						<phase>pre-integration-test</phase>
 						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<fork>true</fork>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-tomcat</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>shutdown</goal>
+							<goal>set-properties</goal>
 						</goals>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.surefire</groupId>
-						<artifactId>surefire-junit47</artifactId>
-						<version>2.15</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.code54.mojo
+										</groupId>
+										<artifactId>
+											buildversion-plugin
+										</artifactId>
+										<versionRange>
+											[1.0.3,)
+										</versionRange>
+										<goals>
+											<goal>set-properties</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<pluginRepositories>
@@ -366,6 +402,16 @@
 			<releases>
 				<enabled>true</enabled>  <!-- Workaround for MNG-2974, see note below -->
 			</releases>
+		</pluginRepository>
+
+		<!-- for buildversion plugin: https://github.com/code54/buildversion-plugin -->
+		<pluginRepository>
+			<id>sonatype-releases</id>
+			<url>http://oss.sonatype.org/content/repositories/releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -402,7 +448,6 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-
 	</repositories>
 
 	<dependencies>
@@ -506,6 +551,14 @@
 			<version>1.4.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
+			<exclusions>
+				<!-- included via solrj, and there the correct groupId is used so that 
+					the pom can be found. -->
+				<exclusion>
+					<artifactId>wstx-asl</artifactId>
+					<groupId>woodstox</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

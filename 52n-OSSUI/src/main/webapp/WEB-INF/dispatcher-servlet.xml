@@ -12,6 +12,8 @@
  
     <context:component-scan base-package="org.n52.oss.ui.controllers" />
     <mvc:annotation-driven />
+    <mvc:resources mapping="/styles/**"  location="/WEB-INF/views/css/" ></mvc:resources>
+    <mvc:resources mapping="/scripts/**"  location="/WEB-INF/views/js/" ></mvc:resources>
      
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />

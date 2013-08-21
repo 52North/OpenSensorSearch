@@ -18,9 +18,14 @@
 		<filter-name>guiceFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
 	<listener>
-		<listener-class>org.n52.oss.guice.GuiceConfigurator</listener-class>
+		<listener-class>org.n52.oss.guice.GuiceServletConfig</listener-class>
 	</listener>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
 
 	<!-- <servlet> -->
 	<!-- <servlet-name>Timer</servlet-name> -->
@@ -65,11 +70,11 @@
 	<!-- </servlet> -->
 
 	<!-- AutoComplete servlet -->
-	<servlet>
-		<servlet-name>AutoCompleteServlet</servlet-name>
-		<servlet-class>org.n52.sir.AutoCompleteSearch</servlet-class>
-		<load-on-startup>5</load-on-startup>
-	</servlet>
+	<!-- <servlet> -->
+	<!-- <servlet-name>AutoCompleteServlet</servlet-name> -->
+	<!-- <servlet-class>org.n52.sir.AutoCompleteSearch</servlet-class> -->
+	<!-- <load-on-startup>5</load-on-startup> -->
+	<!-- </servlet> -->
 
 	<!-- Harvest servlet -->
 	<!-- <servlet> -->

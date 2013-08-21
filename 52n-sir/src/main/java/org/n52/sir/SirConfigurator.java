@@ -435,7 +435,7 @@ public class SirConfigurator {
 
     private IValidatorFactory validatorFactory;
 
-    private boolean startCatalogConnectionsOnStartup = true;
+    private boolean startCatalogConnectionsOnStartup = false;
 
     /**
      * public constructor for transition to dependency injected properties.

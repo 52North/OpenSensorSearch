@@ -20,14 +20,19 @@ import org.n52.oss.config.ConfigModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Singleton;
 import com.google.inject.servlet.GuiceServletContextListener;
 
-@Singleton
-public class GuiceConfigurator extends GuiceServletContextListener {
+/**
+ * http://code.google.com/p/google-guice/wiki/ServletModule
+ */
+public class GuiceServletConfig extends GuiceServletContextListener {
 
     @Override
     protected Injector getInjector() {
-        return Guice.createInjector(new UtilModule(), new ConfigModule(), new OssServletModule());
+        Injector injector = Guice.createInjector(new OssServletModule());
+
+        // new UtilModule(), new ConfigModule(),
+
+        return injector;
     }
 }

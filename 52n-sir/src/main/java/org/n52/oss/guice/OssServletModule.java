@@ -17,6 +17,7 @@
 package org.n52.oss.guice;
 
 import org.n52.oss.opensearch.OpenSearchServlet;
+import org.n52.sir.AutoCompleteSearch;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 import org.n52.sir.script.HarvestResource;
@@ -46,21 +47,27 @@ public class OssServletModule extends JerseyServletModule {
         // install(new FactoryModuleBuilder().implement(ApplicationConstants.class,
         // PropertyApplicationConstants.class).build(ConfigFactory.class));
 
-        bind(HarvestResource.class);
-        bind(IJSExecute.class).to(RhinoJSExecute.class);
-        bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
-        bind(com.sun.jersey.spi.container.servlet.ServletContainer.class).in(Singleton.class);
+        // bind(IJSExecute.class).to(RhinoJSExecute.class);
+        // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
-        serve("/harvest/*").with(GuiceContainer.class);
+        // bind(com.sun.jersey.spi.container.servlet.ServletContainer.class).in(Singleton.class);
+
+        // bind the JAX-RS resources
+        bind(HelloGuice.class);
+        bind(HarvestResource.class);
+        bind(AutoCompleteSearch.class);
+
+        filter("*").through(DebugFilter.class);
+
+        serve("/*").with(GuiceContainer.class);
 
         // http://code.google.com/p/google-guice/wiki/ServletModule
-
-        serve("/autocomplete*").with(GuiceContainer.class);
+        // serve("/autocomplete*").with(GuiceContainer.class);
 
         // TODO Daniel: get opensearchservlet to run with guice
         // bind(ISearchSensorDAO.class).to(PGSQLSearchSensorDAO.class);
 
-        serve("/opensearch*").with(OpenSearchServlet.class);
+        // serve("/opensearch*").with(OpenSearchServlet.class);
 
         log.info("configured {} with context {}", this, getServletContext());
     }

@@ -47,11 +47,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.servlet.RequestScoped;
 import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/script")
+@RequestScoped
 public class HarvestResource {
     private static Logger log = LoggerFactory.getLogger(HarvestResource.class);
 

@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -21,7 +23,6 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.n52.sir.client.DescribeSensorBean;
 import org.n52.sir.util.XmlTools;
 import org.x52North.sir.x032.DescribeSensorRequestDocument;
@@ -31,7 +32,7 @@ import org.x52North.sir.x032.DescribeSensorRequestDocument;
  * @author Daniel Nüst
  * 
  */
-public class DescribeSensor extends SirTestCase {
+public class DescribeSensor extends SirTest {
 
     private String sensorIDinSIR = "1";
 
@@ -39,7 +40,7 @@ public class DescribeSensor extends SirTestCase {
     public void testGetExample() throws Exception {
         String s = loadGetRequestExample("DescribeSensor");
 
-        String response = Client.sendGetRequest(s);
+        String response = client.sendGetRequest(s);
 
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response);
@@ -55,7 +56,7 @@ public class DescribeSensor extends SirTestCase {
         dsb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(dsb.getRequestString());
+        String response = client.sendPostRequest(dsb.getRequestString());
 
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response);
@@ -69,7 +70,7 @@ public class DescribeSensor extends SirTestCase {
         File f = getPostExampleFile("DescribeSensor.xml");
         DescribeSensorRequestDocument dsd = DescribeSensorRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(dsd);
+        XmlObject response = client.xSendPostRequest(dsd);
 
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response.getDomNode());

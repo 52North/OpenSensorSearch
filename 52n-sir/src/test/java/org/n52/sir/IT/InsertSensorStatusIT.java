@@ -30,6 +30,7 @@ import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -38,12 +39,19 @@ import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
 
 public class InsertSensorStatusIT {
 
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = Util.configureSirClient();
+    }
+
     @Test
     public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
         File sensor_status = new File(ClassLoader.getSystemResource("Requests/InsertSensorStatus.xml").getFile());
         InsertSensorStatusRequestDocument request = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
 
-        XmlObject res = Client.xSendPostRequest(request);
+        XmlObject res = client.xSendPostRequest(request);
 
         InsertSensorStatusResponseDocument response = InsertSensorStatusResponseDocument.Factory.parse(res.getDomNode());
 
@@ -52,7 +60,7 @@ public class InsertSensorStatusIT {
 
         assertThat("sensor IDs equal", actual, is(equalTo(expected)));
     }
-    
+
     @After
     public void cleanUp() {
         // TODO remove the inserted status again

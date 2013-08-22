@@ -17,7 +17,6 @@
 package org.n52.sir.IT;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +24,7 @@ import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.client.ConnectToCatalogBean;
@@ -38,9 +38,16 @@ import org.x52North.sir.x032.ConnectToCatalogResponseDocument;
  */
 public class ConnectToCatalogIT {
 
+    private static Client client;
+
     private String catalogURL = "http://localhost:8080/ergorr/webservice";
 
     private int pushInterval = 0;
+
+    @BeforeClass
+    public static void setUp() {
+        client = Util.configureSirClient();
+    }
 
     @Test
     public void requestCreatedByBean() throws Exception {
@@ -49,7 +56,7 @@ public class ConnectToCatalogIT {
         ctcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(ctcb.getRequestString());
+        String response = client.sendPostRequest(ctcb.getRequestString());
 
         ConnectToCatalogResponseDocument responseDoc = ConnectToCatalogResponseDocument.Factory.parse(response);
         assertTrue(responseDoc.validate());
@@ -61,15 +68,15 @@ public class ConnectToCatalogIT {
         File f = new File(ClassLoader.getSystemResource("Requests/ConnectToCatalog.xml").getFile());
         ConnectToCatalogRequestDocument ctcrd = ConnectToCatalogRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(ctcrd);
+        XmlObject response = client.xSendPostRequest(ctcrd);
 
         ConnectToCatalogResponseDocument responseDoc = ConnectToCatalogResponseDocument.Factory.parse(response.getDomNode());
         assertTrue(responseDoc.validate());
         assertThat("catalog URLs match", responseDoc.getConnectToCatalogResponse().getCatalogURL(), is(this.catalogURL));
     }
-    
+
     @After
-    public static void cleanUp() {
+    public void cleanUp() {
         // FIXME test must remove the catalog connections
     }
 

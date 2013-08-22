@@ -13,33 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.n52.sir.harvest;
 
-package org.n52.sir.IT;
-
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.ds.IInsertHarvestScriptDAO;
 
-public class IInsertHarvestScriptIT {
-
-    @BeforeClass
-    public static void setUp() {
-        Util.configureSirConfigurator();
-    }
-
+public class OWS {
+    
     @Test
-    public void insertScript() {
-        SirConfigurator config = SirConfigurator.getInstance();
-        IDAOFactory f = config.getFactory();
-
-        IInsertHarvestScriptDAO dao = f.insertHarvestScriptDAO();
-
-        String id = dao.insertScript("/scripts/one.js", "test", 1);
-        assertNotNull(id);
-
+    public void sosCapabilties10AreHarvested() {
+        // TODO use pegelonline-capabilities.xml
     }
+    
+    @Test
+    public void sosCapabilties20AreHarvested() {
+        // TODO use sos20-test-capabilities.xml
+    }
+
 }

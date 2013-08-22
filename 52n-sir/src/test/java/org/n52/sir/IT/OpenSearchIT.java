@@ -64,17 +64,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OpenSearchIT {
 
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = Util.configureSirClient();
+    }
+
     private void insertSensor(String path) throws XmlException, IOException, OwsExceptionReport, HttpException {
         File sensor = new File(ClassLoader.getSystemResource(path).getFile());
         SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
 
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
         req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
-        XmlObject res = Client.xSendPostRequest(req);
+        XmlObject res = client.xSendPostRequest(req);
 
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
-        assertThat("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), is(not(0)));
+        assertThat("Failed to insert sensor",
+                   resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),
+                   is(not(0)));
     }
 
     @BeforeClass
@@ -100,33 +109,41 @@ public class OpenSearchIT {
     }
 
     private String sendRequest(String query) throws ClientProtocolException, IOException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient c = new DefaultHttpClient();
         /*
          * I test using the unique ID of testSenosr01
          */
         HttpGet get = new HttpGet(query);
 
-        HttpResponse response = client.execute(get);
+        HttpResponse response = c.execute(get);
         StringBuilder builder = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        String s = "";
-        while ( (s = reader.readLine()) != null)
-            builder.append(s);
 
-        String responseString = builder.toString();
-        reader.close();
+        String responseString = null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));) {
+            String s = "";
+            while ( (s = reader.readLine()) != null)
+                builder.append(s);
+
+            responseString = builder.toString();
+            reader.close();
+        }
+
         return responseString;
     }
 
-    private String readResource(String s) throws IOException {
-        File results = new File(ClassLoader.getSystemResource("Requests/Sensors/testSensor01Result.RSS").getFile());
+    private String readResource(String name) throws IOException {
+        File results = new File(ClassLoader.getSystemResource(name).getFile());
         StringBuilder builder = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new FileReader(results));
-        s = "";
-        while ( (s = reader.readLine()) != null)
-            builder.append(s);
-        String realResults = builder.toString();
-        reader.close();
+
+        String realResults = null;
+        try (BufferedReader reader = new BufferedReader(new FileReader(results));) {
+            String string = "";
+            while ( (string = reader.readLine()) != null)
+                builder.append(string);
+            realResults = builder.toString();
+            reader.close();
+        }
+
         return realResults;
     }
 
@@ -149,7 +166,7 @@ public class OpenSearchIT {
     }
 
     @Test
-    public void testJSONResponseFromOpenSearch() throws IOException, SAXException {
+    public void testJSONResponseFromOpenSearch() throws IOException {
         String realResult = readResource("Requests/Sensors/jsonSensor.json");
 
         ObjectMapper mapper = MapperFactory.getMapper();

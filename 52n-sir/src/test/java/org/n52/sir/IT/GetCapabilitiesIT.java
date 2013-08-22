@@ -19,7 +19,8 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,24 +28,42 @@ import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.custommonkey.xmlunit.Diff;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.GetCapabilitiesDocument;
+import org.xml.sax.SAXException;
 
 public class GetCapabilitiesIT {
 
-    @Test
-    public void getCapabilites() throws IOException, OwsExceptionReport, HttpException, XmlException {
+    static Client client;
 
-        File f = new File(ClassLoader.getSystemResource("Requests/GetCapabilities.xml").getFile());
+    @BeforeClass
+    public static void setUp() {
+        client = Util.configureSirClient();
+    }
+
+    @Test
+    public void getCapabilites() throws IOException, OwsExceptionReport, HttpException, XmlException, SAXException {
+
+        File f = new File(ClassLoader.getSystemResource("sir/requests/GetCapabilities.xml").getFile());
 
         GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
-        XmlObject response = Client.xSendPostRequest(doc);
-        CapabilitiesDocument resp_doc = CapabilitiesDocument.Factory.parse(response.getDomNode());
+        XmlObject response = client.xSendPostRequest(doc);
+        CapabilitiesDocument actual = CapabilitiesDocument.Factory.parse(response.getDomNode());
 
-        assertTrue("Invalid", (resp_doc.validate()));
-        // FIXME test is not checking anything
+        assertThat("Document is valid according to XMLBeans.", actual.validate(), is(true));
+
+        f = new File(ClassLoader.getSystemResource("sir/responses/capabilities.xml").getFile());
+        CapabilitiesDocument expected = CapabilitiesDocument.Factory.parse(f);
+
+        Diff diff = new Diff(actual.getCapabilities().getOperationsMetadata().toString(),
+                             expected.getCapabilities().getOperationsMetadata().toString());
+        
+        assertThat("XML is similar.", diff.similar(), is(true));
+        assertThat("XML is identical.", diff.identical(), is(true));
     }
 }

@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.client.HarvestServiceBean;
@@ -38,6 +39,13 @@ public class HarvestServiceIT {
 
     private String serviceType = "SOS";
 
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = Util.configureSirClient();
+    }
+
     @Test
     public void harvestWeatherServiceBean() throws Exception {
         // buildRequest
@@ -45,7 +53,7 @@ public class HarvestServiceIT {
         hsb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(hsb.getRequestString());
+        String response = client.sendPostRequest(hsb.getRequestString());
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response);
@@ -59,7 +67,7 @@ public class HarvestServiceIT {
         File f = new File(ClassLoader.getSystemResource("Requests/HarvestService_WeatherSOS.xml").getFile());
         HarvestServiceRequestDocument hsrd = HarvestServiceRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(hsrd);
+        XmlObject response = client.xSendPostRequest(hsrd);
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response.getDomNode());

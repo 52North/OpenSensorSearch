@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.n52.sir.client.ConnectToCatalogBean;
 import org.n52.sir.client.DisconnectFromCatalogBean;
 import org.x52North.sir.x032.DisconnectFromCatalogRequestDocument;
@@ -30,7 +32,7 @@ import org.x52North.sir.x032.DisconnectFromCatalogResponseDocument;
  * @author Daniel Nüst
  * 
  */
-public class DisconnectFromCatalog extends SirTestCase {
+public class DisconnectFromCatalog extends SirTest {
 
     private String catalogURL = "http://localhost:8080/ergorr/webservice";
 
@@ -44,7 +46,7 @@ public class DisconnectFromCatalog extends SirTestCase {
         dfcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(dfcb.getRequestString());
+        String response = client.sendPostRequest(dfcb.getRequestString());
 
         // parse and validate response
         DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response);
@@ -61,7 +63,7 @@ public class DisconnectFromCatalog extends SirTestCase {
         String sentUrl = dfcrd.getDisconnectFromCatalogRequest().getCatalogURL();
         setUpConnection(sentUrl);
 
-        XmlObject response = Client.xSendPostRequest(dfcrd);
+        XmlObject response = client.xSendPostRequest(dfcrd);
 
         // parse and validate response
         DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response.getDomNode());
@@ -82,7 +84,7 @@ public class DisconnectFromCatalog extends SirTestCase {
         int pushInterval = 3600; // needs to be with repetition, otherwise not saved in database for removal.
         ConnectToCatalogBean ctcb = new ConnectToCatalogBean(url, pushInterval);
         ctcb.buildRequest();
-        Client.sendPostRequest(ctcb.getRequestString());
+        client.sendPostRequest(ctcb.getRequestString());
     }
 
 }

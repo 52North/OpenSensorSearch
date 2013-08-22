@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument.InsertSensorInfoRequest.InfoToBeInserted;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
@@ -29,14 +31,14 @@ import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
  * @author Daniel Nüst
  * 
  */
-public class InsertSensorInfo extends SirTestCase {
+public class InsertSensorInfo extends SirTest {
 
     @Test
     public void testPostExampleNewSensor() throws Exception {
         File f = getPostExampleFile("InsertSensorInfo_newSensor.xml");
         InsertSensorInfoRequestDocument isird = InsertSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(isird);
+        XmlObject response = client.xSendPostRequest(isird);
 
         // parse and validate response
         InsertSensorInfoResponseDocument responseDoc = InsertSensorInfoResponseDocument.Factory.parse(response.getDomNode());
@@ -44,7 +46,7 @@ public class InsertSensorInfo extends SirTestCase {
         int send = isird.getInsertSensorInfoRequest().getInfoToBeInsertedArray().length;
         int inserted = responseDoc.getInsertSensorInfoResponse().getNumberOfInsertedSensors();
 
-        SirTestCase.insertedSensorId = responseDoc.getInsertSensorInfoResponse().getInsertedSensors().getSensorIDInSIRArray(0);
+        SirTest.insertedSensorId = responseDoc.getInsertSensorInfoResponse().getInsertedSensors().getSensorIDInSIRArray(0);
 
         assertEquals(send, inserted);
         assertTrue(responseDoc.validate());
@@ -55,7 +57,7 @@ public class InsertSensorInfo extends SirTestCase {
         File f = getPostExampleFile("InsertSensorInfo_addReference.xml");
         InsertSensorInfoRequestDocument isird = InsertSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(isird);
+        XmlObject response = client.xSendPostRequest(isird);
 
         // parse and validate response
         InsertSensorInfoResponseDocument responseDoc = InsertSensorInfoResponseDocument.Factory.parse(response.getDomNode());

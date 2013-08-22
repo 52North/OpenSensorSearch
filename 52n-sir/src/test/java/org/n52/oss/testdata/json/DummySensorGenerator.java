@@ -25,12 +25,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.servlet.UnavailableException;
 
 import net.opengis.sensorML.x101.KeywordsDocument.Keywords.KeywordList;
 import net.opengis.sensorML.x101.SensorMLDocument;
@@ -39,8 +36,9 @@ import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.joda.time.DateTime;
-import org.junit.Before;
-import org.n52.sir.SirConfigurator;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.n52.sir.IT.Util;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirTimePeriod;
@@ -49,21 +47,19 @@ import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 
 import com.google.gson.Gson;
+import com.google.inject.Inject;
 
 public class DummySensorGenerator {
 
-    @Before
-    public void prepare() throws UnavailableException, OwsExceptionReport {
-
-        if (SirConfigurator.getInstance() == null) {
-            InputStream dbStream = ClassLoader.getSystemResourceAsStream("prop/db.PROPERTIES");
-            InputStream sirStream = ClassLoader.getSystemResourceAsStream("prop/sir.PROPERTIES");
-            // Read configurator if null
-            SirConfigurator.getInstance(sirStream, dbStream, null, null);
-
-        }
+    @Inject
+    private Client client;
+    
+    @BeforeClass
+    public static void setUp() {
+        Util.configureSirClient();
     }
 
+    @Test
     public void parseJsonSensorsAndInsert() throws IOException, OwsExceptionReport, XmlException, HttpException {
 
         File sensor_file = new File(ClassLoader.getSystemResource("data/randomSensors.json").getFile());
@@ -72,9 +68,11 @@ public class DummySensorGenerator {
         Gson gson = new Gson();
         StringBuilder builder = new StringBuilder();
         String s;
-        BufferedReader reader = new BufferedReader( (new FileReader(sensor_file)));
-        while ( (s = reader.readLine()) != null)
-            builder.append(s);
+        try (BufferedReader reader = new BufferedReader( (new FileReader(sensor_file)));) {
+            while ( (s = reader.readLine()) != null)
+                builder.append(s);
+        }
+
         JSONSensorsCollection collection = gson.fromJson(builder.toString(), JSONSensorsCollection.class);
         Iterator<JSONSensor> sensors = collection.sensors.iterator();
         while (sensors.hasNext()) {
@@ -95,7 +93,7 @@ public class DummySensorGenerator {
             period.setEndTime(end.toDate());
             sensor.setTimePeriod(period);
             sensor.setIdentificationsList(jsensor.Identifiers);
-            List<String> contacts = new ArrayList<String>();
+            List<String> contacts = new ArrayList<>();
             contacts.add(jsensor.contacts);
             sensor.setContacts(contacts);
 
@@ -107,7 +105,9 @@ public class DummySensorGenerator {
             DOC.getSensorML().getMemberArray(0).getProcess().getKeywordsArray(0).setKeywordList(klist);
             InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
             req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
-            XmlObject res = Client.xSendPostRequest(req);
+
+            XmlObject res = this.client.xSendPostRequest(req);
+
             InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
             assertNotEquals("Failed to insert sensor",
                             resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),

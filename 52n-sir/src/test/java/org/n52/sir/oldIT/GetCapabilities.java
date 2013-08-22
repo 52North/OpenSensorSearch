@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
+import org.n52.sir.SirConstants;
 import org.n52.sir.client.GetCapabilitiesBean;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.GetCapabilitiesDocument;
@@ -29,7 +31,7 @@ import org.x52North.sir.x032.GetCapabilitiesDocument;
  * @author Daniel Nüst
  * 
  */
-public class GetCapabilities extends SirTestCase {
+public class GetCapabilities extends SirTest {
 
     private String updateSequence = "";
 
@@ -49,7 +51,7 @@ public class GetCapabilities extends SirTestCase {
     public void testGetExample() throws Exception {
         String s = loadGetRequestExample("GetCapabilities");
 
-        String response = Client.sendGetRequest(s);
+        String response = client.sendGetRequest(s);
 
         // parse and validate response
         CapabilitiesDocument cd = CapabilitiesDocument.Factory.parse(response);
@@ -70,7 +72,7 @@ public class GetCapabilities extends SirTestCase {
         gcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(gcb.getRequestString());
+        String response = client.sendPostRequest(gcb.getRequestString());
 
         // parse and validate response
         CapabilitiesDocument cd = CapabilitiesDocument.Factory.parse(response);
@@ -82,7 +84,7 @@ public class GetCapabilities extends SirTestCase {
         File f = getPostExampleFile("GetCapabilities.xml");
         GetCapabilitiesDocument gcd = GetCapabilitiesDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(gcd);
+        XmlObject response = client.xSendPostRequest(gcd);
 
         // parse and validate response
         CapabilitiesDocument cd = CapabilitiesDocument.Factory.parse(response.getDomNode());

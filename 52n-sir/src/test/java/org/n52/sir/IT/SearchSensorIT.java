@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.SearchSensorRequestDocument;
@@ -32,13 +33,20 @@ import org.x52North.sir.x032.SearchSensorResponseDocument;
 
 public class SearchSensorIT {
 
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = Util.configureSirClient();
+    }
+
     public void searchSensor(String file) throws Exception {
         File f = new File( (ClassLoader.getSystemResource(file).getFile()));
         SearchSensorRequestDocument doc = SearchSensorRequestDocument.Factory.parse(f);
 
         XmlObject response = null;
 
-        response = Client.xSendPostRequest(doc);
+        response = client.xSendPostRequest(doc);
         SearchSensorResponseDocument resp_doc = SearchSensorResponseDocument.Factory.parse(response.getDomNode());
 
         assertTrue("Invalid  Sensor Response", resp_doc.validate());

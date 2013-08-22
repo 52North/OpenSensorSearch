@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.x52North.sir.x032.SearchSensorRequestDocument;
 import org.x52North.sir.x032.SearchSensorResponseDocument;
 
@@ -28,14 +30,14 @@ import org.x52North.sir.x032.SearchSensorResponseDocument;
  * @author Daniel Nüst
  * 
  */
-public class SearchSensor extends SirTestCase {
+public class SearchSensor extends SirTest {
 
     @Test
     public void testPostExampleByID() throws Exception {
         File f = getPostExampleFile("SearchSensor_bySensorIDInSIR.xml");
         SearchSensorRequestDocument req = SearchSensorRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = client.xSendPostRequest(req);
 
         // parse and validate response
         SearchSensorResponseDocument responseDoc = SearchSensorResponseDocument.Factory.parse(response.getDomNode());
@@ -52,7 +54,7 @@ public class SearchSensor extends SirTestCase {
         File f = getPostExampleFile("SearchSensor_byServiceDescription.xml");
         SearchSensorRequestDocument req = SearchSensorRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = client.xSendPostRequest(req);
 
         // parse and validate response
         SearchSensorResponseDocument responseDoc = SearchSensorResponseDocument.Factory.parse(response.getDomNode());

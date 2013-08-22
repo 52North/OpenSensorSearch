@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.n52.sir.client.HarvestServiceBean;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
@@ -29,7 +30,7 @@ import org.x52North.sir.x032.HarvestServiceResponseDocument;
  * @author Daniel Nüst
  * 
  */
-public class HarvestService extends SirTestCase {
+public class HarvestService extends SirTest {
 
     private String serviceURL = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos";
 
@@ -43,7 +44,7 @@ public class HarvestService extends SirTestCase {
         hsb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(hsb.getRequestString());
+        String response = client.sendPostRequest(hsb.getRequestString());
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response);
@@ -55,7 +56,7 @@ public class HarvestService extends SirTestCase {
         File f = getPostExampleFile("HarvestService_WeatherSOS.xml");
         HarvestServiceRequestDocument hsrd = HarvestServiceRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(hsrd);
+        XmlObject response = client.xSendPostRequest(hsrd);
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response.getDomNode());

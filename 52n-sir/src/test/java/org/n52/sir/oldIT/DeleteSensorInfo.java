@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
 import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
@@ -29,14 +31,14 @@ import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
  * @author Daniel Nüst
  * 
  */
-public class DeleteSensorInfo extends SirTestCase {
+public class DeleteSensorInfo extends SirTest {
 
     @Test
     public void testPostExampleDeleteReference() throws Exception {
         File f = getPostExampleFile("DeleteSensorInfo_deleteReference.xml");
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = client.xSendPostRequest(req);
 
         // parse and validate response
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());
@@ -49,10 +51,10 @@ public class DeleteSensorInfo extends SirTestCase {
         File f = getPostExampleFile("DeleteSensorInfo.xml");
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
-        if (SirTestCase.insertedSensorId != null)
-            req.getDeleteSensorInfoRequest().getInfoToBeDeletedArray(0).getSensorIdentification().setSensorIDInSIR(SirTestCase.insertedSensorId);
+        if (SirTest.insertedSensorId != null)
+            req.getDeleteSensorInfoRequest().getInfoToBeDeletedArray(0).getSensorIdentification().setSensorIDInSIR(SirTest.insertedSensorId);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = client.xSendPostRequest(req);
 
         // parse and validate response
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());

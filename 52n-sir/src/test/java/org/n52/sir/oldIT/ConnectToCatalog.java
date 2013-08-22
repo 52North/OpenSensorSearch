@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.n52.sir.client.ConnectToCatalogBean;
 import org.x52North.sir.x032.ConnectToCatalogRequestDocument;
 import org.x52North.sir.x032.ConnectToCatalogResponseDocument;
@@ -29,12 +32,12 @@ import org.x52North.sir.x032.ConnectToCatalogResponseDocument;
  * @author Daniel Nüst
  * 
  */
-public class ConnectToCatalog extends SirTestCase {
+public class ConnectToCatalog extends SirTest {
 
     private String catalogURL = "http://localhost:8080/ergorr/webservice";
 
     private int pushInterval = 0;
-
+    
     @Test
     public void testPost() throws Exception {
         // buildRequest
@@ -43,7 +46,7 @@ public class ConnectToCatalog extends SirTestCase {
         ctcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(ctcb.getRequestString());
+        String response = client.sendPostRequest(ctcb.getRequestString());
 
         // parse and validate response
         ConnectToCatalogResponseDocument responseDoc = ConnectToCatalogResponseDocument.Factory.parse(response);
@@ -52,10 +55,10 @@ public class ConnectToCatalog extends SirTestCase {
 
     @Test
     public void testPostExample() throws Exception {
-        File f = getPostExampleFile("ConnectToCatalog.xml");
+        File f = new File(ConnectToCatalog.class.getResource("/Request/ConnectToCatalog.xml").toURI());
         ConnectToCatalogRequestDocument ctcrd = ConnectToCatalogRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(ctcrd);
+        XmlObject response = client.xSendPostRequest(ctcrd);
 
         // parse and validate response
         ConnectToCatalogResponseDocument responseDoc = ConnectToCatalogResponseDocument.Factory.parse(response.getDomNode());

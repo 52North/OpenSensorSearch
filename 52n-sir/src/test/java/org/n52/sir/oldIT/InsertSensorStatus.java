@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
+package org.n52.sir.oldIT;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
-import org.n52.sir.client.Client;
 import org.x52North.sir.x032.InsertSensorStatusRequestDocument;
 import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
 
@@ -28,14 +30,14 @@ import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
  * @author Daniel Nüst
  * 
  */
-public class InsertSensorStatus extends SirTestCase {
+public class InsertSensorStatus extends SirTest {
 
     @Test
     public void testPostExample() throws Exception {
         File f = getPostExampleFile("InsertSensorStatus.xml");
         InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = client.xSendPostRequest(req);
 
         // parse and validate response
         InsertSensorStatusResponseDocument responseDoc = InsertSensorStatusResponseDocument.Factory.parse(response.getDomNode());

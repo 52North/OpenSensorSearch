@@ -95,6 +95,10 @@
 		<guice.version>3.0</guice.version>
 		<jersey.version>1.8</jersey.version>
 		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
+		<logback.version>1.0.13</logback.version>
+
+		<config.logger.fileappender.filepath>D:/logs</config.logger.fileappender.filepath>
+		<config.logger.level>DEBUG</config.logger.level>
 	</properties>
 
 	<profiles>
@@ -242,7 +246,7 @@
 				<configuration>
 					<header>src/main/resources/license_header.txt</header>
 					<excludes>
-						<exclude>**/log4j*</exclude>
+						<exclude>**/logback*</exclude>
 						<exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
 						<exclude>**/iso_svrl_for_xslt2.xsl</exclude>
 						<exclude>**/test/resources/**</exclude>
@@ -458,9 +462,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.5</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<dependency>

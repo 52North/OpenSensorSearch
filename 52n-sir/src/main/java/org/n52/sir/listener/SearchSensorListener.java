@@ -52,9 +52,6 @@ import com.google.inject.Inject;
  */
 public class SearchSensorListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(SearchSensorListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.SearchSensor.name();
@@ -76,44 +73,22 @@ public class SearchSensorListener implements ISirRequestListener {
                                                                                     // SearchSensorListener(ISearchSensorDAO
                                                                                     // searchDao) throws
                                                                                     // OwsExceptionReport {
-        // TODO move character encoding to injection-based config mechanism
-        this.urlCharacterEncoding = "UTF-8"; // config.getCharacterEncoding();
+        // TODO fix injection so that getInstance() is not needed here anymore
+        this.urlCharacterEncoding = config.getInstance().getCharacterEncoding();
 
         IDAOFactory f = config.getInstance().getFactory();
         this.searchSensDao = f.searchSensorDAO();
-
-        // IDAOFactory factory = this.configurator.getFactory();
-        // try {
-        // this.searchSensDao = factory.searchSensorDAO();
-        // }
-        // catch (OwsExceptionReport se) {
-        // log.error("Error while creating the searchSensorDAO", se);
-        // throw se;
-        // }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return SearchSensorListener.OPERATION_NAME;
     }
 
-    /**
-     * @return the encodeURLs
-     */
     public boolean isEncodeURLs() {
         return this.encodeURLs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
@@ -182,7 +157,9 @@ public class SearchSensorListener implements ISirRequestListener {
                                                                                                                                              searchSensReq.isSimpleResponse());
 
                 // union the searches
-                log.debug("Found {} results in Solr, {} in Postgres.", searchResElementsSolr.size(), searchResElementsSir.size());
+                log.debug("Found {} results in Solr, {} in Postgres.",
+                          searchResElementsSolr.size(),
+                          searchResElementsSir.size());
                 Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
                 Collections.addAll(searchResElements, searchResElementsSir.toArray(new SirSearchResultElement[] {}));
             }
@@ -232,10 +209,6 @@ public class SearchSensorListener implements ISirRequestListener {
         return response;
     }
 
-    /**
-     * @param encodeURLs
-     *        the encodeURLs to set
-     */
     public void setEncodeURLs(boolean encodeURLs) {
         this.encodeURLs = encodeURLs;
     }

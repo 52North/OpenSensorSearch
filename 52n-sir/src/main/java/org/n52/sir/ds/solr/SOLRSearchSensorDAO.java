@@ -73,6 +73,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
             wordslist.append("+");
             wordslist.append(iter.next());
         }
+        
         return searchByAll(wordslist.toString(),
                            searchCriteria.getDtstart(),
                            searchCriteria.getDtend(),
@@ -168,7 +169,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         double centerX = center[0];
         double centerY = center[1];
         double dist = Math.sqrt(Math.pow(east - centerX, 2) + Math.pow(north - centerY, 2));
-        Collection<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+        Collection<SirSearchResultElement> results = new ArrayList<>();
         Collection<SirSearchResultElement> allResults = spatialSearchWithQuery(query,
                                                                                centerX + "",
                                                                                centerY + "",
@@ -223,7 +224,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
     }
 
     private List<SirSearchResultElement> encodeResult(SolrDocumentList doc) {
-        List<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+        List<SirSearchResultElement> results = new ArrayList<>();
         for (int i = 0; i < doc.size(); i++) {
             SirSearchResultElement element = new SirSearchResultElement();
             SirDetailedSensorDescription solrDescription = new SirDetailedSensorDescription();
@@ -247,14 +248,14 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
                 solrDescription.setIdentifiers(getCollectionStrings(solrresult.getFieldValues(SolrConstants.IDENTIFICATION)));
             if (solrresult.getFieldValues(SolrConstants.CONTACTS) != null) {
                 Iterator<Object> it = solrresult.getFieldValues(SolrConstants.CONTACTS).iterator();
-                Collection<String> results_contacts = new ArrayList<String>();
+                Collection<String> results_contacts = new ArrayList<>();
                 while (it.hasNext())
                     results_contacts.add(it.next().toString());
                 solrDescription.setContacts(results_contacts);
             }
             if (solrresult.getFieldValues(SolrConstants.INPUT) != null) {
                 Iterator<Object> it = solrresult.getFieldValues(SolrConstants.INPUT).iterator();
-                Collection<String> inputs = new ArrayList<String>();
+                Collection<String> inputs = new ArrayList<>();
                 while (it.hasNext())
                     inputs.add(it.next().toString());
                 solrDescription.setInputs(inputs);
@@ -262,7 +263,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
             }
             if (solrresult.getFieldValues(SolrConstants.OUTPUT) != null) {
                 Iterator<Object> it = solrresult.getFieldValues(SolrConstants.OUTPUT).iterator();
-                Collection<String> outputs = new ArrayList<String>();
+                Collection<String> outputs = new ArrayList<>();
                 while (it.hasNext())
                     outputs.add(it.next().toString());
                 solrDescription.setOutputs(outputs);
@@ -451,6 +452,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
                                                           SirBoundingBox bbox) {
         SolrConnection connection = new SolrConnection();
         ModifiableSolrParams params = new ModifiableSolrParams();
+        
         StringBuilder builder = new StringBuilder();
         String[] qs = query.split("[+]");
         StringBuilder qualified = new StringBuilder();
@@ -500,10 +502,13 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
             if (temporalFilter.toString().length() != 0)
                 params.set("fq", temporalFilter.toString());
         }
+        Collection<SirSearchResultElement> result = new ArrayList<>();
+        
         try {
             QueryResponse response = connection.SolrQuery(params);
             SolrDocumentList list = response.getResults();
-            Collection<SirSearchResultElement> result = encodeResult(list);
+            result.addAll(encodeResult(list));
+            
             if (bbox == null)
                 return result;
             double[] center = bbox.getCenter();
@@ -518,7 +523,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
             Collection<SirSearchResultElement> bbox_result = spatialSearchWithAllQuery(query, centerX + "", centerY
                     + "", dist, SolrConstants.BBOX_CENTER);
             result.addAll(bbox_result);
-            Collection<SirSearchResultElement> filtered_Result = new ArrayList<SirSearchResultElement>();
+            Collection<SirSearchResultElement> filtered_Result = new ArrayList<>();
             Iterator<SirSearchResultElement> iterator = bbox_result.iterator();
             log.info(bbox_result + " :results found");
             if (bbox_result.size() == 0)
@@ -536,9 +541,8 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         }
         catch (Exception e) {
             log.error("Solr exception", e);
-            return null;
+            return result;
         }
-
     }
 
     private void appendParameter(StringBuilder builder, String k, Map<String, String> queryMap) {

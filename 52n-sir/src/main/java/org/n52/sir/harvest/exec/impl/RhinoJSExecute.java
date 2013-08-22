@@ -23,16 +23,16 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.tools.shell.Global;
-import org.mozilla.javascript.tools.shell.Main;
 import org.n52.sir.harvest.exec.IJSExecute;
 
 public class RhinoJSExecute implements IJSExecute {
+    
 	public RhinoJSExecute() {
-
+	    //
 	}
 
 	public RhinoJSExecute(String s) {
-
+	    // FIXME implement method?!
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class RhinoJSExecute implements IJSExecute {
 			e.printStackTrace();
 			return null;
 		} finally {
-			cn.exit();
+			Context.exit();
 		}
 	}
 
@@ -71,7 +71,7 @@ public class RhinoJSExecute implements IJSExecute {
 			e.printStackTrace();
 			return null;
 		} finally {
-			cn.exit();
+			Context.exit();
 		}
 	}
 

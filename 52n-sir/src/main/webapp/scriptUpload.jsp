@@ -62,7 +62,7 @@ body {
 
 <body>
 
-	<form action="/SIR/harvest/script/submit" method="post"
+	<form action="/OpenSensorSearch/harvest/script/submit" method="post"
 		enctype="multipart/form-data" class="form-upload">
 		<h2 class="form-signin-heading">Please Upload your script</h2>
 		<p>

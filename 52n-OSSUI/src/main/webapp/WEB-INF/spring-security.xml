@@ -8,12 +8,14 @@
  
 	<http auto-config="true">
 		<intercept-url pattern="/remote/*" access="ROLE_USER" />
+		<form-login login-page="/login" default-target-url="/remote/index"
+			authentication-failure-url="/login?fail" />
 	</http>
  
 	<authentication-manager>
 	  <authentication-provider>
 	    <user-service>
-		<user name="mkyong" password="123456" authorities="ROLE_USER" />
+		<user name="oss" password="123456789" authorities="ROLE_USER" />
 	    </user-service>
 	  </authentication-provider>
 	</authentication-manager>

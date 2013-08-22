@@ -12,6 +12,12 @@ public class LoginController {
 		return "login/login";
 	}
 	
+	@RequestMapping(value="/login",params="fail")
+	public String loginWithFail(ModelMap map){
+		map.addAttribute("LoginFailed",true);
+		return "login/login";
+	}
+	
 	
 	
 

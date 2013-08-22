@@ -8,12 +8,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
+<head>
 <meta charset="utf-8">
 <title>Sign in</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="css/bootstrap.css" rel="stylesheet">
+<link href="../OSSUI/styles/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 body {
 	padding-top: 40px;
@@ -46,7 +46,7 @@ body {
 	padding: 7px 9px;
 }
 </style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="OSSUI/styles/bootstrap-responsive.css" rel="stylesheet">
 
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -63,30 +63,35 @@ body {
 <link rel="apple-touch-icon-precomposed"
 	href="../assets/ico/apple-touch-icon-57-precomposed.png">
 <link rel="shortcut icon" href="../assets/ico/favicon.png">
-	</head>
+</head>
 
-	<body>
-
-		<div class="container">
-			<form method="post" class="form-signin"
-				action="<c:url value='j_spring_security_check' />">
-				<h2 class="form-signin-heading">Please sign in</h2>
-				<input type="text" class="input-block-level"
-					placeholder="Email address" id="username_or_email"
-					name="j_username" /> <input type="password"
-					class="input-block-level" placeholder="Password" id="password"
-					name="j_password"> <label class="checkbox"> <input
-					type="checkbox" value="remember-me"> Remember me
-				</label>
-				<button class="btn btn-large btn-primary" type="submit">Sign
-					in</button>
-			</form>
-
+<body>
+	<c:if test="${LoginFailed}">
+		<div class="alert alert-error">
+			<a class="close" data-dismiss="alert">×</a> <strong>Error!</strong>
+			Wrong user/password combination!
 		</div>
-		<!-- /container -->
+	</c:if>
+	<div class="container">
+		<form method="post" class="form-signin"
+			action="<c:url value='j_spring_security_check' />">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<input type="text" class="input-block-level"
+				placeholder="Email address" id="username_or_email" name="j_username" />
+			<input type="password" class="input-block-level"
+				placeholder="Password" id="password" name="j_password"> <label
+				class="checkbox"> <input type="checkbox" value="remember-me">
+				Remember me
+			</label>
+			<button class="btn btn-large btn-primary" type="submit">Sign
+				in</button>
+		</form>
 
-		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+	</div>
+	<!-- /container -->
 
-	</body>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="../OSSUI/scripts/bootstrap.min.js"></script>
+
+</body>
 </html>

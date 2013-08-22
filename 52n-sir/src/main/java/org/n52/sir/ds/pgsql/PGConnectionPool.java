@@ -55,7 +55,7 @@ public class PGConnectionPool extends AbstractConnectionPool {
 
         super(connection, user, password, driverName, initConnections, maxConnections);
 
-        log.info(" ***** Config File loaded successfully! ****** ");
+        log.info(" ***** NEW connection pool: {} ****** ", this);
     }
 
     @Override

@@ -17,6 +17,8 @@
 package org.n52.oss.guice;
 
 import org.n52.oss.config.ConfigModule;
+import org.n52.sir.ListenerPluginModule;
+import org.n52.sir.SirModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -29,9 +31,11 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
     @Override
     protected Injector getInjector() {
-        Injector injector = Guice.createInjector(new OssServletModule());
-
-        // new UtilModule(), new ConfigModule(),
+        Injector injector = Guice.createInjector(new UtilModule(),
+                                                 new ConfigModule(),
+                                                 new ListenerPluginModule(),
+                                                 new SirModule(),
+                                                 new ServletModule());
 
         return injector;
     }

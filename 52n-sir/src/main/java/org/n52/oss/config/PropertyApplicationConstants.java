@@ -46,7 +46,7 @@ public class PropertyApplicationConstants implements ApplicationConstants {
     }
 
     @Override
-    public String getApplicationTimestampt() {
+    public String getApplicationTimestamp() {
         return this.applicationTimestampt;
     }
 

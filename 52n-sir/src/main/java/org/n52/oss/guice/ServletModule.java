@@ -16,26 +16,22 @@
 
 package org.n52.oss.guice;
 
-import org.n52.oss.opensearch.OpenSearchServlet;
+import org.n52.oss.opensearch.OpenSearch;
 import org.n52.sir.AutoCompleteSearch;
-import org.n52.sir.harvest.exec.IJSExecute;
-import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
+import org.n52.sir.SIR;
 import org.n52.sir.script.HarvestResource;
-import org.quartz.SchedulerFactory;
-import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
-public class OssServletModule extends JerseyServletModule {
+public class ServletModule extends JerseyServletModule {
 
-    private static Logger log = LoggerFactory.getLogger(OssServletModule.class);
+    private static Logger log = LoggerFactory.getLogger(ServletModule.class);
 
-    public OssServletModule() {
+    public ServletModule() {
         super();
     }
 
@@ -50,24 +46,16 @@ public class OssServletModule extends JerseyServletModule {
         // bind(IJSExecute.class).to(RhinoJSExecute.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
-        // bind(com.sun.jersey.spi.container.servlet.ServletContainer.class).in(Singleton.class);
-
         // bind the JAX-RS resources
+        // http://code.google.com/p/google-guice/wiki/ServletModule
         bind(HelloGuice.class);
         bind(HarvestResource.class);
         bind(AutoCompleteSearch.class);
+        bind(OpenSearch.class);
+        bind(SIR.class);
 
         filter("*").through(DebugFilter.class);
-
         serve("/*").with(GuiceContainer.class);
-
-        // http://code.google.com/p/google-guice/wiki/ServletModule
-        // serve("/autocomplete*").with(GuiceContainer.class);
-
-        // TODO Daniel: get opensearchservlet to run with guice
-        // bind(ISearchSensorDAO.class).to(PGSQLSearchSensorDAO.class);
-
-        // serve("/opensearch*").with(OpenSearchServlet.class);
 
         log.info("configured {} with context {}", this, getServletContext());
     }

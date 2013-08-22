@@ -25,10 +25,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 
 import org.n52.oss.config.ApplicationConstants;
 import org.n52.sir.SirConfigurator;
@@ -58,24 +59,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.google.inject.servlet.RequestScoped;
+import com.sun.jersey.api.core.HttpContext;
 
 /**
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
  */
-@Singleton
-public class OpenSearchServlet extends HttpServlet {
+@Path("/search")
+@RequestScoped
+public class OpenSearch { // extends HttpServlet {
 
-    private static final long serialVersionUID = -3235081570449109985L;
-
-    @SuppressWarnings("unused")
-    private static final String INIT_PARAM_CONFIG_FILE = "configFile";
-
-    @SuppressWarnings("unused")
-    private static final String INIT_PARAM_DBCONFIG_FILE = "dbConfigFile";
-
-    private static Logger log = LoggerFactory.getLogger(OpenSearchServlet.class);
+    private static Logger log = LoggerFactory.getLogger(OpenSearch.class);
 
     private OpenSearchConfigurator configurator;
 
@@ -85,57 +80,60 @@ public class OpenSearchServlet extends HttpServlet {
 
     private SearchSensorListener sensorSearcher;
 
+    @Context
+    HttpServletRequest servletRequest;
+
+    @Context
+    HttpServletResponse servletResponse;
+
+    @Context
+    private HttpContext servletContext;
+
     @Inject
-    public OpenSearchServlet(ApplicationConstants constants, SearchSensorListener listener) {
+    public OpenSearch(ApplicationConstants constants, SearchSensorListener listener, OpenSearchConfigurator config) {
         super();
 
         this.sensorSearcher = listener;
+        this.configurator = config;
+        init();
 
         log.info("NEW {} based on {}", this, constants);
     }
 
-    @Override
-    public void destroy() {
-        log.info("destroy() called...");
-
-        super.destroy();
-
-        // do nothing...
-
-        log.info("done destroy()");
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    // TODO use jersey annotations instead of request and response
+    @GET
+    public void doGet() throws IOException { // (HttpServletRequest req, HttpServletResponse resp) throws
+                                                // ServletException, IOException {
         // FIXME Daniel: the open search functionality must be extracted to a testable class, preferably with
         // an event bus or a listener model.
 
         if (log.isDebugEnabled())
-            log.debug(" ****** (GET) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
+            log.debug(" ****** (GET) Connected from: " + this.servletRequest.getRemoteAddr() + " "
+                    + this.servletRequest.getRemoteHost());
 
-        String acceptHeader = req.getHeader("accept");
+        String acceptHeader = this.servletRequest.getHeader("accept");
         log.trace("Accept header for 'accept': " + acceptHeader);
-        String httpAccept = req.getParameter(OpenSearchConstants.ACCEPT_PARAMETER);
+        String httpAccept = this.servletRequest.getParameter(OpenSearchConstants.ACCEPT_PARAMETER);
         log.trace("Accept header for " + OpenSearchConstants.ACCEPT_PARAMETER + ": " + httpAccept);
 
-        String searchText = req.getParameter(OpenSearchConstants.QUERY_PARAMETER);
+        String searchText = this.servletRequest.getParameter(OpenSearchConstants.QUERY_PARAMETER);
 
-        Map<String, String> map = req.getParameterMap();
+        Map<String, String> map = this.servletRequest.getParameterMap();
 
         Set<String> keys = map.keySet();
 
         // redirect if httpAccept is missing
         if (httpAccept == null || httpAccept.isEmpty()) {
-            redirectMissingHttpAccept(req, resp);
+            redirectMissingHttpAccept(this.servletRequest, this.servletResponse);
             return;
         }
         if (httpAccept.contains(" "))
             httpAccept = httpAccept.replace(" ", "+");
 
         // must be set before getWriter() is called.
-        resp.setCharacterEncoding(SirConfigurator.getInstance().getCharacterEncoding());
+        this.servletResponse.setCharacterEncoding(SirConfigurator.getInstance().getCharacterEncoding());
 
-        try (PrintWriter writer = resp.getWriter();) {
+        try (PrintWriter writer = this.servletResponse.getWriter();) {
 
             Collection<SirSearchResultElement> searchResult = null;
 
@@ -159,7 +157,7 @@ public class OpenSearchServlet extends HttpServlet {
              * req.getRemoteAddr()});
              */
             if (keys.contains(OpenSearchConstants.BOX_PARAM)) {
-                String bbox = req.getParameter(OpenSearchConstants.BOX_PARAM);
+                String bbox = this.servletRequest.getParameter(OpenSearchConstants.BOX_PARAM);
                 String[] s = bbox.split(",");
                 boundingBox = new SirBoundingBox(Double.parseDouble(s[2]),
                                                  Double.parseDouble(s[1]),
@@ -173,9 +171,9 @@ public class OpenSearchServlet extends HttpServlet {
             String radius = null;
             if (keys.contains(OpenSearchConstants.LAT_PARAM) && keys.contains(OpenSearchConstants.LON_PARAM)
                     && keys.contains(OpenSearchConstants.RADIUS_PARAM)) {
-                lat = req.getParameter(OpenSearchConstants.LAT_PARAM);
-                lng = req.getParameter(OpenSearchConstants.LON_PARAM);
-                radius = req.getParameter(OpenSearchConstants.RADIUS_PARAM);
+                lat = this.servletRequest.getParameter(OpenSearchConstants.LAT_PARAM);
+                lng = this.servletRequest.getParameter(OpenSearchConstants.LON_PARAM);
+                radius = this.servletRequest.getParameter(OpenSearchConstants.RADIUS_PARAM);
             }
 
             /*
@@ -190,9 +188,9 @@ public class OpenSearchServlet extends HttpServlet {
              */
             if (keys.contains(OpenSearchConstants.TIME_START_PARAMETER)) {
                 // contains a temporal query
-                log.debug(req.getParameter(OpenSearchConstants.TIME_START_PARAMETER));
-                start = req.getParameter(OpenSearchConstants.TIME_START_PARAMETER);
-                end = req.getParameter(OpenSearchConstants.TIME_END_PARAMETER);
+                log.debug(this.servletRequest.getParameter(OpenSearchConstants.TIME_START_PARAMETER));
+                start = this.servletRequest.getParameter(OpenSearchConstants.TIME_START_PARAMETER);
+                end = this.servletRequest.getParameter(OpenSearchConstants.TIME_END_PARAMETER);
                 log.debug("Time extension used: {} - {}", start, end);
             }
 
@@ -242,7 +240,7 @@ public class OpenSearchServlet extends HttpServlet {
             if (this.listeners.containsKey(httpAccept)) {
                 IOpenSearchListener l = this.listeners.get(httpAccept);
 
-                l.createResponse(req, resp, searchResult, writer, searchText);
+                l.createResponse(this.servletRequest, this.servletResponse, searchResult, writer, searchText);
             }
             else {
                 log.error("Could not create response as for {}, not supported.", httpAccept);
@@ -258,36 +256,18 @@ public class OpenSearchServlet extends HttpServlet {
             log.error("Unhandled exception in doGet: ", e);
         }
 
-        resp.flushBuffer(); // commits the response
+        this.servletResponse.flushBuffer(); // commits the response
 
         log.debug(" *** (GET) Done.");
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-
-        this.configurator = new OpenSearchConfigurator();
-
-        // try {
-        // this.sensorSearcher = new SearchSensorListener();
+    public void init() { // throws ServletException {
         this.sensorSearcher.setEncodeURLs(false);
-        // }
-        // catch (OwsExceptionReport e) {
-        // log.error("Could not create SearchSensorListener.", e);
-        // throw new ServletException(e);
-        // }
-
         this.dismantler = new RequestDismantler();
 
         this.listeners = new HashMap<>();
 
-        // TODO move listener configuration to config file
+        // TODO change listener configuration to injection mechanism
         IOpenSearchListener jsonListener = new JsonListener(this.configurator);
         this.listeners.put(jsonListener.getMimeType(), jsonListener);
         IOpenSearchListener htmlListener = new HtmlListener(this.configurator);
@@ -300,23 +280,6 @@ public class OpenSearchServlet extends HttpServlet {
         this.listeners.put(atomListener.getMimeType(), atomListener);
         IOpenSearchListener kmlListener = new KmlListener(this.configurator);
         this.listeners.put(kmlListener.getMimeType(), kmlListener);
-
-        // get ServletContext
-        // ServletContext context = getServletContext();
-        // String basepath = context.getRealPath("/");
-
-        // get configFile as Inputstream
-        // InputStream configStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_CONFIG_FILE));
-        // if (configStream == null) {
-        // throw new UnavailableException("could not open the config file");
-        // }
-        //
-        // // get dbconfigFile as Inputstream
-        // InputStream dbConfigStream =
-        // context.getResourceAsStream(getInitParameter(INIT_PARAM_DBCONFIG_FILE));
-        // if (dbConfigStream == null) {
-        // throw new UnavailableException("could not open the database config file");
-        // }
     }
 
     private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -349,7 +312,7 @@ public class OpenSearchServlet extends HttpServlet {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("OpenSearchSIR [");
+        sb.append("OpenSearch [");
         if (this.configurator != null)
             sb.append(this.configurator.getOpenSearchPath());
         sb.append("]");

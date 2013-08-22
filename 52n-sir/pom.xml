@@ -685,6 +685,7 @@
 			<artifactId>xmlunit</artifactId>
 			<version>1.4</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -698,6 +699,11 @@
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-assistedinject</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
 			<version>${guice.version}</version>
 		</dependency>
 

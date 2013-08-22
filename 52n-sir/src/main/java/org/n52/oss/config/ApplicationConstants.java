@@ -22,6 +22,6 @@ public interface ApplicationConstants {
 
     public abstract String getApplicationCommit();
 
-    public abstract String getApplicationTimestampt();
+    public abstract String getApplicationTimestamp();
 
 }

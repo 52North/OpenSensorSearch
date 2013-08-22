@@ -66,7 +66,7 @@ public class SearchByInputOutputTest {
 
 		assertNotNull(results);
 		Iterator<SirSearchResultElement> iter = results.iterator();
-		ArrayList<String> resultsInputs = new ArrayList<String>();
+		ArrayList<String> resultsInputs = new ArrayList<>();
 		while (iter.hasNext()) {
 			SirSearchResultElement element = iter.next();
 			resultsInputs.addAll(((SirDetailedSensorDescription) element
@@ -94,7 +94,7 @@ public class SearchByInputOutputTest {
 
 		assertNotNull(results);
 		Iterator<SirSearchResultElement> iter = results.iterator();
-		ArrayList<String> resultsOutputs = new ArrayList<String>();
+		ArrayList<String> resultsOutputs = new ArrayList<>();
 		while (iter.hasNext()) {
 			SirSearchResultElement element = iter.next();
 			resultsOutputs.addAll(((SirDetailedSensorDescription) element

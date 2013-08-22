@@ -22,58 +22,36 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 
-import javax.servlet.UnavailableException;
-
-import net.opengis.sensorML.x101.AbstractProcessType;
-import net.opengis.sos.x10.RegisterSensorDocument.RegisterSensor.SensorDescription;
-
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
+import org.n52.sir.IT.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
-import org.n52.sir.json.SearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
-import org.x52North.sir.x032.HarvestServiceRequestDocument.HarvestServiceRequest;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.InsertedSensor;
-import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
-import org.x52North.sir.x032.InsertSensorInfoRequestDocument.InsertSensorInfoRequest;
-import org.x52North.sir.x032.SimpleSensorDescriptionDocument.SimpleSensorDescription;
-import org.x52North.sir.x032.SearchSensorRequestDocument;
-import org.x52North.sir.x032.SearchSensorResponseDocument;
 
 public class Harvesting {
-	private String serviceURL = "http://sensorweb.demo.52north.org/EO2HeavenSOS/sos";
+	
+    private static Client client;
+
+    private String serviceURL = "http://sensorweb.demo.52north.org/EO2HeavenSOS/sos";
 
 	private String serviceType = "SOS";
 
-	@Before
-	public void prepare() throws UnavailableException, OwsExceptionReport {
-
-		if (SirConfigurator.getInstance() == null) {
-			InputStream dbStream = ClassLoader
-					.getSystemResourceAsStream("prop/db.PROPERTIES");
-			InputStream sirStream = ClassLoader
-					.getSystemResourceAsStream("prop/sir.PROPERTIES");
-			// Read configurator if null
-			SirConfigurator.getInstance(sirStream, dbStream, null, null);
-
-		}
-	}
-
+	@BeforeClass
+    public static void setUp() {
+        client = GuiceUtil.configureSirClient();
+    }
 
 	@Test
 	public void harvestService() throws IOException, OwsExceptionReport,
@@ -82,7 +60,7 @@ public class Harvesting {
 				"Requests/HarvestService_WeatherSOS.xml").getFile());
 		HarvestServiceRequestDocument doc = HarvestServiceRequestDocument.Factory
 				.parse(f);
-		XmlObject resp = Client.xSendPostRequest(doc, new URI(serviceURL));
+		XmlObject resp = client.xSendPostRequest(doc, new URI(this.serviceURL));
 		System.out.println(resp);
 
 		HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory

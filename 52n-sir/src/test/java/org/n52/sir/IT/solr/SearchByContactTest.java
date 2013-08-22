@@ -29,8 +29,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
-import net.opengis.sensorML.x101.SystemType;
-
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
@@ -67,7 +65,7 @@ public class SearchByContactTest {
 
 		assertNotNull(results);
 		Iterator<SirSearchResultElement> iter = results.iterator();
-		ArrayList<Object> resultsContacts = new ArrayList<Object>();
+		ArrayList<Object> resultsContacts = new ArrayList<>();
 		while (iter.hasNext()) {
 			SirSearchResultElement element = iter.next();
 			resultsContacts.addAll(((SirDetailedSensorDescription) element

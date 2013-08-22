@@ -69,7 +69,7 @@ public class SearchByClassifierTest {
 		assertNotNull(results);
 
 		Iterator<SirSearchResultElement> iter = results.iterator();
-		ArrayList<Object> resultsClassifiers = new ArrayList<Object>();
+		ArrayList<Object> resultsClassifiers = new ArrayList<>();
 		while (iter.hasNext()) {
 			SirSearchResultElement element = iter.next();
 			resultsClassifiers.addAll(((SirDetailedSensorDescription) element

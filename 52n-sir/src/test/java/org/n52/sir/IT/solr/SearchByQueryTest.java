@@ -69,7 +69,7 @@ public class SearchByQueryTest {
 	public void keywordTemporalSearch() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		Calendar c = Calendar.getInstance();
 		c.set(2009, 11, 31);
 		Date start = c.getTime();
@@ -105,7 +105,7 @@ public class SearchByQueryTest {
 	public void keywordSpatialSearch() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("keyword", "test");
 		map.put("lat", "1.5");
 		map.put("lng", "3.49");
@@ -135,7 +135,7 @@ public class SearchByQueryTest {
 	public void temporalSpatialSearch() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		Calendar c = Calendar.getInstance();
 		c.set(2009, 11, 31);
 		Date start = c.getTime();
@@ -178,7 +178,7 @@ public class SearchByQueryTest {
 	public void keywordTemporalSpatialSearch() {
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		// Search by keywords and By StartDate
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		Calendar c = Calendar.getInstance();
 		c.set(2009, 11, 31);
 		Date start = c.getTime();

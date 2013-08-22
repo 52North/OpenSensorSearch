@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.catalog.csw;
+package org.n52.sir.csw;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,6 +22,7 @@ import java.net.URL;
 import org.apache.xmlbeans.XmlException;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogFactory;
+import org.n52.sir.catalog.csw.CswFactory;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

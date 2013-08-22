@@ -21,30 +21,25 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
-import org.n52.sir.ows.OwsExceptionReport;
 
-public class ThingSpeakTest {
+public class ThingSpeak {
+    
     @Test
-    public void harvestJSFile() throws OwsExceptionReport, SolrServerException, IOException {
+    public void harvestJSFile() {
         File harvestScript = new File(ClassLoader.getSystemResource("Requests/harvestThingSpeak.js").getFile());
         IJSExecute execEngine = new RhinoJSExecute();
         String id = execEngine.execute(harvestScript);
         assertFalse(id.equals("-1"));
 
-        // FIXME unit test cannot rely on database running
-        // TODO inject a dummy database to RhinoJSExecute, e.g. using http://code.google.com/p/mockito/, and
-        // as that dummy object if the sensors were harvested
-
+        // TODO use mockup DB
         SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
         Collection<SirSearchResultElement> elements = dao.searchByID(id);
         assertNotEquals(elements.size(), 0);

@@ -33,7 +33,7 @@ import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 
-public class JSHarvestTest {
+public class JSHarvest {
     @Test
     public void harvestJSFile() throws SolrServerException, IOException {
         File harvestScript = new File(ClassLoader.getSystemResource("Requests/harvestScript.js").getFile());

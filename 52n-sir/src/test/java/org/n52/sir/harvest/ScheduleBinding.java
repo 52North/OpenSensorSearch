@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -42,13 +39,11 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ds.solr.SolrConnection;
 
-public class scheduleBindingTest {
+public class ScheduleBinding {
 	public static final String randomString = "z7ecmioktu";
 	//@Test
 	public void testBinding() throws HttpException, IOException, InterruptedException, SolrServerException {

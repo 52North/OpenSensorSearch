@@ -21,6 +21,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
@@ -117,7 +118,7 @@ public class SearchSensorListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
         SirSearchSensorResponse response = new SirSearchSensorResponse();
-        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<SirSearchResultElement>();
+        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
 
         if (searchSensReq.getSensIdent() != null) {
             // search by sensorIdentification
@@ -171,12 +172,19 @@ public class SearchSensorListener implements ISirRequestListener {
                         log.debug("Adding phenomena to search criteria: " + Arrays.toString(newPhenomena.toArray()));
                     phenomena.addAll(newPhenomena);
                 }
+
+                // search Solr
                 SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-                searchResElements = (ArrayList<SirSearchResultElement>) dao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                         searchSensReq.isSimpleResponse());
-                // searchResElements = (ArrayList<SirSearchResultElement>)
-                // this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                // searchSensReq.isSimpleResponse());
+                ArrayList<SirSearchResultElement> searchResElementsSolr = (ArrayList<SirSearchResultElement>) dao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                                                                               searchSensReq.isSimpleResponse());
+                // search PostGreSQL
+                ArrayList<SirSearchResultElement> searchResElementsSir = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                                                                                             searchSensReq.isSimpleResponse());
+
+                // union the searches
+                log.debug("Found {} results in Solr, {} in Postgres.", searchResElementsSolr.size(), searchResElementsSir.size());
+                Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
+                Collections.addAll(searchResElements, searchResElementsSir.toArray(new SirSearchResultElement[] {}));
             }
             catch (OwsExceptionReport e) {
                 return new ExceptionResponse(e.getDocument());

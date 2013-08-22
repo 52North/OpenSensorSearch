@@ -62,6 +62,8 @@ import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * 
  * TODO move text snippets to properties file
@@ -128,6 +130,9 @@ public class HtmlListener implements IOpenSearchListener {
     // TODO make this a configuration parameter
     private boolean createTimeSeriesLinks = false;
 
+    @Inject
+    Client sirClient;
+
     public HtmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
@@ -144,7 +149,6 @@ public class HtmlListener implements IOpenSearchListener {
         ICapabilitiesPermalinkMapper cpm2 = new WeatherSosCPM();
         add(cpm2);
 
-        
         if (this.createTimeSeriesLinks)
             log.warn("Permalink generation is disabled.");
     }
@@ -648,8 +652,9 @@ public class HtmlListener implements IOpenSearchListener {
         XmlObject caps;
         // TODO use threads for this, then update the interface one after the other (loader image and
         // AJAX?)
+
         try {
-            caps = Client.requestCapabilities(serviceReference.getService().getType(), url.toURI());
+            caps = this.sirClient.requestCapabilities(serviceReference.getService().getType(), url.toURI());
 
             if (caps instanceof ExceptionReportDocument) {
                 log.debug("Got ExceptionReportDocument as response!\n\n" + caps.xmlText());

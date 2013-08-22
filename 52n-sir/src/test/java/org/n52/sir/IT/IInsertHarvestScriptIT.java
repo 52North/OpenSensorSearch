@@ -26,14 +26,15 @@ import org.n52.sir.ds.IInsertHarvestScriptDAO;
 
 public class IInsertHarvestScriptIT {
 
+    private static SirConfigurator config;
+
     @BeforeClass
     public static void setUp() {
-        Util.configureSirConfigurator();
+        config = GuiceUtil.configureSirConfigurator();
     }
 
     @Test
     public void insertScript() {
-        SirConfigurator config = SirConfigurator.getInstance();
         IDAOFactory f = config.getFactory();
 
         IInsertHarvestScriptDAO dao = f.insertHarvestScriptDAO();

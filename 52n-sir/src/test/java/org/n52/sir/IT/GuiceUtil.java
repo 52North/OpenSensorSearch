@@ -29,9 +29,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
 
-public class Util {
+public class GuiceUtil {
 
-    private static Logger log = LoggerFactory.getLogger(Util.class);
+    private static Logger log = LoggerFactory.getLogger(GuiceUtil.class);
 
     public static Client configureSirClient() {
         Injector i = Guice.createInjector(new AbstractModule() {
@@ -57,7 +57,7 @@ public class Util {
         return i.getInstance(Client.class);
     }
 
-    public static void configureSirConfigurator() {
+    public static SirConfigurator configureSirConfigurator() {
         Injector i = Guice.createInjector(new AbstractModule() {
 
             @Override
@@ -75,12 +75,13 @@ public class Util {
                 }
 
                 bind(SirConfigurator.class);
-                log.info("Configured client for tests.");
+                log.info("Configured SirConfigurator for tests.");
             }
         });
 
         SirConfigurator sc = i.getInstance(SirConfigurator.class);
         log.info("SirConfigurator: {}", sc);
+        return sc;
     }
 
 }

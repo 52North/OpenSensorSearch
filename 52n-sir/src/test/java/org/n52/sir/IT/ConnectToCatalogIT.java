@@ -46,7 +46,7 @@ public class ConnectToCatalogIT {
 
     @BeforeClass
     public static void setUp() {
-        client = Util.configureSirClient();
+        client = GuiceUtil.configureSirClient();
     }
 
     @Test

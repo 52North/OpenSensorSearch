@@ -36,7 +36,7 @@ public class GetSensorStatusIT {
 
     @BeforeClass
     public static void setUp() {
-        client = Util.configureSirClient();
+        client = GuiceUtil.configureSirClient();
     }
     
     @Test

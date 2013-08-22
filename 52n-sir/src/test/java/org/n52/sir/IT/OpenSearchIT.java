@@ -68,7 +68,7 @@ public class OpenSearchIT {
 
     @BeforeClass
     public static void setUp() {
-        client = Util.configureSirClient();
+        client = GuiceUtil.configureSirClient();
     }
 
     private void insertSensor(String path) throws XmlException, IOException, OwsExceptionReport, HttpException {

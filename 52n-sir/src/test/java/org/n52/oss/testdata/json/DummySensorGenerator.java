@@ -38,7 +38,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.sir.IT.Util;
+import org.n52.sir.IT.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirTimePeriod;
@@ -56,7 +56,7 @@ public class DummySensorGenerator {
     
     @BeforeClass
     public static void setUp() {
-        Util.configureSirClient();
+        GuiceUtil.configureSirClient();
     }
 
     @Test

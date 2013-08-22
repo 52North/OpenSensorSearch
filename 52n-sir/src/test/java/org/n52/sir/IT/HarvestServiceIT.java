@@ -43,7 +43,7 @@ public class HarvestServiceIT {
 
     @BeforeClass
     public static void setUp() {
-        client = Util.configureSirClient();
+        client = GuiceUtil.configureSirClient();
     }
 
     @Test

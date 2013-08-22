@@ -37,7 +37,7 @@ public class SearchSensorIT {
 
     @BeforeClass
     public static void setUp() {
-        client = Util.configureSirClient();
+        client = GuiceUtil.configureSirClient();
     }
 
     public void searchSensor(String file) throws Exception {

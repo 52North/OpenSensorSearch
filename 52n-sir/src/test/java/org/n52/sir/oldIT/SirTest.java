@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.junit.BeforeClass;
-import org.n52.sir.IT.Util;
+import org.n52.sir.IT.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public abstract class SirTest {
 
     @BeforeClass
     public static void setUp() {
-        client = Util.configureSirClient();
+        client = GuiceUtil.configureSirClient();
 
         try (InputStream exampleStream = SirTest.class.getResourceAsStream(REQUEST_EXAMPLES_GET_FILE);) {
             examples.load(exampleStream);

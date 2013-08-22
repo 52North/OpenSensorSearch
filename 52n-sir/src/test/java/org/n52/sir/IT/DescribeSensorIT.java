@@ -52,7 +52,7 @@ public class DescribeSensorIT {
 
     @BeforeClass
     public static void setUp() {
-        client = Util.configureSirClient();
+        client = GuiceUtil.configureSirClient();
     }
 
     @Before

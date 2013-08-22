@@ -44,6 +44,8 @@ import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
@@ -60,6 +62,9 @@ public class SOSServiceHarvester extends Harvester {
     private static final String PROCEDURE_PARAMETER_NAME = "procedure";
 
     private SirHarvestServiceRequest request;
+
+    @Inject
+    private Client client;
 
     /**
      * 
@@ -88,7 +93,7 @@ public class SOSServiceHarvester extends Harvester {
         URI uri = Tools.url2Uri(this.request);
 
         // request capabilities
-        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), uri);
+        XmlObject caps = this.client.requestCapabilities(this.request.getServiceType(), uri);
         Capabilities sosCaps;
         if (caps instanceof CapabilitiesDocument) {
             CapabilitiesDocument doc = (CapabilitiesDocument) caps;

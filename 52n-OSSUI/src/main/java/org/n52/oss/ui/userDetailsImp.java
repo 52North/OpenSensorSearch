@@ -1,26 +1,32 @@
 package org.n52.oss.ui;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import org.n52.oss.ui.services.GrantedAuthorityImpl;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class userDetailsImp implements UserDetails {
 	private String username;
 	private String password;
-	private Collection<? extends GrantedAuthority> authorities;
+	private Collection<org.n52.oss.ui.services.GrantedAuthorityImpl> authorities;
 
 	public userDetailsImp(String user, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<GrantedAuthorityImpl> authorities) {
 		this.username = user;
 		this.password = password;
-		this.authorities = authorities;
+		if (authorities == null) {
+			this.authorities = new ArrayList<GrantedAuthorityImpl>();
+			this.authorities.add(new GrantedAuthorityImpl("ROLE_USER"));
+		} else
+			this.authorities = authorities;
 	}
 
 	@Override
-	public Collection<GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<GrantedAuthorityImpl> getAuthorities() {
+		
+		return authorities;
 	}
 
 	@Override
@@ -52,5 +58,4 @@ public class userDetailsImp implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-
 }

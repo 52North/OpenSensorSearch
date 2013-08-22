@@ -13,10 +13,7 @@
 	</http>
  
 	<authentication-manager>
-	  <authentication-provider>
-	    <user-service>
-		<user name="oss" password="123456789" authorities="ROLE_USER" />
-	    </user-service>
+	  <authentication-provider user-service-ref="userDetailsService">
 	  </authentication-provider>
 	</authentication-manager>
  

@@ -31,7 +31,7 @@ import org.x52North.sir.x032.StatusDocument.Status;
  * @author Jan Schulte
  * 
  */
-public class InsertSensorStatusBean extends AbstractBean {
+public class InsertSensorStatusBean extends TestClientBean {
 
     private static final String TIME_STAMP_ID = "status_time_stamp";
 

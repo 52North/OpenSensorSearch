@@ -25,7 +25,7 @@ import org.x52North.sir.x032.DisconnectFromCatalogRequestDocument.DisconnectFrom
  * @author Jan Schulte
  * 
  */
-public class DisconnectFromCatalogBean extends AbstractBean {
+public class DisconnectFromCatalogBean extends TestClientBean {
 
     private String catalogUrl = "";
 

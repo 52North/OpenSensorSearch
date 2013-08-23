@@ -27,15 +27,13 @@
 <jsp:setProperty property="*" name="disconnectFromCatalog" />
 
 <%
-	if (request.getParameter("build") != null) {
-		disconnectFromCatalog.buildRequest();
-	}
+    if (request.getParameter("build") != null) {
+        disconnectFromCatalog.buildRequest();
+    }
 
-	if (request.getParameter("sendRequest") != null) {
-		disconnectFromCatalog.setResponseString(Client
-				.sendPostRequest(disconnectFromCatalog
-						.getRequestString()));
-	}
+    if (request.getParameter("sendRequest") != null) {
+        disconnectFromCatalog.sendRequest(disconnectFromCatalog.getRequestString());
+    }
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,41 +45,49 @@
 </head>
 <body onload="load()">
 
-<div id="content"><jsp:include page="header.jsp" /> <jsp:include
-	page="../menu.jsp" />
+	<div id="content"><jsp:include page="header.jsp" />
+		<jsp:include page="../menu.jsp" />
 
-<div id="pageContent">
+		<div id="pageContent">
 
-<h2>Disconnect From Catalog Request</h2>
+			<h2>Disconnect From Catalog Request</h2>
 
-<form action="disconnectFromCatalog.jsp" method="post">
+			<form action="disconnectFromCatalog.jsp" method="post">
 
-<ul class="inputTablesList">
-	<li>
-	<table style="">
-		<tr>
-			<td class="inputTitle">Catalog URL:</td>
-			<td><input type="text" class="inputField" name="catalogUrl" size="50"
-				value="<%=disconnectFromCatalog.getCatalogUrl()%>" /></td>
-		</tr>
-	</table>
-	</li>
-</ul>
+				<ul class="inputTablesList">
+					<li>
+						<table style="">
+							<tr>
+								<td class="inputTitle">Catalog URL:</td>
+								<td><input type="text" class="inputField" name="catalogUrl"
+									size="50" value="<%=disconnectFromCatalog.getCatalogUrl()%>" /></td>
+							</tr>
+						</table>
+					</li>
+				</ul>
 
-<p><input type="submit" name="build" value="Build request" /></p>
-</form>
+				<p>
+					<input type="submit" name="build" value="Build request" />
+				</p>
+			</form>
 
-<form action="disconnectFromCatalog.jsp" method="post">
-<p class="textareaBorder"><textarea id="requestStringArea"
-	name="requestString" class="smallTextarea" rows="10" cols="10"><%=disconnectFromCatalog.getRequestString()%></textarea></p>
-<p><input type="submit" name="sendRequest" value="Send request" /></p>
-</form>
+			<form action="disconnectFromCatalog.jsp" method="post">
+				<p class="textareaBorder">
+					<textarea id="requestStringArea" name="requestString"
+						class="smallTextarea" rows="10" cols="10"><%=disconnectFromCatalog.getRequestString()%></textarea>
+				</p>
+				<p>
+					<input type="submit" name="sendRequest" value="Send request" />
+				</p>
+			</form>
 
-<p class="textareaBorder"><textarea id="responseStringArea"
-	class="mediumTextarea" rows="10" cols="10"><%=disconnectFromCatalog.getResponseString()%></textarea></p>
+			<p class="textareaBorder">
+				<textarea id="responseStringArea" class="mediumTextarea" rows="10"
+					cols="10"><%=disconnectFromCatalog.getResponseString()%></textarea>
+			</p>
 
-</div>
+		</div>
 
-</div>
+	</div>
 </body>
 </html>

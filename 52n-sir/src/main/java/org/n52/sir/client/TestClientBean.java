@@ -13,20 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
 
+import java.io.IOException;
+
+import org.apache.http.HttpException;
+import org.n52.sir.ows.OwsExceptionReport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
-public abstract class AbstractBean {
+public abstract class TestClientBean {
+
+    private static Logger log = LoggerFactory.getLogger(TestClientBean.class);
 
     protected String requestString = "";
 
     protected String responseString = "";
 
+    @Inject
+    private Client client;
+
     /**
-     * Build the request based on the user input, then save it in {@link AbstractBean#requestString}.
+     * Build the request based on the user input, then save it in {@link TestClientBean#requestString}.
      */
     public abstract void buildRequest();
 
@@ -58,6 +73,18 @@ public abstract class AbstractBean {
      */
     public void setResponseString(String response) {
         this.responseString = response;
+    }
+
+    public String sendRequest(String request) {
+        String response;
+        try {
+            response = this.client.sendPostRequest(request);
+        }
+        catch (IOException | OwsExceptionReport | HttpException e) {
+            log.warn("Could not send request in bean.", e);
+            response = "ERROR: " + e.getMessage();
+        }
+        return response;
     }
 
 }

@@ -190,7 +190,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         initializeTempXSLFile(profileFile, svrlFile);
 
         this.transformer = tFactory.newTransformer(source);
-        // this.db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
         if (log.isDebugEnabled())
             log.debug("NEW SensorML4DiscoveryValidatorImpl");

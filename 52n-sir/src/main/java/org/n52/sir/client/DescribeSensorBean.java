@@ -25,7 +25,7 @@ import org.x52North.sir.x032.DescribeSensorRequestDocument.DescribeSensorRequest
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class DescribeSensorBean extends AbstractBean {
+public class DescribeSensorBean extends TestClientBean {
 
     private String sensorIdInSir = "";
 

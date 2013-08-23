@@ -27,14 +27,13 @@
 <jsp:setProperty property="*" name="deleteSensorInfo" />
 
 <%
-	if (request.getParameter("build") != null) {
-	    deleteSensorInfo.buildRequest();
-	}
+    if (request.getParameter("build") != null) {
+        deleteSensorInfo.buildRequest();
+    }
 
-	if (request.getParameter("sendRequest") != null) {
-	    deleteSensorInfo.setResponseString(Client
-				.sendPostRequest(deleteSensorInfo.getRequestString()));
-	}
+    if (request.getParameter("sendRequest") != null) {
+        deleteSensorInfo.sendRequest(deleteSensorInfo.getRequestString());
+    }
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,97 +45,105 @@
 </head>
 <body onload="load()">
 
-<div id="content"><jsp:include page="header.jsp" /> <jsp:include
-	page="../menu.jsp" />
+	<div id="content"><jsp:include page="header.jsp" />
+		<jsp:include page="../menu.jsp" />
 
-<div id="pageContent">
+		<div id="pageContent">
 
-<h2>Delete Sensor Info Request</h2>
+			<h2>Delete Sensor Info Request</h2>
 
-<form action="deleteSensorInfo.jsp" method="post">
+			<form action="deleteSensorInfo.jsp" method="post">
 
-<ul class="inputTablesList">
-	<li>
-	<p>Sensor identification (mandatory; provide only one choice):</p>
-	<table style="">
-		<tr>
-			<td colspan="2">by SensorID:</td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Sensor ID In SIR</td>
-			<td><input type="text" name="sensorIDinSIR"
-				class="inputField"
-				value="<%=deleteSensorInfo.getSensorIDinSIR()%>" /></td>
-		</tr>
-		<tr>
-			<td colspan="2">by Service Description:</td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service URL</td>
-			<td><input type="text" name="serviceURL" class="inputField"
-				value="<%=deleteSensorInfo.getServiceURL()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Type</td>
-			<td><input type="text" name="serviceType" class="inputField"
-				value="<%=deleteSensorInfo.getServiceType()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Specific SensorID</td>
-			<td><input type="text" name="serviceSpecificSensorID"
-				class="inputField"
-				value="<%=deleteSensorInfo.getServiceSpecificSensorID()%>" /></td>
-		</tr>
-	</table>
-	</li>
-	<li>
-	<p>Either Delete Sensor or Service Information that is to be deleted:</p>
-	<table style="">
-			<tr>
-			<td colspan="2">Delete Sensor:</td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Delete</td>
-			<td><input type="checkbox" name="deleteSensor"
-				<%=deleteSensorInfo.isDeleteSensor() ? "CHECKED"
-					: ""%> /></td>
-		</tr>
-		<tr>
-			<td colspan="2">Service Info:</td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service URL</td>
-			<td><input type="text" name="deleteRefURL"
-				value="<%=deleteSensorInfo.getDeleteRefURL()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Type</td>
-			<td><input type="text" name="deleteRefType"
-				value="<%=deleteSensorInfo.getDeleteRefType()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Specific SensorID</td>
-			<td><input type="text"
-				name="deleteRefSensorID"
-				value="<%=deleteSensorInfo.getDeleteRefSensorID()%>" /></td>
-		</tr>
-	</table>
-	</li>
-</ul>
+				<ul class="inputTablesList">
+					<li>
+						<p>Sensor identification (mandatory; provide only one choice):</p>
+						<table style="">
+							<tr>
+								<td colspan="2">by SensorID:</td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Sensor ID In SIR</td>
+								<td><input type="text" name="sensorIDinSIR"
+									class="inputField"
+									value="<%=deleteSensorInfo.getSensorIDinSIR()%>" /></td>
+							</tr>
+							<tr>
+								<td colspan="2">by Service Description:</td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service URL</td>
+								<td><input type="text" name="serviceURL" class="inputField"
+									value="<%=deleteSensorInfo.getServiceURL()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Type</td>
+								<td><input type="text" name="serviceType"
+									class="inputField"
+									value="<%=deleteSensorInfo.getServiceType()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Specific SensorID</td>
+								<td><input type="text" name="serviceSpecificSensorID"
+									class="inputField"
+									value="<%=deleteSensorInfo.getServiceSpecificSensorID()%>" /></td>
+							</tr>
+						</table>
+					</li>
+					<li>
+						<p>Either Delete Sensor or Service Information that is to be
+							deleted:</p>
+						<table style="">
+							<tr>
+								<td colspan="2">Delete Sensor:</td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Delete</td>
+								<td><input type="checkbox" name="deleteSensor"
+									<%=deleteSensorInfo.isDeleteSensor() ? "CHECKED" : ""%> /></td>
+							</tr>
+							<tr>
+								<td colspan="2">Service Info:</td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service URL</td>
+								<td><input type="text" name="deleteRefURL"
+									value="<%=deleteSensorInfo.getDeleteRefURL()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Type</td>
+								<td><input type="text" name="deleteRefType"
+									value="<%=deleteSensorInfo.getDeleteRefType()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Specific SensorID</td>
+								<td><input type="text" name="deleteRefSensorID"
+									value="<%=deleteSensorInfo.getDeleteRefSensorID()%>" /></td>
+							</tr>
+						</table>
+					</li>
+				</ul>
 
-<p><input type="submit" name="build" value="Build request" /></p>
-</form>
+				<p>
+					<input type="submit" name="build" value="Build request" />
+				</p>
+			</form>
 
-<form action="deleteSensorInfo.jsp" method="post">
-<p class="textareaBorder"><textarea id="requestStringArea"
-	class="mediumTextarea" name="requestString" rows="10" cols="10"><%=deleteSensorInfo.getRequestString()%></textarea></p>
-<p><input type="submit" name="sendRequest" value="Send request" /></p>
-</form>
+			<form action="deleteSensorInfo.jsp" method="post">
+				<p class="textareaBorder">
+					<textarea id="requestStringArea" class="mediumTextarea"
+						name="requestString" rows="10" cols="10"><%=deleteSensorInfo.getRequestString()%></textarea>
+				</p>
+				<p>
+					<input type="submit" name="sendRequest" value="Send request" />
+				</p>
+			</form>
 
-<p class="textareaBorder"><textarea id="responseStringArea"
-	class="mediumTextarea" rows="10" cols="10"><%=deleteSensorInfo.getResponseString()%></textarea></p>
+			<p class="textareaBorder">
+				<textarea id="responseStringArea" class="mediumTextarea" rows="10"
+					cols="10"><%=deleteSensorInfo.getResponseString()%></textarea>
+			</p>
 
-</div>
-</div>
+		</div>
+	</div>
 </body>
 </html>

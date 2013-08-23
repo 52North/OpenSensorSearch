@@ -47,7 +47,7 @@ public class Decoder {
         SirSensor sensor = SensorMLDecoder.decode(doc);
         
         Collection<String> keywords = sensor.getKeywords();
-        ArrayList<String> actual = new ArrayList<String>();
+        ArrayList<String> actual = new ArrayList<>();
         actual.addAll(keywords);
         
         assertThat(actual, hasItems("testkeyword", "test", "another keyword"));

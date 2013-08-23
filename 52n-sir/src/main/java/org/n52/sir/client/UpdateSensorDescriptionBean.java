@@ -34,7 +34,7 @@ import org.x52North.sir.x032.UpdateSensorDescriptionRequestDocument.UpdateSensor
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class UpdateSensorDescriptionBean extends AbstractBean {
+public class UpdateSensorDescriptionBean extends TestClientBean {
 
     private String sensorDescription = "";
 

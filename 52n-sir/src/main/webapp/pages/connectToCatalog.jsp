@@ -27,14 +27,13 @@
 <jsp:setProperty property="*" name="connectToCatalog" />
 
 <%
-	if (request.getParameter("build") != null) {
-		connectToCatalog.buildRequest();
-	}
+    if (request.getParameter("build") != null) {
+        connectToCatalog.buildRequest();
+    }
 
-	if (request.getParameter("sendRequest") != null) {
-		connectToCatalog.setResponseString(Client
-				.sendPostRequest(connectToCatalog.getRequestString()));
-	}
+    if (request.getParameter("sendRequest") != null) {
+        connectToCatalog.sendRequest(connectToCatalog.getRequestString());
+    }
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,47 +45,56 @@
 </head>
 <body onload="load()">
 
-<div id="content"><jsp:include page="header.jsp" /> <jsp:include
-	page="../menu.jsp" />
+	<div id="content"><jsp:include page="header.jsp" />
+		<jsp:include page="../menu.jsp" />
 
-<div id="pageContent">
+		<div id="pageContent">
 
-<h2>ConnectToCatalogRequest</h2>
+			<h2>ConnectToCatalogRequest</h2>
 
-<form action="connectToCatalog.jsp" method="post">
+			<form action="connectToCatalog.jsp" method="post">
 
-<ul class="inputTablesList">
-	<li>
-	<table>
-		<tr>
-			<td class="inputTitle">Catalog URL:</td>
-			<td><input type="text" class="inputField" name="catalogUrl" size="30"
-				value="<%=connectToCatalog.getCatalogUrl()%>" /></td>
-			
-		</tr>
-		<tr>
-			<td class="inputTitle">Push Interval:</td>
-			<td><input type="text" name="pushInterval" size="6"
-				value="<%=connectToCatalog.getPushInterval()%>" />(seconds, '0' for single catalog connection)</td>
-		</tr>
-	</table>
-	</li>
-</ul>
+				<ul class="inputTablesList">
+					<li>
+						<table>
+							<tr>
+								<td class="inputTitle">Catalog URL:</td>
+								<td><input type="text" class="inputField" name="catalogUrl"
+									size="30" value="<%=connectToCatalog.getCatalogUrl()%>" /></td>
 
-<p><input type="submit" name="build" value="Build request" /></p>
-</form>
+							</tr>
+							<tr>
+								<td class="inputTitle">Push Interval:</td>
+								<td><input type="text" name="pushInterval" size="6"
+									value="<%=connectToCatalog.getPushInterval()%>" />(seconds,
+									'0' for single catalog connection)</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
 
-<form action="connectToCatalog.jsp" method="post">
-<p class="textareaBorder"><textarea id="requestStringArea"
-	name="requestString" class="smallTextarea" rows="10" cols="10"><%=connectToCatalog.getRequestString()%></textarea></p>
-<p><input type="submit" name="sendRequest" value="Send request" /></p>
-</form>
+				<p>
+					<input type="submit" name="build" value="Build request" />
+				</p>
+			</form>
 
-<p class="textareaBorder"><textarea id="responseStringArea"
-	class="smallTextarea" rows="10" cols="10"><%=connectToCatalog.getResponseString()%></textarea></p>
+			<form action="connectToCatalog.jsp" method="post">
+				<p class="textareaBorder">
+					<textarea id="requestStringArea" name="requestString"
+						class="smallTextarea" rows="10" cols="10"><%=connectToCatalog.getRequestString()%></textarea>
+				</p>
+				<p>
+					<input type="submit" name="sendRequest" value="Send request" />
+				</p>
+			</form>
 
-</div>
+			<p class="textareaBorder">
+				<textarea id="responseStringArea" class="smallTextarea" rows="10"
+					cols="10"><%=connectToCatalog.getResponseString()%></textarea>
+			</p>
 
-</div>
+		</div>
+
+	</div>
 </body>
 </html>

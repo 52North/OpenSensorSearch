@@ -135,11 +135,7 @@ public class SensorMLDecoder {
 				sbIdent.append(", ");
 			}
 		}
-		sbIdent.replace(sbIdent.length() - 2, sbIdent.length(), ""); // remove
-																		// last
-																		// space
-																		// and
-																		// comma
+		sbIdent.replace(sbIdent.length() - 2, sbIdent.length(), "");
 		sbIdent.append(";");
 		return sbIdent.toString();
 	}
@@ -159,9 +155,7 @@ public class SensorMLDecoder {
 				sbKeywords.append(", ");
 			}
 		}
-		sbKeywords.replace(sbKeywords.length() - 2, sbKeywords.length(), ""); // remove
-																				// last
-																				// space
+		sbKeywords.replace(sbKeywords.length() - 2, sbKeywords.length(), "");
 		sbKeywords.append(";");
 		return sbKeywords.toString();
 	}
@@ -178,49 +172,20 @@ public class SensorMLDecoder {
 
 		// TODO check how this creates the identification part...
 
-		// set sensorML file
 		sensor.setSensorMLDocument(sensorML);
-
-		// set bounding box
 		sensor.setbBox(getBoundingBox(sensorML));
-
-		// set phenomenon
 		sensor.setPhenomenon(getPhenomenona(sensorML));
-
-		// set time period
 		sensor.setTimePeriod(getTimePeriod(sensorML));
-
-		// set text
 		sensor.setText(getText(sensorML));
-
-		// set keywords
 		sensor.setKeywords(getKeywords(sensorML));
-
-		// set Longitude and Latitude
 		sensor.setLatitude(getLatitude(sensorML));
-
-		// set latitude
 		sensor.setLongitude(getLongitude(sensorML));
-
-		// set Description
 		sensor.setDescription(getDescription(sensorML));
-
-		// set Classification
 		sensor.setClassificationList(getClassificationList(sensorML));
-
-		// set Identifications
 		sensor.setIdentificationsList(getIdentificationList(sensorML));
-
-		// set Contacts
 		sensor.setContacts(getContacts(sensorML));
-
-		// set Interfaces
 		sensor.setInterfaces(getInterfaces(sensorML));
-
-		// set Inputs
 		sensor.setInputs(getInputs(sensorML));
-
-		// set Outputs
 		sensor.setOutputs(getOutputs(sensorML));
 
 		return sensor;
@@ -430,50 +395,23 @@ public class SensorMLDecoder {
 			log.debug(errors);
 		}
 
-		// set sensorML file
 		sensor.setSensorMLDocument(Tools
 				.wrapSystemTypeInSensorMLDocument(system));
-
-		// set bounding box
 		sensor.setbBox(getBoundingBox(system));
-
-		// set phenomenon
 		sensor.setPhenomenon(getPhenomenon(system));
-
-		// set time period
 		sensor.setTimePeriod(getTimePeriod(system));
-
-		// set text
 		sensor.setText(getText(system));
-
-		sensor.setLatitude(getLatitude(system));
-
-		// set latitude
 		sensor.setLongitude(getLongitude(system));
-
-		// set Description
 		sensor.setDescription(getDescription(system));
-
-		// set Classification
 		sensor.setClassificationList(getClassificationList(system));
-
-		// set Identifications
 		sensor.setIdentificationsList(getIdentificationList(system));
-
-		// set Contacts
 		sensor.setContacts(getContacts(system));
-		
 		sensor.setKeywords(getKeywords(system));
-/*
-		// set Interfaces
-		sensor.setInterfaces(getInterfaces(system));
 
-		// set Inputs
-		sensor.setInputs(getInputs(system));
+		//sensor.setInterfaces(getInterfaces(system));
+		//sensor.setInputs(getInputs(system));
+		//sensor.setOutputs(getOutputs(system));
 
-		// set Outputs
-		sensor.setOutputs(getOutputs(system));
-*/
 		return sensor;
 	}
 

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.SearchSensorRequestDocument;
@@ -32,37 +33,41 @@ import org.x52North.sir.x032.SearchSensorResponseDocument;
 
 public class SearchSensorIT {
 
-    public void searchSensor(String file, String description) throws Exception {
-        System.out.println(description);
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = GuiceUtil.configureSirClient();
+    }
+
+    public void searchSensor(String file) throws Exception {
         File f = new File( (ClassLoader.getSystemResource(file).getFile()));
         SearchSensorRequestDocument doc = SearchSensorRequestDocument.Factory.parse(f);
 
         XmlObject response = null;
 
-        response = Client.xSendPostRequest(doc);
-        // parse and validate response
+        response = client.xSendPostRequest(doc);
         SearchSensorResponseDocument resp_doc = SearchSensorResponseDocument.Factory.parse(response.getDomNode());
-        // validate the respo_doc
 
         assertTrue("Invalid  Sensor Response", resp_doc.validate());
 
         int send = doc.getSearchSensorRequest().getSensorIdentificationArray().length;
         int response_count = resp_doc.getSearchSensorResponse().sizeOfSearchResultElementArray();
         assertEquals(send, response_count);
-
     }
 
     @Test
     public void searchSensorbyIDInSIR() throws Exception {
-        searchSensor("Requests/SearchSensor_bySensorIDInSIR.xml", "Search Sensor by ID in SIR");
+        searchSensor("Requests/SearchSensor_bySensorIDInSIR.xml");
 
+        // FIXME test must check if the returned sensor is the one with the used ID
     }
 
     @Test
     public void searchSensorByDescription() throws Exception {
+        searchSensor("Requests/SearchSensor_byServiceDescription.xml");
 
-        searchSensor("Requests/SearchSensor_byServiceDescription.xml", "Search Sensor by service Description");
-
+        // FIXME test must check if the returned sensor contains the used service description
     }
 
 }

@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
@@ -34,32 +35,41 @@ import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
  */
 public class DeleteSensorInfoIT {
 
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = GuiceUtil.configureSirClient();
+    }
+    
     @Test
-    public void testPostExampleDeleteReference() throws Exception {
+    public void deleteReference() throws Exception {
         File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo_deleteReference.xml").getFile());
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = client.xSendPostRequest(req);
 
         // parse and validate response
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());
 
         assertTrue(responseDoc.validate());
+        
+        // FIXME test must check whether the reference was actually deleted
     }
 
     @Test
-    public void testPostExampleDeleteSensor() throws Exception {
+    public void deleteSensor() throws Exception {
         File f = new File(ClassLoader.getSystemResource("Requests/DeleteSensorInfo.xml").getFile());
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(req);
+        XmlObject response = client.xSendPostRequest(req);
 
         // parse and validate response
         DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());
         assertTrue(responseDoc.validate());
 
-        int inserted = responseDoc.getDeleteSensorInfoResponse().getNumberOfDeletedSensors();
-        assertEquals(countServiceReferences(req), inserted);
+        int deleted = responseDoc.getDeleteSensorInfoResponse().getNumberOfDeletedSensors();
+        assertEquals(countServiceReferences(req), deleted);
     }
 
     private int countServiceReferences(DeleteSensorInfoRequestDocument isird) {

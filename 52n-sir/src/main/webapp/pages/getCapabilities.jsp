@@ -27,14 +27,13 @@
 <jsp:setProperty property="*" name="getCapabilities" />
 
 <%
-	if (request.getParameter("build") != null) {
-		getCapabilities.buildRequest();
-	}
+    if (request.getParameter("build") != null) {
+        getCapabilities.buildRequest();
+    }
 
-	if (request.getParameter("sendRequest") != null) {
-		getCapabilities.setResponseString(Client
-				.sendPostRequest(getCapabilities.getRequestString()));
-	}
+    if (request.getParameter("sendRequest") != null) {
+        getCapabilities.sendRequest(getCapabilities.getRequestString());
+    }
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,84 +45,91 @@
 </head>
 <body onload="load()">
 
-<div id="content"><jsp:include page="header.jsp" /> <jsp:include
-	page="../menu.jsp" />
+	<div id="content"><jsp:include page="header.jsp" />
+		<jsp:include page="../menu.jsp" />
 
-<div id="pageContent">
+		<div id="pageContent">
 
-<h2>Get Capabilities Request</h2>
+			<h2>Get Capabilities Request</h2>
 
-<form action="getCapabilities.jsp" method="post">
-<ul class="inputTablesList">
-	<li>
-	<table style="">
-		<tr>
-			<td class="inputTitle">Service:</td>
-			<td><select name="service">
-				<option selected="selected">SIR</option>
-			</select></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Update Sequence:</td>
-			<td><input type="text" class="inputField" name="updateSequence" size="60"
-				value="<%=getCapabilities.getUpdateSequence()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Accept Versions:</td>
-			<td><input type="text" class="inputField" name="acceptVersions" size="60"
-				value="<%=getCapabilities.getAcceptVersions()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Sections:</td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Identification:</td>
-			<td><input type="checkbox" name="serviceIdentification"
-				<%=getCapabilities.isServiceIdentification() ? "CHECKED"
-							: ""%> /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Provider:</td>
-			<td><input type="checkbox" name="serviceProvider"
-				<%=getCapabilities.isServiceProvider() ? "CHECKED"
-							: ""%> /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Operations Metadata:</td>
-			<td><input type="checkbox" name="operationsMetadata"
-				<%=getCapabilities.isOperationsMetadata() ? "CHECKED"
-					: ""%> /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Contents:</td>
-			<td><input type="checkbox" name="contents"
-				<%=getCapabilities.isContents() ? "CHECKED" : ""%> /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">All:</td>
-			<td><input type="checkbox" name="all"
-				<%=getCapabilities.isAll() ? "CHECKED" : ""%> /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Accept Formats:</td>
-			<td><input type="text" disabled="disabled"
-				value="not implemented yet" /></td>
-		</tr>
-	</table>
-	</li>
-</ul>
+			<form action="getCapabilities.jsp" method="post">
+				<ul class="inputTablesList">
+					<li>
+						<table style="">
+							<tr>
+								<td class="inputTitle">Service:</td>
+								<td><select name="service">
+										<option selected="selected">SIR</option>
+								</select></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Update Sequence:</td>
+								<td><input type="text" class="inputField"
+									name="updateSequence" size="60"
+									value="<%=getCapabilities.getUpdateSequence()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Accept Versions:</td>
+								<td><input type="text" class="inputField"
+									name="acceptVersions" size="60"
+									value="<%=getCapabilities.getAcceptVersions()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Sections:</td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Identification:</td>
+								<td><input type="checkbox" name="serviceIdentification"
+									<%=getCapabilities.isServiceIdentification() ? "CHECKED" : ""%> /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Provider:</td>
+								<td><input type="checkbox" name="serviceProvider"
+									<%=getCapabilities.isServiceProvider() ? "CHECKED" : ""%> /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Operations Metadata:</td>
+								<td><input type="checkbox" name="operationsMetadata"
+									<%=getCapabilities.isOperationsMetadata() ? "CHECKED" : ""%> /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Contents:</td>
+								<td><input type="checkbox" name="contents"
+									<%=getCapabilities.isContents() ? "CHECKED" : ""%> /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">All:</td>
+								<td><input type="checkbox" name="all"
+									<%=getCapabilities.isAll() ? "CHECKED" : ""%> /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Accept Formats:</td>
+								<td><input type="text" disabled="disabled"
+									value="not implemented yet" /></td>
+							</tr>
+						</table>
+					</li>
+				</ul>
 
-<p><input type="submit" name="build" value="Build request" /></p>
-</form>
-<form action="getCapabilities.jsp" method="post">
-<p class="textareaBorder"><textarea id="requestStringArea"
-	class="mediumTextarea" name="requestString" cols="10" rows="10"><%=getCapabilities.getRequestString()%></textarea></p>
-<p><input type="submit" name="sendRequest" value="Send request" /></p>
-</form>
-<p class="textareaBorder"><textarea id="responseStringArea"
-	class="largeTextarea" cols="10" rows="10"><%=getCapabilities.getResponseString()%></textarea></p>
+				<p>
+					<input type="submit" name="build" value="Build request" />
+				</p>
+			</form>
+			<form action="getCapabilities.jsp" method="post">
+				<p class="textareaBorder">
+					<textarea id="requestStringArea" class="mediumTextarea"
+						name="requestString" cols="10" rows="10"><%=getCapabilities.getRequestString()%></textarea>
+				</p>
+				<p>
+					<input type="submit" name="sendRequest" value="Send request" />
+				</p>
+			</form>
+			<p class="textareaBorder">
+				<textarea id="responseStringArea" class="largeTextarea" cols="10"
+					rows="10"><%=getCapabilities.getResponseString()%></textarea>
+			</p>
 
-</div>
-</div>
+		</div>
+	</div>
 </body>
 </html>

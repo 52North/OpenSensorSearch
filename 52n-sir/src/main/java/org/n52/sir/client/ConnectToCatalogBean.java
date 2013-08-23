@@ -25,7 +25,7 @@ import org.x52North.sir.x032.ConnectToCatalogRequestDocument.ConnectToCatalogReq
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class ConnectToCatalogBean extends AbstractBean {
+public class ConnectToCatalogBean extends TestClientBean {
 
     private String catalogUrl = "";
 

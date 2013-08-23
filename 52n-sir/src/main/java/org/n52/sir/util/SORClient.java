@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.util;
 
 import java.io.IOException;
@@ -41,6 +42,8 @@ import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument;
 import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
 import org.x52North.sor.x031.GetMatchingDefinitionsResponseDocument;
 
+import com.google.inject.Inject;
+
 /**
  * @author Daniel Nüst
  * 
@@ -55,6 +58,9 @@ public class SORClient {
 
     private static final String VERSION = "0.3.0";
 
+    @Inject
+    Client client;
+
     /**
      * 
      * @param serviceVersion
@@ -65,11 +71,11 @@ public class SORClient {
      * @return
      * @throws OwsExceptionReport
      */
-    private static GetMatchingDefinitionsRequestDocument buildRequest(String serviceVersion,
-                                                                      String inputURI,
-                                                                      String matchingTypeString,
-                                                                      int searchDepth,
-                                                                      boolean validateXml) throws OwsExceptionReport {
+    private GetMatchingDefinitionsRequestDocument buildRequest(String serviceVersion,
+                                                               String inputURI,
+                                                               String matchingTypeString,
+                                                               int searchDepth,
+                                                               boolean validateXml) throws OwsExceptionReport {
         GetMatchingDefinitionsRequestDocument requestDoc = GetMatchingDefinitionsRequestDocument.Factory.newInstance();
         GetMatchingDefinitionsRequest request = requestDoc.addNewGetMatchingDefinitionsRequest();
         request.setService(SOR_SERVICE);
@@ -94,14 +100,13 @@ public class SORClient {
         return requestDoc;
     }
 
-    public static Collection<SirSearchCriteria_Phenomenon> getMatchingTypes(SirSearchCriteria_Phenomenon p,
-                                                                            boolean validateXml) throws OwsExceptionReport {
+    public Collection<SirSearchCriteria_Phenomenon> getMatchingTypes(SirSearchCriteria_Phenomenon p, boolean validateXml) throws OwsExceptionReport {
         int searchDepth = p.getSearchDepth();
         SirMatchingType matchingType = p.getMatchingType();
         String phenomenonName = p.getPhenomenonName();
         String sorUrlString = p.getSorUrl();
 
-        Collection<SirSearchCriteria_Phenomenon> matchedPhenomena = new ArrayList<SirSearchCriteria_Phenomenon>();
+        Collection<SirSearchCriteria_Phenomenon> matchedPhenomena = new ArrayList<>();
 
         URI sorUri;
         try {
@@ -134,8 +139,8 @@ public class SORClient {
      * @param matchingURIArray
      * @return
      */
-    private static Collection<SirSearchCriteria_Phenomenon> parseMatchingURIs(String[] matchingURIArray) {
-        ArrayList<SirSearchCriteria_Phenomenon> phenomena = new ArrayList<SirSearchCriteria_Phenomenon>();
+    private Collection<SirSearchCriteria_Phenomenon> parseMatchingURIs(String[] matchingURIArray) {
+        ArrayList<SirSearchCriteria_Phenomenon> phenomena = new ArrayList<>();
 
         for (String s : matchingURIArray) {
             SirSearchCriteria_Phenomenon newPhen = new SirSearchCriteria_Phenomenon(s);
@@ -152,7 +157,7 @@ public class SORClient {
      * @return
      * @throws OwsExceptionReport
      */
-    private static CapabilitiesDocument requestCapabilities(URI sorUri, boolean validateXml) throws OwsExceptionReport {
+    private CapabilitiesDocument requestCapabilities(URI sorUri, boolean validateXml) throws OwsExceptionReport {
         GetCapabilitiesDocument getCapRequestDoc = GetCapabilitiesDocument.Factory.newInstance();
         GetCapabilities request = getCapRequestDoc.addNewGetCapabilities();
 
@@ -170,7 +175,7 @@ public class SORClient {
 
         XmlObject response;
         try {
-            response = Client.xSendPostRequest(getCapRequestDoc, sorUri);
+            response = this.client.xSendPostRequest(getCapRequestDoc, sorUri);
 
             if (response instanceof CapabilitiesDocument) {
                 CapabilitiesDocument caps = (CapabilitiesDocument) response;
@@ -210,11 +215,11 @@ public class SORClient {
      * @return
      * @throws OwsExceptionReport
      */
-    private static Collection<SirSearchCriteria_Phenomenon> requestMatchingDefinitions(URI serviceURI,
-                                                                                       String phenomenon,
-                                                                                       String matchingType,
-                                                                                       int searchDepth,
-                                                                                       boolean validateXml) throws OwsExceptionReport {
+    private Collection<SirSearchCriteria_Phenomenon> requestMatchingDefinitions(URI serviceURI,
+                                                                                String phenomenon,
+                                                                                String matchingType,
+                                                                                int searchDepth,
+                                                                                boolean validateXml) throws OwsExceptionReport {
 
         GetMatchingDefinitionsRequestDocument getDefRequest = buildRequest(VERSION,
                                                                            phenomenon,
@@ -222,7 +227,7 @@ public class SORClient {
                                                                            searchDepth,
                                                                            validateXml);
         try {
-            XmlObject response = Client.xSendPostRequest(getDefRequest, serviceURI);
+            XmlObject response = this.client.xSendPostRequest(getDefRequest, serviceURI);
 
             if (response instanceof GetMatchingDefinitionsResponseDocument) {
                 GetMatchingDefinitionsResponseDocument getMatchinDefsRespDoc = (GetMatchingDefinitionsResponseDocument) response;
@@ -234,7 +239,7 @@ public class SORClient {
             if (response instanceof ExceptionReportDocument) {
                 ExceptionReportDocument er = (ExceptionReportDocument) response;
                 log.info("Received ExceptionReport, could be a sign for no matches found!\n" + er.xmlText());
-                return new ArrayList<SirSearchCriteria_Phenomenon>();
+                return new ArrayList<>();
             }
             log.error("Did not get GetMatchingDefinitionsResponseDocument, but \n" + response.xmlText());
             throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,

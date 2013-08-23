@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.IT;
 
 import static org.junit.Assert.assertTrue;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.client.HarvestServiceBean;
@@ -32,23 +34,32 @@ import org.x52North.sir.x032.HarvestServiceResponseDocument;
  */
 public class HarvestServiceIT {
 
+    // FIXME use a mocked up webservice to test harvesting
     private String serviceURL = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos";
 
     private String serviceType = "SOS";
+
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = GuiceUtil.configureSirClient();
+    }
 
     @Test
     public void harvestWeatherServiceBean() throws Exception {
         // buildRequest
         HarvestServiceBean hsb = new HarvestServiceBean(this.serviceURL, this.serviceType);
-
         hsb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(hsb.getRequestString());
+        String response = client.sendPostRequest(hsb.getRequestString());
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response);
         assertTrue(cd.validate());
+
+        // FIXME test must check whether the correct number of sensors was added, and more
     }
 
     @Test
@@ -56,11 +67,13 @@ public class HarvestServiceIT {
         File f = new File(ClassLoader.getSystemResource("Requests/HarvestService_WeatherSOS.xml").getFile());
         HarvestServiceRequestDocument hsrd = HarvestServiceRequestDocument.Factory.parse(f);
 
-        XmlObject response = Client.xSendPostRequest(hsrd);
+        XmlObject response = client.xSendPostRequest(hsrd);
 
         // parse and validate response
         HarvestServiceResponseDocument cd = HarvestServiceResponseDocument.Factory.parse(response.getDomNode());
         assertTrue(cd.validate());
+
+        // FIXME test must check whether the correct number of sensors was added, and more
     }
 
 }

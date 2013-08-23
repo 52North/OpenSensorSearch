@@ -43,7 +43,6 @@
 
 	<Query role="example" searchTerms="weather" />
 	<Query role="example" searchTerms="temperature" />
-	<Query role="example" searchTerms="IOOS" />
 	<Query role="example" searchTerms="Muenster" />
 
 	<Url type="text/html" method="GET"

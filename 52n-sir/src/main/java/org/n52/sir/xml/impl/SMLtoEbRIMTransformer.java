@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml.impl;
 
 import java.io.FileNotFoundException;
 import java.io.StringWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
@@ -115,11 +118,14 @@ public class SMLtoEbRIMTransformer implements ITransformer {
     private StreamSource xsltSource;
 
     /**
-     * @throws InstantiationException
      * 
+     * @param xsltDirPath
+     *        the directory with the XSLT transformation files needed
+     * @throws InstantiationError
      */
-    public SMLtoEbRIMTransformer(String xsltDir) throws InstantiationError {
-        this.xsltSource = new StreamSource(xsltDir + TRANSFORMATION_FILE_NAME);
+    public SMLtoEbRIMTransformer(Path xsltDirPath) throws InstantiationError {
+        Path p = Paths.get(xsltDirPath.toString(), TRANSFORMATION_FILE_NAME);
+        this.xsltSource = new StreamSource(p.toString());
 
         try {
             this.transformer = tFactory.newTransformer(this.xsltSource);

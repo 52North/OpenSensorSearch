@@ -5,10 +5,12 @@
 	<groupId>org.n52.sensorweb</groupId>
 	<artifactId>52n-sir</artifactId>
 
-	<name>SIR</name>
-	<description>52North Sensor Instance Registry</description>
+	<name>OpenSensorSearch</name>
+	<description>52North Open Sensor Search</description>
 	<packaging>war</packaging>
-	<version>0.5.3</version>
+
+	<!-- http://semver.org/ -->
+	<version>0.5.4</version>
 
 	<url>http://52north.org/communities/sensorweb/discovery/</url>
 	<inceptionYear>2012</inceptionYear>
@@ -25,7 +27,7 @@
 			<organization>${project.organization.name}</organization>
 			<organizationUrl>${project.organization.url}</organizationUrl>
 			<timezone>GMT+1</timezone>
-			<id>JanSchulte</id>
+			<id>janschulte</id>
 		</developer>
 		<developer>
 			<name>Daniel Nüst</name>
@@ -33,7 +35,13 @@
 			<organization>${project.organization.name}</organization>
 			<organizationUrl>${project.organization.url}</organizationUrl>
 			<timezone>GMT+1</timezone>
-			<id>DanielNuest</id>
+			<id>nuest</id>
+		</developer>
+		<developer>
+			<name>Mohammad A. Yakoub</name>
+			<email>m.ahmed.yakoub@gmail.com</email>
+			<timezone>GMT+1</timezone>
+			<id>Moh-Yakoub</id>
 		</developer>
 	</developers>
 
@@ -51,20 +59,22 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:svn:https://svn.52north.org/svn/swe/incubation/SIR/${project.artifactID}/trunk</connection>
-		<url>https://svn.52north.org/cgi-bin/viewvc.cgi/incubation/SIR/${project.artifactID}/trunk/?root=sensorweb</url>
+		<!-- We use the fork & pull development model: https://help.github.com/articles/using-pull-requests -->
+		<connection>scm:git:git://github.com/52North/OpenSensorSearch.git</connection>
+		<url>https://github.com/52North/OpenSensorSearch</url>
 	</scm>
 
 	<issueManagement>
-		<system>Bugzilla</system>
-		<url>https://bugzilla.52north.org/</url>
+		<url>https://github.com/52North/OpenSensorSearch/issues</url>
+		<system>GitHub Issues</system>
 	</issueManagement>
 
 	<licenses>
 		<license>
-			<name>General Public License Version 2</name>
-			<url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
 
@@ -85,6 +95,10 @@
 		<guice.version>3.0</guice.version>
 		<jersey.version>1.8</jersey.version>
 		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
+		<logback.version>1.0.13</logback.version>
+
+		<config.logger.fileappender.filepath>D:/logs</config.logger.fileappender.filepath>
+		<config.logger.level>DEBUG</config.logger.level>
 	</properties>
 
 	<profiles>
@@ -184,25 +198,6 @@
 
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>2.0-beta-1</version>
-				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir>
-					</systemProperties> </configuration> -->
-				<configuration>
-					<path>${service.path}</path>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>commons-io</groupId>
-						<artifactId>commons-io</artifactId>
-						<version>2.1</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
 				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
@@ -211,13 +206,34 @@
 				<configuration>
 					<path>${service.path}</path>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>commons-io</groupId>
-						<artifactId>commons-io</artifactId>
-						<version>2.1</version>
-					</dependency>
-				</dependencies>
+
+				<executions>
+					<execution>
+						<id>start-tomcat</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<fork>true</fork>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-tomcat</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>shutdown</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<!-- <dependencies> -->
+				<!-- <dependency> -->
+				<!-- <groupId>org.apache.maven.surefire</groupId> -->
+				<!-- <artifactId>surefire-junit47</artifactId> -->
+				<!-- <version>2.15</version> -->
+				<!-- </dependency> -->
+				<!-- </dependencies> -->
 			</plugin>
 
 			<plugin>
@@ -230,7 +246,7 @@
 				<configuration>
 					<header>src/main/resources/license_header.txt</header>
 					<excludes>
-						<exclude>**/log4j*</exclude>
+						<exclude>**/logback*</exclude>
 						<exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
 						<exclude>**/iso_svrl_for_xslt2.xsl</exclude>
 						<exclude>**/test/resources/**</exclude>
@@ -241,6 +257,7 @@
 						<exclude>**/libs/jquery.js</exclude>
 						<exclude>**/webapp/js/bootstrap*.js</exclude>
 						<exclude>**/webapp/css/bootstrap*.css</exclude>
+						<exclude>**/org/n52/sir/util/ext/**</exclude>
 					</excludes>
 					<includes>
 						<include>**/*.java</include>
@@ -292,41 +309,79 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>2.1</version>
+				<groupId>org.jasig.maven</groupId>
+				<artifactId>maven-notice-plugin</artifactId>
+				<version>1.0.5</version>
 				<configuration>
-					<path>${service.path}</path>
+					<noticeTemplate>src/main/resources/NOTICE.template</noticeTemplate>
+					<licenseMapping>
+						<param>src/main/resources/license-mappings.xml</param>
+					</licenseMapping>
 				</configuration>
+			</plugin>
 
+			<plugin>
+				<groupId>com.github.danielflower.mavenplugins</groupId>
+				<artifactId>maven-gitlog-plugin</artifactId>
+				<version>1.5.0</version>
 				<executions>
 					<execution>
-						<id>start-tomcat</id>
-						<phase>pre-integration-test</phase>
 						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<fork>true</fork>
-						</configuration>
-					</execution>
-					<execution>
-						<id>stop-tomcat</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>shutdown</goal>
+							<goal>generate</goal>
 						</goals>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.surefire</groupId>
-						<artifactId>surefire-junit47</artifactId>
-						<version>2.15</version>
-					</dependency>
-				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>com.code54.mojo</groupId>
+				<artifactId>buildversion-plugin</artifactId>
+				<version>1.0.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>set-properties</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.code54.mojo
+										</groupId>
+										<artifactId>
+											buildversion-plugin
+										</artifactId>
+										<versionRange>
+											[1.0.3,)
+										</versionRange>
+										<goals>
+											<goal>set-properties</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<pluginRepositories>
@@ -352,6 +407,16 @@
 				<enabled>true</enabled>  <!-- Workaround for MNG-2974, see note below -->
 			</releases>
 		</pluginRepository>
+
+		<!-- for buildversion plugin: https://github.com/code54/buildversion-plugin -->
+		<pluginRepository>
+			<id>sonatype-releases</id>
+			<url>http://oss.sonatype.org/content/repositories/releases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>clojars.org</id>
+			<url>http://clojars.org/repo</url>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<repositories>
@@ -359,14 +424,6 @@
 			<id>maven-restlet</id>
 			<name>Public online Restlet repository</name>
 			<url>http://maven.restlet.org</url>
-		</repository>
-
-		<repository>
-			<!-- Tentative local repo for libs that are not migrated to Maven dependency
-				mechanism and available in online repositories. -->
-			<id>lib-repository</id>
-			<name>Local Repository</name>
-			<url>file:///${basedir}/lib-repository/</url>
 		</repository>
 
 		<!-- for postgis -->
@@ -395,20 +452,25 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-
 	</repositories>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.2</version>
+			<version>1.7.5</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.2</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 
 		<dependency>
@@ -441,19 +503,19 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.2.2</version>
+			<version>4.2.5</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sun.xml.messaging.saaj</groupId>
 			<artifactId>saaj-impl</artifactId>
-			<version>1.3.19</version>
+			<version>1.3.21</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
-			<version>2.5.0</version>
+			<version>2.6.0</version>
 			<!-- if added, the wrong XmlConstants is used, see XmlTools.java and SMLtoEbRIMTransformer.java -->
 			<exclusions>
 				<exclusion>
@@ -470,15 +532,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.1</version>
+			<version>2.2</version>
 		</dependency>
 
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
-			<version>2.10.0</version>
+			<version>2.11.0</version>
 		</dependency>
 		<dependency>
 			<artifactId>solr-solrj</artifactId>
@@ -493,6 +561,14 @@
 			<version>1.4.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
+			<exclusions>
+				<!-- included via solrj, and there the correct groupId is used so that
+					the pom can be found. -->
+				<exclusion>
+					<artifactId>wstx-asl</artifactId>
+					<groupId>woodstox</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -546,7 +622,7 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>dbcp</artifactId>
-			<version>6.0.36</version>
+			<version>6.0.37</version>
 		</dependency>
 
 		<dependency>
@@ -568,19 +644,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.2.2</version>
+			<version>2.2.4</version>
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- RSS support -->
 		<dependency>
 			<groupId>net.java.dev.rome</groupId>
 			<artifactId>rome</artifactId>
@@ -592,6 +661,12 @@
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>sensorwebclient-ext</artifactId>
 			<version>3.1.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
 		</dependency>
 
 		<dependency>
@@ -620,11 +695,7 @@
 			<artifactId>xmlunit</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<dependency>
-			<groupId>net.sf</groupId>
-			<artifactId>saxon-he</artifactId>
-			<version>9</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -635,6 +706,17 @@
 			<artifactId>guice-servlet</artifactId>
 			<version>${guice.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.mozilla</groupId>
 			<artifactId>rhino</artifactId>

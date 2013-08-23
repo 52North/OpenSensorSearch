@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.x52North.sir.x032.GetSensorStatusRequestDocument;
@@ -31,6 +32,14 @@ import org.x52North.sir.x032.GetSensorStatusResponseDocument;
 
 public class GetSensorStatusIT {
 
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = GuiceUtil.configureSirClient();
+    }
+    
+    @Test
     public void getSensorStatus(String file) throws Exception {
         File f = new File( (ClassLoader.getSystemResource(file).getFile()));
         GetSensorStatusRequestDocument doc = GetSensorStatusRequestDocument.Factory.parse(f);
@@ -38,7 +47,7 @@ public class GetSensorStatusIT {
 
         // try {
 
-        response = Client.xSendPostRequest(doc);
+        response = client.xSendPostRequest(doc);
         // parse and validate response
         GetSensorStatusResponseDocument resp_doc = GetSensorStatusResponseDocument.Factory.parse(response.getDomNode());
         // validate the respo_doc
@@ -50,19 +59,19 @@ public class GetSensorStatusIT {
     @Test
     public void getSensorStatusSearchCriteria() throws Exception {
         getSensorStatus("Requests/GetSensorStatus_bySearchCriteria.xml");
-
+        // TODO implement test
     }
 
     @Test
     public void getSensorStatusSearchID() throws Exception {
         getSensorStatus("Requests/GetSensorStatus_bySensorIDInSIR");
-
+        // TODO implement test
     }
 
     @Test
     public void getSensorStatusSearchServiceDescription() throws Exception {
         getSensorStatus("Requests/GetSensorStatus_byServiceDescription.xml");
-
+        // TODO implement test
     }
 
 }

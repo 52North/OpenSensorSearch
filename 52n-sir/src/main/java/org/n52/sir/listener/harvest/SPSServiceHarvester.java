@@ -41,6 +41,8 @@ import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
@@ -50,6 +52,9 @@ public class SPSServiceHarvester extends Harvester {
     private static Logger log = LoggerFactory.getLogger(SPSServiceHarvester.class);
 
     private SirHarvestServiceRequest request;
+
+    @Inject
+    private Client client;
 
     /**
      * 
@@ -71,7 +76,7 @@ public class SPSServiceHarvester extends Harvester {
     public ISirResponse call() throws Exception {
         // request capabilities
         URI uri = Tools.url2Uri(this.request);
-        XmlObject caps = Client.requestCapabilities(this.request.getServiceType(), uri);
+        XmlObject caps = this.client.requestCapabilities(this.request.getServiceType(), uri);
 
         CapabilitiesDocument.Capabilities spsCaps;
         if (caps instanceof CapabilitiesDocument) {
@@ -96,14 +101,14 @@ public class SPSServiceHarvester extends Harvester {
         SirConfigurator.getInstance().newUpdateSequence();
 
         // search for possible sensors in getCapabilities response
-        List<Pair<String, URI>> sensorDefinitions = new ArrayList<Pair<String, URI>>();
+        List<Pair<String, URI>> sensorDefinitions = new ArrayList<>();
         SensorOfferingType[] sensorOfferings = spsCaps.getContents().getSensorOfferingList().getSensorOfferingArray();
 
         for (SensorOfferingType currentOffering : sensorOfferings) {
             // try to create uri from it
             URI tempUri = URI.create(currentOffering.getSensorDefinition());
             String tempID = currentOffering.getSensorID();
-            sensorDefinitions.add(new Pair<String, URI>(tempID, tempUri));
+            sensorDefinitions.add(new Pair<>(tempID, tempUri));
             if (log.isDebugEnabled())
                 log.debug("Found sensor with ID " + tempID + " and description " + tempUri.toString());
         }
@@ -134,5 +139,4 @@ public class SPSServiceHarvester extends Harvester {
         response.setNumberOfInsertedSensors(this.insertedSensors.size());
         return response;
     }
-
 }

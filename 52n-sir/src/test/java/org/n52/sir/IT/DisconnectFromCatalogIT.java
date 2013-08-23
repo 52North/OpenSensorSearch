@@ -21,6 +21,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.client.ConnectToCatalogBean;
@@ -37,17 +39,30 @@ public class DisconnectFromCatalogIT {
 
     private String catalogURL = "http://localhost:8080/ergorr/webservice";
 
-    @Test
-    public void testDisconnectFromCatalogBean() throws Exception {
-        setUpConnection(this.catalogURL);
+    private static Client client;
 
+    @BeforeClass
+    public static void setUp() {
+        client = GuiceUtil.configureSirClient();
+    }
+    
+    @Before
+    private void connectCatalog(String url) throws Exception {
+        int pushInterval = 3600; // needs to be with repetition, otherwise not
+                                 // saved in database for removal.
+        ConnectToCatalogBean ctcb = new ConnectToCatalogBean(url, pushInterval);
+        ctcb.buildRequest();
+        client.sendPostRequest(ctcb.getRequestString());
+    }
+    
+    @Test
+    public void fromBean() throws Exception {
         // buildRequest
         DisconnectFromCatalogBean dfcb = new DisconnectFromCatalogBean(this.catalogURL);
-
         dfcb.buildRequest();
 
         // send request
-        String response = Client.sendPostRequest(dfcb.getRequestString());
+        String response = client.sendPostRequest(dfcb.getRequestString());
 
         // parse and validate response
         DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response);
@@ -57,29 +72,18 @@ public class DisconnectFromCatalogIT {
     }
 
     @Test
-    public void testConnectFromCatalogFile() throws Exception {
+    public void fromFile() throws Exception {
         File f = new File(ClassLoader.getSystemResource("Requests/ConnectToCatalog.xml").getFile());
         DisconnectFromCatalogRequestDocument dfcrd = DisconnectFromCatalogRequestDocument.Factory.parse(f);
 
         String sentUrl = dfcrd.getDisconnectFromCatalogRequest().getCatalogURL();
-        setUpConnection(sentUrl);
-
-        XmlObject response = Client.xSendPostRequest(dfcrd);
+        XmlObject response = client.xSendPostRequest(dfcrd);
 
         // parse and validate response
         DisconnectFromCatalogResponseDocument responseDoc = DisconnectFromCatalogResponseDocument.Factory.parse(response.getDomNode());
         assertTrue(responseDoc.validate());
 
         assertEquals(sentUrl, responseDoc.getDisconnectFromCatalogResponse().getCatalogURL());
-    }
-
-    private void setUpConnection(String url) throws Exception {
-        System.out.println("Creating temporary conneciton for immediate deletion: " + url);
-        int pushInterval = 3600; // needs to be with repetition, otherwise not
-                                 // saved in database for removal.
-        ConnectToCatalogBean ctcb = new ConnectToCatalogBean(url, pushInterval);
-        ctcb.buildRequest();
-        Client.sendPostRequest(ctcb.getRequestString());
     }
 
 }

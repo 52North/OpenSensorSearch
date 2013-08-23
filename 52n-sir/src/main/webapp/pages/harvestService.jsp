@@ -32,8 +32,7 @@
     }
 
     if (request.getParameter("sendRequest") != null) {
-        String responseString = Client.sendPostRequest(harvestService.getRequestString());
-        harvestService.setResponseString(responseString);
+        harvestService.setResponseString(harvestService.sendRequest(harvestService.getRequestString()));
     }
 %>
 

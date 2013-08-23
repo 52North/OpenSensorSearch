@@ -560,7 +560,6 @@ public class SensorMLDecoder {
 	}
 
 	private static Object getDescription(SystemType system) {
-		// TODO Auto-generated method stub
 		return system.getDescription().getStringValue();
 	}
 

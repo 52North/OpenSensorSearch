@@ -34,7 +34,6 @@ public class HarvestJob implements Job {
 		try {
 			arg0.getScheduler().unscheduleJob(arg0.getTrigger().getKey());
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
 			log.error("Cannot unscedule ",e);
 		}
 		

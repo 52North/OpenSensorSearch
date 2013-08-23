@@ -107,8 +107,7 @@ public class OpenSearchSpatialExtensionIT {
 		Iterator<SearchResultElement> iter = result.getResults().iterator();
 		while(iter.hasNext()){
 			SearchResultElement element = iter.next();
-			/**TODO 
-			 * Add LngLat to searchResult and assert here
+			/**TODO Add LngLat to searchResult and assert here
 			 */
 			
 		}

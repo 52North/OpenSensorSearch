@@ -17,8 +17,7 @@ public class OWSHarvestingRequest {
 	private static Logger log = LoggerFactory.getLogger(HarvestResource.class);
 
 	public OWSHarvestingRequest(){
-		//TODO remove all of those
-
+		
 		if (SirConfigurator.getInstance() == null) {
 			InputStream dbStream = ClassLoader
 					.getSystemResourceAsStream("prop/db.PROPERTIES");

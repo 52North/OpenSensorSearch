@@ -111,7 +111,6 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
 	}
 
 	public SirDetailedSensorDescription() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void setClassifiers(Collection<Object> classifiers) {

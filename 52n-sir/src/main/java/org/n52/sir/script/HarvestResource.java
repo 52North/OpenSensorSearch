@@ -153,7 +153,6 @@ public class HarvestResource {
 		String url = config.getFactory().insertRemoteHarvestSensor().harvestRemoteServer(auth_token);
 		log.info("The result url:"+url);
 		if(url==null){
-			//TODO Yakoub sets the status to fail : HAR31
 			return Response.status(404).build();
 		}
 		dataMap.put(QuartzConstants.INSERTION_INTERFACE,this.insertSensorInfoDao);

@@ -91,7 +91,6 @@ public class AutoCompleteSearch extends HttpServlet {
 			resp.flushBuffer();
 			log.debug("Done serving servlet");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			log.error("error on searching", e);
 		}
 

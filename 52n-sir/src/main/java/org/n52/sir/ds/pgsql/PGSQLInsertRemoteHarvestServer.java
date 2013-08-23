@@ -72,7 +72,6 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 
 	@Override
 	public int getRemoteServerHarvestState(String authToken) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -137,7 +136,7 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 	}
 	
 	private String updateState(String auth_token,int state){
-		//TODO implement this
+		//TODO yakoub implement updating harvest state HAR31
 		return "";
 	}
 

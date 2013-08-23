@@ -124,7 +124,6 @@ public class PGSQLDAOFactory implements IDAOFactory {
 
 	@Override
 	public IInsertHarvestScriptDAO insertHarvestScriptDAO() {
-		// TODO Auto-generated method stub
 		return new PGSQLInsertHarvestScriptDAO(this.cpool);
 	}
 	public IInsertRemoteHarvestServer insertRemoteHarvestSensor(){

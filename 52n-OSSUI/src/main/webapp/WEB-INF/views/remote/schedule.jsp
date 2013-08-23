@@ -28,15 +28,22 @@
 					type : "POST",
 					url : "http://localhost:8080/SIR/harvest/script/remote/server/harvest",
 					data : $("#schedule-form").serialize(),
-					success : function(data) {
-						alert("done");
-						$("#auth_token").prop("disabled", false);
-						$("#datepicker").prop("disabled", false);
-					},
-					error : function() {
-						alert("error");
-						$("#remoteServer").prop("disabled", true);
-						$("#uploadserverbtn").prop("disabled", true);
+					statusCode : {
+						200 : function(data) {
+							alert("Request sent successfully!");
+							$("#auth_token").prop("disabled", false);
+							$("#datepicker").prop("disabled", false);
+						},
+						404 : function() {
+							alert("No such authToken!");
+							$("#auth_token").prop("disabled", false);
+							$("#datepicker").prop("disabled", false);
+						},
+						500 : function() {
+							alert("Internal server error ! please try again later")
+							$("#auth_token").prop("disabled", false);
+							$("#datepicker").prop("disabled", false);
+						}
 					}
 				});
 	}

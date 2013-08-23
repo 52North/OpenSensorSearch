@@ -53,6 +53,7 @@ $(function(){
 		<input type="text" class="span6" id="authtokenval" value="Auth token"
 			readonly></input>
 		<p>
+		<!-- TODO yakoub : add the data to the harvesting -->
 			<a id="uploadserverbtn" href="#" class="btn btn-primary btn-large"
 				onclick="uploadServer()">Add server &raquo;</a>
 		</p>

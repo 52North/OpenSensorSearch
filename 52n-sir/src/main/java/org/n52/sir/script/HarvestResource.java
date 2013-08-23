@@ -144,15 +144,17 @@ public class HarvestResource {
 		}else return Response.status(500).build();
 		
 	}
+	//TODO add a time parameter for a schedule time :Yakoub
 	@POST
 	@Path("/remote/server/harvest")
 	public Response harvestServer(@FormParam("auth_token")String auth_token){
 		JobDataMap dataMap = new JobDataMap();
 		SirConfigurator config = SirConfigurator.getInstance();
 		String url = config.getFactory().insertRemoteHarvestSensor().harvestRemoteServer(auth_token);
+		log.info("The result url:"+url);
 		if(url==null){
 			//TODO Yakoub sets the status to fail : HAR31
-			return null;
+			return Response.status(404).build();
 		}
 		dataMap.put(QuartzConstants.INSERTION_INTERFACE,this.insertSensorInfoDao);
 		dataMap.put(QuartzConstants.REMOTE_SENSOR_URL,url);

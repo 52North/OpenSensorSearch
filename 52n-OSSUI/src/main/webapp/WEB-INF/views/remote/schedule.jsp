@@ -54,7 +54,7 @@
 		<form id="schedule-form">
 
 			<label for="auth_token">Auth token</label> <input type="text"
-				class="span6" name="auth_token" id="auth_token"></input>
+				class="span6" name="auth_token"></input>
 		</form>
 		<label for="datepicker">Date</label> <input type="text" class="span6"
 			name="date" id="datepicker"></input>

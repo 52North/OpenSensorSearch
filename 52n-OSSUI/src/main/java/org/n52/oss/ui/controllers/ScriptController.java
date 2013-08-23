@@ -5,24 +5,24 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/remote")
+@RequestMapping("/script")
 public class ScriptController {
 	
 	@RequestMapping("/index")
 	public String index(ModelMap map){
-		return "remote/index";
+		return "script/index";
 	}
 	@RequestMapping("/upload")
 	public String upload(ModelMap map){
-		return "remote/upload";
+		return "script/upload";
 	}
 	@RequestMapping("/schedule")
 	public String harvest(ModelMap map){
-		return "remote/schedule";
+		return "script/schedule";
 	}
 	@RequestMapping("/status")
 	public String status(ModelMap map){
-		return "remote/status";
+		return "script/status";
 	}
 
 }

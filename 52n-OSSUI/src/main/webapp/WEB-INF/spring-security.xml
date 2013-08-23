@@ -8,6 +8,7 @@
  
 	<http auto-config="true">
 		<intercept-url pattern="/remote/*" access="ROLE_USER" />
+		<intercept-url pattern="/script/*" access="ROLE_USER" />
 		<form-login login-page="/login" default-target-url="/remote/index"
 			authentication-failure-url="/login?fail" />
 	</http>

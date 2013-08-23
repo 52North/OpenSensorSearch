@@ -16,9 +16,9 @@ public class ScriptController {
 	public String upload(ModelMap map){
 		return "remote/upload";
 	}
-	@RequestMapping("/harvest")
+	@RequestMapping("/schedule")
 	public String harvest(ModelMap map){
-		return "remote/harvest";
+		return "remote/schedule";
 	}
 	@RequestMapping("/status")
 	public String status(ModelMap map){

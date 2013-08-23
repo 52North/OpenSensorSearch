@@ -4,7 +4,15 @@
 <meta charset="utf-8">
 <title>Harvest a remote file</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="../${context}/scripts/bootstrap.min.js"></script>
 
+<script>
+$(function(){
+
+	$("#upload-pin").addClass("active");
+});
+</script>
 <script>
 	function uploadServer() {
 		$("#remoteServer").prop("disabled", true);
@@ -52,7 +60,5 @@
 </div>
 </div>
 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="../${context}/scripts/bootstrap.min.js"></script>
 </body>
 </html>

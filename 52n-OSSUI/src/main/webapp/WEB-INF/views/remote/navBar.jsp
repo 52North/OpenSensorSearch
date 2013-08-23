@@ -62,12 +62,12 @@ body {
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Upload</li>
-						<li class="active"><a href="${context}/OSSUI/remote/upload">Upload a
+						<li id="upload-pin"><a href="${context}/OSSUI/remote/upload">Upload a
 								remote server</a></li>
 						<li class="nav-header">Harvest</li>
-						<li><a href="/remote/schedule">Schedule a harvest</a></li>
+						<li id="schedule-pin"><a href="${context}/OSSUI/remote/schedule">Schedule a harvest</a></li>
 						<li class="nav-header">Monitor</li>
-						<li><a href="/remote/status">Check harvest job status</a></li>
+						<li id="status-pin"><a href="/remote/status">Check harvest job status</a></li>
 
 					</ul>
 				</div>

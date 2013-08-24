@@ -67,8 +67,6 @@ body {
 						<li class="nav-header">Harvest</li>
 						<li id="schedule-pin"><a href="${context}/OSSUI/script/schedule">Schedule a harvest</a></li>
 						<li class="nav-header">Monitor</li>
-						<li id="status-pin"><a href="${context}/OSSUI/script/status">Check harvest job status</a></li>
-
 					</ul>
 				</div>
 				<!--/.well -->

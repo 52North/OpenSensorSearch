@@ -47,7 +47,7 @@ body {
 					<ul class="nav">
 						<li class="active"><a href="${context}/OSSUI/remote/index">Harvest
 								a Remote Server</a></li>
-						<li><a href="#about">Harvest a javascript script</a></li>
+						<li><a href="${context}/OSSUI/script/index">Harvest a javascript script</a></li>
 						<li><a href="#contact">Contact</a></li>
 					</ul>
 				</div>

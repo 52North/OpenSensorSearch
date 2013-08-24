@@ -66,7 +66,6 @@ body {
 								Javascript file</a></li>
 						<li class="nav-header">Harvest</li>
 						<li id="schedule-pin"><a href="${context}/OSSUI/script/schedule">Schedule a harvest</a></li>
-						<li class="nav-header">Monitor</li>
 					</ul>
 				</div>
 				<!--/.well -->

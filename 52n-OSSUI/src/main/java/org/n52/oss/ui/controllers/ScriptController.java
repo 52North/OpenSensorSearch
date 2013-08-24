@@ -44,9 +44,10 @@ public class ScriptController {
 		String s = form.getFile().getFileItem().getName();
 		MultipartEntity multipartEntity = new MultipartEntity();
 		// upload the file
-		File dest = new File(form.getFile().getName());
+		File dest = new File(s);
 		try {
 			form.getFile().transferTo(dest);
+			
 			UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			//TODO yakoub the DB always insert the name file - how to fix this
 			multipartEntity.addPart("file", new FileBody(dest));

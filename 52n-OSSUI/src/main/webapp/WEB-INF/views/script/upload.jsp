@@ -29,13 +29,10 @@
 				<input type="file" name="file"
 					class="btn span6" size="45" />
 			</p>
-			<label for="user">User</label>
-			<p>
-				<input type="text" name="user" class="span6" />
-			</p>
+			
 
-			<input type="submit" value="Upload It"
-				class="btn btn-primary btn-large" />
+			<p><input type="submit" value="Upload It"
+				class="btn btn-primary btn-large" /></p>
 		</form>
 
 	</div>

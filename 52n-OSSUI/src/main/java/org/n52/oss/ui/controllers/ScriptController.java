@@ -11,6 +11,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.n52.oss.ui.uploadForm;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -45,8 +47,10 @@ public class ScriptController {
 		File dest = new File(form.getFile().getName());
 		try {
 			form.getFile().transferTo(dest);
+			UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			//TODO yakoub the DB always insert the name file - how to fix this
 			multipartEntity.addPart("file", new FileBody(dest));
-			multipartEntity.addPart("user", new StringBody("testUserTest"));
+			multipartEntity.addPart("user", new StringBody(details.getUsername()));
 			HttpPost post = new HttpPost(
 					"http://localhost:8080/SIR/harvest/script/submit");
 			post.setEntity(multipartEntity);
@@ -60,7 +64,6 @@ public class ScriptController {
 			while((str=reader.readLine())!=null)
 				builder.append(str);
 			
-			map.addAttribute("name", s);
 			if (responseCode == 200){
 				map.addAttribute("harvestSuccess",true);
 				map.addAttribute("scriptID",builder.toString());

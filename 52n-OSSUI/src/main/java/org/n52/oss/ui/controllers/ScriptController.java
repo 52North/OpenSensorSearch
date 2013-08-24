@@ -1,18 +1,15 @@
 package org.n52.oss.ui.controllers;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStreamReader;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-
 import org.n52.oss.ui.uploadForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -57,10 +54,16 @@ public class ScriptController {
 			HttpResponse resp;
 			resp = client.execute(post);
 			int responseCode = resp.getStatusLine().getStatusCode();
-
+			StringBuilder builder = new StringBuilder();
+			String str = null;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+			while((str=reader.readLine())!=null)
+				builder.append(str);
+			
 			map.addAttribute("name", s);
 			if (responseCode == 200){
 				map.addAttribute("harvestSuccess",true);
+				map.addAttribute("scriptID",builder.toString());
 				return "script/status";
 			}else{
 				map.addAttribute("harvestError",true);

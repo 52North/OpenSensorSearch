@@ -23,7 +23,7 @@
 		<c:if test="${harvestSuccess}">
 			<div class="alert alert-success">
 				<a class="close" data-dismiss="alert">×</a> <strong>Successful!</strong>
-				Script uploaded successfully!
+				Script uploaded successfully! , your Script Id : ${scriptID}
 			</div>
 		</c:if>
 		

@@ -10,7 +10,8 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<context:component-scan base-package="org.n52.oss.ui.controllers,org.n52.oss.ui.services" />
+	<context:component-scan
+		base-package="org.n52.oss.ui.controllers,org.n52.oss.ui.services" />
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/styles/**" location="/WEB-INF/views/css/"></mvc:resources>
 	<mvc:resources mapping="/scripts/**" location="/WEB-INF/views/js/"></mvc:resources>
@@ -21,4 +22,11 @@
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	<!-- Configure the multipart resolver -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="100000" />
+	</bean>
+	
 </beans>

@@ -22,8 +22,8 @@
 		<h1>Upload A remote server</h1>
 		<p>Please upload your Javascript File</p>
 
-		<form action="${context}/OSSUI/script/file/upload" method="post"
-			enctype="multipart/form-data" class="form-upload">
+		<form action="${context}/OSSUI/script/upload" method="post"
+			enctype="multipart/form-data" class="form-upload"  name="uploadForm">
 			<label for="file">File</label>
 			<p>
 				<input type="file" name="file"

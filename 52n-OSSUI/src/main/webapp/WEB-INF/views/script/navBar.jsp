@@ -42,7 +42,7 @@ body {
 				<a class="brand" href="#">OpenSensorSearch</a>
 				<div class="nav-collapse collapse">
 					<p class="navbar-text pull-right">
-						Logged in as <a href="#" class="navbar-link">Username</a>
+						Logged in as <a href="#" class="navbar-link">${SPRING_SECURITY_LAST_USERNAME}</a>
 					</p>
 					<ul class="nav">
 						<li ><a href="${context}/OSSUI/remote/index">Harvest

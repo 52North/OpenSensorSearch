@@ -49,7 +49,6 @@ public class ScriptController {
 			form.getFile().transferTo(dest);
 			
 			UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			//TODO yakoub the DB always insert the name file - how to fix this
 			multipartEntity.addPart("file", new FileBody(dest));
 			multipartEntity.addPart("user", new StringBody(details.getUsername()));
 			HttpPost post = new HttpPost(

@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sos:Capabilities version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sos/1.0 http://schemas.opengis.net/sos/1.0.0/sosAll.xsd" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+  <ows:ServiceIdentification>
+    <ows:Title>52N SOS</ows:Title>
+    <ows:Abstract>52N SOS for EO2HEAVEN internal use at 52North, Muenster, Germany (SVN: 9085 @ 2010-10-11 15:40:26)</ows:Abstract>
+    <ows:Keywords>
+      <ows:Keyword>environmental and health parameters</ows:Keyword>
+    </ows:Keywords>
+    <ows:ServiceType codeSpace="http://opengeospatial.net">OGC:SOS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+    <ows:Fees>NONE</ows:Fees>
+    <ows:AccessConstraints>IP restricted access</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>52North</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://52north.org/swe"/>
+    <ows:ServiceContact>
+      <ows:IndividualName>Juerrens, Eike Hinderk</ows:IndividualName>
+      <ows:PositionName>Software Engineer</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+49(0)251/396 371-33</ows:Voice>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Marin-Luther-King-Weg 24</ows:DeliveryPoint>
+          <ows:City>Muenster</ows:City>
+          <ows:AdministrativeArea>North Rhine-Westphalia</ows:AdministrativeArea>
+          <ows:PostalCode>48155</ows:PostalCode>
+          <ows:Country>Germany</ows:Country>
+          <ows:ElectronicMailAddress>e.h.juerrens@52north.org</ows:ElectronicMailAddress>
+        </ows:Address>
+      </ows:ContactInfo>
+      <ows:Role/>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos?"/>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="updateSequence">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptVersions">
+        <ows:AllowedValues>
+          <ows:Value>1.0.0</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="Sections">
+        <ows:AllowedValues>
+          <ows:Value>ServiceIdentification</ows:Value>
+          <ows:Value>ServiceProvider</ows:Value>
+          <ows:Value>OperationsMetadata</ows:Value>
+          <ows:Value>Filter_Capabilities</ows:Value>
+          <ows:Value>Contents</ows:Value>
+          <ows:Value>All</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:AllowedValues>
+          <ows:Value>text/xml</ows:Value>
+          <ows:Value>application/zip</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetObservation">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos?"/>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="srsName">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="offering">
+        <ows:AllowedValues>
+          <ows:Value>EO2H_CS_DURBAN_ENVIRONMENTAL</ows:Value>
+          <ows:Value>EO2H_CS_DURBAN_HEALTH</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="eventTime">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>2010-06-01T00:00:00.000+02:00</ows:MinimumValue>
+            <ows:MaximumValue>2010-06-30T23:55:00.000+02:00</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/Adminstration/Healthcare</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SettlersSchool</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorks</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorksMet</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NitrogenMonoxide</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NitrogenDioxide</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/SulfurDioxide</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/ParticularMatter10</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/Windspeed</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/Winddirection</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/AirTemperature</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/TotalResidualSulphides</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupils</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsInGradeOfInterest</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsInStudy</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsWithAsthma</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="featureOfInterest">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/object/feature/city/Durban</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/EntuthukweniLowerPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/AssegaiPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/DirkieUysPrimary</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="result">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="responseFormat">
+        <ows:AllowedValues>
+          <ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
+          <ows:Value>application/zip</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="resultModel">
+        <ows:AllowedValues>
+          <ows:Value>om:Observation</ows:Value>
+          <ows:Value>om:Measurement</ows:Value>
+          <ows:Value>om:CategoryObservation</ows:Value>
+          <ows:Value>om:SpatialObservation</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="responseMode">
+        <ows:AllowedValues>
+          <ows:Value>inline</ows:Value>
+          <ows:Value>resultTemplate</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeSensor">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos?"/>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/Adminstration/Healthcare</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SettlersSchool</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorks</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorksMet</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="outputFormat">
+        <ows:AllowedValues>
+          <ows:Value>text/xml;subtype="sensorML/1.0.1"</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeatureOfInterest">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterestID">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/object/feature/city/Durban</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/EntuthukweniLowerPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/AssegaiPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/DirkieUysPrimary</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="location">
+        <ows:AnyValue/>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeatureOfInterestTime">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="featureOfInterestID">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/object/feature/city/Durban</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/EntuthukweniLowerPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/AssegaiPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/DirkieUysPrimary</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="location">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="procedure">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/Adminstration/Healthcare</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SettlersSchool</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorks</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorksMet</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="observedProperty">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NitrogenMonoxide</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NitrogenDioxide</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/SulfurDioxide</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/ParticularMatter10</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/Windspeed</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/Winddirection</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/AirTemperature</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/TotalResidualSulphides</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupils</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsInGradeOfInterest</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsInStudy</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsWithAsthma</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetObservationById">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="ObservationId">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>309666</ows:MinimumValue>
+            <ows:MinimumValue>516018</ows:MinimumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="srsName">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="responseFormat">
+        <ows:AllowedValues>
+          <ows:Value>text/xml;subtype="om/1.0.0"</ows:Value>
+          <ows:Value>application/zip</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="resultModel">
+        <ows:AllowedValues>
+          <ows:Value>om:Observation</ows:Value>
+          <ows:Value>om:Measurement</ows:Value>
+          <ows:Value>om:CategoryObservation</ows:Value>
+          <ows:Value>om:SpatialObservation</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+      <ows:Parameter name="responseMode">
+        <ows:AllowedValues>
+          <ows:Value>inline</ows:Value>
+          <ows:Value>resultTemplate</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetResult">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="ObservationTemplateId">
+        <ows:AnyValue/>
+      </ows:Parameter>
+      <ows:Parameter name="eventTime">
+        <ows:AllowedValues>
+          <ows:Range>
+            <ows:MinimumValue>2010-06-01T00:00:00.000+02:00</ows:MinimumValue>
+            <ows:MaximumValue>2010-06-30T23:55:00.000+02:00</ows:MaximumValue>
+          </ows:Range>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureOfInterest">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Post xlink:href="http://sensorweb.demo.52north.org/EO2HeavenSOS/sos"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="FeatureId">
+        <ows:AllowedValues>
+          <ows:Value>http://www.eo2heaven.org/object/feature/city/Durban</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/EntuthukweniLowerPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/AssegaiPrimary</ows:Value>
+          <ows:Value>http://www.eo2heaven.org/object/feature/school/primary/DirkieUysPrimary</ows:Value>
+        </ows:AllowedValues>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Parameter name="service">
+      <ows:AllowedValues>
+        <ows:Value>SOS</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+    <ows:Parameter name="version">
+      <ows:AllowedValues>
+        <ows:Value>1.0.0</ows:Value>
+      </ows:AllowedValues>
+    </ows:Parameter>
+  </ows:OperationsMetadata>
+  <sos:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:GeometryOperands>
+        <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+      </ogc:GeometryOperands>
+      <ogc:SpatialOperators>
+        <ogc:SpatialOperator name="BBOX">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+        <ogc:SpatialOperator name="Contains">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+        <ogc:SpatialOperator name="Intersects">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+        <ogc:SpatialOperator name="Overlaps">
+          <ogc:GeometryOperands>
+            <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+            <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+          </ogc:GeometryOperands>
+        </ogc:SpatialOperator>
+      </ogc:SpatialOperators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Temporal_Capabilities>
+      <ogc:TemporalOperands>
+        <ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+        <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+      </ogc:TemporalOperands>
+      <ogc:TemporalOperators>
+        <ogc:TemporalOperator name="TM_During">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimePeriod</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+        <ogc:TemporalOperator name="TM_Equals">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+        <ogc:TemporalOperator name="TM_After">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+        <ogc:TemporalOperator name="TM_Before">
+          <ogc:TemporalOperands>
+            <ogc:TemporalOperand>gml:TimeInstant</ogc:TemporalOperand>
+          </ogc:TemporalOperands>
+        </ogc:TemporalOperator>
+      </ogc:TemporalOperators>
+    </ogc:Temporal_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:ComparisonOperators>
+        <ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+      </ogc:ComparisonOperators>
+    </ogc:Scalar_Capabilities>
+    <ogc:Id_Capabilities>
+      <ogc:FID/>
+      <ogc:EID/>
+    </ogc:Id_Capabilities>
+  </sos:Filter_Capabilities>
+  <sos:Contents>
+    <sos:ObservationOfferingList>
+      <sos:ObservationOffering gml:id="EO2H_CS_DURBAN_ENVIRONMENTAL">
+        <gml:name>Environmental data for the Durban Case Study</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
+            <gml:lowerCorner>-29.857 31.0247</gml:lowerCorner>
+            <gml:upperCorner>-29.857 31.0247</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2010-06-01T00:00:00.000+02:00</gml:beginPosition>
+            <gml:endPosition>2010-06-30T23:55:00.000+02:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorks"/>
+        <sos:procedure xlink:href="http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SettlersSchool"/>
+        <sos:procedure xlink:href="http://www.eo2heaven.org/feature/Sensor/SouthDurban/AirQUIS/SouthernWorksMet"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/NitrogenMonoxide"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/NitrogenDioxide"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/SulfurDioxide"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/ParticularMatter10"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/Windspeed"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/Winddirection"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/AirTemperature"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/TotalResidualSulphides"/>
+        <sos:featureOfInterest xlink:href="http://www.eo2heaven.org/object/feature/city/Durban"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:responseFormat>application/zip</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>
+      <sos:ObservationOffering gml:id="EO2H_CS_DURBAN_HEALTH">
+        <gml:name>Health data for the Durban Case Study</gml:name>
+        <gml:boundedBy>
+          <gml:Envelope srsName="urn:ogc:def:crs:EPSG:4326">
+            <gml:lowerCorner>-29.94937 30.94287</gml:lowerCorner>
+            <gml:upperCorner>-29.9303 30.99625</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <sos:time>
+          <gml:TimePeriod xsi:type="gml:TimePeriodType">
+            <gml:beginPosition>2010-06-30T12:00:00.000+02:00</gml:beginPosition>
+            <gml:endPosition>2010-06-30T12:00:00.000+02:00</gml:endPosition>
+          </gml:TimePeriod>
+        </sos:time>
+        <sos:procedure xlink:href="http://www.eo2heaven.org/feature/Sensor/SouthDurban/Adminstration/Healthcare"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/NumberOfPupils"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsInGradeOfInterest"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsInStudy"/>
+        <sos:observedProperty xlink:href="http://www.eo2heaven.org/classifier/parameter/NumberOfPupilsWithAsthma"/>
+        <sos:featureOfInterest xlink:href="http://www.eo2heaven.org/object/feature/school/primary/AssegaiPrimary"/>
+        <sos:featureOfInterest xlink:href="http://www.eo2heaven.org/object/feature/school/primary/DirkieUysPrimary"/>
+        <sos:featureOfInterest xlink:href="http://www.eo2heaven.org/object/feature/school/primary/EntuthukweniLowerPrimary"/>
+        <sos:responseFormat>text/xml;subtype="om/1.0.0"</sos:responseFormat>
+        <sos:responseFormat>application/zip</sos:responseFormat>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Measurement</sos:resultModel>
+        <sos:resultModel xmlns:ns="http://www.opengis.net/om/1.0">ns:Observation</sos:resultModel>
+        <sos:responseMode>inline</sos:responseMode>
+        <sos:responseMode>resultTemplate</sos:responseMode>
+      </sos:ObservationOffering>
+    </sos:ObservationOfferingList>
+  </sos:Contents>
+</sos:Capabilities>

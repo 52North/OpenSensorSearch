@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Paths;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
@@ -67,7 +68,7 @@ public class TransformerIT {
 
     private static void testTransformation(String inputFile, String transformationDir, String dataDir) throws InstantiationError {
 
-        SMLtoEbRIMTransformer transformer = new SMLtoEbRIMTransformer(transformationDir);
+        SMLtoEbRIMTransformer transformer = new SMLtoEbRIMTransformer(Paths.get(transformationDir));
 
         try {
             // test the input document

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
@@ -14,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
+
 /**
  * @author Yakoub 
  */
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
@@ -35,160 +37,75 @@ import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AutoCompleteSearch extends HttpServlet {
+import com.google.inject.servlet.RequestScoped;
+import com.sun.jersey.api.core.HttpContext;
 
-	private static Logger log = LoggerFactory
-			.getLogger(SOLRSearchSensorDAO.class);
-	private static final String AUTOCOMPLETE = "text";
+@Path("/autocomplete")
+@RequestScoped
+public class AutoCompleteSearch {
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String text = req.getParameter(AUTOCOMPLETE);
-		PrintWriter pw = resp.getWriter();
-		// I'm using a set to avoid duplications
-		Collection<Object> results = new HashSet<Object>();
-		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-		try {
-			Collection<SirSearchResultElement> search_results = dao
-					.searchByAll(text,null,null,null,null,null,null);
-			Iterator<SirSearchResultElement> it = search_results.iterator();
+    // private static final long serialVersionUID = 5313315792207485425L;
 
-			while (it.hasNext()) {
-				SirSearchResultElement element = it.next();
-				SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element
-						.getSensorDescription();
-				results.addAll(desc.getKeywords());
-				if(desc.getContacts()!=null)results.addAll(desc.getContacts());
-				if(desc.getDescription()!=null)results.add(desc.getDescription().toString());
-				if(desc.getInputs()!=null)results.addAll(desc.getInputs());
-				if(desc.getOutputs()!=null)results.addAll(desc.getOutputs());
-				if(desc.getIdentifiers()!=null)results.addAll(desc.getIdentifiers());
-				if(desc.getClassifiers()!=null)results.addAll(desc.getClassifiers());
-			}
+    private static Logger log = LoggerFactory.getLogger(SOLRSearchSensorDAO.class);
 
-			// returns the result as json array
-			if (results.size() == 0)
-				pw.println("");
-			else {
-				Iterator<Object> iterator = results.iterator();
-				StringBuilder res = new StringBuilder();
-				res.append(iterator.next());
-				while(iterator.hasNext()){
-					res.append(",");
-					res.append(iterator.next());
-				}
-				pw.println(res.toString());
-			}
-			pw.flush();
-			resp.flushBuffer();
-			log.debug("Done serving servlet");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			log.error("error on searching", e);
-		}
+    private static final String REQUEST_PARAM_AUTOCOMPLETE = "text";
 
-	}
+    @Context
+    HttpServletRequest servletRequest;
 
-}
-=======
-/**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
- *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
- *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
- *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
- */
-package org.n52.sir;
-/**
- * @author Yakoub 
- */
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+    @Context
+    private HttpContext servletContext;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String doGet(@QueryParam("text")
+    String text) {
+        // String text = servletRequest.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
+        log.trace("new GET request for autocomplete: {}", text);
 
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
-import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+        // TODO return reasonable error message and status code
+        if (text == null)
+            throw new RuntimeException("Query parameter " + REQUEST_PARAM_AUTOCOMPLETE + " must be given.");
 
-public class AutoCompleteSearch extends HttpServlet {
+        // I'm using a set to avoid duplications
+        Collection<Object> results = new HashSet<>();
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+        Collection<SirSearchResultElement> search_results = dao.searchByAll(text, null, null, null, null, null, null);
+        Iterator<SirSearchResultElement> it = search_results.iterator();
 
-	private static Logger log = LoggerFactory
-			.getLogger(SOLRSearchSensorDAO.class);
-	private static final String AUTOCOMPLETE = "text";
+        while (it.hasNext()) {
+            SirSearchResultElement element = it.next();
+            SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element.getSensorDescription();
+            results.addAll(desc.getKeywords());
+            if (desc.getContacts() != null)
+                results.addAll(desc.getContacts());
+            if (desc.getDescription() != null)
+                results.add(desc.getDescription().toString());
+            if (desc.getInputs() != null)
+                results.addAll(desc.getInputs());
+            if (desc.getOutputs() != null)
+                results.addAll(desc.getOutputs());
+            if (desc.getIdentifiers() != null)
+                results.addAll(desc.getIdentifiers());
+            if (desc.getClassifiers() != null)
+                results.addAll(desc.getClassifiers());
+        }
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String text = req.getParameter(AUTOCOMPLETE);
-		PrintWriter pw = resp.getWriter();
-		// I'm using a set to avoid duplications
-		Collection<Object> results = new HashSet<Object>();
-		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-		try {
-			Collection<SirSearchResultElement> search_results = dao
-					.searchByAll(text,null,null,null,null,null,null);
-			Iterator<SirSearchResultElement> it = search_results.iterator();
+        // returns the result as json array
+        if (results.size() == 0)
+            return "{input: " + text + "}"; // FIXME more helpful response message
 
-			while (it.hasNext()) {
-				SirSearchResultElement element = it.next();
-				SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element
-						.getSensorDescription();
-				results.addAll(desc.getKeywords());
-				if(desc.getContacts()!=null)results.addAll(desc.getContacts());
-				if(desc.getDescription()!=null)results.add(desc.getDescription().toString());
-				if(desc.getInputs()!=null)results.addAll(desc.getInputs());
-				if(desc.getOutputs()!=null)results.addAll(desc.getOutputs());
-				if(desc.getIdentifiers()!=null)results.addAll(desc.getIdentifiers());
-				if(desc.getClassifiers()!=null)results.addAll(desc.getClassifiers());
-			}
+        Iterator<Object> iterator = results.iterator();
+        StringBuilder res = new StringBuilder();
+        res.append(iterator.next());
+        while (iterator.hasNext()) {
+            res.append(",");
+            res.append(iterator.next());
+        }
 
-			// returns the result as json array
-			if (results.size() == 0)
-				pw.println("");
-			else {
-				Iterator<Object> iterator = results.iterator();
-				StringBuilder res = new StringBuilder();
-				res.append(iterator.next());
-				while(iterator.hasNext()){
-					res.append(",");
-					res.append(iterator.next());
-				}
-				pw.println(res.toString());
-			}
-			pw.flush();
-			resp.flushBuffer();
-			log.debug("Done serving servlet");
-		} catch (Exception e) {
-			log.error("error on searching", e);
-		}
+        log.debug("Done serving servlet, response: {}", res.toString());
 
-	}
+        return res.toString();
+    }
 
 }
->>>>>>> harvestCallback

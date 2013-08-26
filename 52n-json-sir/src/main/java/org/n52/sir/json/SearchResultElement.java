@@ -41,23 +41,24 @@ public class SearchResultElement { // implements JsonSerializableWithType {
 
 	private Collection<ServiceReference> serviceReferences;
 
-	private Collection<Object> classifiers;
-	private Collection<Object> keywords;
+	private Collection<String> classifiers;
+	
+	private Collection<String> keywords;
 	
 
-	public Collection<Object> getKeywords() {
+	public Collection<String> getKeywords() {
 		return this.keywords;
 	}
 
-	public void setKeywords(Collection<Object> keywords) {
+	public void setKeywords(Collection<String> keywords) {
 		this.keywords = keywords;
 	}
 
-	public Collection<Object> getClassifiers() {
+	public Collection<String> getClassifiers() {
 		return this.classifiers;
 	}
 
-	public void setClassifiers(Collection<Object> classifiers) {
+	public void setClassifiers(Collection<String> classifiers) {
 		this.classifiers = classifiers;
 	}
 

@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class TransformSensorMLBean extends AbstractBean {
+public class TransformSensorMLBean extends TestClientBean {
 
     private static Logger log = LoggerFactory.getLogger(TransformSensorMLBean.class);
 

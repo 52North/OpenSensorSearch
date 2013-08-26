@@ -71,7 +71,7 @@ public class RemoteHarvestJob implements Job {
 						
 						SirSensor sensor = new SirSensor();
 						Collection<String> keywords = new ArrayList<String>();
-						Iterator<Object> it = description.getKeywords().iterator();
+						Iterator<String> it = description.getKeywords().iterator();
 						while(it.hasNext())keywords.add(it.next().toString());
 						
 						sensor.setKeywords(keywords);

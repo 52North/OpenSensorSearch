@@ -32,8 +32,7 @@
 	}
 
 	if (request.getParameter("sendRequest") != null) {
-		describeSensor.setResponseString(Client
-				.sendPostRequest(describeSensor.getRequestString()));
+		describeSensor.sendRequest(describeSensor.getRequestString());
 	}
 %>
 

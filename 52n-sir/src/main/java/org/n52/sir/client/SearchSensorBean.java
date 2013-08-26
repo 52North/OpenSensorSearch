@@ -43,7 +43,7 @@ import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
  * @author Jan Schulte
  * 
  */
-public class SearchSensorBean extends AbstractBean {
+public class SearchSensorBean extends TestClientBean {
 
     private String lowerCorner = "";
 

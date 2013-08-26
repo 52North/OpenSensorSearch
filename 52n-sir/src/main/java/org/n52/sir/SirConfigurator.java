@@ -41,6 +41,7 @@ import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
+import org.n52.sir.ds.pgsql.PGSQLDAOFactory;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
@@ -898,8 +899,9 @@ public class SirConfigurator {
             // get Constructor of this class with matching parameter types
             Constructor<IDAOFactory> constructor = daoFactoryClass.getConstructor(constrArgs);
 
-            this.factory = constructor.newInstance(args);
-
+            //this.factory = constructor.newInstance(args);
+            this.factory = new PGSQLDAOFactory(daoPropsP);
+            
             log.info(" ***** " + daoName + " loaded successfully! ***** ");
 
         }
@@ -919,18 +921,18 @@ public class SirConfigurator {
             log.error("Error while loading DAOFactory, parameters for the constructor are illegal: " + iae.toString());
             throw new OwsExceptionReport(iae.getMessage(), iae.getCause());
         }
-        catch (InstantiationException ie) {
-            log.error("The instantiation of a DAOFactory failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iace) {
-            log.error("The instantiation of a DAOFactory failed: " + iace.toString());
-            throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("The instantiation of a DAOFactory failed: " + ite.toString());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-        }
+//        catch (InstantiationException ie) {
+//            log.error("The instantiation of a DAOFactory failed: " + ie.toString());
+//            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
+//        }
+//        catch (IllegalAccessException iace) {
+//            log.error("The instantiation of a DAOFactory failed: " + iace.toString());
+//            throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
+//        }
+//        catch (InvocationTargetException ite) {
+//            log.error("The instantiation of a DAOFactory failed: " + ite.toString());
+//            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
+//        }
     }
 
     @SuppressWarnings("unchecked")

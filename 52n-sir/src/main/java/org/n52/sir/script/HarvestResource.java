@@ -68,14 +68,17 @@ public class HarvestResource {
     private SchedulerFactory schedulerFactory;
     private IInsertSensorInfoDAO dao;
     private IInsertRemoteHarvestServer remoteDAO;
+    private SirConfigurator config;
     @Inject
-    public HarvestResource(IInsertSensorInfoDAO dao,IInsertRemoteHarvestServer remoteDAO) { // public HarvestResource(IJSExecute exec, SchedulerFactory schedulerFactory) {
+    public HarvestResource(SirConfigurator config) { // public HarvestResource(IJSExecute exec, SchedulerFactory schedulerFactory) {
     // this.jsEngine = exec;
     // this.schedulerFactory = schedulerFactory;
-    	this.dao = dao;
-    	this.remoteDAO=remoteDAO;
+//    	this.dao = dao;
+//    	this.remoteDAO=remoteDAO;
+//    }
+    	log.info("SirConfigurator: {}", config.getFactory());
+    	this.config=config;
     }
-
     @GET
     public Object listHarvesters() {
         return "test";
@@ -177,9 +180,12 @@ public class HarvestResource {
 	@Path("/remote/server")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response putServer(@FormParam("url")String serverURL){
-		if(remoteDAO==null)log.info("Cannot instantiate remote dao");
-		if(remoteDAO!=null){
-			String auth_token = remoteDAO.insertRemoteServer(serverURL);
+		if(config==null)log.info("Cannot instantiate remote dao");
+		if(config.getFactory()==null)log.info("Cannot find factory");
+		if(config.getFactory().insertRemoteHarvestSensor()==null)log.info("Cannot find remote factory");
+		
+		if(config!=null){
+			String auth_token = config.getFactory().insertRemoteHarvestSensor().insertRemoteServer(serverURL);
 			String result = "{"+'"'+"auth_token"+'"'+":"+'"'+auth_token+'"'+"}";
 			return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
 		}else return Response.status(500).build();

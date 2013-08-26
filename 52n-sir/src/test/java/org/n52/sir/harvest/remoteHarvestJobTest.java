@@ -68,7 +68,7 @@ public class remoteHarvestJobTest {
 		@Override
 		public boolean matches(Object arg0) {
 			if(arg0==null)return false;
-				return ((SirSensor) arg0).getKeywords().contains("test2");
+			return ((SirSensor) arg0).getKeywords().contains("test2");
 		}
 	};
 

@@ -33,7 +33,6 @@ import org.x52North.sir.x032.SearchSensorResponseDocument;
 public class SearchSensorIT {
 
     public void searchSensor(String file, String description) throws Exception {
-        System.out.println(description);
         File f = new File( (ClassLoader.getSystemResource(file).getFile()));
         SearchSensorRequestDocument doc = SearchSensorRequestDocument.Factory.parse(f);
 

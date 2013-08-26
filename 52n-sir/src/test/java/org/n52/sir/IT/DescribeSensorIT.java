@@ -67,7 +67,6 @@ public class DescribeSensorIT {
         XmlObject response = null;
 
         response = Client.xSendPostRequest(doc);
-        System.out.println("response:" + response);
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response.getDomNode());
         boolean isValid = sml.validate();
@@ -81,7 +80,6 @@ public class DescribeSensorIT {
         XmlObject response = null;
 
         response = Client.xSendPostRequest(doc);
-        System.out.println("response:" + response);
         // parse and validate response
         SensorMLDocument sml = SensorMLDocument.Factory.parse(response.getDomNode());
         boolean isValid = sml.validate();

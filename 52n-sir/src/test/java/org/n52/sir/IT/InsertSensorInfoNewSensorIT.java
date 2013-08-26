@@ -67,7 +67,6 @@ public class InsertSensorInfoNewSensorIT {
         XmlObject res = Client.xSendPostRequest(req);
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
         
-        System.out.println(resp);
         assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
     }
 
@@ -98,10 +97,7 @@ public class InsertSensorInfoNewSensorIT {
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
         assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
-        /*
-         * TODO delete the sensor here
-         */
-
+ 
     }
 
 }

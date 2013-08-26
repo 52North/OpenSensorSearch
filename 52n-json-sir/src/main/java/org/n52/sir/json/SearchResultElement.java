@@ -197,7 +197,6 @@ public class SearchResultElement { // implements JsonSerializableWithType {
 	// public void serialize(JsonGenerator arg0, SerializerProvider arg1) throws
 	// IOException,
 	// JsonProcessingException {
-	// // TODO Auto-generated method stub
 	//
 	// }
 	//
@@ -206,7 +205,6 @@ public class SearchResultElement { // implements JsonSerializableWithType {
 	// arg1, TypeSerializer arg2) throws
 	// IOException,
 	// JsonProcessingException {
-	// // TODO Auto-generated method stub
 	//
 	// }
 }

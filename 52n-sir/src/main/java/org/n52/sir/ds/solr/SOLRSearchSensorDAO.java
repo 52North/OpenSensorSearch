@@ -49,14 +49,12 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 	@Override
 	public Collection<SirSearchResultElement> getAllSensors(
 			boolean simpleReponse) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public SirSearchResultElement getSensorBySensorID(String sensorIdInSir,
 			boolean simpleReponse) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -64,7 +62,6 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 	public SirSearchResultElement getSensorByServiceDescription(
 			SirServiceReference servDesc, boolean simpleReponse)
 			throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

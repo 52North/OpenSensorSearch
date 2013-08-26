@@ -47,27 +47,23 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 	@Override
 	public String addNewReference(SirSensorIdentification sensIdent,
 			SirServiceReference servRef) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String deleteReference(SirSensorIdentification sensIdent,
 			SirServiceReference servRef) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String deleteSensor(SirSensorIdentification sensIdent)
 			throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		// Get the keywords first
 
 		// TODO moh-yakoub: implement a mechanism to get access to the various
@@ -154,14 +150,12 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 			log.error("IOException", e);
 		}
 
-		// TODO add the database ID
 		return id;
 	}
 
 	@Override
 	public String updateSensor(SirSensorIdentification sensIdent,
 			SirSensor sensor) throws OwsExceptionReport {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

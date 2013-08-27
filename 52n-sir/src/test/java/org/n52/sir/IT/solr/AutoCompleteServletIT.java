@@ -1,40 +1,27 @@
 /**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.n52.sir.IT.solr;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import javax.servlet.UnavailableException;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -44,9 +31,7 @@ import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
-import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
@@ -61,25 +46,20 @@ public class AutoCompleteServletIT {
 			.getLogger(AutoCompleteServletIT.class);
 
 	@Before
-	public  void insertSensor() throws UnavailableException, OwsExceptionReport, XmlException, IOException {
-		InputStream dbStream = ClassLoader
-				.getSystemResourceAsStream("prop/db.PROPERTIES");
-		InputStream sirStream = ClassLoader
-				.getSystemResourceAsStream("prop/sir.PROPERTIES");
-		// Read configurator if null
-		SirConfigurator.getInstance(sirStream, dbStream, null, null);
+	public  void insertSensor() throws OwsExceptionReport, XmlException, IOException {
 		File sensor_status = new File(ClassLoader.getSystemResource(
 				"Requests/testsensor.xml").getFile());
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_status);
 		
 		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-		dao.insertSensor(SensorMLDecoder.decode(doc));
-			
+		String insertSensor = dao.insertSensor(SensorMLDecoder.decode(doc));
+		log.debug("inserted test sensor: {}", insertSensor);
 	}
+	
 	@Test
 	public  void testServlet() throws ClientProtocolException, IOException {
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:8080/SIR/autocomplete?text=te");
+		HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/autocomplete?text=te");
 		
 		HttpResponse response = client.execute(get);
 		StringBuilder builder = new StringBuilder();

@@ -1,25 +1,17 @@
 /**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.n52.sir.opensearch;
@@ -69,6 +61,8 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -133,21 +127,30 @@ public class HtmlListener implements IOpenSearchListener {
 
     private HashMap<String, ICapabilitiesPermalinkMapper> mappers;
 
+    // TODO make this a configuration parameter
+    private boolean createTimeSeriesLinks = false;
+
+    @Inject
+    Client sirClient;
+
     public HtmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
 
-        this.capabilitiesCache = new HashMap<URL, XmlObject>();
-        this.capabilitiesCacheAge = new HashMap<URL, Date>();
-        this.capabilitiesErrorCache = new HashMap<URL, XmlObject>();
+        this.capabilitiesCache = new HashMap<>();
+        this.capabilitiesCacheAge = new HashMap<>();
+        this.capabilitiesErrorCache = new HashMap<>();
 
-        this.mappers = new HashMap<String, ICapabilitiesPermalinkMapper>();
+        this.mappers = new HashMap<>();
 
-        // TODO change this to service loaders
+        // TODO change this to injection of multiple implemntations, move mapper to a submodule
         ICapabilitiesPermalinkMapper cpm1 = new PegelOnlineCPM();
         add(cpm1);
         ICapabilitiesPermalinkMapper cpm2 = new WeatherSosCPM();
         add(cpm2);
+
+        if (this.createTimeSeriesLinks)
+            log.warn("Permalink generation is disabled.");
     }
 
     private void add(ICapabilitiesPermalinkMapper cpm1) {
@@ -278,14 +281,18 @@ public class HtmlListener implements IOpenSearchListener {
         sb.append("<div class=\"result-header\">");
 
         sb.append(this.sensorInfo_Title);
-        sb.append("<a href=\"");
+
         String url = sensorDescription.getSensorDescriptionURL();
-        sb.append(Tools.encode(url));
-        sb.append("\">");
-        sb.append(" ");
-        // sb.append(sirSearchResultElement.getSensorIdInSir());
-        sb.append(Tools.extractEntryTitle(sirSearchResultElement));
-        sb.append("</a>");
+        if (url != null) {
+            sb.append("<a href=\"");
+            sb.append(Tools.encode(url));
+            sb.append("\">");
+            sb.append(" ");
+            // sb.append(sirSearchResultElement.getSensorIdInSir());
+            sb.append(Tools.extractEntryTitle(sirSearchResultElement));
+            sb.append("</a>");
+        }
+
         sb.append("</div>");
 
         for (SirServiceReference reference : sirSearchResultElement.getServiceReferences()) {
@@ -300,38 +307,40 @@ public class HtmlListener implements IOpenSearchListener {
             sb.append(reference.getService().getUrl());
             sb.append("</a>");
 
-            // timeseries link
-            String permalinkUrl = null;
+            if (this.createTimeSeriesLinks) {
+                // timeseries link
+                String permalinkUrl = null;
 
-            // permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
-            try {
-                permalinkUrl = getTimeSeriesPermalink(sirSearchResultElement, reference);
-            }
-            catch (MalformedURLException e) {
-                log.warn("Could not create permalink for " + reference, e);
-            }
-            catch (ExternalToolsException e) {
-                log.warn("Could not create permalink for " + reference, e);
-            }
-            catch (IllegalArgumentException e) {
-                log.warn("Could not create permalink for " + reference, e);
-            }
+                // permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
+                try {
+                    permalinkUrl = getTimeSeriesPermalink(sirSearchResultElement, reference);
+                }
+                catch (MalformedURLException e) {
+                    log.warn("Could not create permalink for " + reference, e);
+                }
+                catch (ExternalToolsException e) {
+                    log.warn("Could not create permalink for " + reference, e);
+                }
+                catch (IllegalArgumentException e) {
+                    log.warn("Could not create permalink for " + reference, e);
+                }
 
-            if (permalinkUrl != null) {
-                sb.append("<span style=\"float: right;\"><a href=\"");
-                sb.append(Tools.encode(permalinkUrl));
-                sb.append("\" title=\"");
-                sb.append(this.openTimeSeries);
-                sb.append("\">");
-                sb.append("<img src=\"");
-                sb.append(this.timeseriesImage);
-                sb.append("\" alt=\"");
-                sb.append(this.openTimeSeries);
-                sb.append("\" />");
-                sb.append("</a></span>");
+                if (permalinkUrl != null) {
+                    sb.append("<span style=\"float: right;\"><a href=\"");
+                    sb.append(Tools.encode(permalinkUrl));
+                    sb.append("\" title=\"");
+                    sb.append(this.openTimeSeries);
+                    sb.append("\">");
+                    sb.append("<img src=\"");
+                    sb.append(this.timeseriesImage);
+                    sb.append("\" alt=\"");
+                    sb.append(this.openTimeSeries);
+                    sb.append("\" />");
+                    sb.append("</a></span>");
+                }
+                else
+                    log.debug("Could not create permalink for {}", reference);
             }
-            else
-                log.debug("Could not create permalink for {}", reference);
 
             sb.append("</div>");
         }
@@ -643,8 +652,9 @@ public class HtmlListener implements IOpenSearchListener {
         XmlObject caps;
         // TODO use threads for this, then update the interface one after the other (loader image and
         // AJAX?)
+
         try {
-            caps = Client.requestCapabilities(serviceReference.getService().getType(), url.toURI());
+            caps = this.sirClient.requestCapabilities(serviceReference.getService().getType(), url.toURI());
 
             if (caps instanceof ExceptionReportDocument) {
                 log.debug("Got ExceptionReportDocument as response!\n\n" + caps.xmlText());

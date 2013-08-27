@@ -26,7 +26,6 @@ import org.n52.sir.ds.IGetAllServicesDAO;
 import org.n52.sir.ds.IGetSensorStatusDAO;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertHarvestScriptDAO;
-import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.IInsertSensorStatusDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
@@ -124,10 +123,8 @@ public class PGSQLDAOFactory implements IDAOFactory {
 
 	@Override
 	public IInsertHarvestScriptDAO insertHarvestScriptDAO() {
+		// TODO Auto-generated method stub
 		return new PGSQLInsertHarvestScriptDAO(this.cpool);
-	}
-	public IInsertRemoteHarvestServer insertRemoteHarvestSensor(){
-		return new PGSQLInsertRemoteHarvestServer(this.cpool);
 	}
 
 }

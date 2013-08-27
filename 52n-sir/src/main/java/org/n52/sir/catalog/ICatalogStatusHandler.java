@@ -19,7 +19,9 @@ import java.util.Collection;
 
 /**
  * 
- * Interface for updating the status of a saved catalog connection.
+ * Interface for viewing the status of a saved catalog connection.
+ * 
+ * TODO move this into a module and as a service endpoint /catalog
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 

@@ -1,0 +1,190 @@
+<sir:Capabilities version="0.3.1" updateSequence="2013-08-22T15:46:56+0200"
+	xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd"
+	xmlns:sir="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ows:OperationsMetadata xmlns:ows="http://www.opengis.net/ows/1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink">
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="updateSequence">
+				<ows:AnyValue />
+			</ows:Parameter>
+			<ows:Parameter name="AcceptVersions">
+				<ows:AllowedValues>
+					<ows:Value>0.3.0</ows:Value>
+					<ows:Value>0.3.0</ows:Value>
+					<ows:Value>0.3.1</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="Sections">
+				<ows:AllowedValues>
+					<ows:Value>ServiceIdentification</ows:Value>
+					<ows:Value>ServiceProvider</ows:Value>
+					<ows:Value>OperationsMetadata</ows:Value>
+					<ows:Value>Contents</ows:Value>
+					<ows:Value>All</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+			<ows:Parameter name="AcceptFormats">
+				<ows:AllowedValues>
+					<ows:Value>text/xml</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="ConnectToCatalog">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="CatalogURL">
+				<ows:AnyValue />
+			</ows:Parameter>
+			<ows:Parameter name="PushIntervalSeconds">
+				<ows:AllowedValues>
+					<ows:Range>
+						<ows:MinimumValue>0</ows:MinimumValue>
+					</ows:Range>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="DescribeSensor">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="SensorIDInSIR">
+				<ows:AnyValue />
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="DisconnectFromCatalog">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="CatalogURL">
+				<ows:AnyValue />
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="GetSensorStatus">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="SensorIdentification">
+				<ows:AnyValue />
+			</ows:Parameter>
+			<ows:Parameter name="SearchCriteria">
+				<ows:AnyValue />
+			</ows:Parameter>
+			<ows:Parameter name="PropertyFilter">
+				<ows:AnyValue />
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="HarvestService">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="ServiceURL">
+				<ows:AnyValue />
+			</ows:Parameter>
+			<ows:Parameter name="ServiceType">
+				<ows:AllowedValues>
+					<ows:Value>SOS</ows:Value>
+					<ows:Value>SPS</ows:Value>
+				</ows:AllowedValues>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="InsertSensorInfo">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="InfoToBeInserted">
+				<ows:AnyValue />
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="InsertSensorStatus">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="StatusDescription">
+				<ows:AnyValue />
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="SearchSensor">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://localhost:8080/OpenSensorSearch/sir" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="SensorIdentification">
+				<ows:AnyValue />
+			</ows:Parameter>
+			<ows:Parameter name="SearchCriteria">
+				<ows:AnyValue />
+			</ows:Parameter>
+			<ows:Parameter name="SimpleResponse">
+				<!--true or false -->
+				<ows:AnyValue />
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Parameter name="service">
+			<ows:AllowedValues>
+				<ows:Value>SIR</ows:Value>
+			</ows:AllowedValues>
+		</ows:Parameter>
+		<ows:Parameter name="version">
+			<ows:AllowedValues>
+				<ows:Value>0.3.1</ows:Value>
+			</ows:AllowedValues>
+		</ows:Parameter>
+	</ows:OperationsMetadata>
+	<sir:Contents>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://204.115.180.244/sos/server.php</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://v-swe.uni-muenster.de:8080/WeatherSOS/sos</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://gcoos.rsmas.miami.edu/sos/sos_server.php</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://habu.apl.washington.edu/pyws/sos.py</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://sdf.ndbc.noaa.gov/sos/server.php</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://giv-uw.uni-muenster.de:8080/AQE/sos</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+		<sir:HarvestedService>
+			<sir:ServiceURL>http://sensorweb.demo.52north.org/PegelOnlineSOSv2.1/sos</sir:ServiceURL>
+			<sir:ServiceType>SOS</sir:ServiceType>
+		</sir:HarvestedService>
+	</sir:Contents>
+</sir:Capabilities>

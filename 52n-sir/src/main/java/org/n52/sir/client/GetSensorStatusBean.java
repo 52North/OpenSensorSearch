@@ -45,7 +45,7 @@ import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
  * @author Jan Schulte
  * 
  */
-public class GetSensorStatusBean extends AbstractBean {
+public class GetSensorStatusBean extends TestClientBean {
 
     private String isBetweenLowerBoundary = "";
 

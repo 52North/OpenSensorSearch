@@ -1,34 +1,27 @@
 /**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 /**
  * @author Yakoub
  */
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +29,8 @@ import java.io.IOException;
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -44,22 +39,31 @@ import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
 
 public class InsertSensorStatusIT {
 
+    private static Client client;
+
+    @BeforeClass
+    public static void setUp() {
+        client = GuiceUtil.configureSirClient();
+    }
+
     @Test
     public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
-        XmlObject res = null;
-        /*
-         * Create a sensor insert request from sensorFile
-         */
         File sensor_status = new File(ClassLoader.getSystemResource("Requests/InsertSensorStatus.xml").getFile());
-        InsertSensorStatusRequestDocument req = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
+        InsertSensorStatusRequestDocument request = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
 
-        res = Client.xSendPostRequest(req);
+        XmlObject res = client.xSendPostRequest(request);
 
-        InsertSensorStatusResponseDocument res_doc = InsertSensorStatusResponseDocument.Factory.parse(res.getDomNode());
+        InsertSensorStatusResponseDocument response = InsertSensorStatusResponseDocument.Factory.parse(res.getDomNode());
 
-        assertTrue("StatusId not equal",
-                   res_doc.getInsertSensorStatusResponse().getSensorIDInSIR().equals(req.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR()));
+        String expected = request.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR();
+        String actual = response.getInsertSensorStatusResponse().getSensorIDInSIR();
 
+        assertThat("sensor IDs equal", actual, is(equalTo(expected)));
+    }
+
+    @After
+    public void cleanUp() {
+        // TODO remove the inserted status again
     }
 
 }

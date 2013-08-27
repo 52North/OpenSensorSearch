@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.opensearch;
 
 import java.net.URL;
@@ -21,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.n52.sir.SirConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -31,7 +34,9 @@ import org.n52.sir.SirConfigurator;
  */
 public class OpenSearchConfigurator {
 
-    public static final String HOME_URL = "/SIR";
+    private static Logger log = LoggerFactory.getLogger(OpenSearchConfigurator.class);
+
+    public static final String HOME_URL = "/OpenSensorSearch";
 
     private static SirConfigurator sirConfigurator = SirConfigurator.getInstance();
 
@@ -51,7 +56,11 @@ public class OpenSearchConfigurator {
 
     private SimpleDateFormat permalinkDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    HashMap<String, String> responseFormats = new HashMap<String, String>();
+    HashMap<String, String> responseFormats = new HashMap<>();
+
+    public OpenSearchConfigurator() {
+        log.info("NEW {}", this);
+    }
 
     public void addResponseFormat(IOpenSearchListener listener) {
         this.responseFormats.put(listener.getMimeType(), listener.getName());

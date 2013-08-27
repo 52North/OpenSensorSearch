@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.io.UnsupportedEncodingException;
@@ -20,6 +21,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
@@ -28,9 +30,9 @@ import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirSearchSensorRequest;
@@ -42,72 +44,56 @@ import org.n52.sir.util.SORTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class SearchSensorListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(SearchSensorListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.SearchSensor.name();
 
-    private SirConfigurator configurator;
-
     private boolean encodeURLs = true;
 
-    /**
-     * the data access object for the searchSensor operation
-     */
     private ISearchSensorDAO searchSensDao;
 
+    private String urlCharacterEncoding = null;
+
     /**
+     * TODO implement injection mechanism for search DAO so that only that what needed is injected, not the
+     * complete configurator
      * 
      * @throws OwsExceptionReport
      */
-    public SearchSensorListener() throws OwsExceptionReport {
-        this.configurator = SirConfigurator.getInstance();
+    @Inject
+    public SearchSensorListener(SirConfigurator config) throws OwsExceptionReport { // public
+                                                                                    // SearchSensorListener(ISearchSensorDAO
+                                                                                    // searchDao) throws
+                                                                                    // OwsExceptionReport {
+        // TODO fix injection so that getInstance() is not needed here anymore
+        this.urlCharacterEncoding = config.getInstance().getCharacterEncoding();
 
-        IDAOFactory factory = this.configurator.getFactory();
-        try {
-            this.searchSensDao = factory.searchSensorDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the searchSensorDAO", se);
-            throw se;
-        }
+        IDAOFactory f = config.getInstance().getFactory();
+        this.searchSensDao = f.searchSensorDAO();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return SearchSensorListener.OPERATION_NAME;
     }
 
-    /**
-     * @return the encodeURLs
-     */
     public boolean isEncodeURLs() {
         return this.encodeURLs;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
         SirSearchSensorResponse response = new SirSearchSensorResponse();
-        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<SirSearchResultElement>();
+        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
 
         if (searchSensReq.getSensIdent() != null) {
             // search by sensorIdentification
@@ -162,8 +148,20 @@ public class SearchSensorListener implements ISirRequestListener {
                     phenomena.addAll(newPhenomena);
                 }
 
-                searchResElements = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                                        searchSensReq.isSimpleResponse());
+                // search Solr
+                SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+                ArrayList<SirSearchResultElement> searchResElementsSolr = (ArrayList<SirSearchResultElement>) dao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                                                                               searchSensReq.isSimpleResponse());
+                // search PostGreSQL
+                ArrayList<SirSearchResultElement> searchResElementsSir = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                                                                                             searchSensReq.isSimpleResponse());
+
+                // union the searches
+                log.debug("Found {} results in Solr, {} in Postgres.",
+                          searchResElementsSolr.size(),
+                          searchResElementsSir.size());
+                Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
+                Collections.addAll(searchResElements, searchResElementsSir.toArray(new SirSearchResultElement[] {}));
             }
             catch (OwsExceptionReport e) {
                 return new ExceptionResponse(e.getDocument());
@@ -178,7 +176,8 @@ public class SearchSensorListener implements ISirRequestListener {
             boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
 
             for (SirSearchResultElement sirSearchResultElement : searchResElements) {
-                SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
+                // SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription)
+                // sirSearchResultElement.getSensorDescription();
 
                 String descriptionURL;
                 try {
@@ -186,7 +185,7 @@ public class SearchSensorListener implements ISirRequestListener {
 
                     if (this.encodeURLs) {
                         // must be encoded for XML:
-                        descriptionURL = URLEncoder.encode(descriptionURL, this.configurator.getCharacterEncoding());
+                        descriptionURL = URLEncoder.encode(descriptionURL, this.urlCharacterEncoding);
                     }
                 }
                 catch (UnsupportedEncodingException e) {
@@ -197,10 +196,10 @@ public class SearchSensorListener implements ISirRequestListener {
                     log.debug("Created description URL for sensor " + sirSearchResultElement.getSensorIdInSir() + ": "
                             + descriptionURL);
 
-                sensorDescription.setSensorDescriptionURL(descriptionURL);
+                // sensorDescription.setSensorDescriptionURL(descriptionURL);
 
-                if (removeBBoxes)
-                    sensorDescription.setBoundingBox(null);
+                // if (removeBBoxes)
+                // sensorDescription.setBoundingBox(null);
             }
 
         }
@@ -210,10 +209,6 @@ public class SearchSensorListener implements ISirRequestListener {
         return response;
     }
 
-    /**
-     * @param encodeURLs
-     *        the encodeURLs to set
-     */
     public void setEncodeURLs(boolean encodeURLs) {
         this.encodeURLs = encodeURLs;
     }

@@ -25,7 +25,7 @@ import org.x52North.sir.x032.HarvestServiceRequestDocument.HarvestServiceRequest
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class HarvestServiceBean extends AbstractBean {
+public class HarvestServiceBean extends TestClientBean {
 
     private String harvestInterval = "";
 

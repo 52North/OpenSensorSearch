@@ -64,7 +64,12 @@
 	href="${service.url}${service.path}/OpenSearchDoc.xml" />
 <link rel="shortcut icon"
 	href="https://52north.org/templates/52n/favicon.ico" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
+<script src="./autocomplete.js"></script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">

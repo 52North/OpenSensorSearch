@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
@@ -51,49 +57,51 @@ import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 /**
  * 
  * @author Jan Schulte, Daniel Nüst (d.nuest@52north.org)
  * 
  */
+@Singleton
 public class RequestOperator {
 
     private static Logger log = LoggerFactory.getLogger(RequestOperator.class);
 
-    /**
-     * decoder for http get requests
-     */
     private IHttpGetRequestDecoder httpGetDecoder;
 
-    /**
-     * decoder for http post requests
-     */
     private IHttpPostRequestDecoder httpPostDecoder;
 
-    /**
-     * container of the requestListener
-     */
-    private HashMap<String, ISirRequestListener> reqListener;
+    private HashMap<String, ISirRequestListener> reqListener = new HashMap<>();
 
-    /**
-     * constructor
-     */
-    public RequestOperator() {
+    @Inject
+    public RequestOperator(SirConfigurator config, Set<ISirRequestListener> listeners) {
         this.httpGetDecoder = SirConfigurator.getInstance().getHttpGetDecoder();
         this.httpPostDecoder = SirConfigurator.getInstance().getHttpPostDecoder();
+
+        for (ISirRequestListener listener : listeners) {
+            addRequestListener(listener);
+        }
+
+        ArrayList<String> listenerClassnames = config.getInstance().getListenerClassnames();
+        addListenersByClassname(listenerClassnames);
+
+        log.info("NEW {}", this);
     }
 
-    /**
-     * adds a requestListener to the listener collection
-     * 
-     * @param listener
-     *        the requestListener which should be added
-     */
-    public void addRequestListener(ISirRequestListener listener) {
-        if (this.reqListener == null) {
-            this.reqListener = new HashMap<String, ISirRequestListener>();
-        }
-        this.reqListener.put(listener.getOperationName(), listener);
+    private void addRequestListener(ISirRequestListener listener) {
+        String name = listener.getOperationName();
+        
+        if(this.reqListener.containsKey(name))
+            log.warn("Replacing listener for {}", name);
+        
+        this.reqListener.put(name, listener);
+
+        log.debug("Added new request listener for operation {}: {}",
+                  listener.getOperationName(),
+                  listener.getClass().getName());
     }
 
     /**
@@ -160,11 +168,12 @@ public class RequestOperator {
         }
         catch (IllegalArgumentException e) {
             log.error("Illegal argument in request: ", e);
-            
+
             OwsExceptionReport owser = new OwsExceptionReport();
             owser.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 e.getClass().toString(),
-                                 "The request contained an illeagal argument: " + e.getMessage() + "\n\n" + Tools.getStackTrace(e));
+                                    e.getClass().toString(),
+                                    "The request contained an illeagal argument: " + e.getMessage() + "\n\n"
+                                            + Tools.getStackTrace(e));
             return new ExceptionResponse(owser.getDocument());
         }
 
@@ -301,5 +310,43 @@ public class RequestOperator {
         }
 
         return response;
+    }
+
+    private void addListenersByClassname(Collection<String> listeners) {
+        for (String classname : listeners) {
+            log.debug("Loading {} by classname", classname);
+
+            try {
+                // get Class of the Listener
+                @SuppressWarnings("unchecked")
+                Class<ISirRequestListener> listenerClass = (Class<ISirRequestListener>) Class.forName(classname);
+
+                Class< ? >[] constrArgs = {};
+
+                Object[] args = {};
+
+                // get Constructor of this class with matching parameter types
+                Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
+
+                addRequestListener(constructor.newInstance(args));
+            }
+            catch (ClassNotFoundException cnfe) {
+                log.error("Error while loading RequestListeners, required class could not be loaded: "
+                        + cnfe.toString());
+            }
+            catch (NoSuchMethodException nsme) {
+                log.error("Error while loading RequestListeners," + " no required constructor available: "
+                        + nsme.toString());
+            }
+            catch (InvocationTargetException ite) {
+                log.error("The instatiation of a RequestListener failed: " + ite.toString());
+            }
+            catch (InstantiationException ie) {
+                log.error("The instatiation of a RequestListener failed: " + ie.toString());
+            }
+            catch (IllegalAccessException iace) {
+                log.error("The instatiation of a RequestListener failed: " + iace.toString());
+            }
+        }
     }
 }

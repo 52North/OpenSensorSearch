@@ -47,7 +47,7 @@ public class ShortAlphanumericIdentifierGenerator implements IdentifierGenerator
      */
     @Override
     public Collection<String> generate(int count) {
-        ArrayList<String> ids = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
             ids.add(generate());
         }

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sml:SensorML xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:gml="http://www.opengis.net/gml" xmlns:om="http://www.opengis.net/om/1.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns:sos="http://www.opengis.net/sos/1.0" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0.1" xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+    <sml:member>
+        <sml:System>
+            <gml:description>Sensor of the European air quality database 'AirBase' in GERMANY</gml:description>
+            <sml:keywords>
+                <sml:KeywordList>
+                    <sml:keyword>GERMANY</sml:keyword>
+                    <sml:keyword>DE</sml:keyword>
+                    <sml:keyword>AIRBASE</sml:keyword>
+                    <sml:keyword>AIRQUALITY</sml:keyword>
+                    <sml:keyword>EEA</sml:keyword>
+                </sml:KeywordList>
+            </sml:keywords>
+            <sml:identification>
+                <sml:IdentifierList>
+                    <sml:identifier>
+                        <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+                            <sml:value>urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059</sml:value>
+                        </sml:Term>
+                    </sml:identifier>
+                    <sml:identifier>
+                        <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+                            <sml:value>Nauen, Berliner Straﬂe</sml:value>
+                        </sml:Term>
+                    </sml:identifier>
+                    <sml:identifier>
+                        <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+                            <sml:value>Nauen, Berliner Straﬂe</sml:value>
+                        </sml:Term>
+                    </sml:identifier>
+                </sml:IdentifierList>
+            </sml:identification>
+            <sml:classification>
+                <sml:ClassifierList>
+                    <sml:classifier name="intendedApplication">
+                        <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+                            <sml:value>air quality</sml:value>
+                        </sml:Term>
+                    </sml:classifier>
+                    <sml:classifier name="sensorType">
+                        <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+                            <sml:value>Traffic</sml:value>
+                        </sml:Term>
+                    </sml:classifier>
+                    <sml:classifier name="typeOfSensor">
+                        <sml:Term definition="urn:ogc:def:classifier:EEA:airbase:4.0:typeOfSensor">
+                            <sml:value>Traffic</sml:value>
+                        </sml:Term>
+                    </sml:classifier>
+                    <sml:classifier name="stationAreaType">
+                        <sml:Term definition="urn:ogc:def:classifier:EEA:airbase:4.0:areaType">
+                            <sml:value>urban</sml:value>
+                        </sml:Term>
+                    </sml:classifier>
+                    <sml:classifier name="stationSubCatRural">
+                        <sml:Term definition="urn:ogc:def:classifier:EEA:airbase:4.0:subcat:rural">
+                            <sml:value>unknown</sml:value>
+                        </sml:Term>
+                    </sml:classifier>
+                </sml:ClassifierList>
+            </sml:classification>
+            <sml:validTime>
+                <gml:TimePeriod>
+                    <gml:beginPosition>1994-03-01</gml:beginPosition>
+                    <gml:endPosition>2009-03-13</gml:endPosition>
+                </gml:TimePeriod>
+            </sml:validTime>
+            <sml:capabilities>
+                <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+                    <swe:field name="observedBBOX">
+                        <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG::4326">
+                            <swe:lowerCorner>
+                                <swe:Vector>
+                                    <swe:coordinate name="latitude">
+                                        <swe:Quantity axisID="y">
+                                            <swe:uom code="degree"/>
+                                            <swe:value>52.599998</swe:value>
+                                        </swe:Quantity>
+                                    </swe:coordinate>
+                                    <swe:coordinate name="longitude">
+                                        <swe:Quantity axisID="x">
+                                            <swe:uom code="degree"/>
+                                            <swe:value>12.875009</swe:value>
+                                        </swe:Quantity>
+                                    </swe:coordinate>
+                                </swe:Vector>
+                            </swe:lowerCorner>
+                            <swe:upperCorner>
+                                <swe:Vector>
+                                    <swe:coordinate name="latitude">
+                                        <swe:Quantity axisID="y">
+                                            <swe:uom code="degree"/>
+                                            <swe:value>52.599998</swe:value>
+                                        </swe:Quantity>
+                                    </swe:coordinate>
+                                    <swe:coordinate name="longitude">
+                                        <swe:Quantity axisID="x">
+                                            <swe:uom code="degree"/>
+                                            <swe:value>12.875009</swe:value>
+                                        </swe:Quantity>
+                                    </swe:coordinate>
+                                </swe:Vector>
+                            </swe:upperCorner>
+                        </swe:Envelope>
+                    </swe:field>
+                    <swe:field name="status">
+                        <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
+                            <swe:value>false</swe:value>
+                        </swe:Boolean>
+                    </swe:field>
+                    <swe:field name="EMEP_station">
+                        <swe:Text definition="urn:ogc:def:property:EEA:airbase:4.0:EMEP">
+                            <swe:value>no</swe:value>
+                        </swe:Text>
+                    </swe:field>
+                    <swe:field name="station_local_code">
+                        <swe:Text definition="urn:ogc:def:property:EEA:airbase:4.0:localCode">
+                            <swe:value>DEBB059</swe:value>
+                        </swe:Text>
+                    </swe:field>
+                    <swe:field name="lau_level2_code">
+                        <swe:Text definition="urn:ogc:def:property:EEA:airbase:4.0:lauLevel2Code">
+                            <swe:value>12063208</swe:value>
+                        </swe:Text>
+                    </swe:field>
+                    <swe:field name="lau_level2_name">
+                        <swe:Text definition="urn:ogc:def:property:EEA:airbase:4.0:lauLevel2Name">
+                            <swe:value>Nauen, Stadt</swe:value>
+                        </swe:Text>
+                    </swe:field>
+                </swe:DataRecord>
+            </sml:capabilities>
+            <sml:contact>
+                <sml:ResponsibleParty gml:id="WWU_ifgi_AirBase_contact">
+                    <sml:individualName>Christian Autermann</sml:individualName>
+                    <sml:organizationName>Institute for Geoinformatics - Westfaelische Wilhelms Universitaet Muenster - Sensor Web and Simulation Lab</sml:organizationName>
+                    <sml:contactInfo>
+                        <sml:address>
+                            <sml:deliveryPoint>Weseler Stra?e 253</sml:deliveryPoint>
+                            <sml:city>M?nster</sml:city>
+                            <sml:postalCode>48151</sml:postalCode>
+                            <sml:country>Germany</sml:country>
+                            <sml:electronicMailAddress>autermann@uni-muenster.de</sml:electronicMailAddress>
+                        </sml:address>
+                    </sml:contactInfo>
+                </sml:ResponsibleParty>
+            </sml:contact>
+            <sml:position name="DEBB059">
+                <swe:Position fixed="true" referenceFrame="urn:ogc:def:crs:EPSG::4326">
+                    <swe:location>
+                        <swe:Vector>
+                            <swe:coordinate name="latitude">
+                                <swe:Quantity axisID="y">
+                                    <swe:uom code="degree"/>
+                                    <swe:value>52.599998</swe:value>
+                                </swe:Quantity>
+                            </swe:coordinate>
+                            <swe:coordinate name="longitude">
+                                <swe:Quantity axisID="x">
+                                    <swe:uom code="degree"/>
+                                    <swe:value>12.875009</swe:value>
+                                </swe:Quantity>
+                            </swe:coordinate>
+                            <swe:coordinate name="altitude">
+                                <swe:Quantity axisID="z">
+                                    <swe:uom code="m"/>
+                                    <swe:value>32.0</swe:value>
+                                </swe:Quantity>
+                            </swe:coordinate>
+                        </swe:Vector>
+                    </swe:location>
+                </swe:Position>
+            </sml:position>
+            <sml:inputs>
+                <sml:InputList>
+                    <sml:input name="Particulate matter &lt; 10 µm (aerosol)">
+                        <swe:ObservableProperty definition="urn:ogc:def:property:EEA:airbase:4.0:componentCode:PM10"/>
+                    </sml:input>
+                    <sml:input name="Nitrogen dioxide (air)">
+                        <swe:ObservableProperty definition="urn:ogc:def:property:EEA:airbase:4.0:componentCode:NO2"/>
+                    </sml:input>
+                </sml:InputList>
+            </sml:inputs>
+            <sml:outputs>
+                <sml:OutputList>
+                    <sml:output name="PM10">
+                        <swe:Quantity definition="http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration(PM10)">
+                            <gml:metaDataProperty>
+                                <offering>
+                                    <id>PM10</id>
+                                    <name>PM10</name>
+                                </offering>
+                            </gml:metaDataProperty>
+                            <gml:description>Particulate matter &lt; 10 µm (aerosol)</gml:description>
+                            <swe:uom code="µg/m3"/>
+                        </swe:Quantity>
+                    </sml:output>
+                    <sml:output name="NO2">
+                        <swe:Quantity definition="http://giv-genesis.uni-muenster.de:8080/SOR/REST/phenomenon/OGC/Concentration(NO2)">
+                            <gml:metaDataProperty>
+                                <offering>
+                                    <id>NO2</id>
+                                    <name>NO2</name>
+                                </offering>
+                            </gml:metaDataProperty>
+                            <gml:description>Nitrogen dioxide (air)</gml:description>
+                            <swe:uom code="µg/m3"/>
+                        </swe:Quantity>
+                    </sml:output>
+                </sml:OutputList>
+            </sml:outputs>
+        </sml:System>
+    </sml:member>
+</sml:SensorML>

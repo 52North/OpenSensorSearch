@@ -18,10 +18,10 @@ package org.n52.sir.xml;
 import java.io.File;
 import java.util.List;
 
+import net.opengis.sensorML.x101.SensorMLDocument;
+
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.ows.OwsExceptionReport;
-
-import net.opengis.sensorML.x101.SensorMLDocument;
 
 /**
  * @author Daniel Nüst

@@ -56,7 +56,7 @@ public class XmlListener implements IOpenSearchListener {
                                PrintWriter writer,
                                String searchText) throws OwsExceptionReport {
         log.debug("Creating XML response for {}", searchText);
-
+        
         resp.setContentType(MIME_TYPE);
         SirSearchSensorResponse sssr = new SirSearchSensorResponse();
         sssr.setSearchResultElements(searchResult);
@@ -64,12 +64,13 @@ public class XmlListener implements IOpenSearchListener {
 
         log.debug("Done with XML response.");
     }
-    
+
     private void writeTo(SirSearchSensorResponse sssr, Writer writer) throws OwsExceptionReport {
         SearchSensorResponseDocument searchSensorRespDoc = sssr.createXml();
         try {
             WriterOutputStream wos = new WriterOutputStream(writer, CharacterSet.UTF_8);
             searchSensorRespDoc.save(wos, XmlTools.xmlOptionsForNamespaces());
+            wos.close();
         }
         catch (IOException e) {
             log.error("Could not write response document to writer.", e);

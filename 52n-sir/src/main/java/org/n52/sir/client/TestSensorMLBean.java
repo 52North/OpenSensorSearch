@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class TestSensorMLBean extends AbstractBean {
+public class TestSensorMLBean extends TestClientBean {
 
     private static Logger log = LoggerFactory.getLogger(TestSensorMLBean.class);
 

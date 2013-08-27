@@ -28,7 +28,7 @@ import org.x52North.sir.x032.GetCapabilitiesDocument.GetCapabilities;
  * @author Jan Schulte
  * 
  */
-public class GetCapabilitiesBean extends AbstractBean {
+public class GetCapabilitiesBean extends TestClientBean {
 
     private String acceptVersions;
 

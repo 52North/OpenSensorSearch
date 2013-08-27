@@ -47,7 +47,7 @@ import org.n52.sir.util.Tools;
 import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon;
 import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters;
 import org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria.Phenomenon.SORParameters.MatchingType;
-import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.*;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
 
 /**
  * 

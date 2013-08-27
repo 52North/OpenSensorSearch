@@ -13,40 +13,75 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 This project includes:
-  52n-xml-gml under The Apache Software License, Version 2.0
+  AOP alliance under Public Domain
   Apache Log4j under The Apache Software License, Version 2.0
+  Apache Solr Core under Apache 2
+  Apache Solr Solrj under Apache 2
+  ASM Core under BSD 3-Clause License
+  c3p0:JDBC DataSources/Resource Pools under GNU LESSER GENERAL PUBLIC LICENSE
+  Collections under The Apache Software License, Version 2.0
   Commons Codec under The Apache Software License, Version 2.0
+  Commons FileUpload under The Apache Software License, Version 2.0
+  Commons IO under The Apache Software License, Version 2.0
+  Commons Lang under The Apache Software License, Version 2.0
   Commons Logging under The Apache Software License, Version 2.0
-  CSW-ebRIM XML Beans under The Apache Software License, Version 2.0
   dbcp under Apache License, Version 2.0
+  Google Guice - Core Library under The Apache Software License, Version 2.0
+  Google Guice - Extensions - Servlet under The Apache Software License, Version 2.0
   Gson under The Apache Software License, Version 2.0
+  Hamcrest All under New BSD License
   Hamcrest Core under New BSD License
+  Hamcrest JSON under MIT License
+  Hamcrest library under New BSD License
   HttpClient under Apache License
   HttpCore under Apache License
+  HttpMime under Apache License
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
+  javax.inject under The Apache Software License, Version 2.0
   javax.xml.soap API under CDDL 1.1 or GPL2 w/ CPE
   jdom under JDOM license: https://github.com/hunterhacker/jdom/blob/master/LICENSE.txt
+  jersey-core under CDDL 1.1 or GPL2 w/ CPE
+  jersey-guice under CDDL 1.1 or GPL2 w/ CPE
+  jersey-multipart under CDDL 1.1 or GPL2 w/ CPE
+  jersey-server under CDDL 1.1 or GPL2 w/ CPE
   Joda time under Apache 2
+  JSON (JavaScript Object Notation) under provided without support or warranty
+  JSONassert under The Apache Software License, Version 2.0
   JUnit under Common Public License Version 1.0
-  MIME streaming extension under CDDL 1.1 or GPL2 w/ CPE
+  Lucene Analyzers under Apache 2
+  Lucene Core under Apache 2
+  Lucene Highlighter under Apache 2
+  Lucene Memory under Apache 2
+  Lucene Miscellaneous under Apache 2
+  Lucene Queries under Apache 2
+  Lucene Snowball under Apache 2
+  Lucene Spellchecker under Apache 2
+  MIME streaming extension under COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0 or GPLv2 with classpath exception
+  Mozilla Rhino under Mozilla Public License, Version 2.0
+  OASIS ebXML Registry Information Model (RIM) schemas v3.0.0 under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC CSW schema (spec. v2.0.2) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  OGC CSW-ebRIM schema (spec. v1.0.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC Filter schema (spec. v1.1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC GML schema (spec. v3.1.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  OGC GML schema (spec. v3.2.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC Keyhole Markup Language schema (spec. v2.2.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC O&M schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC OWS schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC OWS schema (spec. v1.1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC SensorML schema (spec. v1.0.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  OGC SIR schema 0.3.2 (OGC Discussion Paper 10-171) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  OGC SOR schema 0.3.1 (OGC Discussion Paper 09-112r1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC SOS schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC SPS schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC SWECommon schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   OGC SWECommon schema (spec. v1.0.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  org.n52.sensorweb:52n-xml-gml-v321 under The Apache Software License, Version 2.0
+  OpenSensorSearch under The Apache Software License, Version 2.0
   Postgis JDBC Driver under GNU Lesser General Public License
   Postgis JDBC Driver Stubs under GNU Lesser General Public License
   PostgreSQL JDBC Driver under BSD License
+  quartz under The Apache Software License, Version 2.0
   Restlet Core - API and Engine under Apache 2.0 license or LGPL 3.0 license or LGPL 2.1 license or CDDL 1.0 license or EPL 1.0 license
   Restlet Extension - Servlet under Apache 2.0 license or LGPL 3.0 license or LGPL 2.1 license or CDDL 1.0 license or EPL 1.0 license
   ROME, RSS and atOM utilitiEs for Java under Apache 2
@@ -54,14 +89,16 @@ This project includes:
   Saxon-HE under Mozilla Public License Version 2.0
   Sensor Web Client External Tools under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
   servlet-api under Commons Development and Distribution License, Version 1.0
-  SIR under The Apache Software License, Version 2.0
   SIR JSON Bindings under The Apache Software License, Version 2.0
-  SIR XML Beans under The Apache Software License, Version 2.0
   SLF4J API Module under MIT License
   SLF4J LOG4J-12 Binding under MIT License
-  SOR XML Beans under The Apache Software License, Version 2.0
-  W3C xlink schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  Solr Specific Commons CSV under Apache 2
+  Streaming API for XML (STAX API 1.0) under The Apache Software License, Version 2.0
+  W3C xlink schema (spec. v1.1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  Woodstox under The Apache Software License, Version 2.0
   Xerces2-j under The Apache Software License, Version 2.0
   XML Commons External Components XML APIs under The Apache Software License, Version 2.0 or The SAX License or The W3C License
   XmlBeans under The Apache Software License, Version 2.0
+  XMLUnit for Java under BSD License
+  zookeeper under The Apache Software License, Version 2.0
 

@@ -1,0 +1,22 @@
+{
+  "source" : "http://localhost:8080/SIR",
+  "query" : "test",
+  "url" : "http://localhost:8080/SIR/search?q=test&httpAccept=application/json",
+  "description" : "These are the search hits for the keyword(s) 'test' from Open Sensor Search (http://localhost:8080/SIR).",
+  "author" : "52°North",
+  "date" : 1374007619476,
+  "results" : [ {
+    "lastUpdate" : null,
+    "sensorDescription" : null,
+    "sensorIdInSir" : "4d547f74-7cac-478e-9622-df02b1cf9650",
+    "serviceReferences" : null,
+    "classifiers" : null,
+    "keywords" : [ "testkeyword", "test", "another keyword" ],
+    "identifiers" : [ "urn:ogc:object:feature:testsensor", "A Test Sensor", "TEST" ],
+    "contacts" : [ "Me", "My Org" ],
+    "inputs" : [ "precipitation ", "atmosphericTemperature ", "atmosphericPressure ", "wind ", "luminance ", "humidity " ],
+    "outputs" : [ "precipitation mm", "windDirection deg", "windSpeed m/s", "barometricPressure hPa", "temperature Cel", "luminance lx", "relativeHumidity %" ],
+    "beginDate" : 1262296800000,
+    "endDate" : 1325282400000
+  } ]
+}

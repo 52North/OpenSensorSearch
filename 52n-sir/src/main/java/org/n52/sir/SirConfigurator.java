@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.File;
@@ -25,7 +26,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -41,7 +41,6 @@ import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.listener.ISirRequestListener;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
@@ -55,12 +54,17 @@ import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.VersionAttribute;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
  * 
  * @author Jan Schulte
  * 
  */
+@Singleton
 public class SirConfigurator {
 
     /** Sections for the Capabilities */
@@ -196,7 +200,7 @@ public class SirConfigurator {
     /**
      * propertyname of service url
      */
-    private static final String SERVICEURL = "SERVICEURL";
+    private static final String SERVICEURL = "oss.sir.serviceurl";
 
     /**
      * propertyname of the SIR service version
@@ -260,33 +264,15 @@ public class SirConfigurator {
      */
     private static final String XSTL_DIRECTORY = "XSTL_DIRECTORY";
 
+    private static final String SCRIPTS_PATH = "SCRIPTS_PATH";
+
     /**
+     * @deprecated use injection instead
      * @return Returns the instance of the SirConfigurator. Null will be returned if the parameterized
      *         getInstance method was not invoked before. Usuallex this will be done in the SIR
      */
+    @Deprecated
     public static SirConfigurator getInstance() {
-        return instance;
-    }
-
-    /**
-     * @param configStream
-     * @param dbConfigStream
-     * @param basepath
-     * @return Returns an instance of the SirConfigurator. This method is used to implement the singleton
-     *         pattern
-     * @throws UnavailableException
-     *         if the configFile could not be loaded
-     * @throws OwsExceptionReport
-     */
-    public synchronized static SirConfigurator getInstance(InputStream configStream,
-                                                           InputStream dbConfigStream,
-                                                           String basepath,
-                                                           TimerServlet timerServlet) throws UnavailableException,
-            OwsExceptionReport {
-        if (instance == null) {
-            instance = new SirConfigurator(configStream, dbConfigStream, basepath, timerServlet);
-            instance.initialize();
-        }
         return instance;
     }
 
@@ -414,6 +400,8 @@ public class SirConfigurator {
      */
     private ITransformerFactory transformerFactory;
 
+    private String ScriptsPath;
+
     /**
      * update sequence
      */
@@ -424,6 +412,37 @@ public class SirConfigurator {
     private boolean validateResponses;
 
     private IValidatorFactory validatorFactory;
+
+    private boolean startCatalogConnectionsOnStartup = false;
+
+    /**
+     * public constructor for transition to dependency injected properties.
+     * 
+     * TODO Daniel: remove this after new configuration mechanism is in place.
+     * 
+     * @throws UnavailableException
+     * @throws OwsExceptionReport
+     * @throws IOException
+     */
+    @Inject
+    public SirConfigurator(@Named("context.basepath")
+    String basepath) throws UnavailableException, OwsExceptionReport, IOException {
+        try (InputStream dbStream = SirConfigurator.class.getResourceAsStream("/prop/db.properties");
+                InputStream configStream = SirConfigurator.class.getResourceAsStream("/prop/sir.properties");) {
+
+            if (instance == null) {
+                instance = new SirConfigurator(configStream, dbStream, basepath, null);
+                instance.initialize();
+            }
+            else
+                log.error("SHOULD BE SINGLETON");
+        }
+        catch (Exception e) {
+            log.error("could not init SirConfigurator with properties files.", e);
+        }
+
+        log.info("NEW {}", this);
+    }
 
     /**
      * private constructor due to the singleton pattern.
@@ -457,76 +476,6 @@ public class SirConfigurator {
         }
     }
 
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public RequestOperator buildRequestOperator() throws OwsExceptionReport {
-
-        // initialize RequestOperator
-        RequestOperator ro = new RequestOperator();
-
-        // loading names of listeners
-        ArrayList<String> listeners = loadListeners();
-
-        Iterator<String> iter = listeners.iterator();
-
-        // initialize listeners and add them to the RequestOperator
-        while (iter.hasNext()) {
-
-            // classname of the listener
-            String classname = iter.next();
-
-            try {
-                // get Class of the Listener
-                @SuppressWarnings("unchecked")
-                Class<ISirRequestListener> listenerClass = (Class<ISirRequestListener>) Class.forName(classname);
-
-                Class< ? >[] constrArgs = {};
-
-                Object[] args = {};
-
-                // get Constructor of this class with matching parameter types,
-                // throws a NoSuchMethodException
-                Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
-
-                // add new requestListener to RequestOperator throws a
-                // Instantiation, IllegalAccess and InvocationTargetException
-                ro.addRequestListener(constructor.newInstance(args));
-
-            }
-            catch (ClassNotFoundException cnfe) {
-                log.error("Error while loading RequestListeners, required class could not be loaded: "
-                        + cnfe.toString());
-                throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
-            }
-            catch (NoSuchMethodException nsme) {
-                log.error("Error while loading RequestListeners," + " no required constructor available: "
-                        + nsme.toString());
-                throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-            }
-            catch (InvocationTargetException ite) {
-                log.error("The instatiation of a RequestListener failed: " + ite.toString());
-                throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-            }
-            catch (InstantiationException ie) {
-                log.error("The instatiation of a RequestListener failed: " + ie.toString());
-                throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-            }
-            catch (IllegalAccessException iace) {
-                log.error("The instatiation of a RequestListener failed: " + iace.toString());
-                throw new OwsExceptionReport(iace.getMessage(), iace.getCause());
-            }
-        }
-
-        return ro;
-    }
-
-    /**
-     * 
-     * @param path
-     */
     private void checkFile(String path) {
         File f = new File(path);
         if ( !f.exists())
@@ -535,38 +484,10 @@ public class SirConfigurator {
         f = null;
     }
 
-    /**
-     * 
-     * @param resourcePath
-     */
-    @SuppressWarnings("unused")
-    private void checkResource(String resourcePath) {
-        InputStream resource = SirConfigurator.class.getResourceAsStream(resourcePath);
-
-        if (resource != null) {
-            try {
-                int i = resource.read();
-                if (i == -1)
-                    log.error("Resource is empty.");
-            }
-            catch (IOException e) {
-                log.error("Cannot read resource " + resourcePath);
-            }
-        }
-        else
-            log.error("Cannot find resource " + resourcePath);
-    }
-
-    /**
-     * @return the acceptedVersions
-     */
     public String[] getAcceptedServiceVersions() {
         return this.acceptedVersions;
     }
 
-    /**
-     * @return the capabilitiesSkeleton
-     */
     public CapabilitiesDocument getCapabilitiesSkeleton() {
         return this.capabilitiesSkeleton;
     }
@@ -588,7 +509,7 @@ public class SirConfigurator {
                                                               Boolean.valueOf(this.doNotCheckCatalogsList.contains(url)));
         }
         catch (Exception e) {
-            log.error("The instatiation of a catalog factory failed." + e.toString());
+            log.error("The instatiation of a catalog factory failed.", e);
             throw new OwsExceptionReport("The instatiation of a catalog factory failed: " + e.getMessage(),
                                          e.getCause());
         }
@@ -807,6 +728,8 @@ public class SirConfigurator {
         this.validateRequests = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_REQUESTS));
         this.validateResponses = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_RESPONSES));
 
+        this.ScriptsPath = this.props.getProperty(SCRIPTS_PATH);
+
         String resourceName = this.props.getProperty(PROFILE4DISCOVERY);
         URL location = this.getClass().getResource(resourceName);
         if (location == null) {
@@ -837,12 +760,7 @@ public class SirConfigurator {
             this.serviceUrl = new URL(url);
         }
         catch (MalformedURLException e) {
-            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "No valid service url is defined in the config file: " + url);
             log.error("No valid service url is defined in the config file: " + url);
-            throw se;
         }
 
         try {
@@ -906,7 +824,7 @@ public class SirConfigurator {
         }
 
         // check if given url does not need to be checked
-        this.doNotCheckCatalogsList = new ArrayList<URL>();
+        this.doNotCheckCatalogsList = new ArrayList<>();
         splitted = sirProps.getProperty(DO_NOT_CHECK_CATALOGS).split(CONFIG_FILE_LIST_SEPARATOR);
         if (splitted.length > 0) {
             for (String s : splitted) {
@@ -1316,6 +1234,10 @@ public class SirConfigurator {
         return this.extendedDebugToConsole;
     }
 
+    public String getScriptsPath() {
+        return this.ScriptsPath;
+    }
+
     /**
      * @return the validateRequests
      */
@@ -1332,11 +1254,11 @@ public class SirConfigurator {
 
     private void loadCapabilitiesSkeleton(Properties sirProps) throws OwsExceptionReport {
         String skeletonPath = sirProps.getProperty(CAPABILITIESSKELETON_FILENAME);
-        InputStream resource = SirConfigurator.class.getResourceAsStream(skeletonPath);
 
-        log.info("Loading capabilities skeleton from " + skeletonPath);
+        try (InputStream resource = SirConfigurator.class.getResourceAsStream(skeletonPath);) {
 
-        try {
+            log.info("Loading capabilities skeleton from " + skeletonPath);
+
             this.capabilitiesSkeleton = CapabilitiesDocument.Factory.parse(resource);
         }
         catch (Exception e) {
@@ -1345,23 +1267,19 @@ public class SirConfigurator {
             se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
                                  null,
                                  "Error on loading capabilities skeleton file: " + e.getMessage());
+
             throw se;
         }
     }
 
-    private ArrayList<String> loadListeners() throws OwsExceptionReport {
-
-        ArrayList<String> listeners = new ArrayList<String>();
+    public ArrayList<String> getListenerClassnames() {
+        ArrayList<String> listeners = new ArrayList<>();
         String listenersList = this.props.getProperty(LISTENERS);
 
         if (listenersList == null) {
             log.error("No RequestListeners are defined in the ConfigFile!");
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                 "SirConfigurator.loadListeners()",
-                                 "No request listeners are defined in the config file!");
-            throw se;
         }
+
         StringTokenizer tokenizer = new StringTokenizer(listenersList, ",");
         while (tokenizer.hasMoreTokens()) {
             listeners.add(tokenizer.nextToken());
@@ -1395,6 +1313,11 @@ public class SirConfigurator {
      * context.
      */
     private void startCatalogConnections() {
+        if ( !this.startCatalogConnectionsOnStartup) {
+            log.warn("Catalog connections are disabled on startup.");
+            return;
+        }
+
         if (log.isDebugEnabled())
             log.debug(" ***** Starting Thread for catalog connections with a delay of "
                     + STARTUP_CATALOG_CONNECTION_DELAY_SECS + " seconds ***** ");
@@ -1419,7 +1342,13 @@ public class SirConfigurator {
                 // run tasks for existing catalogs
                 int i = 0;
                 try {
-                    IConnectToCatalogDAO catalogDao = getFactory().connectToCatalogDAO();
+                    IDAOFactory f = getFactory();
+                    if (f == null) {
+                        log.error("Factory is null");
+                        throw new RuntimeException("Could not get factory");
+                    }
+
+                    IConnectToCatalogDAO catalogDao = f.connectToCatalogDAO();
                     List<ICatalogConnection> savedConnections = catalogDao.getCatalogConnectionList();
 
                     IJobScheduler scheduler = SirConfigurator.getInstance().getJobSchedulerFactory().getJobScheduler();
@@ -1436,7 +1365,7 @@ public class SirConfigurator {
                     }
                 }
                 catch (OwsExceptionReport e) {
-                    log.error("Could not run tasks for saved catalog connections.", e.getCause());
+                    log.error("Could not run tasks for saved catalog connections: {}", e.getMessage());
                 }
 
                 log.info(" ***** Scheduled " + i + " task(s) from the database. ***** ");

@@ -28,7 +28,7 @@ import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class DeleteSensorInfoBean extends AbstractBean {
+public class DeleteSensorInfoBean extends TestClientBean {
 
     private String deleteRefSensorID = "";
 

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.listener;
 
 import java.util.Collection;
@@ -21,7 +20,6 @@ import java.util.Date;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
-import org.n52.sir.api.IdentifierGenerator;
 import org.n52.sir.datastructure.SirInfoToBeInserted;
 import org.n52.sir.datastructure.SirInfoToBeInserted_SensorDescription;
 import org.n52.sir.datastructure.SirInfoToBeInserted_ServiceReference;
@@ -30,6 +28,7 @@ import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirInsertSensorInfoRequest;
@@ -42,24 +41,28 @@ import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-
 /**
  * @author Jan Schulte
  * 
  */
 public class InsertSensorInfoListener implements ISirRequestListener {
 
+    /**
+     * the logger, used to log exceptions and additionally information
+     */
     private static Logger log = LoggerFactory.getLogger(InsertSensorInfoListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorInfo.name();
 
+    /**
+     * the data access object for the insertSensorInfo operation
+     */
     private IInsertSensorInfoDAO insSensInfoDao;
 
+    /**
+     * the factory for validators
+     */
     private IValidatorFactory validatorFactory;
-
-    @Inject
-    private IdentifierGenerator idGen;
 
     public InsertSensorInfoListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();
@@ -98,19 +101,23 @@ public class InsertSensorInfoListener implements ISirRequestListener {
     private void insertSensor(SirInsertSensorInfoResponse response,
                               Collection<SirServiceReference> serviceRefs,
                               SirSensor sensor) throws OwsExceptionReport {
+    	log.info("InsertSensorCalled");
         if (sensor.getSensorMLDocument() != null) {
             IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
             boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
+            log.debug("The sensor is valid: " + isValid);
             if (isValid) {
-                String id = this.idGen.generate();
-                sensor.setSensorIDInSIR(id);
-                // TODO add test if id is already taken
-
-                String sensorIdInSir = this.insSensInfoDao.insertSensor(sensor);
+            	/*
+            	 * Inserts into solr
+            	 */
+            	SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+            	String sensorIdInSirSolr = dao.insertSensor(sensor);
+            	String sensorIdInSir = sensorIdInSirSolr;
                 if (sensorIdInSir != null) {
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);
                     response.getInsertedSensors().add(sensorIdInSir);
-
+                    log.debug("Inserted Sensor: " + sensorIdInSir);
+                    log.debug("Inserted sensor in solr:"+sensorIdInSirSolr);
                     if (log.isDebugEnabled())
                         log.debug("Inserted Sensor: " + sensorIdInSir);
 
@@ -140,6 +147,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
             se.addCodedException(OwsExceptionReport.ExceptionCode.MissingParameterValue,
                                  "InsertSensorInfoListener.receiveRequest()",
                                  "Missing parameter: To insert a sensor, a sensorInfo element is required!");
+            log.error("OWS:",se);
             throw se;
         }
     }
@@ -179,6 +187,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                 if (infoToBeInserted instanceof SirInfoToBeInserted_SensorDescription) {
                     SirInfoToBeInserted_SensorDescription newSensor = (SirInfoToBeInserted_SensorDescription) infoToBeInserted;
                     SirSensor sensor = SensorMLDecoder.decode(newSensor.getSensorDescription());
+                    
                     sensor.setLastUpdate(new Date());
 
                     Collection<SirServiceReference> serviceReferences = newSensor.getServiceReferences();

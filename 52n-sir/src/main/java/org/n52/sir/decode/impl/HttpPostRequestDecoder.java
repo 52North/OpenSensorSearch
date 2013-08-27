@@ -724,8 +724,8 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         SirSearchSensorRequest sirRequest = new SirSearchSensorRequest();
         SearchSensorRequest request = searchSensDoc.getSearchSensorRequest();
         Enum version = request.getVersion();
-        
-        if(version == null) {
+
+        if (version == null) {
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
                                  null,

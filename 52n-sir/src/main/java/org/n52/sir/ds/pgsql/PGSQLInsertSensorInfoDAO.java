@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -430,14 +429,9 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             String insertSensor = insertSensorCommand(sensor);
             if (log.isDebugEnabled())
                 log.debug(">>>Database Query: " + insertSensor.toString());
-
-            if (sensor.getSensorIDInSIR() == null) {
-                log.debug("SensorIDinSIR is not set, using database identifier.");
-                try (ResultSet rs = stmt.executeQuery(insertSensor)) {
-                    if (rs.next()) {
-                        sensor.setSensorIDInSIR(rs.getString(PGDAOConstants.sensorIdSir));
-                    }
-                }
+            ResultSet rs = stmt.executeQuery(insertSensor);
+            if (rs.next()) {
+                sensor.setSensorIDInSIR(rs.getString(PGDAOConstants.sensorIdSir));
             }
 
             if (sensor.getSensorIDInSIR() != null) {
@@ -447,29 +441,25 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                     String insertPhenomenon = insertPhenomenonCommand(phenom);
                     if (log.isDebugEnabled())
                         log.debug(">>>Database Query: " + insertPhenomenon);
-
-                    try (ResultSet rs = stmt.executeQuery(insertPhenomenon)) {
+                    rs = stmt.executeQuery(insertPhenomenon);
+                    while (rs.next()) {
+                        phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
+                    }
+                    if (phenomenonID.isEmpty()) {
+                        // phenomenon ID query
+                        String phenomenonIDQuery = phenomenonIDQuery(phenom);
+                        if (log.isDebugEnabled())
+                            log.debug(">>>Database Query: " + phenomenonIDQuery);
+                        rs = stmt.executeQuery(phenomenonIDQuery);
                         while (rs.next()) {
                             phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
                         }
-                        if (phenomenonID.isEmpty()) {
-                            // phenomenon ID query
-                            String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                            if (log.isDebugEnabled())
-                                log.debug(">>>Database Query: " + phenomenonIDQuery);
-
-                            try (ResultSet rsPhen = stmt.executeQuery(phenomenonIDQuery)) {
-                                while (rsPhen.next()) {
-                                    phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
-                                }
-                            }
-                        }
-                        // insert in sensor/phenomenon table
-                        String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensor, phenomenonID);
-                        if (log.isDebugEnabled())
-                            log.debug(">>>Database Query: " + insertSensorPhenomenon);
-                        stmt.execute(insertSensorPhenomenon);
                     }
+                    // insert in sensor/phenomenon table
+                    String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensor, phenomenonID);
+                    if (log.isDebugEnabled())
+                        log.debug(">>>Database Query: " + insertSensorPhenomenon);
+                    stmt.execute(insertSensorPhenomenon);
                 }
             }
 
@@ -514,7 +504,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(", ");
         cmd.append(PGDAOConstants.lastUpdate);
-        cmd.append(") SELECT GeometryFromText('POLYGON((");
+        cmd.append(") SELECT ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());
@@ -564,7 +554,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(PGDAOConstants.sensor);
         cmd.append(" WHERE (");
         cmd.append(PGDAOConstants.bBox);
-        cmd.append(" = GeometryFromText('POLYGON((");
+        cmd.append(" = ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());
@@ -820,7 +810,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(" SET ");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(" = ");
-        cmd.append("GeometryFromText('POLYGON((");
+        cmd.append("ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());

@@ -28,14 +28,13 @@
 <jsp:setProperty property="*" name="updateSensorDescr" />
 
 <%
-	if (request.getParameter("build") != null) {
-	    updateSensorDescr.buildRequest();
-	}
+    if (request.getParameter("build") != null) {
+        updateSensorDescr.buildRequest();
+    }
 
-	if (request.getParameter("sendRequest") != null) {
-	    updateSensorDescr.setResponseString(Client
-				.sendPostRequest(updateSensorDescr.getRequestString()));
-	}
+    if (request.getParameter("sendRequest") != null) {
+        updateSensorDescr.setResponseString(updateSensorDescr.sendRequest(updateSensorDescr.getRequestString()));
+    }
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,88 +46,102 @@
 </head>
 <body onload="load()">
 
-<div id="content"><jsp:include page="header.jsp" /> <jsp:include
-	page="../menu.jsp" />
+	<div id="content"><jsp:include page="header.jsp" />
+		<jsp:include page="../menu.jsp" />
 
-<div id="pageContent">
+		<div id="pageContent">
 
-<h2>Update Sensor Description Request</h2>
+			<h2>Update Sensor Description Request</h2>
 
-<form action="updateSensorDescription.jsp" method="post">
+			<form action="updateSensorDescription.jsp" method="post">
 
-<ul class="inputTablesList">
-	<li>
-	<p>Sensor identification (mandatory; provide only one choice, and only if deleting/updating a sensor!):</p>
-	<table style="">
-		<tr>
-			<td colspan="2">by SensorID:</td>
-			<td />
-		</tr>
-		<tr>
-			<td class="inputTitle">Sensor ID In SIR</td>
-			<td><input type="text" name="sensorIDinSIR"
-				class="inputField"
-				value="<%=updateSensorDescr.getSensorIDinSIR()%>" /></td>
-		</tr>
-	</table>
-	</li>
-	<li>
-	<table style="">
-		<tr>
-			<td colspan="2">by Service Description:</td>
-			<td />
-		</tr>
-		<tr>
-			<td class="inputTitle">Service URL</td>
-			<td><input type="text" name="serviceURL" class="inputField"
-				value="<%=updateSensorDescr.getServiceURL()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Type</td>
-			<td><input type="text" name="serviceType" class="inputField"
-				value="<%=updateSensorDescr.getServiceType()%>" /></td>
-		</tr>
-		<tr>
-			<td class="inputTitle">Service Specific SensorID</td>
-			<td><input type="text" name="serviceSpecificSensorID"
-				class="inputField"
-				value="<%=updateSensorDescr.getServiceSpecificSensorID()%>" /></td>
-		</tr>
-	</table>
-	</li>
-	<li>
-	<p>Sensor Description (mandatory):</p>
-	<table style="">
-		<tr>
-			<td colspan="2"></td>
-		</tr>
-		<tr>
-			<td colspan="2">Needs to be a valid <code>sml:SensorML</code> document containing one <code>sml:member</code> with one <code>sml:System</code>.</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-			<p class="textareaBorder"><textarea id="descriptionStringArea"
-				class="mediumTextarea" name="sensorDescription"
-				style="width: 600px;" rows="10" cols="10"><%=updateSensorDescr.getSensorDescription()%></textarea></p>
-			</td>
-		</tr>
-	</table>
-	</li>
-</ul>
+				<ul class="inputTablesList">
+					<li>
+						<p>Sensor identification (mandatory; provide only one choice,
+							and only if deleting/updating a sensor!):</p>
+						<table style="">
+							<tr>
+								<td colspan="2">by SensorID:</td>
+								<td />
+							</tr>
+							<tr>
+								<td class="inputTitle">Sensor ID In SIR</td>
+								<td><input type="text" name="sensorIDinSIR"
+									class="inputField"
+									value="<%=updateSensorDescr.getSensorIDinSIR()%>" /></td>
+							</tr>
+						</table>
+					</li>
+					<li>
+						<table style="">
+							<tr>
+								<td colspan="2">by Service Description:</td>
+								<td />
+							</tr>
+							<tr>
+								<td class="inputTitle">Service URL</td>
+								<td><input type="text" name="serviceURL" class="inputField"
+									value="<%=updateSensorDescr.getServiceURL()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Type</td>
+								<td><input type="text" name="serviceType"
+									class="inputField"
+									value="<%=updateSensorDescr.getServiceType()%>" /></td>
+							</tr>
+							<tr>
+								<td class="inputTitle">Service Specific SensorID</td>
+								<td><input type="text" name="serviceSpecificSensorID"
+									class="inputField"
+									value="<%=updateSensorDescr.getServiceSpecificSensorID()%>" /></td>
+							</tr>
+						</table>
+					</li>
+					<li>
+						<p>Sensor Description (mandatory):</p>
+						<table style="">
+							<tr>
+								<td colspan="2"></td>
+							</tr>
+							<tr>
+								<td colspan="2">Needs to be a valid <code>sml:SensorML</code>
+									document containing one <code>sml:member</code> with one <code>sml:System</code>.
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<p class="textareaBorder">
+										<textarea id="descriptionStringArea" class="mediumTextarea"
+											name="sensorDescription" style="width: 600px;" rows="10"
+											cols="10"><%=updateSensorDescr.getSensorDescription()%></textarea>
+									</p>
+								</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
 
-<p><input type="submit" name="build" value="Build request" /></p>
-</form>
+				<p>
+					<input type="submit" name="build" value="Build request" />
+				</p>
+			</form>
 
-<form action="updateSensorDescription.jsp" method="post">
-<p class="textareaBorder"><textarea id="requestStringArea"
-	class="mediumTextarea" name="requestString" rows="10" cols="10"><%=updateSensorDescr.getRequestString()%></textarea></p>
-<p><input type="submit" name="sendRequest" value="Send request" /></p>
-</form>
+			<form action="updateSensorDescription.jsp" method="post">
+				<p class="textareaBorder">
+					<textarea id="requestStringArea" class="mediumTextarea"
+						name="requestString" rows="10" cols="10"><%=updateSensorDescr.getRequestString()%></textarea>
+				</p>
+				<p>
+					<input type="submit" name="sendRequest" value="Send request" />
+				</p>
+			</form>
 
-<p class="textareaBorder"><textarea id="responseStringArea"
-	class="mediumTextarea" rows="10" cols="10"><%=updateSensorDescr.getResponseString()%></textarea></p>
+			<p class="textareaBorder">
+				<textarea id="responseStringArea" class="mediumTextarea" rows="10"
+					cols="10"><%=updateSensorDescr.getResponseString()%></textarea>
+			</p>
 
-</div>
-</div>
+		</div>
+	</div>
 </body>
 </html>

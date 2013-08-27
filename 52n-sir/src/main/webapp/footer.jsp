@@ -32,7 +32,18 @@
 			search to browser</a> | <a href="mailto:${sir.deploy.contact}">Contact</a>
 	</p>
 	<p class="infotext">
-		&copy; <%=new java.text.SimpleDateFormat("yyyy").format(new java.util.Date())%> <a href="http://52north.org">52&deg;North Initiative
-			for Geospatial Software GmbH</a>
+		&copy;
+		<%=new java.text.SimpleDateFormat("yyyy").format(new java.util.Date())%>
+		<a href="http://52north.org">52&deg;North Initiative for
+			Geospatial Software GmbH</a>
 	</p>
+	<p class="infotext">
+		For harvesting your sensor <a href="/scriptUpload.jsp">Upload
+			here</a>.
+	</p>
+
+	<p class="infotext">
+		<br />${project.name}
+		${project.version}-${build-commit} build at ${build-tstamp}></p>
+
 </div>

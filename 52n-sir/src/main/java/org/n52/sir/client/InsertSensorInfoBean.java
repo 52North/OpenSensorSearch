@@ -33,7 +33,7 @@ import org.x52North.sir.x032.ServiceReferenceDocument.ServiceReference;
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class InsertSensorInfoBean extends AbstractBean {
+public class InsertSensorInfoBean extends TestClientBean {
 
     private String addRefSensorID = "";
 

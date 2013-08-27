@@ -190,7 +190,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         initializeTempXSLFile(profileFile, svrlFile);
 
         this.transformer = tFactory.newTransformer(source);
-        // this.db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
         if (log.isDebugEnabled())
             log.debug("NEW SensorML4DiscoveryValidatorImpl");
@@ -235,6 +234,14 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         catch (ParserConfigurationException e) {
             log.error("Error processing SVRL output!", e);
             return false;
+        }
+        finally {
+            try {
+                sw.close();
+            }
+            catch (IOException e) {
+                log.error("Could not close output writer", e);
+            }
         }
 
         // clean up

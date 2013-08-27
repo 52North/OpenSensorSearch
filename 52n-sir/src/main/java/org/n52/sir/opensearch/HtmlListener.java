@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.opensearch;
 
 import java.io.PrintWriter;
@@ -60,6 +61,8 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -124,25 +127,34 @@ public class HtmlListener implements IOpenSearchListener {
 
     private HashMap<String, ICapabilitiesPermalinkMapper> mappers;
 
+    // TODO make this a configuration parameter
+    private boolean createTimeSeriesLinks = false;
+
+    @Inject
+    Client sirClient;
+
     public HtmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
 
-        this.capabilitiesCache = new HashMap<URL, XmlObject>();
-        this.capabilitiesCacheAge = new HashMap<URL, Date>();
-        this.capabilitiesErrorCache = new HashMap<URL, XmlObject>();
+        this.capabilitiesCache = new HashMap<>();
+        this.capabilitiesCacheAge = new HashMap<>();
+        this.capabilitiesErrorCache = new HashMap<>();
 
-        this.mappers = new HashMap<String, ICapabilitiesPermalinkMapper>();
-        
-        // TODO change this to service loaders
+        this.mappers = new HashMap<>();
+
+        // TODO change this to injection of multiple implemntations, move mapper to a submodule
         ICapabilitiesPermalinkMapper cpm1 = new PegelOnlineCPM();
         add(cpm1);
         ICapabilitiesPermalinkMapper cpm2 = new WeatherSosCPM();
         add(cpm2);
+
+        if (this.createTimeSeriesLinks)
+            log.warn("Permalink generation is disabled.");
     }
 
     private void add(ICapabilitiesPermalinkMapper cpm1) {
-        mappers.put(cpm1.getServiceURL(), cpm1);
+        this.mappers.put(cpm1.getServiceURL(), cpm1);
     }
 
     /**
@@ -269,14 +281,18 @@ public class HtmlListener implements IOpenSearchListener {
         sb.append("<div class=\"result-header\">");
 
         sb.append(this.sensorInfo_Title);
-        sb.append("<a href=\"");
+
         String url = sensorDescription.getSensorDescriptionURL();
-        sb.append(Tools.encode(url));
-        sb.append("\">");
-        sb.append(" ");
-        // sb.append(sirSearchResultElement.getSensorIdInSir());
-        sb.append(Tools.extractEntryTitle(sirSearchResultElement));
-        sb.append("</a>");
+        if (url != null) {
+            sb.append("<a href=\"");
+            sb.append(Tools.encode(url));
+            sb.append("\">");
+            sb.append(" ");
+            // sb.append(sirSearchResultElement.getSensorIdInSir());
+            sb.append(Tools.extractEntryTitle(sirSearchResultElement));
+            sb.append("</a>");
+        }
+
         sb.append("</div>");
 
         for (SirServiceReference reference : sirSearchResultElement.getServiceReferences()) {
@@ -291,38 +307,40 @@ public class HtmlListener implements IOpenSearchListener {
             sb.append(reference.getService().getUrl());
             sb.append("</a>");
 
-            // timeseries link
-            String permalinkUrl = null;
+            if (this.createTimeSeriesLinks) {
+                // timeseries link
+                String permalinkUrl = null;
 
-            // permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
-            try {
-                permalinkUrl = getTimeSeriesPermalink(sirSearchResultElement, reference);
-            }
-            catch (MalformedURLException e) {
-                log.warn("Could not create permalink for " + reference, e);
-            }
-            catch (ExternalToolsException e) {
-                log.warn("Could not create permalink for " + reference, e);
-            }
-            catch (IllegalArgumentException e) {
-                log.warn("Could not create permalink for " + reference, e);
-            }
+                // permalink = getTimeseriesViewerPermalink(sirSearchResultElement, reference);
+                try {
+                    permalinkUrl = getTimeSeriesPermalink(sirSearchResultElement, reference);
+                }
+                catch (MalformedURLException e) {
+                    log.warn("Could not create permalink for " + reference, e);
+                }
+                catch (ExternalToolsException e) {
+                    log.warn("Could not create permalink for " + reference, e);
+                }
+                catch (IllegalArgumentException e) {
+                    log.warn("Could not create permalink for " + reference, e);
+                }
 
-            if (permalinkUrl != null) {
-                sb.append("<span style=\"float: right;\"><a href=\"");
-                sb.append(Tools.encode(permalinkUrl));
-                sb.append("\" title=\"");
-                sb.append(this.openTimeSeries);
-                sb.append("\">");
-                sb.append("<img src=\"");
-                sb.append(this.timeseriesImage);
-                sb.append("\" alt=\"");
-                sb.append(this.openTimeSeries);
-                sb.append("\" />");
-                sb.append("</a></span>");
+                if (permalinkUrl != null) {
+                    sb.append("<span style=\"float: right;\"><a href=\"");
+                    sb.append(Tools.encode(permalinkUrl));
+                    sb.append("\" title=\"");
+                    sb.append(this.openTimeSeries);
+                    sb.append("\">");
+                    sb.append("<img src=\"");
+                    sb.append(this.timeseriesImage);
+                    sb.append("\" alt=\"");
+                    sb.append(this.openTimeSeries);
+                    sb.append("\" />");
+                    sb.append("</a></span>");
+                }
+                else
+                    log.debug("Could not create permalink for {}", reference);
             }
-            else
-                log.debug("Could not create permalink for {}", reference);
 
             sb.append("</div>");
         }
@@ -607,14 +625,15 @@ public class HtmlListener implements IOpenSearchListener {
         accessURL = linkFactory.createAccessURL(this.conf.getPermalinkBaseURL());
 
         if (accessURL.length() > OpenSearchConstants.MAX_GET_URL_CHARACTER_COUNT && this.conf.isCompressPermalinks()) {
-            AccessLinkCompressor compressor;
+            AccessLinkCompressor compressor = null;
+            log.debug("Not using compressor {}", compressor);
         }
 
         return accessURL;
     }
 
     private ICapabilitiesPermalinkMapper getCPMapper(String serviceURL) {
-        return mappers.get(serviceURL);
+        return this.mappers.get(serviceURL);
     }
 
     private boolean serviceCapabilitiesSupported(String serviceURL) {
@@ -633,8 +652,9 @@ public class HtmlListener implements IOpenSearchListener {
         XmlObject caps;
         // TODO use threads for this, then update the interface one after the other (loader image and
         // AJAX?)
+
         try {
-            caps = Client.requestCapabilities(serviceReference.getService().getType(), url.toURI());
+            caps = this.sirClient.requestCapabilities(serviceReference.getService().getType(), url.toURI());
 
             if (caps instanceof ExceptionReportDocument) {
                 log.debug("Got ExceptionReportDocument as response!\n\n" + caps.xmlText());

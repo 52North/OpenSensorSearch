@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectToCatalogRequest service="SIR" version="0.3.0"
+	xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd">
+	<!-- push all data to catalog only once -->
+	<CatalogURL>http://giv-genesis.uni-muenster.de:8080/ergorr/webservice</CatalogURL>
+</ConnectToCatalogRequest>

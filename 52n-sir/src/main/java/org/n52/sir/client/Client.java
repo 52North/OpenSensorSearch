@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import net.opengis.ows.x11.VersionType;
 import net.opengis.sos.x10.GetCapabilitiesDocument;
@@ -36,13 +36,15 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * @author Jan Schulte, Daniel Nüst (daniel.nuest@uni-muenster.de)
@@ -60,7 +62,17 @@ public class Client {
 
     private static final int CONNECTION_TIMEOUT = 1000 * 30;
 
-    private static String createGetCapabilities(String serviceType) {
+    private URI sirURI;
+
+    @Inject
+    public Client(@Named("oss.sir.serviceurl")
+    String sirUrl) {
+        this.sirURI = URI.create(sirUrl);
+
+        log.info("NEW {}", this);
+    }
+
+    private String createGetCapabilities(String serviceType) {
         if (serviceType.equals(SirConstants.SOS_SERVICE_TYPE)) {
             GetCapabilitiesDocument gcdoc = GetCapabilitiesDocument.Factory.newInstance();
             GetCapabilities gc = gcdoc.addNewGetCapabilities();
@@ -87,7 +99,7 @@ public class Client {
      * @throws HttpException
      * @throws OwsExceptionReport
      */
-    private static XmlObject doSend(String request, String requestMethod, URI uri) throws UnsupportedEncodingException,
+    private XmlObject doSend(String request, String requestMethod, URI uri) throws UnsupportedEncodingException,
             IOException,
             HttpException,
             OwsExceptionReport {
@@ -117,7 +129,9 @@ public class Client {
 
             // postMethod.setRequestEntity(new StringRequestEntity(request, REQUEST_CONTENT_TYPE,
             // REQUEST_CONTENT_CHARSET));
-            postMethod.setEntity(new StringEntity(request, SirConstants.REQUEST_CONTENT_TYPE, SirConstants.REQUEST_CONTENT_CHARSET));
+            postMethod.setEntity(new StringEntity(request,
+                                                  SirConstants.REQUEST_CONTENT_TYPE,
+                                                  SirConstants.REQUEST_CONTENT_CHARSET));
 
             method = postMethod;
         }
@@ -152,16 +166,17 @@ public class Client {
         }
     }
 
-    private static URI getSirURI() throws OwsExceptionReport {
-        try {
-            return SirConfigurator.getInstance().getServiceUrl().toURI();
-        }
-        catch (URISyntaxException e) {
-            throw new OwsExceptionReport("Could not transform service URL to URI", e);
-        }
-    }
+    // private URI getSirURI() {
+    // return this.sirURI;
+    // try {
+    // return SirConfigurator.getInstance().getServiceUrl().toURI();
+    // }
+    // catch (URISyntaxException e) {
+    // throw new OwsExceptionReport("Could not transform service URL to URI", e);
+    // }
+    // }
 
-    public static XmlObject requestCapabilities(String serviceType, URI uri) throws OwsExceptionReport {
+    public XmlObject requestCapabilities(String serviceType, URI uri) throws OwsExceptionReport {
         // create getCapabilities request
         String gcDoc = createGetCapabilities(serviceType);
 
@@ -212,7 +227,7 @@ public class Client {
      * @throws IOException
      * @throws OwsExceptionReport
      */
-    public static String sendGetRequest(String request) throws UnsupportedEncodingException,
+    public String sendGetRequest(String request) throws UnsupportedEncodingException,
             HttpException,
             IOException,
             OwsExceptionReport {
@@ -232,9 +247,8 @@ public class Client {
      * @throws OwsExceptionReport
      * @throws HttpException
      */
-    public static String sendPostRequest(String request) throws IOException, OwsExceptionReport, HttpException {
-        URI sirURI = getSirURI();
-        return sendPostRequest(request, sirURI);
+    public String sendPostRequest(String request) throws IOException, OwsExceptionReport, HttpException {
+        return sendPostRequest(request, this.sirURI);
     }
 
     /**
@@ -247,7 +261,7 @@ public class Client {
      * @throws HttpException
      * @throws UnsupportedEncodingException
      */
-    public static String sendPostRequest(String request, URI serviceURI) throws UnsupportedEncodingException,
+    public String sendPostRequest(String request, URI serviceURI) throws UnsupportedEncodingException,
             HttpException,
             IOException,
             OwsExceptionReport {
@@ -268,14 +282,13 @@ public class Client {
      * @throws IOException
      * @throws OwsExceptionReport
      */
-    public static XmlObject xSendGetRequest(String request) throws UnsupportedEncodingException,
+    public XmlObject xSendGetRequest(String request) throws UnsupportedEncodingException,
             HttpException,
             IOException,
             OwsExceptionReport {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + request);
-        URI sirURI = getSirURI();
-        XmlObject response = doSend(request, GET_METHOD, sirURI);
+        XmlObject response = doSend(request, GET_METHOD, this.sirURI);
         return response;
     }
 
@@ -285,7 +298,7 @@ public class Client {
      * @return
      * @throws OwsExceptionReport
      */
-    public static XmlObject xSendGetRequest(URI uri) throws OwsExceptionReport {
+    public XmlObject xSendGetRequest(URI uri) throws OwsExceptionReport {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + uri);
         XmlObject response;
@@ -315,11 +328,10 @@ public class Client {
      * @throws OwsExceptionReport
      * @throws HttpException
      */
-    public static XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport, HttpException {
+    public XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport, HttpException {
         if (log.isDebugEnabled())
             log.debug("Sending request: " + request);
-        URI sirURI = getSirURI();
-        return xSendPostRequest(request, sirURI);
+        return xSendPostRequest(request, this.sirURI);
     }
 
     /**
@@ -332,13 +344,22 @@ public class Client {
      * @throws HttpException
      * @throws UnsupportedEncodingException
      */
-    public static XmlObject xSendPostRequest(XmlObject request, URI serviceURI) throws UnsupportedEncodingException,
+    public XmlObject xSendPostRequest(XmlObject request, URI serviceURI) throws UnsupportedEncodingException,
             HttpException,
             IOException,
             OwsExceptionReport {
 
         XmlObject response = doSend(request.xmlText(), POST_METHOD, serviceURI);
         return response;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Client [sirURI=");
+        builder.append(this.sirURI);
+        builder.append("]");
+        return builder.toString();
     }
 
 }

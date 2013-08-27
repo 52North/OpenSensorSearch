@@ -167,7 +167,7 @@ public class XmlTools {
                 + SMLConstants.SCHEMA_LOCATION);
         c.dispose();
     }
-    
+
     public static void addSirSchemaLocation(XmlObject xml) {
         XmlCursor c = xml.newCursor();
         c.setAttributeText(SCHEMA_LOCATION_ATTRIBUTE_QNAME, XmlTools.getSirSchemaLocation());

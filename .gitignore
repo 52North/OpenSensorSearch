@@ -1,4 +1,11 @@
 target
+
 .classpath
+
 .project
+
 .settings
+
+*.buildNumber.properties
+src/main/config/buildNumber.properties
+

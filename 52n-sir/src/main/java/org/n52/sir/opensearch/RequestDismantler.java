@@ -17,11 +17,13 @@ package org.n52.sir.opensearch;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.n52.sir.datastructure.SirBoundingBox;
+import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.util.ext.GeoLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,12 @@ public class RequestDismantler {
 
     private static final Logger log = LoggerFactory.getLogger(RequestDismantler.class);
 
+    public SirSearchCriteria createCriteria(Map<String, String> parameters) {
+        // TODO daniel: implement method
+        
+        return null;
+    }
+    
     public SirBoundingBox getBoundingBox(HttpServletRequest req) {
         Set< ? > keySet = req.getParameterMap().keySet();
         boolean containsName = keySet.contains(OpenSearchConstants.NAME_PARAM);
@@ -76,7 +84,7 @@ public class RequestDismantler {
     }
 
     private SirBoundingBox getBoundingBoxFromGazetteer(String parameter) {
-        log.error("gazetteer not implemented yet!");
+        log.error("gazetteer not implemented yet, discarding parameter {}", parameter);
         return null;
     }
 
@@ -105,7 +113,7 @@ public class RequestDismantler {
     }
 
     public Calendar[] getStartEnd(HttpServletRequest req) {
-        // TODO Auto-generated method stub
+        log.error("start-end not implemented yet, discarding request {}", req);
         return null;
     }
 
@@ -122,7 +130,7 @@ public class RequestDismantler {
     }
 
     public boolean requestContainsTime(HttpServletRequest req) {
-        // TODO Auto-generated method stub
+        log.error("time not implemented yet, discarding req {}", req);
         return false;
     }
 

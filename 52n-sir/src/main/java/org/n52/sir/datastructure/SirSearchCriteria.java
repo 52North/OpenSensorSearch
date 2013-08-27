@@ -34,8 +34,54 @@ public class SirSearchCriteria {
     private Collection<String> searchText;
 
     private Collection<SirService> serviceCriteria;
+    
+    private String lat;
+    public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getLng() {
+		return lng;
+	}
+
+	public void setLng(String lng) {
+		this.lng = lng;
+	}
+
+	public String getRadius() {
+		return radius;
+	}
+
+	public void setRadius(String radius) {
+		this.radius = radius;
+	}
+
+	private String lng;
+    private String radius;
 
     private Calendar start;
+    public String getDtstart() {
+		return this.dtstart;
+	}
+
+	public void setDtstart(String dtstart) {
+		this.dtstart = dtstart;
+	}
+
+	public String getDtend() {
+		return this.dtend;
+	}
+
+	public void setDtend(String dtend) {
+		this.dtend = dtend;
+	}
+
+	private String dtstart;
+    private String dtend;
 
     private Collection<String> uom;
 

@@ -16,16 +16,9 @@
 
 package org.n52.oss.guice;
 
-import java.util.Properties;
-
 import org.n52.oss.opensearch.OpenSearch;
 import org.n52.sir.AutoCompleteSearch;
 import org.n52.sir.SIR;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IInsertRemoteHarvestServer;
-import org.n52.sir.ds.IInsertSensorInfoDAO;
-import org.n52.sir.ds.pgsql.PGSQLInsertRemoteHarvestServer;
-import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.script.HarvestResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,52 +29,35 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 public class ServletModule extends JerseyServletModule {
 
-	private static Logger log = LoggerFactory.getLogger(ServletModule.class);
+    private static Logger log = LoggerFactory.getLogger(ServletModule.class);
 
-	public ServletModule() {
-		super();
-	}
+    public ServletModule() {
+        super();
+    }
 
-	@Override
-	protected void configureServlets() {
-		String basepath = getServletContext().getRealPath("/");
-		bindConstant().annotatedWith(Names.named("context.basepath")).to(
-				basepath);
+    @Override
+    protected void configureServlets() {
+        String basepath = getServletContext().getRealPath("/");
+        bindConstant().annotatedWith(Names.named("context.basepath")).to(basepath);
 
-		// install(new
-		// FactoryModuleBuilder().implement(ApplicationConstants.class,
-		// PropertyApplicationConstants.class).build(ConfigFactory.class));
+        // install(new FactoryModuleBuilder().implement(ApplicationConstants.class,
+        // PropertyApplicationConstants.class).build(ConfigFactory.class));
 
-		// bind(IJSExecute.class).to(RhinoJSExecute.class);
-		// bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
-		// bind(IInsertSensorInfoDAO.class).to(SOLRInsertSensorInfoDAO.class);
-		// bind(IInsertRemoteHarvestServer.class).to(PGSQLInsertRemoteHarvestServer.class);
-		// // bind the JAX-RS resources
-		// http://code.google.com/p/google-guice/wiki/ServletModule
-		
-		try {
-			Properties sirProps = new Properties();
-			Properties dbProps = new Properties();
-			sirProps.load(HarvestResource.class
-					.getResourceAsStream("/prop/sir.properties"));
-			dbProps.load(HarvestResource.class
-					.getResourceAsStream("/prop/db.properties"));
-			Names.bindProperties(binder(), sirProps);
-			Names.bindProperties(binder(), dbProps);
-		} catch (Exception e) {
-			log.error("Error loading props", e);
-		}
-		bind(SirConfigurator.class);
-		bind(HelloGuice.class);
-		bind(HarvestResource.class);
-		bind(AutoCompleteSearch.class);
-		bind(OpenSearch.class);
-		bind(SIR.class);
+        // bind(IJSExecute.class).to(RhinoJSExecute.class);
+        // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
-		// filter("*").through(DebugFilter.class);
-		serve("/*").with(GuiceContainer.class);
+        // bind the JAX-RS resources
+        // http://code.google.com/p/google-guice/wiki/ServletModule
+        bind(HelloGuice.class);
+        bind(HarvestResource.class);
+        bind(AutoCompleteSearch.class);
+        bind(OpenSearch.class);
+        bind(SIR.class);
 
-		log.info("configured {} with context {}", this, getServletContext());
-	}
+        filter("*").through(DebugFilter.class);
+        serve("/*").with(GuiceContainer.class);
+
+        log.info("configured {} with context {}", this, getServletContext());
+    }
 
 }

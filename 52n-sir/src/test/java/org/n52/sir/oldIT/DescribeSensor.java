@@ -87,6 +87,8 @@ public class DescribeSensor extends SirTest {
      */
     private void weakValidate(SensorMLDocument sml, boolean isValid) {
         if ( !isValid) {
+            System.out.println("Response document is invalid, but test probably passed...\n"
+                    + XmlTools.validateAndIterateErrors(sml));
         }
         else {
             assertTrue(isValid);

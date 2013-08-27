@@ -35,8 +35,11 @@ public class Identifiers {
     public void identifiersAreGenerated() {
         IdentifierGenerator gen = new ShortAlphanumericIdentifierGenerator();
         String id0 = gen.generate();
+        System.out.println("Generated id: " + id0);
         String id1 = gen.generate();
+        System.out.println("Generated id: " + id1);
         String id2 = gen.generate();
+        System.out.println("Generated id: " + id2);
         
         assertThat(id0, not(equalTo(id1)));
         assertThat(id0, not(equalTo(id2)));
@@ -56,6 +59,7 @@ public class Identifiers {
         IdentifierGenerator gen = new ShortAlphanumericIdentifierGenerator();
         int size = 10;
         Collection<String> ids = gen.generate(size);
+        System.out.println("Generated ids: " + Arrays.toString(ids.toArray()));
         
         assertThat(ids, hasSize(size));
     }

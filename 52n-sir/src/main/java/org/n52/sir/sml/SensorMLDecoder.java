@@ -421,6 +421,7 @@ public class SensorMLDecoder {
 		for (Contact m : contactsarr) {
 			if (m.getPerson() != null) {
 				Person p = m.getPerson();
+				System.out.println(p);
 				contacts.add(p.getName());
 				contacts.add(p.getEmail());
 				contacts.add(p.getPhoneNumber());
@@ -498,6 +499,7 @@ public class SensorMLDecoder {
 	}
 
 	private static Object getDescription(SystemType system) {
+		// TODO Auto-generated method stub
 		return system.getDescription().getStringValue();
 	}
 

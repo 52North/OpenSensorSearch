@@ -17,10 +17,9 @@
 package org.n52.sir;
 
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Properties;
 
-import org.n52.oss.config.ConfigModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,20 +39,20 @@ public class SirModule extends AbstractModule {
             Properties dbProps = loadProperties("/prop/db.properties");
             Names.bindProperties(binder(), dbProps);
 
-            log.debug("Loaded and bound properties: \n    {}\n    {}", sirProps, dbProps);
+            log.debug("Loaded and bound properties: \n\t    {}\n\t    {}", sirProps, dbProps);
         }
         catch (IOException e) {
             log.error("Could not load properties.", e);
         }
     }
 
-    private static Properties loadProperties(String name) throws IOException {
-        log.trace("Loading properties for {}", name);
+    private static Properties loadProperties(String path) throws IOException {
+        log.trace("Loading properties for {}", path);
 
         Properties properties = new Properties();
-        ClassLoader loader = ConfigModule.class.getClassLoader();
-        URL url = loader.getResource(name);
-        properties.load(url.openStream());
+        try (InputStream stream = SirModule.class.getResourceAsStream(path);) {
+            properties.load(stream);
+        }
 
         log.trace("Loaded properties: {}", properties);
         return properties;

@@ -237,6 +237,13 @@ public class PGDAOConstants {
     private final String TNSERVICE = "oss.db.TNSERVICE";
 
     private final String TNSTATUS = "oss.db.TNSTATUS";
+    
+  //remoteHarvestSensor table
+    public static String remoteHarvestSensor ;
+    public static String SERVER_ID;
+    public static String SERVER_URL;
+    public static String AUTH_TOKEN;
+    public static String REMOTE_LAST_UPDATE;
 
     /**
      * constructor
@@ -296,7 +303,12 @@ public class PGDAOConstants {
         SCRIPT_UPLOAD_TIME = props.getProperty("UPLOADTIME");
         SCRIPT_LAST_RUN_RESULT = props.getProperty("lastRunResult");
         SCRIPT_OWNER_USERNAME = props.getProperty("USERNAME");
-
+        SERVER_ID = props.getProperty("SERVER_ID");
+        SERVER_URL = props.getProperty("SERVER_URL");
+        AUTH_TOKEN = props.getProperty("AUTH_TOKEN");
+        REMOTE_LAST_UPDATE = props.getProperty("REMOTE_LAST_UPDATE");
+        remoteHarvestSensor = props.getProperty("remoteHarvestSensor");
+        log.info("PGDAOConstants initialized successfully!");
         log.info("PGDAOConstants initialized successfully: {}", this);
     }
 }

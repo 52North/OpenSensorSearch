@@ -76,9 +76,10 @@ public class HarvestResource {
     private SirConfigurator config;
 
     @Inject
-    public HarvestResource(SirConfigurator config) {
+    public HarvestResource(SirConfigurator config,IJSExecute jsEngine) {
         log.info("SirConfigurator: {}", config.getFactory());
         this.config = config.getInstance();
+        this.jsEngine=jsEngine;
     }
 
     @GET

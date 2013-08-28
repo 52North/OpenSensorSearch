@@ -30,6 +30,7 @@ import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.IInsertSensorStatusDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.ds.IUserAccountDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 
 /**
@@ -128,6 +129,9 @@ public class PGSQLDAOFactory implements IDAOFactory {
 	}
 	public IInsertRemoteHarvestServer insertRemoteHarvestSensor(){
 		return new PGSQLInsertRemoteHarvestServer(this.cpool);
+	}
+	public IUserAccountDAO userAccountDAO(){
+		return new PGSQLUserAccountDAO(this.cpool);
 	}
 
 }

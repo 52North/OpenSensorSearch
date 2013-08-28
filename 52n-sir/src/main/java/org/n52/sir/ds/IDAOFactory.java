@@ -94,4 +94,6 @@ public interface IDAOFactory {
     IInsertHarvestScriptDAO insertHarvestScriptDAO() ;
     
     IInsertRemoteHarvestServer insertRemoteHarvestSensor();
+    
+    IUserAccountDAO userAccountDAO();
 }

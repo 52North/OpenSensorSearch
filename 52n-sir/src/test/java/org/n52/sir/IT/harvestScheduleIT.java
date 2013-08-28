@@ -52,7 +52,7 @@ public class harvestScheduleIT {
 		File harvestScript = new File(ClassLoader.getSystemResource(
 				"Requests/randomSensor.js").getFile());
 		PostMethod method = new PostMethod(
-				"http://localhost:8080/SIR/harvest/script/submit");
+				"http://localhost:8080/OpenSensorSearch/script/submit");
 		Part[] parts = new Part[] { new StringPart("user", "User"),
 				new FilePart("file", harvestScript) };
 		method.setRequestEntity(new MultipartRequestEntity(parts, method
@@ -62,7 +62,7 @@ public class harvestScheduleIT {
 		multipartEntity.addPart("file", new FileBody(harvestScript));
 		multipartEntity.addPart("user", new StringBody("User"));
 		HttpPost post = new HttpPost(
-				"http://localhost:8080/SIR/harvest/script/submit");
+				"http://localhost:8080/OpenSensorSearch/script/submit");
 		post.setEntity(multipartEntity);
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();
 		HttpResponse resp = client.execute(post);
@@ -86,7 +86,7 @@ public class harvestScheduleIT {
 		String scriptId = System.getProperty(SCRIPT_ID);
 		StringBuilder scheduleRequest = new StringBuilder();
 		scheduleRequest
-				.append("http://localhost:8080/SIR/harvest/script/schedule");
+				.append("http://localhost:8080/OpenSensorSearch/script/schedule");
 		scheduleRequest.append("?id=");
 		scheduleRequest.append(scriptId);
 		Date d = new Date();

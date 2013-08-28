@@ -20,10 +20,8 @@ package org.n52.sir.ds.pgsql;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Date;
 
-import javax.naming.spi.DirStateFactory.Result;
-
-import org.n52.sir.ds.IInsertHarvestScriptDAO;
 import org.n52.sir.ds.IUserAccountDAO;
 import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 import org.slf4j.Logger;
@@ -159,7 +157,32 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 
 	@Override
 	public String authenticateUser(String name, String password) {
-		return null;
+
+		String insert;
+		Connection con = null;
+		Statement stmt = null;
+		
+		try {
+			con = this.cpool.getConnection();
+			stmt = con.createStatement();
+			String searchQuery = selectUserPassword(name, password);
+			log.info(searchQuery);
+			ResultSet rs = stmt.executeQuery(searchQuery);
+			String id = null;
+			if(rs.next()){
+				id = rs.getObject(PGDAOConstants.USER_ID).toString();
+			}else return null;
+			stmt.execute(deleteUserWithID(id));
+			stmt.execute(insertAuthToken(name, id));
+			rs = stmt.executeQuery(authTokenForUser(id));
+			if(rs.next()){
+				return rs.getString(PGDAOConstants.AUTH_TOKEN);
+			}else return null;
+		} catch (Exception e) {
+			log.error("Cannot insert harvest Script",e);
+			return null;
+		}
+	
 	}
 	
 	private String selectUserPassword(String name,String password){
@@ -179,8 +202,50 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		builder.append(hash);
 		builder.append("'");
 		return builder.toString();
-
-		
+	}
+	
+	private String insertAuthToken(String name,String id){
+		String seed = name+(new Date().getTime());
+		String hash = new ShortAlphanumericIdentifierGenerator().generate(seed);
+		StringBuilder builder = new StringBuilder();
+		builder.append("INSERT INTO ");
+		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
+		builder.append("(");
+		builder.append(PGDAOConstants.USER_ID);
+		builder.append(",");
+		builder.append(PGDAOConstants.USER_AUTH_TOKEN);
+		builder.append(") values(");
+		builder.append(id);
+		builder.append(",");
+		builder.append("'");
+		builder.append(hash);
+		builder.append("'");
+		builder.append(");");
+		return builder.toString();
+	}
+	
+	private String deleteUserWithID(String id){
+		StringBuilder builder = new StringBuilder();
+		builder.append("DELETE FROM ");
+		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
+		builder.append(" WHERE ");
+		builder.append(PGDAOConstants.USER_ID);
+		builder.append("=");
+		builder.append(id);
+		return builder.toString();
+	}
+	
+	private String authTokenForUser(String id){
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT  ");
+		builder.append(PGDAOConstants.AUTH_TOKEN);
+		builder.append(" FROM " );
+		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
+		builder.append(" WHERE ");
+		builder.append(PGDAOConstants.USER_ID);
+		builder.append(" = ");
+		builder.append(id);
+		return builder.toString();
 	}
 
 }

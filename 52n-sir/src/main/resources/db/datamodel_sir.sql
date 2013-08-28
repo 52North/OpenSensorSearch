@@ -30,7 +30,8 @@ DROP TABLE IF EXISTS service CASCADE;
 DROP TABLE IF EXISTS userauthtoken CASCADE;
 DROP TABLE IF EXISTS harvestScript CASCADE;
 DROP TABLE IF EXISTS remoteHarvestSensor CASCADE;
-
+DROP TABLE IF EXISTS status CASCADE;
+DROP TABLE IF EXISTS useraccount CASCADE;
 
 -----------------------------------------------------------------------------------------------------------------------
 -- Creating the tables
@@ -153,7 +154,7 @@ CREATE TABLE userAccount
 
 CREATE TABLE userAuthToken
 (
-	userId text,
+	userId integer,
 	user_auth_token text
 );
 

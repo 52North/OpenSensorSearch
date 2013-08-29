@@ -16,6 +16,8 @@
 
 package org.n52.oss.guice;
 
+import org.n52.oss.api.TransformationResource;
+import org.n52.oss.api.ValidatorResource;
 import org.n52.oss.opensearch.OpenSearch;
 import org.n52.sir.AutoCompleteSearch;
 import org.n52.sir.SIR;
@@ -48,7 +50,7 @@ public class ServletModule extends JerseyServletModule {
         // PropertyApplicationConstants.class).build(ConfigFactory.class));
 
          bind(IJSExecute.class).to(RhinoJSExecute.class);
-         bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
+       //  bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
         // bind the JAX-RS resources
@@ -58,8 +60,10 @@ public class ServletModule extends JerseyServletModule {
         bind(AutoCompleteSearch.class);
         bind(OpenSearch.class);
         bind(SIR.class);
-
-        filter("*").through(DebugFilter.class);
+        bind(TransformationResource.class);
+        bind(ValidatorResource.class);
+    //    bind(ValidatorResource.class);
+     //   filter("*").through(DebugFilter.class);
         serve("/*").with(GuiceContainer.class);
 
         log.info("configured {} with context {}", this, getServletContext());

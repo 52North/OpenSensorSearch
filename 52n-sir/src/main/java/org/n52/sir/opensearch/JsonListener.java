@@ -130,9 +130,9 @@ public class JsonListener implements IOpenSearchListener {
 				if(desc.getInputs()!=null)element.setInputs(desc.getInputs());
 				if(desc.getOutputs()!=null)element.setOutputs(desc.getOutputs());
 				if(desc.getIdentifiers()!=null)element.setIdentifiers(desc.getIdentifiers());
-				if(desc.getClassifiers()!=null)element.setClassifiers(desc.getClassifiers());
+			//	if(desc.getClassifiers()!=null)element.setClassifiers(desc.getClassifiers());
 				if(desc.getContacts()!=null)element.setContacts(desc.getContacts());
-				if(desc.getKeywords()!=null)element.setKeywords(desc.getKeywords());
+				//if(desc.getKeywords()!=null)element.setKeywords(desc.getKeywords());
 				result.addResult(element);
 			} else {
 				SearchResultElement sre = new SearchResultElement();

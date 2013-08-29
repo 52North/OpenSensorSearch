@@ -8,4 +8,4 @@ target
 
 *.buildNumber.properties
 src/main/config/buildNumber.properties
-
+*.log

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true"> <!-- refer to http://logback.qos.ch/manual/appenders.html -->
 	<property name="logFile"
-		value="${config.logger.fileappender.filepath}/${pom.artifactId}-${project.version}" />
+		value="${oss.logger.filepath}/${pom.artifactId}-${project.version}" />
 
 	<appender name="ossfile"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">

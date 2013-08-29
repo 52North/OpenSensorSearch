@@ -97,8 +97,8 @@
 		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
 		<logback.version>1.0.13</logback.version>
 
-		<config.logger.fileappender.filepath>D:/logs</config.logger.fileappender.filepath>
-		<config.logger.level>DEBUG</config.logger.level>
+		<oss.logger.filepath>${catalina.base:-.}/logs/52n-oss</oss.logger.filepath>
+		<oss.logger.level>DEBUG</oss.logger.level>
 	</properties>
 
 	<profiles>
@@ -669,6 +669,12 @@
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-json-sir</artifactId>
 			<version>0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -749,6 +755,13 @@
 			<artifactId>wiremock</artifactId>
 			<version>1.33</version>
 			<classifier>standalone</classifier>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+			</exclusions>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

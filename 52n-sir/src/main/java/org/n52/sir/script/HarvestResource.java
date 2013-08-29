@@ -36,12 +36,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;
-import org.n52.sir.scheduler.RemoteHarvestJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -62,7 +60,7 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/script")
 @RequestScoped
 public class HarvestResource {
-    
+
     private static Logger log = LoggerFactory.getLogger(HarvestResource.class);
 
     private IJSExecute jsEngine;
@@ -71,7 +69,7 @@ public class HarvestResource {
 
     private IInsertSensorInfoDAO dao;
 
-    private IInsertRemoteHarvestServer remoteDAO;
+    // private IInsertRemoteHarvestServer remoteDAO;
 
     private SirConfigurator config;
 
@@ -192,8 +190,8 @@ public class HarvestResource {
         // log.info("Cannot find remote factory");
 
         try {
-            IInsertRemoteHarvestServer irhs = this.config.getFactory().insertRemoteHarvestSensor();
-            String auth_token = irhs.insertRemoteServer(serverURL);
+            // IInsertRemoteHarvestServer irhs = this.config.getFactory().insertRemoteHarvestSensor();
+            String auth_token = "test"; // irhs.insertRemoteServer(serverURL);
             String result = "{" + '"' + "auth_token" + '"' + ":" + '"' + auth_token + '"' + "}";
             return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
         }
@@ -209,15 +207,19 @@ public class HarvestResource {
     public Response harvestServer(@FormParam("auth_token")
     String auth_token) {
         JobDataMap dataMap = new JobDataMap();
-        String url = this.config.getFactory().insertRemoteHarvestSensor().harvestRemoteServer(auth_token);
-        log.info("The result url:" + url);
-        if (url == null) {
-            return Response.status(404).build();
-        }
-        dataMap.put(QuartzConstants.INSERTION_INTERFACE, this.dao);
-        dataMap.put(QuartzConstants.REMOTE_SENSOR_URL, url);
 
-        JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I" + auth_token).usingJobData(dataMap).build();
+        // FIXME after merge with moh-yakoub
+        // String url = this.config.getFactory().insertRemoteHarvestSensor().harvestRemoteServer(auth_token);
+        // log.info("The result url:" + url);
+        // if (url == null) {
+        // return Response.status(404).build();
+        // }
+        // dataMap.put(QuartzConstants.INSERTION_INTERFACE, this.dao);
+        // dataMap.put(QuartzConstants.REMOTE_SENSOR_URL, url);
+        //
+        JobDetail detail = null;
+        // JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I" +
+        // auth_token).usingJobData(dataMap).build();
 
         try {
             Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + auth_token).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();

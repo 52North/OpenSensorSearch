@@ -1,0 +1,7 @@
+2013-08-28 19:39:20,057 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:59] Executed at : 1377711560054
+2013-08-28 19:39:20,103 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:60] http://localhost:3000
+2013-08-28 19:39:20,103 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:61] Harvesting server:http://localhost:3000
+2013-08-28 19:39:20,826 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 1
+2013-08-28 19:39:20,826 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test1, testkeyword1]
+2013-08-28 19:39:20,834 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 2
+2013-08-28 19:39:20,834 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test2, testkeyword2]

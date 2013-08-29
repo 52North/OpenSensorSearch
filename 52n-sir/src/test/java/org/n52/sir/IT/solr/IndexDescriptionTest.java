@@ -55,7 +55,7 @@ public class IndexDescriptionTest {
 		dao.insertSensor(sensor);
 	}
 
-	@Test
+	//@Test
 	public void searchForSensorByDescription() {
 		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
 		Collection<SirSearchResultElement> results = dao

@@ -85,7 +85,7 @@
 		<restlet.version>2.1.1</restlet.version>
 		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
-		<!-- would like to use filtering here, but I did not get it to work with
+		<!-- would like to use filtering here, but I did not get it to work with 
 			Tomcat and Jetty plugins: http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
 		<service.path>/SIR</service.path>
 		<service.endpoint.service>sir</service.endpoint.service>
@@ -118,9 +118,9 @@
 		<profile>
 			<id>sir.deploy</id>
 			<properties>
-				<!-- add these to your settings.xml file to ensure passwords are not
-					uploaded to SCM: <profile> <id>sir.deploy</id> <properties> <sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server>
-					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user> <sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password>
+				<!-- add these to your settings.xml file to ensure passwords are not 
+					uploaded to SCM: <profile> <id>sir.deploy</id> <properties> <sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server> 
+					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user> <sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password> 
 					</properties> </profile> -->
 				<service.url>${sir.deploy.server}</service.url>
 				<service.contact>${sir.deploy.contact}</service.contact>
@@ -145,10 +145,10 @@
 
 				<configuration>
 					<scanIntervalSeconds>2</scanIntervalSeconds>
-					<!-- if you embed the following in <webApp>, then jetty:run-exploded
-						will result in error "When configuring a basic element the configuration
+					<!-- if you embed the following in <webApp>, then jetty:run-exploded 
+						will result in error "When configuring a basic element the configuration 
 						cannot contain any child elements. Configuration element 'war'." -->
-					<contextPath>${service.path}</contextPath> <!-- is ignored for run-exploded, but used by Webby: Right-click, Debug as,
+					<contextPath>${service.path}</contextPath> <!-- is ignored for run-exploded, but used by Webby: Right-click, Debug as, 
 						Webby ... -->
 					<war>target/${project.build.finalName}</war>
 				</configuration>
@@ -160,7 +160,7 @@
 				<version>2.4</version>
 
 				<configuration>
-					<!-- have to explicitly add resources and target paths if I want to
+					<!-- have to explicitly add resources and target paths if I want to 
 						do filtering on different resources -->
 					<!-- http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
 					<webResources>
@@ -198,10 +198,10 @@
 
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
+				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.1</version>
 				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir>
+				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir> 
 					</systemProperties> </configuration> -->
 				<configuration>
 					<path>${service.path}</path>
@@ -281,7 +281,7 @@
 				<executions>
 					<execution>
 						<phase>test</phase>
-						<!-- test will fail if license headers are not correct, run license:format
+						<!-- test will fail if license headers are not correct, run license:format 
 							to add the headers. -->
 						<goals>
 							<goal>check</goal>
@@ -348,7 +348,7 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -495,7 +495,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-			<!-- it’s just the api and the implementation should be provided by the
+			<!-- it’s just the api and the implementation should be provided by the 
 				application server/web container -->
 			<scope>provided</scope> <!-- for running with tomcat-maven-plugin, see http://singztechmusings.wordpress.com/2011/06/17/java-lang-classcastexception-cannot-be-cast-to-javax-servlet-servlet-how-to-resolve/ -->
 		</dependency>
@@ -562,7 +562,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 			<exclusions>
-				<!-- included via solrj, and there the correct groupId is used so that
+				<!-- included via solrj, and there the correct groupId is used so that 
 					the pom can be found. -->
 				<exclusion>
 					<artifactId>wstx-asl</artifactId>
@@ -608,11 +608,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-gml-v321</artifactId>
-			<version>${sensorweb.schemas.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-kml-v220</artifactId>
@@ -741,6 +737,18 @@
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.tomakehurst</groupId>
+			<artifactId>wiremock</artifactId>
+			<version>1.33</version>
+			<classifier>standalone</classifier>
 		</dependency>
 	</dependencies>
 </project>

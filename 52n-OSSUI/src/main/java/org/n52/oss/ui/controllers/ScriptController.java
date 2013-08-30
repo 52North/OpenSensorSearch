@@ -18,7 +18,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.n52.oss.config.Config;
 import org.n52.oss.config.License;
 import org.n52.oss.ui.uploadForm;
-import org.n52.sir.SirConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;

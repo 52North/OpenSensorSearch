@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package org.n52.sir.opensearch;
+package org.n52.oss.opensearch.listeners;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -31,8 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
 import net.opengis.gml.ReferenceType;
 import net.opengis.ows.ExceptionReportDocument;
@@ -50,15 +56,16 @@ import org.n52.ext.link.AccessLinkFactory;
 import org.n52.ext.link.sos.TimeRange;
 import org.n52.ext.link.sos.TimeSeriesParameters;
 import org.n52.ext.link.sos.TimeSeriesPermalinkBuilder;
-import org.n52.sir.SirConfigurator;
+import org.n52.oss.opensearch.OpenSearchConfigurator;
+import org.n52.oss.opensearch.OpenSearchConstants;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
+import org.n52.sir.opensearch.ICapabilitiesPermalinkMapper;
 import org.n52.sir.opensearch.instanceSupport.PegelOnlineCPM;
 import org.n52.sir.opensearch.instanceSupport.WeatherSosCPM;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +78,7 @@ import com.google.inject.Inject;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class HtmlListener implements IOpenSearchListener {
+public class HtmlListener implements OpenSearchListener {
 
     private static final Logger log = LoggerFactory.getLogger(HtmlListener.class);
 
@@ -133,6 +140,7 @@ public class HtmlListener implements IOpenSearchListener {
     @Inject
     Client sirClient;
 
+    @Inject
     public HtmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
@@ -181,14 +189,14 @@ public class HtmlListener implements IOpenSearchListener {
         writer.println("</div>");
 
         writer.print("<input name=\"");
-        writer.print(OpenSearchConstants.QUERY_PARAMETER);
+        writer.print(OpenSearchConstants.QUERY_PARAM);
         writer.print("\" type=\"text\" value=\"");
         writer.print(searchText);
         writer.print("\" class=\"search-input\" />");
 
         // hidden input for default accept parameter
         writer.print("<input type=\"hidden\" name=\"");
-        writer.print(OpenSearchConstants.ACCEPT_PARAMETER);
+        writer.print(OpenSearchConstants.FORMAT_PARAM);
         writer.print("\" value=\"");
         writer.print(OpenSearchConstants.X_DEFAULT_MIME_TYPE);
         writer.print("\" />");
@@ -213,7 +221,7 @@ public class HtmlListener implements IOpenSearchListener {
         writer.print(this.conf.getFullServicePath() + this.conf.getOpenSearchPath());
         writer.print("\" method=\"get\">");
         writer.print("<input type=\"hidden\" name=\"");
-        writer.print(OpenSearchConstants.QUERY_PARAMETER);
+        writer.print(OpenSearchConstants.QUERY_PARAM);
         writer.print("\" value=\"");
         writer.print(searchText);
         writer.print("\" />");
@@ -231,7 +239,7 @@ public class HtmlListener implements IOpenSearchListener {
         Map<String, String> responseFormats = this.conf.getResponseFormats();
 
         writer.print("<select name=\"");
-        writer.print(OpenSearchConstants.ACCEPT_PARAMETER);
+        writer.print(OpenSearchConstants.FORMAT_PARAM);
         writer.print("\" onchange=\"this.form.submit();\">");
 
         for (Entry<String, String> format : responseFormats.entrySet()) {
@@ -371,62 +379,58 @@ public class HtmlListener implements IOpenSearchListener {
     }
 
     @Override
-    public void createResponse(HttpServletRequest req,
-                               HttpServletResponse resp,
-                               Collection<SirSearchResultElement> searchResult,
-                               PrintWriter writer,
-                               String searchText) throws OwsExceptionReport {
-        String searchT;
-        if (searchText.contains("&"))
-            searchT = Tools.encode(searchText);
-        else
-            searchT = searchText;
+    public Response createResponse(final Collection<SirSearchResultElement> searchResult,
+                                   final MultivaluedMap<String, String> params) throws OwsExceptionReport {
+        StreamingOutput stream = new StreamingOutput() {
+            @Override
+            public void write(OutputStream os) throws IOException, WebApplicationException {
+                String query = params.getFirst(OpenSearchConstants.QUERY_PARAM);
+                if (query.contains("&"))
+                    query = Tools.encode(query);
 
-        writer.print("<?xml version=\"1.0\" encoding=\"");
-        writer.print(SirConfigurator.getInstance().getCharacterEncoding().toLowerCase());
-        writer.println("\"?>");
+                PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os)));
 
-        writer.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        writer.println("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+                writer.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                writer.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+                writer.println("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
 
-        writer.println("<head>");
-        writer.print("<link href=\"");
-        writer.print(this.conf.getCssFile());
-        writer.println("\" rel=\"stylesheet\" type=\"text/css\" />");
+                writer.println("<head>");
+                writer.print("<link href=\"");
+                writer.print(HtmlListener.this.conf.getCssFile());
+                writer.println("\" rel=\"stylesheet\" type=\"text/css\" />");
 
-        writer.print("<title>");
-        writer.print(this.searchResultTitle);
-        writer.print(" '");
-        writer.print(searchT);
-        writer.println("'</title>");
+                writer.print("<title>");
+                writer.print(HtmlListener.this.searchResultTitle);
+                writer.print(" '");
+                writer.print(query);
+                writer.println("'</title>");
 
-        writer.println("<link rel=\"shortcut icon\" href=\"https://52north.org/templates/52n/favicon.ico\" />");
-        writer.println("</head>");
+                writer.println("<link rel=\"shortcut icon\" href=\"https://52north.org/templates/52n/favicon.ico\" />");
+                writer.println("</head>");
 
-        writer.println("<body>");
-        writer.println("<div id=\"content\">");
+                writer.println("<body>");
+                writer.println("<div id=\"content\">");
 
-        try {
-            createHTMLContent(searchResult, writer, searchT);
-        }
-        catch (UnsupportedEncodingException e) {
-            log.error("Error creating HTML content.", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Encoding error: " + e.getMessage());
-        }
+                createHTMLContent(searchResult, writer, query);
 
-        writer.println("<div id=\"footer\">");
-        writer.println("<p class=\"infotext\">Open Sensor Search is powered by the 52&deg;North Sensor Instance Registry. <a href=\"http://52north.org/communities/sensorweb/incubation/discovery/\" title=\"Sensor Discovery by 52N\">Find out more</a>.");
-        writer.println("</p>");
-        writer.println("<p class=\"infotext\"><a href=\"./\">Home</a> | <a href=\"client.jsp\">Extended Client</a> | <a href=\"formClient.html\">Form Client</a>");
-        writer.println("</p>");
-        writer.println("<p class=\"infotext\">&copy; 2012 <a href=\"http://52north.org\">52&deg;North Initiative for Geospatial Software GmbH</a>");
-        writer.println("</p>");
-        writer.println("</div>");
+                writer.println("<div id=\"footer\">");
+                writer.println("<p class=\"infotext\">Open Sensor Search is powered by the 52&deg;North Sensor Instance Registry. <a href=\"http://52north.org/communities/sensorweb/incubation/discovery/\" title=\"Sensor Discovery by 52N\">Find out more</a>.");
+                writer.println("</p>");
+                writer.println("<p class=\"infotext\"><a href=\"./\">Home</a> | <a href=\"client.jsp\">Extended Client</a> | <a href=\"formClient.html\">Form Client</a>");
+                writer.println("</p>");
+                writer.println("<p class=\"infotext\">&copy; 2012 <a href=\"http://52north.org\">52&deg;North Initiative for Geospatial Software GmbH</a>");
+                writer.println("</p>");
+                writer.println("</div>");
 
-        writer.println("</div>"); // content
-        writer.println("</body>");
-        writer.println("</html>");
-        writer.flush();
+                writer.println("</div>"); // content
+                writer.println("</body>");
+                writer.println("</html>");
+
+                writer.flush();
+            }
+        };
+
+        return Response.ok(stream).build();
     }
 
     @Override

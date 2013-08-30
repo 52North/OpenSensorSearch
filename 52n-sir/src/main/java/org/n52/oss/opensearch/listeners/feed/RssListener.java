@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.opensearch;
+package org.n52.oss.opensearch.listeners.feed;
+
+import org.n52.oss.opensearch.OpenSearchConfigurator;
+import org.n52.oss.opensearch.OpenSearchConstants;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -26,10 +31,11 @@ public class RssListener extends AbstractFeedListener {
 
     private static final String FEED_TYPE = "rss_2.0";
 
-    public static final String MIME_TYPE = "application/rss+xml";
+    public static final String MIME_TYPE = OpenSearchConstants.APPLICATION_RSS_XML;
 
     private static final String NAME = "RSS";
 
+    @Inject
     public RssListener(OpenSearchConfigurator configurator) {
         super(configurator);
     }

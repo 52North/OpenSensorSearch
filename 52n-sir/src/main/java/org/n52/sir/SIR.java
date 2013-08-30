@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
@@ -32,7 +31,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.xml.transform.TransformerException;
 
 import org.n52.oss.config.ApplicationConstants;
-import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.response.ISirResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -524,8 +524,10 @@ public class SirConfigurator {
     }
 
     /**
+     * @deprecated the character encoding should be only UTF-8, which is Jersey's default and must not be set
      * @return the characterEncoding
      */
+    @Deprecated
     public String getCharacterEncoding() {
         return this.characterEncoding;
     }

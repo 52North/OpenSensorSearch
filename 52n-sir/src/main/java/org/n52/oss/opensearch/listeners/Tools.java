@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.opensearch;
+package org.n52.oss.opensearch.listeners;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.n52.oss.opensearch.OpenSearchConstants;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;

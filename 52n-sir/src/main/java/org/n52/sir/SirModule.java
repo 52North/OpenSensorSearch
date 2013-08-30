@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.n52.oss.config.ConfigModule;
+import org.n52.sir.ows.OwsExMessageBodyWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +46,8 @@ public class SirModule extends AbstractModule {
         catch (IOException e) {
             log.error("Could not load properties.", e);
         }
+
+        bind(OwsExMessageBodyWriter.class);
     }
 
     private static Properties loadProperties(String name) throws IOException {

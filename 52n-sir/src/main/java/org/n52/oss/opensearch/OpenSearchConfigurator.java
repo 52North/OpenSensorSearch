@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.n52.sir.opensearch;
+package org.n52.oss.opensearch;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.n52.oss.opensearch.listeners.OpenSearchListener;
 import org.n52.sir.SirConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,7 @@ public class OpenSearchConfigurator {
         log.info("NEW {}", this);
     }
 
-    public void addResponseFormat(IOpenSearchListener listener) {
+    public void addResponseFormat(OpenSearchListener listener) {
         this.responseFormats.put(listener.getMimeType(), listener.getName());
     }
 
@@ -70,6 +71,7 @@ public class OpenSearchConfigurator {
         return this.capabilitiesCacheMaximumAgeSeconds;
     }
 
+    @Deprecated
     public String getCharacterEncoding() {
         return sirConfigurator.getCharacterEncoding();
     }

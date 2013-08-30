@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.opensearch;
+
+package org.n52.oss.opensearch;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 
 /**
  * TODO see what is constant, and what should be in {@link OpenSearchConfigurator}.
@@ -25,8 +27,6 @@ import java.util.Collection;
  * 
  */
 public class OpenSearchConstants {
-
-    public static final String ACCEPT_PARAMETER = "httpAccept";
 
     public static final String BOX_PARAM = "box";
 
@@ -50,17 +50,25 @@ public class OpenSearchConstants {
 
     public static final String NAME_PARAM = "name";
 
-    public static final String QUERY_PARAMETER = "q";
-    
-    public static final String TIME_START_PARAMETER = "dtstart";
-    
-    public static final String TIME_END_PARAMETER = "dtend";
+    public static final String QUERY_PARAM = "q";
+
+    public static final String TIME_START_PARAM = "dtstart";
+
+    public static final String TIME_END_PARAM = "dtend";
 
     public static final String RADIUS_PARAM = "radius";
 
-    public static Collection<String> TIME_SERIES_SERVICE_TYPES = new ArrayList<String>();
+    public static Collection<String> TIME_SERIES_SERVICE_TYPES = new ArrayList<>();
 
     public static final String X_DEFAULT_MIME_TYPE = "text/html";
+
+    public static final String FORMAT_PARAM = "format";
+
+    public static final String APPLICATION_RSS_XML = "application/rss+xml";
+
+    public static final String URL_DECODE_ENCODING = "UTF-8";
+
+    public static final String APPLICATION_VND_KML = "application/vnd.google-earth.kml+xml";
 
     static {
         TIME_SERIES_SERVICE_TYPES.add("SOS");

@@ -24,6 +24,7 @@ import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -74,10 +75,10 @@ public class HarvestResource {
     private SirConfigurator config;
 
     @Inject
-    public HarvestResource(SirConfigurator config,IJSExecute jsEngine) {
+    public HarvestResource(SirConfigurator config, IJSExecute jsEngine) {
         log.info("SirConfigurator: {}", config.getFactory());
         this.config = config.getInstance();
-        this.jsEngine=jsEngine;
+        this.jsEngine = jsEngine;
     }
 
     @GET
@@ -152,8 +153,9 @@ public class HarvestResource {
     @GET
     @Path("/schedule")
     public Response scheduleHarvest(@QueryParam("id")
-    int sensorId, @QueryParam("date")
-    long when) {
+    int sensorId, @QueryParam("date") @DefaultValue("0")
+    long when, @QueryParam("schedule") @DefaultValue("0/10 * * * * ?")
+    String schedule) {
         Date d;
         if (when == 0)
             d = new Date();

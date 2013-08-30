@@ -30,9 +30,9 @@ import com.google.inject.multibindings.Multibinder;
  * @author Daniel
  * 
  */
-public class ListenerPluginModule extends AbstractModule {
+public class SirListenerPluginModule extends AbstractModule {
 
-    private static Logger log = LoggerFactory.getLogger(ListenerPluginModule.class);
+    private static Logger log = LoggerFactory.getLogger(SirListenerPluginModule.class);
 
     @Override
     protected void configure() {

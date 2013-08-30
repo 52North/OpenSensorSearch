@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.opensearch;
+package org.n52.oss.opensearch.listeners.feed;
+
+import javax.ws.rs.core.MediaType;
+
+import org.n52.oss.opensearch.OpenSearchConfigurator;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -24,10 +30,11 @@ public class AtomListener extends AbstractFeedListener {
 
     private static final String FEED_TYPE = "atom_0.3";
 
-    public static final String MIME_TYPE = "application/atom+xml";
+    public static final String MIME_TYPE = MediaType.APPLICATION_ATOM_XML;
 
     private static final String NAME = "Atom";
 
+    @Inject
     public AtomListener(OpenSearchConfigurator configurator) {
         super(configurator);
     }

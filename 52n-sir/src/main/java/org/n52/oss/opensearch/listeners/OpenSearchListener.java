@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.opensearch;
 
-import java.io.PrintWriter;
+package org.n52.oss.opensearch.listeners;
+
 import java.util.Collection;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
 
-public interface IOpenSearchListener {
+public interface OpenSearchListener {
 
-    public void createResponse(HttpServletRequest req,
-                               HttpServletResponse resp,
-                               Collection<SirSearchResultElement> searchResult,
-                               PrintWriter writer,
-                               String searchText) throws OwsExceptionReport;
+    public Response createResponse(Collection<SirSearchResultElement> searchResult,
+                                   MultivaluedMap<String, String> params) throws OwsExceptionReport;
 
     public String getMimeType();
 

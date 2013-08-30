@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.opensearch;
 
+package org.n52.oss.opensearch.listeners.feed;
+
+import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -24,13 +27,19 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.StreamingOutput;
 
+import org.n52.oss.opensearch.OpenSearchConfigurator;
+import org.n52.oss.opensearch.OpenSearchConstants;
+import org.n52.oss.opensearch.listeners.OpenSearchListener;
+import org.n52.oss.opensearch.listeners.Tools;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +59,7 @@ import com.sun.syndication.io.SyndFeedOutput;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public abstract class AbstractFeedListener implements IOpenSearchListener {
+public abstract class AbstractFeedListener implements OpenSearchListener {
 
     protected static final Logger log = LoggerFactory.getLogger(AbstractFeedListener.class);
 
@@ -61,34 +70,28 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
         this.conf.addResponseFormat(this);
     }
 
-    /**
-     * 
-     * @param searchResult
-     * @param searchText
-     * @return
-     */
-    protected SyndFeed createFeed(Collection<SirSearchResultElement> searchResult, String searchText) {
+    protected SyndFeed createFeed(Collection<SirSearchResultElement> searchResult, String query) {
         SyndFeed feed = new SyndFeedImpl();
 
-        feed.setTitle("Sensor Search for " + searchText);
-        String channelURL = this.conf.getFullOpenSearchPath() + "?" + OpenSearchConstants.QUERY_PARAMETER + "="
-                + searchText + "&" + OpenSearchConstants.ACCEPT_PARAMETER + "=" + getMimeType();
+        feed.setTitle("Sensor Search for " + query);
+        String channelURL = this.conf.getFullOpenSearchPath() + "?" + OpenSearchConstants.QUERY_PARAM + "=" + query
+                + "&" + OpenSearchConstants.FORMAT_PARAM + "=" + getMimeType();
         feed.setLink(channelURL);
         feed.setPublishedDate(new Date());
         feed.setAuthor(this.conf.getFeedAuthor());
         // feed.setContributors(contributors) // TODO add all service contacts
         // feed.setCategories(categories) // TODO user tags for categories
-        feed.setEncoding(this.conf.getCharacterEncoding());
+
         SyndImage image = new SyndImageImpl();
         image.setUrl("http://52north.org/templates/52n/images/52n-logo.gif");
         image.setLink(this.conf.getFullServicePath().toString());
         image.setTitle("52°North Logo");
         image.setDescription("Logo of the provider of Open Sensor Search: 52°North");
         feed.setImage(image);
-        feed.setDescription("These are the sensors for the keywords '" + searchText + "' from Open Sensor Search ("
+        feed.setDescription("These are the sensors for the keywords '" + query + "' from Open Sensor Search ("
                 + this.conf.getFullServicePath().toString() + ").");
 
-        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        List<SyndEntry> entries = new ArrayList<>();
         for (SirSearchResultElement ssre : searchResult) {
             SyndEntry e = createFeedEntry(ssre);
             entries.add(e);
@@ -98,11 +101,6 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
         return feed;
     }
 
-    /**
-     * 
-     * @param ssre
-     * @return
-     */
     protected SyndEntry createFeedEntry(SirSearchResultElement ssre) {
         SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) ssre.getSensorDescription();
 
@@ -114,7 +112,7 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
             // String link = URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
             // this.configurator.getCharacterEncoding());
             String link = Tools.decode(URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
-                                                         this.conf.getCharacterEncoding()));
+                                                         OpenSearchConstants.URL_DECODE_ENCODING));
 
             entry.setLink(link);
         }
@@ -144,45 +142,37 @@ public abstract class AbstractFeedListener implements IOpenSearchListener {
     }
 
     @Override
-    public void createResponse(HttpServletRequest req,
-                               HttpServletResponse resp,
-                               Collection<SirSearchResultElement> searchResult,
-                               PrintWriter writer,
-                               String searchText) throws OwsExceptionReport {
-        resp.setContentType(getMimeType());
+    public Response createResponse(final Collection<SirSearchResultElement> searchResult,
+                                   final MultivaluedMap<String, String> params) throws OwsExceptionReport {
 
-        // TODO create WireFeed, then reuse for Atom AND RSS, see
-        // http://en.wikipedia.org/wiki/RSS#Comparison_with_Atom
-        SyndFeed feed = createFeed(searchResult, searchText);
-        feed.setFeedType(getFeedType());
+        StreamingOutput stream = new StreamingOutput() {
+            @Override
+            public void write(OutputStream os) throws IOException, WebApplicationException {
+                String query = params.getFirst(OpenSearchConstants.QUERY_PARAM);
 
-        outputFeed(writer, feed);
+                OutputStreamWriter writer = new OutputStreamWriter(new BufferedOutputStream(os));
+
+                // TODO create WireFeed, then reuse for Atom AND RSS, see
+                // http://en.wikipedia.org/wiki/RSS#Comparison_with_Atom
+                SyndFeed feed = createFeed(searchResult, query);
+                feed.setFeedType(getFeedType());
+
+                SyndFeedOutput output = new SyndFeedOutput();
+
+                try {
+                    output.output(feed, writer, true);
+                }
+                catch (IllegalArgumentException | FeedException e) {
+                    log.error("Error outputting feed to writer", e);
+                    throw new WebApplicationException(e, Status.INTERNAL_SERVER_ERROR);
+                }
+
+            }
+        };
+
+        return Response.ok(stream).build();
     }
 
     protected abstract String getFeedType();
-
-    /**
-     * @param writer
-     * @param feed
-     * @throws OwsExceptionReport
-     */
-    protected void outputFeed(PrintWriter writer, SyndFeed feed) throws OwsExceptionReport {
-        SyndFeedOutput output = new SyndFeedOutput();
-        try {
-            output.output(feed, writer, true);
-        }
-        catch (IllegalArgumentException e) {
-            log.error("Error outputting feed to writer", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
-        }
-        catch (IOException e) {
-            log.error("Error outputting feed to writer", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
-        }
-        catch (FeedException e) {
-            log.error("Error doing output of feed to writer", e);
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", "Error outputting feed to writer");
-        }
-    }
 
 }

@@ -2,10 +2,8 @@ package org.n52.oss.ui.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -20,6 +18,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.n52.oss.config.Config;
 import org.n52.oss.config.License;
 import org.n52.oss.ui.uploadForm;
+import org.n52.sir.SirConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/script")
 public class ScriptController {
 	public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
-	
+	private static Logger log = LoggerFactory.getLogger(ScriptController.class);
 	@RequestMapping("/index")
 	public String index(ModelMap map) {
 		return "script/index";
@@ -56,8 +57,11 @@ public class ScriptController {
 		// upload the file
 		File dest = new File(s);
 		try {
+			log.info("Chosen license:"+form.getLicense());
+			log.info("Adding  license header");
 			form.getFile().transferTo(dest);
 			List<License> lists = Config.licenses;
+			log.info("found : "+lists.size()+" headers");
 			Iterator<License> iterator = lists.iterator();
 			while(iterator.hasNext()){
 				License l= iterator.next();

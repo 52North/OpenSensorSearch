@@ -2,7 +2,14 @@ package org.n52.oss.ui.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -10,6 +17,8 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.n52.oss.config.Config;
+import org.n52.oss.config.License;
 import org.n52.oss.ui.uploadForm;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +31,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/script")
 public class ScriptController {
-
+	public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
+	
 	@RequestMapping("/index")
 	public String index(ModelMap map) {
 		return "script/index";
@@ -47,10 +57,22 @@ public class ScriptController {
 		File dest = new File(s);
 		try {
 			form.getFile().transferTo(dest);
+			List<License> lists = Config.licenses;
+			Iterator<License> iterator = lists.iterator();
+			while(iterator.hasNext()){
+				License l= iterator.next();
+				if(l.code.equals(form.getLicense()))
+				{
+					addLicenseToHeader(dest, l);
+					break;
+				}
+			}
 			
-			UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			UserDetails details = (UserDetails) SecurityContextHolder
+					.getContext().getAuthentication().getPrincipal();
 			multipartEntity.addPart("file", new FileBody(dest));
-			multipartEntity.addPart("user", new StringBody(details.getUsername()));
+			multipartEntity.addPart("user",
+					new StringBody(details.getUsername()));
 			HttpPost post = new HttpPost(
 					"http://localhost:8080/OpenSensorSearch/script/submit");
 			post.setEntity(multipartEntity);
@@ -60,22 +82,40 @@ public class ScriptController {
 			int responseCode = resp.getStatusLine().getStatusCode();
 			StringBuilder builder = new StringBuilder();
 			String str = null;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-			while((str=reader.readLine())!=null)
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					resp.getEntity().getContent()));
+			while ((str = reader.readLine()) != null)
 				builder.append(str);
-			
-			if (responseCode == 200){
-				map.addAttribute("harvestSuccess",true);
-				map.addAttribute("scriptID",builder.toString());
+
+			if (responseCode == 200) {
+				map.addAttribute("harvestSuccess", true);
+				map.addAttribute("scriptID", builder.toString());
+				map.addAttribute("license",form.getLicense());
 				return "script/status";
-			}else{
-				map.addAttribute("harvestError",true);
+			} else {
+				map.addAttribute("harvestError", true);
 				return "script/status";
 			}
 		} catch (Exception e) {
 			map.addAttribute("errorMSG", e);
 			return "script/status?fail";
 		}
+	}
+	private void addLicenseToHeader(File f,License l) throws IOException{
+		RandomAccessFile random = new RandomAccessFile(f, "rw");
+		random.seek(0); // to the beginning
+		random.write(prepareLicenseStr(l).getBytes());
+		random.close();
+	}
+	private String prepareLicenseStr(License l ){
+		StringBuilder builder=new StringBuilder();
+		builder.append("/*");
+		builder.append("This work is licensed under:");
+		builder.append(l.description);
+		builder.append(" For more details please visit:");
+		builder.append(l.link);
+		builder.append("*/");
+		return builder.toString();
 	}
 
 }

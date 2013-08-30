@@ -23,16 +23,28 @@
 		<p>Please upload your Javascript File</p>
 
 		<form action="${context}/OSSUI/script/upload" method="post"
-			enctype="multipart/form-data" class="form-upload"  name="uploadForm">
+			enctype="multipart/form-data" class="form-upload" name="uploadForm">
 			<label for="file">File</label>
 			<p>
-				<input type="file" name="file"
-					class="btn span6" size="45" />
+				<input type="file" name="file" class="btn span6" size="45" />
 			</p>
-			
-
-			<p><input type="submit" value="Upload It"
-				class="btn btn-primary btn-large" /></p>
+			<p>
+				<input type="submit" value="Upload It"
+					class="btn btn-primary btn-large" />
+			</p>
+			<p>License</p>
+			<label class="radio"> <input type="radio"
+				name="license" id="optionsRadios1" value="pddl" checked>
+				<a href="http://opendatacommons.org/licenses/pddl/">Public Domain for Data/Database</a>
+			</label> <label class="radio"> <input type="radio"
+				name="license" id="optionsRadios2" value="ODC">
+				<a href="http://opendatacommons.org/licenses/by/">Attribution for Data/Databases</a>
+			</label>
+			 <label class="radio"> <input type="radio"
+				name="license" id="optionsRadios2" value="ODBL">
+				<a href="http://opendatacommons.org/licenses/odbl/">Attribution and Share-Alike for Data/Databases</a>
+				
+			</label>
 		</form>
 
 	</div>

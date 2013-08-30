@@ -13,37 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.json;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SerializeSensorDescription {
 
+    private static File f;
     private ObjectMapper mapper;
     private ByteArrayOutputStream baos;
+    private SimpleSensorDescription expected;
+    
+    @BeforeClass
+    public static void prepare() {
+        f = new File(SerializeSensorDescription.class.getResource("/sensordescription.json").getFile());
+    }
 
     @Before
     public void setUp() throws Exception {
         this.mapper = MapperFactory.getMapper();
         this.baos = new ByteArrayOutputStream();
+        this.expected = this.mapper.readValue(f, SimpleSensorDescription.class);
     }
 
     @Test
-    public void test() throws Exception {
-        SensorDescription sd = Util.getSensorDescription();
+    public void mappingMatchesTestFile() throws Exception {
+        SimpleSensorDescription sd = TestObjectGenerator.getSensorDescription();
         this.mapper.writeValue(this.baos, sd);
-        System.out.println(new String(this.baos.toByteArray()));
 
-        System.out.println("");
-        
-        sd.getBoundingBox().setSrid(4326);
-        this.mapper.writeValue(this.baos, sd);
-        System.out.println(new String(this.baos.toByteArray()));
+        try (BufferedReader br = new BufferedReader(new FileReader(f));) {
+            StringBuilder sb = new StringBuilder();
+            String line = "";
+            while ( (line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            JSONAssert.assertEquals(sb.toString(), new String(this.baos.toByteArray()), false);
+        }
+
     }
-
 }

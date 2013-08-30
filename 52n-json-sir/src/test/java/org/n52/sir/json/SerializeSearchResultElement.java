@@ -35,10 +35,12 @@ public class SerializeSearchResultElement {
 
     @Test
     public void test() throws Exception {
-        SearchResultElement resultElement = Util.getSearchResultElement();
+        SearchResultElement resultElement = TestObjectGenerator.getSearchResultElement();
 
         this.mapper.writeValue(this.baos, resultElement);
         System.out.println(new String(this.baos.toByteArray()));
+        
+        // TODO add assertion to test
     }
 
 }

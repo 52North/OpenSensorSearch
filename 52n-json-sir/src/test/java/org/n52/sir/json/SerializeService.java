@@ -40,6 +40,8 @@ public class SerializeService {
         this.mapper.writeValue(this.baos, service);
         
         System.out.println(new String(this.baos.toByteArray()));
+        
+        // TODO add assertion to test
     }
 
 }

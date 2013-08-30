@@ -23,11 +23,11 @@ import java.util.Date;
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class SearchResultElement { // implements JsonSerializableWithType {
+public class SearchResultElement {
 
     private Date lastUpdate;
 
-    private SensorDescription sensorDescription;
+    private SimpleSensorDescription sensorDescription;
 
     private String sensorIdInSir;
 
@@ -124,7 +124,7 @@ public class SearchResultElement { // implements JsonSerializableWithType {
     /**
      * @return the sensorDescription
      */
-    public SensorDescription getSensorDescription() {
+    public SimpleSensorDescription getSensorDescription() {
         return this.sensorDescription;
     }
 
@@ -154,7 +154,7 @@ public class SearchResultElement { // implements JsonSerializableWithType {
      * @param sensorDescription
      *        the sensorDescription to set
      */
-    public void setSensorDescription(SensorDescription sensorDescription) {
+    public void setSensorDescription(SimpleSensorDescription sensorDescription) {
         this.sensorDescription = sensorDescription;
     }
 
@@ -184,20 +184,4 @@ public class SearchResultElement { // implements JsonSerializableWithType {
         return sb.toString();
     }
 
-    // @Override
-    // public void serialize(JsonGenerator arg0, SerializerProvider arg1) throws
-    // IOException,
-    // JsonProcessingException {
-    // // TODO Auto-generated method stub
-    //
-    // }
-    //
-    // @Override
-    // public void serializeWithType(JsonGenerator arg0, SerializerProvider
-    // arg1, TypeSerializer arg2) throws
-    // IOException,
-    // JsonProcessingException {
-    // // TODO Auto-generated method stub
-    //
-    // }
 }

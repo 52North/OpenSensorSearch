@@ -20,7 +20,7 @@ package org.n52.sir.json;
  * @author Daniel Nüst
  * 
  */
-public class SensorDescription {
+public class SimpleSensorDescription {
 
     private BoundingBox boundingBox;
 
@@ -28,11 +28,11 @@ public class SensorDescription {
 
     private String url;
 
-    public SensorDescription() {
+    public SimpleSensorDescription() {
         // empty constructor to allow deserialization
     }
 
-    public SensorDescription(String url, String text, BoundingBox boundingBox) {
+    public SimpleSensorDescription(String url, String text, BoundingBox boundingBox) {
         this.url = url;
         this.text = text;
         this.boundingBox = boundingBox;

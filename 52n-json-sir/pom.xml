@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.n52.sensorweb</groupId>
 	<artifactId>52n-json-sir</artifactId>
-	<version>0.2</version>
+	<version>0.2.1</version>
 	<name>SIR JSON Bindings</name>
-	<description>JavaScript Object Notation (JSON) encoders and decoders for the Sensor Instance Registry (SIR)</description>
+	<description>JavaScript Object Notation (JSON) encoders and decoders for Open Sensor Search (OSS)</description>
 
 	<url>http://52north.org/communities/sensorweb/incubation/discovery/</url>
 	<inceptionYear>2012</inceptionYear>

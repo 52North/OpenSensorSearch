@@ -18,6 +18,7 @@ package org.n52.sir.json;
 import java.io.ByteArrayOutputStream;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,20 +26,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SerializeSearchResult {
 
     private ObjectMapper mapper;
-    private ByteArrayOutputStream baos;
 
     @Before
     public void setUp() throws Exception {
         this.mapper = MapperFactory.getMapper();
-        this.baos = new ByteArrayOutputStream();
     }
 
     @Test
     public void test() throws Exception {
-        SearchResult resultElement = Util.getSearchResult();
+        SearchResult resultElement = TestObjectGenerator.getSearchResult();
 
-        this.mapper.writeValue(this.baos, resultElement);
-        System.out.println(new String(this.baos.toByteArray()));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        this.mapper.writeValue(baos, resultElement);
+        
+        System.out.println(new String(baos.toByteArray()));
+        
+        // TODO add assertion to test
     }
 
 }

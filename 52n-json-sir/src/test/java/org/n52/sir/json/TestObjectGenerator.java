@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class Util {
+public class TestObjectGenerator {
 
-    public static SensorDescription getSensorDescription() {
-        return new SensorDescription("http://domain.tld:port/path/001",
+    public static SimpleSensorDescription getSensorDescription() {
+        return new SimpleSensorDescription("http://domain.tld:port/path/001",
                                      "This text describes the sensor.",
                                      getBoundingBox());
     }
@@ -38,7 +38,7 @@ public class Util {
         references.add(getServiceReference());
         resultElement.setServiceReferences(references);
         resultElement.setLastUpdate(new Date());
-        resultElement.setSensorDescription(Util.getSensorDescription());
+        resultElement.setSensorDescription(TestObjectGenerator.getSensorDescription());
 
         return resultElement;
     }
@@ -50,7 +50,7 @@ public class Util {
         references.add(getServiceReference());
         resultElement.setServiceReferences(references);
         resultElement.setLastUpdate(new Date());
-        resultElement.setSensorDescription(Util.getSensorDescription());
+        resultElement.setSensorDescription(TestObjectGenerator.getSensorDescription());
 
         return resultElement;
     }

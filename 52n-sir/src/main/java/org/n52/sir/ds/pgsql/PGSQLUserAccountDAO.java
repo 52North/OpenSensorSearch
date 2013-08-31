@@ -23,6 +23,7 @@ import java.sql.Statement;
 import java.util.Date;
 
 import org.n52.sir.ds.IUserAccountDAO;
+import org.n52.sir.util.SHA1HashGenerator;
 import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,7 +187,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 	}
 	
 	private String selectUserPassword(String name,String password){
-		String hash = new ShortAlphanumericIdentifierGenerator().generate(password);
+		String hash = new SHA1HashGenerator().generate(password);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT ");
 		builder.append(PGDAOConstants.USER_ID);
@@ -206,7 +207,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 	
 	private String insertAuthToken(String name,String id){
 		String seed = name+(new Date().getTime());
-		String hash = new ShortAlphanumericIdentifierGenerator().generate(seed);
+		String hash = new SHA1HashGenerator().generate(seed);
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO ");
 		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);

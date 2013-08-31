@@ -57,7 +57,6 @@ public class ValidatorResource {
 				return "{status:'valid'}";
 
 			String details = this.validator.getValidationFailuresAsString();
-			
 			return "{status:'invalid',error:" + details + "}";
 
 		} catch (XmlException exception) {

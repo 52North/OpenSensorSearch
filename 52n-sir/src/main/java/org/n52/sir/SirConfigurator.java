@@ -17,8 +17,10 @@
 package org.n52.sir;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -41,6 +43,8 @@ import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
+import org.n52.sir.licenses.License;
+import org.n52.sir.licenses.Licenses;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
@@ -54,6 +58,7 @@ import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.VersionAttribute;
 
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -401,7 +406,15 @@ public class SirConfigurator {
     private ITransformerFactory transformerFactory;
 
     private String ScriptsPath;
+    public List<License> getLicenses() {
+		return licenses;
+	}
 
+	public void setLicenses(List<License> licenses) {
+		this.licenses = licenses;
+	}
+
+	private List<License> licenses;
     /**
      * update sequence
      */
@@ -729,7 +742,7 @@ public class SirConfigurator {
         this.validateResponses = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_RESPONSES));
 
         this.ScriptsPath = this.props.getProperty(SCRIPTS_PATH);
-
+        this.licenses = this.initializeLicenses();
         String resourceName = this.props.getProperty(PROFILE4DISCOVERY);
         URL location = this.getClass().getResource(resourceName);
         if (location == null) {
@@ -810,7 +823,15 @@ public class SirConfigurator {
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
     }
 
-    @SuppressWarnings("unchecked")
+    private List<License> initializeLicenses() {
+    	InputStream licensesStream = SirConfigurator.class.getResourceAsStream("licenses.json");
+    	Gson gson = new Gson();
+		Licenses list = gson.fromJson(new InputStreamReader(licensesStream),Licenses.class);
+		log.info("The list of licenses initialized successfully! {}",list);
+		return list.licenses; 
+    }
+
+	@SuppressWarnings("unchecked")
     private void initializeCatalogFactory(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(CATALOGFACTORY);
 

@@ -1,4 +1,4 @@
-package org.n52.oss.config;
+package org.n52.sir.licenses;
 
 public class License {
 	public String code;

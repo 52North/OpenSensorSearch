@@ -58,6 +58,7 @@ public class ScriptController {
 			multipartEntity.addPart("file", new FileBody(dest));
 			multipartEntity.addPart("user",
 					new StringBody(details.getUsername()));
+			multipartEntity.addPart("licenseCode",new StringBody(form.getLicense()));
 			HttpPost post = new HttpPost(
 					"http://localhost:8080/OpenSensorSearch/script/submit");
 			post.setEntity(multipartEntity);

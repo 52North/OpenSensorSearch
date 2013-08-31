@@ -28,6 +28,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -406,15 +407,15 @@ public class SirConfigurator {
     private ITransformerFactory transformerFactory;
 
     private String ScriptsPath;
-    public List<License> getLicenses() {
+    public LinkedHashMap<String,License> getLicenses() {
 		return licenses;
 	}
 
-	public void setLicenses(List<License> licenses) {
+	public void setLicenses(LinkedHashMap<String,License> licenses) {
 		this.licenses = licenses;
 	}
 
-	private List<License> licenses;
+	private LinkedHashMap<String,License> licenses;
     /**
      * update sequence
      */
@@ -823,12 +824,24 @@ public class SirConfigurator {
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
     }
 
-    private List<License> initializeLicenses() {
-    	InputStream licensesStream = SirConfigurator.class.getResourceAsStream("licenses.json");
+    private LinkedHashMap<String,License> initializeLicenses() {
+        try (InputStream licensesStream = SirConfigurator.class.getResourceAsStream("/prop/licenses.json");) {
+
+    	LinkedHashMap<String, License> licensesMap = new LinkedHashMap<>();
     	Gson gson = new Gson();
 		Licenses list = gson.fromJson(new InputStreamReader(licensesStream),Licenses.class);
+		List<License> licenses = list.licenses;
+		
+		for(int i=0;i<licenses.size();i++){
+			License l = licenses.get(i);
+			licensesMap.put(l.code,l);
+		}
 		log.info("The list of licenses initialized successfully! {}",list);
-		return list.licenses; 
+		return licensesMap; 
+        } catch (IOException e) {
+        	log.error("Cannot load licesnes",e);
+        	return null;
+		}
     }
 
 	@SuppressWarnings("unchecked")

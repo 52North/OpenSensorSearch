@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/** @author Yakoub
+ */
 package org.n52.sir.script;
 
 import java.io.File;
@@ -21,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -39,6 +41,7 @@ import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.harvest.exec.IJSExecute;
+import org.n52.sir.licenses.License;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;
 import org.n52.sir.scheduler.RemoteHarvestJob;
@@ -115,7 +118,7 @@ public class HarvestResource {
     public Response uploadHarvester(@FormDataParam("file")
     InputStream uploadedInputStream, @FormDataParam("file")
     FormDataContentDisposition fileDetail, @FormDataParam("user")
-    String user) {
+    String user,@FormDataParam("licenseCode")String code) {
 
         String fileName = fileDetail.getFileName();
         String type = fileDetail.getType();
@@ -127,9 +130,10 @@ public class HarvestResource {
             dir.mkdir();
 
         File script = new File(pathStr + user + '\\' + fileName);
-
         try (OutputStream writer = new FileOutputStream(script);) {
+        	writer.write(getLicenseForCode(code).getBytes());
             int read = 0;
+            
             byte[] bytes = new byte[1024];
             while ( (read = uploadedInputStream.read(bytes)) != -1)
                 writer.write(bytes, 0, read);
@@ -233,6 +237,26 @@ public class HarvestResource {
             log.error("Error on scheduling", e);
             return Response.status(500).entity(e.getMessage()).build();
         }
+    }
+    private String getLicenseForCode(String code){
+    	StringBuilder builder = new StringBuilder();
+    	LinkedHashMap<String, License> map = SirConfigurator.getInstance().getLicenses();
+    	
+    	License l = map.get(code);
+    	if(l==null)
+    		builder.append("/* This file doesn't support any license */");
+    	else
+    	{
+    		builder.append("/*");
+    		builder.append("This work is licensed under:");
+    		builder.append(l.description);
+    		builder.append(" For more details please visit:");
+    		builder.append(l.link);
+    		builder.append("*/");
+    		builder.append(System.lineSeparator());
+    	}
+    	return builder.toString();
+    	
     }
 
 }

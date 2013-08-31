@@ -62,14 +62,9 @@ public class transformerBindingIT {
 		reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
 		while((s=reader.readLine())!=null)
 			result.append(s);
-		StatusResponse sr = new Gson().fromJson(result.toString(), StatusResponse.class);
+		//TODO yakoub : complete teh checking here
 		
-		assertEquals("valid",sr.status);
 	}
 	
-	public class StatusResponse{
-		public String status;
-		public String error;
-	}
 
 }

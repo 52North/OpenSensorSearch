@@ -2,12 +2,8 @@ package org.n52.oss.ui.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -15,8 +11,6 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.n52.oss.config.Config;
-import org.n52.oss.config.License;
 import org.n52.oss.ui.uploadForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,21 +50,9 @@ public class ScriptController {
 		// upload the file
 		File dest = new File(s);
 		try {
+			System.out.println("Chosen license:"+form.getLicense());
 			log.info("Chosen license:"+form.getLicense());
-			log.info("Adding  license header");
-			form.getFile().transferTo(dest);
-			List<License> lists = Config.licenses;
-			log.info("found : "+lists.size()+" headers");
-			Iterator<License> iterator = lists.iterator();
-			while(iterator.hasNext()){
-				License l= iterator.next();
-				if(l.code.equals(form.getLicense()))
-				{
-					addLicenseToHeader(dest, l);
-					break;
-				}
-			}
-			
+			form.getFile().transferTo(dest);		
 			UserDetails details = (UserDetails) SecurityContextHolder
 					.getContext().getAuthentication().getPrincipal();
 			multipartEntity.addPart("file", new FileBody(dest));
@@ -104,21 +86,21 @@ public class ScriptController {
 			return "script/status?fail";
 		}
 	}
-	private void addLicenseToHeader(File f,License l) throws IOException{
-		RandomAccessFile random = new RandomAccessFile(f, "rw");
-		random.seek(0); // to the beginning
-		random.write(prepareLicenseStr(l).getBytes());
-		random.close();
-	}
-	private String prepareLicenseStr(License l ){
-		StringBuilder builder=new StringBuilder();
-		builder.append("/*");
-		builder.append("This work is licensed under:");
-		builder.append(l.description);
-		builder.append(" For more details please visit:");
-		builder.append(l.link);
-		builder.append("*/");
-		return builder.toString();
-	}
+//	private void addLicenseToHeader(File f,License l) throws IOException{
+//		RandomAccessFile random = new RandomAccessFile(f, "rw");
+//		random.seek(0); // to the beginning
+//		random.write(prepareLicenseStr(l).getBytes());
+//		random.close();
+//	}
+//	private String prepareLicenseStr(License l ){
+//		StringBuilder builder=new StringBuilder();
+//		builder.append("/*");
+//		builder.append("This work is licensed under:");
+//		builder.append(l.description);
+//		builder.append(" For more details please visit:");
+//		builder.append(l.link);
+//		builder.append("*/");
+//		return builder.toString();
+//	}
 
 }

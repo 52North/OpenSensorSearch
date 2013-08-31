@@ -13,6 +13,18 @@
 		$("#upload-pin").addClass("active");
 	});
 </script>
+<script>
+	function validateForm() {
+		var x=document.forms["uploadForm"]["agree"].checked;
+		if(x==true)
+			return true;
+		else{
+			alert("You need to Accept the license first!");
+			return false;
+		}
+		
+	}
+</script>
 <link href="../${context}/styles/bootstrap.css" rel="stylesheet">
 <%@ include file="navBar.jsp"%>
 <!-- /container -->
@@ -23,7 +35,7 @@
 		<p>Please upload your Javascript File</p>
 
 		<form action="${context}/OSSUI/script/upload" method="post"
-			enctype="multipart/form-data" class="form-upload" name="uploadForm">
+			enctype="multipart/form-data" class="form-upload" name="uploadForm" onsubmit="return validateForm()">
 			<label for="file">File</label>
 			<p>
 				<input type="file" name="file" class="btn span6" size="45" />
@@ -33,18 +45,23 @@
 					class="btn btn-primary btn-large" />
 			</p>
 			<p>License</p>
-			<label class="radio"> <input type="radio"
-				name="license" id="optionsRadios1" value="pddl" checked>
-				<a href="http://opendatacommons.org/licenses/pddl/">Public Domain for Data/Database</a>
-			</label> <label class="radio"> <input type="radio"
-				name="license" id="optionsRadios2" value="ODC">
-				<a href="http://opendatacommons.org/licenses/by/">Attribution for Data/Databases</a>
+			<label class="radio"> <input type="radio" name="license"
+				id="optionsRadios1" value="pddl" checked> <a
+				href="http://opendatacommons.org/licenses/pddl/">Public Domain
+					for Data/Database</a>
+			</label> <label class="radio"> <input type="radio" name="license"
+				id="optionsRadios2" value="ODC"> <a
+				href="http://opendatacommons.org/licenses/by/">Attribution for
+					Data/Databases</a>
+			</label> <label class="radio"> <input type="radio" name="license"
+				id="optionsRadios2" value="ODBL"> <a
+				href="http://opendatacommons.org/licenses/odbl/">Attribution and
+					Share-Alike for Data/Databases</a>
+
 			</label>
-			 <label class="radio"> <input type="radio"
-				name="license" id="optionsRadios2" value="ODBL">
-				<a href="http://opendatacommons.org/licenses/odbl/">Attribution and Share-Alike for Data/Databases</a>
-				
-			</label>
+			
+			<p><br><input type="checkbox" name="agree" value="agree">By clicking 'Upload It' I agree to put my script under the Apache License<br>
+			
 		</form>
 
 	</div>

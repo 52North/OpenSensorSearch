@@ -54,7 +54,7 @@ public class UserAccessResource {
 			if (token == null)
 				return Response.ok("{status:fail}").build();
 			else
-				return Response.ok("{auth_token:" + token + "}").build();
+				return Response.ok("{auth_token:'" + token + "'}").build();
 		} catch (Exception e) {
 			return Response.status(500).entity(e).build();
 		}

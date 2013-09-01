@@ -167,7 +167,7 @@ public class HarvestResource {
     	IInsertHarvestScriptDAO scriptDao = this.config.getFactory().insertHarvestScriptDAO();
     	String userid = userDao.getUserIDForToken(authToken);
     	String scriptowner = scriptDao.getScriptUserId(scriptId);
-    	if(!userid.equals(scriptId))
+    	if(!userid.equals(scriptowner))
     		return Response.status(401).entity("Forbidden - You cannot access the following script").build();
         Date d;
         if (when == 0)

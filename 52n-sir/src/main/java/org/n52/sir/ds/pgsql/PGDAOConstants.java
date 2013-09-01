@@ -319,7 +319,7 @@ public class PGDAOConstants {
 		remoteHarvestSensor = props.getProperty("remoteHarvestSensor");
 		USER_ACCOUNT_TABLE=props.getProperty("oss.db.USER_ACCOUNT_TABLE");
 		PASSWORD_HASH=props.getProperty("oss.db.PASSWORD_HASH");
-		USER_NAME=props.getProperty("oss.db.USERNAME");
+		USER_NAME=props.getProperty("oss.db.USER_NAME");
 		USER_ID=props.getProperty("oss.db.USER_ID");
 		AUTH_TOKEN_TABLE=props.getProperty("oss.db.AUTH_TOKEN_TABLE");
 		USER_AUTH_TOKEN=props.getProperty("oss.db.USER_AUTH_TOKEN");

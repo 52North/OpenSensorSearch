@@ -24,7 +24,6 @@ import java.util.Date;
 
 import org.n52.sir.ds.IUserAccountDAO;
 import org.n52.sir.util.SHA1HashGenerator;
-import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,6 +125,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 			stmt = con.createStatement();
 			String searchQuery = selectUserPassword(name, password);
 			log.info(searchQuery);
+			System.out.println(searchQuery);
 			ResultSet rs = stmt.executeQuery(searchQuery);
 			String id = null;
 			if (rs.next()) {
@@ -136,7 +136,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 			stmt.execute(insertAuthToken(name, id));
 			rs = stmt.executeQuery(authTokenForUser(id));
 			if (rs.next()) {
-				return rs.getString(PGDAOConstants.AUTH_TOKEN);
+				return rs.getString(PGDAOConstants.USER_AUTH_TOKEN);
 			} else
 				return null;
 		} catch (Exception e) {
@@ -199,7 +199,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 	private String authTokenForUser(String id) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT  ");
-		builder.append(PGDAOConstants.AUTH_TOKEN);
+		builder.append(PGDAOConstants.USER_AUTH_TOKEN);
 		builder.append(" FROM ");
 		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
 		builder.append(" WHERE ");
@@ -216,7 +216,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		builder.append(" FROM ");
 		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
 		builder.append(" WHERE ");
-		builder.append(PGDAOConstants.AUTH_TOKEN);
+		builder.append(PGDAOConstants.USER_AUTH_TOKEN);
 		builder.append(" = ");
 		builder.append(authToken);
 		return builder.toString();
@@ -232,6 +232,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 			stmt = con.createStatement();
 			String searchQuery = UserIDForAuthToken(token);
 			log.info(searchQuery);
+			System.out.println(searchQuery);
 			ResultSet rs = stmt.executeQuery(searchQuery);
 			String id = null;
 			if (rs.next()) {

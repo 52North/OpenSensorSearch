@@ -21,8 +21,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.n52.sir.ds.IInsertHarvestScriptDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +46,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 	}
 
 	@Override
-	public String insertScript(String path, String username, int version) {
+	public String insertScript(String path, String username, int version,int userid) {
 		String insert;
 		Connection con = null;
 		Statement stmt = null;
@@ -56,8 +54,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		try {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
-			String insertQuery = insertScriptString(path, username, version);
-			System.out.println(insertQuery);
+			String insertQuery = insertScriptString(path, username, version,userid);
 			log.info(insertQuery);
 			stmt.execute(insertQuery);
 			String id = null;
@@ -96,7 +93,7 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		}
 	}
 	
-	private String insertScriptString(String path,String username,int version){
+	private String insertScriptString(String path,String username,int version,int userid){
 		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO ");
 		query.append(PGDAOConstants.harvestScript);
@@ -106,6 +103,8 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		query.append(PGDAOConstants.PATH_URL);
 		query.append(",");
 		query.append(PGDAOConstants.SCRIPT_VERSION);
+		query.append(",");
+		query.append(PGDAOConstants.USER_ID);
 		query.append(") values(");
 		query.append("'");
 		query.append(username);
@@ -118,9 +117,10 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		query.append("'");
 		query.append(version);
 		query.append("'");
+		query.append(",");
+		query.append(userid);
 		query.append(");");
 		log.info(query.toString());
-		System.out.println(query.toString());
 		return query.toString();
 	}
 	private String searchByPath(String path){
@@ -149,15 +149,52 @@ public class PGSQLInsertHarvestScriptDAO implements IInsertHarvestScriptDAO {
 		builder.append(PGDAOConstants.SCRIPTID);
 		builder.append("=");
 		builder.append(Id);
-
-		System.out.println(builder.toString());
 		return builder.toString();
 		
+	}
+	
+	private String userIdForScript(String id){
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT ");
+		builder.append(PGDAOConstants.USER_ID);
+		builder.append (" FROM ");
+		builder.append(PGDAOConstants.harvestScript);
+		builder.append(" WHERE ");
+		builder.append(PGDAOConstants.SCRIPTID);
+		builder.append("=");
+		builder.append(id);
+
+		return builder.toString();
+
 	}
 
 	@Override
 	public String getScriptPath(String identifier) {
 		return getPathById(identifier);
+	}
+
+	@Override
+	public String getScriptUserId(int scriptId) {
+		Connection con = null;
+		Statement stmt = null;
+		
+		try {
+			con = this.cpool.getConnection();
+			stmt = con.createStatement();
+			String query = userIdForScript(scriptId+"");
+			log.info(query);
+			stmt.execute(query);
+			String id = null;
+			ResultSet rs = stmt.executeQuery(query);
+			if(rs.next()){
+				id = rs.getString(PGDAOConstants.USER_ID);
+			}
+			return id;
+		} catch (Exception e) {
+			log.error("Cannot insert harvest Script",e);
+			return null;
+		}
+
 	}
 
 }

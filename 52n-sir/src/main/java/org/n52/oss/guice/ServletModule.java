@@ -17,6 +17,7 @@
 package org.n52.oss.guice;
 
 import org.n52.oss.api.TransformationResource;
+import org.n52.oss.api.UserAccessResource;
 import org.n52.oss.api.ValidatorResource;
 import org.n52.oss.opensearch.OpenSearch;
 import org.n52.sir.AutoCompleteSearch;
@@ -62,6 +63,7 @@ public class ServletModule extends JerseyServletModule {
         bind(SIR.class);
         bind(TransformationResource.class);
         bind(ValidatorResource.class);
+        bind(UserAccessResource.class);
     //    bind(ValidatorResource.class);
      //   filter("*").through(DebugFilter.class);
         serve("/*").with(GuiceContainer.class);

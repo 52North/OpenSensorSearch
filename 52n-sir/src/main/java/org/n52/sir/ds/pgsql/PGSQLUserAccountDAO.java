@@ -39,12 +39,12 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 	 * Connection pool for creating connections to the DB
 	 */
 	private PGConnectionPool cpool;
-	
-	public PGSQLUserAccountDAO(){
-		
+
+	public PGSQLUserAccountDAO() {
+
 	}
-	
-	public PGSQLUserAccountDAO(PGConnectionPool cpool){
+
+	public PGSQLUserAccountDAO(PGConnectionPool cpool) {
 		this.cpool = cpool;
 	}
 
@@ -52,7 +52,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		String insert;
 		Connection con = null;
 		Statement stmt = null;
-		
+
 		try {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
@@ -62,41 +62,17 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 			stmt.execute(insertQuery);
 			String id = null;
 			ResultSet rs = stmt.executeQuery(searchByPath(path));
-			if(rs.next()){
+			if (rs.next()) {
 				id = rs.getString(PGDAOConstants.SCRIPTID);
 			}
 			return id;
 		} catch (Exception e) {
-			log.error("Cannot insert harvest Script",e);
+			log.error("Cannot insert harvest Script", e);
 			return null;
 		}
 	}
-	
-	private String getPathById(String id) {
-		String query;
-		Connection con = null;
-		Statement stmt = null;
-		
-		try {
-			con = this.cpool.getConnection();
-			stmt = con.createStatement();
-			String searchQuery = searchPathById(id);
-			log.info(searchQuery);
-			String path = null;
-			ResultSet rs = stmt.executeQuery(searchQuery);
-			String user = null;
-			if(rs.next()){
-				path = rs.getString(PGDAOConstants.PATH_URL);
-				user = rs.getString(PGDAOConstants.SCRIPT_OWNER_USERNAME);
-			}
-			return user+"/"+path;
-		} catch (Exception e) {
-			log.error("Cannot search for harvest Script",e);
-			return null;
-		}
-	}
-	
-	private String insertScriptString(String path,String username,int version){
+
+	private String insertScriptString(String path, String username, int version) {
 		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO ");
 		query.append(PGDAOConstants.harvestScript);
@@ -123,7 +99,8 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		System.out.println(query.toString());
 		return query.toString();
 	}
-	private String searchByPath(String path){
+
+	private String searchByPath(String path) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT ");
 		builder.append(PGDAOConstants.SCRIPTID);
@@ -137,32 +114,13 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		builder.append("'");
 		return builder.toString();
 	}
-	private String searchPathById(String Id){
-		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT ");
-		builder.append(PGDAOConstants.PATH_URL);
-		builder.append(",");
-		builder.append(PGDAOConstants.SCRIPT_OWNER_USERNAME);
-		builder.append (" FROM ");
-		builder.append(PGDAOConstants.harvestScript);
-		builder.append(" WHERE ");
-		builder.append(PGDAOConstants.SCRIPTID);
-		builder.append("=");
-		builder.append(Id);
-
-		System.out.println(builder.toString());
-		return builder.toString();
-		
-	}
-
 
 	@Override
 	public String authenticateUser(String name, String password) {
 
-		String insert;
 		Connection con = null;
 		Statement stmt = null;
-		
+
 		try {
 			con = this.cpool.getConnection();
 			stmt = con.createStatement();
@@ -170,28 +128,30 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 			log.info(searchQuery);
 			ResultSet rs = stmt.executeQuery(searchQuery);
 			String id = null;
-			if(rs.next()){
+			if (rs.next()) {
 				id = rs.getObject(PGDAOConstants.USER_ID).toString();
-			}else return null;
+			} else
+				return null;
 			stmt.execute(deleteUserWithID(id));
 			stmt.execute(insertAuthToken(name, id));
 			rs = stmt.executeQuery(authTokenForUser(id));
-			if(rs.next()){
+			if (rs.next()) {
 				return rs.getString(PGDAOConstants.AUTH_TOKEN);
-			}else return null;
+			} else
+				return null;
 		} catch (Exception e) {
-			log.error("Cannot insert harvest Script",e);
+			log.error("Cannot insert harvest Script", e);
 			return null;
 		}
-	
+
 	}
-	
-	private String selectUserPassword(String name,String password){
+
+	private String selectUserPassword(String name, String password) {
 		String hash = new SHA1HashGenerator().generate(password);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT ");
 		builder.append(PGDAOConstants.USER_ID);
-		builder.append (" FROM ");
+		builder.append(" FROM ");
 		builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
 		builder.append(" WHERE ");
 		builder.append(PGDAOConstants.USER_NAME);
@@ -204,9 +164,9 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		builder.append("'");
 		return builder.toString();
 	}
-	
-	private String insertAuthToken(String name,String id){
-		String seed = name+(new Date().getTime());
+
+	private String insertAuthToken(String name, String id) {
+		String seed = name + (new Date().getTime());
 		String hash = new SHA1HashGenerator().generate(seed);
 		StringBuilder builder = new StringBuilder();
 		builder.append("INSERT INTO ");
@@ -224,8 +184,8 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		builder.append(");");
 		return builder.toString();
 	}
-	
-	private String deleteUserWithID(String id){
+
+	private String deleteUserWithID(String id) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("DELETE FROM ");
 		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
@@ -235,18 +195,54 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 		builder.append(id);
 		return builder.toString();
 	}
-	
-	private String authTokenForUser(String id){
+
+	private String authTokenForUser(String id) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT  ");
 		builder.append(PGDAOConstants.AUTH_TOKEN);
-		builder.append(" FROM " );
+		builder.append(" FROM ");
 		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
 		builder.append(" WHERE ");
 		builder.append(PGDAOConstants.USER_ID);
 		builder.append(" = ");
 		builder.append(id);
 		return builder.toString();
+	}
+
+	private String UserIDForAuthToken(String authToken) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SELECT  ");
+		builder.append(PGDAOConstants.USER_ID);
+		builder.append(" FROM ");
+		builder.append(PGDAOConstants.AUTH_TOKEN_TABLE);
+		builder.append(" WHERE ");
+		builder.append(PGDAOConstants.AUTH_TOKEN);
+		builder.append(" = ");
+		builder.append(authToken);
+		return builder.toString();
+	}
+
+	@Override
+	public String getUserIDForToken(String token) {
+		Connection con = null;
+		Statement stmt = null;
+
+		try {
+			con = this.cpool.getConnection();
+			stmt = con.createStatement();
+			String searchQuery = UserIDForAuthToken(token);
+			log.info(searchQuery);
+			ResultSet rs = stmt.executeQuery(searchQuery);
+			String id = null;
+			if (rs.next()) {
+				id = rs.getObject(PGDAOConstants.USER_ID).toString();
+			} else
+				return null;
+			return id;
+			} catch (Exception e) {
+			log.error("Cannot getUserIf", e);
+			return null;
+		}
 	}
 
 }

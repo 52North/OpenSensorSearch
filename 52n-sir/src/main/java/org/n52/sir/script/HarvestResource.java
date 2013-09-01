@@ -38,8 +38,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.ds.IInsertHarvestScriptDAO;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.IUserAccountDAO;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.licenses.License;
 import org.n52.sir.scheduler.HarvestJob;
@@ -118,8 +120,9 @@ public class HarvestResource {
     public Response uploadHarvester(@FormDataParam("file")
     InputStream uploadedInputStream, @FormDataParam("file")
     FormDataContentDisposition fileDetail, @FormDataParam("user")
-    String user,@FormDataParam("licenseCode")String code) {
-
+    String user,@FormDataParam("auth_token")String userToken,@FormDataParam("licenseCode")String code) {
+    	IUserAccountDAO userDao = this.config.getFactory().userAccountDAO();
+    	int userid = Integer.parseInt(userDao.getUserIDForToken(userToken));
         String fileName = fileDetail.getFileName();
         String type = fileDetail.getType();
 
@@ -139,7 +142,7 @@ public class HarvestResource {
                 writer.write(bytes, 0, read);
             writer.flush();
             writer.close();
-            String id = this.config.getFactory().insertHarvestScriptDAO().insertScript(fileName, user, 1);
+            String id = this.config.getFactory().insertHarvestScriptDAO().insertScript(fileName, user, 1,userid);
             log.info("Storing for script at {}, id: {}" + script.getAbsolutePath(), id);
             log.info("Executing script");
             String result = this.jsEngine.execute(script);
@@ -158,25 +161,31 @@ public class HarvestResource {
     @GET
     @Path("/schedule")
     public Response scheduleHarvest(@QueryParam("id")
-    int sensorId, @QueryParam("date")
-    long when) {
+    int scriptId, @QueryParam("date")
+    long when,@QueryParam("authToken")String authToken) {
+    	IUserAccountDAO userDao = this.config.getFactory().userAccountDAO();
+    	IInsertHarvestScriptDAO scriptDao = this.config.getFactory().insertHarvestScriptDAO();
+    	String userid = userDao.getUserIDForToken(authToken);
+    	String scriptowner = scriptDao.getScriptUserId(scriptId);
+    	if(!userid.equals(scriptId))
+    		return Response.status(401).entity("Forbidden - You cannot access the following script").build();
         Date d;
         if (when == 0)
             d = new Date();
         else
             d = new Date(when);
-        JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J" + sensorId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,
-                                                                                                          sensorId + "").build();
+        JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J" + scriptId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,
+        		scriptId + "").build();
 
         try {
-            Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + sensorId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();
+            Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + scriptId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();
             Scheduler sch = this.schedulerFactory.getScheduler();
             sch.scheduleJob(detail, tr);
             sch.start();
-            log.info("Scheduled successfully :_J" + sensorId);
+            log.info("Scheduled successfully :_J" + scriptId);
 
             // return "_J" + sensorId;
-            return Response.status(200).entity("_J" + sensorId).build();
+            return Response.status(200).entity("_J" + scriptId).build();
         }
         catch (Exception e) {
             log.error("Error on scheduling", e);

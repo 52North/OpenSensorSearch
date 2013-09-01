@@ -13,7 +13,7 @@
 			authentication-failure-url="/login?fail" />
 	</http>
  
-	<authentication-manager>
+	<authentication-manager erase-credentials="false">
 	  <authentication-provider ref="userAuthService">
 	  </authentication-provider>
 	</authentication-manager>

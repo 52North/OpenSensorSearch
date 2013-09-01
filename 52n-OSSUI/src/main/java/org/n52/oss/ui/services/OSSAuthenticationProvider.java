@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,13 +35,14 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 		String username = arg0.getName();
 		String password = arg0.getCredentials().toString();
 
-		if (authenticateOSS(username, password) != null) {
+		String token = authenticateOSS(username, password);
+		if (token != null) {
 			final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
 			grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-			final UserDetails principal = new User(username, password,
+			final UserDetails principal = new User(username, token,
 					grantedAuths);
 			final Authentication auth = new UsernamePasswordAuthenticationToken(
-					principal, password, grantedAuths);
+					principal, token, grantedAuths);
 			return auth;
 
 		} else

@@ -75,7 +75,7 @@ public class TransformerIT {
             FileReader inputReader = new FileReader(dataDir + inputFile);
             SensorMLDocument smlDoc = SensorMLDocument.Factory.parse(inputReader);
 
-            transformer.setValidating(false);
+            transformer.setValidatingInputAndOutput(false);
 
             Result r = transformer.transform(dataDir + inputFile);
             StreamResult sr = (StreamResult) r;

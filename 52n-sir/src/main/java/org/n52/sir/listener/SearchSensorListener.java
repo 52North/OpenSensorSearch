@@ -111,7 +111,7 @@ public class SearchSensorListener implements ISirRequestListener {
                         }
                     }
                     catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e.getDocument());
+                        return new ExceptionResponse(e);
                     }
                 }
                 else {
@@ -126,7 +126,7 @@ public class SearchSensorListener implements ISirRequestListener {
                         }
                     }
                     catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e.getDocument());
+                        return new ExceptionResponse(e);
                     }
                 }
             }
@@ -164,7 +164,7 @@ public class SearchSensorListener implements ISirRequestListener {
                 Collections.addAll(searchResElements, searchResElementsSir.toArray(new SirSearchResultElement[] {}));
             }
             catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e.getDocument());
+                return new ExceptionResponse(e);
             }
         }
 

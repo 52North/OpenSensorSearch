@@ -18,6 +18,8 @@ package org.n52.sir.listener;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalogStatusHandler;
+import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
+import org.n52.sir.catalogconnection.CatalogConnectionSchedulerFactory;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDisconnectFromCatalogDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -26,8 +28,6 @@ import org.n52.sir.request.SirDisconnectFromCatalogRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirDisconnectFromCatalogResponse;
-import org.n52.sir.util.jobs.IJobScheduler;
-import org.n52.sir.util.jobs.IJobSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,8 +74,8 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirDisconnectFromCatalogRequest disconFromCatReq = (SirDisconnectFromCatalogRequest) request;
         SirDisconnectFromCatalogResponse response = new SirDisconnectFromCatalogResponse();
-        IJobSchedulerFactory schedulerFact = SirConfigurator.getInstance().getJobSchedulerFactory();
-        IJobScheduler scheduler = schedulerFact.getJobScheduler();
+        CatalogConnectionSchedulerFactory schedulerFact = SirConfigurator.getInstance().getJobSchedulerFactory();
+        CatalogConnectionScheduler scheduler = schedulerFact.getScheduler();
 
         String connectionID;
         try {
@@ -102,7 +102,7 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
             return response;
         }
         catch (OwsExceptionReport e) {
-            return new ExceptionResponse(e.getDocument());
+            return new ExceptionResponse(e);
         }
     }
 

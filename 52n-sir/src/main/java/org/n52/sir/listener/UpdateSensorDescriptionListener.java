@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -86,7 +88,7 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
         SirUpdateSensorDescriptionRequest sirRequest = (SirUpdateSensorDescriptionRequest) request;
         SirUpdateSensorDescriptionResponse response = new SirUpdateSensorDescriptionResponse();
 
-        ArrayList<String> updatedSensors = new ArrayList<String>();
+        ArrayList<String> updatedSensors = new ArrayList<>();
 
         try {
             for (SirDescriptionToBeUpdated descrToBeUpdated : sirRequest.getDescriptionToBeUpdated()) {
@@ -101,8 +103,8 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
                 updateSensor(response, updatedSensors, sensorIdent, sensor);
             }
         }
-        catch (OwsExceptionReport e) {
-            return new ExceptionResponse(e.getDocument());
+        catch (OwsExceptionReport | IOException e) {
+            return new ExceptionResponse(e);
         }
 
         response.setUpdatedSensors(updatedSensors);
@@ -118,11 +120,12 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
      * @param sensor
      * @return
      * @throws OwsExceptionReport
+     * @throws IOException
      */
     private void updateSensor(SirUpdateSensorDescriptionResponse response,
                               ArrayList<String> updatedSensors,
                               SirSensorIdentification sensorIdent,
-                              SirSensor sensor) throws OwsExceptionReport {
+                              SirSensor sensor) throws OwsExceptionReport, IOException {
         // check SensorML for conformity with profile
         IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
         boolean isValid = Boolean.valueOf(profileValidator.validate(sensor.getSensorMLDocument())).booleanValue();

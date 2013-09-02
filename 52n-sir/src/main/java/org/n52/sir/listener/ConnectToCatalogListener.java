@@ -22,6 +22,8 @@ import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
+import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
+import org.n52.sir.catalogconnection.CatalogConnectionSchedulerFactory;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -30,8 +32,6 @@ import org.n52.sir.request.SirConnectToCatalogRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirConnectToCatalogResponse;
-import org.n52.sir.util.jobs.IJobScheduler;
-import org.n52.sir.util.jobs.IJobSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,8 +86,8 @@ public class ConnectToCatalogListener implements ISirRequestListener {
         int pushInterval = conToCatReq.getPushInterval();
         URL url = conToCatReq.getCswUrl();
 
-        IJobSchedulerFactory schedulerFact = SirConfigurator.getInstance().getJobSchedulerFactory();
-        IJobScheduler scheduler = schedulerFact.getJobScheduler();
+        CatalogConnectionSchedulerFactory schedulerFact = SirConfigurator.getInstance().getJobSchedulerFactory();
+        CatalogConnectionScheduler scheduler = schedulerFact.getScheduler();
 
         try {
             ICatalogFactory catFact = SirConfigurator.getInstance().getCatalogFactory(url);

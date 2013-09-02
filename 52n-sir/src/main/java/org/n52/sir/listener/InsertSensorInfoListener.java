@@ -15,6 +15,7 @@
  */
 package org.n52.sir.listener;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -97,10 +98,11 @@ public class InsertSensorInfoListener implements ISirRequestListener {
      * @param sensor
      * @return
      * @throws OwsExceptionReport
+     * @throws IOException 
      */
     private void insertSensor(SirInsertSensorInfoResponse response,
                               Collection<SirServiceReference> serviceRefs,
-                              SirSensor sensor) throws OwsExceptionReport {
+                              SirSensor sensor) throws OwsExceptionReport, IOException {
     	log.info("InsertSensorCalled");
         if (sensor.getSensorMLDocument() != null) {
             IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
@@ -203,8 +205,8 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                 }
             }
         }
-        catch (OwsExceptionReport e) {
-            return new ExceptionResponse(e.getDocument());
+        catch (OwsExceptionReport | IOException e) {
+            return new ExceptionResponse(e);
         }
 
         return response;

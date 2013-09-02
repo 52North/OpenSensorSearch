@@ -86,7 +86,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirGetSensorStatusRequest getSensStatReq = (SirGetSensorStatusRequest) request;
         SirGetSensorStatusResponse response = new SirGetSensorStatusResponse();
-        ArrayList<SirStatusDescription> statDescs = new ArrayList<SirStatusDescription>();
+        ArrayList<SirStatusDescription> statDescs = new ArrayList<>();
 
         if (getSensStatReq.getSensIdent() != null) {
             // search by sensorIdentification
@@ -99,7 +99,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
                                                                                                                     getSensStatReq.getPropertyFilter());
                     }
                     catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e.getDocument());
+                        return new ExceptionResponse(e);
                     }
                 }
                 else {
@@ -110,7 +110,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
                                                                                                                               getSensStatReq.getPropertyFilter());
                     }
                     catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e.getDocument());
+                        return new ExceptionResponse(e);
                     }
                 }
             }
@@ -136,7 +136,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
                                                                                                                   getSensStatReq.getPropertyFilter());
             }
             catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e.getDocument());
+                return new ExceptionResponse(e);
             }
         }
         response.setStatusDescs(statDescs);

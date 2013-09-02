@@ -139,7 +139,7 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
         SirDeleteSensorInfoRequest sirRequest = (SirDeleteSensorInfoRequest) request;
         SirDeleteSensorInfoResponse response = new SirDeleteSensorInfoResponse();
 
-        ArrayList<String> deletedSensors = new ArrayList<String>();
+        ArrayList<String> deletedSensors = new ArrayList<>();
 
         try {
             for (SirInfoToBeDeleted intoToBeDeleted : sirRequest.getInfoToBeDeleted()) {
@@ -160,7 +160,7 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
             }
         }
         catch (OwsExceptionReport e) {
-            return new ExceptionResponse(e.getDocument());
+            return new ExceptionResponse(e);
         }
 
         response.setDeletedSensors(deletedSensors);

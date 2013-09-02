@@ -145,7 +145,7 @@ public class CswCatalog implements ICatalog {
     }
 
     @Override
-    public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport {
+    public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport, IOException {
         IProfileValidator validator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
 
         boolean b = Boolean.valueOf(validator.validate(doc)).booleanValue();
@@ -760,7 +760,7 @@ public class CswCatalog implements ICatalog {
             try {
                 isConform = acceptsDocument(copy);
             }
-            catch (OwsExceptionReport e) {
+            catch (OwsExceptionReport | IOException e) {
                 log.error("Could not check if catalog accepts the given document!", e);
                 continue;
             }

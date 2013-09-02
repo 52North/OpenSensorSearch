@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -49,62 +51,20 @@ public interface ITransformer {
 
     public static final RegistryPackageDocument TRANSFORMATION_ERROR_OBJECT = RegistryPackageDocument.Factory.newInstance();
 
-    /**
-     * 
-     * @return If the transformer perfoms validation of incoming and outgoing documents.
-     */
-    public abstract boolean isValidating();
+    public abstract boolean isValidatingInputAndOutput();
 
-    /**
-     * 
-     * @param Set
-     *        if the transformer perfoms a validation before and after transformation.
-     */
-    public abstract void setValidating(boolean b);
+    public abstract void setValidatingInputAndOutput(boolean b);
 
-    /**
-     * 
-     * @param sourceDoc
-     * @return
-     * @throws XmlException
-     * @throws TransformerException
-     */
-    public abstract XmlObject transform(SensorMLDocument smlDoc) throws XmlException, TransformerException;
+    public abstract XmlObject transform(SensorMLDocument smlDoc) throws XmlException, TransformerException, IOException;
 
-    /**
-     * 
-     * @param sensor
-     * @return
-     * @throws TransformerException
-     * @throws XmlException
-     */
-    public abstract XmlObject transform(SirSensorDescription sensor) throws XmlException, TransformerException;
+    public abstract XmlObject transform(SirSensorDescription sensor) throws XmlException,
+            TransformerException,
+            IOException;
 
-    /**
-     * 
-     * @param input
-     * @return
-     * @throws TransformerException
-     * @throws FileNotFoundException
-     */
     public abstract Result transform(Source input) throws TransformerException, FileNotFoundException;
 
-    /**
-     * 
-     * @param file
-     * @return
-     * @throws FileNotFoundException
-     * @throws TransformerException
-     */
     public abstract Result transform(String file) throws FileNotFoundException, TransformerException;
 
-    /**
-     * 
-     * @param copy
-     * @return
-     * @throws TransformerException
-     * @throws XmlException
-     */
-    public abstract XmlObject transform(SystemType copy) throws XmlException, TransformerException;
+    public abstract XmlObject transform(SystemType copy) throws XmlException, TransformerException, IOException;
 
 }

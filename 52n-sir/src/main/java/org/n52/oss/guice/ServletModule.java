@@ -70,7 +70,7 @@ public class ServletModule extends JerseyServletModule {
         Map<String, String> params = new HashMap<String, String>(); 
         params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF"); 
         
-        serve("/*").with(GuiceContainer.class,params);
+        filter("/*").through(GuiceContainer.class,params);
         
         log.info("configured {} with context {}", this, getServletContext());
     }

@@ -160,4 +160,5 @@ public class SIR {
     public Response index(){
     	return Response.ok().entity(new Viewable("/index")).build();
     }
+    
 }

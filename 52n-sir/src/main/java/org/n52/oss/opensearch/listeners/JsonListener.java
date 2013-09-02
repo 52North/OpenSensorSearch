@@ -36,9 +36,9 @@ import org.n52.sir.json.BoundingBox;
 import org.n52.sir.json.MapperFactory;
 import org.n52.sir.json.SearchResult;
 import org.n52.sir.json.SearchResultElement;
-import org.n52.sir.json.SensorDescription;
 import org.n52.sir.json.Service;
 import org.n52.sir.json.ServiceReference;
+import org.n52.sir.json.SimpleSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +48,7 @@ import com.google.inject.Inject;
 
 public class JsonListener implements OpenSearchListener {
 
-    private static final Logger log = LoggerFactory.getLogger(JsonListener.class);
+    private static Logger log = LoggerFactory.getLogger(JsonListener.class);
 
     public static final String MIME_TYPE = MediaType.APPLICATION_JSON;
 
@@ -85,7 +85,7 @@ public class JsonListener implements OpenSearchListener {
                                                searchText,
                                                responseURL,
                                                responseDescription,
-                                               "52°North",
+                                               this.conf.getResponseAuthor(),
                                                new Date());
 
         for (SirSearchResultElement sirSearchResultElement : searchResult) {
@@ -142,11 +142,9 @@ public class JsonListener implements OpenSearchListener {
             SirBoundingBox b = d.getBoundingBox();
             BoundingBox bbox = new BoundingBox(b.getEast(), b.getSouth(), b.getWest(), b.getNorth());
             bbox.setSrid(b.getSrid());
-            SensorDescription sd = new SensorDescription(d.getSensorDescriptionURL(),
-                                                         Tools.extractDescriptionText(d),
-                                                         bbox);
+            String text = Tools.extractDescriptionText(d);
+            SimpleSensorDescription sd = new SimpleSensorDescription(d.getSensorDescriptionURL(), text, bbox);
             sre.setSensorDescription(sd);
-
         }
 
         return sre;

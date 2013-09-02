@@ -162,7 +162,6 @@ public class OpenSearch {
         }
     }
 
-    // TODO configure actual mime types
     // TODO get parameters using @QueryParam and write own param classes for convenience, see
     // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
     @GET
@@ -198,8 +197,9 @@ public class OpenSearch {
                 Collection<SirSearchResultElement> searchResult = sssr.getSearchResultElements();
 
                 OpenSearchListener l = this.listeners.get(responseFormat);
-
-                return l.createResponse(searchResult, params);
+                Response r = l.createResponse(searchResult, params);
+                
+                return Response.ok(r.getEntity(), responseFormat).build();
             }
             else if (response instanceof ExceptionResponse) {
                 log.error("Search returned exception response: {}", response);

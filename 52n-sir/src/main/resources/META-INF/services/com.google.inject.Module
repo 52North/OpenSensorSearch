@@ -4,7 +4,7 @@ org.n52.oss.config.ConfigModule
 org.n52.sir.SirListenerPluginModule
 org.n52.sir.SirModule
 org.n52.oss.guice.ServletModule
-org.n52.oss.opensearch.OpenSearchModule
+org.n52.oss.guice.OpenSensorSearchModule
 org.n52.oss.opensearch.listeners.ListenerModule
 org.n52.oss.opensearch.listeners.xml.ListenerModule
 org.n52.oss.opensearch.listeners.feed.ListenerModule

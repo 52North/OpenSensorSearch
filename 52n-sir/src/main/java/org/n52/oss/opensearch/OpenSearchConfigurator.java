@@ -59,6 +59,8 @@ public class OpenSearchConfigurator {
 
     HashMap<String, String> responseFormats = new HashMap<>();
 
+    private String responseAuthor = "52°North";
+
     public OpenSearchConfigurator() {
         log.info("NEW {}", this);
     }
@@ -114,6 +116,10 @@ public class OpenSearchConfigurator {
 
     public boolean isCompressPermalinks() {
         return this.compressPermalinks;
+    }
+
+    public String getResponseAuthor() {
+        return this.responseAuthor;
     }
 
 }

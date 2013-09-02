@@ -47,13 +47,13 @@ public class ServletModule extends JerseyServletModule {
         // install(new FactoryModuleBuilder().implement(ApplicationConstants.class,
         // PropertyApplicationConstants.class).build(ConfigFactory.class));
 
-         bind(IJSExecute.class).to(RhinoJSExecute.class);
-         bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
+        bind(IJSExecute.class).to(RhinoJSExecute.class);
+        bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
         // bind the JAX-RS resources
         // http://code.google.com/p/google-guice/wiki/ServletModule
-        bind(HelloGuice.class);
+        // bind(HelloGuice.class);
         bind(HarvestResource.class);
         bind(AutoCompleteSearch.class);
         bind(OpenSearch.class);

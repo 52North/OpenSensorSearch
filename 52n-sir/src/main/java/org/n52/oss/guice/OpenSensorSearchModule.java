@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.oss.opensearch;
+package org.n52.oss.guice;
 
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
@@ -25,9 +25,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 
-public class OpenSearchModule extends AbstractModule {
+public class OpenSensorSearchModule extends AbstractModule {
 
-    private static Logger log = LoggerFactory.getLogger(OpenSearchModule.class);
+    private static Logger log = LoggerFactory.getLogger(OpenSensorSearchModule.class);
 
     @Override
     protected void configure() {
@@ -35,6 +35,7 @@ public class OpenSearchModule extends AbstractModule {
         bind(MessageBodyReader.class).to(JacksonJsonProvider.class);
         bind(MessageBodyWriter.class).to(JacksonJsonProvider.class);
 
+        // https://blogs.oracle.com/sandoz/entry/tracing_in_jersey
         // Map<String, String> initParams = new HashMap<String, String>();
         // initParams.put("com.sun.jersey.config.feature.Trace",
         // "true");

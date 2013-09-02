@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true"> <!-- refer to http://logback.qos.ch/manual/appenders.html -->
 
-	<appender name="ossfile-test"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>52n-oss.log</file>
-
-		<encoder>
-			<pattern> %date %level [%thread] [%file:%line] %msg%n </pattern>
-		</encoder>
-	</appender>
-
 	<appender name="ossconsole" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern> %d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n
@@ -19,9 +10,9 @@
 
 	<logger name="org.n52.oss" level="TRACE" />
 	<logger name="org.n52.sir" level="TRACE" />
+	<logger name="ch.qos.logback." level="WARN" />
 
 	<root level="INFO">
-		<appender-ref ref="ossfile-test" />
 		<appender-ref ref="ossconsole" />
 	</root>
 </configuration>

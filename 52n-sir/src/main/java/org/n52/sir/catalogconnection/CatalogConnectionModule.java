@@ -45,12 +45,12 @@ public class CatalogConnectionModule extends AbstractModule {
     private ExecutorService exec;
 
     private SirConfigurator config;
-    
+
     @Inject
     public CatalogConnectionModule(@Named("oss.catalogconnection.scheduleJobsOnStartup")
-    boolean startup,SirConfigurator config) {
+    boolean startup, SirConfigurator config) {
         super();
-        
+
         this.scheduleJobsOnStartup = startup;
         this.exec = Executors.newSingleThreadExecutor();
         this.config = config;

@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-package org.n52.oss.guice;
+package org.n52.oss.guice.log;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-
-import org.n52.oss.guice.log.InjectLogger;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Path("helloguice")
-public class HelloGuice {
+import com.google.inject.AbstractModule;
+import com.google.inject.matcher.Matchers;
 
-    @InjectLogger
-    private static Logger log;
+public class LoggerModule extends AbstractModule {
 
-    public HelloGuice() {
-        log.info("NEW {}", this);
-    }
+    private static Logger log = LoggerFactory.getLogger(LoggerModule.class);
 
-    @GET
-    @Produces("text/plain")
-    public String get(@QueryParam("x")
-    String x) {
-        log.debug("query: {}", x);
+    @Override
+    protected void configure() {
+        bindListener(Matchers.any(), new Slf4jTypeListener());
 
-        return "Howdy Guice. Injected query parameter " + (x != null ? "x = " + x : "x is not injected");
+        log.debug("Configured {}", this);
     }
 
 }

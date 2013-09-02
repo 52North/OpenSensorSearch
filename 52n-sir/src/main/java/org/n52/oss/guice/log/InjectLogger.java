@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-package org.n52.oss.guice;
+package org.n52.oss.guice.log;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import static java.lang.annotation.ElementType.FIELD;
 
-import org.n52.oss.guice.log.InjectLogger;
-import org.slf4j.Logger;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Path("helloguice")
-public class HelloGuice {
+import javax.inject.Scope;
 
-    @InjectLogger
-    private static Logger log;
-
-    public HelloGuice() {
-        log.info("NEW {}", this);
-    }
-
-    @GET
-    @Produces("text/plain")
-    public String get(@QueryParam("x")
-    String x) {
-        log.debug("query: {}", x);
-
-        return "Howdy Guice. Injected query parameter " + (x != null ? "x = " + x : "x is not injected");
-    }
-
+/**
+ * Based on online tutorial at http://glauche.de/2009/08/24/logging-with-slf4j-and-guice/
+ * 
+ * @author Daniel
+ * 
+ */
+@Scope
+@Documented
+@Target(FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface InjectLogger {
+    //
 }

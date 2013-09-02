@@ -58,7 +58,7 @@
 <meta name="Keywords"
 	content="Open Sensor Search, Sensor Web, Sensor Instance Registry, Sensor Discovery, OGC, Open Geospatial Consortium, SIR, SWE, Sensor Web Enablement Initiative" />
 
-<link href="sir.css" rel="stylesheet" type="text/css" />
+<link href="http://localhost:8080/OpenSensorSearch/sir.css" rel="stylesheet" type="text/css" />
 <link rel="search" type="application/opensearchdescription+xml"
 	title="Sensor Search"
 	href="${service.url}${service.path}/OpenSearchDoc.xml" />
@@ -69,7 +69,7 @@
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
-<script src="./autocomplete.js"></script>
+<script src="http://localhost:8080/OpenSensorSearch/autocomplete.js"></script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">

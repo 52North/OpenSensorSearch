@@ -69,7 +69,8 @@ public class ServletModule extends JerseyServletModule {
      //   filter("*").through(DebugFilter.class);
         Map<String, String> params = new HashMap<String, String>(); 
         params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF"); 
-        
+
+        params.put("com.sun.jersey.config.property.WebPageContentRegex", "/.*\\.(jpg|ico|png|gif|html|id|txt|css|js)");
         filter("/*").through(GuiceContainer.class,params);
         
         log.info("configured {} with context {}", this, getServletContext());

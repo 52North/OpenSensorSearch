@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+	﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software 
+	GmbH
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 
 -->
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -27,6 +28,9 @@
 	<!-- imports -->
 	<xsl:import href="SensorML-to-ebRIM_variables.xsl" />
 	<xsl:import href="SensorML-to-ebRIM_contact.xsl" />
+	<!-- have just one import of _classification here instead of in both _system 
+		and _component, see http://stackoverflow.com/questions/10096086/how-to-handle-duplicate-imports-in-xslt -->
+	<xsl:import href="SensorML-to-ebRIM_classification.xsl" />
 	<xsl:import href="SensorML-to-ebRIM_system.xsl" />
 	<xsl:import href="SensorML-to-ebRIM_component.xsl" />
 
@@ -39,8 +43,10 @@
 	<xsl:template match="sml:member">
 
 		<xsl:comment>
-			This document was created using the 52North Sensor Instance Registry (SIR).
-			Homepage: https://52north.org/communities/sensorweb/incubation/discovery/
+			This document was created using the 52North Sensor Instance Registry
+			(SIR).
+			Homepage:
+			https://52north.org/communities/sensorweb/incubation/discovery/
 			Contact: daniel.nuest@uni-muenster.de
 		</xsl:comment>
 

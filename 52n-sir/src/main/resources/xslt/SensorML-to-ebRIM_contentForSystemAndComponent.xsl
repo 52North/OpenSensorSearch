@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+	﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software 
+	GmbH
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 
 -->
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -93,7 +94,7 @@
 			<xsl:attribute name="slotType"><xsl:value-of
 				select="concat($iso19107DataTypePrefix, 'GM_Envelope')" /></xsl:attribute>
 			<xsl:choose>
-				<!-- do not use SWE namespace for compatibility issues  -->
+				<!-- do not use SWE namespace for compatibility issues -->
 				<xsl:when test="$noSWE">
 					<xsl:element name="wrs:ValueList" namespace="{$nswrs}">
 						<xsl:element name="wrs:AnyValue" namespace="{$nswrs}">
@@ -129,7 +130,7 @@
 			<xsl:value-of select="."></xsl:value-of>
 		</xsl:comment>
 	</xsl:template>
-	
+
 	<xsl:template match="swe:lowerCorner" mode="buildGmlEnvelope">
 		<xsl:element name="gml:lowerCorner" namespace="{$nsgml}">
 			<xsl:apply-templates mode="buildGmlEnvelope" />
@@ -142,6 +143,8 @@
 		</xsl:element>
 	</xsl:template>
 
+	<!-- set axis order to "y x", though this may differe depending on the used 
+		coordinate reference system -->
 	<xsl:template match="swe:Vector" mode="buildGmlEnvelope">
 		<xsl:value-of
 			select="concat(swe:coordinate/swe:Quantity[@axisID='y']/swe:value, ' ', swe:coordinate/swe:Quantity[@axisID='x']/swe:value)" />

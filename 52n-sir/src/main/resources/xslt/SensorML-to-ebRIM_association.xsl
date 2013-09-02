@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+	﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software 
+	GmbH
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 
 -->
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -22,7 +23,8 @@
 	xmlns:swe="http://www.opengis.net/swe/1.0.1" version="2.0"
 	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd">
 
-	<xsl:import href="SensorML-to-ebRIM_variables.xsl" />
+	<!-- test if things work without this import, see http://stackoverflow.com/questions/10096086/how-to-handle-duplicate-imports-in-xslt -->
+	<!-- <xsl:import href="SensorML-to-ebRIM_variables.xsl" /> -->
 
 	<xsl:strip-space elements="*" />
 

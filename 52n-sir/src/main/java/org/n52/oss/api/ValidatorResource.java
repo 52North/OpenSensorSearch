@@ -15,6 +15,8 @@
  */
 package org.n52.oss.api;
 
+import java.io.IOException;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -47,8 +49,8 @@ public class ValidatorResource {
 
 	}
 
-	private boolean validateSensorMLDocument(String s) throws XmlException {
-		boolean b = validator.validate(XmlObject.Factory.parse(s));
+	private boolean validateSensorMLDocument(String s) throws XmlException, IOException {
+		boolean b = this.validator.validate(XmlObject.Factory.parse(s));
 		return b;
 	}
 
@@ -61,8 +63,8 @@ public class ValidatorResource {
 			String details = this.validator.getValidationFailuresAsString();
 			return "{status:'invalid',error:" + details + "}";
 
-		} catch (XmlException exception) {
-			return "{error:" + exception.toString() + "}";
+		} catch (XmlException | IOException exception) {
+			return "{error:" + exception.getMessage() + "}";
 		}
 	}
 

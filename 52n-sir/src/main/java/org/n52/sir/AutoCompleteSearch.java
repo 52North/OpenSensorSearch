@@ -103,18 +103,18 @@ public class AutoCompleteSearch {
 		StringBuilder res = new StringBuilder();
 		String first = iterator.next().toString();
 		if (first.contains(text)) {
-			res.append('"');
+			res.append("'");
 			res.append(first);
-			res.append('"');
+			res.append("'");
 		}
 		while (iterator.hasNext()) {
 			String n = iterator.next().toString();
 			if (n.contains(text)) {
 				if (res.toString().length() > 0)
 					res.append(",");
-				res.append('"');
+				res.append("'");
 				res.append(n);
-				res.append('"');
+				res.append("'");
 			}
 		}
 

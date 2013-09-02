@@ -58,7 +58,11 @@
 <meta name="Keywords"
 	content="Open Sensor Search, Sensor Web, Sensor Instance Registry, Sensor Discovery, OGC, Open Geospatial Consortium, SIR, SWE, Sensor Web Enablement Initiative" />
 
-<link href="http://localhost:8080/OpenSensorSearch/sir.css" rel="stylesheet" type="text/css" />
+<link href="http://localhost:8080/OpenSensorSearch/sir.css"
+	rel="stylesheet" type="text/css" />
+	
+<link href="http://localhost:8080/OpenSensorSearch/bootstrap.css" rel="stylesheet">
+	
 <link rel="search" type="application/opensearchdescription+xml"
 	title="Sensor Search"
 	href="${service.url}${service.path}/OpenSearchDoc.xml" />
@@ -70,39 +74,46 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 <script src="http://localhost:8080/OpenSensorSearch/autocomplete.js"></script>
+<script src="http://localhost:8080/OpenSensorSearch/bootstrap.min.js"></script>
+
 </head>
+
 
 <body bgcolor="#ffffff" text="#000000">
 	<div id="content">
 
-		<div class="search-header">Open Sensor Search</div>
 
-		<div class="center">
-			<form name="requestform" method="get"
-				action="${service.path}/${service.endpoint.opensearch}">
-				<input type="hidden" name="httpAccept" value="text/html" /> <span><input
-					name="q" type="text" class="search-input" /> </span> <span><input
-					value="Search" type="submit" class="search-button" /> </span>
-			</form>
+		<div class="span9">
+			<div class="hero-unit">
+					<div class="search-header">Open Sensor Search</div>
+
+				<div class="center">
+					<form name="requestform" method="get"
+						action="${service.path}/${service.endpoint.opensearch}">
+						<input type="hidden" name="httpAccept" value="text/html" /> <span><input
+							name="q" type="text" class="search-input" /> </span> <span><input
+							value="Search" type="submit" class="search-button" /> </span>
+					</form>
+				</div>
+
+				<div class="center">
+					<!-- #TODO add links to the RESTful URLs /sensors, /phenomena and /services -->
+					<span class="infotext">Searching across <%=serviceStatusBean.getNumberOfSensors()%>
+						sensors with <%=serviceStatusBean.getNumberOfPhenomena()%>
+						observed properties from <%=serviceStatusBean.getNumberOfServices()%>
+						services.
+					</span>
+				</div>
+
+				<div class="center" style="padding-top: 2em;">
+					<span class="infotextHighlight">Is your data missing? <a
+						href="mailto:${sir.deploy.contact}">Write us an email!</a></span>
+				</div>
+
+				<jsp:include page="footer.jsp" />
+			</div>
 		</div>
-
-		<div class="center">
-			<!-- #TODO add links to the RESTful URLs /sensors, /phenomena and /services -->
-			<span class="infotext">Searching across <%=serviceStatusBean.getNumberOfSensors()%>
-				sensors with <%=serviceStatusBean.getNumberOfPhenomena()%> observed
-				properties from <%=serviceStatusBean.getNumberOfServices()%>
-				services.
-			</span>
-		</div>
-
-		<div class="center" style="padding-top: 2em;">
-			<span class="infotextHighlight">Is your data missing? <a
-				href="mailto:${sir.deploy.contact}">Write us an email!</a></span>
-		</div>
-
-		<jsp:include page="footer.jsp" />
 	</div>
-
 </body>
 
 </html>

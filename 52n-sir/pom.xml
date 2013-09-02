@@ -259,15 +259,17 @@
 						<exclude>**/webapp/css/bootstrap*.css</exclude>
 						<exclude>**/org/n52/sir/util/ext/**</exclude>
 						<exclude>**/*.properties</exclude>
+						<exclude>**/*.js</exclude>
+						<exclude>**/*.css</exclude>
 					</excludes>
 					<includes>
 						<include>**/*.java</include>
 						<include>**/*.jsp</include>
-						<include>**/*.js</include>
+						<!-- <include>**/*.js</include> -->
 						<include>**/*.xsl</include>
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>
-						<include>**/*.css</include>
+						<!-- <include>**/*.css</include> -->
 						<include>**/*.html</include>
 					</includes>
 					<strictCheck>true</strictCheck>

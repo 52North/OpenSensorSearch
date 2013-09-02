@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.util.jobs.impl;
+package org.n52.sir.catalogconnection.impl;
 
 import java.util.Arrays;
 import java.util.Date;

@@ -26,7 +26,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
@@ -34,19 +33,15 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.UnavailableException;
 
-import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
+import org.n52.sir.catalogconnection.CatalogConnectionSchedulerFactory;
 import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
-import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
-import org.n52.sir.util.jobs.IJobScheduler;
-import org.n52.sir.util.jobs.IJobSchedulerFactory;
-import org.n52.sir.util.jobs.impl.TimerServlet;
 import org.n52.sir.xml.ITransformerFactory;
 import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
@@ -143,11 +138,6 @@ public class SirConfigurator {
     private static SirConfigurator instance = null;
 
     /**
-     * propertyname of JOBSCHEDULERFACTORY property
-     */
-    private static final String JOBSCHEDULERFACTORY = "JOBSCHEDULERFACTORY";
-
-    /**
      * propertyname of listeners
      */
     private static final String LISTENERS = "LISTENERS";
@@ -183,11 +173,6 @@ public class SirConfigurator {
     private static final String PROFILE4DISCOVERY = "PROFILE4DISCOVERY";
 
     /**
-     * propertyname of SCHEDULE_JOBS_ON_STARTUP property
-     */
-    private static final String SCHEDULE_JOBS_ON_STARTUP = "SCHEDULE_JOBS_ON_STARTUP";
-
-    /**
      * 
      */
     private static final String SCHEMA_URL = "SCHEMA_URL";
@@ -211,11 +196,6 @@ public class SirConfigurator {
      * propertyname of SLOT_INIT_FILENAME property
      */
     private static final String SLOT_INIT_FILENAME = "SLOT_INIT_FILENAME";
-
-    /**
-     * Delay (in seconds) for scheduling the first run of repeated catalog connections on startup.
-     */
-    private static final int STARTUP_CATALOG_CONNECTION_DELAY_SECS = 10;
 
     /**
      * propertyname of STATUS_HANDLER property
@@ -359,7 +339,7 @@ public class SirConfigurator {
     /**
      * Implementation of IJobSchedulerFactory to schedule (repeated) tasks
      */
-    private IJobSchedulerFactory jobSchedulerFactory;
+    private CatalogConnectionSchedulerFactory jobSchedulerFactory;
 
     private String namespacePrefix;
 
@@ -391,11 +371,6 @@ public class SirConfigurator {
     private String testRequestPath;
 
     /**
-     * servlet for scheduling tasks
-     */
-    private TimerServlet timerServlet;
-
-    /**
      * Implementation of the ITransformerFactory, used to access transformers for XML documents
      */
     private ITransformerFactory transformerFactory;
@@ -413,8 +388,6 @@ public class SirConfigurator {
 
     private IValidatorFactory validatorFactory;
 
-    private boolean startCatalogConnectionsOnStartup = false;
-
     /**
      * public constructor for transition to dependency injected properties.
      * 
@@ -431,7 +404,7 @@ public class SirConfigurator {
                 InputStream configStream = SirConfigurator.class.getResourceAsStream("/prop/sir.properties");) {
 
             if (instance == null) {
-                instance = new SirConfigurator(configStream, dbStream, basepath, null);
+                instance = new SirConfigurator(configStream, dbStream, basepath);
                 instance.initialize();
             }
             else
@@ -458,11 +431,9 @@ public class SirConfigurator {
      */
     private SirConfigurator(InputStream configStream,
                             InputStream dbConfigStream,
-                            String basepath,
-                            TimerServlet timerServlet) throws UnavailableException {
+                            String basepath) throws UnavailableException {
         try {
             this.basepath = basepath;
-            this.timerServlet = timerServlet;
 
             // creating common SIR properties object from inputstream
             this.props = loadProperties(configStream);
@@ -578,7 +549,7 @@ public class SirConfigurator {
     /**
      * @return the jobSchedulerFactory
      */
-    public IJobSchedulerFactory getJobSchedulerFactory() {
+    public CatalogConnectionSchedulerFactory getJobSchedulerFactory() {
         return this.jobSchedulerFactory;
     }
 
@@ -797,11 +768,6 @@ public class SirConfigurator {
 
         // initialize status handler
         initializeStatusHandler(this.props);
-
-        // initialize job scheduler and start the connections from database
-        initializeJobScheduling(this.props, this.timerServlet);
-        if (Boolean.parseBoolean(this.props.getProperty(SCHEDULE_JOBS_ON_STARTUP)))
-            startCatalogConnections();
 
         // initialize transformer
         initializeTransformerFactory(this.props);
@@ -1027,53 +993,6 @@ public class SirConfigurator {
             log.error("the instatiation of an getRequestDecoder failed: " + ite.toString() + ite.getLocalizedMessage()
                     + ite.getCause());
             throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void initializeJobScheduling(Properties p, TimerServlet timer) throws OwsExceptionReport {
-        String className = p.getProperty(JOBSCHEDULERFACTORY);
-        try {
-            if (className == null) {
-                log.error("No job scheduler factory implementation is set in the config file!");
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "SirConfigurator.initializeJobScheduling()",
-                                     "No job scheduling implementation is set in the config file!");
-                throw se;
-            }
-            // get Class of the httpGetRequestDecoderClass Implementation
-            Class<IJobSchedulerFactory> jobSchedulerFactoryClass = (Class<IJobSchedulerFactory>) Class.forName(className);
-
-            // get Constructor of this class with matching parameter types
-            Constructor<IJobSchedulerFactory> constructor = jobSchedulerFactoryClass.getConstructor(TimerServlet.class);
-
-            this.jobSchedulerFactory = constructor.newInstance(timer);
-
-            log.info(" ***** " + className + " loaded successfully! ***** ");
-        }
-        catch (NoSuchMethodException nsme) {
-            log.error("Error while loading jobSchedulerFactoryClass, no required constructor available: "
-                    + nsme.toString());
-            throw new OwsExceptionReport(nsme.getMessage(), nsme.getCause());
-        }
-        catch (InstantiationException ie) {
-            log.error("The instatiation of a jobSchedulerFactoryClass failed: " + ie.toString());
-            throw new OwsExceptionReport(ie.getMessage(), ie.getCause());
-        }
-        catch (IllegalAccessException iae) {
-            log.error("The instatiation of an jobSchedulerFactoryClass failed: " + iae.toString());
-            throw new OwsExceptionReport(iae.getMessage(), iae.getCause());
-        }
-        catch (InvocationTargetException ite) {
-            log.error("The instatiation of an jobSchedulerFactoryClass failed: " + ite.toString()
-                    + ite.getLocalizedMessage() + ite.getCause());
-            throw new OwsExceptionReport(ite.getMessage(), ite.getCause());
-        }
-        catch (ClassNotFoundException cnfe) {
-            log.error("Error while loading jobSchedulerFactoryClass, required class could not be loaded: "
-                    + cnfe.toString());
-            throw new OwsExceptionReport(cnfe.getMessage(), cnfe.getCause());
         }
     }
 
@@ -1307,73 +1226,6 @@ public class SirConfigurator {
     public void newUpdateSequence() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(this.gmlDateFormat);
         this.updateSequence = dateFormat.format(new Date());
-    }
-
-    /**
-     * Uses a thread for a delayed execution. This is necessary if both the catalog and the SIR run in the
-     * same container. The update can be blocked if the {@link ICatalogStatusHandler} is not available in the
-     * context.
-     */
-    private void startCatalogConnections() {
-        if ( !this.startCatalogConnectionsOnStartup) {
-            log.warn("Catalog connections are disabled on startup.");
-            return;
-        }
-
-        if (log.isDebugEnabled())
-            log.debug(" ***** Starting Thread for catalog connections with a delay of "
-                    + STARTUP_CATALOG_CONNECTION_DELAY_SECS + " seconds ***** ");
-
-        this.exec.submit(new Thread("CatalogConnector") {
-
-            @Override
-            public void run() {
-                // wait with the catalog connection, because if the catalog runs
-                // in the same tomcat, problems
-                // might occur during startup phase
-
-                try {
-                    sleep(STARTUP_CATALOG_CONNECTION_DELAY_SECS * 1000);
-                }
-                catch (InterruptedException e1) {
-                    log.error("Error sleeping before catalog connections.", e1);
-                }
-
-                log.info(" ***** Starting catalog connections ***** ");
-
-                // run tasks for existing catalogs
-                int i = 0;
-                try {
-                    IDAOFactory f = getFactory();
-                    if (f == null) {
-                        log.error("Factory is null");
-                        throw new RuntimeException("Could not get factory");
-                    }
-
-                    IConnectToCatalogDAO catalogDao = f.connectToCatalogDAO();
-                    List<ICatalogConnection> savedConnections = catalogDao.getCatalogConnectionList();
-
-                    IJobScheduler scheduler = SirConfigurator.getInstance().getJobSchedulerFactory().getJobScheduler();
-                    for (ICatalogConnection iCatalogConnection : savedConnections) {
-                        if (iCatalogConnection.getPushIntervalSeconds() != ICatalogConnection.NO_PUSH_INTERVAL) {
-                            scheduler.submit(iCatalogConnection);
-                            i++;
-                        }
-                        else {
-                            if (log.isDebugEnabled())
-                                log.debug("ICatalogConnection without push interval is ignored: "
-                                        + iCatalogConnection.getConnectionID());
-                        }
-                    }
-                }
-                catch (OwsExceptionReport e) {
-                    log.error("Could not run tasks for saved catalog connections: {}", e.getMessage());
-                }
-
-                log.info(" ***** Scheduled " + i + " task(s) from the database. ***** ");
-            }
-
-        });
     }
 
 }

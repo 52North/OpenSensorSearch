@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.util.jobs;
+package org.n52.sir.catalogconnection;
 
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -21,15 +21,15 @@ import org.n52.sir.ows.OwsExceptionReport;
 /**
  * 
  * This interface encapsulates the submission of catalog connections using
- * {@link IJobScheduler#submit(ICatalogConnection)}.
+ * {@link CatalogConnectionScheduler#submit(ICatalogConnection)}.
  * 
  * An {@link ICatalogConnection} can be submitted for (repeated) execution. It contains an identifier that can
- * be used to abort a (persistently saved) task using {@link IJobScheduler#cancel(String)}.
+ * be used to abort a (persistently saved) task using {@link CatalogConnectionScheduler#cancel(String)}.
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public interface IJobScheduler {
+public interface CatalogConnectionScheduler {
 
     /**
      * Cancels the task with the given identifier.

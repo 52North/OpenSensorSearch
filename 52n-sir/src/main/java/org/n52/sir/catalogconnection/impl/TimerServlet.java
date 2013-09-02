@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.util.jobs.impl;
+package org.n52.sir.catalogconnection.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,6 +56,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
+@Deprecated
 public class TimerServlet extends GenericServlet {
 
     /**

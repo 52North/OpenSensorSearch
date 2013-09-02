@@ -164,7 +164,7 @@ public class RequestOperator {
             request = this.httpPostDecoder.receiveRequest(inputString);
         }
         catch (OwsExceptionReport e) {
-            return new ExceptionResponse(e.getDocument());
+            return new ExceptionResponse(e);
         }
         catch (IllegalArgumentException e) {
             log.error("Illegal argument in request: ", e);

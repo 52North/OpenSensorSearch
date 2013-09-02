@@ -13,29 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.util.jobs.impl;
 
-import org.n52.sir.util.jobs.IJobScheduler;
-import org.n52.sir.util.jobs.IJobSchedulerFactory;
+package org.n52.sir.catalogconnection.impl;
+
+import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
+import org.n52.sir.catalogconnection.CatalogConnectionSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * 
- * Factory for creating instances of {@link IJobScheduler} that work with the timer given in the constructor.
- * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class JobSchedulerFactoryImpl implements IJobSchedulerFactory {
+public class CatalogConnectionSchedulerFactoryImpl implements CatalogConnectionSchedulerFactory {
 
-    private static Logger log = LoggerFactory.getLogger(JobSchedulerFactoryImpl.class);
+    private static Logger log = LoggerFactory.getLogger(CatalogConnectionSchedulerFactoryImpl.class);
 
-    private TimerServlet timerServlet;
-
-    public JobSchedulerFactoryImpl(TimerServlet timer) {
-        this.timerServlet = timer;
-        log.info("NEW " + this);
+    public CatalogConnectionSchedulerFactoryImpl() {
+        log.info("NEW {}", this);
     }
 
     /*
@@ -44,8 +40,8 @@ public class JobSchedulerFactoryImpl implements IJobSchedulerFactory {
      * @see org.n52.sir.util.jobs.IJobSchedulerFactory#getJobScheduler()
      */
     @Override
-    public IJobScheduler getJobScheduler() {
-        return new JobSchedulerImpl(this.timerServlet);
+    public CatalogConnectionScheduler getScheduler() {
+        return new CatalogConnectionSchedulerImpl();
     }
 
     /*
@@ -56,8 +52,8 @@ public class JobSchedulerFactoryImpl implements IJobSchedulerFactory {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("JobSchedulerFactory [timerServlet=");
-        sb.append(this.timerServlet);
+        sb.append("CatalogConnectionSchedulerFactoryImpl [");
+        sb.append("...");
         sb.append("]");
         return sb.toString();
     }

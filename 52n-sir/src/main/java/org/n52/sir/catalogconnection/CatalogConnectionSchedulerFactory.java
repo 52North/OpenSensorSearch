@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.util.jobs;
+package org.n52.sir.catalogconnection;
 
 /**
  * 
- * Factory class for encapsulation of {@link IJobScheduler} instances.
+ * Factory class for encapsulation of {@link CatalogConnectionScheduler} instances.
  * 
  * @author Daniel Nüst (daniel.neust@uni-muenster.de)
  * 
  */
-public interface IJobSchedulerFactory {
+public interface CatalogConnectionSchedulerFactory {
 
     /**
      * 
-     * @return An instance of an {@link IJobScheduler} to schedule new or cancel existing tasks.
+     * @return An instance of an {@link CatalogConnectionScheduler} to schedule new or cancel existing tasks.
      */
-    public abstract IJobScheduler getJobScheduler();
+    public abstract CatalogConnectionScheduler getScheduler();
 
 }

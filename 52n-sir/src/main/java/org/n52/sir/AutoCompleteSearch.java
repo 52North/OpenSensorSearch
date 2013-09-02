@@ -40,72 +40,87 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.servlet.RequestScoped;
 import com.sun.jersey.api.core.HttpContext;
 
-@Path("/autocomplete")
+@Path("/suggest")
 @RequestScoped
 public class AutoCompleteSearch {
 
-    // private static final long serialVersionUID = 5313315792207485425L;
+	// private static final long serialVersionUID = 5313315792207485425L;
 
-    private static Logger log = LoggerFactory.getLogger(SOLRSearchSensorDAO.class);
+	private static Logger log = LoggerFactory
+			.getLogger(SOLRSearchSensorDAO.class);
 
-    private static final String REQUEST_PARAM_AUTOCOMPLETE = "text";
+	private static final String REQUEST_PARAM_AUTOCOMPLETE = "q";
 
-    @Context
-    HttpServletRequest servletRequest;
+	@Context
+	HttpServletRequest servletRequest;
 
-    @Context
-    private HttpContext servletContext;
+	@Context
+	private HttpContext servletContext;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String doGet(@QueryParam("text")
-    String text) {
-        // String text = servletRequest.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
-        log.trace("new GET request for autocomplete: {}", text);
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public String doGet(@QueryParam("q") String text) {
+		// String text =
+		// servletRequest.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
+		log.trace("new GET request for autocomplete: {}", text);
 
-        // TODO return reasonable error message and status code
-        if (text == null)
-            throw new RuntimeException("Query parameter " + REQUEST_PARAM_AUTOCOMPLETE + " must be given.");
+		// TODO return reasonable error message and status code
+		if (text == null)
+			throw new RuntimeException("Query parameter "
+					+ REQUEST_PARAM_AUTOCOMPLETE + " must be given.");
 
-        // I'm using a set to avoid duplications
-        Collection<Object> results = new HashSet<>();
-        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-        Collection<SirSearchResultElement> search_results = dao.searchByAll(text, null, null, null, null, null, null);
-        Iterator<SirSearchResultElement> it = search_results.iterator();
+		// I'm using a set to avoid duplications
+		Collection<Object> results = new HashSet<>();
+		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+		Collection<SirSearchResultElement> search_results = dao.searchByAll(
+				text, null, null, null, null, null, null);
+		Iterator<SirSearchResultElement> it = search_results.iterator();
 
-        while (it.hasNext()) {
-            SirSearchResultElement element = it.next();
-            SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element.getSensorDescription();
-            results.addAll(desc.getKeywords());
-            if (desc.getContacts() != null)
-                results.addAll(desc.getContacts());
-            if (desc.getDescription() != null)
-                results.add(desc.getDescription().toString());
-            if (desc.getInputs() != null)
-                results.addAll(desc.getInputs());
-            if (desc.getOutputs() != null)
-                results.addAll(desc.getOutputs());
-            if (desc.getIdentifiers() != null)
-                results.addAll(desc.getIdentifiers());
-            if (desc.getClassifiers() != null)
-                results.addAll(desc.getClassifiers());
-        }
+		while (it.hasNext()) {
+			SirSearchResultElement element = it.next();
+			SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element
+					.getSensorDescription();
+			results.addAll(desc.getKeywords());
+			if (desc.getContacts() != null)
+				results.addAll(desc.getContacts());
+			if (desc.getDescription() != null)
+				results.add(desc.getDescription().toString());
+			if (desc.getInputs() != null)
+				results.addAll(desc.getInputs());
+			if (desc.getOutputs() != null)
+				results.addAll(desc.getOutputs());
+			if (desc.getIdentifiers() != null)
+				results.addAll(desc.getIdentifiers());
+			if (desc.getClassifiers() != null)
+				results.addAll(desc.getClassifiers());
+		}
 
-        // returns the result as json array
-        if (results.size() == 0)
-            return "{input: " + text + "}"; // FIXME more helpful response message
+		// returns the result as json array
+		if (results.size() == 0)
+			return "[]";
 
-        Iterator<Object> iterator = results.iterator();
-        StringBuilder res = new StringBuilder();
-        res.append(iterator.next());
-        while (iterator.hasNext()) {
-            res.append(",");
-            res.append(iterator.next());
-        }
+		Iterator<Object> iterator = results.iterator();
+		StringBuilder res = new StringBuilder();
+		String first = iterator.next().toString();
+		if (first.contains(text)) {
+			res.append('"');
+			res.append(first);
+			res.append('"');
+		}
+		while (iterator.hasNext()) {
+			String n = iterator.next().toString();
+			if (n.contains(text)) {
+				if (res.toString().length() > 0)
+					res.append(",");
+				res.append('"');
+				res.append(n);
+				res.append('"');
+			}
+		}
 
-        log.debug("Done serving servlet, response: {}", res.toString());
+		log.debug("Done serving servlet, response: {}", res.toString());
 
-        return res.toString();
-    }
+		return "[" + res.toString() + "]";
+	}
 
 }

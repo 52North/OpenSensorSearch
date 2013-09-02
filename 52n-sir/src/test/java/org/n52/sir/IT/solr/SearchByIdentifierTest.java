@@ -78,10 +78,10 @@ public class SearchByIdentifierTest {
 		if (resultsIdentifiers.size() > 0)
 			assertFalse(resultsIdentifiers.indexOf("TEST") == -1);
 	}
-
+/*
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
 		new SolrConnection().deleteByQuery("");
 
 	}
-}
+*/}

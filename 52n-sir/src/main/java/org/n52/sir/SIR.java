@@ -16,7 +16,8 @@
 
 package org.n52.sir;
 
-import java.io.BufferedReader;
+import java.io.BufferedReader
+;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -28,6 +29,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.transform.TransformerException;
 
@@ -39,6 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
+import com.sun.jersey.api.view.Viewable;
 
 /**
  * 
@@ -151,5 +154,10 @@ public class SIR {
         catch (TransformerException te) {
             log.error("doResponse", te);
         }
+    }
+    @GET
+    @Path("/search")
+    public Response index(){
+    	return Response.ok().entity(new Viewable("/index")).build();
     }
 }

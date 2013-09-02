@@ -16,6 +16,9 @@
 
 package org.n52.oss.guice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.n52.oss.api.TransformationResource;
 import org.n52.oss.api.UserAccessResource;
 import org.n52.oss.api.ValidatorResource;
@@ -25,8 +28,6 @@ import org.n52.sir.SIR;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 import org.n52.sir.script.HarvestResource;
-import org.n52.sir.xml.IValidatorFactory;
-import org.n52.sir.xml.impl.ValidatorFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,8 +67,11 @@ public class ServletModule extends JerseyServletModule {
         bind(UserAccessResource.class);
     //    bind(ValidatorResource.class);
      //   filter("*").through(DebugFilter.class);
-        serve("/*").with(GuiceContainer.class);
-
+        Map<String, String> params = new HashMap<String, String>(); 
+        params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF"); 
+        
+        serve("/*").with(GuiceContainer.class,params);
+        
         log.info("configured {} with context {}", this, getServletContext());
     }
 

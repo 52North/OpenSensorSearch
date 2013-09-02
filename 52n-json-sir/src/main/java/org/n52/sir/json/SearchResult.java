@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class SearchResult {
 
     private String source;
@@ -38,7 +41,7 @@ public class SearchResult {
 
     public SearchResult() {
         super();
-        this.results = new ArrayList<SearchResultElement>();
+        this.results = new ArrayList<>();
     }
 
     public SearchResult(String source, String query, String url, String description, String author, Date date) {

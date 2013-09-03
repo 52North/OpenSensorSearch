@@ -29,6 +29,7 @@ import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
+import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -110,6 +111,12 @@ public class SearchSensorListener implements ISirRequestListener {
         sb.append("=");
         sb.append(sensorIdInSir);
 
+        log.debug("Created description URL for sensor {}: {}", sensorIdInSir, sb.toString());
+
+        // URL must be encoded for usage in XML documents
+        if (this.encodeURLs)
+            return URLEncoder.encode(sb.toString(), this.urlCharacterEncoding);
+
         return sb.toString();
     }
 
@@ -124,134 +131,148 @@ public class SearchSensorListener implements ISirRequestListener {
 
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
+        return receiveRequest(request, false);
+    }
+
+    public ISirResponse receiveRequest(AbstractSirRequest request, boolean fastEngineOnly) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
         SirSearchSensorResponse response = new SirSearchSensorResponse();
-        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
+        ArrayList<SirSearchResultElement> searchResElements = null;
 
-        if (searchSensReq.getSensIdent() != null) {
-            // search by sensorIdentification
-            for (SirSensorIdentification sensIdent : searchSensReq.getSensIdent()) {
-                if (sensIdent instanceof SirSensorIDInSir) {
-                    // sensorID in SIR
-                    try {
-                        SirSensorIDInSir sensorId = (SirSensorIDInSir) sensIdent;
-                        SirSearchResultElement resultElement;
-
-                        resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorIdInSir(),
-                                                                               searchSensReq.isSimpleResponse());
-                        if (resultElement != null) {
-                            searchResElements.add(resultElement);
-                        }
-                    }
-                    catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e);
-                    }
-                }
-                else {
-                    // service description
-                    try {
-                        SirServiceReference servDesc = (SirServiceReference) sensIdent;
-                        SirSearchResultElement resultElement;
-                        resultElement = this.searchSensDao.getSensorByServiceDescription(servDesc,
-                                                                                         searchSensReq.isSimpleResponse());
-                        if (resultElement != null) {
-                            searchResElements.add(resultElement);
-                        }
-                    }
-                    catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e);
-                    }
-                }
-            }
+        try {
+            if (searchSensReq.getSensIdent() != null)
+                searchResElements = searchByIdentification(searchSensReq);
+            else
+                searchResElements = searchBySearchCriteria(searchSensReq, fastEngineOnly);
         }
-        else { // search by searchCriteria
-               // utilize SOR if information is given
-            if (searchSensReq.getSearchCriteria().isUsingSOR()) {
-                // request the information from SOR and extend the search criteria with the result
-                Collection<SirSearchCriteria_Phenomenon> phenomena = searchSensReq.getSearchCriteria().getPhenomena();
-
-                SORTools sor = new SORTools();
-                Collection<SirSearchCriteria_Phenomenon> newPhenomena = sor.getMatchingPhenomena(phenomena);
-
-                // add all found phenomena to search criteria
-                log.debug("Adding phenomena to search criteria: {}", Arrays.toString(newPhenomena.toArray()));
-                phenomena.addAll(newPhenomena);
-            }
-
-            Collection<SirSearchResultElement> searchResElementsSolr = null;
-            Collection<SirSearchResultElement> searchResElementsPgSQL = null;
-
-            // search Solr
-            try {
-                SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-                searchResElementsSolr = dao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                         searchSensReq.isSimpleResponse());
-            }
-            catch (OwsExceptionReport e) {
-                log.error("Could not query data from search backend.", e);
-                searchResElementsSolr = new ArrayList<>();
-                // return new ExceptionResponse(e);
-            }
-
-            // search PostGreSQL
-            try {
-                searchResElementsPgSQL = this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                         searchSensReq.isSimpleResponse());
-
-            }
-            catch (OwsExceptionReport e) {
-                log.error("Could not query data from search backend.", e);
-                searchResElementsPgSQL = new ArrayList<>();
-            }
-
-            // union the searches
-            Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
-            Collections.addAll(searchResElements, searchResElementsPgSQL.toArray(new SirSearchResultElement[] {}));
-            log.debug("Found {} results in Solr, {} in Postgres, so {} in total.",
-                      searchResElementsSolr.size(),
-                      searchResElementsPgSQL.size(),
-                      searchResElements.size());
+        catch (OwsExceptionReport e) {
+            return new ExceptionResponse(e);
         }
 
         // if a simple response, add the corresponding GET URLs and bounding boxes
         if (searchSensReq.isSimpleResponse()) {
-
-            // if the requested version is not 0.3.0, keep the bounding box, otherwise remove
-            String version = searchSensReq.getVersion();
-            boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
-
-            for (SirSearchResultElement sirSearchResultElement : searchResElements) {
-                // SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription)
-                // sirSearchResultElement.getSensorDescription();
-
-                String descriptionURL;
-                try {
-                    descriptionURL = createSensorDescriptionURL(sirSearchResultElement.getSensorIdInSir());
-
-                    if (this.encodeURLs) {
-                        // must be encoded for XML:
-                        descriptionURL = URLEncoder.encode(descriptionURL, this.urlCharacterEncoding);
-                    }
-                }
-                catch (UnsupportedEncodingException e) {
-                    log.error("Could not encode URL", e);
-                    return new ExceptionResponse(new OwsExceptionReport("Could not encode sensor description URL!", e).getDocument());
-                }
-                if (log.isDebugEnabled())
-                    log.debug("Created description URL for sensor " + sirSearchResultElement.getSensorIdInSir() + ": "
-                            + descriptionURL);
-
-                // sensorDescription.setSensorDescriptionURL(descriptionURL);
-
-                // if (removeBBoxes)
-                // sensorDescription.setBoundingBox(null);
-            }
-
+            processForSimpleResponse(searchSensReq, searchResElements);
         }
 
         response.setSearchResultElements(searchResElements);
 
         return response;
+    }
+
+    private void processForSimpleResponse(SirSearchSensorRequest searchSensReq,
+                                          ArrayList<SirSearchResultElement> searchResElements) {
+        // if the requested version is not 0.3.0, keep the bounding box, otherwise remove
+        String version = searchSensReq.getVersion();
+        boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
+
+        for (SirSearchResultElement sirSearchResultElement : searchResElements) {
+            SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
+
+            String descriptionURL;
+            try {
+                descriptionURL = createSensorDescriptionURL(sirSearchResultElement.getSensorIdInSir());
+            }
+            catch (UnsupportedEncodingException e) {
+                log.error("Could not encode URL", e);
+                descriptionURL = "ERROR ENCODING URL: " + e.getMessage();
+                // return new ExceptionResponse(new
+                // OwsExceptionReport("Could not encode sensor description URL!", e).getDocument());
+            }
+
+            sensorDescription.setSensorDescriptionURL(descriptionURL);
+
+            if (removeBBoxes)
+                sensorDescription.setBoundingBox(null);
+        }
+    }
+
+    private ArrayList<SirSearchResultElement> searchBySearchCriteria(SirSearchSensorRequest searchSensReq,
+                                                                     boolean fastEngineOnly) {
+        log.debug("Searching with criteria {} using only the fast engine: {}",
+                  searchSensReq.getSearchCriteria(),
+                  fastEngineOnly);
+
+        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
+
+        // utilize SOR if information is given
+        if (searchSensReq.getSearchCriteria().isUsingSOR()) {
+            // request the information from SOR and extend the search criteria with the result
+            Collection<SirSearchCriteria_Phenomenon> phenomena = searchSensReq.getSearchCriteria().getPhenomena();
+
+            SORTools sor = new SORTools();
+            Collection<SirSearchCriteria_Phenomenon> newPhenomena = sor.getMatchingPhenomena(phenomena);
+
+            // add all found phenomena to search criteria
+            log.debug("Adding phenomena to search criteria: {}", Arrays.toString(newPhenomena.toArray()));
+            phenomena.addAll(newPhenomena);
+        }
+
+        Collection<SirSearchResultElement> searchResElementsSolr = null;
+        Collection<SirSearchResultElement> searchResElementsPgSQL = null;
+
+        // search Solr
+        try {
+            SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+            searchResElementsSolr = dao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                     searchSensReq.isSimpleResponse());
+        }
+        catch (OwsExceptionReport e) {
+            log.error("Could not query data from search backend.", e);
+            searchResElementsSolr = new ArrayList<>();
+            // return new ExceptionResponse(e);
+        }
+
+        if ( !fastEngineOnly) {
+            // search PostGreSQL
+            try {
+                searchResElementsPgSQL = this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                         searchSensReq.isSimpleResponse());
+            }
+            catch (OwsExceptionReport e) {
+                log.error("Could not query data from search backend.", e);
+                searchResElementsPgSQL = new ArrayList<>();
+            }
+        }
+
+        // union the searches
+        Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
+        Collections.addAll(searchResElements, searchResElementsPgSQL.toArray(new SirSearchResultElement[] {}));
+        log.debug("Found {} results in Solr, {} in Postgres, so {} in total.",
+                  searchResElementsSolr.size(),
+                  searchResElementsPgSQL.size(),
+                  searchResElements.size());
+
+        return searchResElements;
+    }
+
+    private ArrayList<SirSearchResultElement> searchByIdentification(SirSearchSensorRequest searchSensReq) throws OwsExceptionReport {
+        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
+
+        for (SirSensorIdentification sensIdent : searchSensReq.getSensIdent()) {
+            if (sensIdent instanceof SirSensorIDInSir) {
+                // sensorID in SIR
+                SirSensorIDInSir sensorId = (SirSensorIDInSir) sensIdent;
+                SirSearchResultElement resultElement;
+
+                resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorIdInSir(),
+                                                                       searchSensReq.isSimpleResponse());
+                if (resultElement != null) {
+                    searchResElements.add(resultElement);
+                }
+            }
+            else {
+                // service description
+                SirServiceReference servDesc = (SirServiceReference) sensIdent;
+                SirSearchResultElement resultElement;
+                resultElement = this.searchSensDao.getSensorByServiceDescription(servDesc,
+                                                                                 searchSensReq.isSimpleResponse());
+                if (resultElement != null) {
+                    searchResElements.add(resultElement);
+                }
+            }
+        }
+
+        return searchResElements;
     }
 
     public void setEncodeURLs(boolean encodeURLs) {

@@ -98,11 +98,16 @@ public class SirSearchResultElement {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SearchResultElement: ");
-        sb.append(", SensorID in SIR: " + this.sensorIdInSir);
-        sb.append(", ServiceDescription: " + this.serviceReferences);
-        sb.append(", Last update: " + this.lastUpdate);
-        return sb.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("SirSearchResultElement [lastUpdate=");
+        builder.append(this.lastUpdate);
+        builder.append(", sensorDescription=");
+        builder.append(this.sensorDescription);
+        builder.append(", sensorIdInSir=");
+        builder.append(this.sensorIdInSir);
+        builder.append(", serviceReferences=");
+        builder.append(this.serviceReferences);
+        builder.append("]");
+        return builder.toString();
     }
 }

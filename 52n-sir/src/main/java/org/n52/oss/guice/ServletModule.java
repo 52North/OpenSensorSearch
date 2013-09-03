@@ -44,9 +44,6 @@ public class ServletModule extends JerseyServletModule {
         String basepath = getServletContext().getRealPath("/");
         bindConstant().annotatedWith(Names.named("context.basepath")).to(basepath);
 
-        // install(new FactoryModuleBuilder().implement(ApplicationConstants.class,
-        // PropertyApplicationConstants.class).build(ConfigFactory.class));
-
         bind(IJSExecute.class).to(RhinoJSExecute.class);
         bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
@@ -54,6 +51,7 @@ public class ServletModule extends JerseyServletModule {
         // bind the JAX-RS resources
         // http://code.google.com/p/google-guice/wiki/ServletModule
         // bind(HelloGuice.class);
+        // TODO move the binding to the respective modules
         bind(HarvestResource.class);
         bind(AutoCompleteSearch.class);
         bind(OpenSearch.class);

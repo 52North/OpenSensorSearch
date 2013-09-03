@@ -18,11 +18,19 @@ package org.n52.sir.json;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
  */
+@XmlRootElement
+@JsonInclude(Include.NON_NULL)
 public class SearchResultElement {
 
     private Date lastUpdate;
@@ -176,12 +184,83 @@ public class SearchResultElement {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SearchResultElement: ");
-        sb.append(", SensorID in SIR: " + this.sensorIdInSir);
-        sb.append(", ServiceDescription: " + this.serviceReferences);
-        sb.append(", Last update: " + this.lastUpdate);
-        return sb.toString();
+        final int maxLen = 3;
+        StringBuilder builder = new StringBuilder();
+        builder.append("SearchResultElement [");
+        if (this.lastUpdate != null) {
+            builder.append("lastUpdate=");
+            builder.append(this.lastUpdate);
+            builder.append(", ");
+        }
+        if (this.sensorDescription != null) {
+            builder.append("sensorDescription=");
+            builder.append(this.sensorDescription);
+            builder.append(", ");
+        }
+        if (this.sensorIdInSir != null) {
+            builder.append("sensorIdInSir=");
+            builder.append(this.sensorIdInSir);
+            builder.append(", ");
+        }
+        if (this.serviceReferences != null) {
+            builder.append("serviceReferences=");
+            builder.append(toString(this.serviceReferences, maxLen));
+            builder.append(", ");
+        }
+        if (this.classifiers != null) {
+            builder.append("classifiers=");
+            builder.append(toString(this.classifiers, maxLen));
+            builder.append(", ");
+        }
+        if (this.keywords != null) {
+            builder.append("keywords=");
+            builder.append(toString(this.keywords, maxLen));
+            builder.append(", ");
+        }
+        if (this.identifiers != null) {
+            builder.append("identifiers=");
+            builder.append(toString(this.identifiers, maxLen));
+            builder.append(", ");
+        }
+        if (this.contacts != null) {
+            builder.append("contacts=");
+            builder.append(toString(this.contacts, maxLen));
+            builder.append(", ");
+        }
+        if (this.inputs != null) {
+            builder.append("inputs=");
+            builder.append(toString(this.inputs, maxLen));
+            builder.append(", ");
+        }
+        if (this.outputs != null) {
+            builder.append("outputs=");
+            builder.append(toString(this.outputs, maxLen));
+            builder.append(", ");
+        }
+        if (this.beginDate != null) {
+            builder.append("beginDate=");
+            builder.append(this.beginDate);
+            builder.append(", ");
+        }
+        if (this.endDate != null) {
+            builder.append("endDate=");
+            builder.append(this.endDate);
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
+    private String toString(Collection< ? > collection, int maxLen) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        int i = 0;
+        for (Iterator< ? > iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+            if (i > 0)
+                builder.append(", ");
+            builder.append(iterator.next());
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

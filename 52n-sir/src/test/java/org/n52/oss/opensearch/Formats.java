@@ -25,7 +25,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -42,25 +41,21 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.n52.oss.GuiceUtil;
-import org.n52.oss.Util;
 import org.n52.oss.config.ApplicationConstants;
 import org.n52.oss.opensearch.listeners.JsonListener;
 import org.n52.oss.opensearch.listeners.OpenSearchListener;
+import org.n52.oss.util.GuiceUtil;
+import org.n52.oss.util.IgnoreDateValueComparator;
+import org.n52.oss.util.Util;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ds.ISearchSensorDAO;
-import org.n52.sir.json.MapperFactory;
 import org.n52.sir.json.SearchResult;
 import org.n52.sir.listener.SearchSensorListener;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.JSONCompareResult;
-import org.skyscreamer.jsonassert.comparator.DefaultComparator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -142,9 +137,7 @@ public class Formats {
         Response json = this.opensearch.json(MediaType.APPLICATION_JSON, queryUriInfo);
 
         // compare to file
-        StringWriter writer = new StringWriter();
-        MapperFactory.getMapper().writeValue(writer, json.getEntity());
-        String actual = writer.toString();
+        String actual = Util.entityToString(json);
         String expected = Util.readResourceFile("/responses/json/searchResult.json");
         JSONAssert.assertEquals(expected, actual, new IgnoreDateValueComparator(JSONCompareMode.LENIENT));
 
@@ -158,29 +151,6 @@ public class Formats {
                    actualResult.getResults().iterator().next().getSensorIdInSir(),
                    is(equalTo(sensorIdentifier)));
         assertThat("source is full URL path", actualResult.getSource(), is(equalTo(osConfig.getWebsiteHome())));
-    }
-
-    private static class IgnoreDateValueComparator extends DefaultComparator {
-        public IgnoreDateValueComparator(JSONCompareMode mode) {
-            super(mode);
-        }
-
-        @SuppressWarnings("unused")
-        private static Logger log = LoggerFactory.getLogger(IgnoreDateValueComparator.class);
-
-        @Override
-        public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
-            // log.debug("Compare {} with {}", expectedValue, actualValue);
-            if (prefix.equals("date")) {
-                if ( !expectedValue.getClass().equals(Long.class))
-                    result.fail("date field is not a long.");
-                if ( !actualValue.getClass().equals(Long.class))
-                    result.fail("date field is not a long.");
-            }
-            else
-                super.compareValues(prefix, expectedValue, actualValue, result);
-        }
-
     }
 
     // TODO test for KML

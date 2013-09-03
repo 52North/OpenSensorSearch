@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package org.n52.oss;
+package org.n52.oss.util;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.ws.rs.core.Response;
+
+import org.n52.sir.json.MapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class Util {
 
@@ -62,6 +69,14 @@ public class Util {
         }
 
         return sb.toString();
+    }
+
+    public static String entityToString(Response response) throws JsonGenerationException,
+            JsonMappingException,
+            IOException {
+        StringWriter writer = new StringWriter();
+        MapperFactory.getMapper().writeValue(writer, response.getEntity());
+        return writer.toString();
     }
 
 }

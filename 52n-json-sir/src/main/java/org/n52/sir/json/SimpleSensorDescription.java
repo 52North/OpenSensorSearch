@@ -16,10 +16,13 @@
 
 package org.n52.sir.json;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author Daniel Nüst
  * 
  */
+@XmlRootElement
 public class SimpleSensorDescription {
 
     private BoundingBox boundingBox;

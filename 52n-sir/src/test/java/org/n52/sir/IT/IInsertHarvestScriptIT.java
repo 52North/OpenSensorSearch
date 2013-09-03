@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.oss.GuiceUtil;
+import org.n52.oss.util.GuiceUtil;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertHarvestScriptDAO;

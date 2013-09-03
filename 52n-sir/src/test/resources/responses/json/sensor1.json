@@ -1,0 +1,9 @@
+{
+  "lastUpdate" : 0,
+  "sensorDescription" : {
+    "boundingBox" : null,
+    "text" : "test description",
+    "url" : "http://a.test.url"
+  },
+  "sensorIdInSir" : "1"
+}

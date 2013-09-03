@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.oss;
+package org.n52.oss.util;
 
 import java.io.IOException;
 import java.util.Properties;

@@ -16,7 +16,6 @@
 
 package org.n52.oss.opensearch.listeners;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -24,26 +23,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.n52.oss.json.Converter;
 import org.n52.oss.opensearch.OpenSearchConfigurator;
 import org.n52.oss.opensearch.OpenSearchConstants;
-import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirService;
-import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
-import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
-import org.n52.sir.json.BoundingBox;
-import org.n52.sir.json.MapperFactory;
 import org.n52.sir.json.SearchResult;
 import org.n52.sir.json.SearchResultElement;
-import org.n52.sir.json.Service;
-import org.n52.sir.json.ServiceReference;
-import org.n52.sir.json.SimpleSensorDescription;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 public class JsonListener implements OpenSearchListener {
@@ -56,14 +45,14 @@ public class JsonListener implements OpenSearchListener {
 
     private OpenSearchConfigurator conf;
 
-    private ObjectMapper mapper;
+    private Converter converter;
 
     @Inject
     public JsonListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
 
-        this.mapper = MapperFactory.getMapper();
+        this.converter = new Converter();
 
         log.info("NEW {}", this);
     }
@@ -89,97 +78,11 @@ public class JsonListener implements OpenSearchListener {
                                                new Date());
 
         for (SirSearchResultElement sirSearchResultElement : searchResult) {
-            SearchResultElement element;
-            if (sirSearchResultElement.getSensorDescription() instanceof SirDetailedSensorDescription) {
-                SirDetailedSensorDescription desc = (SirDetailedSensorDescription) sirSearchResultElement.getSensorDescription();
-
-                element = createDetailedResult(desc);
-            }
-            else {
-                element = createResult(sirSearchResultElement);
-            }
-
+            SearchResultElement element = this.converter.convert(sirSearchResultElement, true);
             result.addResult(element);
         }
 
-        // try {
-        // this.mapper.writeValue(writer, result);
-        // }
-        // catch (JsonGenerationException e) {
-        // log.error("Json Exception", e);
-        // return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e).build();
-        // }
-        // catch (JsonMappingException e) {
-        // log.error("Json Exception", e);
-        // return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e).build();
-        // }
-        // catch (IOException e) {
-        // log.error("Error outputting feed to writer", e);
-        // return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e).build();
-        // }
-
         return Response.ok(result).build();
-    }
-
-    private SearchResultElement createResult(SirSearchResultElement sirSearchResultElement) {
-        SearchResultElement sre = new SearchResultElement();
-
-        sre.setSensorIdInSir(sirSearchResultElement.getSensorIdInSir());
-        sre.setLastUpdate(sirSearchResultElement.getLastUpdate());
-
-        Collection<ServiceReference> sr = new ArrayList<>();
-        Collection<SirServiceReference> serviceReferences = sirSearchResultElement.getServiceReferences();
-
-        if (serviceReferences != null) {
-            for (SirServiceReference sirServiceReference : serviceReferences) {
-                SirService service = sirServiceReference.getService();
-                sr.add(new ServiceReference(new Service(service.getUrl(), service.getType()),
-                                            sirServiceReference.getServiceSpecificSensorId()));
-            }
-            sre.setServiceReferences(sr);
-        }
-
-        if (sirSearchResultElement.getSensorDescription() instanceof SirSimpleSensorDescription) {
-            SirSimpleSensorDescription d = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
-
-            SirBoundingBox b = d.getBoundingBox();
-            BoundingBox bbox = null;
-            if (b != null) {
-                bbox = new BoundingBox(b.getEast(), b.getSouth(), b.getWest(), b.getNorth());
-                bbox.setSrid(b.getSrid());
-            }
-            
-            String text = Tools.extractDescriptionText(d);
-            SimpleSensorDescription sd = new SimpleSensorDescription(d.getSensorDescriptionURL(), text, bbox);
-            sre.setSensorDescription(sd);
-        }
-
-        return sre;
-    }
-
-    private SearchResultElement createDetailedResult(SirDetailedSensorDescription desc) {
-        log.debug("Adding a detailed sensor profile");
-
-        SearchResultElement element = new SearchResultElement();
-
-        element.setSensorIdInSir(desc.getId());
-        log.trace("Begin date:" + desc.getBegineDate());
-        element.setBeginDate(desc.getBegineDate());
-        element.setEndDate(desc.getEndDate());
-        if (desc.getInputs() != null)
-            element.setInputs(desc.getInputs());
-        if (desc.getOutputs() != null)
-            element.setOutputs(desc.getOutputs());
-        if (desc.getIdentifiers() != null)
-            element.setIdentifiers(desc.getIdentifiers());
-        if (desc.getClassifiers() != null)
-            element.setClassifiers(desc.getClassifiers());
-        if (desc.getContacts() != null)
-            element.setContacts(desc.getContacts());
-        if (desc.getKeywords() != null)
-            element.setKeywords(desc.getKeywords());
-
-        return element;
     }
 
     @Override

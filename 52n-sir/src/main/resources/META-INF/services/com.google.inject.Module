@@ -10,3 +10,4 @@ org.n52.oss.opensearch.listeners.ListenerModule
 org.n52.oss.opensearch.listeners.xml.ListenerModule
 org.n52.oss.opensearch.listeners.feed.ListenerModule
 #org.n52.sir.catalogconnection.CatalogConnectionModule
+org.n52.oss.rest.RestModule

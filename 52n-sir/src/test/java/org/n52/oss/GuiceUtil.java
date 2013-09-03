@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package org.n52.sir.IT;
+package org.n52.oss;
 
 import java.io.IOException;
 import java.util.Properties;
 
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.IT.GetCapabilitiesIT;
 import org.n52.sir.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,11 @@ public class GuiceUtil {
         return i.getInstance(Client.class);
     }
 
+    /**
+     * binds all the properties files as a side effect
+     * 
+     * @return
+     */
     public static SirConfigurator configureSirConfigurator() {
         Injector i = Guice.createInjector(new AbstractModule() {
 
@@ -65,8 +71,8 @@ public class GuiceUtil {
                 try {
                     Properties sirProps = new Properties();
                     Properties dbProps = new Properties();
-                    sirProps.load(GetCapabilitiesIT.class.getResourceAsStream("/prop/sir.properties"));
-                    dbProps.load(GetCapabilitiesIT.class.getResourceAsStream("/prop/db.properties"));
+                    sirProps.load(GuiceUtil.class.getResourceAsStream("/prop/sir.properties"));
+                    dbProps.load(GuiceUtil.class.getResourceAsStream("/prop/db.properties"));
                     Names.bindProperties(binder(), sirProps);
                     Names.bindProperties(binder(), dbProps);
                 }
@@ -82,6 +88,30 @@ public class GuiceUtil {
         SirConfigurator sc = i.getInstance(SirConfigurator.class);
         log.info("SirConfigurator: {}", sc);
         return sc;
+    }
+
+    public static Injector bindPropertiesFiles() {
+        Injector i = Guice.createInjector(new AbstractModule() {
+
+            @Override
+            protected void configure() {
+                try {
+                    Properties sirProps = new Properties();
+                    Properties dbProps = new Properties();
+                    sirProps.load(GetCapabilitiesIT.class.getResourceAsStream("/prop/sir.properties"));
+                    dbProps.load(GetCapabilitiesIT.class.getResourceAsStream("/prop/db.properties"));
+                    Names.bindProperties(binder(), sirProps);
+                    Names.bindProperties(binder(), dbProps);
+
+                    log.info("Bound properties for tests: \n\t{}\n\t{}", sirProps.toString(), dbProps.toString());
+                }
+                catch (IOException e) {
+                    log.error("Could not bind properties.", e);
+                }
+            }
+        });
+        
+        return i;
     }
 
 }

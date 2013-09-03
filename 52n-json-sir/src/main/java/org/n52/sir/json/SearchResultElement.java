@@ -53,11 +53,11 @@ public class SearchResultElement {
         this.classifiers = classifiers;
     }
 
-    public Collection< ? extends Object> getIdentifiers() {
+    public Collection<String> getIdentifiers() {
         return this.identifiers;
     }
 
-    public void setIdentifiers(Collection< ? extends Object> identifiers) {
+    public void setIdentifiers(Collection<String> identifiers) {
         this.identifiers = identifiers;
     }
 
@@ -85,7 +85,7 @@ public class SearchResultElement {
         this.outputs = outputs;
     }
 
-    private Collection< ? extends Object> identifiers;
+    private Collection<String> identifiers;
     private Collection<String> contacts;
     private Collection<String> inputs;
     private Collection<String> outputs;

@@ -24,6 +24,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.client.ConnectToCatalogBean;
 import org.n52.sir.client.DisconnectFromCatalogBean;

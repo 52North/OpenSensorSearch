@@ -51,11 +51,10 @@ public class SirModule extends AbstractModule {
     }
 
     private static Properties loadProperties(String name) throws IOException {
-        log.trace("Loading properties for {}", name);
+        URL url = ConfigModule.class.getResource(name);
+        log.trace("Loading properties for {} from {}", name, url);
 
         Properties properties = new Properties();
-        ClassLoader loader = ConfigModule.class.getClassLoader();
-        URL url = loader.getResource(name);
         properties.load(url.openStream());
 
         log.trace("Loaded properties: {}", properties);

@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.junit.BeforeClass;
-import org.n52.sir.IT.GuiceUtil;
+import org.n52.oss.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

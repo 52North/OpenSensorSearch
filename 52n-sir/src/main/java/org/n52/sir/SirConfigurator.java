@@ -70,7 +70,7 @@ public class SirConfigurator {
     /**
      * 
      */
-    private static final String ACCEPTED_SERVICE_VERSIONS = "ACCEPTED_SERVICE_VERSIONS";
+    private static final String ACCEPTED_SERVICE_VERSIONS = "oss.sir.acceptedVersions";
 
     /**
      * propertyname of capabilities skeleton
@@ -120,7 +120,7 @@ public class SirConfigurator {
     /*
      * 
      */
-    private static final String FULL_SERVICE_PATH = "FULL_SERVICE_PATH";
+    private static final String FULL_SERVICE_PATH = "oss.serviceurl";
 
     /**
      * propertyname of get request decoder
@@ -190,7 +190,7 @@ public class SirConfigurator {
     /**
      * propertyname of the SIR service version
      */
-    private static final String SERVICEVERSION = "SERVICEVERSION";
+    private static final String SERVICEVERSION = "oss.sir.version";
 
     /**
      * propertyname of SLOT_INIT_FILENAME property

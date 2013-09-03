@@ -31,7 +31,7 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.sir.IT.GuiceUtil;
+import org.n52.oss.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;

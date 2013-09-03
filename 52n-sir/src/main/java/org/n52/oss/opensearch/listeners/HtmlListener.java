@@ -182,7 +182,7 @@ public class HtmlListener implements OpenSearchListener {
 
         writer.print("<div class=\"search-result-header\">");
         writer.print("<a href=\"");
-        writer.print(this.conf.getHomeUrl());
+        writer.print(this.conf.getWebsiteHome());
         writer.print("\" title=\"Home\">");
         writer.print(this.searchResultHeadline);
         writer.print("</a>");
@@ -218,7 +218,7 @@ public class HtmlListener implements OpenSearchListener {
 
         // dropdown for response format
         writer.print("<form action=\"");
-        writer.print(this.conf.getFullServicePath() + this.conf.getOpenSearchPath());
+        writer.print(this.conf.getWebsiteHome() + this.conf.getOpenSearchPath());
         writer.print("\" method=\"get\">");
         writer.print("<input type=\"hidden\" name=\"");
         writer.print(OpenSearchConstants.QUERY_PARAM);

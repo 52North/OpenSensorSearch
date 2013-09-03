@@ -23,14 +23,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -39,12 +37,12 @@ import org.n52.sir.request.SirSearchSensorRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirSearchSensorResponse;
-import org.n52.sir.util.ListenersTools;
 import org.n52.sir.util.SORTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * @author Jan Schulte, Daniel Nüst
@@ -60,7 +58,17 @@ public class SearchSensorListener implements ISirRequestListener {
 
     private ISearchSensorDAO searchSensDao;
 
-    private String urlCharacterEncoding = null;
+    @Inject
+    @Named("oss.characterencoding")
+    private String urlCharacterEncoding;
+
+    @Inject
+    @Named("oss.sir.serviceurl")
+    private String sirUrl;
+
+    @Inject
+    @Named("oss.sir.version")
+    private String sirVersion;
 
     /**
      * TODO implement injection mechanism for search DAO so that only that what needed is injected, not the
@@ -69,15 +77,40 @@ public class SearchSensorListener implements ISirRequestListener {
      * @throws OwsExceptionReport
      */
     @Inject
-    public SearchSensorListener(SirConfigurator config) throws OwsExceptionReport { // public
-                                                                                    // SearchSensorListener(ISearchSensorDAO
-                                                                                    // searchDao) throws
-                                                                                    // OwsExceptionReport {
-        // TODO fix injection so that getInstance() is not needed here anymore
-        this.urlCharacterEncoding = config.getInstance().getCharacterEncoding();
+    public SearchSensorListener(ISearchSensorDAO dao) throws OwsExceptionReport {
+        this.searchSensDao = dao;
+        log.debug("NEW {}", this);
+    }
 
-        IDAOFactory f = config.getInstance().getFactory();
-        this.searchSensDao = f.searchSensorDAO();
+    /**
+     * 
+     * creates a GET request to retrieve the sensor description of the given sensor,
+     * 
+     * @param sensorIdInSir
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    private String createSensorDescriptionURL(String sensorIdInSir) throws UnsupportedEncodingException {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.sirUrl);
+        sb.append("?");
+        sb.append(SirConstants.SERVICEPARAM);
+        sb.append("=");
+        sb.append(SirConstants.SERVICE_NAME);
+        sb.append("&");
+        sb.append(SirConstants.GETVERSIONPARAM);
+        sb.append("=");
+        sb.append(this.sirVersion);
+        sb.append("&");
+        sb.append(SirConstants.GETREQUESTPARAM);
+        sb.append("=");
+        sb.append(SirConstants.Operations.DescribeSensor.name());
+        sb.append("&");
+        sb.append(SirConstants.GetDescSensorParams.SENSORIDINSIR.name());
+        sb.append("=");
+        sb.append(sensorIdInSir);
+
+        return sb.toString();
     }
 
     @Override
@@ -131,41 +164,53 @@ public class SearchSensorListener implements ISirRequestListener {
                 }
             }
         }
-        else {
-            // search by searchCriteria
+        else { // search by searchCriteria
+               // utilize SOR if information is given
+            if (searchSensReq.getSearchCriteria().isUsingSOR()) {
+                // request the information from SOR and extend the search criteria with the result
+                Collection<SirSearchCriteria_Phenomenon> phenomena = searchSensReq.getSearchCriteria().getPhenomena();
+
+                SORTools sor = new SORTools();
+                Collection<SirSearchCriteria_Phenomenon> newPhenomena = sor.getMatchingPhenomena(phenomena);
+
+                // add all found phenomena to search criteria
+                log.debug("Adding phenomena to search criteria: {}", Arrays.toString(newPhenomena.toArray()));
+                phenomena.addAll(newPhenomena);
+            }
+
+            Collection<SirSearchResultElement> searchResElementsSolr = null;
+            Collection<SirSearchResultElement> searchResElementsPgSQL = null;
+
+            // search Solr
             try {
-                // utilize SOR if information is given
-                if (searchSensReq.getSearchCriteria().isUsingSOR()) {
-                    // request the information from SOR and extend the search criteria with the result
-                    Collection<SirSearchCriteria_Phenomenon> phenomena = searchSensReq.getSearchCriteria().getPhenomena();
-
-                    SORTools sor = new SORTools();
-                    Collection<SirSearchCriteria_Phenomenon> newPhenomena = sor.getMatchingPhenomena(phenomena);
-
-                    // add all found phenomena to search criteria
-                    if (log.isDebugEnabled())
-                        log.debug("Adding phenomena to search criteria: " + Arrays.toString(newPhenomena.toArray()));
-                    phenomena.addAll(newPhenomena);
-                }
-
-                // search Solr
                 SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-                ArrayList<SirSearchResultElement> searchResElementsSolr = (ArrayList<SirSearchResultElement>) dao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                                                               searchSensReq.isSimpleResponse());
-                // search PostGreSQL
-                ArrayList<SirSearchResultElement> searchResElementsSir = (ArrayList<SirSearchResultElement>) this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                                                                             searchSensReq.isSimpleResponse());
-
-                // union the searches
-                log.debug("Found {} results in Solr, {} in Postgres.",
-                          searchResElementsSolr.size(),
-                          searchResElementsSir.size());
-                Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
-                Collections.addAll(searchResElements, searchResElementsSir.toArray(new SirSearchResultElement[] {}));
+                searchResElementsSolr = dao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                         searchSensReq.isSimpleResponse());
             }
             catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e);
+                log.error("Could not query data from search backend.", e);
+                searchResElementsSolr = new ArrayList<>();
+                // return new ExceptionResponse(e);
             }
+
+            // search PostGreSQL
+            try {
+                searchResElementsPgSQL = this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                         searchSensReq.isSimpleResponse());
+
+            }
+            catch (OwsExceptionReport e) {
+                log.error("Could not query data from search backend.", e);
+                searchResElementsPgSQL = new ArrayList<>();
+            }
+
+            // union the searches
+            Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
+            Collections.addAll(searchResElements, searchResElementsPgSQL.toArray(new SirSearchResultElement[] {}));
+            log.debug("Found {} results in Solr, {} in Postgres, so {} in total.",
+                      searchResElementsSolr.size(),
+                      searchResElementsPgSQL.size(),
+                      searchResElements.size());
         }
 
         // if a simple response, add the corresponding GET URLs and bounding boxes
@@ -181,7 +226,7 @@ public class SearchSensorListener implements ISirRequestListener {
 
                 String descriptionURL;
                 try {
-                    descriptionURL = ListenersTools.createSensorDescriptionURL(sirSearchResultElement.getSensorIdInSir());
+                    descriptionURL = createSensorDescriptionURL(sirSearchResultElement.getSensorIdInSir());
 
                     if (this.encodeURLs) {
                         // must be encoded for XML:
@@ -212,4 +257,22 @@ public class SearchSensorListener implements ISirRequestListener {
     public void setEncodeURLs(boolean encodeURLs) {
         this.encodeURLs = encodeURLs;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SearchSensorListener [encodeURLs=");
+        builder.append(this.encodeURLs);
+        builder.append(", urlCharacterEncoding=");
+        builder.append(this.urlCharacterEncoding);
+        builder.append(", sirUrl=");
+        builder.append(this.sirUrl);
+        builder.append(", sirVersion=");
+        builder.append(this.sirVersion);
+        builder.append(", searchSensDao=");
+        builder.append(this.searchSensDao);
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

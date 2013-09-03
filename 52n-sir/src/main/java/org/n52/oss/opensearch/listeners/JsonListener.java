@@ -76,12 +76,12 @@ public class JsonListener implements OpenSearchListener {
         String searchText = params.getFirst(OpenSearchConstants.QUERY_PARAM);
 
         String responseDescription = "These are the search hits for the keyword(s) '" + searchText
-                + "' from Open Sensor Search (" + this.conf.getFullServicePath().toString() + ").";
+                + "' from Open Sensor Search (" + this.conf.getWebsiteHome().toString() + ").";
         String responseURL = this.conf.getFullOpenSearchPath() + "?" + OpenSearchConstants.QUERY_PARAM + "="
                 + searchText + "&" + OpenSearchConstants.FORMAT_PARAM + "=" + MIME_TYPE;
 
         // build the response object
-        SearchResult result = new SearchResult(this.conf.getFullServicePath().toString(),
+        SearchResult result = new SearchResult(this.conf.getWebsiteHome().toString(),
                                                searchText,
                                                responseURL,
                                                responseDescription,
@@ -130,18 +130,25 @@ public class JsonListener implements OpenSearchListener {
         Collection<ServiceReference> sr = new ArrayList<>();
         Collection<SirServiceReference> serviceReferences = sirSearchResultElement.getServiceReferences();
 
-        for (SirServiceReference sirServiceReference : serviceReferences) {
-            SirService service = sirServiceReference.getService();
-            sr.add(new ServiceReference(new Service(service.getUrl(), service.getType()),
-                                        sirServiceReference.getServiceSpecificSensorId()));
+        if (serviceReferences != null) {
+            for (SirServiceReference sirServiceReference : serviceReferences) {
+                SirService service = sirServiceReference.getService();
+                sr.add(new ServiceReference(new Service(service.getUrl(), service.getType()),
+                                            sirServiceReference.getServiceSpecificSensorId()));
+            }
+            sre.setServiceReferences(sr);
         }
-        sre.setServiceReferences(sr);
 
         if (sirSearchResultElement.getSensorDescription() instanceof SirSimpleSensorDescription) {
             SirSimpleSensorDescription d = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
+
             SirBoundingBox b = d.getBoundingBox();
-            BoundingBox bbox = new BoundingBox(b.getEast(), b.getSouth(), b.getWest(), b.getNorth());
-            bbox.setSrid(b.getSrid());
+            BoundingBox bbox = null;
+            if (b != null) {
+                bbox = new BoundingBox(b.getEast(), b.getSouth(), b.getWest(), b.getNorth());
+                bbox.setSrid(b.getSrid());
+            }
+            
             String text = Tools.extractDescriptionText(d);
             SimpleSensorDescription sd = new SimpleSensorDescription(d.getSensorDescriptionURL(), text, bbox);
             sre.setSensorDescription(sd);

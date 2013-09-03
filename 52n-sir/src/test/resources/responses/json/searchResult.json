@@ -1,0 +1,26 @@
+{
+  "source" : "http://localhost:8080/OpenSensorSearch",
+  "query" : "myRandom test query",
+  "url" : "http://localhost:8080/OpenSensorSearch/search?q=myRandom test query&format=application/json",
+  "description" : "These are the search hits for the keyword(s) 'myRandom test query' from Open Sensor Search (http://localhost:8080/OpenSensorSearch).",
+  "author" : "52°North",
+  "date" : 1378199192744,
+  "results" : [ {
+    "lastUpdate" : 0,
+    "sensorDescription" : {
+      "boundingBox" : null,
+      "text" : "description",
+      "url" : "url"
+    },
+    "sensorIdInSir" : "my:mockup:id:42",
+    "serviceReferences" : null,
+    "classifiers" : null,
+    "keywords" : null,
+    "identifiers" : null,
+    "contacts" : null,
+    "inputs" : null,
+    "outputs" : null,
+    "beginDate" : null,
+    "endDate" : null
+  } ]
+}

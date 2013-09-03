@@ -84,12 +84,12 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
 
         SyndImage image = new SyndImageImpl();
         image.setUrl("http://52north.org/templates/52n/images/52n-logo.gif");
-        image.setLink(this.conf.getFullServicePath().toString());
+        image.setLink(this.conf.getWebsiteHome().toString());
         image.setTitle("52°North Logo");
         image.setDescription("Logo of the provider of Open Sensor Search: 52°North");
         feed.setImage(image);
         feed.setDescription("These are the sensors for the keywords '" + query + "' from Open Sensor Search ("
-                + this.conf.getFullServicePath().toString() + ").");
+                + this.conf.getWebsiteHome().toString() + ").");
 
         List<SyndEntry> entries = new ArrayList<>();
         for (SirSearchResultElement ssre : searchResult) {

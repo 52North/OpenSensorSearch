@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.datastructure;
 
 /**
@@ -26,6 +27,17 @@ public class SirSimpleSensorDescription extends SirSensorDescription {
     private String descriptionText;
 
     private String sensorDescriptionURL;
+
+    public SirSimpleSensorDescription() {
+        //
+    }
+
+    public SirSimpleSensorDescription(SirBoundingBox boundingBox, String descriptionText, String sensorDescriptionURL) {
+        super();
+        this.boundingBox = boundingBox;
+        this.descriptionText = descriptionText;
+        this.sensorDescriptionURL = sensorDescriptionURL;
+    }
 
     public SirBoundingBox getBoundingBox() {
         return this.boundingBox;
@@ -53,12 +65,15 @@ public class SirSimpleSensorDescription extends SirSensorDescription {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SimpleSensorDescription [url: ");
-        sb.append(this.sensorDescriptionURL);
-        sb.append(", descriptionText: ");
-        sb.append(this.descriptionText);
-        return sb.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("SirSimpleSensorDescription [boundingBox=");
+        builder.append(this.boundingBox);
+        builder.append(", descriptionText=");
+        builder.append(this.descriptionText);
+        builder.append(", sensorDescriptionURL=");
+        builder.append(this.sensorDescriptionURL);
+        builder.append("]");
+        return builder.toString();
     }
 
 }

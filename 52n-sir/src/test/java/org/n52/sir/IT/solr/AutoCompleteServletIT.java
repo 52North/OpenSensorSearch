@@ -45,7 +45,7 @@ public class AutoCompleteServletIT {
 	private static Logger log = LoggerFactory
 			.getLogger(AutoCompleteServletIT.class);
 
-	@Before
+	//@Before
 	public  void insertSensor() throws OwsExceptionReport, XmlException, IOException {
 		File sensor_status = new File(ClassLoader.getSystemResource(
 				"Requests/testsensor.xml").getFile());
@@ -59,7 +59,7 @@ public class AutoCompleteServletIT {
 	@Test
 	public  void testServlet() throws ClientProtocolException, IOException {
 		org.apache.http.client.HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/autocomplete?text=te");
+		HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/suggest?q=te");
 		
 		HttpResponse response = client.execute(get);
 		StringBuilder builder = new StringBuilder();
@@ -69,10 +69,10 @@ public class AutoCompleteServletIT {
 			builder.append(s);
 		
 		log.debug(builder.toString());
-		
+		System.out.println("result:"+builder.toString());
 	}
-	@After
-	public  void deleteTestSensor() throws SolrServerException, IOException{
-		new  SolrConnection().deleteByQuery("");
-	}
+//	@After
+//	public  void deleteTestSensor() throws SolrServerException, IOException{
+//		new  SolrConnection().deleteByQuery("");
+//	}
 }

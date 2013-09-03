@@ -20,16 +20,25 @@ $(document).ready(function() {
 		if (written.toString().length > 1) {
 			var tokens = written.toString().split(" ");
 			var first = tokens.slice(0, tokens.length - 1).join(" ");
-			var value = "/OpenSensorSearch/autocomplete?text=" + tokens[tokens.length - 1];
-			$.get(value, function(data) {
-				var d = data.toString();
-				var available = d.split(",");
-				for ( var i = 0; i < available.length; i++)
-					available[i] = first + " " + available[i];
-				$(".search-input").autocomplete({
-					source : available
-				});
+			var value = "/OpenSensorSearch/suggest?q=" + tokens[tokens.length - 1];
+			$.ajax({
+				type:"GET",
+				url:value,
+				success:function(data){
+					
+				},
+				error:function(err){
+					var d = err.responseText.toString();
+					d = d.substring(1,d.length);
+					d = d.substring(0,d.length-1);
+					var available = d.split(",");
+					for ( var i = 0; i < available.length; i++)
+						available[i] = first + " " + available[i];
+					$(".search-input").autocomplete({
+						source : available
+					});
+				}
 			});
 		}
-	})
+	});
 });

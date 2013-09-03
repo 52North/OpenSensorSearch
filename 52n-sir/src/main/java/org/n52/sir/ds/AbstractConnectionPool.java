@@ -30,14 +30,8 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractConnectionPool {
 
-    /**
-     * the logger, used to log exceptions and additionaly information
-     */
-    protected static Logger log = LoggerFactory.getLogger(AbstractConnectionPool.class);
+    private static Logger log = LoggerFactory.getLogger(AbstractConnectionPool.class);
 
-    /**
-     * data source
-     */
     protected BasicDataSource dataSource = new BasicDataSource();
 
     /**

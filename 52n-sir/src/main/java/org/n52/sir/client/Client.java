@@ -30,6 +30,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
@@ -127,11 +128,7 @@ public class Client {
                 log.debug("Client connecting via POST to " + uri);
             HttpPost postMethod = new HttpPost(uri.toString());
 
-            // postMethod.setRequestEntity(new StringRequestEntity(request, REQUEST_CONTENT_TYPE,
-            // REQUEST_CONTENT_CHARSET));
-            postMethod.setEntity(new StringEntity(request,
-                                                  SirConstants.REQUEST_CONTENT_TYPE,
-                                                  SirConstants.REQUEST_CONTENT_CHARSET));
+            postMethod.setEntity(new StringEntity(request, ContentType.create(SirConstants.REQUEST_CONTENT_TYPE)));
 
             method = postMethod;
         }

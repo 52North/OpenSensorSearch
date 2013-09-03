@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.util.Properties;
@@ -36,24 +37,15 @@ import org.n52.sir.ows.OwsExceptionReport;
 /**
  * DAO factory for PostgreSQL
  * 
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class PGSQLDAOFactory implements IDAOFactory {
 
-    /**
-     * ConnectionPool, which contains connections to the DB
-     */
-    private PGConnectionPool cpool;
+    protected PGConnectionPool cpool;
 
-    /**
-     * constructor
-     * 
-     * @param daoProps
-     *        Properties of the Dao config file
-     * @throws OwsExceptionReport
-     */
-    public PGSQLDAOFactory(Properties daoProps) throws OwsExceptionReport {
+    @Deprecated
+    public PGSQLDAOFactory(Properties daoProps) {
 
         // initializeDAOConstants;
         PGDAOConstants.getInstance(daoProps);
@@ -66,6 +58,10 @@ public class PGSQLDAOFactory implements IDAOFactory {
         int maxcon = PGDAOConstants.maxcon;
         // initialize PGConnectionPool
         this.cpool = new PGConnectionPool(connection, user, password, driver, initcon, maxcon);
+    }
+
+    public PGSQLDAOFactory(String connectionString, String user, String password, String driver, int initcon, int maxcon) {
+        this.cpool = new PGConnectionPool(connectionString, user, password, driver, initcon, maxcon);
     }
 
     @Override
@@ -119,19 +115,24 @@ public class PGSQLDAOFactory implements IDAOFactory {
     }
 
     @Override
+    @Deprecated
     public ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport {
         return new PGSQLSearchSensorDAO(this.cpool);
     }
 
-	@Override
-	public IInsertHarvestScriptDAO insertHarvestScriptDAO() {
-		return new PGSQLInsertHarvestScriptDAO(this.cpool);
-	}
-	public IInsertRemoteHarvestServer insertRemoteHarvestSensor(){
-		return new PGSQLInsertRemoteHarvestServer(this.cpool);
-	}
-	public IUserAccountDAO userAccountDAO(){
-		return new PGSQLUserAccountDAO(this.cpool);
-	}
+    @Override
+    public IInsertHarvestScriptDAO insertHarvestScriptDAO() {
+        return new PGSQLInsertHarvestScriptDAO(this.cpool);
+    }
+
+    @Override
+    public IInsertRemoteHarvestServer insertRemoteHarvestSensor() {
+        return new PGSQLInsertRemoteHarvestServer(this.cpool);
+    }
+
+    @Override
+    public IUserAccountDAO userAccountDAO() {
+        return new PGSQLUserAccountDAO(this.cpool);
+    }
 
 }

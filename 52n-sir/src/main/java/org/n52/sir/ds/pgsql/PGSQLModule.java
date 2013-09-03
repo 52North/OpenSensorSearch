@@ -41,6 +41,7 @@ public class PGSQLModule extends AbstractModule {
 
             log.debug("Loaded and bound properties:\n\t{}", properties);
 
+            // leftover of old configuration: constants must be initialized
             PGDAOConstants.getInstance(properties);
         }
         catch (IOException e) {

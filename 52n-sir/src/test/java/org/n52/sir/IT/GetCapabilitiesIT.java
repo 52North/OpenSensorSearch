@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
 
 public class GetCapabilitiesIT {
 
-    static Client client;
+    private static Client client;
 
     @BeforeClass
     public static void setUp() {

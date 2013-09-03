@@ -19,6 +19,7 @@ package org.n52.sir;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
@@ -312,6 +313,7 @@ public class RequestOperator {
         return response;
     }
 
+    @Deprecated
     private void addListenersByClassname(Collection<String> listeners) {
         for (String classname : listeners) {
             log.debug("Loading {} by classname", classname);
@@ -323,30 +325,30 @@ public class RequestOperator {
 
                 Class< ? >[] constrArgs = {};
 
-                Object[] args = {};
-
                 // get Constructor of this class with matching parameter types
                 Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
 
-                addRequestListener(constructor.newInstance(args));
+                ISirRequestListener instance = constructor.newInstance(new Object[] {});
+                addRequestListener(instance);
             }
-            catch (ClassNotFoundException cnfe) {
-                log.error("Error while loading RequestListeners, required class could not be loaded: "
-                        + cnfe.toString());
-            }
-            catch (NoSuchMethodException nsme) {
-                log.error("Error while loading RequestListeners," + " no required constructor available: "
-                        + nsme.toString());
-            }
-            catch (InvocationTargetException ite) {
-                log.error("The instatiation of a RequestListener failed: " + ite.toString());
-            }
-            catch (InstantiationException ie) {
-                log.error("The instatiation of a RequestListener failed: " + ie.toString());
-            }
-            catch (IllegalAccessException iace) {
-                log.error("The instatiation of a RequestListener failed: " + iace.toString());
+            catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException
+                    | IllegalAccessException e) {
+                log.error("The instatiation of a RequestListener failed", e);
             }
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("RequestOperator [httpGetDecoder=");
+        builder.append(this.httpGetDecoder);
+        builder.append(", httpPostDecoder=");
+        builder.append(this.httpPostDecoder);
+        builder.append(", reqListeners=");
+        builder.append(Arrays.toString(this.reqListener.keySet().toArray()));
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

@@ -93,7 +93,7 @@ public class DescribeSensorIT {
 
         assertThat("Valid sensorML returned.", actual.validate(), is(true));
 
-        Diff diff = new Diff(actual.toString(), this.expected.toString());
+        Diff diff = new Diff(actual.toString(), this.expected.xmlText());
         assertThat("XML is similar.", diff.similar(), is(true));
         assertThat("XML is identical.", diff.identical(), is(true));
     }

@@ -1,4 +1,4 @@
-<sir:Capabilities version="0.3.1" updateSequence="2013-08-22T15:46:56+0200"
+<sir:Capabilities version="0.3.2" updateSequence="2013-08-22T15:46:56+0200"
 	xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd"
 	xmlns:sir="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ows:OperationsMetadata xmlns:ows="http://www.opengis.net/ows/1.1"
@@ -16,8 +16,8 @@
 			<ows:Parameter name="AcceptVersions">
 				<ows:AllowedValues>
 					<ows:Value>0.3.0</ows:Value>
-					<ows:Value>0.3.0</ows:Value>
 					<ows:Value>0.3.1</ows:Value>
+					<ows:Value>0.3.2</ows:Value>
 				</ows:AllowedValues>
 			</ows:Parameter>
 			<ows:Parameter name="Sections">

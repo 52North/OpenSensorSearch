@@ -20,6 +20,8 @@ import java.sql.SQLException;
 
 import org.n52.sir.ds.AbstractConnectionPool;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Connection Pool for PostgreSQL databases. Class implements the abstract class ConnectionPool and implements
@@ -29,6 +31,8 @@ import org.n52.sir.ows.OwsExceptionReport;
  * 
  */
 public class PGConnectionPool extends AbstractConnectionPool {
+    
+    private static Logger log = LoggerFactory.getLogger(PGConnectionPool.class);
 
     /**
      * constructor with necessary parameters as strings

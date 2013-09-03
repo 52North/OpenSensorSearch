@@ -9,8 +9,8 @@
         "srid" : -1,
         "west" : 12.875009
       },
-      "text" : "\nIdentifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059\n\nlongName: Nauen\n\nBerliner Straße\n\nshortName: Nauen\n\nBerliner Straße;\n\nClassifications: air quality\n\nTraffic\n\nTraffic\n\nurban\n\nunknown;\n\nKeywords: GERMANY\n\nDE\n\nAIRBASE\n\nAIRQUALITY\n\nEEA;\n\n",
-      "url" : "http://geoviqua.dev.52north.org/SIR/sir?service=SIR&version=0.3.1&REQUEST=DescribeSensor&SENSORIDINSIR=48"
+      "text" : "\nIdentifications: uniqueID: urn:ogc:object:feature:Sensor:EEA:airbase:4.0:DEBB059\n\nlongName: Nauen\n\nBerliner Straï¿½e\n\nshortName: Nauen\n\nBerliner Straï¿½e;\n\nClassifications: air quality\n\nTraffic\n\nTraffic\n\nurban\n\nunknown;\n\nKeywords: GERMANY\n\nDE\n\nAIRBASE\n\nAIRQUALITY\n\nEEA;\n\n",
+      "url" : "http://geoviqua.dev.52north.org/SIR/sir?service=SIR&version=0.3.2&REQUEST=DescribeSensor&SENSORIDINSIR=48"
     },
     "sensorIdInSir" : "48",
     "serviceReferences" : [ {

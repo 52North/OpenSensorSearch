@@ -85,7 +85,7 @@ public class SirConfigurator {
     /**
      * propertyname of character encoding
      */
-    private static final String CHARACTER_ENCODING = "CHARACTERENCODING";
+    private static final String CHARACTER_ENCODING = "oss.characterencoding";
 
     /**
      * propertyname of CLASSIFICATION_INIT_FILENAME property
@@ -290,20 +290,9 @@ public class SirConfigurator {
      */
     private ICatalogStatusHandler catalogStatusHandler;
 
-    /**
-     * character encoding for responses
-     */
     private String characterEncoding;
 
-    /**
-     * 
-     */
     private String configDirectory;
-
-    /**
-     * properties for DAO implementation
-     */
-    private Properties daoProps;
 
     /**
      * a list of catalogue-URLs that are not checked when data is pushed into them
@@ -314,9 +303,6 @@ public class SirConfigurator {
 
     private boolean extendedDebugToConsole;
 
-    /**
-     * Implementation of the DAOFactory, used to build the DAOs for the request listeners
-     */
     private IDAOFactory factory;
 
     private URL fullServicePath;
@@ -399,12 +385,12 @@ public class SirConfigurator {
      */
     @Inject
     public SirConfigurator(@Named("context.basepath")
-    String basepath) throws UnavailableException, OwsExceptionReport, IOException {
+    String basepath, IDAOFactory daoFactory) throws UnavailableException, OwsExceptionReport, IOException {
         try (InputStream dbStream = SirConfigurator.class.getResourceAsStream("/prop/db.properties");
                 InputStream configStream = SirConfigurator.class.getResourceAsStream("/prop/sir.properties");) {
 
             if (instance == null) {
-                instance = new SirConfigurator(configStream, dbStream, basepath);
+                instance = new SirConfigurator(configStream, dbStream, basepath, daoFactory);
                 instance.initialize();
             }
             else
@@ -417,27 +403,19 @@ public class SirConfigurator {
         log.info("NEW {}", this);
     }
 
-    /**
-     * private constructor due to the singleton pattern.
-     * 
-     * @param configStream
-     *        Inputstream of the configfile
-     * @param dbConfigStream
-     *        Inputstream of the db configfile
-     * @param basepath
-     *        base path for configuration files
-     * @param xsltDir
-     * 
-     */
+    @Deprecated
     private SirConfigurator(InputStream configStream,
                             InputStream dbConfigStream,
-                            String basepath) throws UnavailableException {
+                            String basepath,
+                            IDAOFactory daoFactory) throws UnavailableException {
+        this.factory = daoFactory;
+
         try {
             this.basepath = basepath;
 
             // creating common SIR properties object from inputstream
             this.props = loadProperties(configStream);
-            this.daoProps = loadProperties(dbConfigStream);
+            // this.daoProps = loadProperties(dbConfigStream);
 
             log.info(" ***** Config Files loaded successfully! ***** ");
         }
@@ -445,6 +423,8 @@ public class SirConfigurator {
             log.error("Error while loading config file.", ioe);
             throw new UnavailableException(ioe.getMessage());
         }
+
+        log.debug("DEPRECATED CONSTRUCTION of {}", this);
     }
 
     private void checkFile(String path) {
@@ -514,6 +494,7 @@ public class SirConfigurator {
     /**
      * @return the DaoFactory
      */
+    @Deprecated
     public IDAOFactory getFactory() {
         return this.factory;
     }
@@ -755,7 +736,7 @@ public class SirConfigurator {
         newUpdateSequence();
 
         // initialize DAO Factory
-        initializeDAOFactory(this.daoProps);
+        // initializeDAOFactory(this.daoProps);
 
         // initialize CatalogFactory
         initializeCatalogFactory(this.props);
@@ -841,7 +822,6 @@ public class SirConfigurator {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void initializeDAOFactory(Properties daoPropsP) throws OwsExceptionReport {
         try {
             String daoName = this.props.getProperty(DAOFACTORY);

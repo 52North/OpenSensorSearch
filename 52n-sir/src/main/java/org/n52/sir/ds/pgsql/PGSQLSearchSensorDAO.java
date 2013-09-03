@@ -45,28 +45,23 @@ import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
  */
 public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLSearchSensorDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DBs
-     */
     private PGConnectionPool cpool;
 
-    /**
-     * 
-     * @param cpool
-     */
+    @Inject
     public PGSQLSearchSensorDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
+
+        log.debug("NEW {}", this);
     }
 
     /**
@@ -202,25 +197,9 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             }
 
         }
-        catch (SQLException sqle) {
+        catch (SQLException | XmlException e) {
             OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while quering with search criteria: " + sqle.getMessage());
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 "SearchSensorDAO",
-                                 "Error while quering with search criteria: " + sqle.getMessage());
-            throw se;
-        }
-        catch (XmlException xmle) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while parsing sensorMLDocument: " + xmle.getMessage());
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 "SearchSensorDAO",
-                                 "Error while parsing sensorMLDocument: " + xmle.getMessage());
-            throw se;
-        }
-        catch (Exception e) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while parsing sensorMLDocument: " + e.getMessage());
+            log.error("Error while quering with search criteria: " + e.getMessage());
             se.addCodedException(ExceptionCode.NoApplicableCode,
                                  "SearchSensorDAO",
                                  "Error while quering with search criteria: " + e.getMessage());

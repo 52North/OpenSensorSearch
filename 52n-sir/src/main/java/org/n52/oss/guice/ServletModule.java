@@ -62,7 +62,7 @@ public class ServletModule extends JerseyServletModule {
         filter("*").through(DebugFilter.class);
         serve("/*").with(GuiceContainer.class);
 
-        log.info("configured {} with context {}", this, getServletContext());
+        log.debug("configured {} with context {}", this, getServletContext());
     }
 
 }

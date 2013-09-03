@@ -588,7 +588,6 @@ public class HtmlListener implements OpenSearchListener {
                 // catch (XmlException e) {
                 // log.debug("Time is not a period, cannot utilize it.");
                 // }
-                // System.out.println(time);
 
                 // ISSUE: there is no matching between feature of interest and observed property, therefore I
                 // can only hack this for a few services atm

@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package org.n52.sir;
+package org.n52.oss.autocomplete;
 
 /**
  * @author Yakoub 
  */
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -30,6 +29,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
@@ -58,23 +59,19 @@ public class AutoCompleteSearch {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String doGet(@QueryParam("text")
+    public Response doGet(@QueryParam(REQUEST_PARAM_AUTOCOMPLETE)
     String text) {
-        // String text = servletRequest.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
-        log.trace("new GET request for autocomplete: {}", text);
+        log.debug("Autocomplete request: '{}'", text);
 
-        // TODO return reasonable error message and status code
-        if (text == null)
-            throw new RuntimeException("Query parameter " + REQUEST_PARAM_AUTOCOMPLETE + " must be given.");
+        if (text == null || text.isEmpty())
+            return Response.status(Status.BAD_REQUEST).entity(" { error: \"Query parameter "
+                    + REQUEST_PARAM_AUTOCOMPLETE + " must be given.\" }").build();
 
-        // I'm using a set to avoid duplications
-        Collection<Object> results = new HashSet<>();
+        Collection<String> results = new HashSet<>();
         SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-        Collection<SirSearchResultElement> search_results = dao.searchByAll(text, null, null, null, null, null, null);
-        Iterator<SirSearchResultElement> it = search_results.iterator();
+        Collection<SirSearchResultElement> searchResults = dao.searchByAll(text, null, null, null, null, null, null);
 
-        while (it.hasNext()) {
-            SirSearchResultElement element = it.next();
+        for (SirSearchResultElement element : searchResults) {
             SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element.getSensorDescription();
             results.addAll(desc.getKeywords());
             if (desc.getContacts() != null)
@@ -91,21 +88,24 @@ public class AutoCompleteSearch {
                 results.addAll(desc.getClassifiers());
         }
 
-        // returns the result as json array
         if (results.size() == 0)
-            return "{input: " + text + "}"; // FIXME more helpful response message
+            return Response.ok("{ }").build();
 
-        Iterator<Object> iterator = results.iterator();
-        StringBuilder res = new StringBuilder();
-        res.append(iterator.next());
-        while (iterator.hasNext()) {
-            res.append(",");
-            res.append(iterator.next());
+        StringBuilder sb = new StringBuilder();
+        sb.append("{ [");
+        for (String s : results) {
+            if (s.contains(text)) {
+                sb.append(s);
+                sb.append(", ");
+            }
         }
+        if (sb.length() > 4)
+            sb.replace(sb.length() - 2, sb.length(), ""); // remove last comma
+        sb.append("] } ");
 
-        log.debug("Done serving servlet, response: {}", res.toString());
+        log.debug("Done serving autocomplete, response: {}", sb.toString());
 
-        return res.toString();
+        return Response.ok(sb.toString()).build();
     }
 
 }

@@ -16,8 +16,8 @@
 
 package org.n52.oss.guice;
 
+import org.n52.oss.autocomplete.AutoCompleteSearch;
 import org.n52.oss.opensearch.OpenSearch;
-import org.n52.sir.AutoCompleteSearch;
 import org.n52.sir.SIR;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;

@@ -21,8 +21,6 @@ package org.n52.oss.opensearch;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -51,6 +49,8 @@ import org.n52.sir.json.MapperFactory;
 import org.n52.sir.json.SearchResult;
 import org.n52.sir.json.SearchResultElement;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 import org.xml.sax.SAXException;
@@ -59,61 +59,46 @@ import uk.co.datumedge.hamcrest.json.SameJSONAs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/*
- * TODO Add all OpenSourceOutputFormats IT to a single OpenSourceIT file
- */
-
 public class OpenSearchIT {
+
+    private static Logger log = LoggerFactory.getLogger(OpenSearchIT.class);
 
     private static Client client;
 
     @BeforeClass
-    public static void setUp() {
+    public static void prepare() throws XmlException, IOException, OwsExceptionReport, HttpException {
         client = GuiceUtil.configureSirClient();
-    }
-
-    private void insertSensor(String path) throws XmlException, IOException, OwsExceptionReport, HttpException {
-        File sensor = new File(ClassLoader.getSystemResource(path).getFile());
-        SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
-
-        InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
-        req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
-        XmlObject res = client.xSendPostRequest(req);
-
-        InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
-
-        assertThat("Failed to insert sensor",
-                   resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),
-                   is(not(0)));
-    }
-
-    @BeforeClass
-    public void insertSensors() throws XmlException, IOException, OwsExceptionReport, HttpException {
 
         insertSensor("Requests/testsensor.xml");
         // insertSensor("Requests/Sensors/testSensor02.xml");
     }
 
+    private static void insertSensor(String path) throws XmlException, IOException, OwsExceptionReport, HttpException {
+        File sensor = new File(ClassLoader.getSystemResource(path).getFile());
+        SensorMLDocument sensorMLDoc = SensorMLDocument.Factory.parse(sensor);
+
+        InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
+        req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(sensorMLDoc.getSensorML().getMemberArray(0).getProcess());
+        XmlObject res = client.xSendPostRequest(req);
+
+        InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
+        log.debug("Inserted sensor: {}", resp.xmlText());
+        // assertThat("inserted sensor successfully",
+        // resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),
+        // is(not(0)));
+    }
+
     public String buildQuery(String q, String format) {
-        /*
-         * I'm sure that the server will be localhost port : 8080 If it's not installed on this the mvn verify
-         * will through a BindingException : Address already in use.
-         */
         StringBuilder query = new StringBuilder();
-        query.append("http://localhost:8080/SIR");
-        // FIXME Daniel: get to run integration tests
-        query.append("/search?q=");
+        query.append("http://localhost:8080/OpenSensorSearch/search?q=");
         query.append(q);
-        query.append("&httpAccept=");
+        query.append("&format=");
         query.append(format);
         return query.toString();
     }
 
     private String sendRequest(String query) throws ClientProtocolException, IOException {
         HttpClient c = new DefaultHttpClient();
-        /*
-         * I test using the unique ID of testSenosr01
-         */
         HttpGet get = new HttpGet(query);
 
         HttpResponse response = c.execute(get);

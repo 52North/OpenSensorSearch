@@ -29,9 +29,12 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import com.google.inject.Singleton;
-
 import net.opengis.ows.ExceptionReportDocument;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Singleton;
 
 /**
  * https://jersey.java.net/documentation/latest/message-body-workers.html
@@ -46,6 +49,8 @@ import net.opengis.ows.ExceptionReportDocument;
 @Produces({MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 @Provider
 public class OwsExMessageBodyWriter implements MessageBodyWriter<OwsExceptionReport> {
+
+    private static Logger log = LoggerFactory.getLogger(OwsExMessageBodyWriter.class);
 
     @Override
     public boolean isWriteable(Class< ? > type, Type genericType, Annotation[] annotations, MediaType mediaType) {
@@ -70,6 +75,7 @@ public class OwsExMessageBodyWriter implements MessageBodyWriter<OwsExceptionRep
                         MediaType mediaType,
                         MultivaluedMap<String, Object> httpHeaders,
                         OutputStream entityStream) throws IOException, WebApplicationException {
+        log.debug("Writing {}", myBean);
 
         // FIXME writeTo method not working for OwsExMessageBodyWriter
         if (mediaType.equals(MediaType.TEXT_HTML_TYPE)) {

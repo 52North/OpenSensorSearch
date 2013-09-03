@@ -158,7 +158,7 @@ public class SIR {
     @GET
     @Path("/search")
     public Response index(){
-    	return Response.ok().entity(new Viewable("/index")).build();
+    	return Response.ok().entity(new Viewable("/search")).build();
     }
     
 }

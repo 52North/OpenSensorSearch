@@ -168,6 +168,7 @@ public class PGDAOConstants {
 	 *            the Properties for the DAO
 	 * @return The only PGDAOConstants instance
 	 */
+    @Deprecated
 	public static synchronized PGDAOConstants getInstance(Properties daoProps) {
 		if (instance == null) {
 			instance = new PGDAOConstants(daoProps);

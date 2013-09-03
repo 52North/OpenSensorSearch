@@ -16,6 +16,7 @@
 
 package org.n52.sir;
 
+import org.n52.sir.listener.GetCapabilitiesListener;
 import org.n52.sir.listener.ISirRequestListener;
 import org.n52.sir.listener.SearchSensorListener;
 import org.slf4j.Logger;
@@ -30,9 +31,9 @@ import com.google.inject.multibindings.Multibinder;
  * @author Daniel
  * 
  */
-public class SirListenerPluginModule extends AbstractModule {
+public class ListenerModule extends AbstractModule {
 
-    private static Logger log = LoggerFactory.getLogger(SirListenerPluginModule.class);
+    private static Logger log = LoggerFactory.getLogger(ListenerModule.class);
 
     @Override
     protected void configure() {
@@ -41,6 +42,7 @@ public class SirListenerPluginModule extends AbstractModule {
         Multibinder<ISirRequestListener> uriBinder = Multibinder.newSetBinder(binder(), ISirRequestListener.class);
 
         uriBinder.addBinding().to(SearchSensorListener.class);
+        uriBinder.addBinding().to(GetCapabilitiesListener.class);
 
         // bind plugin dependencies...
         log.debug("Configured {}", this);

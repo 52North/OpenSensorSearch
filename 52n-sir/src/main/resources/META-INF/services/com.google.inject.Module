@@ -1,8 +1,9 @@
 org.n52.oss.guice.log.LoggerModule
 org.n52.oss.guice.UtilModule
 org.n52.oss.config.ConfigModule
-org.n52.sir.SirListenerPluginModule
-org.n52.sir.SirModule
+org.n52.sir.ConfigModule
+org.n52.sir.ListenerModule
+org.n52.sir.ds.pgsql.PGSQLModule
 org.n52.oss.guice.ServletModule
 org.n52.oss.guice.OpenSensorSearchModule
 org.n52.oss.opensearch.listeners.ListenerModule

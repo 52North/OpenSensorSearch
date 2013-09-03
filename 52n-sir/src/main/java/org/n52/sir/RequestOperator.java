@@ -94,10 +94,10 @@ public class RequestOperator {
 
     private void addRequestListener(ISirRequestListener listener) {
         String name = listener.getOperationName();
-        
-        if(this.reqListener.containsKey(name))
+
+        if (this.reqListener.containsKey(name))
             log.warn("Replacing listener for {}", name);
-        
+
         this.reqListener.put(name, listener);
 
         log.debug("Added new request listener for operation {}: {}",
@@ -113,6 +113,8 @@ public class RequestOperator {
      * @return the related ISirResponse
      */
     public ISirResponse doGetOperation(String queryString) {
+        log.debug("GET {}", queryString);
+
         ISirResponse response = null;
 
         AbstractSirRequest request = null;
@@ -182,90 +184,73 @@ public class RequestOperator {
         if (request instanceof SirGetCapabilitiesRequest) {
             GetCapabilitiesListener capListener = (GetCapabilitiesListener) this.reqListener.get(SirConstants.Operations.GetCapabilities.name());
             response = capListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("GetCapabilities operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("GetCapabilities operation executed successfully!");
         }
 
         // harvestService request
         else if (request instanceof SirHarvestServiceRequest) {
             HarvestServiceListener harvServListener = (HarvestServiceListener) this.reqListener.get(SirConstants.Operations.HarvestService.name());
             response = harvServListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("HarvestService operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("HarvestService operation executed successfully!");
+
         }
 
         // updatesensordescription request
         else if (request instanceof SirUpdateSensorDescriptionRequest) {
             UpdateSensorDescriptionListener updSensDescrListener = (UpdateSensorDescriptionListener) this.reqListener.get(SirConstants.Operations.UpdateSensorDescription.name());
             response = updSensDescrListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("UpdateSensorDescription operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("UpdateSensorDescription operation executed successfully!");
         }
 
         // describeSensor request
         else if (request instanceof SirDescribeSensorRequest) {
             DescribeSensorListener descSensListener = (DescribeSensorListener) this.reqListener.get(SirConstants.Operations.DescribeSensor.name());
             response = descSensListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("DescribeSensor operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("DescribeSensor operation executed successfully!");
         }
 
         // insertSensorStatus request
         else if (request instanceof SirInsertSensorStatusRequest) {
             InsertSensorStatusListener insSensStatListener = (InsertSensorStatusListener) this.reqListener.get(SirConstants.Operations.InsertSensorStatus.name());
             response = insSensStatListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("InsertSensorStatus operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("InsertSensorStatus operation executed successfully!");
         }
 
         // insertSensorInfo request
         else if (request instanceof SirInsertSensorInfoRequest) {
             InsertSensorInfoListener insSensInfoListener = (InsertSensorInfoListener) this.reqListener.get(SirConstants.Operations.InsertSensorInfo.name());
             response = insSensInfoListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("InsertSensorInfo operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("InsertSensorInfo operation executed successfully!");
         }
 
         // deleteSensorInfo request
         else if (request instanceof SirDeleteSensorInfoRequest) {
             DeleteSensorInfoListener deleteSensorInfoListener = (DeleteSensorInfoListener) this.reqListener.get(SirConstants.Operations.DeleteSensorInfo.name());
             response = deleteSensorInfoListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("DeleteSensorInfo operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("DeleteSensorInfo operation executed successfully!");
         }
 
         // searchSensor request
         else if (request instanceof SirSearchSensorRequest) {
             SearchSensorListener searchSensListener = (SearchSensorListener) this.reqListener.get(SirConstants.Operations.SearchSensor.name());
             response = searchSensListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("SearchSensor operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("SearchSensor operation executed successfully!");
         }
 
         // getSensorStatus request
         else if (request instanceof SirGetSensorStatusRequest) {
             GetSensorStatusListener getSensStatListener = (GetSensorStatusListener) this.reqListener.get(SirConstants.Operations.GetSensorStatus.name());
             response = getSensStatListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("GetSensorStatus operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("GetSensorStatus operation executed successfully!");
         }
 
         // connectToCatalog request
@@ -273,8 +258,7 @@ public class RequestOperator {
             ConnectToCatalogListener conCatListener = (ConnectToCatalogListener) this.reqListener.get(SirConstants.Operations.ConnectToCatalog.name());
             response = conCatListener.receiveRequest(request);
             if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("ConnectToCatalog operation executed successfully!");
+                log.debug("ConnectToCatalog operation executed successfully!");
             }
         }
 
@@ -282,10 +266,8 @@ public class RequestOperator {
         else if (request instanceof SirDisconnectFromCatalogRequest) {
             DisconnectFromCatalogListener disCatListener = (DisconnectFromCatalogListener) this.reqListener.get(SirConstants.Operations.DisconnectFromCatalog.name());
             response = disCatListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("DisconnectionFromCatalog operation executed successfully!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("DisconnectionFromCatalog operation executed successfully!");
         }
 
         // subscription requests wrapper
@@ -294,10 +276,8 @@ public class RequestOperator {
 
             ISirRequestListener subscriptionListener = this.reqListener.get(subscription.getName());
             response = subscriptionListener.receiveRequest(request);
-            if ( ! (response instanceof ExceptionResponse)) {
-                if (log.isDebugEnabled())
-                    log.debug("Subscription operation operation executed, not implemented though!");
-            }
+            if ( ! (response instanceof ExceptionResponse))
+                log.debug("Subscription operation operation executed, not implemented though!");
         }
 
         if (request == null) {
@@ -307,7 +287,6 @@ public class RequestOperator {
                                  "The request was sent in an unknown format or is invalid!");
             log.error("Request is unknown!", se);
             return new ExceptionResponse(se.getDocument());
-
         }
 
         return response;

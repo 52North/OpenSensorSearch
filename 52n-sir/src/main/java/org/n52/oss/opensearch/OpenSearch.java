@@ -179,12 +179,18 @@ public class OpenSearch {
         String responseFormat = detectResponseFormat(acceptHeader, params);
 
         if ( !this.listeners.containsKey(responseFormat)) {
-            log.error("Could not create response as for format '{}', not supported.", responseFormat);
-            OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
-                                                               OpenSearchConstants.FORMAT_PARAM + " or "
-                                                                       + HttpHeaders.ACCEPT,
-                                                               "Unsupported output format '" + responseFormat + "'.");
-            return Response.status(Status.BAD_REQUEST).entity(report).build();
+            // could still be html
+            if (responseFormat.contains(MediaType.TEXT_HTML))
+                responseFormat = MediaType.TEXT_HTML;
+            else {
+                log.error("Could not create response as for format '{}', not supported.", responseFormat);
+                OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
+                                                                   OpenSearchConstants.FORMAT_PARAM + " or "
+                                                                           + HttpHeaders.ACCEPT,
+                                                                   "Unsupported output format '" + responseFormat
+                                                                           + "'.");
+                return Response.status(Status.BAD_REQUEST).entity(report).build();
+            }
             // return Response.serverError().entity(report).build();
         }
 
@@ -198,7 +204,7 @@ public class OpenSearch {
 
                 OpenSearchListener l = this.listeners.get(responseFormat);
                 Response r = l.createResponse(searchResult, params);
-                
+
                 return Response.ok(r.getEntity(), responseFormat).build();
             }
             else if (response instanceof ExceptionResponse) {

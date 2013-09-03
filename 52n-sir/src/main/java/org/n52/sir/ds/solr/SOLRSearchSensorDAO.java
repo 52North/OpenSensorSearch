@@ -79,12 +79,15 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
     public String createWordslist(SirSearchCriteria searchCriteria) {
         Collection<String> q = searchCriteria.getSearchText();
         StringBuilder wordslist = new StringBuilder();
-        if (q != null) {
+        if (q != null && !q.isEmpty()) {
             for (String s : q) {
+                if (s.isEmpty())
+                    continue;
                 wordslist.append(s);
                 wordslist.append("+");
             }
-            wordslist.replace(wordslist.length() - 1, wordslist.length(), "");
+            if (wordslist.length() > 1)
+                wordslist.replace(wordslist.length() - 1, wordslist.length(), "");
         }
         return wordslist.toString();
     }

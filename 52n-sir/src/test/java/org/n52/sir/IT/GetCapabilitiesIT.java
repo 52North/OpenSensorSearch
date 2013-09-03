@@ -29,6 +29,7 @@ import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.oss.GuiceUtil;
@@ -50,7 +51,7 @@ public class GetCapabilitiesIT {
     @Test
     public void getCapabilites() throws IOException, OwsExceptionReport, HttpException, XmlException, SAXException {
 
-        File f = new File(ClassLoader.getSystemResource("sir/requests/GetCapabilities.xml").getFile());
+        File f = new File(ClassLoader.getSystemResource("Requests/GetCapabilities.xml").getFile());
 
         GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
         XmlObject response = client.xSendPostRequest(doc);
@@ -58,13 +59,15 @@ public class GetCapabilitiesIT {
 
         assertThat("Document is valid according to XMLBeans.", actual.validate(), is(true));
 
-        f = new File(ClassLoader.getSystemResource("sir/responses/capabilities.xml").getFile());
+        f = new File(ClassLoader.getSystemResource("responses/sir/capabilities.xml").getFile());
         CapabilitiesDocument expected = CapabilitiesDocument.Factory.parse(f);
 
         Diff diff = new Diff(actual.getCapabilities().getOperationsMetadata().toString(),
                              expected.getCapabilities().getOperationsMetadata().toString());
-        
-        assertThat("XML is similar.", diff.similar(), is(true));
-        assertThat("XML is identical.", diff.identical(), is(true));
+
+        XMLAssert.assertXMLEqual(diff, true);
+
+        // assertThat("XML is similar.", diff.similar(), is(true));
+        // assertThat("XML is identical.", diff.identical(), is(true));
     }
 }

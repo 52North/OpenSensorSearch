@@ -25,9 +25,31 @@ public class SolrSearchSensor {
     }
 
     @Test
+    public void wordslistForNullSearchCriteria() {
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+        SirSearchCriteria searchCriteria = new SirSearchCriteria();
+        String actual = dao.createWordslist(searchCriteria);
+        String expected = "";
+
+        assertThat("wordslist is correct", actual, is(equalTo(expected)));
+    }
+
+    @Test
     public void wordslistForEmptySearchCriteria() {
         SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
         SirSearchCriteria searchCriteria = new SirSearchCriteria();
+        searchCriteria.setSearchText(Arrays.asList(new String[] {}));
+        String actual = dao.createWordslist(searchCriteria);
+        String expected = "";
+
+        assertThat("wordslist is correct", actual, is(equalTo(expected)));
+    }
+
+    @Test
+    public void wordslistForEmptyStringSearchCriteria() {
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+        SirSearchCriteria searchCriteria = new SirSearchCriteria();
+        searchCriteria.setSearchText(Arrays.asList(new String[] {"", "", ""}));
         String actual = dao.createWordslist(searchCriteria);
         String expected = "";
 

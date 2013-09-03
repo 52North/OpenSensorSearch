@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.response;
 
 import java.util.ArrayList;
@@ -103,28 +104,24 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
             // parameter acceptVersion in operation GetCapabilities
             for (DomainType parameter : operation.getParameterArray()) {
                 if (parameter.getName().equals(ACCEPT_VERSIONS_PARAMETER_NAME)) {
-                    // remove existing placeholder
-                    for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
-                        parameter.getAllowedValues().removeValue(i);
-                    }
-                    // set value
-                    AllowedValues values = parameter.getAllowedValues();
+                    AllowedValues newAllowedValues = AllowedValues.Factory.newInstance();
                     for (String s : SirConfigurator.getInstance().getAcceptedServiceVersions()) {
-                        values.addNewValue().setStringValue(s);
+                        newAllowedValues.addNewValue().setStringValue(s);
                     }
+                    // replace the old values
+                    parameter.setAllowedValues(newAllowedValues);
+
+                    break;
                 }
             }
         }
-        // parameter version
+        // parameter version in other operations
         for (DomainType parameter : opMeData.getParameterArray()) {
             if (parameter.getName().equals(VERSION_PARAMETER_NAME)) {
-                // remove existing
-                for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
-                    parameter.getAllowedValues().removeValue(i);
-                }
-                // set value
-                ValueType value = parameter.getAllowedValues().addNewValue();
+                AllowedValues newAllowedValues = AllowedValues.Factory.newInstance();
+                ValueType value = newAllowedValues.addNewValue();
                 value.setStringValue(SirConfigurator.getInstance().getServiceVersion());
+                parameter.setAllowedValues(newAllowedValues);
             }
         }
         return opMeData;

@@ -17,6 +17,7 @@
 package org.n52.sir.client;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
@@ -139,8 +140,10 @@ public class Client {
         try {
             HttpResponse httpResponse = client.execute(method);
 
-            XmlObject responseObject = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
-            return responseObject;
+            try (InputStream is = httpResponse.getEntity().getContent();) {
+                XmlObject responseObject = XmlObject.Factory.parse(is);
+                return responseObject;
+            }
         }
         catch (XmlException e) {
             log.error("Error parsing response.", e);
@@ -150,7 +153,7 @@ public class Client {
             // log.error("Received HTML!\n" + responseString + "\n");
             // }
 
-            String msg = "Could not parse response (received via " + requestMethod + ") to the request " + request
+            String msg = "Could not parse response (received via " + requestMethod + ") to the request\n\n" + request
                     + "\n\n\n" + Tools.getStackTrace(e);
             // msg = msg + "\n\nRESPONSE STRING:\n<![CDATA[" + responseObject.xmlText() + "]]>";
 

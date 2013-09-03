@@ -149,7 +149,7 @@
 		</ows:Parameter>
 		<ows:Parameter name="version">
 			<ows:AllowedValues>
-				<ows:Value>0.3.1</ows:Value>
+				<ows:Value>0.3.2</ows:Value>
 			</ows:AllowedValues>
 		</ows:Parameter>
 	</ows:OperationsMetadata>

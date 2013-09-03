@@ -325,8 +325,6 @@ public class PGDAOConstants {
 		AUTH_TOKEN_TABLE=props.getProperty("oss.db.AUTH_TOKEN_TABLE");
 		USER_AUTH_TOKEN=props.getProperty("oss.db.USER_AUTH_TOKEN");
 		
-		
-		log.info("PGDAOConstants initialized successfully!");
-		log.info("PGDAOConstants initialized successfully: {}", this);
+        log.debug("PGDAOConstants initialized successfully: {}", this);
 	}
 }

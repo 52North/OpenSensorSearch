@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
 
@@ -53,10 +52,9 @@ public class CatalogConnectionModule extends AbstractModule {
 
         bind(CatalogConnectionScheduler.class).toProvider(CatalogConnectionSchedulerProvider.class);
 
-        // having the exec here is not really nice...
-        Provider<StartupThread> provider = getProvider(StartupThread.class);
-        this.exec.submit(provider.get());
-
+        // having the exec here is not really nice... and does not work...
+        // Provider<StartupThread> provider = getProvider(StartupThread.class);
+        // this.exec.submit(provider.get());
         // FIXME
 
         log.debug("Configured {}", this);

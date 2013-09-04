@@ -31,7 +31,7 @@ import net.opengis.ows.x11.ServiceProviderDocument.ServiceProvider;
 import net.opengis.ows.x11.ValueType;
 
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConfigurator.Section;
+import org.n52.sir.SirConstants.CapabilitiesSection;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.datastructure.SirService;
 import org.n52.sir.util.XmlTools;
@@ -60,7 +60,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
      */
     private Collection<ICatalogConnection> catalogConnection;
 
-    private ArrayList<Section> sections;
+    private ArrayList<CapabilitiesSection> sections;
 
     /**
      * Collection of all services harvested by the SIR
@@ -154,7 +154,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
         if (this.sections != null) {
             // set all
-            if (this.sections.contains(Section.All)) {
+            if (this.sections.contains(CapabilitiesSection.All)) {
                 caps.setServiceIdentification(createServiceIdentification());
                 caps.setServiceProvider(createServiceProvider());
                 caps.setOperationsMetadata(createOperationsMetadata());
@@ -162,19 +162,19 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
             }
             else {
                 // set ServiceIdentification
-                if (this.sections.contains(Section.ServiceIdentification)) {
+                if (this.sections.contains(CapabilitiesSection.ServiceIdentification)) {
                     caps.setServiceIdentification(createServiceIdentification());
                 }
                 // set ServiceProvider
-                if (this.sections.contains(Section.ServiceProvider)) {
+                if (this.sections.contains(CapabilitiesSection.ServiceProvider)) {
                     caps.setServiceProvider(createServiceProvider());
                 }
                 // set OperationsMetadata
-                if (this.sections.contains(Section.OperationsMetadata)) {
+                if (this.sections.contains(CapabilitiesSection.OperationsMetadata)) {
                     caps.setOperationsMetadata(createOperationsMetadata());
                 }
                 // set Contents
-                if (this.sections.contains(Section.Contents)
+                if (this.sections.contains(CapabilitiesSection.Contents)
                         && (this.services.size() != 0 || this.catalogConnection.size() != 0)) {
                     caps.setContents(createContents());
                 }
@@ -201,7 +201,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
     /**
      * @return the sections
      */
-    public ArrayList<Section> getSections() {
+    public ArrayList<CapabilitiesSection> getSections() {
         return this.sections;
     }
 
@@ -224,7 +224,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
      * @param sections
      *        the sections to set
      */
-    public void setSections(ArrayList<Section> sections) {
+    public void setSections(ArrayList<CapabilitiesSection> sections) {
         this.sections = sections;
     }
 

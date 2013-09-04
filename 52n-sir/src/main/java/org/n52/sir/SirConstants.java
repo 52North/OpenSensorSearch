@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir;
 
+package org.n52.sir;
 
 /**
  * @author Jan Schulte
  * 
  */
 public class SirConstants {
+
+    public enum CapabilitiesSection {
+        All, Contents, OperationsMetadata, ServiceIdentification, ServiceProvider
+    }
 
     /**
      * enum with parameter names for GetCapabilities HTTP GET request

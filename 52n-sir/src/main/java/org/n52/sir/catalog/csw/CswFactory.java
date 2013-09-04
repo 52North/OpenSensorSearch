@@ -106,16 +106,37 @@ public class CswFactory implements ICatalogFactory {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SensorMLCatalogFactory [cswUrl=");
-        sb.append(this.catalogUrl);
-        sb.append(", doNotCheck=");
-        sb.append(this.doNotCheck);
-        sb.append(", classificationInitFiles=");
-        sb.append(Arrays.toString(this.classificationInitFiles));
-        sb.append(", slotInitFile=");
-        sb.append(this.slotInitFile);
-        sb.append("]");
-        return sb.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("CswFactory [");
+        if (this.catalogUrl != null) {
+            builder.append("catalogUrl=");
+            builder.append(this.catalogUrl);
+            builder.append(", ");
+        }
+        if (this.classificationInitDocs != null) {
+            builder.append("classificationInitDocs=");
+            builder.append(this.classificationInitDocs);
+            builder.append(", ");
+        }
+        if (this.classificationInitFiles != null) {
+            builder.append("classificationInitFiles=");
+            builder.append(Arrays.toString(this.classificationInitFiles));
+            builder.append(", ");
+        }
+        builder.append("doNotCheck=");
+        builder.append(this.doNotCheck);
+        builder.append(", ");
+        if (this.slotInitDoc != null) {
+            builder.append("slotInitDoc=");
+            builder.append(this.slotInitDoc);
+            builder.append(", ");
+        }
+        if (this.slotInitFile != null) {
+            builder.append("slotInitFile=");
+            builder.append(this.slotInitFile);
+        }
+        builder.append("]");
+        return builder.toString();
     }
+
 }

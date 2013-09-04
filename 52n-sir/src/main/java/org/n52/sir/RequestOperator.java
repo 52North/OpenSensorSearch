@@ -79,8 +79,9 @@ public class RequestOperator {
 
     @Inject
     public RequestOperator(SirConfigurator config, Set<ISirRequestListener> listeners) {
-        this.httpGetDecoder = SirConfigurator.getInstance().getHttpGetDecoder();
-        this.httpPostDecoder = SirConfigurator.getInstance().getHttpPostDecoder();
+        SirConfigurator c = config.getInstance();
+        this.httpGetDecoder = c.getHttpGetDecoder();
+        this.httpPostDecoder = c.getHttpPostDecoder();
 
         for (ISirRequestListener listener : listeners) {
             addRequestListener(listener);

@@ -19,7 +19,7 @@ import net.opengis.ows.x11.AcceptVersionsType;
 import net.opengis.ows.x11.SectionsType;
 
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConfigurator.Section;
+import org.n52.sir.SirConstants.CapabilitiesSection;
 import org.n52.sir.util.XmlTools;
 import org.x52North.sir.x032.GetCapabilitiesDocument;
 import org.x52North.sir.x032.GetCapabilitiesDocument.GetCapabilities;
@@ -122,28 +122,28 @@ public class GetCapabilitiesBean extends TestClientBean {
 
             // all
             if (this.all) {
-                sections.addSection(Section.ServiceIdentification.name());
-                sections.addSection(Section.ServiceProvider.name());
-                sections.addSection(Section.OperationsMetadata.name());
-                sections.addSection(Section.Contents.name());
+                sections.addSection(CapabilitiesSection.ServiceIdentification.name());
+                sections.addSection(CapabilitiesSection.ServiceProvider.name());
+                sections.addSection(CapabilitiesSection.OperationsMetadata.name());
+                sections.addSection(CapabilitiesSection.Contents.name());
             }
 
             else {
                 // service Identification
                 if (this.serviceIdentification) {
-                    sections.addSection(Section.ServiceIdentification.name());
+                    sections.addSection(CapabilitiesSection.ServiceIdentification.name());
                 }
                 // service provider
                 if (this.serviceProvider) {
-                    sections.addSection(Section.ServiceProvider.name());
+                    sections.addSection(CapabilitiesSection.ServiceProvider.name());
                 }
                 // operations Metadata
                 if (this.operationsMetadata) {
-                    sections.addSection(Section.OperationsMetadata.name());
+                    sections.addSection(CapabilitiesSection.OperationsMetadata.name());
                 }
                 // Contents
                 if (this.contents) {
-                    sections.addSection(Section.Contents.name());
+                    sections.addSection(CapabilitiesSection.Contents.name());
                 }
             }
         }

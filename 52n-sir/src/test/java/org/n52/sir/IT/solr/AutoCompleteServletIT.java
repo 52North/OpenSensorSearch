@@ -78,7 +78,7 @@ public class AutoCompleteServletIT {
             builder.append(s);
 
         String actual = builder.toString().trim();
-        String expected = "{ [structual, stringtheory, a really strange keyword to use in a sensor description] }";
+        String expected = "{ \"suggestions\": [\"structual\", \"stringtheory\", \"a really strange keyword to use in a sensor description\"] }";
         assertThat("reponse string is correct", actual, is(equalTo(expected)));
     }
 

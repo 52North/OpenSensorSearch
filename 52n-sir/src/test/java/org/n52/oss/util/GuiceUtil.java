@@ -22,6 +22,8 @@ import java.util.Properties;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.IT.GetCapabilitiesIT;
 import org.n52.sir.client.Client;
+import org.n52.sir.ds.IDAOFactory;
+import org.n52.sir.ds.pgsql.DAOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,16 +42,6 @@ public class GuiceUtil {
             @Override
             protected void configure() {
                 bindConstant().annotatedWith(Names.named("oss.sir.serviceurl")).to("http://localhost:8080/OpenSensorSearch/sir");
-
-                // try {
-                // Properties sirProps = new Properties();
-                // sirProps.load(GetCapabilitiesIT.class.getResourceAsStream("/prop/sir.properties"));
-                // Names.bindProperties(binder(), sirProps);
-                // }
-                // catch (IOException e) {
-                // log.error("Could not bind properties.", e);
-                // }
-
                 bind(Client.class);
                 log.info("Configured client for tests.");
             }
@@ -75,6 +67,9 @@ public class GuiceUtil {
                     dbProps.load(GuiceUtil.class.getResourceAsStream("/prop/db.properties"));
                     Names.bindProperties(binder(), sirProps);
                     Names.bindProperties(binder(), dbProps);
+
+                    bindConstant().annotatedWith(Names.named("context.basepath")).to("TEST_BASEPATH");
+                    bind(IDAOFactory.class).to(DAOFactory.class);
                 }
                 catch (IOException e) {
                     log.error("Could not bind properties.", e);
@@ -90,7 +85,7 @@ public class GuiceUtil {
         return sc;
     }
 
-    public static Injector bindPropertiesFiles() {
+    public static Injector configurePropertiesFiles() {
         Injector i = Guice.createInjector(new AbstractModule() {
 
             @Override

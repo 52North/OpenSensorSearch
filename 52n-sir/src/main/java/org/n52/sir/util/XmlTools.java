@@ -174,44 +174,23 @@ public class XmlTools {
         c.dispose();
     }
 
-    /**
-     * 
-     * @param o
-     * @return
-     */
     public static String generateGmlID(XmlObject o) {
         return "id" + Long.toString(rand.nextInt(1000));
     }
 
-    /**
-     * 
-     * @return
-     */
     public static Map<String, String> getFixedSuggestedPrefixes() {
         return FIXED_SUGGESTED_PREFIXES;
     }
 
-    /**
-     * 
-     * @return
-     */
     public static String getSensorMLSchemaLocation() {
         return SML_1_0_1_NAMESPACE_URI + " " + SML_SCHEMA_LOCATION;
     }
 
-    /**
-     * 
-     * @return
-     */
+    // TODO method must rely on injection
     public static String getSirSchemaLocation() {
         return SirConfigurator.getInstance().getNamespaceUri() + " " + SirConfigurator.getInstance().getSchemaUrl();
     }
 
-    /**
-     * 
-     * @param at
-     * @return
-     */
     public static String inspect(AssociationType1 at) {
         StringBuilder sb = new StringBuilder();
         sb.append("AssociationType [id: ");
@@ -226,11 +205,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param br
-     * @return
-     */
     public static String inspect(BriefRecordType br) {
         StringBuilder sb = new StringBuilder();
         sb.append("BriefRecordType [ ");
@@ -239,11 +213,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param cnd
-     * @return
-     */
     public static String inspect(ClassificationNodeDocument cnd) {
         StringBuilder sb = new StringBuilder();
         sb.append("ClassificationNodeDocument [ ");
@@ -252,11 +221,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param cnt
-     * @return
-     */
     public static String inspect(ClassificationNodeType cnt) {
         StringBuilder sb = new StringBuilder();
         sb.append("ClassificationNodeType [id: ");
@@ -271,11 +235,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param cst
-     * @return
-     */
     public static String inspect(ClassificationSchemeType cst) {
         StringBuilder sb = new StringBuilder();
         sb.append("ClassificationSchemeType [id: ");
@@ -290,11 +249,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param ct
-     * @return
-     */
     public static String inspect(ClassificationType ct) {
         StringBuilder sb = new StringBuilder();
         sb.append("ClassificationType [id: ");
@@ -313,11 +267,6 @@ public class XmlTools {
         return document.getNodeValue();
     }
 
-    /**
-     * 
-     * @param eod
-     * @return
-     */
     public static String inspect(ExtrinsicObjectDocument eod) {
         StringBuilder sb = new StringBuilder();
         sb.append("ExtrinsicObjectDocument [ ");
@@ -326,11 +275,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param eo
-     * @return
-     */
     public static String inspect(ExtrinsicObjectType eo) {
         StringBuilder sb = new StringBuilder();
         sb.append("ExtrinsicObjectType [id: ");
@@ -348,14 +292,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * Method makes <code>instaceof</code> checks to use the most appropriate subclass of
-     * {@link IdentifiableType}. See other methods of this class for available subclasses.
-     * 
-     * @param it
-     * @return
-     */
     public static Object inspect(IdentifiableType it) {
         StringBuilder sb = new StringBuilder();
 
@@ -457,11 +393,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param iR
-     * @return
-     */
     public static String inspect(InsertResultType iR) {
         StringBuilder sb = new StringBuilder();
         sb.append("InsertResultType [ brief records: ");
@@ -475,11 +406,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param ist
-     * @return
-     */
     public static String inspect(InternationalStringType ist) {
         StringBuilder sb = new StringBuilder();
         sb.append("InternationalStringType [ ");
@@ -494,11 +420,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param lst
-     * @return
-     */
     public static String inspect(LocalizedStringType lst) {
         StringBuilder sb = new StringBuilder();
         sb.append(lst.getValue());
@@ -508,11 +429,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param ot
-     * @return
-     */
     public static String inspect(OrganizationType ot) {
         StringBuilder sb = new StringBuilder();
         sb.append("OrganizationType [id: ");
@@ -525,11 +441,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param pnt
-     * @return
-     */
     public static String inspect(PersonNameType pnt) {
         StringBuilder sb = new StringBuilder();
         sb.append("PersonNameType [firstName: ");
@@ -542,11 +453,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param pt
-     * @return
-     */
     public static String inspect(PersonType pt) {
         StringBuilder sb = new StringBuilder();
         sb.append("PersonType [id: ");
@@ -557,11 +463,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param rol
-     * @return
-     */
     public static String inspect(RegistryObjectListType rol) {
         StringBuilder sb = new StringBuilder();
         IdentifiableType[] identifiables = rol.getIdentifiableArray();
@@ -577,11 +478,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param rp
-     * @return
-     */
     public static String inspect(RegistryPackageType rp) {
         StringBuilder sb = new StringBuilder();
         sb.append("RegistryPackageType [ ");
@@ -590,11 +486,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param sbt
-     * @return
-     */
     public static String inspect(ServiceBindingType sbt) {
         StringBuilder sb = new StringBuilder();
         sb.append("ServiceBindingType [id: ");
@@ -607,11 +498,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param st
-     * @return
-     */
     public static String inspect(ServiceType st) {
         StringBuilder sb = new StringBuilder();
         sb.append("ServiceType [id: ");
@@ -627,11 +513,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param sd
-     * @return
-     */
     public static String inspect(SlotDocument sd) {
         StringBuilder sb = new StringBuilder();
         sb.append("SlotDocument [Slot: ");
@@ -640,11 +521,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param st
-     * @return
-     */
     public static String inspect(SlotType1 st) {
         StringBuilder sb = new StringBuilder();
         sb.append("SlotType [name: ");
@@ -657,11 +533,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param transactionResponse
-     * @return
-     */
     public static String inspect(TransactionResponseType transactionResponse) {
         StringBuilder sb = new StringBuilder();
         sb.append("TransactionResponseType [version: ");
@@ -679,11 +550,6 @@ public class XmlTools {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param transactionSummary
-     * @return
-     */
     public static String inspect(TransactionSummaryType transactionSummary) {
         StringBuilder sb = new StringBuilder();
         sb.append("TransactionSummaryType [requestId: ");
@@ -721,10 +587,6 @@ public class XmlTools {
                 + " more characters)";
     }
 
-    /**
-     * 
-     * @param source
-     */
     public static void sensorMLNameSpaceOptions(XmlObject source) {
         XmlCursor cursor = source.newCursor();
         cursor.toFirstContentToken();
@@ -765,7 +627,7 @@ public class XmlTools {
         options.setSavePrettyPrintIndent(4);
         options.setSaveAggressiveNamespaces();
 
-        HashMap<String, String> suggestedPrefixes = new HashMap<String, String>();
+        HashMap<String, String> suggestedPrefixes = new HashMap<>();
         suggestedPrefixes.putAll(XmlTools.getFixedSuggestedPrefixes());
         suggestedPrefixes.put(SIR_NAMESPACE_URI, SIR_NAMESPACE_PREFIX);
         options.setSaveSuggestedPrefixes(suggestedPrefixes);
@@ -780,7 +642,7 @@ public class XmlTools {
      * @return
      */
     public static String validateAndIterateErrors(XmlObject xml) {
-        ArrayList<XmlError> validationErrors = new ArrayList<XmlError>();
+        ArrayList<XmlError> validationErrors = new ArrayList<>();
         XmlOptions validationOptions = new XmlOptions();
         validationOptions.setErrorListener(validationErrors);
 
@@ -824,7 +686,7 @@ public class XmlTools {
         options.setSavePrettyPrintIndent(DEFAULT_INDENT);
         options.setSaveAggressiveNamespaces();
 
-        HashMap<String, String> suggestedPrefixes = new HashMap<String, String>();
+        HashMap<String, String> suggestedPrefixes = new HashMap<>();
         suggestedPrefixes.putAll(FIXED_SUGGESTED_PREFIXES);
         suggestedPrefixes.put(SirConfigurator.getInstance().getNamespaceUri(),
                               SirConfigurator.getInstance().getNamespacePrefix());
@@ -833,13 +695,6 @@ public class XmlTools {
         return options;
     }
 
-    /**
-     * 
-     * 
-     * 
-     * @param node
-     * @return
-     */
     public static String xmlToString(Node node) {
         try {
             Source source = new DOMSource(node);

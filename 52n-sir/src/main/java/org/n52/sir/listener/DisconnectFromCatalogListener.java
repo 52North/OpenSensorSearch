@@ -19,7 +19,6 @@ import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
-import org.n52.sir.catalogconnection.CatalogConnectionSchedulerFactory;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDisconnectFromCatalogDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -30,6 +29,8 @@ import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirDisconnectFromCatalogResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * @author Jan Schulte
@@ -42,6 +43,9 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
     private static final String OPERATION_NAME = SirConstants.Operations.DisconnectFromCatalog.name();
 
     private IDisconnectFromCatalogDAO disconFromCatDao;
+
+    @Inject
+    CatalogConnectionScheduler scheduler;
 
     public DisconnectFromCatalogListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();
@@ -74,8 +78,6 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirDisconnectFromCatalogRequest disconFromCatReq = (SirDisconnectFromCatalogRequest) request;
         SirDisconnectFromCatalogResponse response = new SirDisconnectFromCatalogResponse();
-        CatalogConnectionSchedulerFactory schedulerFact = SirConfigurator.getInstance().getJobSchedulerFactory();
-        CatalogConnectionScheduler scheduler = schedulerFact.getScheduler();
 
         String connectionID;
         try {
@@ -91,7 +93,7 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
                 return new ExceptionResponse(oer.getDocument());
             }
             // delete timer with connectionID
-            scheduler.cancel(connectionID);
+            this.scheduler.cancel(connectionID);
 
             response.setCatalogUrl(disconFromCatReq.getCswURL());
 

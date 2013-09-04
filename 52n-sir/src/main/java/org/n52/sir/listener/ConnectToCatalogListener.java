@@ -23,7 +23,6 @@ import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
-import org.n52.sir.catalogconnection.CatalogConnectionSchedulerFactory;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -34,6 +33,8 @@ import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirConnectToCatalogResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * @author Jan Schulte
@@ -46,6 +47,9 @@ public class ConnectToCatalogListener implements ISirRequestListener {
     private static final String OPERATION_NAME = SirConstants.Operations.ConnectToCatalog.name();
 
     private IConnectToCatalogDAO conToCatDao;
+
+    @Inject
+    private CatalogConnectionScheduler scheduler;
 
     public ConnectToCatalogListener() throws OwsExceptionReport {
         SirConfigurator configurator = SirConfigurator.getInstance();
@@ -86,9 +90,6 @@ public class ConnectToCatalogListener implements ISirRequestListener {
         int pushInterval = conToCatReq.getPushInterval();
         URL url = conToCatReq.getCswUrl();
 
-        CatalogConnectionSchedulerFactory schedulerFact = SirConfigurator.getInstance().getJobSchedulerFactory();
-        CatalogConnectionScheduler scheduler = schedulerFact.getScheduler();
-
         try {
             ICatalogFactory catFact = SirConfigurator.getInstance().getCatalogFactory(url);
             ICatalog catalog = catFact.getCatalog();
@@ -116,7 +117,7 @@ public class ConnectToCatalogListener implements ISirRequestListener {
                                                                        url,
                                                                        ICatalogConnection.NO_PUSH_INTERVAL,
                                                                        ICatalogConnection.NEW_CONNECTION_STATUS);
-                scheduler.submit(conn);
+                this.scheduler.submit(conn);
                 log.info("Submitted single connection:" + conn);
             }
             // with period
@@ -137,20 +138,20 @@ public class ConnectToCatalogListener implements ISirRequestListener {
                                                                            url,
                                                                            pushInterval,
                                                                            ICatalogConnection.NEW_CONNECTION_STATUS);
-                    scheduler.submit(conn);
+                    this.scheduler.submit(conn);
 
                     log.info("Inserted new connection into database, connection identifier: " + connectionID);
                 }
                 else {
                     // cancel existing task with connectionID
-                    scheduler.cancel(connectionID);
+                    this.scheduler.cancel(connectionID);
 
                     // start connection with the same connectionID
                     ICatalogConnection conn = catFact.getCatalogConnection(connectionID,
                                                                            url,
                                                                            pushInterval,
                                                                            ICatalogConnection.NEW_CONNECTION_STATUS);
-                    scheduler.submit(conn);
+                    this.scheduler.submit(conn);
 
                     // update connection and start timertaks with same ID
                     this.conToCatDao.updateConnection(conToCatReq.getCswUrl(), conToCatReq.getPushInterval());

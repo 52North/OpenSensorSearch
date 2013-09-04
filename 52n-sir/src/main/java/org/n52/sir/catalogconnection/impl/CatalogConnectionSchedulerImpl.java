@@ -51,16 +51,23 @@ public class CatalogConnectionSchedulerImpl implements CatalogConnectionSchedule
 
     @Override
     public void cancel(String identifier) {
-        if (log.isDebugEnabled()) {
-            log.debug("Cancelling Task: " + identifier + ".");
-        }
+        log.debug("Cancelling Task: {}", identifier);
 
         // this.timerServlet.cancel(identifier);
     }
 
     @Override
-    public void submit(ICatalogConnection conn) throws OwsExceptionReport {
-        submit(conn, DEFAULT_DELAY_MILLISECS);
+    public boolean submit(ICatalogConnection conn) {
+        log.debug("incoming submission: {}", conn);
+
+        try {
+            submit(conn, DEFAULT_DELAY_MILLISECS);
+            return true;
+        }
+        catch (OwsExceptionReport e) {
+            log.error("Could not submit catalog connection.", e);
+            return false;
+        }
     }
 
     /**

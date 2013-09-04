@@ -16,121 +16,57 @@
 
 package org.n52.sir.catalogconnection;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.catalog.ICatalogConnection;
-import org.n52.sir.catalog.ICatalogStatusHandler;
-import org.n52.sir.catalogconnection.impl.CatalogConnectionSchedulerFactoryImpl;
-import org.n52.sir.ds.IConnectToCatalogDAO;
-import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.catalogconnection.impl.CatalogConnectionSchedulerProvider;
+import org.n52.sir.catalogconnection.impl.StartupThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
+import com.google.inject.Provider;
+import com.google.inject.Provides;
+import com.google.inject.name.Names;
 
 public class CatalogConnectionModule extends AbstractModule {
 
     private static Logger log = LoggerFactory.getLogger(CatalogConnectionModule.class);
 
-    protected static final int STARTUP_DELAY_SECS = 10;
-
-    private boolean scheduleJobsOnStartup;
-
-    private ExecutorService exec;
-
-    private SirConfigurator config;
-
-    @Inject
-    public CatalogConnectionModule(@Named("oss.catalogconnection.scheduleJobsOnStartup")
-    boolean startup, SirConfigurator config) {
-        super();
-
-        this.scheduleJobsOnStartup = startup;
-        this.exec = Executors.newSingleThreadExecutor();
-        this.config = config;
-    }
+    private ExecutorService exec = Executors.newSingleThreadExecutor();
 
     @Override
     protected void configure() {
-        bind(CatalogConnectionSchedulerFactory.class).to(CatalogConnectionSchedulerFactoryImpl.class);
+        try {
+            // TODO move catalog connection properties to own file in own module
+            Properties properties = new Properties();
+            properties.load(CatalogConnectionModule.class.getResourceAsStream("/prop/sir.properties"));
+            Names.bindProperties(binder(), properties);
 
-        // TODO start the catalog connections from database
-        if (this.scheduleJobsOnStartup)
-            startCatalogConnections();
-
-    }
-
-    /**
-     * Uses a thread for a delayed execution. This is necessary if both the catalog and the SIR run in the
-     * same container. The update can be blocked if the {@link ICatalogStatusHandler} is not available in the
-     * context.
-     */
-    private void startCatalogConnections() {
-        if ( !this.scheduleJobsOnStartup) {
-            log.warn("Catalog connections are disabled on startup.");
-            return;
+            log.debug("Loaded and bound properties:\n\t{}", properties);
+        }
+        catch (IOException e) {
+            log.error("Could not load properties.", e);
         }
 
-        if (log.isDebugEnabled())
-            log.debug(" ***** Starting Thread for catalog connections with a delay of " + STARTUP_DELAY_SECS
-                    + " seconds ***** ");
+        bind(CatalogConnectionScheduler.class).toProvider(CatalogConnectionSchedulerProvider.class);
 
-        this.exec.submit(new Thread("CatalogConnector") {
+        // having the exec here is not really nice...
+        Provider<StartupThread> provider = getProvider(StartupThread.class);
+        this.exec.submit(provider.get());
 
-            @Override
-            public void run() {
-                // wait with the catalog connection, because if the catalog runs
-                // in the same tomcat, problems
-                // might occur during startup phase
+        // FIXME
 
-                try {
-                    sleep(STARTUP_DELAY_SECS * 1000);
-                }
-                catch (InterruptedException e1) {
-                    log.error("Error sleeping before catalog connections.", e1);
-                }
-
-                log.info(" ***** Starting catalog connections ***** ");
-
-                // run tasks for existing catalogs
-                int i = 0;
-                try {
-                    IDAOFactory f = CatalogConnectionModule.this.config.getInstance().getFactory();
-                    if (f == null) {
-                        log.error("Factory is null");
-                        throw new RuntimeException("Could not get factory");
-                    }
-
-                    IConnectToCatalogDAO catalogDao = f.connectToCatalogDAO();
-                    List<ICatalogConnection> savedConnections = catalogDao.getCatalogConnectionList();
-
-                    CatalogConnectionScheduler scheduler = CatalogConnectionModule.this.config.getInstance().getJobSchedulerFactory().getScheduler();
-                    for (ICatalogConnection iCatalogConnection : savedConnections) {
-                        if (iCatalogConnection.getPushIntervalSeconds() != ICatalogConnection.NO_PUSH_INTERVAL) {
-                            scheduler.submit(iCatalogConnection);
-                            i++;
-                        }
-                        else {
-                            if (log.isDebugEnabled())
-                                log.debug("ICatalogConnection without push interval is ignored: "
-                                        + iCatalogConnection.getConnectionID());
-                        }
-                    }
-                }
-                catch (OwsExceptionReport e) {
-                    log.error("Could not run tasks for saved catalog connections: {}", e.getMessage());
-                }
-
-                log.info(" ***** Scheduled " + i + " task(s) from the database. ***** ");
-            }
-
-        });
+        log.debug("Configured {}", this);
+    }
+    
+    @Provides
+    public StartupThread provideStartupThread() {
+        StartupThread st = new StartupThread();
+        log.debug("Created new thread: {}", st);
+        return st;
     }
 
 }

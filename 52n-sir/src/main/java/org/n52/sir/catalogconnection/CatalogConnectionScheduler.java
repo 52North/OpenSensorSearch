@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalogconnection;
 
 import org.n52.sir.catalog.ICatalogConnection;
@@ -34,8 +35,6 @@ public interface CatalogConnectionScheduler {
     /**
      * Cancels the task with the given identifier.
      * 
-     * See {@link java.util.TimerTask#cancel()} for details.
-     * 
      * @param identifier
      */
     public abstract void cancel(String identifier);
@@ -45,8 +44,9 @@ public interface CatalogConnectionScheduler {
      * execution time or maximum delay of the operations that are scheduled.
      * 
      * @param iCatalogConnection
+     * @return true if submission was successful
      * @throws OwsExceptionReport
      */
-    public abstract void submit(ICatalogConnection iCatalogConnection) throws OwsExceptionReport;
+    public abstract boolean submit(ICatalogConnection iCatalogConnection);
 
 }

@@ -127,21 +127,17 @@ public class RequestOperator {
             return new ExceptionResponse(se.getDocument());
         }
 
-        // getCapabilities request
         if (request instanceof SirGetCapabilitiesRequest) {
             GetCapabilitiesListener capListener = (GetCapabilitiesListener) this.reqListener.get(SirConstants.Operations.GetCapabilities.name());
             log.info("Listener: " + capListener);
             response = capListener.receiveRequest(request);
         }
-
-        // describeSensor request
-        if (request instanceof SirDescribeSensorRequest) {
+        else if (request instanceof SirDescribeSensorRequest) {
             DescribeSensorListener descSensListener = (DescribeSensorListener) this.reqListener.get(SirConstants.Operations.DescribeSensor.name());
             log.info("Listener: " + descSensListener);
             response = descSensListener.receiveRequest(request);
         }
-
-        if (request == null) {
+        else {
             log.error("Invalid Get request!");
             OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,

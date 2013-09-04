@@ -55,30 +55,24 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
     private static final Object VERSION_PARAMETER_NAME = "version";
 
-    /**
-     * Collection of catalog connections
-     */
-    private Collection<ICatalogConnection> catalogConnection;
+    private Collection<ICatalogConnection> catalogConnections;
 
     private ArrayList<CapabilitiesSection> sections;
 
-    /**
-     * Collection of all services harvested by the SIR
-     */
-    private Collection<SirService> services;
+    private Collection<SirService> harvestedServices;
 
     private Contents createContents() {
         Contents contents = Contents.Factory.newInstance();
 
         // set list of services
-        for (SirService service : this.services) {
+        for (SirService service : this.harvestedServices) {
             HarvestedService harvestedService = contents.addNewHarvestedService();
             harvestedService.setServiceType(service.getType());
             harvestedService.setServiceURL(service.getUrl());
         }
 
         // set catalog connections
-        for (ICatalogConnection catConn : this.catalogConnection) {
+        for (ICatalogConnection catConn : this.catalogConnections) {
             LinkedCatalog linkedCatalog = contents.addNewLinkedCatalog();
             linkedCatalog.setCatalogURL(catConn.getCatalogURL().toString());
             linkedCatalog.setStatus(catConn.getStatus());
@@ -175,7 +169,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
                 }
                 // set Contents
                 if (this.sections.contains(CapabilitiesSection.Contents)
-                        && (this.services.size() != 0 || this.catalogConnection.size() != 0)) {
+                        && (this.harvestedServices.size() != 0 || this.catalogConnections.size() != 0)) {
                     caps.setContents(createContents());
                 }
             }
@@ -191,49 +185,50 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
         return capDoc;
     }
 
-    /**
-     * @return the catalog collections
-     */
     public Collection<ICatalogConnection> getCatalogConnection() {
-        return this.catalogConnection;
+        return this.catalogConnections;
     }
 
-    /**
-     * @return the sections
-     */
     public ArrayList<CapabilitiesSection> getSections() {
         return this.sections;
     }
 
-    /**
-     * @return the services
-     */
     public Collection<SirService> getServices() {
-        return this.services;
+        return this.harvestedServices;
     }
 
-    /**
-     * @param collection
-     *        the catalog connections to set
-     */
     public void setCatalogConnection(Collection<ICatalogConnection> collection) {
-        this.catalogConnection = collection;
+        this.catalogConnections = collection;
     }
 
-    /**
-     * @param sections
-     *        the sections to set
-     */
     public void setSections(ArrayList<CapabilitiesSection> sections) {
         this.sections = sections;
     }
 
-    /**
-     * @param services
-     *        the services to set
-     */
     public void setServices(Collection<SirService> services) {
-        this.services = services;
+        this.harvestedServices = services;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SirGetCapabilitiesResponse [");
+        if (this.catalogConnections != null) {
+            builder.append("catalogConnections=");
+            builder.append(this.catalogConnections);
+            builder.append(", ");
+        }
+        if (this.sections != null) {
+            builder.append("sections=");
+            builder.append(this.sections);
+            builder.append(", ");
+        }
+        if (this.harvestedServices != null) {
+            builder.append("harvestedServices=");
+            builder.append(this.harvestedServices);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

@@ -126,6 +126,8 @@ public class SIR {
             @Override
             public void write(OutputStream os) throws IOException, WebApplicationException {
                 try (BufferedOutputStream bus = new BufferedOutputStream(os);) {
+                    log.debug("Writing streamed response of: {}", sirResp);
+
                     byte[] bytes = sirResp.getByteArray();
                     bus.write(bytes);
                 }

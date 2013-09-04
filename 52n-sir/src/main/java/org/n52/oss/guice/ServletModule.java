@@ -19,6 +19,7 @@ package org.n52.oss.guice;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.n52.oss.api.StatisticsResource;
 import org.n52.oss.api.TransformationResource;
 import org.n52.oss.api.UserAccessResource;
 import org.n52.oss.api.ValidatorResource;
@@ -65,6 +66,7 @@ public class ServletModule extends JerseyServletModule {
         bind(TransformationResource.class);
         bind(ValidatorResource.class);
         bind(UserAccessResource.class);
+        bind(StatisticsResource.class);
     //    bind(ValidatorResource.class);
      //   filter("*").through(DebugFilter.class);
         Map<String, String> params = new HashMap<String, String>(); 

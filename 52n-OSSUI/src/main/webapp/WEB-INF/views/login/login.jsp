@@ -16,34 +16,44 @@
 <link href="../OSSUI/styles/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 body {
-	padding-top: 40px;
-	padding-bottom: 40px;
-	background-color: #f5f5f5;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
 }
 
 .form-signin {
-	max-width: 300px;
-	padding: 19px 29px 29px;
-	margin: 0 auto 20px;
-	background-color: #fff;
-	border: 1px solid #e5e5e5;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
 }
-
-.form-signin .form-signin-heading,.form-signin .checkbox {
-	margin-bottom: 10px;
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
 }
-
-.form-signin input[type="text"],.form-signin input[type="password"] {
-	font-size: 16px;
-	height: auto;
-	margin-bottom: 15px;
-	padding: 7px 9px;
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 </style>
 <link href="OSSUI/styles/bootstrap-responsive.css" rel="stylesheet">
@@ -76,9 +86,9 @@ body {
 		<form method="post" class="form-signin"
 			action="<c:url value='j_spring_security_check' />">
 			<h2 class="form-signin-heading">Please sign in</h2>
-			<input type="text" class="input-block-level"
+			<input type="text" class="form-control"
 				placeholder="Email address" id="username_or_email" name="j_username" />
-			<input type="password" class="input-block-level"
+			<input type="password" class="form-control"
 				placeholder="Password" id="password" name="j_password"> <label
 				class="checkbox"> <input type="checkbox" value="remember-me">
 				Remember me

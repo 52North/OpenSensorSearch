@@ -9,9 +9,6 @@ body {
 	padding: 9px 0;
 }
 </style>
-<link href="../${context}/styles/bootstrap-theme.min.css"
-	rel="stylesheet">
-
 <link href="../${context}/styles/bootstrap-responsive.css"
 	rel="stylesheet">
 

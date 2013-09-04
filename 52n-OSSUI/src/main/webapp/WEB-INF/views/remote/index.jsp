@@ -12,7 +12,7 @@
 			<div class="span9">
 				<div class="hero-unit">
 					<h1>Upload A remote server</h1>
-					<h3>${token} You can use this interface to insert your server in OSS database</h3>
+					<h3>You can use this interface to insert your server in OSS database</h3>
 					
 				</div>
 			</div>

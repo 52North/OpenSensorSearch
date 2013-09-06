@@ -13,11 +13,14 @@
 				<div class="hero-unit">
 					<h1>Upload A remote server</h1>
 					<h3>You can use this interface to insert your server in OSS database</h3>
+					
 				</div>
 			</div>
 		</div>
+		
 
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="../${context}/scripts/bootstrap.min.js"></script>
+		
 </body>
 </html>

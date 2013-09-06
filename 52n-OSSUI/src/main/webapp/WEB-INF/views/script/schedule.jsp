@@ -62,16 +62,14 @@
 		<p>In the specified fields , please enter a valid auth token and a
 			valid time</p>
 		<form id="schedule-form">
-
-			<label for="script_Id">Script ID</label> <input type="text"
-				class="span6" name="script_Id" id="scriptId"></input>
-		</form>
-		<label for="datepicker">Date</label> <input type="text" class="span6"
-			name="date" id="datepicker"></input>
+		 <input type="text" class="span4 form-control input-lg" placeholder="Script Id" name="script_Id" id="scriptId"/>
+		 <input type="text" class="span4 form-control input-lg"
+			name="date" id="datepicker"/>
 		<p>
 			<a id="scheduleserverbtn" href="#" class="btn btn-primary btn-large"
 				onclick="scheduleServer()">Schedule harvest &raquo;</a>
 		</p>
+		</form>
 	</div>
 </div>
 </div>

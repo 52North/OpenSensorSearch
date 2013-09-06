@@ -1,5 +1,8 @@
 package org.n52.oss.ui.controllers;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +13,11 @@ public class RemoteController {
 	
 	@RequestMapping("/index")
 	public String index(ModelMap map){
+		UserDetails userDetails =
+				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String token = userDetails.getPassword();
+		System.out.println("Login token:"+token);
+		map.addAttribute("token",token);
 		return "remote/index";
 	}
 	@RequestMapping("/upload")

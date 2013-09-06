@@ -25,6 +25,8 @@ import java.util.Collections;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
+import org.n52.sir.datastructure.SirProximtyComparator;
+import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensorIDInSir;
@@ -92,6 +94,10 @@ public class SearchSensorListener implements ISirRequestListener {
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
+        SirSearchCriteria crit = searchSensReq.getSearchCriteria();
+        String lat = crit.getLat();
+        String lng = crit.getLng();
+        
         SirSearchSensorResponse response = new SirSearchSensorResponse();
         ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
 
@@ -106,9 +112,15 @@ public class SearchSensorListener implements ISirRequestListener {
 
                         resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorIdInSir(),
                                                                                searchSensReq.isSimpleResponse());
+                        //TODO yakoub implement this call for the search sensor using lng/lat
+
+//                        resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorIdInSir(),lat,lng,
+//                                                                               searchSensReq.isSimpleResponse());
                         if (resultElement != null) {
                             searchResElements.add(resultElement);
                         }
+                        SirProximtyComparator comparator = new SirProximtyComparator(Double.parseDouble(lng), Double.parseDouble(lat));
+                        Collections.sort(searchResElements,comparator);
                     }
                     catch (OwsExceptionReport e) {
                         return new ExceptionResponse(e.getDocument());

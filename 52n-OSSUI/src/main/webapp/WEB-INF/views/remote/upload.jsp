@@ -6,35 +6,78 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="../${context}/scripts/bootstrap.min.js"></script>
+<style>
 
+.form-signin {
+	max-width: 550px;
+	padding: 15px;
+	margin: 0 auto;
+}
+
+.form-signin .form-signin-heading,.form-signin .checkbox {
+	margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+	font-weight: normal;
+}
+
+.form-signin .form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.form-signin .form-control:focus {
+	z-index: 2;
+}
+
+.form-signin input[type="text"] {
+	margin-bottom: -1px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.form-signin input[type="password"] {
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+</style>
 <script>
-$(function(){
+	$(function() {
 
-	$("#upload-pin").addClass("active");
-});
+		$("#upload-pin").addClass("active");
+	});
 </script>
 <script>
 	function uploadServer() {
 		$("#remoteServer").prop("disabled", true);
 		$("#uploadserverbtn").prop("disabled", true);
-		$.ajax({
-			type : "POST",
-			url : "http://localhost:8080/OpenSensorSearch/script/remote/server",
-			data : $("#harvest-form").serialize(),
-			success : function(data) {
-				if (data) {
-					var auth_token = data['auth_token'];
-					$("#authtokenval").val(auth_token);
-				}
-				$("#remoteServer").prop("disabled", true);
-				$("#uploadserverbtn").prop("disabled", true);
-			},
-			error : function() {
-				alert("error");
-				$("#remoteServer").prop("disabled", true);
-				$("#uploadserverbtn").prop("disabled", true);
-			}
-		});
+		$
+				.ajax({
+					type : "POST",
+					url : "http://localhost:8080/OpenSensorSearch/script/remote/server",
+					data : $("#harvest-form").serialize(),
+					success : function(data) {
+						if (data) {
+							var auth_token = data['auth_token'];
+							$("#authtokenval").val(auth_token);
+						}
+						$("#remoteServer").prop("disabled", true);
+						$("#uploadserverbtn").prop("disabled", true);
+					},
+					error : function() {
+						alert("error");
+						$("#remoteServer").prop("disabled", true);
+						$("#uploadserverbtn").prop("disabled", true);
+					}
+				});
 	}
 </script>
 
@@ -47,19 +90,19 @@ $(function(){
 		<h1>Upload A remote server</h1>
 		<p>In the specified field , please enter a valid sensor provider
 			for harvesting</p>
-		<form id="harvest-form">
-			<input type="text" class="span6" name="url"></input>
+		<form id="harvest-form" class="form-signin">
+			<input type="text" class="form-control" placeholder="Remote Server"
+				name="url" /> <input type="text" class="form-control"
+				id="authtokenval" value="Auth token" readonly>
+
+			<!-- TODO yakoub : add the data to the harvesting -->
+			<a id="uploadserverbtn" href="#"
+				class="btn btn-lg btn-primary btn-block" onclick="uploadServer()">Add
+				server &raquo;</a>
+
 		</form>
-		<input type="text" class="span6" id="authtokenval" value="Auth token"
-			readonly></input>
-		<p>
-		<!-- TODO yakoub : add the data to the harvesting -->
-			<a id="uploadserverbtn" href="#" class="btn btn-primary btn-large"
-				onclick="uploadServer()">Add server &raquo;</a>
-		</p>
 	</div>
 </div>
 </div>
-
 </body>
 </html>

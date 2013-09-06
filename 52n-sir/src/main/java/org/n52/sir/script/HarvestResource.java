@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/** @author Yakoub
+ */
 package org.n52.sir.script;
 
 import java.io.File;
@@ -21,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -36,9 +38,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
+import org.n52.sir.ds.IInsertHarvestScriptDAO;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.IUserAccountDAO;
 import org.n52.sir.harvest.exec.IJSExecute;
+import org.n52.sir.licenses.License;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;
 import org.n52.sir.scheduler.RemoteHarvestJob;
@@ -115,8 +120,9 @@ public class HarvestResource {
     public Response uploadHarvester(@FormDataParam("file")
     InputStream uploadedInputStream, @FormDataParam("file")
     FormDataContentDisposition fileDetail, @FormDataParam("user")
-    String user) {
-
+    String user,@FormDataParam("auth_token")String userToken,@FormDataParam("licenseCode")String code) {
+    	IUserAccountDAO userDao = this.config.getFactory().userAccountDAO();
+    	int userid = Integer.parseInt(userDao.getUserIDForToken(userToken));
         String fileName = fileDetail.getFileName();
         String type = fileDetail.getType();
 
@@ -127,15 +133,16 @@ public class HarvestResource {
             dir.mkdir();
 
         File script = new File(pathStr + user + '\\' + fileName);
-
         try (OutputStream writer = new FileOutputStream(script);) {
+        	writer.write(getLicenseForCode(code).getBytes());
             int read = 0;
+            
             byte[] bytes = new byte[1024];
             while ( (read = uploadedInputStream.read(bytes)) != -1)
                 writer.write(bytes, 0, read);
             writer.flush();
             writer.close();
-            String id = this.config.getFactory().insertHarvestScriptDAO().insertScript(fileName, user, 1);
+            String id = this.config.getFactory().insertHarvestScriptDAO().insertScript(fileName, user, 1,userid);
             log.info("Storing for script at {}, id: {}" + script.getAbsolutePath(), id);
             log.info("Executing script");
             String result = this.jsEngine.execute(script);
@@ -154,25 +161,31 @@ public class HarvestResource {
     @GET
     @Path("/schedule")
     public Response scheduleHarvest(@QueryParam("id")
-    int sensorId, @QueryParam("date")
-    long when) {
+    int scriptId, @QueryParam("date")
+    long when,@QueryParam("authToken")String authToken) {
+    	IUserAccountDAO userDao = this.config.getFactory().userAccountDAO();
+    	IInsertHarvestScriptDAO scriptDao = this.config.getFactory().insertHarvestScriptDAO();
+    	String userid = userDao.getUserIDForToken(authToken);
+    	String scriptowner = scriptDao.getScriptUserId(scriptId);
+    	if(!userid.equals(scriptowner))
+    		return Response.status(401).entity("Forbidden - You cannot access the following script").build();
         Date d;
         if (when == 0)
             d = new Date();
         else
             d = new Date(when);
-        JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J" + sensorId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,
-                                                                                                          sensorId + "").build();
+        JobDetail detail = JobBuilder.newJob(HarvestJob.class).withIdentity("_J" + scriptId).usingJobData(QuartzConstants.SENSOR_ID_HARVEST_JOB_DATA,
+        		scriptId + "").build();
 
         try {
-            Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + sensorId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();
+            Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + scriptId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();
             Scheduler sch = this.schedulerFactory.getScheduler();
             sch.scheduleJob(detail, tr);
             sch.start();
-            log.info("Scheduled successfully :_J" + sensorId);
+            log.info("Scheduled successfully :_J" + scriptId);
 
             // return "_J" + sensorId;
-            return Response.status(200).entity("_J" + sensorId).build();
+            return Response.status(200).entity("_J" + scriptId).build();
         }
         catch (Exception e) {
             log.error("Error on scheduling", e);
@@ -233,6 +246,26 @@ public class HarvestResource {
             log.error("Error on scheduling", e);
             return Response.status(500).entity(e.getMessage()).build();
         }
+    }
+    private String getLicenseForCode(String code){
+    	StringBuilder builder = new StringBuilder();
+    	LinkedHashMap<String, License> map = SirConfigurator.getInstance().getLicenses();
+    	
+    	License l = map.get(code);
+    	if(l==null)
+    		builder.append("/* This file doesn't support any license */");
+    	else
+    	{
+    		builder.append("/*");
+    		builder.append("This work is licensed under:");
+    		builder.append(l.description);
+    		builder.append(" For more details please visit:");
+    		builder.append(l.link);
+    		builder.append("*/");
+    		builder.append(System.lineSeparator());
+    	}
+    	return builder.toString();
+    	
     }
 
 }

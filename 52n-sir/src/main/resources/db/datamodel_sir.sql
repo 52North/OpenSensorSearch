@@ -138,8 +138,7 @@ CREATE TABLE remoteHarvestSensor
    serverId bigserial NOT NULL, 
    serverURL text NOT NULL, 
    auth_token text, 
-   lastStatus integer,
-   userId integer
+   lastStatus integer
 ) 
 ;
 

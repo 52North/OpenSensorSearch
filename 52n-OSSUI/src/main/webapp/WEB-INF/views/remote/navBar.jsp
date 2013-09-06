@@ -5,6 +5,10 @@ body {
 	background-color: #f5f5f5;
 }
 
+.navbar-static-top {
+	margin-bottom: 19px;
+}
+
 .sidebar-nav {
 	padding: 9px 0;
 }
@@ -31,47 +35,45 @@ body {
 
 <body>
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container-fluid">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse">
+	<div class="navbar navbar-default navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="brand" href="#">OpenSensorSearch</a>
-				<div class="nav-collapse collapse">
-					<p class="navbar-text pull-right">
-						Logged in as <a href="#" class="navbar-link">Username</a>
-					</p>
-					<ul class="nav">
-						<li class="active"><a href="${context}/OSSUI/remote/index">Harvest
-								a Remote Server</a></li>
-						<li><a href="${context}/OSSUI/script/index">Harvest a javascript script</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-				</div>
-				<!--/.nav-collapse -->
+				<a class="navbar-brand" href="#">OpenSensorSearch</a>
 			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="${context}/OSSUI/remote/index">Harvest
+							a Remote Server</a></li>
+					<li><a href="${context}/OSSUI/script/index">Harvest a
+							javascript script</a></li>
+					<li><a href="#contact">Contact</a></li>
+
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
 		</div>
 	</div>
-
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span3">
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Upload</li>
-						<li id="upload-pin"><a href="${context}/OSSUI/remote/upload">Upload a
-								remote server</a></li>
+						<li id="upload-pin"><a href="${context}/OSSUI/remote/upload">Upload
+								a remote server</a></li>
 						<li class="nav-header">Harvest</li>
-						<li id="schedule-pin"><a href="${context}/OSSUI/remote/schedule">Schedule a harvest</a></li>
+						<li id="schedule-pin"><a
+							href="${context}/OSSUI/remote/schedule">Schedule a harvest</a></li>
 						<li class="nav-header">Monitor</li>
-						<li id="status-pin"><a href="/remote/status">Check harvest job status</a></li>
+						<li id="status-pin"><a href="/remote/status">Check
+								harvest job status</a></li>
 
 					</ul>
 				</div>
 				<!--/.well -->
 			</div>
-
-			<!-- /container -->

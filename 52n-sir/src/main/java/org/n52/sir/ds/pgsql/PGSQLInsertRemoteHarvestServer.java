@@ -25,6 +25,7 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
+import org.n52.sir.util.SHA1HashGenerator;
 import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +101,7 @@ public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServe
 
 	private String insertRemoteServerString(String url){
 		String hash = new Date().getTime()+url;
-		String _hash = new ShortAlphanumericIdentifierGenerator().generate(hash);
+		String _hash = new SHA1HashGenerator().generate(hash);
 		if(_hash == null){
 			log.error("Cannot create SHA1 hash");
 			return null;

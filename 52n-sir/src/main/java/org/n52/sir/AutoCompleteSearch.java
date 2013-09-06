@@ -29,7 +29,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
@@ -40,7 +42,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.servlet.RequestScoped;
 import com.sun.jersey.api.core.HttpContext;
 
-@Path("/autocomplete")
+@Path("/suggest")
 @RequestScoped
 public class AutoCompleteSearch {
 
@@ -48,7 +50,7 @@ public class AutoCompleteSearch {
 
     private static Logger log = LoggerFactory.getLogger(SOLRSearchSensorDAO.class);
 
-    private static final String REQUEST_PARAM_AUTOCOMPLETE = "text";
+    private static final String REQUEST_PARAM_AUTOCOMPLETE = "q";
 
     @Context
     HttpServletRequest servletRequest;
@@ -58,9 +60,10 @@ public class AutoCompleteSearch {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String doGet(@QueryParam("text")
-    String text) {
-        // String text = servletRequest.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
+    public Response doGet(@QueryParam("q") String text)
+    {
+        // String text =
+        // servletRequest.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
         log.trace("new GET request for autocomplete: {}", text);
 
         // TODO return reasonable error message and status code
@@ -93,19 +96,26 @@ public class AutoCompleteSearch {
 
         // returns the result as json array
         if (results.size() == 0)
-            return "{input: " + text + "}"; // FIXME more helpful response message
+            return Response.ok().entity("[]").header(HttpHeaders.CONTENT_LENGTH, "[]".length()).build();
 
         Iterator<Object> iterator = results.iterator();
         StringBuilder res = new StringBuilder();
-        res.append(iterator.next());
+        String first = iterator.next().toString();
+        if (first.contains(text)) {
+            res.append(first);
+        }
         while (iterator.hasNext()) {
-            res.append(",");
-            res.append(iterator.next());
+            String n = iterator.next().toString();
+            if (n.contains(text)) {
+                if (res.toString().length() > 0)
+                    res.append(",");
+                res.append(n);
+            }
         }
 
         log.debug("Done serving servlet, response: {}", res.toString());
-
-        return res.toString();
+        String result = "[" + res.toString() + "]";
+        return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
     }
 
 }

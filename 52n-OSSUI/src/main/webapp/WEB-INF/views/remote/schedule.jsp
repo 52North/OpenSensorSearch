@@ -60,10 +60,10 @@
 			valid time</p>
 		<form id="schedule-form">
 
-			<label for="auth_token">Auth token</label> <input type="text"
-				class="span6" name="auth_token"></input>
+			 <input type="text"
+				class="span6 span4 form-control input-lg" placeholder="Auth token" name="auth_token"></input>
 		</form>
-		<label for="datepicker">Date</label> <input type="text" class="span6"
+	 <input type="text" class="span6 span4 form-control input-lg" placeholder="Date"
 			name="date" id="datepicker"></input>
 		<p>
 			<a id="scheduleserverbtn" href="#" class="btn btn-primary btn-large"

@@ -17,8 +17,10 @@
 package org.n52.sir;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -26,6 +28,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -41,6 +44,8 @@ import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
+import org.n52.sir.licenses.License;
+import org.n52.sir.licenses.Licenses;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
@@ -54,6 +59,7 @@ import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.VersionAttribute;
 
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -401,7 +407,15 @@ public class SirConfigurator {
     private ITransformerFactory transformerFactory;
 
     private String ScriptsPath;
+    public LinkedHashMap<String,License> getLicenses() {
+		return licenses;
+	}
 
+	public void setLicenses(LinkedHashMap<String,License> licenses) {
+		this.licenses = licenses;
+	}
+
+	private LinkedHashMap<String,License> licenses;
     /**
      * update sequence
      */
@@ -729,7 +743,7 @@ public class SirConfigurator {
         this.validateResponses = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_RESPONSES));
 
         this.ScriptsPath = this.props.getProperty(SCRIPTS_PATH);
-
+        this.licenses = this.initializeLicenses();
         String resourceName = this.props.getProperty(PROFILE4DISCOVERY);
         URL location = this.getClass().getResource(resourceName);
         if (location == null) {
@@ -810,7 +824,27 @@ public class SirConfigurator {
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
     }
 
-    @SuppressWarnings("unchecked")
+    private LinkedHashMap<String,License> initializeLicenses() {
+        try (InputStream licensesStream = SirConfigurator.class.getResourceAsStream("/prop/licenses.json");) {
+
+    	LinkedHashMap<String, License> licensesMap = new LinkedHashMap<>();
+    	Gson gson = new Gson();
+		Licenses list = gson.fromJson(new InputStreamReader(licensesStream),Licenses.class);
+		List<License> licenses = list.licenses;
+		
+		for(int i=0;i<licenses.size();i++){
+			License l = licenses.get(i);
+			licensesMap.put(l.code,l);
+		}
+		log.info("The list of licenses initialized successfully! {}",list);
+		return licensesMap; 
+        } catch (IOException e) {
+        	log.error("Cannot load licesnes",e);
+        	return null;
+		}
+    }
+
+	@SuppressWarnings("unchecked")
     private void initializeCatalogFactory(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(CATALOGFACTORY);
 

@@ -16,14 +16,19 @@
 
 package org.n52.oss.guice;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.n52.oss.api.StatisticsResource;
+import org.n52.oss.api.TransformationResource;
+import org.n52.oss.api.UserAccessResource;
+import org.n52.oss.api.ValidatorResource;
 import org.n52.oss.opensearch.OpenSearch;
 import org.n52.sir.AutoCompleteSearch;
 import org.n52.sir.SIR;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 import org.n52.sir.script.HarvestResource;
-import org.n52.sir.xml.IValidatorFactory;
-import org.n52.sir.xml.impl.ValidatorFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +53,7 @@ public class ServletModule extends JerseyServletModule {
         // PropertyApplicationConstants.class).build(ConfigFactory.class));
 
          bind(IJSExecute.class).to(RhinoJSExecute.class);
-         bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
+       //  bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
         // bind the JAX-RS resources
@@ -58,10 +63,18 @@ public class ServletModule extends JerseyServletModule {
         bind(AutoCompleteSearch.class);
         bind(OpenSearch.class);
         bind(SIR.class);
+        bind(TransformationResource.class);
+        bind(ValidatorResource.class);
+        bind(UserAccessResource.class);
+        bind(StatisticsResource.class);
+    //    bind(ValidatorResource.class);
+     //   filter("*").through(DebugFilter.class);
+        Map<String, String> params = new HashMap<String, String>(); 
+        params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF"); 
 
-        filter("*").through(DebugFilter.class);
-        serve("/*").with(GuiceContainer.class);
-
+        params.put("com.sun.jersey.config.property.WebPageContentRegex", "/.*\\.(jpg|ico|png|gif|html|id|txt|css|js)");
+        filter("/*").through(GuiceContainer.class,params);
+        
         log.info("configured {} with context {}", this, getServletContext());
     }
 

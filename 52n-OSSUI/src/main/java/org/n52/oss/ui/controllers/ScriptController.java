@@ -20,10 +20,15 @@ package org.n52.oss.ui.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -37,8 +42,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/script")
@@ -46,6 +54,26 @@ public class ScriptController {
     public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
 
     private static Logger log = LoggerFactory.getLogger(ScriptController.class);
+    
+    @RequestMapping("/show/{scriptId}")
+    public String show(@PathVariable String scriptId,ModelMap map){
+        HttpClient client = new DefaultHttpClient();
+        HttpGet get = new HttpGet("/OpenSensorSearch/script/"+scriptId);
+        try {
+           HttpResponse resp =  client.execute(get);
+           StringBuilder builder = new StringBuilder();
+           BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+           String s = null;
+           while((s=reader.readLine())!=null)
+               builder.append(s);
+           ScriptContent content = new Gson().fromJson(builder.toString(), ScriptContent.class);
+           map.addAttribute("content", builder.toString());
+           
+        } catch (Exception  e) {
+            return "script/error";
+        }
+            
+    }
 
     @RequestMapping("/index")
     public String index(ModelMap map)
@@ -130,4 +158,7 @@ public class ScriptController {
     // return builder.toString();
     // }
 
+    public class ScriptContent{
+        public String content;
+    }
 }

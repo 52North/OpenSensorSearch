@@ -57,7 +57,7 @@
 </head>
 
 <body>
-	<div id="content"><jsp:include page="pages/header.jsp" />
+	<div id="content"><jsp:include page="../pages/header.jsp" />
 		<jsp:include page="menu.jsp" />
 
 		<p>For more information about the Sensor Instance Registry please

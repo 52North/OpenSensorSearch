@@ -30,7 +30,7 @@
 <script src="/OpenSensorSearch/bootstrap.min.js"></script>
 <link href="/OpenSensorSearch/bootstrap.css"
 	rel="stylesheet">
-<%@ include file="navBar.jsp"%>
+<%@ include file="../navBar.jsp"%>
 <!-- /container -->
 <!--/span-->
 <div class="span9">

@@ -32,19 +32,49 @@
 <%@ include file="navBar.jsp"%>
 <!-- /container -->
 <!--/span-->
+<style>
+.form-control{
+max-width: 200px;
+}
+</style>
+<script>
+	$(document)
+			.ready(
+					function() {
+						if (navigator.geolocation) {
+							navigator.geolocation
+									.getCurrentPosition(showPosition);
+						} else {
+							$(".alert-msg")
+									.append(
+											'<div class="alert alert-danger">Your browser doesn\'t support	geolocation!</div>');
 
+						}
+					});
+</script>
+<script>
+function showPosition(position) {
+	var str = position.coords.latitude+","+position.coords.longitude;
+	$("#loc").val(str)
+}
+
+</script>
 
 
 <div class="container">
 	<div class="jumbotron">
-		<h1>Search OSS Sensors Database</h1>
+		<h3>Search OSS Sensors Database</h3>
 		<form name="requestform" method="get"
 			action="${service.path}/${service.endpoint.opensearch}">
 			<input type="hidden" name="httpAccept" value="text/html" /> <span><input
-				name="q" type="text" class="search-input" /> </span> <span><input
-				value="Search" type="submit" class="btn btn-primary btn-large" /> <input
-				type="text" id="demo" readonly="readonly" /> </span>
+				name="q" type="text" class="search-input form-control" /> </span> 
+			<input type="text" name="location" readonly="readonly"
+				placeholder="location" id="loc" class="form-control">
+			<span><input
+				value="Search" type="submit" class="btn btn-primary btn-large" /> </span>
+			<p>
 		</form>
+		<div class="alert-msg"></div>
 	</div>
 </div>
 </body>

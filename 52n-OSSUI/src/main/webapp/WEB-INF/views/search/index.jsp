@@ -1,3 +1,21 @@
+<%--
+
+    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+--%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +29,6 @@
 <script src="./${context }/scripts/autocomplete.js"></script>
 <script src="./${context}/scripts/bootstrap.min.js"></script>
 <link href="./${context}/styles/bootstrap.css" rel="stylesheet">
-
 <%@ include file="navBar.jsp"%>
 <!-- /container -->
 <!--/span-->
@@ -25,7 +42,8 @@
 			action="${service.path}/${service.endpoint.opensearch}">
 			<input type="hidden" name="httpAccept" value="text/html" /> <span><input
 				name="q" type="text" class="search-input" /> </span> <span><input
-				value="Search" type="submit" class="btn btn-primary btn-large" /> </span>
+				value="Search" type="submit" class="btn btn-primary btn-large" /> <input
+				type="text" id="demo" readonly="readonly" /> </span>
 		</form>
 	</div>
 </div>

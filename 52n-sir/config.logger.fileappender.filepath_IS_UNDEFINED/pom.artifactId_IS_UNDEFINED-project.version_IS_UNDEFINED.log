@@ -4710,3 +4710,59 @@ Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
 	... 31 common frames omitted
 2013-09-07 01:10:08,268 DEBUG [main] [SensorML4DiscoveryValidatorImpl.java:326] Creating XSL from Schematron profile: D:\52n_backup\OpenSensorSearch\52n-sir\target\test-classes\SensorML_Profile_for_Discovery.sch
 2013-09-07 01:10:08,271 DEBUG [main] [SensorML4DiscoveryValidatorImpl.java:358] Created Stream Source of svrl xsl file.
+2013-09-07 01:33:50,013 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:59] Executed at : 1378510430011
+2013-09-07 01:33:50,017 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:60] http://localhost:3000
+2013-09-07 01:33:50,017 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:61] Harvesting server:http://localhost:3000
+2013-09-07 01:33:50,335 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 1
+2013-09-07 01:33:50,336 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test1, testkeyword1]
+2013-09-07 01:33:50,344 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 2
+2013-09-07 01:33:50,344 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test2, testkeyword2]
+2013-09-07 01:33:56,932 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:33:56,935 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:33:57,094 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@537d53b9
+2013-09-07 01:33:57,668 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:33:57,669 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:33:57,674 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@5a0a3068
+2013-09-07 01:33:58,161 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:33:58,162 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:33:58,170 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@5b29c361
+2013-09-07 01:33:58,680 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:33:58,680 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:33:58,685 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@49860b6d
+2013-09-07 01:33:59,116 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:33:59,117 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:33:59,123 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@589c6538
+2013-09-07 01:33:59,446 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:33:59,447 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:33:59,451 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@4ff1e4d7
+2013-09-07 01:33:59,827 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:33:59,827 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:33:59,830 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@7a23e24
+2013-09-07 01:34:00,354 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:00,354 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:00,359 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@f158f9e
+2013-09-07 01:34:00,800 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:00,801 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:00,808 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@642f7982
+2013-09-07 01:34:01,819 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:01,819 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:01,823 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@45b82cc0
+2013-09-07 01:34:02,950 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:02,950 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:02,955 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@732961e6
+2013-09-07 01:34:03,703 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:03,703 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:03,707 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@2dad3d89
+2013-09-07 01:34:04,897 INFO [main] [SOLRSearchSensorDAO.java:606] q=dtstart%3A%5B2009-12-30T23%3A34%3A00Z+TO+*+%5D+OR+dtend%3A%5B+*+TO+2012-01-29T23%3A34%3A00Z+%5D+OR+keyword%3A%22TEST%22
+2013-09-07 01:34:05,036 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:05,037 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:05,044 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@fb04321
+2013-09-07 01:34:05,511 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:05,511 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:05,514 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@136422b8
+2013-09-07 01:34:05,944 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:05,944 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:05,948 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@228f2f1
+2013-09-07 01:34:06,488 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 01:34:06,488 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 01:34:06,495 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@108b3bcd

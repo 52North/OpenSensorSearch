@@ -111,8 +111,10 @@ public class HarvestResource {
                 StringBuilder builder = new StringBuilder();
                 BufferedReader reader = new BufferedReader(new FileReader(f));
                 String s = null;
-                while((s=reader.readLine())!=null)
+                while((s=reader.readLine())!=null){
                     builder.append(s);
+                    builder.append("\n");
+                }
                 responseMsg="{content:'"+builder.toString()+"'}";
             }
             return Response.ok(responseMsg).build();            

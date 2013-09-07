@@ -162,12 +162,15 @@ body {
 			<!--/span-->
 			<div class="span9">
 				<div class="hero-unit">
-					<pre class="prettyprint">${content }</pre>
+					<pre class="prettyprint">${content }</pre> <a href="#footnote-1">[1]</a>
 				</div>
 			</div>
 		</div>
 
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="../../${context}/scripts/bootstrap.min.js"></script>
+<footer>
+<p id="footnote-1">This was formatted using <a href="https://code.google.com/p/google-code-prettify/">Google code beautifier</a> for Styling <a href="http://code.google.com/p/google-code-prettify/source/browse/trunk/styles/sunburst.css"> the Sunburst CSS tempelate </a> was used<p>
+</footer>
 </body>
 </html>

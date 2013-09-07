@@ -39,7 +39,7 @@ var licenses = ['optionsRadios1','optionsRadios2','optionsRadios3'];
 			for(var i=0;i<licenses.length;i++)
 				if(document.getElementById(licenses[i].toString()).checked)return true;
 			
-			alert("You need to check a license first");
+			alert("You need to choose a license first");
 			return false;
 		} else {
 			alert("You need to Accept the license first!");

@@ -54,7 +54,10 @@ public class ScriptController {
     public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
 
     private static Logger log = LoggerFactory.getLogger(ScriptController.class);
-
+    @RequestMapping("/show/")
+    public String selectScript(ModelMap map){
+        return "script/selectScript";
+    }
     @RequestMapping("/show/{scriptId}")
     public String show(@PathVariable String scriptId,
             ModelMap map)

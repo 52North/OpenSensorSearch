@@ -113,7 +113,7 @@ public class HarvestResource {
                 String s = null;
                 while((s=reader.readLine())!=null){
                     builder.append(s);
-                    builder.append("\n");
+                    builder.append(System.getProperty("line.separator"));
                 }
                 responseMsg="{content:'"+builder.toString()+"'}";
             }

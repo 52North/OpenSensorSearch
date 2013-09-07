@@ -4766,3 +4766,2500 @@ Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
 2013-09-07 01:34:06,488 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
 2013-09-07 01:34:06,488 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
 2013-09-07 01:34:06,495 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@108b3bcd
+2013-09-07 19:29:50,026 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:59] Executed at : 1378574990024
+2013-09-07 19:29:50,051 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:60] http://localhost:3000
+2013-09-07 19:29:50,052 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:61] Harvesting server:http://localhost:3000
+2013-09-07 19:29:50,359 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 1
+2013-09-07 19:29:50,361 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test1, testkeyword1]
+2013-09-07 19:29:50,369 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 2
+2013-09-07 19:29:50,369 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test2, testkeyword2]
+2013-09-07 19:29:59,992 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:29:59,995 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:00,198 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@3c4cfbe7
+2013-09-07 19:30:02,310 ERROR [main] [SOLRInsertSensorInfoDAO.java:152] Could not create connection to Solr.
+org.apache.solr.client.solrj.SolrServerException: Server refused connection at: http://localhost:8983/solr
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:406) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:181) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.request.AbstractUpdateRequest.process(AbstractUpdateRequest.java:117) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.SolrServer.add(SolrServer.java:116) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.SolrServer.add(SolrServer.java:102) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.n52.sir.ds.solr.SolrConnection.addInputDocument(SolrConnection.java:39) ~[classes/:na]
+	at org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO.insertSensor(SOLRInsertSensorInfoDAO.java:149) ~[classes/:na]
+	at org.n52.sir.IT.solr.SearchByAllFieldsTest.searchByAllFields(SearchByAllFieldsTest.java:54) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104) [surefire-junit4-2.10.jar:2.10]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164) [surefire-api-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68) [surefire-booter-2.10.jar:2.10]
+Caused by: org.apache.http.conn.HttpHostConnectException: Connection to http://localhost:8983 refused
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:190) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:151) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:125) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:643) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:479) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:906) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:805) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:784) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:352) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	... 37 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method) ~[na:1.7.0_21]
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:69) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182) ~[na:1.7.0_21]
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:157) ~[na:1.7.0_21]
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:391) ~[na:1.7.0_21]
+	at java.net.Socket.connect(Socket.java:579) ~[na:1.7.0_21]
+	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:127) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180) ~[httpclient-4.2.5.jar:4.2.5]
+	... 45 common frames omitted
+2013-09-07 19:30:04,456 ERROR [main] [SOLRSearchSensorDAO.java:543] Solr exception
+org.apache.solr.client.solrj.SolrServerException: Server refused connection at: http://localhost:8983/solr
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:406) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:181) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.request.QueryRequest.process(QueryRequest.java:90) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.SolrServer.query(SolrServer.java:301) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.n52.sir.ds.solr.SolrConnection.SolrQuery(SolrConnection.java:47) ~[classes/:na]
+	at org.n52.sir.ds.solr.SOLRSearchSensorDAO.searchByAll(SOLRSearchSensorDAO.java:508) ~[classes/:na]
+	at org.n52.sir.IT.solr.SearchByAllFieldsTest.searchByAllFields(SearchByAllFieldsTest.java:57) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104) [surefire-junit4-2.10.jar:2.10]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164) [surefire-api-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68) [surefire-booter-2.10.jar:2.10]
+Caused by: org.apache.http.conn.HttpHostConnectException: Connection to http://localhost:8983 refused
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:190) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:151) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:125) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:643) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:479) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:906) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:805) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:784) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:352) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	... 36 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method) ~[na:1.7.0_21]
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:69) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182) ~[na:1.7.0_21]
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:157) ~[na:1.7.0_21]
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:391) ~[na:1.7.0_21]
+	at java.net.Socket.connect(Socket.java:579) ~[na:1.7.0_21]
+	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:127) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180) ~[httpclient-4.2.5.jar:4.2.5]
+	... 44 common frames omitted
+2013-09-07 19:30:06,516 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:06,517 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:06,522 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@39731fbd
+2013-09-07 19:30:08,559 ERROR [main] [SOLRInsertSensorInfoDAO.java:152] Could not create connection to Solr.
+org.apache.solr.client.solrj.SolrServerException: Server refused connection at: http://localhost:8983/solr
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:406) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:181) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.request.AbstractUpdateRequest.process(AbstractUpdateRequest.java:117) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.SolrServer.add(SolrServer.java:116) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.SolrServer.add(SolrServer.java:102) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.n52.sir.ds.solr.SolrConnection.addInputDocument(SolrConnection.java:39) ~[classes/:na]
+	at org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO.insertSensor(SOLRInsertSensorInfoDAO.java:149) ~[classes/:na]
+	at org.n52.sir.IT.solr.SearchByBoundingBoxTest.insertSensor(SearchByBoundingBoxTest.java:64) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104) [surefire-junit4-2.10.jar:2.10]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164) [surefire-api-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68) [surefire-booter-2.10.jar:2.10]
+Caused by: org.apache.http.conn.HttpHostConnectException: Connection to http://localhost:8983 refused
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:190) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:151) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:125) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:643) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:479) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:906) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:805) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:784) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:352) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	... 37 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method) ~[na:1.7.0_21]
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:69) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182) ~[na:1.7.0_21]
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:157) ~[na:1.7.0_21]
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:391) ~[na:1.7.0_21]
+	at java.net.Socket.connect(Socket.java:579) ~[na:1.7.0_21]
+	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:127) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180) ~[httpclient-4.2.5.jar:4.2.5]
+	... 45 common frames omitted
+2013-09-07 19:30:10,643 ERROR [main] [SOLRSearchSensorDAO.java:141] Server refused connection at: http://localhost:8983/solr
+2013-09-07 19:30:12,703 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:12,704 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:12,710 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@1152dedc
+2013-09-07 19:30:14,738 ERROR [main] [SOLRInsertSensorInfoDAO.java:152] Could not create connection to Solr.
+org.apache.solr.client.solrj.SolrServerException: Server refused connection at: http://localhost:8983/solr
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:406) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:181) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.request.AbstractUpdateRequest.process(AbstractUpdateRequest.java:117) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.SolrServer.add(SolrServer.java:116) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.apache.solr.client.solrj.SolrServer.add(SolrServer.java:102) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	at org.n52.sir.ds.solr.SolrConnection.addInputDocument(SolrConnection.java:39) ~[classes/:na]
+	at org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO.insertSensor(SOLRInsertSensorInfoDAO.java:149) ~[classes/:na]
+	at org.n52.sir.IT.solr.SearchByBoundingBoxTest.insertSensor(SearchByBoundingBoxTest.java:64) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:53) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:123) [surefire-junit4-2.10.jar:2.10]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:104) [surefire-junit4-2.10.jar:2.10]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:164) [surefire-api-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:110) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:175) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcessWhenForked(SurefireStarter.java:107) [surefire-booter-2.10.jar:2.10]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:68) [surefire-booter-2.10.jar:2.10]
+Caused by: org.apache.http.conn.HttpHostConnectException: Connection to http://localhost:8983 refused
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:190) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:151) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:125) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:643) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:479) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:906) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:805) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:784) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:352) ~[solr-solrj-4.0.0.jar:4.0.0 1394950 - rmuir - 2012-10-06 03:05:44]
+	... 37 common frames omitted
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method) ~[na:1.7.0_21]
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:69) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200) ~[na:1.7.0_21]
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182) ~[na:1.7.0_21]
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:157) ~[na:1.7.0_21]
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:391) ~[na:1.7.0_21]
+	at java.net.Socket.connect(Socket.java:579) ~[na:1.7.0_21]
+	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:127) ~[httpclient-4.2.5.jar:4.2.5]
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180) ~[httpclient-4.2.5.jar:4.2.5]
+	... 45 common frames omitted
+2013-09-07 19:30:16,757 ERROR [main] [SOLRSearchSensorDAO.java:141] Server refused connection at: http://localhost:8983/solr
+2013-09-07 19:30:18,793 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:18,794 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:18,799 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@e5e2bd7
+2013-09-07 19:30:20,930 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:20,931 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:20,934 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@1fb10a9f
+2013-09-07 19:30:21,229 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:21,230 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:21,234 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@1554778f
+2013-09-07 19:30:21,545 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:21,545 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:21,549 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@33697802
+2013-09-07 19:30:22,030 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:22,031 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:22,037 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@4bbbce04
+2013-09-07 19:30:22,546 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:22,547 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:22,550 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@5d938a38
+2013-09-07 19:30:23,227 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:23,228 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:23,235 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@18a8ccce
+2013-09-07 19:30:23,761 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:23,762 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:23,767 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@783589e6
+2013-09-07 19:30:24,283 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:24,284 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:24,289 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@4bf0f8ff
+2013-09-07 19:30:24,720 INFO [main] [SOLRSearchSensorDAO.java:606] q=dtstart%3A%5B2009-12-31T17%3A30%3A00Z+TO+*+%5D+OR+dtend%3A%5B+*+TO+2012-01-30T17%3A30%3A00Z+%5D+OR+keyword%3A%22TEST%22
+2013-09-07 19:30:24,863 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:24,864 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:24,868 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@6eb6377c
+2013-09-07 19:30:25,322 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:25,322 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:25,327 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@37987632
+2013-09-07 19:30:26,083 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:26,083 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:26,086 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@720cd60d
+2013-09-07 19:30:26,694 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:26,695 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:26,701 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@450be552
+2013-09-07 19:30:30,025 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:59] Executed at : 1378575030022
+2013-09-07 19:30:30,029 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:60] http://localhost:3000
+2013-09-07 19:30:30,030 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:61] Harvesting server:http://localhost:3000
+2013-09-07 19:30:30,353 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 1
+2013-09-07 19:30:30,353 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test1, testkeyword1]
+2013-09-07 19:30:30,365 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:87] 2
+2013-09-07 19:30:30,365 INFO [DefaultQuartzScheduler_Worker-1] [RemoteHarvestJob.java:88] [test2, testkeyword2]
+2013-09-07 19:30:37,050 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:37,053 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:37,227 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@330afe23
+2013-09-07 19:30:37,737 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:37,737 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:37,743 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@76966a1d
+2013-09-07 19:30:38,242 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:38,243 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:38,249 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@6641d56
+2013-09-07 19:30:38,650 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:38,651 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:38,657 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@5c0dc84
+2013-09-07 19:30:39,106 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:39,106 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:39,111 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@7a23e24
+2013-09-07 19:30:39,445 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:39,446 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:39,450 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@3a8bbd49
+2013-09-07 19:30:39,715 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:39,716 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:39,719 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@5e5f0b0
+2013-09-07 19:30:40,085 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:40,086 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:40,089 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@1d5f261a
+2013-09-07 19:30:40,996 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:40,996 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:41,001 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@3b53fb0f
+2013-09-07 19:30:41,625 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:41,626 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:41,632 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@6e971f94
+2013-09-07 19:30:43,878 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:43,879 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:43,883 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@199bffc7
+2013-09-07 19:30:44,442 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:44,442 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:44,445 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@506fdc27
+2013-09-07 19:30:44,824 INFO [main] [SOLRSearchSensorDAO.java:606] q=dtstart%3A%5B2009-12-31T17%3A30%3A00Z+TO+*+%5D+OR+dtend%3A%5B+*+TO+2012-01-30T17%3A30%3A00Z+%5D+OR+keyword%3A%22TEST%22
+2013-09-07 19:30:44,953 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:44,954 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:44,959 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@2e54e48d
+2013-09-07 19:30:45,383 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:45,383 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:45,387 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@6e1dacbd
+2013-09-07 19:30:45,805 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:45,805 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:45,808 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@2314d479
+2013-09-07 19:30:46,380 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:30:46,380 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:30:46,392 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@27d4ae59
+2013-09-07 19:31:08,178 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:08,319 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:08,561 DEBUG [main] [Client.java:333] Sending request: <ConnectToCatalogRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!--push all data to catalog only once-->
+  <CatalogURL>http://giv-genesis.uni-muenster.de:8080/ergorr/webservice</CatalogURL>
+</ConnectToCatalogRequest>
+2013-09-07 19:31:08,562 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <ConnectToCatalogRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-09-07 19:31:08,697 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:09,706 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.ConnectToCatalogIT.requestFromFile(ConnectToCatalogIT.java:71) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:09,857 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:09,859 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:09,882 DEBUG [main] [Client.java:333] Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>3</SensorIDInSIR>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+      </ServiceReference>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+2013-09-07 19:31:09,885 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-09-07 19:31:09,885 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:09,929 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DeleteSensorInfoIT.deleteSensor(DeleteSensorInfoIT.java:65) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 32 common frames omitted
+2013-09-07 19:31:09,938 DEBUG [main] [Client.java:333] Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>1</SensorIDInSIR>
+    </SensorIdentification>
+    <ServiceInfo>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:017</ServiceSpecificSensorID>
+      </ServiceReference>
+    </ServiceInfo>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+2013-09-07 19:31:09,940 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-09-07 19:31:09,941 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:09,967 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DeleteSensorInfoIT.deleteReference(DeleteSensorInfoIT.java:50) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 32 common frames omitted
+2013-09-07 19:31:09,980 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:09,982 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:10,047 DEBUG [main] [Client.java:333] Sending request: <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>water gage</ns:keyword>
+          <ns:keyword>warning system</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:Sensor:IFGI:station_4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>station 4781, a dummy test station near Münster</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>station 4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:classification>
+        <ns:ClassifierList>
+          <ns:classifier name="intendedApplication">
+            <ns:Term>
+              <ns:value>water gauge</ns:value>
+            </ns:Term>
+          </ns:classifier>
+          <ns:classifier name="sensorType">
+            <ns:Term>
+              <ns:value>gauge station</ns:value>
+            </ns:Term>
+          </ns:classifier>
+        </ns:ClassifierList>
+      </ns:classification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-04-25T00:00:00.000+02:00</gml:beginPosition>
+          <gml:endPosition>2010-04-25T00:00:00.000+02:00</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>51.77</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>52.076</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.833</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="WWU_ifgi_test_sensor_data_contact">
+          <ns:individualName>Daniel Nüst</ns:individualName>
+          <ns:organizationName>Institute for Geoinformatics - Westfälische Wilhelms Universität Münster - Sensor Web and Simulation Lab</ns:organizationName>
+          <ns:contactInfo>
+            <ns:address>
+              <ns:deliveryPoint>Weseler Straße 253</ns:deliveryPoint>
+              <ns:city>Münster</ns:city>
+              <ns:postalCode>48151</ns:postalCode>
+              <ns:country>Germany</ns:country>
+              <ns:electronicMailAddress>daniel.nuest@uni-muenster.de</ns:electronicMailAddress>
+            </ns:address>
+          </ns:contactInfo>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position>
+          <swe:location>
+            <swe:Vector gml:id="SYSTEM_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="degree"/>
+                  <swe:value>51.977160249276004</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:value>7.357731467853749</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:value>61.52</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="WaterSAS_68">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>WaterSAS:68</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+          <ns:interface name="SOS6_55">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>SOS6:55</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="water_level">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+          </ns:input>
+          <ns:input name="current">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="water_level">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="current">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+    <ServiceReference>
+      <ServiceURL>http://service.url</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+    </ServiceReference>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-09-07 19:31:10,055 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-09-07 19:31:10,056 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,134 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DescribeSensorIT.setup(DescribeSensorIT.java:63) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:10,225 DEBUG [main] [Client.java:333] Sending request: <DescribeSensorRequest xmlns="http://52north.org/sir/0.3.2">
+  <SensorIDInSIR>42</SensorIDInSIR>
+</DescribeSensorRequest>
+2013-09-07 19:31:10,225 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <ns:DescribeSensorRequest xmlns:ns="http://52north.org/sir/0.3.2"><ns:SensorIDInSIR>42</ns:SensorIDI
+2013-09-07 19:31:10,226 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,239 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DescribeSensorIT.describeSensorUsingDocument(DescribeSensorIT.java:75) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 34 common frames omitted
+2013-09-07 19:31:10,249 DEBUG [main] [Client.java:333] Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>3</SensorIDInSIR>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+      </ServiceReference>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+2013-09-07 19:31:10,250 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-09-07 19:31:10,251 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,267 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DescribeSensorIT.deleteInsertedSensor(DescribeSensorIT.java:104) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 32 common frames omitted
+2013-09-07 19:31:10,312 DEBUG [main] [Client.java:333] Sending request: <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>water gage</ns:keyword>
+          <ns:keyword>warning system</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:Sensor:IFGI:station_4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>station 4781, a dummy test station near Münster</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>station 4781</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:classification>
+        <ns:ClassifierList>
+          <ns:classifier name="intendedApplication">
+            <ns:Term>
+              <ns:value>water gauge</ns:value>
+            </ns:Term>
+          </ns:classifier>
+          <ns:classifier name="sensorType">
+            <ns:Term>
+              <ns:value>gauge station</ns:value>
+            </ns:Term>
+          </ns:classifier>
+        </ns:ClassifierList>
+      </ns:classification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-04-25T00:00:00.000+02:00</gml:beginPosition>
+          <gml:endPosition>2010-04-25T00:00:00.000+02:00</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>51.77</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>52.076</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>7.833</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="WWU_ifgi_test_sensor_data_contact">
+          <ns:individualName>Daniel Nüst</ns:individualName>
+          <ns:organizationName>Institute for Geoinformatics - Westfälische Wilhelms Universität Münster - Sensor Web and Simulation Lab</ns:organizationName>
+          <ns:contactInfo>
+            <ns:address>
+              <ns:deliveryPoint>Weseler Straße 253</ns:deliveryPoint>
+              <ns:city>Münster</ns:city>
+              <ns:postalCode>48151</ns:postalCode>
+              <ns:country>Germany</ns:country>
+              <ns:electronicMailAddress>daniel.nuest@uni-muenster.de</ns:electronicMailAddress>
+            </ns:address>
+          </ns:contactInfo>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position>
+          <swe:location>
+            <swe:Vector gml:id="SYSTEM_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="degree"/>
+                  <swe:value>51.977160249276004</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:value>7.357731467853749</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:value>61.52</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="WaterSAS_68">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SAS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>WaterSAS:68</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+          <ns:interface name="SOS6_55">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>SOS6:55</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="water_level">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+          </ns:input>
+          <ns:input name="current">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="water_level">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="current">
+            <swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
+              <swe:uom code="m"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+    <ServiceReference>
+      <ServiceURL>http://service.url</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+    </ServiceReference>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-09-07 19:31:10,323 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <InsertSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-09-07 19:31:10,324 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,407 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DescribeSensorIT.setup(DescribeSensorIT.java:63) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:10,413 DEBUG [main] [Client.java:333] Sending request: <DescribeSensorRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SensorIDInSIR>1</SensorIDInSIR>
+</DescribeSensorRequest>
+2013-09-07 19:31:10,414 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <DescribeSensorRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.
+2013-09-07 19:31:10,415 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,433 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DescribeSensorIT.describeSensor(DescribeSensorIT.java:88) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 34 common frames omitted
+2013-09-07 19:31:10,439 DEBUG [main] [Client.java:333] Sending request: <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <SensorIDInSIR>3</SensorIDInSIR>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+  <InfoToBeDeleted>
+    <SensorIdentification>
+      <ServiceReference>
+        <ServiceURL>http://service.url</ServiceURL>
+        <ServiceType>SOS</ServiceType>
+        <ServiceSpecificSensorID>id:sensor:42</ServiceSpecificSensorID>
+      </ServiceReference>
+    </SensorIdentification>
+    <DeleteSensor>true</DeleteSensor>
+  </InfoToBeDeleted>
+</DeleteSensorInfoRequest>
+2013-09-07 19:31:10,440 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <DeleteSensorInfoRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.
+2013-09-07 19:31:10,441 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,463 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.DescribeSensorIT.deleteInsertedSensor(DescribeSensorIT.java:104) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 32 common frames omitted
+2013-09-07 19:31:10,472 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:10,474 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:10,485 DEBUG [main] [Client.java:333] Sending request: <sir:GetCapabilities service="SIR" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd" xmlns:sir="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.opengis.net/ows/1.1">
+  <AcceptVersions>
+    <Version>0.3.0</Version>
+  </AcceptVersions>
+  <Sections>
+    <Section>Operationsmetadata</Section>
+    <Section>Contents</Section>
+  </Sections>
+</sir:GetCapabilities>
+2013-09-07 19:31:10,486 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <sir:GetCapabilities service="SIR" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.o
+2013-09-07 19:31:10,488 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,512 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.GetCapabilitiesIT.getCapabilites(GetCapabilitiesIT.java:55) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 32 common frames omitted
+2013-09-07 19:31:10,646 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:10,649 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:10,657 DEBUG [main] [Client.java:333] Sending request: <HarvestServiceRequest service="SIR" version="0.3.2" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ServiceURL>http://sensorweb.demo.52north.org/EO2HeavenSOS/sos</ServiceURL>
+  <ServiceType>SOS</ServiceType>
+</HarvestServiceRequest>
+2013-09-07 19:31:10,658 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <HarvestServiceRequest service="SIR" version="0.3.2" xsi:schemaLocation="http://52north.org/sir/0.3.
+2013-09-07 19:31:10,659 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:10,677 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.HarvestServiceIT.harvestWeatherServiceDoc(HarvestServiceIT.java:70) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 32 common frames omitted
+2013-09-07 19:31:10,893 INFO [main] [GuiceUtil.java:78] Configured SirConfigurator for tests.
+2013-09-07 19:31:10,919 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:10,920 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:11,028 DEBUG [main] [Client.java:333] Sending request: <InsertSensorInfoRequest xmlns="http://52north.org/sir/0.3.2">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>A test sensor.</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>testkeyword</ns:keyword>
+          <ns:keyword>test</ns:keyword>
+          <ns:keyword>another keyword</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <!--~~~~~~~~~~~~~~-->
+      <!--Identification-->
+      <!--~~~~~~~~~~~~~~-->
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:testsensor</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>A Test Sensor</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>TEST</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:classification>
+        <ns:ClassifierList>
+          <ns:classifier>
+            <ns:Term definition="urn:test:classification">
+              <ns:value>aSpecialTestSensor</ns:value>
+            </ns:Term>
+          </ns:classifier>
+        </ns:ClassifierList>
+      </ns:classification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-01-01</gml:beginPosition>
+          <gml:endPosition>2011-12-31</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <!--station is NOT collecting data-->
+          <swe:field name="status">
+            <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
+              <swe:value>false</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="mobile">
+            <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isMobile">
+              <swe:value>false</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>1</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>2</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>4</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="contact">
+          <ns:individualName>Me</ns:individualName>
+          <ns:organizationName>My Org</ns:organizationName>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+          <swe:location>
+            <swe:Vector gml:id="STATION_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                  <swe:value>1.5</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                  <swe:value>3.5</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
+                  <swe:value>42</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="SOS1">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://v-swe.uni- muenster.de:8080/WeatherSOS/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>sensor02</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="precipitation">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Precipitation"/>
+          </ns:input>
+          <ns:input name="atmosphericTemperature">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::AirTemperature"/>
+          </ns:input>
+          <ns:input name="atmosphericPressure">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::AtmosphericPressure"/>
+          </ns:input>
+          <ns:input name="wind">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Wind"/>
+          </ns:input>
+          <ns:input name="luminance">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Luminance"/>
+          </ns:input>
+          <ns:input name="humidity">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::RelativeHumidity"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="precipitation">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Precipitation1Hour">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>RAIN_GAUGE</ns:id>
+                  <ns:name>Rain</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="mm" xlink:href="urn:ogc:def:uom:UCUM::mm"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="windDirection">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::WindDirection">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>WIND_DIRECTION</ns:id>
+                  <ns:name>Direction of the wind</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="windSpeed">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::WindSpeed">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>WIND_SPEED</ns:id>
+                  <ns:name>Speed of the wind</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="m/s" xlink:href="urn:ogc:def:uom:UCUM::m_s"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="barometricPressure">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::BarometricPressure">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>ATMOSPHERIC_PRESSURE</ns:id>
+                  <ns:name>Pressure of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="hPa" xlink:href="urn:ogc:def:uom:UCUM::hPa"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="temperature">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Temperature">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>ATMOSPHERIC_TEMPERATURE</ns:id>
+                  <ns:name>Temperature of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="Cel" xlink:href="urn:ogc:def:uom:UCUM::degC"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="luminance">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Luminance">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>LUMINANCE</ns:id>
+                  <ns:name>Luminance</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="lx" xlink:href="urn:ogc:def:uom:UCUM::lx"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="relativeHumidity">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::RelativeHumidity">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>HUMIDITY</ns:id>
+                  <ns:name>Humidity of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="%" xlink:href="urn:ogc:def:uom:UCUM::%25"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-09-07 19:31:11,037 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <ns:InsertSensorInfoRequest xmlns:ns="http://52north.org/sir/0.3.2"><ns:InfoToBeInserted><ns1:Sensor
+2013-09-07 19:31:11,038 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:11,102 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertSampleSensor(InsertSensorInfoNewSensorIT.java:81) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:11,409 DEBUG [main] [Client.java:333] Sending request: <InsertSensorInfoRequest xmlns="http://52north.org/sir/0.3.2">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="ns:SystemType" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns="http://www.opengis.net/sensorML/1.0.1">
+      <gml:description>A test sensor.</gml:description>
+      <ns:keywords>
+        <ns:KeywordList>
+          <ns:keyword>testkeyword</ns:keyword>
+          <ns:keyword>test</ns:keyword>
+          <ns:keyword>another keyword</ns:keyword>
+        </ns:KeywordList>
+      </ns:keywords>
+      <!--~~~~~~~~~~~~~~-->
+      <!--Identification-->
+      <!--~~~~~~~~~~~~~~-->
+      <ns:identification>
+        <ns:IdentifierList>
+          <ns:identifier name="uniqueID">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <ns:value>urn:ogc:object:feature:testsensor</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="longName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <ns:value>A Test Sensor</ns:value>
+            </ns:Term>
+          </ns:identifier>
+          <ns:identifier name="shortName">
+            <ns:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <ns:value>TEST</ns:value>
+            </ns:Term>
+          </ns:identifier>
+        </ns:IdentifierList>
+      </ns:identification>
+      <ns:classification>
+        <ns:ClassifierList>
+          <ns:classifier name="intendedApplication">
+            <ns:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+              <ns:value>water gauge</ns:value>
+            </ns:Term>
+          </ns:classifier>
+          <ns:classifier name="sensorType">
+            <ns:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+              <ns:value>gauge station</ns:value>
+            </ns:Term>
+          </ns:classifier>
+        </ns:ClassifierList>
+      </ns:classification>
+      <ns:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2010-01-01</gml:beginPosition>
+          <gml:endPosition>2011-12-31</gml:endPosition>
+        </gml:TimePeriod>
+      </ns:validTime>
+      <ns:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <!--station is NOT collecting data-->
+          <swe:field name="status">
+            <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
+              <swe:value>false</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="mobile">
+            <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isMobile">
+              <swe:value>false</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>1</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>2</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>3</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                      <swe:value>4</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+        </swe:DataRecord>
+      </ns:capabilities>
+      <ns:contact>
+        <ns:ResponsibleParty gml:id="contact">
+          <ns:individualName>Me</ns:individualName>
+          <ns:organizationName>My Org</ns:organizationName>
+        </ns:ResponsibleParty>
+      </ns:contact>
+      <ns:position name="stationPosition">
+        <swe:Position fixed="false" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+          <swe:location>
+            <swe:Vector gml:id="STATION_LOCATION">
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                  <swe:value>1.5</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+                  <swe:value>3.5</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:uom code="m" xlink:href="urn:ogc:def:uom:UCUM::m"/>
+                  <swe:value>42</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </ns:position>
+      <ns:interfaces>
+        <ns:InterfaceList>
+          <ns:interface name="SOS1">
+            <ns:InterfaceDefinition>
+              <ns:serviceLayer>
+                <swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+                    <swe:Text>
+                      <swe:value>http://v-swe.uni- muenster.de:8080/WeatherSOS/sos</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+                    <swe:Text>
+                      <swe:value>SOS</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                  <swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+                    <swe:Text>
+                      <swe:value>sensor02</swe:value>
+                    </swe:Text>
+                  </swe:field>
+                </swe:DataRecord>
+              </ns:serviceLayer>
+            </ns:InterfaceDefinition>
+          </ns:interface>
+        </ns:InterfaceList>
+      </ns:interfaces>
+      <ns:inputs>
+        <ns:InputList>
+          <ns:input name="precipitation">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Precipitation"/>
+          </ns:input>
+          <ns:input name="atmosphericTemperature">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::AirTemperature"/>
+          </ns:input>
+          <ns:input name="atmosphericPressure">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::AtmosphericPressure"/>
+          </ns:input>
+          <ns:input name="wind">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Wind"/>
+          </ns:input>
+          <ns:input name="luminance">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::Luminance"/>
+          </ns:input>
+          <ns:input name="humidity">
+            <swe:ObservableProperty definition="urn:ogc:def:property:OGC::RelativeHumidity"/>
+          </ns:input>
+        </ns:InputList>
+      </ns:inputs>
+      <ns:outputs>
+        <ns:OutputList>
+          <ns:output name="precipitation">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Precipitation1Hour">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>RAIN_GAUGE</ns:id>
+                  <ns:name>Rain</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="mm" xlink:href="urn:ogc:def:uom:UCUM::mm"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="windDirection">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::WindDirection">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>WIND_DIRECTION</ns:id>
+                  <ns:name>Direction of the wind</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="deg" xlink:href="urn:ogc:def:uom:UCUM::deg"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="windSpeed">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::WindSpeed">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>WIND_SPEED</ns:id>
+                  <ns:name>Speed of the wind</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="m/s" xlink:href="urn:ogc:def:uom:UCUM::m_s"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="barometricPressure">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::BarometricPressure">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>ATMOSPHERIC_PRESSURE</ns:id>
+                  <ns:name>Pressure of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="hPa" xlink:href="urn:ogc:def:uom:UCUM::hPa"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="temperature">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Temperature">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>ATMOSPHERIC_TEMPERATURE</ns:id>
+                  <ns:name>Temperature of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="Cel" xlink:href="urn:ogc:def:uom:UCUM::degC"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="luminance">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::Luminance">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>LUMINANCE</ns:id>
+                  <ns:name>Luminance</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="lx" xlink:href="urn:ogc:def:uom:UCUM::lx"/>
+            </swe:Quantity>
+          </ns:output>
+          <ns:output name="relativeHumidity">
+            <swe:Quantity definition="urn:ogc:def:property:OGC::RelativeHumidity">
+              <gml:metaDataProperty>
+                <ns:offering>
+                  <ns:id>HUMIDITY</ns:id>
+                  <ns:name>Humidity of the atmosphere</ns:name>
+                </ns:offering>
+              </gml:metaDataProperty>
+              <swe:uom code="%" xlink:href="urn:ogc:def:uom:UCUM::%25"/>
+            </swe:Quantity>
+          </ns:output>
+        </ns:OutputList>
+      </ns:outputs>
+    </SensorDescription>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-09-07 19:31:11,418 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <ns:InsertSensorInfoRequest xmlns:ns="http://52north.org/sir/0.3.2"><ns:InfoToBeInserted><ns1:Sensor
+2013-09-07 19:31:11,419 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:11,530 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertSensorDirectly(InsertSensorInfoNewSensorIT.java:68) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:11,571 DEBUG [main] [Client.java:333] Sending request: <InsertSensorInfoRequest xmlns="http://52north.org/sir/0.3.2">
+  <InfoToBeInserted>
+    <SensorDescription xsi:type="sml:SystemType" xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <gml:description>Sensor of the European air quality database
+				AirBase in BELGIUM</gml:description>
+      <sml:keywords>
+        <sml:KeywordList>
+          <sml:keyword>MECHELEN</sml:keyword>
+          <sml:keyword>BELGIUM</sml:keyword>
+          <sml:keyword>BE</sml:keyword>
+        </sml:KeywordList>
+      </sml:keywords>
+      <sml:identification>
+        <sml:IdentifierList>
+          <sml:identifier>
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+              <sml:value>urn:ogc:object:feature:Sensor:eea:airbase:BE:LML01</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier>
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+              <sml:value>40ML01 - MECHELEN</sml:value>
+            </sml:Term>
+          </sml:identifier>
+          <sml:identifier>
+            <sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+              <sml:value>40ML01 - MECHELEN</sml:value>
+            </sml:Term>
+          </sml:identifier>
+        </sml:IdentifierList>
+      </sml:identification>
+      <sml:classification>
+        <sml:ClassifierList>
+          <sml:classifier name="intendedApplication">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+              <sml:value>air quality</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="sensorType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+              <sml:value>Traffic</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="stationAreaType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:areaType">
+              <sml:value>urban</sml:value>
+            </sml:Term>
+          </sml:classifier>
+          <sml:classifier name="streetType">
+            <sml:Term definition="urn:ogc:def:classifier:OGC:1.0:streetType">
+              <sml:value>Wide street: L/H &amp;gt; 1.5</sml:value>
+            </sml:Term>
+          </sml:classifier>
+        </sml:ClassifierList>
+      </sml:classification>
+      <sml:validTime>
+        <gml:TimePeriod>
+          <gml:beginPosition>2000-01-01</gml:beginPosition>
+          <gml:endPosition>2010-10-11</gml:endPosition>
+        </gml:TimePeriod>
+      </sml:validTime>
+      <sml:capabilities>
+        <swe:DataRecord definition="urn:ogc:def:property:capabilities">
+          <swe:field name="observedBBOX">
+            <swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+              <swe:lowerCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>51.016666</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>4.463622</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:lowerCorner>
+              <swe:upperCorner>
+                <swe:Vector>
+                  <swe:coordinate name="latitude">
+                    <swe:Quantity axisID="y">
+                      <swe:uom code="degree"/>
+                      <swe:value>51.016666</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                  <swe:coordinate name="longitude">
+                    <swe:Quantity axisID="x">
+                      <swe:uom code="degree"/>
+                      <swe:value>4.463622</swe:value>
+                    </swe:Quantity>
+                  </swe:coordinate>
+                </swe:Vector>
+              </swe:upperCorner>
+            </swe:Envelope>
+          </swe:field>
+          <swe:field name="status">
+            <swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
+              <swe:value>true</swe:value>
+            </swe:Boolean>
+          </swe:field>
+          <swe:field name="EMEP_station">
+            <swe:Text definition="urn:ogc:def:property:OGC:1.0:EMEP">
+              <swe:value>no</swe:value>
+            </swe:Text>
+          </swe:field>
+          <swe:field name="station_local_code">
+            <swe:Text definition="urn:ogc:def:property:OGC:1.0:localCode">
+              <swe:value>40ML01</swe:value>
+            </swe:Text>
+          </swe:field>
+          <swe:field name="lau_level2_code">
+            <swe:Text definition="urn:ogc:def:property:OGC:1.0:lauLevel2Code">
+              <swe:value>12025</swe:value>
+            </swe:Text>
+          </swe:field>
+          <swe:field name="lau_level2_name">
+            <swe:Text definition="urn:ogc:def:property:OGC:1.0:lauLevel2Name">
+              <swe:value>Mechelen</swe:value>
+            </swe:Text>
+          </swe:field>
+        </swe:DataRecord>
+      </sml:capabilities>
+      <sml:contact>
+        <sml:ResponsibleParty gml:id="WWU_ifgi_AirBase_contact">
+          <sml:individualName>Christian Autermann</sml:individualName>
+          <sml:organizationName>Institute for Geoinformatics - Westfaelische
+						Wilhelms Universitaet Muenster - Sensor Web and Simulation Lab</sml:organizationName>
+          <sml:contactInfo>
+            <sml:address>
+              <sml:deliveryPoint>Weseler Straße 253</sml:deliveryPoint>
+              <sml:city>Münster</sml:city>
+              <sml:postalCode>48151</sml:postalCode>
+              <sml:country>Germany</sml:country>
+              <sml:electronicMailAddress>autermann@uni-muenster.de</sml:electronicMailAddress>
+            </sml:address>
+          </sml:contactInfo>
+        </sml:ResponsibleParty>
+      </sml:contact>
+      <sml:position name="BELML01">
+        <swe:Position referenceFrame="urn:ogc:def:crs:EPSG:4326" fixed="true">
+          <swe:location>
+            <swe:Vector>
+              <swe:coordinate name="latitude">
+                <swe:Quantity axisID="y">
+                  <swe:uom code="degree"/>
+                  <swe:value>51.016666</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="longitude">
+                <swe:Quantity axisID="x">
+                  <swe:uom code="degree"/>
+                  <swe:value>4.463622</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+              <swe:coordinate name="altitude">
+                <swe:Quantity axisID="z">
+                  <swe:uom code="m"/>
+                  <swe:value>12.0</swe:value>
+                </swe:Quantity>
+              </swe:coordinate>
+            </swe:Vector>
+          </swe:location>
+        </swe:Position>
+      </sml:position>
+      <sml:inputs>
+        <sml:InputList>
+          <sml:input name="Nitrogen monoxide (air)">
+            <swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:38"/>
+          </sml:input>
+          <sml:input name="Benzene (air)">
+            <swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:20"/>
+          </sml:input>
+          <sml:input name="Particulate matter &lt; 10 µm (aerosol)">
+            <swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:5"/>
+          </sml:input>
+          <sml:input name="Nitrogen dioxide (air)">
+            <swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:8"/>
+          </sml:input>
+          <sml:input name="Particulate matter &lt; 2.5 µm (aerosol)">
+            <swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:6001"/>
+          </sml:input>
+        </sml:InputList>
+      </sml:inputs>
+      <sml:outputs>
+        <sml:OutputList>
+          <sml:output name="NITROGEN_MONOXIDE_(AIR)">
+            <swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:38">
+              <gml:metaDataProperty>
+                <offering xmlns="">
+                  <id>NITROGEN_MONOXIDE_(AIR)</id>
+                  <name>NITROGEN_MONOXIDE_(AIR)</name>
+                </offering>
+              </gml:metaDataProperty>
+              <gml:description>Nitrogen monoxide (air)</gml:description>
+              <swe:uom code="µg/m3"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="BENZENE_(AIR)">
+            <swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:20">
+              <gml:metaDataProperty>
+                <offering xmlns="">
+                  <id>BENZENE_(AIR)</id>
+                  <name>BENZENE_(AIR)</name>
+                </offering>
+              </gml:metaDataProperty>
+              <gml:description>Benzene (air)</gml:description>
+              <swe:uom code="µg/m3"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="PARTICULATE_MATTER_&lt;_10_?M_(AEROSOL)">
+            <swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:5">
+              <gml:metaDataProperty>
+                <offering xmlns="">
+                  <id>PARTICULATE_MATTER_&lt;_10_?M_(AEROSOL)</id>
+                  <name>PARTICULATE_MATTER_&lt;_10_?M_(AEROSOL)</name>
+                </offering>
+              </gml:metaDataProperty>
+              <gml:description>Particulate matter &lt; 10 µm (aerosol)</gml:description>
+              <swe:uom code="µg/m3"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="NITROGEN_DIOXIDE_(AIR)">
+            <swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:8">
+              <gml:metaDataProperty>
+                <offering xmlns="">
+                  <id>NITROGEN_DIOXIDE_(AIR)</id>
+                  <name>NITROGEN_DIOXIDE_(AIR)</name>
+                </offering>
+              </gml:metaDataProperty>
+              <gml:description>Nitrogen dioxide (air)</gml:description>
+              <swe:uom code="µg/m3"/>
+            </swe:Quantity>
+          </sml:output>
+          <sml:output name="PARTICULATE_MATTER_&lt;_2.5_?M_(AEROSOL)">
+            <swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:6001">
+              <gml:metaDataProperty>
+                <offering xmlns="">
+                  <id>PARTICULATE_MATTER_&lt;_2.5_?M_(AEROSOL)</id>
+                  <name>PARTICULATE_MATTER_&lt;_2.5_?M_(AEROSOL)</name>
+                </offering>
+              </gml:metaDataProperty>
+              <gml:description>Particulate matter &lt; 2.5 µm (aerosol)</gml:description>
+              <swe:uom code="µg/m3"/>
+            </swe:Quantity>
+          </sml:output>
+        </sml:OutputList>
+      </sml:outputs>
+    </SensorDescription>
+  </InfoToBeInserted>
+</InsertSensorInfoRequest>
+2013-09-07 19:31:11,581 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <ns:InsertSensorInfoRequest xmlns:ns="http://52north.org/sir/0.3.2"><ns:InfoToBeInserted><ns:SensorD
+2013-09-07 19:31:11,583 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:11,640 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.InsertSensorInfoNewSensorIT.insertNewSensor(InsertSensorInfoNewSensorIT.java:55) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:11,645 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:11,647 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:11,659 DEBUG [main] [Client.java:333] Sending request: <InsertSensorStatusRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <StatusDescription>
+    <SensorIDInSIR>1</SensorIDInSIR>
+    <Status>
+      <PropertyName>urn:osiris:sensorproperties:batterystate</PropertyName>
+      <PropertyValue>55</PropertyValue>
+      <Uom code="%"/>
+      <Timestamp gml:id="timestamp_01">
+        <gml:timePosition>2010-04-16T15:43:06+0200</gml:timePosition>
+      </Timestamp>
+    </Status>
+  </StatusDescription>
+</InsertSensorStatusRequest>
+2013-09-07 19:31:11,660 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <InsertSensorStatusRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/
+2013-09-07 19:31:11,662 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:11,684 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.InsertSensorStatusIT.insertSensorStatus(InsertSensorStatusIT.java:54) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:11,690 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:11,691 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:11,707 DEBUG [main] [Client.java:333] Sending request: <SearchSensorRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns="http://52north.org/sir/0.3.2" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SensorIdentification>
+    <ServiceReference>
+      <ServiceURL>http://mars.uni-muenster.de:8080/OWS5SOS/sos</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>urn:ogc:object:procedure:CITE:WeatherService:NYC</ServiceSpecificSensorID>
+    </ServiceReference>
+  </SensorIdentification>
+  <SensorIdentification>
+    <ServiceReference>
+      <ServiceURL>http://mars.uni-muenster.de:8080/OWS5SOS/sos</ServiceURL>
+      <ServiceType>SOS</ServiceType>
+      <ServiceSpecificSensorID>urn:ogc:object:procedure:CITE:WeatherService:JFK</ServiceSpecificSensorID>
+    </ServiceReference>
+  </SensorIdentification>
+  <SimpleResponse>true</SimpleResponse>
+</SearchSensorRequest>
+2013-09-07 19:31:11,708 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <SearchSensorRequest service="SIR" version="0.3.0" xsi:schemaLocation="http://52north.org/sir/0.3.2 
+2013-09-07 19:31:11,709 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:11,726 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.SearchSensorIT.searchSensor(SearchSensorIT.java:49) [test-classes/:na]
+	at org.n52.sir.IT.SearchSensorIT.searchSensorByDescription(SearchSensorIT.java:68) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:11,734 DEBUG [main] [Client.java:333] Sending request: <sir:SearchSensorRequest service="SIR" sir:version="0.3.2" xsi:schemaLocation="http://52north.org/sir/0.3.2  http://52north.org/schema/sir/0.3.2/sirAll.xsd" xmlns:sir="http://52north.org/sir/0.3.2" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <sir:SensorIdentification>
+    <sir:SensorIDInSIR>1</sir:SensorIDInSIR>
+  </sir:SensorIdentification>
+  <sir:SimpleResponse>true</sir:SimpleResponse>
+</sir:SearchSensorRequest>
+2013-09-07 19:31:11,735 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <sir:SearchSensorRequest service="SIR" sir:version="0.3.2" xsi:schemaLocation="http://52north.org/si
+2013-09-07 19:31:11,736 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch/sir
+2013-09-07 19:31:11,755 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:334) [classes/:na]
+	at org.n52.sir.IT.SearchSensorIT.searchSensor(SearchSensorIT.java:49) [test-classes/:na]
+	at org.n52.sir.IT.SearchSensorIT.searchSensorbyIDInSIR(SearchSensorIT.java:61) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 33 common frames omitted
+2013-09-07 19:31:11,781 DEBUG [main] [AutoCompleteServletIT.java:71] 
+2013-09-07 19:31:11,791 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@d6e4e8
+2013-09-07 19:31:11,837 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:31:11,838 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:31:12,465 DEBUG [main] [OpenSearchSpatialExtensionIT.java:80] 
+2013-09-07 19:31:12,835 DEBUG [main] [ShortAlphanumericIdentifierGenerator.java:36] NEW org.n52.sir.util.ShortAlphanumericIdentifierGenerator@75b517ea
+2013-09-07 19:31:12,836 DEBUG [main] [SensorMLDecoder.java:602] A data record, check if bbox!
+2013-09-07 19:31:12,836 DEBUG [main] [SensorMLDecoder.java:610] Found bbox!
+2013-09-07 19:31:13,131 DEBUG [main] [OpenSearchTemporalExtensionIT.java:82] 
+2013-09-07 19:31:13,297 INFO [main] [GuiceUtil.java:53] Configured client for tests.
+2013-09-07 19:31:13,301 INFO [main] [Client.java:72] NEW Client [sirURI=http://localhost:8080/OpenSensorSearch/sir]
+2013-09-07 19:31:13,375 DEBUG [main] [Client.java:107] Sending request (first 100 characters): <ns:SearchSensorRequest xmlns:ns="http://52north.org/sir/0.3.2"><ns:SearchCriteria><ns:SearchText>pr
+2013-09-07 19:31:13,376 DEBUG [main] [Client.java:127] Client connecting via POST to http://localhost:8080/OpenSensorSearch
+2013-09-07 19:31:13,391 ERROR [main] [Client.java:149] Error parsing response.
+org.apache.xmlbeans.XmlException: error: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3511) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1277) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale.parseToXmlObject(Locale.java:1264) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.schema.SchemaTypeLoaderBase.parse(SchemaTypeLoaderBase.java:345) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.XmlObject$Factory.parse(XmlObject.java:688) ~[xmlbeans-2.6.0.jar:2.6.0-r1364789]
+	at org.n52.sir.client.Client.doSend(Client.java:145) [classes/:na]
+	at org.n52.sir.client.Client.xSendPostRequest(Client.java:352) [classes/:na]
+	at org.n52.sir.IT.solr.SIRTemporalExtensionIT.sendSearchRequest(SIRTemporalExtensionIT.java:45) [test-classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.7.0_21]
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) ~[na:1.7.0_21]
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.7.0_21]
+	at java.lang.reflect.Method.invoke(Method.java:601) ~[na:1.7.0_21]
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47) [junit-4.11.jar:na]
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12) [junit-4.11.jar:na]
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70) [junit-4.11.jar:na]
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229) [junit-4.11.jar:na]
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26) [junit-4.11.jar:na]
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309) [junit-4.11.jar:na]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124) [surefire-junit4-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:200) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153) [surefire-booter-2.15.jar:2.15]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103) [surefire-booter-2.15.jar:2.15]
+Caused by: org.xml.sax.SAXParseException: Unexpected end of file after null
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.reportFatalError(Piccolo.java:1038) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.piccolo.xml.Piccolo.parse(Piccolo.java:723) ~[xmlbeans-2.6.0.jar:na]
+	at org.apache.xmlbeans.impl.store.Locale$SaxLoader.load(Locale.java:3479) ~[xmlbeans-2.6.0.jar:na]
+	... 31 common frames omitted
+2013-09-07 19:31:13,872 DEBUG [main] [SensorML4DiscoveryValidatorImpl.java:326] Creating XSL from Schematron profile: D:\52n_backup\OpenSensorSearch\52n-sir\target\test-classes\SensorML_Profile_for_Discovery.sch
+2013-09-07 19:31:13,875 DEBUG [main] [SensorML4DiscoveryValidatorImpl.java:358] Created Stream Source of svrl xsl file.

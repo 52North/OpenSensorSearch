@@ -54,25 +54,28 @@ public class ScriptController {
     public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
 
     private static Logger log = LoggerFactory.getLogger(ScriptController.class);
-    
+
     @RequestMapping("/show/{scriptId}")
-    public String show(@PathVariable String scriptId,ModelMap map){
+    public String show(@PathVariable String scriptId,
+            ModelMap map)
+    {
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet("/OpenSensorSearch/script/"+scriptId);
+        HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/script/" + scriptId);
         try {
-           HttpResponse resp =  client.execute(get);
-           StringBuilder builder = new StringBuilder();
-           BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-           String s = null;
-           while((s=reader.readLine())!=null)
-               builder.append(s);
-           ScriptContent content = new Gson().fromJson(builder.toString(), ScriptContent.class);
-           map.addAttribute("content", builder.toString());
-           
-        } catch (Exception  e) {
+            HttpResponse resp = client.execute(get);
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+            String s = null;
+            while ((s = reader.readLine()) != null)
+                builder.append(s);
+            ScriptContent content = new Gson().fromJson(builder.toString(), ScriptContent.class);
+            map.addAttribute("content", content.content);
+            return "script/show";
+        } catch (Exception e) {
+            map.addAttribute("error",e);
             return "script/error";
         }
-            
+
     }
 
     @RequestMapping("/index")
@@ -141,6 +144,7 @@ public class ScriptController {
             return "script/status?fail";
         }
     }
+
     // private void addLicenseToHeader(File f,License l) throws IOException{
     // RandomAccessFile random = new RandomAccessFile(f, "rw");
     // random.seek(0); // to the beginning
@@ -158,7 +162,7 @@ public class ScriptController {
     // return builder.toString();
     // }
 
-    public class ScriptContent{
+    public class ScriptContent {
         public String content;
     }
 }

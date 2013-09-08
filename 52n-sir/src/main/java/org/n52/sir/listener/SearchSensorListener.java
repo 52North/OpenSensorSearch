@@ -141,28 +141,29 @@ public class SearchSensorListener implements ISirRequestListener {
         SirSearchCriteria crit = searchSensReq.getSearchCriteria();
         String lat = crit.getLat();
         String lng = crit.getLng();
-        
+
         SirSearchSensorResponse response = new SirSearchSensorResponse();
         ArrayList<SirSearchResultElement> searchResElements = null;
 
-                    try {
+        try {
             if (searchSensReq.getSensIdent() != null)
                 searchResElements = searchByIdentification(searchSensReq);
             else
                 searchResElements = searchBySearchCriteria(searchSensReq, fastEngineOnly);
-                        }
-						// TODO only use comparator if proximity search is requested
-                        SirProximtyComparator comparator = new SirProximtyComparator(Double.parseDouble(lng), Double.parseDouble(lat));
-                        Collections.sort(searchResElements,comparator);
-                    }
-                    catch (OwsExceptionReport e) {
+
+            // TODO only use comparator if proximity search is requested
+            SirProximtyComparator comparator = new SirProximtyComparator(Double.parseDouble(lng),
+                                                                         Double.parseDouble(lat));
+            Collections.sort(searchResElements, comparator);
+        }
+        catch (OwsExceptionReport e) {
             return new ExceptionResponse(e);
-                    }
+        }
 
         // if a simple response, add the corresponding GET URLs and bounding boxes
         if (searchSensReq.isSimpleResponse()) {
             processForSimpleResponse(searchSensReq, searchResElements);
-                }
+        }
 
         response.setSearchResultElements(searchResElements);
 
@@ -179,22 +180,22 @@ public class SearchSensorListener implements ISirRequestListener {
             SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
 
             String descriptionURL;
-                    try {
+            try {
                 descriptionURL = createSensorDescriptionURL(sirSearchResultElement.getSensorIdInSir());
-                        }
+            }
             catch (UnsupportedEncodingException e) {
                 log.error("Could not encode URL", e);
                 descriptionURL = "ERROR ENCODING URL: " + e.getMessage();
                 // return new ExceptionResponse(new
                 // OwsExceptionReport("Could not encode sensor description URL!", e).getDocument());
-                    }
+            }
 
             sensorDescription.setSensorDescriptionURL(descriptionURL);
 
             if (removeBBoxes)
                 sensorDescription.setBoundingBox(null);
-                    }
-                }
+        }
+    }
 
     private ArrayList<SirSearchResultElement> searchBySearchCriteria(SirSearchSensorRequest searchSensReq,
                                                                      boolean fastEngineOnly) {
@@ -204,27 +205,27 @@ public class SearchSensorListener implements ISirRequestListener {
 
         ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
 
-                // utilize SOR if information is given
-                if (searchSensReq.getSearchCriteria().isUsingSOR()) {
-                    // request the information from SOR and extend the search criteria with the result
-                    Collection<SirSearchCriteria_Phenomenon> phenomena = searchSensReq.getSearchCriteria().getPhenomena();
+        // utilize SOR if information is given
+        if (searchSensReq.getSearchCriteria().isUsingSOR()) {
+            // request the information from SOR and extend the search criteria with the result
+            Collection<SirSearchCriteria_Phenomenon> phenomena = searchSensReq.getSearchCriteria().getPhenomena();
 
-                    SORTools sor = new SORTools();
-                    Collection<SirSearchCriteria_Phenomenon> newPhenomena = sor.getMatchingPhenomena(phenomena);
+            SORTools sor = new SORTools();
+            Collection<SirSearchCriteria_Phenomenon> newPhenomena = sor.getMatchingPhenomena(phenomena);
 
-                    // add all found phenomena to search criteria
+            // add all found phenomena to search criteria
             log.debug("Adding phenomena to search criteria: {}", Arrays.toString(newPhenomena.toArray()));
-                    phenomena.addAll(newPhenomena);
-                }
+            phenomena.addAll(newPhenomena);
+        }
 
         Collection<SirSearchResultElement> searchResElementsSolr = null;
         Collection<SirSearchResultElement> searchResElementsPgSQL = null;
 
-                // search Solr
+        // search Solr
         try {
-                SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+            SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
             searchResElementsSolr = dao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                                                               searchSensReq.isSimpleResponse());
+                                                     searchSensReq.isSimpleResponse());
         }
         catch (OwsExceptionReport e) {
             log.error("Could not query data from search backend.", e);
@@ -233,10 +234,10 @@ public class SearchSensorListener implements ISirRequestListener {
         }
 
         if ( !fastEngineOnly) {
-                // search PostGreSQL
+            // search PostGreSQL
             try {
                 searchResElementsPgSQL = this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                                                                                             searchSensReq.isSimpleResponse());
+                                                                         searchSensReq.isSimpleResponse());
             }
             catch (OwsExceptionReport e) {
                 log.error("Could not query data from search backend.", e);
@@ -268,8 +269,8 @@ public class SearchSensorListener implements ISirRequestListener {
                                                                        searchSensReq.isSimpleResponse());
                 if (resultElement != null) {
                     searchResElements.add(resultElement);
-                    }
                 }
+            }
             else {
                 // service description
                 SirServiceReference servDesc = (SirServiceReference) sensIdent;

@@ -32,13 +32,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
-import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 import org.slf4j.Logger;
@@ -55,33 +51,35 @@ public class AutoCompleteServletIT {
     private String insertedSensorId;
     private String enteredText = "str";
 
-	//@Before
-	public  void insertSensor() throws OwsExceptionReport, XmlException, IOException {
+    // @Before
+    public void insertSensor() throws OwsExceptionReport, XmlException, IOException {
         File sensor_status = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
-		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_status);
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_status);
 
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
         this.insertedSensorId = dao.insertSensor(SensorMLDecoder.decode(doc));
         log.debug("inserted test sensor: {}", this.insertedSensorId);
-	}
+    }
 
-	@Test
-	public  void testServlet() throws ClientProtocolException, IOException {
+    @Test
+    public void testServlet() throws ClientProtocolException, IOException {
         HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/suggest?q=te");
-		
-		HttpResponse response = client.execute(get);
-		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/suggest?q=te");
+
+        HttpResponse response = client.execute(get);
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         String s;
         while ( (s = reader.readLine()) != null)
-			builder.append(s);
+            builder.append(s);
 
         String actual = builder.toString().trim();
         String expected = "{ \"suggestions\": [\"structual\", \"stringtheory\", \"a really strange keyword to use in a sensor description\"] }";
         assertThat("reponse string is correct", actual, is(equalTo(expected)));
-	}
-//	@After
-//	public  void deleteTestSensor() throws SolrServerException, IOException{
-//		new  SolrConnection().deleteByQuery("");
-//	}}
+    }
+
+    // @After
+    // public void deleteTestSensor() throws SolrServerException, IOException{
+    // new SolrConnection().deleteByQuery("");
+    // }
+}

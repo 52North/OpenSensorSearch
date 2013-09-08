@@ -47,6 +47,7 @@ import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.licenses.License;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;
+import org.n52.sir.scheduler.RemoteHarvestJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -161,7 +162,8 @@ public class HarvestResource {
     @GET
     @Path("/schedule")
     public Response scheduleHarvest(@QueryParam("id")
-    int sensorId, @QueryParam("date") @DefaultValue("0")
+    int scriptId, @QueryParam("date")
+    @DefaultValue("0")
     long when,@QueryParam("authToken")String authToken, @QueryParam("schedule") @DefaultValue("0/10 * * * * ?")
     String schedule) {
     	IUserAccountDAO userDao = this.config.getFactory().userAccountDAO();
@@ -234,7 +236,6 @@ public class HarvestResource {
          dataMap.put(QuartzConstants.INSERTION_INTERFACE, this.dao);
          dataMap.put(QuartzConstants.REMOTE_SENSOR_URL, url);
         
-        JobDetail detail = null;
         JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I" +
         auth_token).usingJobData(dataMap).build();
 

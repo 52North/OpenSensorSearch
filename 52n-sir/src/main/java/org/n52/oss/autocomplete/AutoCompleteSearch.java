@@ -63,7 +63,7 @@ public class AutoCompleteSearch {
     @Inject
     public AutoCompleteSearch(SearchSensorListener ssl) {
         this.searchSensor = ssl;
-        
+
         log.debug("NEW {}", this);
     }
 
@@ -103,19 +103,20 @@ public class AutoCompleteSearch {
         if (results.size() == 0)
             result = "[]";
         else {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{ [");
-        for (String s : results) {
-            if (s.contains(text)) {
-                sb.append(s);
-                sb.append(", ");
+            StringBuilder sb = new StringBuilder();
+            sb.append("{ [");
+            for (String s : results) {
+                if (s.contains(text)) {
+                    sb.append(s);
+                    sb.append(", ");
+                }
             }
+            if (sb.length() > 4)
+                sb.replace(sb.length() - 2, sb.length(), ""); // remove last comma
+            sb.append("] } ");
         }
-        if (sb.length() > 4)
-            sb.replace(sb.length() - 2, sb.length(), ""); // remove last comma
-        sb.append("] } ");
 
-        log.debug("Done serving autocomplete, response: {}", sb.toString());
+        log.debug("Done serving autocomplete, response: {}", result);
 
         return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
     }

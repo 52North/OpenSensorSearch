@@ -30,7 +30,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HarvestJob implements Job {
+    
 	private static Logger log = LoggerFactory.getLogger(HarvestJob.class);
+	
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		JobDetail details = arg0.getJobDetail();

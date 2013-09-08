@@ -65,22 +65,31 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
     @Override
     public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport {
-        Collection<String> q = searchCriteria.getSearchText();
-        StringBuilder wordslist = new StringBuilder();
-        Iterator<String> iter = q.iterator();
-        wordslist.append(iter.next());
-        while (iter.hasNext()) {
-            wordslist.append("+");
-            wordslist.append(iter.next());
-        }
-        
-        return searchByAll(wordslist.toString(),
+        String wordslist = createWordslist(searchCriteria);
+
+        return searchByAll(wordslist,
                            searchCriteria.getDtstart(),
                            searchCriteria.getDtend(),
                            searchCriteria.getLng(),
                            searchCriteria.getLat(),
                            searchCriteria.getRadius(),
                            searchCriteria.getBoundingBox());
+    }
+
+    public String createWordslist(SirSearchCriteria searchCriteria) {
+        Collection<String> q = searchCriteria.getSearchText();
+        StringBuilder wordslist = new StringBuilder();
+        if (q != null && !q.isEmpty()) {
+            for (String s : q) {
+                if (s.isEmpty())
+                    continue;
+                wordslist.append(s);
+                wordslist.append("+");
+            }
+            if (wordslist.length() > 1)
+                wordslist.replace(wordslist.length() - 1, wordslist.length(), "");
+        }
+        return wordslist.toString();
     }
 
     /**
@@ -452,7 +461,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
                                                           SirBoundingBox bbox) {
         SolrConnection connection = new SolrConnection();
         ModifiableSolrParams params = new ModifiableSolrParams();
-        
+
         StringBuilder builder = new StringBuilder();
         String[] qs = query.split("[+]");
         StringBuilder qualified = new StringBuilder();
@@ -503,12 +512,12 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
                 params.set("fq", temporalFilter.toString());
         }
         Collection<SirSearchResultElement> result = new ArrayList<>();
-        
+
         try {
             QueryResponse response = connection.SolrQuery(params);
             SolrDocumentList list = response.getResults();
             result.addAll(encodeResult(list));
-            
+
             if (bbox == null)
                 return result;
             double[] center = bbox.getCenter();

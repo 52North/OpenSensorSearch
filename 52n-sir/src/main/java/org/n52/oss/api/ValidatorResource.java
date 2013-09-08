@@ -1,5 +1,5 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * ?Copyright (C) 2012 52�North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/** @author Yakoub
- */
-
 package org.n52.oss.api;
+
+import java.io.IOException;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -44,8 +43,7 @@ public class ValidatorResource {
 		this.validator = config.getInstance().getValidatorFactory().getSensorMLProfile4DiscoveryValidator();
 	}
 
-	private boolean validateSensorMLDocument(String s) throws XmlException,
-			OwsExceptionReport {
+	private boolean validateSensorMLDocument(String s) throws XmlException, IOException {
 		boolean b = this.validator.validate(XmlObject.Factory.parse(s));
 		return b;
 	}
@@ -59,8 +57,8 @@ public class ValidatorResource {
 			String details = this.validator.getValidationFailuresAsString();
 			return "{status:'invalid',error:" + details + "}";
 
-		} catch (XmlException exception) {
-			return "{error:" + exception.toString() + "}";
+		} catch (XmlException | IOException exception) {
+			return "{error:" + exception.getMessage() + "}";
 		}
 	}
 

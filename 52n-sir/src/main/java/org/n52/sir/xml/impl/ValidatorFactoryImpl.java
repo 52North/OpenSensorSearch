@@ -17,7 +17,6 @@ package org.n52.sir.xml.impl;
 
 import java.io.File;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
@@ -63,17 +62,9 @@ public class ValidatorFactoryImpl implements IValidatorFactory {
             catch (TransformerFactoryConfigurationError e) {
                 log.error("Could not initialize ValidatorFactory!", e);
             }
-            catch (ParserConfigurationException e) {
-                log.error("Could not initialize ValidatorFactory!", e);
-            }
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.IValidatorFactory#getSensorMLProfile4DiscoveryValidator()
-     */
     @Override
     public IProfileValidator getSensorMLProfile4DiscoveryValidator() throws OwsExceptionReport {
         try {
@@ -84,10 +75,6 @@ public class ValidatorFactoryImpl implements IValidatorFactory {
             throw new OwsExceptionReport("Could not create validator!", e);
         }
         catch (TransformerFactoryConfigurationError e) {
-            log.error("Could not initialize SensorML Discovery Profile Validator!", e);
-            throw new OwsExceptionReport("Could not create validator!", e);
-        }
-        catch (ParserConfigurationException e) {
             log.error("Could not initialize SensorML Discovery Profile Validator!", e);
             throw new OwsExceptionReport("Could not create validator!", e);
         }

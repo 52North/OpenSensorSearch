@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalog.csw;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -143,7 +145,7 @@ public class CswCatalog implements ICatalog {
     }
 
     @Override
-    public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport {
+    public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport, IOException {
         IProfileValidator validator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
 
         boolean b = Boolean.valueOf(validator.validate(doc)).booleanValue();
@@ -758,7 +760,7 @@ public class CswCatalog implements ICatalog {
             try {
                 isConform = acceptsDocument(copy);
             }
-            catch (OwsExceptionReport e) {
+            catch (OwsExceptionReport | IOException e) {
                 log.error("Could not check if catalog accepts the given document!", e);
                 continue;
             }
@@ -780,19 +782,7 @@ public class CswCatalog implements ICatalog {
                                 + copy.xmlText());
                     }
                 }
-                catch (XmlException e) {
-                    log.error("Exception: Could not transform sensor description: " + XmlTools.inspect(description)
-                            + "\n  - XmlException: " + e);
-                    transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
-                    continue;
-                }
-                catch (TransformerException e) {
-                    log.error("Exception: Could not transform sensor description: " + XmlTools.inspect(description)
-                            + "\n - TransformerException: " + e);
-                    transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
-                    continue;
-                }
-                catch (XmlValueDisconnectedException e) {
+                catch (XmlException | TransformerException | XmlValueDisconnectedException | IOException e) {
                     log.error("Exception: Could not transform sensor description: " + XmlTools.inspect(description)
                             + "\n  - TransformerException: " + e);
                     transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);

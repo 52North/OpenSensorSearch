@@ -150,7 +150,7 @@ public class IOOSHarvester extends FileHarvester {
             public long latestTime; // TODO put in status for the sensor
             public double lon;
             public String name;
-            public List<IOOSObservation> observations = new ArrayList<IOOSObservation>();
+            public List<IOOSObservation> observations = new ArrayList<>();
             public String organisationName;
             @SuppressWarnings("unused")
             public URL organisationUrl;
@@ -672,9 +672,8 @@ public class IOOSHarvester extends FileHarvester {
                                                 validDescription,
                                                 serviceSpecificSensorId);
                     }
-                    catch (OwsExceptionReport e) {
+                    catch (OwsExceptionReport | IOException e) {
                         log.error("Could not process created sensor description.", e);
-
                         IOOSHarvester.this.failedSensors.put(serviceSpecificSensorId, e.getMessage());
                     }
                 }

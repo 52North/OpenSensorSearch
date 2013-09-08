@@ -22,7 +22,8 @@
 	xmlns:swe="http://www.opengis.net/swe/1.0.1" version="2.0"
 	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd">
 
-	<xsl:import href="SensorML-to-ebRIM_variables.xsl" />
+	<!-- test if things work without this import, see http://stackoverflow.com/questions/10096086/how-to-handle-duplicate-imports-in-xslt -->
+	<!-- <xsl:import href="SensorML-to-ebRIM_variables.xsl" /> -->
 
 	<xsl:strip-space elements="*" />
 

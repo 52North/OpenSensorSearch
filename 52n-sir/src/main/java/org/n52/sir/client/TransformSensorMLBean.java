@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
+
+import java.io.IOException;
 
 import javax.xml.transform.TransformerException;
 
@@ -65,11 +68,7 @@ public class TransformSensorMLBean extends TestClientBean {
             XmlObject ebrim = transformer.transform(sml);
             setResponseString(ebrim.toString());
         }
-        catch (XmlException e) {
-            log.error("Error during transformation.", e);
-            setResponseString("Exception:\n" + e.getMessage());
-        }
-        catch (TransformerException e) {
+        catch (XmlException | TransformerException | IOException e) {
             log.error("Error during transformation.", e);
             setResponseString("Exception:\n" + e.getMessage());
         }

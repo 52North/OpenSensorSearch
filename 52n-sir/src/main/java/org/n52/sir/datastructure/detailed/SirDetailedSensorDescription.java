@@ -116,7 +116,7 @@ public class SirDetailedSensorDescription extends SirSensorDescription {
         return this.classifiers;
     }
 
-    public Collection< ? extends Object> getIdentifiers() {
+    public Collection<String> getIdentifiers() {
         return this.identifiers;
     }
 

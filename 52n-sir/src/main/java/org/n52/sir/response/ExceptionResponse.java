@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.response;
 
 import java.io.ByteArrayOutputStream;
@@ -20,12 +21,16 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import net.opengis.ows.ExceptionReportDocument;
+import net.opengis.ows.ExceptionReportDocument.ExceptionReport;
+import net.opengis.ows.ExceptionType;
 
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlOptions;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.ows.OWSConstants;
+import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.util.XmlTools;
 
 /**
@@ -40,13 +45,34 @@ public class ExceptionResponse implements ISirResponse {
     private ExceptionReportDocument erd;
 
     /**
-     * constructor
-     * 
      * @param erd
      *        the exception report document for which the exception response should be created
      */
     public ExceptionResponse(ExceptionReportDocument erd) {
         this.erd = erd;
+        addNamespace();
+    }
+
+    public ExceptionResponse(OwsExceptionReport oer) {
+        this(oer.getDocument());
+    }
+
+    /**
+     * 
+     * @param e
+     *        a regular exception to be wrapped in a exception response
+     */
+    public ExceptionResponse(Exception e) {
+        this.erd = ExceptionReportDocument.Factory.newInstance();
+        ExceptionReport exceptionReport = this.erd.addNewExceptionReport();
+        ExceptionType exception = exceptionReport.addNewException();
+        exception.addExceptionText(e.getMessage());
+        exception.setExceptionCode(ExceptionCode.NoApplicableCode.toString());
+
+        addNamespace();
+    }
+
+    private void addNamespace() {
         XmlCursor cursor = this.erd.newCursor();
         if (cursor.toFirstChild()) {
             cursor.setAttributeText(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME, OWSConstants.NAMESPACE + " "
@@ -68,7 +94,7 @@ public class ExceptionResponse implements ISirResponse {
         options.setSavePrettyPrint();
         options.setCharacterEncoding(SirConfigurator.getInstance().getCharacterEncoding());
 
-        HashMap<String, String> suggestedPrefixes = new HashMap<String, String>();
+        HashMap<String, String> suggestedPrefixes = new HashMap<>();
         suggestedPrefixes.put(OWSConstants.NAMESPACE, OWSConstants.NAMESPACE_PREFIX);
         options.setSaveSuggestedPrefixes(suggestedPrefixes);
 

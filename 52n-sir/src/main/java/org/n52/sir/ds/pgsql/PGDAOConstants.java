@@ -168,6 +168,7 @@ public class PGDAOConstants {
 	 *            the Properties for the DAO
 	 * @return The only PGDAOConstants instance
 	 */
+    @Deprecated
 	public static synchronized PGDAOConstants getInstance(Properties daoProps) {
 		if (instance == null) {
 			instance = new PGDAOConstants(daoProps);
@@ -324,8 +325,6 @@ public class PGDAOConstants {
 		AUTH_TOKEN_TABLE=props.getProperty("oss.db.AUTH_TOKEN_TABLE");
 		USER_AUTH_TOKEN=props.getProperty("oss.db.USER_AUTH_TOKEN");
 		
-		
-		log.info("PGDAOConstants initialized successfully!");
-		log.info("PGDAOConstants initialized successfully: {}", this);
+        log.debug("PGDAOConstants initialized successfully: {}", this);
 	}
 }

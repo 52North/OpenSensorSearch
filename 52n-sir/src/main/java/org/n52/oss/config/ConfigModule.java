@@ -43,7 +43,7 @@ public class ConfigModule extends AbstractModule {
         bind(ApplicationConstants.class).to(PropertyApplicationConstants.class);
         bind(SirConfigurator.class);
         
-        log.info("Configured {}", this);
+        log.debug("Configured {}", this);
     }
 
     private static Properties loadProperties(String name) throws Exception {

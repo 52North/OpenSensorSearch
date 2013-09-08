@@ -27,6 +27,9 @@
 	<!-- imports -->
 	<xsl:import href="SensorML-to-ebRIM_variables.xsl" />
 	<xsl:import href="SensorML-to-ebRIM_contact.xsl" />
+	<!-- have just one import of _classification here instead of in both _system 
+		and _component, see http://stackoverflow.com/questions/10096086/how-to-handle-duplicate-imports-in-xslt -->
+	<xsl:import href="SensorML-to-ebRIM_classification.xsl" />
 	<xsl:import href="SensorML-to-ebRIM_system.xsl" />
 	<xsl:import href="SensorML-to-ebRIM_component.xsl" />
 
@@ -39,8 +42,10 @@
 	<xsl:template match="sml:member">
 
 		<xsl:comment>
-			This document was created using the 52North Sensor Instance Registry (SIR).
-			Homepage: https://52north.org/communities/sensorweb/incubation/discovery/
+			This document was created using the 52North Sensor Instance Registry
+			(SIR).
+			Homepage:
+			https://52north.org/communities/sensorweb/incubation/discovery/
 			Contact: daniel.nuest@uni-muenster.de
 		</xsl:comment>
 

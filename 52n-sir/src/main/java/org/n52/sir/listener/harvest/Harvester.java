@@ -198,13 +198,14 @@ public abstract class Harvester implements Callable<ISirResponse> {
      * @param sensorMLDocument
      * @param serviceSpecificSensorId
      * @throws OwsExceptionReport
+     * @throws IOException
      */
     protected void processSensorMLDocument(String serviceURL,
                                            String serviceType,
                                            Collection<SirSensor> insertedSensorsP,
                                            Collection<SirSensor> updatedSensorsP,
                                            SensorMLDocument sensorMLDocument,
-                                           String serviceSpecificSensorId) throws OwsExceptionReport {
+                                           String serviceSpecificSensorId) throws OwsExceptionReport, IOException {
         // check SensorML for conformity with profile
         IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
         boolean isValid = profileValidator.validate(sensorMLDocument);
@@ -317,8 +318,8 @@ public abstract class Harvester implements Callable<ISirResponse> {
             }
 
         }
-        catch (OwsExceptionReport e) {
-            log.error("OWS Report", e.getDocument());
+        catch (OwsExceptionReport | IOException e) {
+            log.error("Error processing SensorML Document", e);
             failedSensorsP.put(sensorID, e.getMessage());
         }
     }

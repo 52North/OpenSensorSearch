@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConfigurator.Section;
 import org.n52.sir.SirConstants;
+import org.n52.sir.SirConstants.CapabilitiesSection;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -81,23 +81,23 @@ public class GetCapabilitiesListener implements ISirRequestListener {
         }
     }
 
-    private ArrayList<Section> checkSections(String[] sections) throws OwsExceptionReport {
-        ArrayList<Section> responseSection = new ArrayList<Section>();
+    private ArrayList<CapabilitiesSection> checkSections(String[] sections) throws OwsExceptionReport {
+        ArrayList<CapabilitiesSection> responseSection = new ArrayList<CapabilitiesSection>();
         for (String section : sections) {
-            if (section.equalsIgnoreCase(Section.Contents.name())) {
-                responseSection.add(Section.Contents);
+            if (section.equalsIgnoreCase(CapabilitiesSection.Contents.name())) {
+                responseSection.add(CapabilitiesSection.Contents);
             }
-            else if (section.equalsIgnoreCase(Section.OperationsMetadata.name())) {
-                responseSection.add(Section.OperationsMetadata);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.OperationsMetadata.name())) {
+                responseSection.add(CapabilitiesSection.OperationsMetadata);
             }
-            else if (section.equalsIgnoreCase(Section.ServiceIdentification.name())) {
-                responseSection.add(Section.ServiceIdentification);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.ServiceIdentification.name())) {
+                responseSection.add(CapabilitiesSection.ServiceIdentification);
             }
-            else if (section.equalsIgnoreCase(Section.ServiceProvider.name())) {
-                responseSection.add(Section.ServiceProvider);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.ServiceProvider.name())) {
+                responseSection.add(CapabilitiesSection.ServiceProvider);
             }
-            else if (section.equalsIgnoreCase(Section.All.name())) {
-                responseSection.add(Section.All);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.All.name())) {
+                responseSection.add(CapabilitiesSection.All);
             }
             else {
                 OwsExceptionReport se = new OwsExceptionReport();
@@ -105,10 +105,10 @@ public class GetCapabilitiesListener implements ISirRequestListener {
                                      null,
                                      "The parameter 'Sections' has a wrong value: '" + section
                                              + "'. Please use only this values: "
-                                             + Section.ServiceIdentification.name() + ", "
-                                             + Section.ServiceProvider.name() + ", "
-                                             + Section.OperationsMetadata.name() + ", " + Section.Contents.name()
-                                             + ", " + Section.All.name());
+                                             + CapabilitiesSection.ServiceIdentification.name() + ", "
+                                             + CapabilitiesSection.ServiceProvider.name() + ", "
+                                             + CapabilitiesSection.OperationsMetadata.name() + ", " + CapabilitiesSection.Contents.name()
+                                             + ", " + CapabilitiesSection.All.name());
                 log.error("The sections parameter is incorrect.", se);
                 throw se;
             }
@@ -171,8 +171,8 @@ public class GetCapabilitiesListener implements ISirRequestListener {
                 response.setSections(checkSections(sirRequest.getSections()));
             }
             else {
-                ArrayList<Section> temp = new ArrayList<Section>();
-                temp.add(Section.All);
+                ArrayList<CapabilitiesSection> temp = new ArrayList<CapabilitiesSection>();
+                temp.add(CapabilitiesSection.All);
                 response.setSections(temp);
             }
 

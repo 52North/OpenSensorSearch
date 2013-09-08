@@ -175,7 +175,7 @@ public class HarvestServiceListener implements ISirRequestListener {
                 response = harvestSOS(harvServReq);
             }
             catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e.getDocument());
+                return new ExceptionResponse(e);
             }
         }
         // harvest a SPS
@@ -184,7 +184,7 @@ public class HarvestServiceListener implements ISirRequestListener {
                 response = harvestSPS(harvServReq);
             }
             catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e.getDocument());
+                return new ExceptionResponse(e);
             }
         }
         // harvest the IOOSCatalog (xml file)
@@ -193,7 +193,7 @@ public class HarvestServiceListener implements ISirRequestListener {
                 response = harvestIOOSCatalog(harvServReq);
             }
             catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e.getDocument());
+                return new ExceptionResponse(e);
             }
         }
         else {
@@ -202,7 +202,7 @@ public class HarvestServiceListener implements ISirRequestListener {
                                                                "Harvesting for the given service type '"
                                                                        + harvServReq.getServiceType()
                                                                        + "' not supported!");
-            return new ExceptionResponse(report.getDocument());
+            return new ExceptionResponse(report);
         }
 
         return response;

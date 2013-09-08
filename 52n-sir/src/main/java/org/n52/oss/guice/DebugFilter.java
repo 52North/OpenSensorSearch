@@ -49,7 +49,7 @@ public class DebugFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         String url = getFullURL((HttpServletRequest) request);
-        log.debug("Filter: {}", url);
+        log.debug("URL: {}", url);
         
         chain.doFilter(request, response);
     }

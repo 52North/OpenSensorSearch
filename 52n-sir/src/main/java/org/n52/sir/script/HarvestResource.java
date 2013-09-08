@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -46,7 +47,6 @@ import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.licenses.License;
 import org.n52.sir.scheduler.HarvestJob;
 import org.n52.sir.scheduler.QuartzConstants;
-import org.n52.sir.scheduler.RemoteHarvestJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -67,7 +67,7 @@ import com.sun.jersey.multipart.FormDataParam;
 @Path("/script")
 @RequestScoped
 public class HarvestResource {
-    
+
     private static Logger log = LoggerFactory.getLogger(HarvestResource.class);
 
     private IJSExecute jsEngine;
@@ -76,15 +76,15 @@ public class HarvestResource {
 
     private IInsertSensorInfoDAO dao;
 
-    private IInsertRemoteHarvestServer remoteDAO;
+    // private IInsertRemoteHarvestServer remoteDAO;
 
     private SirConfigurator config;
 
     @Inject
-    public HarvestResource(SirConfigurator config,IJSExecute jsEngine) {
+    public HarvestResource(SirConfigurator config, IJSExecute jsEngine) {
         log.info("SirConfigurator: {}", config.getFactory());
         this.config = config.getInstance();
-        this.jsEngine=jsEngine;
+        this.jsEngine = jsEngine;
     }
 
     @GET
@@ -161,8 +161,9 @@ public class HarvestResource {
     @GET
     @Path("/schedule")
     public Response scheduleHarvest(@QueryParam("id")
-    int scriptId, @QueryParam("date")
-    long when,@QueryParam("authToken")String authToken) {
+    int sensorId, @QueryParam("date") @DefaultValue("0")
+    long when,@QueryParam("authToken")String authToken, @QueryParam("schedule") @DefaultValue("0/10 * * * * ?")
+    String schedule) {
     	IUserAccountDAO userDao = this.config.getFactory().userAccountDAO();
     	IInsertHarvestScriptDAO scriptDao = this.config.getFactory().insertHarvestScriptDAO();
     	String userid = userDao.getUserIDForToken(authToken);
@@ -223,15 +224,19 @@ public class HarvestResource {
     public Response harvestServer(@FormParam("auth_token")
     String auth_token) {
         JobDataMap dataMap = new JobDataMap();
+
+        // FIXME after merge with moh-yakoub
         String url = this.config.getFactory().insertRemoteHarvestSensor().harvestRemoteServer(auth_token);
         log.info("The result url:" + url);
-        if (url == null) {
-            return Response.status(404).build();
-        }
-        dataMap.put(QuartzConstants.INSERTION_INTERFACE, this.dao);
-        dataMap.put(QuartzConstants.REMOTE_SENSOR_URL, url);
-
-        JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I" + auth_token).usingJobData(dataMap).build();
+         if (url == null) {
+        return Response.status(404).build();
+         }
+         dataMap.put(QuartzConstants.INSERTION_INTERFACE, this.dao);
+         dataMap.put(QuartzConstants.REMOTE_SENSOR_URL, url);
+        
+        JobDetail detail = null;
+        JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity("_I" +
+        auth_token).usingJobData(dataMap).build();
 
         try {
             Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + auth_token).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();

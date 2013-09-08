@@ -16,25 +16,24 @@
 
 package org.n52.sir;
 
-import java.io.BufferedReader
-;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
-import javax.servlet.ServletContext;
+import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.transform.TransformerException;
 
 import org.n52.oss.config.ApplicationConstants;
-import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.response.ISirResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,17 +53,13 @@ public class SIR {
 
     private static Logger log = LoggerFactory.getLogger(SIR.class);
 
-    private SirConfigurator configurator;
-
     private ApplicationConstants appConstants;
 
     @Inject
     RequestOperator requestOperator;
 
     @Inject
-    public SIR(SirConfigurator config, ApplicationConstants constants) {
-        this.configurator = config.getInstance(); // TODO remove getInstance() call when injection of
-                                                  // properties is configured
+    public SIR(ApplicationConstants constants) {
         this.appConstants = constants;
 
         log.info("{} | Version: {} | Build: {} | From: {}",
@@ -76,18 +71,15 @@ public class SIR {
         log.info(" ***** NEW {} *****", this);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        log.info("finalize() called...");
-
-        super.finalize();
-        SirConfigurator.getInstance().getExecutor().shutdown();
+    @PreDestroy
+    protected void shutdown() throws Throwable {
+        log.info("SHUTDOWN called...");
+        // SirConfigurator.getInstance().getExecutor().shutdown();
     }
 
     @GET
-    public void doGet(@Context
-    UriInfo uriInfo, @Context
-    HttpServletResponse resp) { // throws ServletException, IOException {
+    public Response doGet(@Context
+    UriInfo uriInfo) {
         String query = uriInfo.getRequestUri().getQuery();
         log.debug(" ****** (GET) Connected: {} ****** ", query);
 
@@ -95,13 +87,12 @@ public class SIR {
         // MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
 
         ISirResponse sirResp = this.requestOperator.doGetOperation(query);
-        doResponse(resp, sirResp);
+        return doResponse(sirResp);
     }
 
     @POST
-    public void doPost(@Context
-    HttpServletRequest req, @Context
-    HttpServletResponse resp) { // throws ServletException, IOException {
+    public Response doPost(@Context
+    HttpServletRequest req) {
         if (log.isDebugEnabled())
             log.debug(" ****** (POST) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
 
@@ -128,33 +119,28 @@ public class SIR {
         }
 
         ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
-        doResponse(resp, sirResp);
+        return doResponse(sirResp);
     }
 
-    private void doResponse(HttpServletResponse resp, ISirResponse sirResp) {
-        try {
-            String contentType = sirResp.getContentType();
-            int contentLength = sirResp.getContentLength();
-            byte[] bytes = sirResp.getByteArray();
-            resp.setContentLength(contentLength);
+    private Response doResponse(final ISirResponse sirResp) {
+        StreamingOutput stream = new StreamingOutput() {
+            @Override
+            public void write(OutputStream os) throws IOException, WebApplicationException {
+                try (BufferedOutputStream bus = new BufferedOutputStream(os);) {
+                    log.debug("Writing streamed response of: {}", sirResp);
 
-            try (OutputStream out = resp.getOutputStream();) {
-                resp.setContentType(contentType);
-                out.write(bytes);
-                out.close();
+            byte[] bytes = sirResp.getByteArray();
+                    bus.write(bytes);
             }
             catch (Exception e) {
                 log.error("Could not write to response stream.", e);
             }
 
         }
-        catch (IOException ioe) {
-            log.error("doResponse", ioe);
+        };
+
+        return Response.ok(stream).build();
         }
-        catch (TransformerException te) {
-            log.error("doResponse", te);
-        }
-    }
     @GET
     @Path("/search")
     public Response index(){

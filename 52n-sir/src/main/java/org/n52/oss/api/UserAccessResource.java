@@ -21,8 +21,6 @@ package org.n52.oss.api;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
@@ -36,28 +34,34 @@ import com.google.inject.servlet.RequestScoped;
 @Path("/api/user")
 @RequestScoped
 public class UserAccessResource {
-	protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
-	private SirConfigurator config;
+    protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
+    private SirConfigurator config;
 
-	@Inject
-	public UserAccessResource(SirConfigurator config) {
-		this.config = config;
-	}
+    @Inject
+    public UserAccessResource(SirConfigurator config) {
+        this.config = config;
+    }
 
-	@POST
-	@Path("/login")
-	public Response authenticate(@FormParam("username") String user,
-			@FormParam("password") String password) {
-		try {
-			String token = this.config.getInstance().getFactory().userAccountDAO()
-					.authenticateUser(user, password);
-			if (token == null)
-				return Response.ok("{status:fail}").build();
-			else
-				return Response.ok("{auth_token:'" + token + "'}").build();
-		} catch (Exception e) {
-			return Response.status(500).entity(e).build();
-		}
-	}
+    @POST
+    @Path("/login")
+    public Response authenticate(@FormParam("username")
+    String user, @FormParam("password")
+    String password) {
+        log.debug("Authentication requested for user {}", user);
+
+        try {
+            IUserAccountDAO dao = this.config.getInstance().getFactory().userAccountDAO();
+            String token = dao.authenticateUser(user, password);
+            log.debug("Token for user {} is {}", user, token);
+
+            if (token == null)
+                return Response.ok("{status:fail}").build();
+
+            return Response.ok("{auth_token:'" + token + "'}").build();
+        }
+        catch (Exception e) {
+            return Response.status(500).entity(e).build();
+        }
+    }
 
 }

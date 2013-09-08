@@ -19,7 +19,10 @@
 			</pattern>
 		</encoder>
 	</appender>
+	
 	<logger name="org.n52" level="${config.logger.level}" />
+	<logger name="org.apache.http" level="WARN" />
+	
 	<root level="WARN">
 		<appender-ref ref="FILE" />
 		<appender-ref ref="STDOUT" />

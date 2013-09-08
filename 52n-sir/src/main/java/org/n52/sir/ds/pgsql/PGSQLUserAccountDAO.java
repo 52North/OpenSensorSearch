@@ -132,7 +132,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
             con = this.cpool.getConnection();
             stmt = con.createStatement();
             String searchQuery = selectUserPassword(name, password);
-            log.info(searchQuery);
+            log.debug(searchQuery);
             System.out.println(searchQuery);
             ResultSet rs = stmt.executeQuery(searchQuery);
             String id = null;

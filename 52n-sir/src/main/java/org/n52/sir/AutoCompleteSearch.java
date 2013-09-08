@@ -36,17 +36,17 @@ import javax.ws.rs.core.Response;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.listener.SearchSensorListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
 import com.sun.jersey.api.core.HttpContext;
 
 @Path("/suggest")
 @RequestScoped
 public class AutoCompleteSearch {
-
-    // private static final long serialVersionUID = 5313315792207485425L;
 
     private static Logger log = LoggerFactory.getLogger(SOLRSearchSensorDAO.class);
 
@@ -58,10 +58,19 @@ public class AutoCompleteSearch {
     @Context
     private HttpContext servletContext;
 
+    SearchSensorListener searchSensor;
+
+    @Inject
+    public AutoCompleteSearch(SearchSensorListener ssl) {
+        this.searchSensor = ssl;
+        
+        log.debug("NEW {}", this);
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response doGet(@QueryParam("q") String text)
-    {
+    public Response doGet(@QueryParam("q")
+    String text) {
         // String text =
         // servletRequest.getParameter(REQUEST_PARAM_AUTOCOMPLETE);
         log.trace("new GET request for autocomplete: {}", text);
@@ -74,6 +83,7 @@ public class AutoCompleteSearch {
         Collection<Object> results = new HashSet<>();
         SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
         Collection<SirSearchResultElement> search_results = dao.searchByAll(text, null, null, null, null, null, null);
+
         Iterator<SirSearchResultElement> it = search_results.iterator();
 
         while (it.hasNext()) {
@@ -95,26 +105,30 @@ public class AutoCompleteSearch {
         }
 
         // returns the result as json array
+        String result = null;
+
         if (results.size() == 0)
-            return Response.ok().entity("[]").header(HttpHeaders.CONTENT_LENGTH, "[]".length()).build();
-
-        Iterator<Object> iterator = results.iterator();
-        StringBuilder res = new StringBuilder();
-        String first = iterator.next().toString();
-        if (first.contains(text)) {
-            res.append(first);
-        }
-        while (iterator.hasNext()) {
-            String n = iterator.next().toString();
-            if (n.contains(text)) {
-                if (res.toString().length() > 0)
-                    res.append(",");
-                res.append(n);
+            result = "[]";
+        else {
+            Iterator<Object> iterator = results.iterator();
+            StringBuilder res = new StringBuilder();
+            String first = iterator.next().toString();
+            if (first.contains(text)) {
+                res.append(first);
             }
+            while (iterator.hasNext()) {
+                String n = iterator.next().toString();
+                if (n.contains(text)) {
+                    if (res.toString().length() > 0)
+                        res.append(",");
+                    res.append(n);
+                }
+            }
+
+            result = "[" + res.toString() + "]";
         }
 
-        log.debug("Done serving servlet, response: {}", res.toString());
-        String result = "[" + res.toString() + "]";
+        log.debug("Done serving servlet, response: {}", result);
         return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
     }
 

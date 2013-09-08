@@ -14,10 +14,10 @@
 -- limitations under the License.
 --
 
---FILE CREATES TABLE STRUCTURE OF DATABASE
+-- Database structure for PostGIS 2
 
--- last change: 2009-05-11
--- last change by: Jan Schulte
+-- last change: 2013-08
+-- last change by: Moh-Yakoub
 
 -- Dropping Tables
 ----------------------
@@ -27,11 +27,11 @@ DROP TABLE IF EXISTS sensor CASCADE;
 DROP TABLE IF EXISTS sensor_phen CASCADE;
 DROP TABLE IF EXISTS sensor_service CASCADE;
 DROP TABLE IF EXISTS service CASCADE;
-DROP TABLE IF EXISTS userauthtoken CASCADE;
+DROP TABLE IF EXISTS status CASCADE;
+DROP TABLE IF EXISTS userAuthToken CASCADE;
 DROP TABLE IF EXISTS harvestScript CASCADE;
 DROP TABLE IF EXISTS remoteHarvestSensor CASCADE;
-DROP TABLE IF EXISTS status CASCADE;
-DROP TABLE IF EXISTS useraccount CASCADE;
+DROP TABLE IF EXISTS userAccount CASCADE;
 
 -----------------------------------------------------------------------------------------------------------------------
 -- Creating the tables
@@ -55,7 +55,7 @@ CREATE TABLE service
   service_url varchar(255) NOT NULL,
   service_type varchar(5) NOT NULL,
   PRIMARY KEY(service_id),
-  CHECK (service_type IN ('SOS', 'sos', 'SPS', 'sps', 'ses', 'SES', 'sas', 'SAS')),
+  CHECK (service_type IN ('SOS', 'sos', 'SPS', 'sps', 'ses', 'SES', 'sas', 'SAS', 'SIR', 'sir', 'OSS', 'oss')),
   CONSTRAINT uc_service UNIQUE (service_url,service_type)
 );
 
@@ -145,9 +145,11 @@ CREATE TABLE remoteHarvestSensor
 --Table : userAccount
 CREATE TABLE userAccount
 (
-   userId bigserial, 
-   userName text, 
-   passwordSHA1 text
+   userId bigserial NOT NULL, 
+   userName text NOT NULL, 
+   passwordSHA1 text,
+   PRIMARY KEY(userId),
+   CONSTRAINT uc_username UNIQUE (userName)
 );
 
 

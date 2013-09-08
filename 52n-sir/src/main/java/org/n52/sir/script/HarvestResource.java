@@ -96,7 +96,7 @@ public class HarvestResource {
     @Path("/{scriptid}")
     public Object showHarvester(@PathParam("scriptid")
     String id) {
-        // FIXME implement full CRUD
+        // FIXME implement full CRUD, return full script here, and render it in HTML with ossui
         return "script " + id;
     }
 

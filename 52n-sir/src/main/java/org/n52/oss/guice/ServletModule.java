@@ -75,11 +75,10 @@ public class ServletModule extends JerseyServletModule {
         params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF"); 
 
         params.put("com.sun.jersey.config.property.WebPageContentRegex", "/.*\\.(jpg|ico|png|gif|html|id|txt|css|js)");
-        
-        params.put(PackagesResourceConfig.PROPERTY_PACKAGES,"org.n52.oss.api;com.wordnik.swagger.jaxrs.listing");
-        params.put("api.version","1.0.0");
+        //params.put("com.sun.jersey.config.property.packages","org.n52.oss.api;com.wordnik.swagger.jaxrs");
+//        params.put("api.version","1.0.0");
      //   filter("/doc/api/*").through(GuiceContainer.class,params);
-    //    filter("/api-docs/*").through(GuiceContainer.class,params);
+      //  filter("/api-docs/*").through(GuiceContainer.class,params);
         filter("/*").through(GuiceContainer.class,params);    
         log.info("configured {} with context {}", this, getServletContext());
     }

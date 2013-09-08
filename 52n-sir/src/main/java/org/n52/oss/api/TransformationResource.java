@@ -34,8 +34,12 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
 import com.sun.jersey.multipart.FormDataParam;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/convert")
+@Api(value = "/convert", description = "Operations about pets")
+
 @RequestScoped
 public class TransformationResource {
 
@@ -79,6 +83,7 @@ public class TransformationResource {
 	}
 	@POST
 	@Path("/")
+	@ApiOperation(value = "Convert to a specific form", notes = "More notes about this method")
 	public Response convertSensor(@FormParam("sensor")String sensor,@FormParam("output")String format){
 		if(format.equals("json")){
 			return toJson(sensor); 

@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
+import com.wordnik.swagger.annotations.Api;
 
 @Path("/api/v1/statistics")
 @RequestScoped

@@ -1,5 +1,5 @@
 /**
- * ?Copyright (C) 2012 52�North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/convert")
 @Api(value = "/convert", description = "Conversion of SensorML document to different formats")
-
 @RequestScoped
 public class TransformationResource {
 
@@ -80,8 +79,11 @@ public class TransformationResource {
 
     @POST
     @Path("/")
-	@ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
-	public Response convertSensor(@FormParam("sensor")String sensor,@FormParam("output")String format){        if (format.equals("json"))
+    @ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
+    public Response convertSensor(@FormParam("sensor")
+    String sensor, @FormParam("output")
+    String format) {
+        if (format.equals("json"))
             return toJson(sensor);
         return toEbrim(sensor);
     }

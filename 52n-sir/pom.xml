@@ -238,8 +238,8 @@
 
 			<plugin>
 				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
-				<!-- run "mvn license:check -Dyear=2011" to check -->
-				<!-- run "mvn license:format -Dyear=2011" to add to the files -->
+				<!-- run "mvn license:check" to check -->
+				<!-- run "mvn license:format" to add to the files -->
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>

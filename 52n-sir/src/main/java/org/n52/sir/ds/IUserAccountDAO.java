@@ -1,5 +1,5 @@
 /**
- * ?Copyright (C) 2012 52�North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds;
 
 public interface IUserAccountDAO {
-	
-	
-	//return null if the authentication fail , authToken otherwise
-	public String authenticateUser(String name,String password);
-	public String getUserIDForToken(String token);
 
+    // return null if the authentication fail , authToken otherwise
+    public String authenticateUser(String name, String password);
+
+    public String getUserIDForToken(String token);
 
 }

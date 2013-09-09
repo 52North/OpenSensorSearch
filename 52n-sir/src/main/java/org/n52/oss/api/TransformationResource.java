@@ -35,8 +35,12 @@ import org.n52.sir.xml.ITransformer;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/convert")
+@Api(value = "/convert", description = "Conversion of SensorML document to different formats")
+
 @RequestScoped
 public class TransformationResource {
 
@@ -76,10 +80,8 @@ public class TransformationResource {
 
     @POST
     @Path("/")
-    public Response convertSensor(@FormParam("sensor")
-    String sensor, @FormParam("output")
-    String format) {
-        if (format.equals("json"))
+	@ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
+	public Response convertSensor(@FormParam("sensor")String sensor,@FormParam("output")String format){        if (format.equals("json"))
             return toJson(sensor);
         return toEbrim(sensor);
     }

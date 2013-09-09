@@ -1,11 +1,34 @@
+/**
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/** @author Yakoub
+ */
+
 package org.n52.oss.ui.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -19,8 +42,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/script")
@@ -28,6 +54,32 @@ public class ScriptController {
     public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
 
     private static Logger log = LoggerFactory.getLogger(ScriptController.class);
+    @RequestMapping("/show/")
+    public String selectScript(ModelMap map){
+        return "script/selectScript";
+    }
+    @RequestMapping("/show/{scriptId}")
+    public String show(@PathVariable String scriptId,
+            ModelMap map)
+    {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/script/" + scriptId);
+        try {
+            HttpResponse resp = client.execute(get);
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+            String s = null;
+            while ((s = reader.readLine()) != null)
+                builder.append(s);
+            ScriptContent content = new Gson().fromJson(builder.toString(), ScriptContent.class);
+            map.addAttribute("content", content.content);
+            return "script/show";
+        } catch (Exception e) {
+            map.addAttribute("error",e);
+            return "script/error";
+        }
+
+    }
 
     @RequestMapping("/index")
     public String index(ModelMap map)
@@ -95,6 +147,7 @@ public class ScriptController {
             return "script/status?fail";
         }
     }
+
     // private void addLicenseToHeader(File f,License l) throws IOException{
     // RandomAccessFile random = new RandomAccessFile(f, "rw");
     // random.seek(0); // to the beginning
@@ -112,4 +165,7 @@ public class ScriptController {
     // return builder.toString();
     // }
 
+    public class ScriptContent {
+        public String content;
+    }
 }

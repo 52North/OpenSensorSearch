@@ -17,8 +17,10 @@
  */
 package org.n52.sir.script;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
@@ -59,6 +61,7 @@ import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
 import com.sun.jersey.api.view.Viewable;
@@ -95,10 +98,31 @@ public class HarvestResource {
 
     @GET
     @Path("/{scriptid}")
-    public Object showHarvester(@PathParam("scriptid")
+    public Response showHarvester(@PathParam("scriptid")
     String id) {
-        // FIXME implement full CRUD, return full script here, and render it in HTML with ossui
-        return "script " + id;
+        try{
+            String responseMsg = null;
+            IInsertHarvestScriptDAO dao = this.config.getFactory().insertHarvestScriptDAO();
+            String relativePath =  dao.getScriptFileForID(Integer.parseInt(id));
+            String root = config.getScriptsPath();
+            File f = new File(root+relativePath);
+            if(!f.exists())
+                responseMsg = "{error:'No such script stored at server'}";
+            else{
+                StringBuilder builder = new StringBuilder();
+                BufferedReader reader = new BufferedReader(new FileReader(f));
+                String s = null;
+                while((s=reader.readLine())!=null){
+                    builder.append(s);
+                    builder.append(System.getProperty("line.separator"));
+    }
+                responseMsg="{content:'"+builder.toString()+"'}";
+            }
+            return Response.ok(responseMsg).build();            
+        }catch(Exception e){
+            log.error("Error on showing harvest script",e);
+            return Response.ok("{error:'cannot read script'}").build();
+        }
     }
 
     @DELETE
@@ -273,5 +297,4 @@ public class HarvestResource {
     	return builder.toString();
     	
     }
-
 }

@@ -1,5 +1,5 @@
 /**
- * ?Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * ?Copyright (C) 2012 52Â°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,17 @@ import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.impl.ValidatorFactoryImpl;
 
 import com.google.inject.Inject;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/api/check")
+@Api(
+        value = "/api/check", description = "validation of SensorML for future harvesting")
 public class ValidatorResource {
 	// private IProfileValidator validator;
 
 	private IProfileValidator validator;
+
 	@Inject
 	public ValidatorResource(SirConfigurator config) throws OwsExceptionReport {
 		this.validator = config.getInstance().getValidatorFactory().getSensorMLProfile4DiscoveryValidator();
@@ -48,7 +53,8 @@ public class ValidatorResource {
 		return b;
 	}
 
-	private String returnJSON(String s) throws OwsExceptionReport {
+    private String returnJSON(String s) throws OwsExceptionReport
+    {
 		try {
 			boolean b = validateSensorMLDocument(s);
 			if (b)
@@ -64,9 +70,12 @@ public class ValidatorResource {
 
 	@POST
 	@Path("/sensorML")
+    @ApiOperation(
+            value = "Validates a given SensorML Document")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response check(@FormParam("sensor") String sensor,
-			@FormParam("format") String format) throws OwsExceptionReport {
+            @FormParam("format") String format) throws OwsExceptionReport
+    {
 		if (format.equals("json")) {
 			return Response.ok(returnJSON(sensor)).build();
 		} else {

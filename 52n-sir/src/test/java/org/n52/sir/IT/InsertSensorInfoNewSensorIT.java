@@ -32,6 +32,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.util.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;

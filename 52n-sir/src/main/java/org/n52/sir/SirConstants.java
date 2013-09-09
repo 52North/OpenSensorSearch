@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 /**
@@ -20,6 +21,10 @@ package org.n52.sir;
  * 
  */
 public class SirConstants {
+
+    public enum CapabilitiesSection {
+        All, Contents, OperationsMetadata, ServiceIdentification, ServiceProvider
+    }
 
     /**
      * enum with parameter names for GetCapabilities HTTP GET request
@@ -44,9 +49,6 @@ public class SirConstants {
 
     public static final String CHARSET_NAME = "UTF-8";
 
-    /**
-     * Constant for the content type of the response
-     */
     public static final String CONTENT_TYPE_XML = "text/xml";
 
     /**
@@ -54,71 +56,32 @@ public class SirConstants {
      */
     public static final String DESCRIBE_SENSOR_OPERATION_NAME = "DescribeSensor";
 
-    /**
-     * Constant for the http get request REQUEST parameter
-     */
     public static final String GETREQUESTPARAM = "REQUEST";
 
-    /**
-     * 
-     */
     public static final String GETVERSIONPARAM = "version";
 
-    /**
-     * Service type for IOOSCatalog XML sensor description file
-     */
     public static final String IOOSCATAL0G_SERVICE_TYPE = "IOOSCatalog";
 
-    /**
-     * 
-     */
     public static final String REQUEST_CONTENT_CHARSET = CHARSET_NAME;
 
-    public static final String REQUEST_CONTENT_TYPE = "text/xml";
+    public static final String REQUEST_CONTENT_TYPE = CONTENT_TYPE_XML;
 
-    /**
-     * 
-     */
     public static final String RESPONSE_CONTENT_CHARSET = CHARSET_NAME;
 
-    /**
-     * Constant for the service name of the SIR
-     */
     public static final String SERVICE_NAME = "SIR";
 
-    /**
-     * 
-     */
     public static final String SERVICE_VERSION_0_3_0 = "0.3.0";
 
-    /**
-     * 
-     */
     public static final String SERVICE_VERSION_0_3_1 = "0.3.1";
 
-    /**
-     * 
-     */
     public static final String SERVICE_VERSION_0_3_2 = "0.3.2";
 
-    /**
-     * 
-     */
     public static final Object SERVICEPARAM = "service";
 
-    /**
-     * Service type for Sensor Observation Service
-     */
     public static final String SOS_SERVICE_TYPE = "SOS";
 
-    /**
-     * 
-     */
     public static final String SOS_VERSION = "1.0.0";
 
-    /**
-     * Service type for Sensor Planning Service
-     */
     public static final String SPS_SERVICE_TYPE = "SPS";
 
 }

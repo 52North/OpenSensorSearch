@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
 import java.io.BufferedReader;
@@ -38,6 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 
+ * TODO make unit tests out of these hacked tests
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
@@ -77,7 +80,7 @@ public class TestSIR {
                 }
                 rd.close();
 
-                System.out.println(XmlObject.Factory.parse(sb.toString()));
+                log.debug("{}", XmlObject.Factory.parse(sb.toString()));
 
                 result = sb.toString();
             }
@@ -224,47 +227,36 @@ public class TestSIR {
         log.info("----------- POST InsertSensorStatus by sensorIDInSIR -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/bySensorIDInSIR.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus by serviceDescription -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/byServiceDescription.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus wrong sensorIDInSIR -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/wrongSensorIDInSIR.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus wrong serviceDescription -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/wrongServiceDescription.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus statusDescription missing -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/statusDescriptionMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus sensorIdentification missing -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/sensorIdentificationMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus status missing -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/statusMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus propertyName missing -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/propertyNameMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus propertyValue missing -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/propertyValueMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus uom missing -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/uomMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorStatus timestamp missing -----------");
         in = new FileReader(new File(path + "/InsertSensorStatus/timestampMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
     }
 
     /**
@@ -282,39 +274,30 @@ public class TestSIR {
         log.info("----------- POST InsertSensorInfo new sensor -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/newSensor.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo delete sensor -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/deleteSensor.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo add reference -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/addReference.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo delete reference -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/deleteReference.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo update sensor -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/updateSensor.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo infoToBeInserted missing -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/infoToBeInsertedMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo delete in sensorInfo missing -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/deleteInSensorInfoMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo delete in serviceInfo missing -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/deleteInServiceInfoMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST InsertSensorInfo serviceDescription in serviceInfo missing -----------");
         in = new FileReader(new File(path + "/InsertSensorInfo/serviceDescriptionInServiceInfoMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
     }
 
     /**
@@ -332,31 +315,24 @@ public class TestSIR {
         log.info("----------- POST searchSensor by search criteria -----------");
         in = new FileReader(new File(path + "/SearchSensor/bySearchCriteria.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST searchSensor by sensorIDInSIR -----------");
         in = new FileReader(new File(path + "/SearchSensor/bySensorIDInSIR.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST searchSensor by service description -----------");
         in = new FileReader(new File(path + "/SearchSensor/byServiceDescription.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST searchSensor no identification or search criteria -----------");
         in = new FileReader(new File(path + "/SearchSensor/noIdentOrCriteria.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST searchSensor no sensorID or service description -----------");
         in = new FileReader(new File(path + "/SearchSensor/noSensorIDOrServDesc.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST searchSensor no serviceURL and service type and serviceSpecificSensorID -----------");
         in = new FileReader(new File(path + "/SearchSensor/noServiceAndSpecificID.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST searchSensor no starttime and endtime -----------");
         in = new FileReader(new File(path + "/SearchSensor/noStarttimeAndEndtime.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
     }
 
     /**
@@ -373,27 +349,20 @@ public class TestSIR {
         Reader in;
         log.info("----------- GET describe sensor right -----------");
         sendGetRequest(url, "request=describeSensor&sensorID=1");
-        System.out.println("\n");
         log.info("----------- GET describe sensor REQUEST missing -----------");
         sendGetRequest(url, "sensorID=1");
-        System.out.println("\n");
         log.info("----------- GET describe sensor REQUEST wrong -----------");
         sendGetRequest(url, "request=deeSensor&sensorID=1");
-        System.out.println("\n");
         log.info("----------- GET describe sensor SENSORID missing -----------");
         sendGetRequest(url, "request=describeSensor");
-        System.out.println("\n");
         log.info("----------- GET describe sensor SENSORID not found -----------");
         sendGetRequest(url, "request=describeSensor&sensorID=500");
-        System.out.println("\n");
         log.info("----------- POST describe sensor right -----------");
         in = new FileReader(new File(path + "/DescribeSensor/right.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST describe sensor sensorIDInSir missing -----------");
         in = new FileReader(new File(path + "/DescribeSensor/sensorIDMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST describe sensor sensorIDInSir not found -----------");
         in = new FileReader(new File(path + "/DescribeSensor/sensorIDNotFound.xml"));
         postData(in, new URL(url), out);
@@ -414,23 +383,18 @@ public class TestSIR {
         log.info("----------- POST harvestService OWS5SOS -----------");
         in = new FileReader(new File(path + "/HarvestService/OWS5SOS.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST harvestService WeatherSOS -----------");
         in = new FileReader(new File(path + "/HarvestService/WeatherSOS.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST harvestService type missing -----------");
         in = new FileReader(new File(path + "/HarvestService/typeMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST harvestService url missing -----------");
         in = new FileReader(new File(path + "/HarvestService/urlMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST harvestService wrong -----------");
         in = new FileReader(new File(path + "/HarvestService/wrong.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
     }
 
     /**
@@ -448,11 +412,9 @@ public class TestSIR {
         log.info("----------- POST getAllServices right -----------");
         in = new FileReader(new File(path + "/GetAllServices/right.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST getAllServices wrong -----------");
         in = new FileReader(new File(path + "/GetAllServices/wrong.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
     }
 
     /**
@@ -469,45 +431,33 @@ public class TestSIR {
         Reader in;
         log.info("----------- GET get capabilities right -----------");
         sendGetRequest(url, "request=getCapabilities&service=sir");
-        System.out.println("\n");
         log.info("----------- GET get capabilities wrong REQUEST -----------");
         sendGetRequest(url, "requst=getCapabilities&service=sir");
-        System.out.println("\n");
         log.info("----------- GET get capabilities wrong REQUEST entry -----------");
         sendGetRequest(url, "request=getCapabilitie&service=sir");
-        System.out.println("\n");
         log.info("----------- GET get capabilities wrong SERVICE -----------");
         sendGetRequest(url, "request=getCapabilities&servce=sir");
-        System.out.println("\n");
         log.info("----------- GET get capabilities wrong SERVICE entry -----------");
         sendGetRequest(url, "request=getCapabilities&service=sr");
-        System.out.println("\n");
         log.info("----------- GET get capabilities REQUEST missing -----------");
         sendGetRequest(url, "service=sir");
-        System.out.println("\n");
         log.info("----------- GET get capabilities SERVICE missing -----------");
         sendGetRequest(url, "request=getCapabilities");
-        System.out.println("\n");
         log.info("----------- POST get capabilities right -----------");
         in = new FileReader(new File(path + "/GetCapabilities/right.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST get capabilities wrong REQUEST -----------");
         in = new FileReader(new File(path + "/GetCapabilities/wrongRequest.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST get capabilities wrong SERVICE -----------");
         in = new FileReader(new File(path + "/GetCapabilities/wrongService.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST get capabilities wrong SERVICE entry -----------");
         in = new FileReader(new File(path + "/GetCapabilities/wrongServiceEntry.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST get capabilities SERVICE missing -----------");
         in = new FileReader(new File(path + "/GetCapabilities/serviceMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
     }
 
     /**
@@ -525,27 +475,21 @@ public class TestSIR {
         log.info("----------- POST GetSensorStatus by sensorIDInSIR -----------");
         in = new FileReader(new File(path + "/GetSensorStatus/bySensorIDInSIR.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST GetSensorStatus by serviceDescription -----------");
         in = new FileReader(new File(path + "/GetSensorStatus/byServiceDescription.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST GetSensorStatus by searchCriteria -----------");
         in = new FileReader(new File(path + "/GetSensorStatus/bySearchCriteria.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST GetSensorStatus propertyName missing -----------");
         in = new FileReader(new File(path + "/GetSensorStatus/propertyNameMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST GetSensorStatus constraint missing -----------");
         in = new FileReader(new File(path + "/GetSensorStatus/constraintMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
         log.info("----------- POST GetSensorStatus isEqual missing -----------");
         in = new FileReader(new File(path + "/GetSensorStatus/isEqualMissing.xml"));
         postData(in, new URL(url), out);
-        System.out.println("\n");
     }
 
 }

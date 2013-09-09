@@ -17,6 +17,7 @@
 package org.n52.sir.client;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
@@ -30,6 +31,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
@@ -116,10 +118,16 @@ public class Client {
         HttpRequestBase method = null;
 
         if (requestMethod.equals(GET_METHOD)) {
-            if (log.isDebugEnabled())
-                log.debug("Client connecting via GET to " + uri);
+            log.debug("Client connecting via GET to '{}' with request '{}'", uri, request);
 
-            HttpGet get = new HttpGet(request);
+            String fullUri = null;
+            if (request == null || request.isEmpty())
+                fullUri = uri.toString();
+            else
+                fullUri = uri.toString() + "?" + request;
+
+            log.debug("GET call: {}", fullUri);
+            HttpGet get = new HttpGet(fullUri);
             method = get;
         }
         else if (requestMethod.equals(POST_METHOD)) {
@@ -127,11 +135,7 @@ public class Client {
                 log.debug("Client connecting via POST to " + uri);
             HttpPost postMethod = new HttpPost(uri.toString());
 
-            // postMethod.setRequestEntity(new StringRequestEntity(request, REQUEST_CONTENT_TYPE,
-            // REQUEST_CONTENT_CHARSET));
-            postMethod.setEntity(new StringEntity(request,
-                                                  SirConstants.REQUEST_CONTENT_TYPE,
-                                                  SirConstants.REQUEST_CONTENT_CHARSET));
+            postMethod.setEntity(new StringEntity(request, ContentType.create(SirConstants.REQUEST_CONTENT_TYPE)));
 
             method = postMethod;
         }
@@ -142,8 +146,10 @@ public class Client {
         try {
             HttpResponse httpResponse = client.execute(method);
 
-            XmlObject responseObject = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
-            return responseObject;
+            try (InputStream is = httpResponse.getEntity().getContent();) {
+                XmlObject responseObject = XmlObject.Factory.parse(is);
+                return responseObject;
+            }
         }
         catch (XmlException e) {
             log.error("Error parsing response.", e);
@@ -153,7 +159,7 @@ public class Client {
             // log.error("Received HTML!\n" + responseString + "\n");
             // }
 
-            String msg = "Could not parse response (received via " + requestMethod + ") to the request " + request
+            String msg = "Could not parse response (received via " + requestMethod + ") to the request\n\n" + request
                     + "\n\n\n" + Tools.getStackTrace(e);
             // msg = msg + "\n\nRESPONSE STRING:\n<![CDATA[" + responseObject.xmlText() + "]]>";
 
@@ -286,8 +292,7 @@ public class Client {
             HttpException,
             IOException,
             OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + request);
+        log.debug("Sending request: {}", request);
         XmlObject response = doSend(request, GET_METHOD, this.sirURI);
         return response;
     }
@@ -299,11 +304,10 @@ public class Client {
      * @throws OwsExceptionReport
      */
     public XmlObject xSendGetRequest(URI uri) throws OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + uri);
+        log.debug("Sending request: {}", uri);
         XmlObject response;
         try {
-            response = doSend("", GET_METHOD, uri);
+            response = doSend(null, GET_METHOD, uri);
         }
         catch (UnsupportedEncodingException e) {
             throw new OwsExceptionReport(e);
@@ -329,8 +333,7 @@ public class Client {
      * @throws HttpException
      */
     public XmlObject xSendPostRequest(XmlObject request) throws IOException, OwsExceptionReport, HttpException {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + request);
+        log.debug("Sending request: {}", request);
         return xSendPostRequest(request, this.sirURI);
     }
 
@@ -348,7 +351,6 @@ public class Client {
             HttpException,
             IOException,
             OwsExceptionReport {
-
         XmlObject response = doSend(request.xmlText(), POST_METHOD, serviceURI);
         return response;
     }

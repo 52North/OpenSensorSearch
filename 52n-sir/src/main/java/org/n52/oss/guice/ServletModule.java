@@ -16,6 +16,7 @@
 
 package org.n52.oss.guice;
 
+import org.n52.oss.autocomplete.AutoCompleteSearch;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ import org.n52.oss.api.TransformationResource;
 import org.n52.oss.api.UserAccessResource;
 import org.n52.oss.api.ValidatorResource;
 import org.n52.oss.opensearch.OpenSearch;
-import org.n52.sir.AutoCompleteSearch;
 import org.n52.sir.SIR;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
@@ -51,16 +51,14 @@ public class ServletModule extends JerseyServletModule {
         String basepath = getServletContext().getRealPath("/");
         bindConstant().annotatedWith(Names.named("context.basepath")).to(basepath);
 
-        // install(new FactoryModuleBuilder().implement(ApplicationConstants.class,
-        // PropertyApplicationConstants.class).build(ConfigFactory.class));
-
          bind(IJSExecute.class).to(RhinoJSExecute.class);
        //  bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
         // bind the JAX-RS resources
         // http://code.google.com/p/google-guice/wiki/ServletModule
-        bind(HelloGuice.class);
+        // bind(HelloGuice.class);
+        // TODO move the binding to the respective modules
         bind(HarvestResource.class);
         bind(AutoCompleteSearch.class);
         bind(OpenSearch.class);
@@ -80,7 +78,7 @@ public class ServletModule extends JerseyServletModule {
      //   filter("/doc/api/*").through(GuiceContainer.class,params);
       //  filter("/api-docs/*").through(GuiceContainer.class,params);
         filter("/*").through(GuiceContainer.class,params);    
-        log.info("configured {} with context {}", this, getServletContext());
+        log.debug("configured {} with context {}", this, getServletContext());
     }
 
 }

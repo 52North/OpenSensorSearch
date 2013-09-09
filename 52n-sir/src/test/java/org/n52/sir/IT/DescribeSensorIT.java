@@ -37,62 +37,31 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.util.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.util.XmlTools;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
 import org.x52North.sir.x032.DescribeSensorRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
+import org.xml.sax.SAXException;
 
 public class DescribeSensorIT {
 
     private static Client client;
-    private String sensorIDinSIR = "42";
-
-    private AbstractProcessType expected;
-
     @BeforeClass
     public static void setUp() {
         client = GuiceUtil.configureSirClient();
     }
 
-    @Before
-    public void setup() throws OwsExceptionReport, XmlException, IOException, HttpException {
-        File f = new File(ClassLoader.getSystemResource("Requests/InsertSensorInfo_newSensor.xml").getFile());
+    private AbstractProcessType expected;
 
-        InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory.parse(f);
-        client.xSendPostRequest(doc);
-        this.expected = doc.getInsertSensorInfoRequest().getInfoToBeInsertedArray()[0].getSensorDescription();
-    }
+    private String sensorIDinSIR = "42";
 
-    @Test
-    public void describeSensorUsingDocument() throws Exception {
-
-        DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory.newInstance();
-        doc.addNewDescribeSensorRequest().setSensorIDInSIR(this.sensorIDinSIR);
-
-        XmlObject response = null;
-
-        response = client.xSendPostRequest(doc);
-        System.out.println("response:" + response);
-        // parse and validate response
-        SensorMLDocument sml = SensorMLDocument.Factory.parse(response.getDomNode());
-        boolean isValid = sml.validate();
-        assertTrue("Not a valid sensorML returned", isValid);
-    }
-
-    @Test
-    public void describeSensor() throws Exception {
-        DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory.parse(new File(ClassLoader.getSystemResource("Requests/DescribeSensor.xml").getFile()));
-        XmlObject response = null;
-
-        response = client.xSendPostRequest(doc);
-        // System.out.println("response:" + response);
-        // parse and validate response
-        SensorMLDocument actual = SensorMLDocument.Factory.parse(response.getDomNode());
-
+    private void checkSensor(SensorMLDocument actual) throws SAXException, IOException {
         assertThat("Valid sensorML returned.", actual.validate(), is(true));
 
-        Diff diff = new Diff(actual.toString(), this.expected.toString());
+        Diff diff = new Diff(actual.toString(), this.expected.xmlText());
         assertThat("XML is similar.", diff.similar(), is(true));
         assertThat("XML is identical.", diff.identical(), is(true));
     }
@@ -105,5 +74,60 @@ public class DescribeSensorIT {
         boolean isValid = response.validate();
         // FIXME must check if the response actually reports that the sensor is deleted
         assertTrue("Warning:SensorId:42 has to be deleted", isValid);
+    }
+
+    @Test
+    public void describeSensorWithTestFile() throws Exception {
+        DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory.parse(new File(ClassLoader.getSystemResource("Requests/DescribeSensor.xml").getFile()));
+        XmlObject response = null;
+
+        response = client.xSendPostRequest(doc);
+        SensorMLDocument actual = SensorMLDocument.Factory.parse(response.getDomNode());
+        checkSensor(actual);
+    }
+
+    @Test
+    public void getDescribeSensor() throws Exception {
+        XmlObject response = client.xSendGetRequest("request=DescribeSensor&service=SIR&sensorIDinSIR="
+                + this.sensorIDinSIR);
+
+        SensorMLDocument actual = SensorMLDocument.Factory.parse(response.getDomNode());
+        checkSensor(actual);
+    }
+
+    @Test
+    public void postDescribeSensor() throws Exception {
+        DescribeSensorRequestDocument doc = DescribeSensorRequestDocument.Factory.newInstance();
+        doc.addNewDescribeSensorRequest().setSensorIDInSIR(this.sensorIDinSIR);
+
+        XmlObject response = client.xSendPostRequest(doc);
+        SensorMLDocument actual = SensorMLDocument.Factory.parse(response.getDomNode());
+        checkSensor(actual);
+    }
+
+    @Before
+    public void setup() throws OwsExceptionReport, XmlException, IOException, HttpException {
+        File f = new File(ClassLoader.getSystemResource("Requests/InsertSensorInfo_newSensor.xml").getFile());
+
+        InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory.parse(f);
+        client.xSendPostRequest(doc);
+        this.expected = doc.getInsertSensorInfoRequest().getInfoToBeInsertedArray()[0].getSensorDescription();
+    }
+
+    /**
+     * 
+     * Something is wrong with the validation of SensorML regarding the version numbers...
+     * 
+     * @param sml
+     * @param isValid
+     */
+    private void weakValidate(SensorMLDocument sml, boolean isValid) {
+        if ( !isValid) {
+            System.out.println("Response document is invalid, but test probably passed...\n"
+                    + XmlTools.validateAndIterateErrors(sml));
+        }
+        else {
+            assertTrue(isValid);
+        }
     }
 }

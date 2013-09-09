@@ -17,6 +17,7 @@
 package org.n52.sir.xml.impl;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -154,51 +155,52 @@ public class SMLtoEbRIMTransformer implements ITransformer {
      * @return
      * @throws XmlException
      * @throws TransformerException
+     * @throws IOException
      */
-    private RegistryPackageDocument actualTransform(SensorMLDocument smlDoc) throws XmlException, TransformerException {
-        if (log.isDebugEnabled())
-            log.debug("Start transforming SensorMLDocument: " + XmlTools.inspect(smlDoc));
+    private RegistryPackageDocument actualTransform(SensorMLDocument smlDoc) throws XmlException,
+            TransformerException,
+            IOException {
+        log.debug("Start transforming SensorMLDocument: {}", XmlTools.inspect(smlDoc));
 
         // encapsulate input document in a Source
         Source input = new DOMSource(smlDoc.getDomNode());
 
         // create output string
-        StringWriter sw = new StringWriter();
-        StreamResult output = new StreamResult(sw);
+        try (StringWriter sw = new StringWriter();) {
+            StreamResult output = new StreamResult(sw);
 
-        // do the transformation
-        this.transformer.transform(input, output);
+            // do the transformation
+            this.transformer.transform(input, output);
 
-        // create output document
-        String outputString = output.getWriter().toString();
+            // create output document
+            String outputString = output.getWriter().toString();
 
-        RegistryPackageDocument regPackDoc = RegistryPackageDocument.Factory.parse(outputString);
+            RegistryPackageDocument regPackDoc = RegistryPackageDocument.Factory.parse(outputString);
 
-        // clean up
-        input = null;
-        sw = null;
-        output = null;
-        outputString = null;
+            // clean up
+            input = null;
+            output = null;
+            outputString = null;
 
-        if (SirConfigurator.getInstance().isValidateRequests()) {
-            if ( !regPackDoc.validate()) {
-                log.warn("Created RegistryPackageDocument is not valid!");
+            if (SirConfigurator.getInstance().isValidateRequests()) {
+                if ( !regPackDoc.validate()) {
+                    log.warn("Created RegistryPackageDocument is not valid!");
+                }
             }
+
+            log.debug("Finished transformation: {}", XmlTools.inspect(regPackDoc));
+
+            return regPackDoc;
         }
-
-        if (log.isDebugEnabled())
-            log.debug("Finished transformation: " + XmlTools.inspect(regPackDoc));
-
-        return regPackDoc;
     }
 
     @Override
-    public boolean isValidating() {
+    public boolean isValidatingInputAndOutput() {
         return this.validating;
     }
 
     @Override
-    public void setValidating(boolean b) {
+    public void setValidatingInputAndOutput(boolean b) {
         this.validating = b;
     }
 
@@ -215,12 +217,12 @@ public class SMLtoEbRIMTransformer implements ITransformer {
     }
 
     @Override
-    public XmlObject transform(SensorMLDocument smlDoc) throws XmlException, TransformerException {
+    public XmlObject transform(SensorMLDocument smlDoc) throws XmlException, TransformerException, IOException {
         return actualTransform(smlDoc);
     }
 
     @Override
-    public XmlObject transform(SirSensorDescription sensor) throws XmlException, TransformerException {
+    public XmlObject transform(SirSensorDescription sensor) throws XmlException, TransformerException, IOException {
         if (sensor instanceof SirXmlSensorDescription) {
             SirXmlSensorDescription sensorDescription = (SirXmlSensorDescription) sensor;
             XmlObject o = sensorDescription.getDescription();
@@ -240,18 +242,13 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.ITransformer#transform(javax.xml.transform.Source)
-     */
     @Override
     public Result transform(Source input) throws TransformerException, FileNotFoundException {
         if (this.validating) {
             return validateAndTransform(new InputSource(input.getSystemId()));
         }
 
-        log.info("Transformation of " + input.getSystemId());
+        log.debug("Transformation of {}", input.getSystemId());
 
         ErrorListener errL = new StandardErrorListener();
         this.transformer.setErrorListener(errL);
@@ -263,8 +260,7 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         // do transform
         this.transformer.transform(input, output);
 
-        if (log.isDebugEnabled())
-            log.debug("Transformation Done.");
+        log.debug("Transformation Done.");
 
         return output;
     }
@@ -276,7 +272,7 @@ public class SMLtoEbRIMTransformer implements ITransformer {
     }
 
     @Override
-    public XmlObject transform(SystemType st) throws XmlException, TransformerException {
+    public XmlObject transform(SystemType st) throws XmlException, TransformerException, IOException {
         SensorMLDocument smlDoc = SensorMLDocument.Factory.newInstance();
         AbstractProcessType abstractProcess = smlDoc.addNewSensorML().addNewMember().addNewProcess();
         SystemType systemType = (SystemType) abstractProcess.substitute(new QName(SMLConstants.NAMESPACE, "System"),
@@ -341,12 +337,13 @@ public class SMLtoEbRIMTransformer implements ITransformer {
             catch (TransformerException te) {
                 // The TransformerException wraps someting other than a SAXParseException
                 // warning or error, either of which should be "caught" by the Handler.
-                log.error("Not a SAXParseException warning or error: " + te);
+                log.error("Not a SAXParseException warning or error: {}", te);
             }
 
             log.info("=====Done=====");
             return output;
         }
+
         log.error("TransformerFactory does not support required SAXSource.FEATURE");
         throw new TransformerConfigurationException("TransformerFactory does not support required SAXSource.FEATURE");
     }

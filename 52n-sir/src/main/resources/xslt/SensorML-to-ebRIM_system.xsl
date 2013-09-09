@@ -24,7 +24,7 @@
 	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd 
   http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd">
 
-	<xsl:import href="SensorML-to-ebRIM_classification.xsl" />
+	<!-- <xsl:import href="SensorML-to-ebRIM_classification.xsl" /> -->
 	<xsl:import href="SensorML-to-ebRIM_contentForSystemAndComponent.xsl" />
 
 	<xsl:strip-space elements="*" />

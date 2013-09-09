@@ -16,51 +16,44 @@
 
 package org.n52.oss.opensearch;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import org.n52.oss.config.ApplicationConstants;
-import org.n52.sir.SirConfigurator;
+import org.n52.oss.opensearch.listeners.OpenSearchListener;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.listener.SearchSensorListener;
-import org.n52.sir.opensearch.AtomListener;
-import org.n52.sir.opensearch.HtmlListener;
-import org.n52.sir.opensearch.IOpenSearchListener;
-import org.n52.sir.opensearch.JsonListener;
-import org.n52.sir.opensearch.KmlListener;
-import org.n52.sir.opensearch.OpenSearchConfigurator;
-import org.n52.sir.opensearch.OpenSearchConstants;
 import org.n52.sir.opensearch.RequestDismantler;
-import org.n52.sir.opensearch.RssListener;
-import org.n52.sir.opensearch.XmlListener;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.request.SirSearchSensorRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirSearchSensorResponse;
-import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
-import com.sun.jersey.api.core.HttpContext;
 
 /**
  * 
@@ -68,7 +61,7 @@ import com.sun.jersey.api.core.HttpContext;
  */
 @Path("/search")
 @RequestScoped
-public class OpenSearch { // extends HttpServlet {
+public class OpenSearch {
 
     private static Logger log = LoggerFactory.getLogger(OpenSearch.class);
 
@@ -76,238 +69,314 @@ public class OpenSearch { // extends HttpServlet {
 
     private RequestDismantler dismantler;
 
-    private HashMap<String, IOpenSearchListener> listeners;
+    private HashMap<String, OpenSearchListener> listeners;
 
     private SearchSensorListener sensorSearcher;
 
-    @Context
-    HttpServletRequest servletRequest;
-
-    @Context
-    HttpServletResponse servletResponse;
-
-    @Context
-    private HttpContext servletContext;
-
     @Inject
-    public OpenSearch(ApplicationConstants constants, SearchSensorListener listener, OpenSearchConfigurator config) {
-        super();
+    public OpenSearch(ApplicationConstants constants,
+                      SearchSensorListener listener,
+                      OpenSearchConfigurator config,
+                      Set<OpenSearchListener> listeners) {
 
         this.sensorSearcher = listener;
+        this.sensorSearcher.setEncodeURLs(false);
+
         this.configurator = config;
-        init();
+        this.dismantler = new RequestDismantler();
+
+        this.listeners = new HashMap<>();
+        for (OpenSearchListener l : listeners) {
+            this.listeners.put(l.getMimeType(), l);
+            log.debug("Added listener for {}:\t{}", l.getMimeType(), l);
+        }
 
         log.info("NEW {} based on {}", this, constants);
     }
 
-    // TODO use jersey annotations instead of request and response
     @GET
-    public void doGet() throws IOException { // (HttpServletRequest req, HttpServletResponse resp) throws
-                                                // ServletException, IOException {
-        // FIXME Daniel: the open search functionality must be extracted to a testable class, preferably with
-        // an event bus or a listener model.
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response json(@HeaderParam(HttpHeaders.ACCEPT)
+    String acceptHeader, @Context
+    UriInfo uriInfo) {
+        // TODO create response subclass for exception reports
 
-        if (log.isDebugEnabled())
-            log.debug(" ****** (GET) Connected from: " + this.servletRequest.getRemoteAddr() + " "
-                    + this.servletRequest.getRemoteHost());
+        log.debug("****** (GET) Connected: {}", uriInfo.getRequestUri());
+        log.debug("Accept header: {}", acceptHeader);
+        MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
+        OpenSearchListener l = this.listeners.get(MediaType.APPLICATION_JSON);
 
-        String acceptHeader = this.servletRequest.getHeader("accept");
-        log.trace("Accept header for 'accept': " + acceptHeader);
-        String httpAccept = this.servletRequest.getParameter(OpenSearchConstants.ACCEPT_PARAMETER);
-        log.trace("Accept header for " + OpenSearchConstants.ACCEPT_PARAMETER + ": " + httpAccept);
-
-        String searchText = this.servletRequest.getParameter(OpenSearchConstants.QUERY_PARAMETER);
-
-        Map<String, String> map = this.servletRequest.getParameterMap();
-
-        Set<String> keys = map.keySet();
-
-        // redirect if httpAccept is missing
-        if (httpAccept == null || httpAccept.isEmpty()) {
-            redirectMissingHttpAccept(this.servletRequest, this.servletResponse);
-            return;
-        }
-        if (httpAccept.contains(" "))
-            httpAccept = httpAccept.replace(" ", "+");
-
-        // must be set before getWriter() is called.
-        this.servletResponse.setCharacterEncoding(SirConfigurator.getInstance().getCharacterEncoding());
-
-        try (PrintWriter writer = this.servletResponse.getWriter();) {
-
-            Collection<SirSearchResultElement> searchResult = null;
-
-            // handle missing query parameter, can be the case if just using geo extension...
-            if (searchText == null || searchText.isEmpty()) {
-                searchResult = new ArrayList<>();
-                searchText = "";
-                log.debug("No search text given.");
-            }
-
-            /*
-             * Geo Extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
-             */
-            SirBoundingBox boundingBox = null;
-            /*
-             * if (this.dismantler.requestContainsGeoParameters(req)) { boundingBox =
-             * this.dismantler.getBoundingBox(req);
-             * log.info("Geo extension used: bounding box {} from query {} (source: {})", new Object[]
-             * {boundingBox, req.getQueryString(), req.getRemoteAddr()}); } else
-             * log.info("Searching with query {} (source: {})", new Object[] {req.getQueryString(),
-             * req.getRemoteAddr()});
-             */
-            if (keys.contains(OpenSearchConstants.BOX_PARAM)) {
-                String bbox = this.servletRequest.getParameter(OpenSearchConstants.BOX_PARAM);
-                String[] s = bbox.split(",");
-                boundingBox = new SirBoundingBox(Double.parseDouble(s[2]),
-                                                 Double.parseDouble(s[1]),
-                                                 Double.parseDouble(s[0]),
-                                                 Double.parseDouble(s[3]));
-                log.debug("Geo extension used: {}", boundingBox);
-            }
-
-            String lat = null;
-            String lng = null;
-            String radius = null;
-            if (keys.contains(OpenSearchConstants.LAT_PARAM) && keys.contains(OpenSearchConstants.LON_PARAM)
-                    && keys.contains(OpenSearchConstants.RADIUS_PARAM)) {
-                lat = this.servletRequest.getParameter(OpenSearchConstants.LAT_PARAM);
-                lng = this.servletRequest.getParameter(OpenSearchConstants.LON_PARAM);
-                radius = this.servletRequest.getParameter(OpenSearchConstants.RADIUS_PARAM);
-            }
-
-            /*
-             * Time extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
-             */
-            String start = null;
-            String end = null;
-            /*
-             * if (this.dismantler.requestContainsTime(req)) { Calendar[] startEnd =
-             * this.dismantler.getStartEnd(req); start = startEnd[0]; end = startEnd[1];
-             * log.debug("Time extension used: {} - {}", start, end); }
-             */
-            if (keys.contains(OpenSearchConstants.TIME_START_PARAMETER)) {
-                // contains a temporal query
-                log.debug(this.servletRequest.getParameter(OpenSearchConstants.TIME_START_PARAMETER));
-                start = this.servletRequest.getParameter(OpenSearchConstants.TIME_START_PARAMETER);
-                end = this.servletRequest.getParameter(OpenSearchConstants.TIME_END_PARAMETER);
-                log.debug("Time extension used: {} - {}", start, end);
-            }
-
-            // create search criteria
-            SirSearchCriteria searchCriteria = new SirSearchCriteria();
-            if ( !searchText.isEmpty()) {
-                ArrayList<String> searchTexts = new ArrayList<>();
-                searchTexts.add(searchText);
-                searchCriteria.setSearchText(searchTexts);
-            }
-
-            if (boundingBox != null)
-                searchCriteria.setBoundingBox(boundingBox);
-
-            if (start != null && end != null) {
-                searchCriteria.setDtend(end);
-                searchCriteria.setDtstart(start);
-            }
-            if (lat != null && lng != null && radius != null) {
-                searchCriteria.setLat(lat);
-                searchCriteria.setLng(lng);
-                searchCriteria.setRadius(radius);
-            }
-
-            // create search request
-            SirSearchSensorRequest searchRequest = new SirSearchSensorRequest();
-            searchRequest.setSimpleResponse(true);
-            searchRequest.setVersion(SirConstants.SERVICE_VERSION_0_3_1);
-            searchRequest.setSearchCriteria(searchCriteria);
-
-            ISirResponse response = this.sensorSearcher.receiveRequest(searchRequest);
+        try {
+            ISirResponse response = search(params);
 
             if (response instanceof SirSearchSensorResponse) {
                 SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
-                searchResult = sssr.getSearchResultElements();
+                Collection<SirSearchResultElement> searchResult = sssr.getSearchResultElements();
+
+                return l.createResponse(searchResult, params);
             }
             else if (response instanceof ExceptionResponse) {
-                ExceptionResponse er = (ExceptionResponse) response;
-                String s = new String(er.getByteArray());
-                writer.print(s);
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(response).build();
             }
             else {
                 log.error("Unhandled response: {}", response);
-                writer.print(response.toString());
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(response).build();
             }
-
-            if (this.listeners.containsKey(httpAccept)) {
-                IOpenSearchListener l = this.listeners.get(httpAccept);
-
-                l.createResponse(this.servletRequest, this.servletResponse, searchResult, writer, searchText);
-            }
-            else {
-                log.error("Could not create response as for {}, not supported.", httpAccept);
-
-                OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
-                                                                   OpenSearchConstants.ACCEPT_PARAMETER,
-                                                                   "Unsupported output format '" + httpAccept + "'.");
-                report.getDocument().save(writer, XmlTools.xmlOptionsForNamespaces());
-            }
-
         }
         catch (Exception e) {
             log.error("Unhandled exception in doGet: ", e);
+            return Response.serverError().entity(e).build();
         }
-
-        this.servletResponse.flushBuffer(); // commits the response
-
-        log.debug(" *** (GET) Done.");
     }
 
-    public void init() { // throws ServletException {
-        this.sensorSearcher.setEncodeURLs(false);
-        this.dismantler = new RequestDismantler();
+    @GET
+    @Produces(OpenSearchConstants.APPLICATION_VND_KML)
+    public Response kml(@HeaderParam(HttpHeaders.ACCEPT)
+    String acceptHeader, @Context
+    UriInfo uriInfo) {
+        log.debug("****** (GET) Connected: {}", uriInfo.getRequestUri());
+        log.debug("Accept header: {}", acceptHeader);
+        MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
+        OpenSearchListener l = this.listeners.get(OpenSearchConstants.APPLICATION_VND_KML);
 
-        this.listeners = new HashMap<>();
+        try {
+            ISirResponse response = search(params);
 
-        // TODO change listener configuration to injection mechanism
-        IOpenSearchListener jsonListener = new JsonListener(this.configurator);
-        this.listeners.put(jsonListener.getMimeType(), jsonListener);
-        IOpenSearchListener htmlListener = new HtmlListener(this.configurator);
-        this.listeners.put(htmlListener.getMimeType(), htmlListener);
-        IOpenSearchListener xmlListener = new XmlListener(this.configurator);
-        this.listeners.put(xmlListener.getMimeType(), xmlListener);
-        IOpenSearchListener rssListener = new RssListener(this.configurator);
-        this.listeners.put(rssListener.getMimeType(), rssListener);
-        IOpenSearchListener atomListener = new AtomListener(this.configurator);
-        this.listeners.put(atomListener.getMimeType(), atomListener);
-        IOpenSearchListener kmlListener = new KmlListener(this.configurator);
-        this.listeners.put(kmlListener.getMimeType(), kmlListener);
-    }
+            if (response instanceof SirSearchSensorResponse) {
+                SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
+                Collection<SirSearchResultElement> searchResult = sssr.getSearchResultElements();
 
-    private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(this.configurator.getFullOpenSearchPath());
-        sb.append("?");
-
-        Enumeration< ? > params = req.getParameterNames();
-        while (params.hasMoreElements()) {
-            String s = (String) params.nextElement();
-            sb.append(s);
-            sb.append("=");
-            String[] parameterValues = req.getParameterValues(s);
-            for (String sVal : parameterValues) {
-                sb.append(sVal);
-                sb.append(",");
+                return l.createResponse(searchResult, params);
             }
+            else if (response instanceof ExceptionResponse) {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(response).build();
+            }
+            else {
+                log.error("Unhandled response: {}", response);
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(response).build();
+            }
+        }
+        catch (Exception e) {
+            log.error("Unhandled exception in kml: ", e);
+            return Response.serverError().entity(e).build();
+        }
+    }
 
-            sb.replace(sb.length() - 1, sb.length(), "&");
+    // TODO get parameters using @QueryParam and write own param classes for convenience, see
+    // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
+    @GET
+    @Produces({MediaType.TEXT_HTML})
+    public Response html(@HeaderParam(HttpHeaders.ACCEPT)
+    String acceptHeader, @Context
+    UriInfo uriInfo) {
+        // FIXME Daniel: the open search functionality must be extracted to a testable classes AND TESTS
+
+        log.debug("****** (GET) Connected: {}", uriInfo.getRequestUri());
+        log.debug("Accept header: {}", acceptHeader);
+
+        MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
+
+        String responseFormat = detectResponseFormat(acceptHeader, params);
+
+        if ( !this.listeners.containsKey(responseFormat)) {
+            // could still be html
+            if (responseFormat.contains(MediaType.TEXT_HTML))
+                responseFormat = MediaType.TEXT_HTML;
+            else {
+                log.error("Could not create response as for format '{}', not supported.", responseFormat);
+                OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
+                                                                   OpenSearchConstants.FORMAT_PARAM + " or "
+                                                                           + HttpHeaders.ACCEPT,
+                                                                   "Unsupported output format '" + responseFormat
+                                                                           + "'.");
+                return Response.status(Status.BAD_REQUEST).entity(report).build();
+            }
+            // return Response.serverError().entity(report).build();
         }
 
-        sb.append(OpenSearchConstants.ACCEPT_PARAMETER);
-        sb.append("=");
-        sb.append(OpenSearchConstants.X_DEFAULT_MIME_TYPE);
-        log.debug("Redirecting to {}", sb.toString());
-        resp.sendRedirect(sb.toString());
+        log.warn("Redirecting manually with listeners!");
+        try {
+            ISirResponse response = search(params);
+
+            if (response instanceof SirSearchSensorResponse) {
+                SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
+                Collection<SirSearchResultElement> searchResult = sssr.getSearchResultElements();
+
+                OpenSearchListener l = this.listeners.get(responseFormat);
+                Response r = l.createResponse(searchResult, params);
+
+                return Response.ok(r.getEntity(), responseFormat).build();
+            }
+            else if (response instanceof ExceptionResponse) {
+                log.error("Search returned exception response: {}", response);
+                GenericEntity<ISirResponse> entity = new GenericEntity<>(response, ISirResponse.class);
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(entity).build();
+            }
+            else {
+                log.error("Unhandled response: {}", response);
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(response).build();
+            }
+        }
+        catch (Exception e) {
+            log.error("Unhandled exception in doGet: ", e);
+            return Response.serverError().entity(e).build();
+        }
     }
+
+    private String detectResponseFormat(String acceptHeader, MultivaluedMap<String, String> params) {
+        String formatParameter = params.getFirst(OpenSearchConstants.FORMAT_PARAM);
+        log.debug("URL format parameter for {} is {}", OpenSearchConstants.FORMAT_PARAM, formatParameter);
+
+        String responseFormat = null;
+        if (acceptHeader == null || acceptHeader.isEmpty())
+            responseFormat = OpenSearchConstants.X_DEFAULT_MIME_TYPE;
+        else
+            responseFormat = acceptHeader;
+
+        // allow manual override
+        if (formatParameter != null) {
+            log.debug("Header ({}) is overridden by format parameter ({}).", acceptHeader, formatParameter);
+            responseFormat = formatParameter;
+        }
+
+        return responseFormat;
+    }
+
+    private ISirResponse search(MultivaluedMap<String, String> params) {
+        SirSearchCriteria searchCriteria = createSearchCriteria(params);
+
+        SirSearchSensorRequest searchRequest = createSearchRequest(searchCriteria);
+
+        ISirResponse response = this.sensorSearcher.receiveRequest(searchRequest);
+        return response;
+    }
+
+    private SirSearchSensorRequest createSearchRequest(SirSearchCriteria searchCriteria) {
+        SirSearchSensorRequest request = new SirSearchSensorRequest();
+        request.setSimpleResponse(true);
+        request.setVersion(SirConstants.SERVICE_VERSION_0_3_1);
+        request.setSearchCriteria(searchCriteria);
+
+        log.trace("Request: {}", request);
+        return request;
+    }
+
+    private SirSearchCriteria createSearchCriteria(MultivaluedMap<String, String> params) {
+        String query = params.getFirst(OpenSearchConstants.QUERY_PARAM);
+        log.debug("Creating search for query '{}' with parameters: {}",
+                  query,
+                  Arrays.toString(params.entrySet().toArray()));
+
+        SirSearchCriteria searchCriteria = new SirSearchCriteria();
+
+        // handle missing query parameter, can be the case if just using geo extension...
+        if (params == null || params.isEmpty()) {
+            query = "";
+            log.debug("No search text given.");
+        }
+
+        /*
+         * Geo Extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2
+         */
+        SirBoundingBox boundingBox = null;
+        /*
+         * if (this.dismantler.requestContainsGeoParameters(req)) { boundingBox =
+         * this.dismantler.getBoundingBox(req);
+         * log.info("Geo extension used: bounding box {} from query {} (source: {})", new Object[]
+         * {boundingBox, req.getQueryString(), req.getRemoteAddr()}); } else
+         * log.info("Searching with query {} (source: {})", new Object[] {req.getQueryString(),
+         * req.getRemoteAddr()});
+         */
+        if (params.containsKey(OpenSearchConstants.BOX_PARAM)) {
+            String bbox = params.getFirst(OpenSearchConstants.BOX_PARAM);
+            String[] s = bbox.split(",");
+            boundingBox = new SirBoundingBox(Double.parseDouble(s[2]),
+                                             Double.parseDouble(s[1]),
+                                             Double.parseDouble(s[0]),
+                                             Double.parseDouble(s[3]));
+            log.debug("Geo extension used: {}", boundingBox);
+        }
+
+        String lat = null;
+        String lng = null;
+        String radius = null;
+        if (params.containsKey(OpenSearchConstants.LAT_PARAM) && params.containsKey(OpenSearchConstants.LON_PARAM)
+                && params.containsKey(OpenSearchConstants.RADIUS_PARAM)) {
+            lat = params.getFirst(OpenSearchConstants.LAT_PARAM);
+            lng = params.getFirst(OpenSearchConstants.LON_PARAM);
+            radius = params.getFirst(OpenSearchConstants.RADIUS_PARAM);
+        }
+
+        /*
+         * Time extension: http://www.opensearch.org/Specifications/OpenSearch/Extensions/Time/1.0/Draft_1
+         */
+        String start = null;
+        String end = null;
+        /*
+         * if (this.dismantler.requestContainsTime(req)) { Calendar[] startEnd =
+         * this.dismantler.getStartEnd(req); start = startEnd[0]; end = startEnd[1];
+         * log.debug("Time extension used: {} - {}", start, end); }
+         */
+        if (params.containsKey(OpenSearchConstants.TIME_START_PARAM)) {
+            // contains a temporal query
+            log.debug(params.getFirst(OpenSearchConstants.TIME_START_PARAM));
+            start = params.getFirst(OpenSearchConstants.TIME_START_PARAM);
+            end = params.getFirst(OpenSearchConstants.TIME_END_PARAM);
+            log.debug("Time extension used: {} - {}", start, end);
+        }
+
+        if ( !query.isEmpty()) {
+            ArrayList<String> searchTexts = new ArrayList<>();
+            searchTexts.add(query);
+            searchCriteria.setSearchText(searchTexts);
+        }
+
+        if (boundingBox != null)
+            searchCriteria.setBoundingBox(boundingBox);
+
+        if (start != null && end != null) {
+            searchCriteria.setDtend(end);
+            searchCriteria.setDtstart(start);
+        }
+        if (lat != null && lng != null && radius != null) {
+            searchCriteria.setLat(lat);
+            searchCriteria.setLng(lng);
+            searchCriteria.setRadius(radius);
+        }
+
+        log.debug("Search criteria: {}", searchCriteria);
+        return searchCriteria;
+    }
+
+    // private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws
+    // IOException {
+    // log.debug("Redirecting... {}", req);
+    //
+    // StringBuilder sb = new StringBuilder();
+    //
+    // sb.append(this.configurator.getFullOpenSearchPath());
+    // sb.append("?");
+    //
+    // Enumeration< ? > params = req.getParameterNames();
+    // while (params.hasMoreElements()) {
+    // String s = (String) params.nextElement();
+    // sb.append(s);
+    // sb.append("=");
+    // String[] parameterValues = req.getParameterValues(s);
+    // for (String sVal : parameterValues) {
+    // sb.append(sVal);
+    // sb.append(",");
+    // }
+    //
+    // sb.replace(sb.length() - 1, sb.length(), "&");
+    // }
+    //
+    // sb.append(OpenSearchConstants.FORMAT_PARAM);
+    // sb.append("=");
+    // sb.append(OpenSearchConstants.X_DEFAULT_MIME_TYPE);
+    // log.debug("Redirecting to {}", sb.toString());
+    // resp.sendRedirect(sb.toString());
+    // }
 
     @Override
     public String toString() {

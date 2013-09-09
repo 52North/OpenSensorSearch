@@ -20,6 +20,7 @@ import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 
 import com.google.inject.AbstractModule;
 
+// TODO move module to own package
 public class UtilModule extends AbstractModule {
 
     @Override

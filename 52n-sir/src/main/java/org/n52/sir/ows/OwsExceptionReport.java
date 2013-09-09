@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ows;
 
 import java.util.ArrayList;
@@ -33,8 +34,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Alexander C. Walkowski, Daniel Nüst (minor improvements)
  * 
- * @version 0.2
- * 
  */
 public class OwsExceptionReport extends Exception {
 
@@ -50,16 +49,13 @@ public class OwsExceptionReport extends Exception {
         DetailedExceptions, PlainExceptions
     }
 
-    /** logger */
     private static Logger log = LoggerFactory.getLogger(OwsExceptionReport.class.getName());
 
     private static final long serialVersionUID = 9069373009339881302L;
 
-    /** exception level */
     private ExceptionLevel excLevel = null;
 
-    /** Exception types */
-    private ArrayList<ExceptionType> excs = new ArrayList<ExceptionType>();
+    private ArrayList<ExceptionType> excs = new ArrayList<>();
 
     /**
      * standard constructor without parameters, sets the ExceptionLevel on PlainExceptions
@@ -83,17 +79,11 @@ public class OwsExceptionReport extends Exception {
         addCodedException(code, locator, message);
     }
 
-    /**
-     * �constructor with exceptionLevel as parameter
-     * 
-     * @param excLevelIn
-     */
     public OwsExceptionReport(ExceptionLevel excLevelIn) {
         this.excLevel = excLevelIn;
     }
 
     /**
-     * constructor with message and cause as parameters
      * 
      * @param message
      *        String containing the message of this exception
@@ -106,7 +96,6 @@ public class OwsExceptionReport extends Exception {
     }
 
     /**
-     * constructor with cause as parameter
      * 
      * @param cause
      *        Throwable cause of this exception

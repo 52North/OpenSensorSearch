@@ -1,0 +1,11 @@
+{
+  "sensorIdInSir" : "1",
+  "classifiers" : [ "myClass01" ],
+  "keywords" : [ "testkeyword01", "testkeyword02" ],
+  "identifiers" : [ "myId01" ],
+  "contacts" : [ "some@contact" ],
+  "inputs" : [ "input01", "anInput02" ],
+  "outputs" : [ "myOutput" ],
+  "beginDate" : 17,
+  "endDate" : 42
+}

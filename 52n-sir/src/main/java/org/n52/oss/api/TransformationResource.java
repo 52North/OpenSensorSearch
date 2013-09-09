@@ -1,5 +1,5 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * ?Copyright (C) 2012 52�North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 
 package org.n52.oss.api;
 
+import java.io.IOException;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,63 +35,54 @@ import org.n52.sir.xml.ITransformer;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
-import com.sun.jersey.multipart.FormDataParam;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-@Path("/api/v1/convert")
-@Api(value = "/v1/convert", description = "Conversion of SensorML document to different formats")
+@Path("/convert")
+@Api(value = "/convert", description = "Conversion of SensorML document to different formats")
 
 @RequestScoped
 public class TransformationResource {
 
-	private Gson gson;
-	private SirConfigurator config;
+    private Gson gson;
+    private SirConfigurator config;
 
-	@Inject
-	public TransformationResource(SirConfigurator config) {
-		this.gson = new Gson();
-		this.config = config;
-	}
+    @Inject
+    public TransformationResource(SirConfigurator config) {
+        this.gson = new Gson();
+        this.config = config;
+    }
 
-	private String toJsonString(String sensorML) throws XmlException {
-		SensorMLDocument document = SensorMLDocument.Factory.parse(sensorML);
-		return gson.toJson(document);
-	}
-	public Response toJson(String sensor) {
-		try {
-			String response = toJsonString(sensor);
-			return Response.ok(response).build();
-		} catch (XmlException e) {
-			return Response.ok("{error:Cannot parse sensorML}").build();
-		}
-	}
+    private String toJsonString(String sensorML) throws XmlException {
+        SensorMLDocument document = SensorMLDocument.Factory.parse(sensorML);
+        return this.gson.toJson(document);
+    }
 
+    public Response toJson(String sensor) {
+        try {
+            String response = toJsonString(sensor);
+            return Response.ok(response).build();
+        }
+        catch (XmlException e) {
+            return Response.ok("{error:Cannot parse sensorML}").build();
+        }
+    }
 
-	public Response toEbrim(String sensor) {
-		try {
-			ITransformer transformer = config.getInstance().getTransformerFactory()
-					.getSensorMLtoCatalogXMLTransformer();
-			return Response.ok(
-					transformer.transform(SensorMLDocument.Factory
-							.parse(sensor))).build();
-		} catch (XmlException e) {
-			return Response.ok("{error:Cannot parse sensorML}").build();
-		} catch (TransformerException e) {
-			e.printStackTrace();
+    public Response toEbrim(String sensor) {
+        try {
+            ITransformer transformer = this.config.getInstance().getTransformerFactory().getSensorMLtoCatalogXMLTransformer();
+            return Response.ok(transformer.transform(SensorMLDocument.Factory.parse(sensor))).build();
+        }
+        catch (XmlException | TransformerException | IOException e) {
+            return Response.ok("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" " + e.getMessage() + "\" }").build();
+        }
+    }
 
-			return Response.ok("{error:Cannot parse sensorML}").build();
-		}
-	}
-	@POST
-	@Path("/")
+    @POST
+    @Path("/")
 	@ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
-	public Response convertSensor(@FormParam("sensor")String sensor,@FormParam("output")String format){
-		if(format.equals("json")){
-			return toJson(sensor); 
-		}else{
-			return toEbrim(sensor);
-		}
-		
-	}
+	public Response convertSensor(@FormParam("sensor")String sensor,@FormParam("output")String format){        if (format.equals("json"))
+            return toJson(sensor);
+        return toEbrim(sensor);
+    }
 }

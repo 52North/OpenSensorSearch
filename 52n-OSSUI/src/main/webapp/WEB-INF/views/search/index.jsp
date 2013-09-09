@@ -54,26 +54,62 @@ max-width: 200px;
 </script>
 <script>
 function showPosition(position) {
-	var str = position.coords.latitude+","+position.coords.longitude;
-	$("#loc").val(str)
+	$("#lat").val(position.coords.latitude);
+	$("#lng").val(position.coords.longitude);
+	$("#radius").val("1000");
+	var str = "You're near:"+position.coords.latitude+","+position.coords.longitude
+	$("#location_info").html(str);
 }
 
 </script>
+<script>
+function validate(){
+	var q = document.forms["requestform"]["q"].value;
+	if(q == null || q =="" || q.toString().trim().length == 0){
+		alert("Please enter a valid query!");
+		return false;
+	}
+	return true;
+	
+}
+</script>
+<script>
+$(document).ready(function(){
+	$("#notlocation").click(function(){
+		$("#lat").attr("disabled",true);
+		$("#lng").attr("disabled",true);
+		$("#radius").attr("disabled",true);
+	});
+	$("#location").click(function(){
+		$("#lat").attr("disabled",false);
+		$("#lng").attr("disabled",false);
+		$("#radius").attr("disabled",false);
+	});
+});
 
-
+</script>
 <div class="container">
 	<div class="jumbotron">
 		<h3>Search OSS Sensors Database</h3>
 		<form name="requestform" method="get"
-			action="${service.path}/${service.endpoint.opensearch}">
+			action="/OpenSensorSearch/search" onsubmit="return validate()">
 			<input type="hidden" name="httpAccept" value="text/html" /> <span><input
 				name="q" type="text" class="search-input form-control" /> </span> 
-			<input type="text" name="location" readonly="readonly"
-				placeholder="location" id="loc" class="form-control">
+			<input name="lat" type="hidden"
+				placeholder="location" id="lat" class="form-control">
+			<input name="lng" type="hidden"
+				placeholder="location" id="lng" class="form-control">
+			<input name="radius" type="hidden"
+				placeholder="location" id="radius" class="form-control">
+			
 			<span><input
-				value="Search" type="submit" class="btn btn-primary btn-large" /> </span>
+				value="Search" type="submit" class="btn btn-primary btn-large" id="notlocation" />
+				<input
+				value="Search nearby my location" type="submit" class="btn btn-primary btn-large" id="location"/> 
+				</span>
 			<p>
 		</form>
+		<label id="location_info"></label>
 		<div class="alert-msg"></div>
 	</div>
 </div>

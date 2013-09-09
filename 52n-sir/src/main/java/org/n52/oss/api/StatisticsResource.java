@@ -28,8 +28,12 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/api/v1/statistics")
+@Api(value = "/api/v1/statistics", description = "Endpoint of all of the statistics related to sensors in OSS")
+
 @RequestScoped
 public class StatisticsResource {
         protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
@@ -42,18 +46,24 @@ public class StatisticsResource {
 
         @GET
         @Path("/sensors")
+        @ApiOperation(value = "Find the number of sensors stored in OSS")
+
         public Response getSensors() {
             //TODO :Daniel implement this to return the number of sensors
             return Response.ok("{sensors:0}").build();
         }
         @GET
         @Path("/phenomena")
+        @ApiOperation(value = "Find the number of phenomena stored in OSS")
+
         public Response getNumberOfPhenomena() {
             //TODO :Daniel implement this to return the number of phenomena
             return Response.ok("{phenomena:0}").build();
         }
         @GET
         @Path("/services")
+        @ApiOperation(value = "Find the number of services stored in OSS")
+
         public Response getNumberOfServices() {
             //TODO :Daniel implement this to return the number of services
             return Response.ok("{services:0}").build();

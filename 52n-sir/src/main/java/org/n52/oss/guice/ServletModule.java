@@ -32,7 +32,9 @@ import org.n52.sir.script.HarvestResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Guice;
 import com.google.inject.name.Names;
+import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
@@ -71,8 +73,11 @@ public class ServletModule extends JerseyServletModule {
         params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF"); 
 
         params.put("com.sun.jersey.config.property.WebPageContentRegex", "/.*\\.(jpg|ico|png|gif|html|id|txt|css|js)");
-        filter("/*").through(GuiceContainer.class,params);
-        
+        params.put("com.sun.jersey.config.property.packages","org.n52.oss.api;com.wordnik.swagger.jersey.listing");
+//        params.put("api.version","1.0.0");
+     //   filter("/doc/api/*").through(GuiceContainer.class,params);
+      //  filter("/api-docs/*").through(GuiceContainer.class,params);
+        filter("/*").through(GuiceContainer.class,params);    
         log.debug("configured {} with context {}", this, getServletContext());
     }
 

@@ -24,8 +24,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.n52.sir.SirConstants;
-import org.n52.sir.datastructure.SirProximtyComparator;
-import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensorIDInSir;
@@ -138,9 +136,9 @@ public class SearchSensorListener implements ISirRequestListener {
 
     public ISirResponse receiveRequest(AbstractSirRequest request, boolean fastEngineOnly) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
-        SirSearchCriteria crit = searchSensReq.getSearchCriteria();
-        String lat = crit.getLat();
-        String lng = crit.getLng();
+        // SirSearchCriteria crit = searchSensReq.getSearchCriteria();
+        // String lat = crit.getLat();
+        // String lng = crit.getLng();
 
         SirSearchSensorResponse response = new SirSearchSensorResponse();
         ArrayList<SirSearchResultElement> searchResElements = null;
@@ -151,11 +149,13 @@ public class SearchSensorListener implements ISirRequestListener {
             else
                 searchResElements = searchBySearchCriteria(searchSensReq, fastEngineOnly);
 
-            // TODO only use comparator if proximity search is requested
-            SirProximtyComparator comparator = new SirProximtyComparator(Double.parseDouble(lng),
-                                                                         Double.parseDouble(lat));
-            Collections.sort(searchResElements, comparator);
+            // FIXME moh-yakoub: why do you query by id manually here, there is one happening above!
+            // Object resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorIdInSir(),
+            // searchSensReq.isSimpleResponse());
+            // if (resultElement != null) {
+            // searchResElements.add(resultElement);
         }
+
         catch (OwsExceptionReport e) {
             return new ExceptionResponse(e);
         }

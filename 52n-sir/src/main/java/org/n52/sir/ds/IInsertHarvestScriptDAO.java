@@ -15,6 +15,8 @@
  */
 package org.n52.sir.ds;
 
+import java.io.File;
+
 
 public interface IInsertHarvestScriptDAO {
 	//returns the identifier for the sensor
@@ -22,5 +24,6 @@ public interface IInsertHarvestScriptDAO {
 	 //get the path for retrieval
 	 public String getScriptPath(String identifier);
 	 public String getScriptUserId(int scriptId);
+	 public String getScriptFileForID(int scriptId);
 	 
 }

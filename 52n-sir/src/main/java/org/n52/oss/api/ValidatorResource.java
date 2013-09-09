@@ -33,47 +33,56 @@ import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.impl.ValidatorFactoryImpl;
 
 import com.google.inject.Inject;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/api/check")
+@Api(
+        value = "/api/check", description = "validation of SensorML for future harvesting")
 public class ValidatorResource {
-	// private IProfileValidator validator;
+    // private IProfileValidator validator;
 
-	private IProfileValidator validator;
-	@Inject
-	public ValidatorResource(SirConfigurator config) throws OwsExceptionReport {
-		this.validator = config.getInstance().getValidatorFactory().getSensorMLProfile4DiscoveryValidator();
-	}
+    private IProfileValidator validator;
 
-	private boolean validateSensorMLDocument(String s) throws XmlException,
-			OwsExceptionReport {
-		boolean b = this.validator.validate(XmlObject.Factory.parse(s));
-		return b;
-	}
+    @Inject
+    public ValidatorResource(SirConfigurator config) throws OwsExceptionReport {
+        this.validator = config.getInstance().getValidatorFactory().getSensorMLProfile4DiscoveryValidator();
+    }
 
-	private String returnJSON(String s) throws OwsExceptionReport {
-		try {
-			boolean b = validateSensorMLDocument(s);
-			if (b)
-				return "{status:'valid'}";
+    private boolean validateSensorMLDocument(String s) throws XmlException, OwsExceptionReport
+    {
+        boolean b = this.validator.validate(XmlObject.Factory.parse(s));
+        return b;
+    }
 
-			String details = this.validator.getValidationFailuresAsString();
-			return "{status:'invalid',error:" + details + "}";
+    private String returnJSON(String s) throws OwsExceptionReport
+    {
+        try {
+            boolean b = validateSensorMLDocument(s);
+            if (b)
+                return "{status:'valid'}";
 
-		} catch (XmlException exception) {
-			return "{error:" + exception.toString() + "}";
-		}
-	}
+            String details = this.validator.getValidationFailuresAsString();
+            return "{status:'invalid',error:" + details + "}";
 
-	@POST
-	@Path("/sensorML")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response check(@FormParam("sensor") String sensor,
-			@FormParam("format") String format) throws OwsExceptionReport {
-		if (format.equals("json")) {
-			return Response.ok(returnJSON(sensor)).build();
-		} else {
-			return Response.ok().build();
-		}
-	}
+        } catch (XmlException exception) {
+            return "{error:" + exception.toString() + "}";
+        }
+    }
+
+    @POST
+    @Path("/sensorML")
+    @ApiOperation(
+            value = "Validates a given SensorML Document")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response check(@FormParam("sensor") String sensor,
+            @FormParam("format") String format) throws OwsExceptionReport
+    {
+        if (format.equals("json")) {
+            return Response.ok(returnJSON(sensor)).build();
+        } else {
+            return Response.ok().build();
+        }
+    }
 
 }

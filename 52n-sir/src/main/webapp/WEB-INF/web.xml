@@ -36,7 +36,7 @@
 		</init-param>
 		<init-param>
 			<param-name>swagger.api.basepath</param-name>
-			<param-value>http://localhost:8080/api</param-value>
+			<param-value>http://localhost:8080/OpenSensorSearch/api</param-value>
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>

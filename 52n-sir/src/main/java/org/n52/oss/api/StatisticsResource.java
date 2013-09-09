@@ -20,6 +20,9 @@ package org.n52.oss.api;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
@@ -32,41 +35,56 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/api/v1/statistics")
-@Api(value = "/api/v1/statistics", description = "Endpoint of all of the statistics related to sensors in OSS")
-
+@Api(
+        value = "/v1/statistics", description = "Endpoint of all of the statistics related to sensors in OSS")
 @RequestScoped
 public class StatisticsResource {
-        protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
-        private SirConfigurator config;
+    protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
 
-        @Inject
-        public StatisticsResource(SirConfigurator config){
-            this.config=config;
-        }
+    private SirConfigurator config;
 
-        @GET
-        @Path("/sensors")
-        @ApiOperation(value = "Find the number of sensors stored in OSS")
+    @Inject
+    public StatisticsResource(SirConfigurator config) {
+        this.config = config;
+    }
 
-        public Response getSensors() {
-            //TODO :Daniel implement this to return the number of sensors
-            return Response.ok("{sensors:0}").build();
-        }
-        @GET
-        @Path("/phenomena")
-        @ApiOperation(value = "Find the number of phenomena stored in OSS")
+    @GET
+    @Path("/sensors")
+    @ApiOperation(
+            value = "Find the number of sensors stored in OSS")
 
-        public Response getNumberOfPhenomena() {
-            //TODO :Daniel implement this to return the number of phenomena
-            return Response.ok("{phenomena:0}").build();
-        }
-        @GET
-        @Path("/services")
-        @ApiOperation(value = "Find the number of services stored in OSS")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSensors()
+    {
+        // TODO :Daniel implement this to return the number of sensors
+        String result = "{sensors:0}";
+        return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
+    }
 
-        public Response getNumberOfServices() {
-            //TODO :Daniel implement this to return the number of services
-            return Response.ok("{services:0}").build();
-        }
-       
+    @GET
+    @Path("/phenomena")
+    @ApiOperation(
+            value = "Find the number of phenomena stored in OSS")
+
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumberOfPhenomena()
+    {
+        // TODO :Daniel implement this to return the number of phenomena
+        String result = "{phenomena:0}";
+        return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
+    }
+
+    @GET
+    @Path("/services")
+    @ApiOperation(
+            value = "Find the number of services stored in OSS")
+
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumberOfServices()
+    {
+        // TODO :Daniel implement this to return the number of services
+        String result = "{services:0}";
+        return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
+    }
+
 }

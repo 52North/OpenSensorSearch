@@ -36,9 +36,9 @@ import com.google.inject.Inject;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-@Path("/api/check")
+@Path("/api/v1/check")
 @Api(
-        value = "/api/check", description = "validation of SensorML for future harvesting")
+        value = "/v1/check", description = "validation of SensorML for future harvesting")
 public class ValidatorResource {
     // private IProfileValidator validator;
 

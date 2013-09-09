@@ -54,22 +54,46 @@ max-width: 200px;
 </script>
 <script>
 function showPosition(position) {
-	var str = position.coords.latitude+","+position.coords.longitude;
-	$("#loc").val(str)
+	$("#lat").val(position.coords.latitude);
+	$("#lng").val(position.coords.longitude);
+	$("#radius").val("1000");
+	
 }
 
 </script>
-
+<script>
+function validate(){
+	var x = document.forms["requestform"]["lat"].value;
+	var q = document.forms["requestform"]["q"].value;
+	if(q == null || q =="" || q.toString().trim().length == 0){
+		alert("Please enter a valid query!");
+		return false;
+	
+	}
+	if (x == null || x=="") {
+		$("#lat").remove();
+		$("#lng").remove();
+		$("#radius").remove();
+	}
+	return true;
+	
+}
+</script>
 
 <div class="container">
 	<div class="jumbotron">
 		<h3>Search OSS Sensors Database</h3>
 		<form name="requestform" method="get"
-			action="${service.path}/${service.endpoint.opensearch}">
+			action="/OpenSensorSearch/search" onsubmit="return validate()">
 			<input type="hidden" name="httpAccept" value="text/html" /> <span><input
 				name="q" type="text" class="search-input form-control" /> </span> 
-			<input type="text" name="location" readonly="readonly"
-				placeholder="location" id="loc" class="form-control">
+			<input name="lat" type="hidden"
+				placeholder="location" id="lat" class="form-control">
+			<input name="lng" type="hidden"
+				placeholder="location" id="lng" class="form-control">
+			<input name="radius" type="hidden"
+				placeholder="location" id="radius" class="form-control">
+			
 			<span><input
 				value="Search" type="submit" class="btn btn-primary btn-large" /> </span>
 			<p>

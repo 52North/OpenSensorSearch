@@ -69,6 +69,9 @@ body {
 							a Remote Server</a></li>
 					<li><a href="${context}/OSSUI/script/index">Harvest a
 							javascript script</a></li>
+					<li><a href="http://moh-yakoub.github.io/OpenSensorSearch/">Developers
+							Documentation</a></li>
+
 					<li><a href="#contact">Contact</a></li>
 
 				</ul>
@@ -76,17 +79,18 @@ body {
 			<!--/.nav-collapse -->
 		</div>
 	</div>
-	
+
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span3">
 				<div class="well sidebar-nav">
 					<ul class="nav nav-list">
 						<li class="nav-header">Upload</li>
-						<li id="upload-pin"><a href="${context}/OSSUI/script/upload">Upload a
-								Javascript file</a></li>
+						<li id="upload-pin"><a href="${context}/OSSUI/script/upload">Upload
+								a Javascript file</a></li>
 						<li class="nav-header">Harvest</li>
-						<li id="schedule-pin"><a href="${context}/OSSUI/script/schedule">Schedule a harvest</a></li>
+						<li id="schedule-pin"><a
+							href="${context}/OSSUI/script/schedule">Schedule a harvest</a></li>
 					</ul>
 				</div>
 				<!--/.well -->

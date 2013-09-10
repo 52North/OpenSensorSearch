@@ -69,6 +69,9 @@ body {
 							a Remote Server</a></li>
 					<li><a href="${context}/OSSUI/script/index">Harvest a
 							javascript script</a></li>
+					<li><a href="http://moh-yakoub.github.io/OpenSensorSearch/">Developers
+							Documentation</a></li>
+
 					<li><a href="#contact">Contact</a></li>
 
 				</ul>
@@ -76,9 +79,9 @@ body {
 			<!--/.nav-collapse -->
 		</div>
 	</div>
-	
+
 	<div class="container-fluid">
 		<div class="row-fluid">
-		
+
 
 			<!-- /container -->

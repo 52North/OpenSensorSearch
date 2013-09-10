@@ -1,10 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
-	<ShortName>OpenSensorSearch</ShortName>
-	<Description>OpenSensorSearch</Description>
+<!--
+
+    ﻿Copyright (C) 2012
+    by 52 North Initiative for Geospatial Open Source Software GmbH
+
+    Contact: Andreas Wytzisk
+    52 North Initiative for Geospatial Open Source Software GmbH
+    Martin-Luther-King-Weg 24
+    48155 Muenster, Germany
+    info@52north.org
+
+    This program is free software; you can redistribute and/or modify it under
+    the terms of the GNU General Public License version 2 as published by the
+    Free Software Foundation.
+
+    This program is distributed WITHOUT ANY WARRANTY; even without the implied
+    WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along with
+    this program (see gnu-gpl v2.txt). If not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
+    visit the Free Software Foundation web page, http://www.fsf.org.
+
+-->
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+	xmlns:moz="http://www.mozilla.org/2006/browser/search/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/">
+	<ShortName>Open Sensor Search</ShortName>
+	<LongName>Sensor and observed property search powered by 52N SIR
+	</LongName>
+	<Description>Search and discover online sensors and get information to
+		retrieve live data using OGC Sensor Instance Registry search
+		capabilities.
+	</Description>
+	<Contact>d.nuest@52north.org</Contact>
+	<Developer>52°North Initiative for Geospatial Open Source Software GmbH
+	</Developer>
+	<Attribution>Search data copyright belongs to the respective service
+		providers.
+	</Attribution>
+	<SyndicationRight>open</SyndicationRight>
+	<Tags>sensor web search discovery SWE OGC 52North 52N broker phenomena
+		observed properties
+	</Tags>
 	<InputEncoding>UTF-8</InputEncoding>
-	<!-- <Image width="16" height="16">data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAABGdBTUEAAK%2FINwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHWSURBVHjaYvz%2F%2Fz8DJQAggJiQOe%2Ffv2fv7Oz8rays%2FN%2BVkfG%2FiYnJfyD%2F1%2BrVq7ffu3dPFpsBAAHEAHIBCJ85c8bN2Nj4vwsDw%2F8zQLwKiO8CcRoQu0DxqlWrdsHUwzBAAIGJmTNnPgYa9j8UqhFElwPxf2MIDeIrKSn9FwSJoRkAEEAM0DD4DzMAyPi%2FG%2BQKY4hh5WAXGf8PDQ0FGwJ22d27CjADAAIIrLmjo%2BMXA9R2kAHvGBA2wwx6B8W7od6CeQcggKCmCEL8bgwxYCbUIGTDVkHDBia%2BCuotgACCueD3TDQN75D4xmAvCoK9ARMHBzAw0AECiBHkAlC0Mdy7x9ABNA3obAZXIAa6iKEcGlMVQHwWyjYuL2d4v2cPg8vZswx7gHyAAAK7AOif7SAbOqCmn4Ha3AHFsIDtgPq%2FvLz8P4MSkJ2W9h8ggBjevXvHDo4FQUQg%2FkdypqCg4H8lUIACnQ%2FSOBMYI8bAsAJFPcj1AAEEjwVQqLpAbXmH5BJjqI0gi9DTAAgDBBCcAVLkgmQ7yKCZxpCQxqUZhAECCJ4XgMl493ug21ZD%2BaDAXH0WLM4A9MZPXJkJIIAwTAR5pQMalaCABQUULttBGCCAGCnNzgABBgAMJ5THwGvJLAAAAABJRU5ErkJggg%3D%3D</Image> -->
+	<OutputEncoding>UTF-8</OutputEncoding>
+	<AdultContent>false</AdultContent>
+	<Image width="16" height="16" type="image/x-icon">https://52north.org/templates/52n/favicon.ico
+	</Image>
+
+	<Query role="example" searchTerms="weather" />
+	<Query role="example" searchTerms="temperature" />
+	<Query role="example" searchTerms="IOOS" />
+	<Query role="example" searchTerms="Muenster" />
+	
+	<!--  change this url -->
 	<Url type="text/html" method="GET"
-		template="http://localhost:8080/OSSUI:requestform?q={searchTerms}" />
-	<SearchForm>http://localhost:8080/OSSUI:requestform</SearchForm>
-</SearchPlugin>
+		template="http://localhost:8080/OpenSensorSearch/search">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
+		<Param name="httpAccept" value="text/html" />
+	</Url>
+	<Url type="application/xml" method="GET"
+		template="http://localhost:8080/OpenSensorSearch/search">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
+		<Param name="httpAccept" value="application/xml" />
+	</Url>
+	<Url type="application/json" method="GET"
+		template="http://localhost:8080/OpenSensorSearch/search">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
+		<Param name="httpAccept" value="application/json" />
+	</Url>
+	<Url type="application/vnd.google-earth.kml+xml" method="GET"
+		template="http://localhost:8080/OpenSensorSearch/search">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
+		<Param name="httpAccept" value="application/vnd.google-earth.kml+xml" />
+	</Url>
+	<Url type="application/rss+xml" method="GET"
+		template="http://localhost:8080/OpenSensorSearch/search">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
+		<Param name="httpAccept" value="application/rss+xml" />
+	</Url>
+	<Url type="application/atom+xml" method="GET"
+		template="http://localhost:8080/OpenSensorSearch/search">
+		<Param name="q" value="{searchTerms}" />
+		<Param name="l" value="{geo:name?}" />
+		<Param name="lat" value="{geo:lat?}" />
+		<Param name="lon" value="{geo:lon?}" />
+		<Param name="radius" value="{geo:radius?}" />
+		<Param name="httpAccept" value="application/atom+xml" />
+	</Url>
+
+	<Url type="application/opensearchdescription+xml" rel="self"
+		template="http://localhost:8080/OSSUI/resources/searchPlugin.xml" />
+
+	<moz:SearchForm>http://localhost:8080/OpenSensorSearch/</moz:SearchForm>
+</OpenSearchDescription>

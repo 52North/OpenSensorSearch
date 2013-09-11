@@ -71,9 +71,12 @@ body {
 							javascript script</a></li>
 					<li><a href="http://moh-yakoub.github.io/OpenSensorSearch/">Developers
 							Documentation</a></li>
-							
-					<li><a onclick="window.external.AddSearchProvider('http://localhost:8080/OSSUI/resources/searchPlugin.xml');">Add as search plugin</a>
-							</li>
+
+					<li><a
+						onclick="window.external.AddSearchProvider('http://localhost:8080/OSSUI/resources/searchPlugin.xml');">Add
+							as search plugin</a></li>
+					<li><a href="http://localhost:8080/OSSUI/api/">API
+							Documentation</a></li>
 
 
 					<li><a href="#contact">Contact</a></li>

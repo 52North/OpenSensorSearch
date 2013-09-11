@@ -71,6 +71,8 @@ body {
 							javascript script</a></li>
 					<li><a href="http://moh-yakoub.github.io/OpenSensorSearch/">Developers
 							Documentation</a></li>
+					<li><a href="http://localhost:8080/OSSUI/api/">API
+							Documentation</a></li>
 
 					<li><a href="#contact">Contact</a></li>
 

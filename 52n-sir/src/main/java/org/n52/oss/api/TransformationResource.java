@@ -36,8 +36,8 @@ import com.google.inject.servlet.RequestScoped;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-@Path("/convert")
-@Api(value = "/convert", description = "Conversion of SensorML document to different formats")
+@Path("/api/v1/convert")
+@Api(value = "/api/v1/convert", description = "Conversion of SensorML document to different formats")
 
 @RequestScoped
 public class TransformationResource {

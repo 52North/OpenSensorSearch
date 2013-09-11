@@ -39,7 +39,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/api/check")
 @Api(
-        value = "/api/check", description = "validation of SensorML for future harvesting")
+        value = "/check", description = "validation of SensorML for future harvesting")
 public class ValidatorResource {
 	// private IProfileValidator validator;
 

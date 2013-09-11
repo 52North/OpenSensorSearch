@@ -17,6 +17,7 @@
 	<mvc:resources mapping="/scripts/**" location="/WEB-INF/views/js/"></mvc:resources>
 	<mvc:resources mapping="/lib/**" location="/WEB-INF/views/lib/"></mvc:resources>
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/views/resources/"></mvc:resources>
+	<mvc:resources mapping="/images/**" location="/WEB-INF/views/images/"></mvc:resources>
 	
 	<mvc:resources mapping="/tempelates/**" location="/WEB-INF/views/tempelates/"></mvc:resources>
 

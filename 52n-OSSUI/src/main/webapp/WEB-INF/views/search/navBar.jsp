@@ -72,7 +72,7 @@ max-width: 200px;
 							a Remote Server</a></li>
 					<li><a href="${context}/OSSUI/script/index">Harvest a
 							javascript script</a></li>
-					<li><a href="http://moh-yakoub.github.io/OpenSensorSearch/">Developers
+					<li><a href="${context}/OSSUI/api/developer">Developers
 							Documentation</a></li>
 
 					<li><a

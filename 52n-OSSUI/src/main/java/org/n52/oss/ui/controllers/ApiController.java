@@ -10,4 +10,8 @@ public class ApiController {
     public String index(){
         return "api/index";
     }
+    @RequestMapping("/developer")
+    public String developers(){
+        return "api/developers";
+    }
 }

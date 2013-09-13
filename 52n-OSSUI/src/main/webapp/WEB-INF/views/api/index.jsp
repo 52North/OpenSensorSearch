@@ -47,7 +47,7 @@
 <body>
 <div id='header'>
   <div class="swagger-ui-wrap">
-    <a id="logo" href="http://swagger.wordnik.com">swagger</a>
+    <a id="logo" href="#">OpenSensorSearch API Documentation</a>
 
     <form id='api_selector'>
       <div class='input icon-btn'>

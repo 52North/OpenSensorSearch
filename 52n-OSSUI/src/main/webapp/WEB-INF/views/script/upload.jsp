@@ -62,7 +62,7 @@ var licenses = ['optionsRadios1','optionsRadios2','optionsRadios3'];
 			onsubmit="return validateForm()">
 			<label for="file">File</label>
 			<p>
-				<input type="file" name="file" class="btn span6" size="45" />
+				<input type="file" name="file" class="btn span6"/>
 			</p>
 			<p>
 				<input type="submit" value="Upload It"

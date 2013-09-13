@@ -81,19 +81,18 @@ body {
 			<!--/.nav-collapse -->
 		</div>
 	</div>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span3">
-				<div class="well sidebar-nav">
-					<ul class="nav nav-list">
-						<li class="nav-header">Upload</li>
-						<li id="upload-pin"><a href="${context}/OSSUI/remote/upload">Upload
-								a remote server</a></li>
-						<li class="nav-header">Harvest</li>
-						<li id="schedule-pin"><a
-							href="${context}/OSSUI/remote/schedule">Schedule a harvest</a></li>
+	<div class="row-fluid">
+		<div class="span3">
+			<div class="well sidebar-nav">
+				<ul class="nav nav-list">
+					<li class="nav-header">Upload</li>
+					<li id="upload-pin"><a href="${context}/OSSUI/remote/upload">Upload
+							a remote server</a></li>
+					<li class="nav-header">Harvest</li>
+					<li id="schedule-pin"><a
+						href="${context}/OSSUI/remote/schedule">Schedule a harvest</a></li>
 
-					</ul>
-				</div>
-				<!--/.well -->
+				</ul>
 			</div>
+			<!--/.well -->
+		</div>

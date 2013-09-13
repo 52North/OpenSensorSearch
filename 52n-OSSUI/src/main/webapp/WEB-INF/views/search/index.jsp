@@ -32,11 +32,6 @@
 <%@ include file="navBar.jsp"%>
 <!-- /container -->
 <!--/span-->
-<style>
-.form-control{
-max-width: 200px;
-}
-</style>
 <script>
 	$(document)
 			.ready(

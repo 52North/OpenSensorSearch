@@ -30,6 +30,9 @@ body {
 .sidebar-nav {
 	padding: 9px 0;
 }
+
+.form-control{
+max-width: 200px;
 </style>
 <link href="../${context}/styles/bootstrap-responsive.css"
 	rel="stylesheet">
@@ -87,8 +90,6 @@ body {
 		</div>
 	</div>
 
-	<div class="container-fluid">
-		<div class="row-fluid">
 
 
 			<!-- /container -->

@@ -91,11 +91,11 @@ $(document).ready(function(){
 			<input type="hidden" name="httpAccept" value="text/html" /> <span><input
 				name="q" type="text" class="search-input form-control" /> </span> 
 			<input name="lat" type="hidden"
-				placeholder="location" id="lat" class="form-control">
+				 id="lat" class="form-control">
 			<input name="lng" type="hidden"
-				placeholder="location" id="lng" class="form-control">
+				 id="lng" class="form-control">
 			<input name="radius" type="hidden"
-				placeholder="location" id="radius" class="form-control">
+				 id="radius" class="form-control">
 			
 			<span><input
 				value="Search" type="submit" class="btn btn-primary btn-large" id="notlocation" />

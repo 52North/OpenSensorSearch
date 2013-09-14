@@ -59,7 +59,7 @@ CREATE TABLE userAccount
 (
    userId bigserial NOT NULL, 
    userName text NOT NULL, 
-   passwordSHA1 text,
+   passwordsha1 text,
    PRIMARY KEY(userId),
    CONSTRAINT uc_username UNIQUE (userName)
 );

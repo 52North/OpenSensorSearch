@@ -147,7 +147,9 @@ CREATE TABLE userAccount
 (
    userId bigserial NOT NULL, 
    userName text NOT NULL, 
-   passwordSHA1 text,
+   passwordsha1 text,
+   isAdmin boolean,
+   isValid boolean,
    PRIMARY KEY(userId),
    CONSTRAINT uc_username UNIQUE (userName)
 );

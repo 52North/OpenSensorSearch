@@ -120,6 +120,59 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
         return builder.toString();
     }
 
+    public boolean isAdmin(String username)
+    {
+        Connection con = null;
+        Statement stmt = null;
+
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            String query = isAdminQuery(username);
+            log.debug(query);
+            System.out.println(query);
+            ResultSet rs = stmt.executeQuery(query);
+            boolean isadmin;
+            if (rs.next()) {
+                isadmin = rs.getBoolean(PGDAOConstants.USER_IS_ADMIN);
+            } else
+                return false;
+            return isadmin;
+
+        } catch (Exception e) {
+            log.error("Cannot find admin status", e);
+            return false;
+        }
+    }
+    
+    public boolean isValid(String username){
+        Connection con = null;
+        Statement stmt = null;
+
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            String query = isValidQuery(username);
+            log.debug(query);
+            System.out.println(query);
+            ResultSet rs = stmt.executeQuery(query);
+            boolean isadmin  ;
+            if (rs.next()) {
+                isadmin = rs.getBoolean(PGDAOConstants.USER_IS_VALID);
+            } else
+                return false;
+            return isadmin;
+     
+        } catch (Exception e) {
+            log.error("Cannot find admin status", e);
+            return false;
+        }
+
+
+        
+    }
+
+
     @Override
     public String authenticateUser(String name,
             String password)
@@ -262,6 +315,36 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
             log.error("Cannot getUserIf", e);
             return null;
         }
+    }
+
+    private String isAdminQuery(String username)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SELECT ");
+        builder.append(PGDAOConstants.USER_IS_ADMIN);
+        builder.append(" FROM ");
+        builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
+        builder.append(" WHERE  ");
+        builder.append(PGDAOConstants.USER_NAME);
+        builder.append(" like '");
+        builder.append(username);
+        builder.append("'");
+        return builder.toString();
+    }
+
+    private String isValidQuery(String username)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SELECT ");
+        builder.append(PGDAOConstants.USER_IS_VALID);
+        builder.append(" FROM ");
+        builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
+        builder.append(" WHERE  ");
+        builder.append(PGDAOConstants.USER_NAME);
+        builder.append(" like '");
+        builder.append(username);
+        builder.append("'");
+        return builder.toString();
     }
 
 }

@@ -50,12 +50,14 @@ public class UserAccessResource {
         try {
             IUserAccountDAO dao = this.config.getInstance().getFactory().userAccountDAO();
             String token = dao.authenticateUser(user, password);
+            boolean isValid = dao.isAdmin(user);
+            boolean isAdmin  = dao.isValid(user);
             log.debug("Token for user {} is {}", user, token);
 
             if (token == null)
                 return Response.ok("{status:fail}").build();
 
-            return Response.ok("{auth_token:'" + token + "'}").build();
+            return Response.ok("{auth_token:'" + token + "',isValid:'"+isValid+"',isAdmin:'"+isAdmin+"'}").build();
         }
         catch (Exception e) {
             return Response.status(500).entity(e).build();

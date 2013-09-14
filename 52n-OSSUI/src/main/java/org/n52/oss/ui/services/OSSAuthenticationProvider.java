@@ -55,11 +55,10 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 
 		AuthToken token = authenticateOSS(username, password);
 		
-		if(!token.isValid)
-		    throw new UsernameNotFoundException("Username is not validated please contact site administration!");
-		
-		
 		if (token.auth_token != null) {
+		    if(!token.isValid)
+	                    throw new UsernameNotFoundException("Username is not validated please contact site administration!");
+	                
 			final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
 			grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 			if(token.isAdmin)

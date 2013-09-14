@@ -53,14 +53,21 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 		String username = arg0.getName();
 		String password = arg0.getCredentials().toString();
 
-		String token = authenticateOSS(username, password);
-		if (token != null) {
+		AuthToken token = authenticateOSS(username, password);
+		
+		if(!token.isValid)
+		    throw new UsernameNotFoundException("Username is not validated please contact site administration!");
+		
+		
+		if (token.auth_token != null) {
 			final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
 			grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-			final UserDetails principal = new User(username, token,
+			if(token.isAdmin)
+			    grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			final UserDetails principal = new User(username, token.auth_token,
 					grantedAuths);
 			final Authentication auth = new UsernamePasswordAuthenticationToken(
-					principal, token, grantedAuths);
+					principal, token.auth_token, grantedAuths);
 			return auth;
 
 		} else
@@ -75,9 +82,11 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 
 	public class AuthToken {
 		String auth_token;
+		boolean isValid;
+		boolean isAdmin;
 	}
 
-	private String authenticateOSS(String username, String password) {
+	private AuthToken authenticateOSS(String username, String password) {
 		try {
 			HttpPost post = new HttpPost(
 					"http://localhost:8080/OpenSensorSearch/api/user/login");
@@ -97,7 +106,7 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 
 			AuthToken token = new Gson().fromJson(result.toString(),
 					AuthToken.class);
-			return token.auth_token;
+			return token;
 		} catch (Exception e) {
 			return null;
 		}

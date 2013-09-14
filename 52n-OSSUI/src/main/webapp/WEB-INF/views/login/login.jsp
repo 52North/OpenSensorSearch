@@ -102,7 +102,7 @@ body {
 	<c:if test="${LoginFailed}">
 		<div class="alert alert-error">
 			<a class="close" data-dismiss="alert">×</a> <strong>Error!</strong>
-			Wrong user/password combination!
+			${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
 		</div>
 	</c:if>
 	<div class="container">

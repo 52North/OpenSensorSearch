@@ -144,6 +144,48 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
             return false;
         }
     }
+    public String userNameForId(String id)
+    {
+        Connection con = null;
+        Statement stmt = null;
+
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            String query = userNameByIdQuery(id);
+            log.debug(query);
+            System.out.println(query);
+            ResultSet rs = stmt.executeQuery(query);
+            String name=null;
+            if (rs.next()) {
+                name = rs.getString(PGDAOConstants.USER_NAME);
+            } else
+                return null;
+            return name;
+        } catch (Exception e) {
+            log.error("Cannot find user name", e);
+            return null;
+        }
+    }
+
+    public boolean validate(String id)
+    {
+        Connection con = null;
+        Statement stmt = null;
+
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            String query = validateQuery(id);
+            log.debug(query);
+            System.out.println(query);
+            return stmt.execute(query);
+        } catch (Exception e) {
+            log.error("Cannot find validate user status", e);
+            return false;
+        }
+    }
+
     
     public boolean isValid(String username){
         Connection con = null;
@@ -344,6 +386,31 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
         builder.append(" like '");
         builder.append(username);
         builder.append("'");
+        return builder.toString();
+    }
+    
+    private String validateQuery(String id){
+        StringBuilder builder = new StringBuilder();
+        builder.append("UPDATE ");
+        builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
+        builder.append(" SET ");
+        builder.append(PGDAOConstants.USER_IS_VALID);
+        builder.append(" = 'true'  WHERE ");
+        builder.append(PGDAOConstants.USER_ID);
+        builder.append(" = ");
+        builder.append(id);
+        return builder.toString();
+    }
+    private String userNameByIdQuery(String id){
+        StringBuilder builder = new StringBuilder();
+        builder.append("SELECT ");
+        builder.append(PGDAOConstants.USER_NAME);
+        builder.append(" FROM ");
+        builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
+        builder.append("  WHERE ");
+        builder.append(PGDAOConstants.USER_ID);
+        builder.append(" = ");
+        builder.append(id);
         return builder.toString();
     }
 

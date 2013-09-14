@@ -20,9 +20,11 @@ public interface IUserAccountDAO {
 	
 	//return null if the authentication fail , authToken otherwise
 	public String authenticateUser(String name,String password);
+	public String userNameForId(String id);
 	public String getUserIDForToken(String token);
 	public boolean isAdmin(String user);
 	public boolean isValid(String user);
-
+	public boolean validate(String id);
+	
 
 }

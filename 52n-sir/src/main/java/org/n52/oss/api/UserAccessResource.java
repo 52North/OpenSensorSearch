@@ -63,5 +63,26 @@ public class UserAccessResource {
             return Response.status(500).entity(e).build();
         }
     }
+    @POST
+    @Path("/user/validate")
+    public Response validate(@FormParam("id")
+    String user, @FormParam("auth_token")
+    String auth_token) {
+        log.debug("Authentication requested for user {}", user);
 
+        try {
+            IUserAccountDAO dao = this.config.getInstance().getFactory().userAccountDAO();
+            String admin_id = dao.getUserIDForToken(auth_token);
+            String admin_user_name = dao.userNameForId(admin_id);
+            boolean isAdmin = dao.isAdmin(admin_user_name);
+            if(!isAdmin)return Response.status(403).entity("{status:Fail insufficent permission}").build();
+            boolean result =  dao.validate(user);
+            
+            return Response.ok("{status:'"+result+"'}").build();
+        }
+        catch (Exception e) {
+            return Response.status(500).entity(e).build();
+        }
+    }
+    
 }

@@ -18,9 +18,10 @@
 	<mvc:resources mapping="/lib/**" location="/WEB-INF/views/lib/"></mvc:resources>
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/views/resources/"></mvc:resources>
 	<mvc:resources mapping="/images/**" location="/WEB-INF/views/images/"></mvc:resources>
-	
-	<mvc:resources mapping="/tempelates/**" location="/WEB-INF/views/tempelates/"></mvc:resources>
 
+	<mvc:resources mapping="/tempelates/**" location="/WEB-INF/views/tempelates/"></mvc:resources>
+	<mvc:annotation-driven
+		ignoreDefaultModelOnRedirect="true" />
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
@@ -32,5 +33,5 @@
 		<!-- one of the properties available; the maximum file size in bytes -->
 		<property name="maxUploadSize" value="100000" />
 	</bean>
-	
+
 </beans>

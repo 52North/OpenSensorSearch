@@ -120,13 +120,13 @@ body {
 <body>
 	<c:if test="${RegisterFailed}">
 		<div class="alert alert-error">
-			<a class="close" data-dismiss="alert">×</a> <strong>Error!</strong>
-			${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+			<a class="close" data-dismiss="alert"></a> <strong>Error!</strong>
+			${ErrorMsg}
 		</div>
 	</c:if>
 	<div class="container">
 		<form method="post" class="form-signin" name="registerForm"
-			action="${context}/OSSUI/user/register"
+			action="${context}/OSSUI/register/user"
 			onsubmit="return validateForm()">
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<input type="text" class="form-control" placeholder="Email address"

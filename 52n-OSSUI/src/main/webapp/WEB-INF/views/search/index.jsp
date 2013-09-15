@@ -15,6 +15,12 @@
     limitations under the License.
 
 --%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,6 +89,13 @@ $(document).ready(function(){
 });
 
 </script>
+
+	<c:if test="${RegisterSucceded}">
+		<div class="alert alert-error">
+			<a class="close" data-dismiss="alert"></a> <strong>Error!</strong>
+			Your account was created , contact Site administrator for activation
+		</div>
+	</c:if>
 <div class="container">
 	<div class="jumbotron">
 		<h3>Search OSS Sensors Database</h3>

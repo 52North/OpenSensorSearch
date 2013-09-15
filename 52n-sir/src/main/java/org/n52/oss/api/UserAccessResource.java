@@ -74,14 +74,11 @@ public class UserAccessResource {
         try {
             IUserAccountDAO dao = this.config.getInstance().getFactory().userAccountDAO();
             String passwordHash = new SHA1HashGenerator().generate(password);
-            boolean isValid = dao.isAdmin(user);
-            boolean isAdmin  = dao.isValid(user);
-            log.debug("Token for user {} is {}", user, token);
-
-            if (token == null)
-                return Response.ok("{status:fail}").build();
-
-            return Response.ok("{auth_token:'" + token + "',isValid:'"+isValid+"',isAdmin:'"+isAdmin+"'}").build();
+            boolean userExists = dao.nameExists(user);
+            if(userExists)return Response.ok("{success:'false'}").build();
+            
+            boolean success  = dao.register(user, passwordHash);
+            return Response.ok("{success:'"+success+"'}").build();
         }
         catch (Exception e) {
             return Response.status(500).entity(e).build();

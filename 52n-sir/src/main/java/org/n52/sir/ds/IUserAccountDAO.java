@@ -25,6 +25,8 @@ public interface IUserAccountDAO {
 	public boolean isAdmin(String user);
 	public boolean isValid(String user);
 	public boolean validate(String id);
+	public boolean nameExists(String name);
+	public boolean register(String name,String passwordHash);
 	
 
 }

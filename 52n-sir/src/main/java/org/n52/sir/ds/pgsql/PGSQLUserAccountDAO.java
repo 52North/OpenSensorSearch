@@ -144,6 +144,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
             return false;
         }
     }
+
     public String userNameForId(String id)
     {
         Connection con = null;
@@ -156,7 +157,7 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
             log.debug(query);
             System.out.println(query);
             ResultSet rs = stmt.executeQuery(query);
-            String name=null;
+            String name = null;
             if (rs.next()) {
                 name = rs.getString(PGDAOConstants.USER_NAME);
             } else
@@ -186,8 +187,8 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
         }
     }
 
-    
-    public boolean isValid(String username){
+    public boolean isValid(String username)
+    {
         Connection con = null;
         Statement stmt = null;
 
@@ -198,22 +199,19 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
             log.debug(query);
             System.out.println(query);
             ResultSet rs = stmt.executeQuery(query);
-            boolean isadmin  ;
+            boolean isadmin;
             if (rs.next()) {
                 isadmin = rs.getBoolean(PGDAOConstants.USER_IS_VALID);
             } else
                 return false;
             return isadmin;
-     
+
         } catch (Exception e) {
             log.error("Cannot find admin status", e);
             return false;
         }
 
-
-        
     }
-
 
     @Override
     public String authenticateUser(String name,
@@ -388,8 +386,9 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
         builder.append("'");
         return builder.toString();
     }
-    
-    private String validateQuery(String id){
+
+    private String validateQuery(String id)
+    {
         StringBuilder builder = new StringBuilder();
         builder.append("UPDATE ");
         builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
@@ -401,7 +400,9 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
         builder.append(id);
         return builder.toString();
     }
-    private String userNameByIdQuery(String id){
+
+    private String userNameByIdQuery(String id)
+    {
         StringBuilder builder = new StringBuilder();
         builder.append("SELECT ");
         builder.append(PGDAOConstants.USER_NAME);
@@ -412,6 +413,81 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
         builder.append(" = ");
         builder.append(id);
         return builder.toString();
+    }
+
+    @Override
+    public boolean nameExists(String name)
+    {
+        Connection con = null;
+        Statement stmt = null;
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            String query = isValidQuery(name);
+            log.debug(query);
+            System.out.println(query);
+            ResultSet rs = stmt.executeQuery(query);
+            return rs.next();
+        } catch (Exception e) {
+            log.error("Cannot find admin status", e);
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean register(String name,
+            String passwordHash)
+    {
+        Connection con = null;
+        Statement stmt = null;
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            String query = registerQuery(name, passwordHash);
+            log.debug(query);
+            System.out.println(query);
+            return stmt.execute(query);
+        } catch (Exception e) {
+            log.error("Cannot find admin status", e);
+            return false;
+        }
+
+    }
+
+    private String registerQuery(String name,
+            String passwordHash)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("INSERT INTO  ");
+        builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
+        builder.append(" ( ");
+        builder.append(PGDAOConstants.USER_NAME);
+        builder.append(",");
+        builder.append(PGDAOConstants.PASSWORD_HASH);
+        builder.append(",");
+        builder.append(PGDAOConstants.USER_IS_ADMIN);
+        builder.append(",");
+        builder.append(PGDAOConstants.USER_IS_VALID);
+        builder.append(") VALUES (");
+        builder.append("'");
+        builder.append(name);
+        builder.append("'");
+        builder.append(",");
+        builder.append("'");
+        builder.append(passwordHash);
+        builder.append("'");
+        builder.append(',');
+        builder.append("'");
+        builder.append("false");
+        builder.append("'");
+        builder.append(",");
+        builder.append("'");
+        builder.append("false");
+        builder.append("')");
+
+        return builder.toString();
+
     }
 
 }

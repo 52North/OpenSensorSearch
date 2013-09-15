@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IUserAccountDAO;
+import org.n52.sir.util.SHA1HashGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +51,29 @@ public class UserAccessResource {
         try {
             IUserAccountDAO dao = this.config.getInstance().getFactory().userAccountDAO();
             String token = dao.authenticateUser(user, password);
+            boolean isValid = dao.isAdmin(user);
+            boolean isAdmin  = dao.isValid(user);
+            log.debug("Token for user {} is {}", user, token);
+
+            if (token == null)
+                return Response.ok("{status:fail}").build();
+
+            return Response.ok("{auth_token:'" + token + "',isValid:'"+isValid+"',isAdmin:'"+isAdmin+"'}").build();
+        }
+        catch (Exception e) {
+            return Response.status(500).entity(e).build();
+        }
+    }
+    @POST
+    @Path("/register")
+    public Response register(@FormParam("username")
+    String user, @FormParam("password")
+    String password) {
+        log.debug("Authentication requested for user {}", user);
+
+        try {
+            IUserAccountDAO dao = this.config.getInstance().getFactory().userAccountDAO();
+            String passwordHash = new SHA1HashGenerator().generate(password);
             boolean isValid = dao.isAdmin(user);
             boolean isAdmin  = dao.isValid(user);
             log.debug("Token for user {} is {}", user, token);

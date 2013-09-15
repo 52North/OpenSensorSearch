@@ -447,7 +447,8 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
             String query = registerQuery(name, passwordHash);
             log.debug(query);
             System.out.println(query);
-            return stmt.execute(query);
+            stmt.execute(query);
+            return true;
         } catch (Exception e) {
             log.error("Cannot find admin status", e);
             return false;

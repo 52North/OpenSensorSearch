@@ -75,7 +75,7 @@ public class UserAccessResource {
             IUserAccountDAO dao = this.config.getInstance().getFactory().userAccountDAO();
             String passwordHash = new SHA1HashGenerator().generate(password);
             boolean userExists = dao.nameExists(user);
-            if(userExists)return Response.ok("{success:'false'}").build();
+            if(userExists)return Response.ok("{success:'false',reason:'User exists'}").build();
             
             boolean success  = dao.register(user, passwordHash);
             return Response.ok("{success:'"+success+"'}").build();

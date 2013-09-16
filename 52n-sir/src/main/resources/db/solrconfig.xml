@@ -47,7 +47,6 @@
 	<jmx />
 
 	<updateHandler class="solr.DirectUpdateHandler2">
-
 		<updateLog>
 			<str name="dir">${solr.ulog.dir:}</str>
 		</updateLog>
@@ -60,7 +59,6 @@
 		<autoSoftCommit>
 			<maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime>
 		</autoSoftCommit>
-
 	</updateHandler>
 
 	<query>
@@ -100,7 +98,6 @@
 		<useColdSearcher>false</useColdSearcher>
 
 		<maxWarmingSearchers>2</maxWarmingSearchers>
-
 	</query>
 
 

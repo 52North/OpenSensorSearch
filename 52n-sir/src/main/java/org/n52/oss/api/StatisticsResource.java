@@ -18,55 +18,121 @@
 
 package org.n52.oss.api;
 
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.n52.sir.SirConfigurator;
+import org.n52.sir.ds.IGetCapabilitiesDAO;
+import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-import com.google.inject.servlet.RequestScoped;
+import com.google.inject.name.Named;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/api/v1/statistics")
 @Api(value = "/api/v1/statistics", description = "Endpoint of all of the statistics related to sensors in OSS")
-
-@RequestScoped
+@Singleton
 public class StatisticsResource {
-        protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
-        private SirConfigurator config;
 
-        @Inject
-        public StatisticsResource(SirConfigurator config){
-            this.config=config;
+    private static final String SENSORS_PATH = "/sensors";
+
+    private static final String SERVICES_PATH = "/services";
+
+    private static final String PHENOMENA_PATH = "/phenomena";
+
+    protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
+
+    private IGetCapabilitiesDAO capabilitiesDao;
+
+    private String baseUrl;
+
+    @Inject
+    public StatisticsResource(IGetCapabilitiesDAO dao, @Named("oss.serviceurl")
+    String baseUrl) {
+        this.capabilitiesDao = dao;
+        this.baseUrl = baseUrl;
+
+        log.debug("NEW {}", this);
+    }
+
+    @GET
+    @Path("/")
+    @ApiOperation(value = "List of available statistics")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStatisticsIndex() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" { ");
+        sb.append("\"sensors\" : \"" + this.baseUrl + "/api/v1/statistics" + SENSORS_PATH + "\"");
+        sb.append(" , ");
+        sb.append("\"phenomena\" : \"" + this.baseUrl + "/api/v1/statistics" + PHENOMENA_PATH + "\"");
+        sb.append(" , ");
+        sb.append("\"services\" : \"" + this.baseUrl + "/api/v1/statistics" + SERVICES_PATH + "\"");
+        sb.append(" } ");
+
+        return Response.ok(sb.toString()).build();
+    }
+
+    @GET
+    @Path(SENSORS_PATH)
+    @ApiOperation(value = "Find the number of sensors stored in OSS")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumberOfSensors() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" { \"sensors\": ");
+
+        try {
+            sb.append(this.capabilitiesDao.getSensorCount());
         }
-
-        @GET
-        @Path("/sensors")
-        @ApiOperation(value = "Find the number of sensors stored in OSS")
-
-        public Response getSensors() {
-            //TODO :Daniel implement this to return the number of sensors
-            return Response.ok("{sensors:0}").build();
+        catch (OwsExceptionReport e) {
+            return Response.serverError().entity(e).build();
         }
-        @GET
-        @Path("/phenomena")
-        @ApiOperation(value = "Find the number of phenomena stored in OSS")
+        sb.append(" }");
 
-        public Response getNumberOfPhenomena() {
-            //TODO :Daniel implement this to return the number of phenomena
-            return Response.ok("{phenomena:0}").build();
-        }
-        @GET
-        @Path("/services")
-        @ApiOperation(value = "Find the number of services stored in OSS")
+        return Response.ok(sb.toString()).build();
+    }
 
-        public Response getNumberOfServices() {
-            //TODO :Daniel implement this to return the number of services
-            return Response.ok("{services:0}").build();
+    @GET
+    @Path(PHENOMENA_PATH)
+    @ApiOperation(value = "Find the number of phenomena stored in OSS")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumberOfPhenomena() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" { \"phenomena\": ");
+
+        try {
+            sb.append(this.capabilitiesDao.getPhenomenonCount());
         }
-       
+        catch (OwsExceptionReport e) {
+            return Response.serverError().entity(e).build();
+        }
+        sb.append(" }");
+
+        return Response.ok(sb.toString()).build();
+    }
+
+    @GET
+    @Path(SERVICES_PATH)
+    @ApiOperation(value = "Find the number of services stored in OSS")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNumberOfServices() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" { \"services\": ");
+
+        try {
+            sb.append(this.capabilitiesDao.getServiceCount());
+        }
+        catch (OwsExceptionReport e) {
+            return Response.serverError().entity(e).build();
+        }
+        sb.append(" }");
+
+        return Response.ok(sb.toString()).build();
+    }
+
 }

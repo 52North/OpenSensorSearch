@@ -16,8 +16,10 @@
 
 package org.n52.oss.util;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
@@ -27,6 +29,7 @@ import java.nio.file.Paths;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.http.HttpResponse;
 import org.n52.sir.json.MapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +80,16 @@ public class Util {
         StringWriter writer = new StringWriter();
         MapperFactory.getMapper().writeValue(writer, response.getEntity());
         return writer.toString();
+    }
+
+    public static String getResponsePayload(HttpResponse response) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        String s;
+        while ( (s = reader.readLine()) != null)
+            builder.append(s);
+
+        return builder.toString().trim();
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	This is the Solr schema file based on the example file from http://svn.apache.org/viewvc/lucene/dev/trunk/solr/example/solr/collection1/conf/schema.xml?view=markup
+	This is the Solr schema file based on the example file from http://svn.apache.org/viewvc/lucene/dev/tags/lucene_solr_4_4_0/solr/example/solr/collection1/conf/schema.xml?view=markup
 
 	For more information, comments and tipps on how to customize this file, 
 	please see

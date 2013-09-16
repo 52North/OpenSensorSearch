@@ -86,7 +86,7 @@ public class UserAccessResource {
     }
     @POST
     @Path("/user/validate")
-    public Response validate(@FormParam("id")
+    public Response validate(@FormParam("username")
     String user, @FormParam("auth_token")
     String auth_token) {
         log.debug("Authentication requested for user {}", user);

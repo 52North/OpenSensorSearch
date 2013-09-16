@@ -331,6 +331,22 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
         builder.append("'");
         return builder.toString();
     }
+    
+    private String UserIDForUsernameQuery(String userName)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SELECT  ");
+        builder.append(PGDAOConstants.USER_ID);
+        builder.append(" FROM ");
+        builder.append(PGDAOConstants.USER_ACCOUNT_TABLE);
+        builder.append(" WHERE ");
+        builder.append(PGDAOConstants.USER_NAME);
+        builder.append(" like ");
+        builder.append("'");
+        builder.append(userName);
+        builder.append("'");
+        return builder.toString();
+    }
 
     @Override
     public String getUserIDForToken(String token)
@@ -489,6 +505,30 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
 
         return builder.toString();
 
+    }
+
+    @Override
+    public String getUserIDForUsername(String username)
+    {
+        Connection con = null;
+        Statement stmt = null;
+        try {
+            con = this.cpool.getConnection();
+            stmt = con.createStatement();
+            String query = UserIDForUsernameQuery(username);
+            log.debug(query);
+            System.out.println(query);
+            String id = null;
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                id = rs.getString(PGDAOConstants.USER_ID);
+            }
+            return id;
+       
+        } catch (Exception e) {
+            log.error("Cannot find admin status", e);
+            return null;
+        }
     }
 
 }

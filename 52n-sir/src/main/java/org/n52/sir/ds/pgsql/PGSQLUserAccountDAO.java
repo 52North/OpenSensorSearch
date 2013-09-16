@@ -524,7 +524,6 @@ public class PGSQLUserAccountDAO implements IUserAccountDAO {
                 id = rs.getString(PGDAOConstants.USER_ID);
             }
             return id;
-       
         } catch (Exception e) {
             log.error("Cannot find admin status", e);
             return null;

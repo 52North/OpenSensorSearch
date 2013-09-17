@@ -61,6 +61,8 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 	                
 			final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
 			grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+			grantedAuths.add(new SimpleGrantedAuthority("ROLE_SCRIPT_AUTHOR"));
+                        
 			if(token.isAdmin)
 			    grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 			final UserDetails principal = new User(username, token.auth_token,

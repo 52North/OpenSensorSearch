@@ -47,12 +47,12 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
 
     private static final String OPERATION_NAME = SirConstants.Operations.DeleteSensorInfo.name();
 
-    private IInsertSensorInfoDAO insertSensorInfoDAO;
+    private IInsertSensorInfoDAO sensorInfoDao;
 
     @Inject
     public DeleteSensorInfoListener(SirConfigurator config) throws OwsExceptionReport {
         IDAOFactory factory = config.getInstance().getFactory();
-        this.insertSensorInfoDAO = factory.insertSensorInfoDAO();
+        this.sensorInfoDao = factory.insertSensorInfoDAO();
 
         log.debug("NEW {}", this);
     }
@@ -61,7 +61,7 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
                               SirSensorIdentification sensorIdent,
                               ArrayList<String> deletedSensors) throws OwsExceptionReport {
         if (sensorIdent != null) {
-            String sID = this.insertSensorInfoDAO.deleteSensor(sensorIdent);
+            String sID = this.sensorInfoDao.deleteSensor(sensorIdent);
 
             if (sID != null) {
                 deletedSensors.add(sID);
@@ -89,7 +89,7 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
                                         SirServiceReference serviceReference,
                                         SirSensorIdentification sensIdent) throws OwsExceptionReport {
         if (serviceReference != null) {
-            String sID = this.insertSensorInfoDAO.deleteReference(sensIdent, serviceReference);
+            String sID = this.sensorInfoDao.deleteReference(sensIdent, serviceReference);
 
             if (sID != null) {
                 response.setNumberOfDeletedServiceReferences(response.getNumberOfDeletedServiceReferences() + 1);

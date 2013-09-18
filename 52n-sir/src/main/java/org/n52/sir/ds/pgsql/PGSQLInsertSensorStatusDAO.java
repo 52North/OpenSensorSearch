@@ -56,11 +56,11 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" FROM ");
         query.append(PGDAOConstants.sensor);
         query.append(" WHERE (");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = '");
         query.append(ident.getId());
         query.append("');");
@@ -92,7 +92,7 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
         query.append("')) AND ");
         query.append(PGDAOConstants.sensorIdSirSensServ);
         query.append(" = (SELECT ");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" FROM ");
         query.append(PGDAOConstants.sensorService);
         query.append(" WHERE (");
@@ -153,7 +153,7 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
                     log.debug(">>>Database Query: " + sensorIdQuery);
                 ResultSet rs = stmt.executeQuery(sensorIdQuery);
                 while (rs.next()) {
-                    sensorId = rs.getString(PGDAOConstants.internalSensorId);
+                    sensorId = rs.getString(PGDAOConstants.sensorId);
                 }
             }
             // check service description
@@ -163,7 +163,7 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
                     log.debug(">>>Database Query: " + sensorIdQuery);
                 ResultSet rs = stmt.executeQuery(sensorIdQuery);
                 while (rs.next()) {
-                    sensorId = rs.getString(PGDAOConstants.internalSensorId);
+                    sensorId = rs.getString(PGDAOConstants.sensorId);
                 }
             }
             if (sensorId == null) {

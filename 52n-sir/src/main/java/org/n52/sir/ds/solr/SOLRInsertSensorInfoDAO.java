@@ -140,12 +140,13 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         }
         catch (SolrServerException e) {
             log.error("Could not create connection to Solr.", e);
+            return null;
         }
         catch (IOException e) {
             log.error("IOException", e);
+            return null;
         }
 
-        // TODO add the database ID
         return id;
     }
 

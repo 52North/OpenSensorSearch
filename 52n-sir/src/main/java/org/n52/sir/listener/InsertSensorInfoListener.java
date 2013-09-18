@@ -101,6 +101,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                               SirSensor sensor) throws OwsExceptionReport, IOException {
 
         String id = this.identifierGenerator.generate();
+        sensor.setInternalSensorId(id);
         log.debug("InsertSensor called, generated new ID {}", id);
 
         if (sensor.getSensorMLDocument() != null) {
@@ -110,20 +111,26 @@ public class InsertSensorInfoListener implements ISirRequestListener {
 
             if (isValid) {
 
+                // TODO Daniel: implement listener mechanism or event bus to support several databases
+                // dynamically
+
                 /*
                  * Inserts into solr
                  */
                 SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
                 String sensorIdInSolr = dao.insertSensor(sensor);
-                log.debug("Inserted sensor in solr:" + sensorIdInSolr);
+                log.debug("Inserted sensor in solr: " + sensorIdInSolr);
+                if (sensorIdInSolr == null)
+                    log.warn("Could not insert sensor to solr.");
 
                 /*
                  * Insert to database
                  */
                 String sensorIdInDB = this.insSensInfoDao.insertSensor(sensor);
-                log.debug("Inserted sensor in database:" + sensorIdInDB);
+                log.debug("Inserted sensor in database: " + sensorIdInDB);
 
-                if (sensorIdInSolr != null && sensorIdInDB != null && sensorIdInSolr.equals(sensorIdInDB)) {
+                if (// sensorIdInSolr != null && sensorIdInSolr.equals(sensorIdInDB) &&
+                sensorIdInDB != null) {
                     String internalSensorId = sensorIdInDB;
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);
                     response.getInsertedSensors().add(internalSensorId);

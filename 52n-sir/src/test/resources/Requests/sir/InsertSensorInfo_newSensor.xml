@@ -1,6 +1,10 @@
-<InsertSensorInfoRequest service="SIR" version="0.3.0" xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1" xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
+<InsertSensorInfoRequest service="SIR" version="0.3.0"
+	xmlns="http://52north.org/sir/0.3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0.1"
+	xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd">
 	<InfoToBeInserted>
-		<SensorDescription xmlns:ns="http://www.opengis.net/sensorML/1.0.1" xsi:type="ns:SystemType">
+		<SensorDescription xmlns:ns="http://www.opengis.net/sensorML/1.0.1"
+			xsi:type="ns:SystemType">
 			<gml:description>Test sensor (dummy, fake!) in the vicinity of Münster, Germany</gml:description>
 			<ns:keywords>
 				<ns:KeywordList>
@@ -30,12 +34,12 @@
 			<ns:classification>
 				<ns:ClassifierList>
 					<ns:classifier name="intendedApplication">
-						<ns:Term>
+						<ns:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
 							<ns:value>water gauge</ns:value>
 						</ns:Term>
 					</ns:classifier>
 					<ns:classifier name="sensorType">
-						<ns:Term>
+						<ns:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
 							<ns:value>gauge station</ns:value>
 						</ns:Term>
 					</ns:classifier>
@@ -50,18 +54,19 @@
 			<ns:capabilities>
 				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
 					<swe:field name="observedBBOX">
-						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX" referenceFrame="urn:ogc:def:crs:EPSG:4326">
+						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX"
+							referenceFrame="urn:ogc:def:crs:EPSG:4326">
 							<swe:lowerCorner>
 								<swe:Vector>
 									<swe:coordinate name="latitude">
 										<swe:Quantity axisID="y">
-											<swe:uom code="degree"/>
+											<swe:uom code="degree" />
 											<swe:value>51.77</swe:value>
 										</swe:Quantity>
 									</swe:coordinate>
 									<swe:coordinate name="longitude">
 										<swe:Quantity axisID="x">
-											<swe:uom code="degree"/>
+											<swe:uom code="degree" />
 											<swe:value>7.3</swe:value>
 										</swe:Quantity>
 									</swe:coordinate>
@@ -71,13 +76,13 @@
 								<swe:Vector>
 									<swe:coordinate name="latitude">
 										<swe:Quantity axisID="y">
-											<swe:uom code="degree"/>
+											<swe:uom code="degree" />
 											<swe:value>52.076</swe:value>
 										</swe:Quantity>
 									</swe:coordinate>
 									<swe:coordinate name="longitude">
 										<swe:Quantity axisID="x">
-											<swe:uom code="degree"/>
+											<swe:uom code="degree" />
 											<swe:value>7.833</swe:value>
 										</swe:Quantity>
 									</swe:coordinate>
@@ -103,22 +108,24 @@
 				</ns:ResponsibleParty>
 			</ns:contact>
 			<ns:position name="stationPosition">
-				<swe:Position>
+				<swe:Position referenceFrame="urn:ogc:def:crs:EPSG:4326">
 					<swe:location>
 						<swe:Vector gml:id="SYSTEM_LOCATION">
 							<swe:coordinate name="latitude">
 								<swe:Quantity axisID="y">
-									<swe:uom code="degree"/>
+									<swe:uom code="degree" />
 									<swe:value>51.977160249276004</swe:value>
 								</swe:Quantity>
 							</swe:coordinate>
 							<swe:coordinate name="longitude">
 								<swe:Quantity axisID="x">
+									<swe:uom code="degree" />
 									<swe:value>7.357731467853749</swe:value>
 								</swe:Quantity>
 							</swe:coordinate>
 							<swe:coordinate name="altitude">
 								<swe:Quantity axisID="z">
+									<swe:uom code="m" />
 									<swe:value>61.52</swe:value>
 								</swe:Quantity>
 							</swe:coordinate>
@@ -131,10 +138,12 @@
 					<ns:interface name="WaterSAS_68">
 						<ns:InterfaceDefinition>
 							<ns:serviceLayer>
-								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+								<swe:DataRecord
+									definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
 									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
 										<swe:Text>
-											<swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS</swe:value>
+											<swe:value>http://giv-genesis.uni-muenster.de:8080/water/SAS
+											</swe:value>
 										</swe:Text>
 									</swe:field>
 									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
@@ -142,7 +151,8 @@
 											<swe:value>SAS</swe:value>
 										</swe:Text>
 									</swe:field>
-									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+									<swe:field
+										name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
 										<swe:Text>
 											<swe:value>WaterSAS:68</swe:value>
 										</swe:Text>
@@ -154,10 +164,12 @@
 					<ns:interface name="SOS6_55">
 						<ns:InterfaceDefinition>
 							<ns:serviceLayer>
-								<swe:DataRecord definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+								<swe:DataRecord
+									definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
 									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
 										<swe:Text>
-											<swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos</swe:value>
+											<swe:value>http://giv-sos.uni-muenster.de:8080/Waterflow-SOS-2/sos
+											</swe:value>
 										</swe:Text>
 									</swe:field>
 									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
@@ -165,7 +177,8 @@
 											<swe:value>SOS</swe:value>
 										</swe:Text>
 									</swe:field>
-									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+									<swe:field
+										name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
 										<swe:Text>
 											<swe:value>SOS6:55</swe:value>
 										</swe:Text>
@@ -179,10 +192,10 @@
 			<ns:inputs>
 				<ns:InputList>
 					<ns:input name="water_level">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level"/>
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:water_level" />
 					</ns:input>
 					<ns:input name="current">
-						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current"/>
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:current" />
 					</ns:input>
 				</ns:InputList>
 			</ns:inputs>
@@ -190,12 +203,12 @@
 				<ns:OutputList>
 					<ns:output name="water_level">
 						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
-							<swe:uom code="m"/>
+							<swe:uom code="m" />
 						</swe:Quantity>
 					</ns:output>
 					<ns:output name="current">
 						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:gauge">
-							<swe:uom code="m"/>
+							<swe:uom code="m" />
 						</swe:Quantity>
 					</ns:output>
 				</ns:OutputList>

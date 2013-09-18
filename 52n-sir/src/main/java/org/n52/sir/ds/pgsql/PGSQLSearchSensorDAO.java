@@ -70,7 +70,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -92,7 +92,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" GROUP BY ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -307,7 +307,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -329,7 +329,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" WHERE (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = '");
         query.append(sensorId);
         query.append("');");
@@ -342,7 +342,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -382,11 +382,11 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("') AND (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(") AND (");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -421,7 +421,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -672,7 +672,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             query.append(" AND (");
             query.append(PGDAOConstants.sensor);
             query.append(".");
-            query.append(PGDAOConstants.internalSensorId);
+            query.append(PGDAOConstants.sensorId);
             query.append(" = ");
             query.append(PGDAOConstants.sensorService);
             query.append(".");
@@ -695,7 +695,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             query.append(" = ");
             query.append(PGDAOConstants.sensor);
             query.append(".");
-            query.append(PGDAOConstants.internalSensorId);
+            query.append(PGDAOConstants.sensorId);
             query.append(") AND (");
             query.append(PGDAOConstants.phenomenon);
             query.append(".");
@@ -711,7 +711,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" GROUP BY ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");

@@ -179,7 +179,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
 
             ResultSet rs = stmt.executeQuery(insertSensor);
             if (rs.next()) {
-                sensor.setInternalSensorId(rs.getString(PGDAOConstants.internalSensorId));
+                sensor.setInternalSensorId(rs.getString(PGDAOConstants.sensorId));
             }
             else {
                 log.warn("Did not receive result set when inserting sensor!");
@@ -378,7 +378,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
             cmd.deleteCharAt(cmd.length() - 1);
         }
         cmd.append("}')) RETURNING ");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
 
         return cmd.toString();
     }
@@ -434,7 +434,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(" (");
         cmd.append(PGDAOConstants.serviceId);
         cmd.append(", ");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
         cmd.append(", ");
         cmd.append(PGDAOConstants.serviceSpecId);
         cmd.append(") SELECT (SELECT ");
@@ -456,7 +456,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append("' WHERE NOT EXISTS (SELECT ");
         cmd.append(PGDAOConstants.serviceId);
         cmd.append(", ");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
         cmd.append(", ");
         cmd.append(PGDAOConstants.serviceSpecId);
         cmd.append(" FROM ");
@@ -476,7 +476,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(" = '");
         cmd.append(sensor.getServDescs().iterator().next().getService().getType());
         cmd.append("')) AND ");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
         cmd.append(" = '");
         cmd.append(sensor.getInternalSensorID());
         cmd.append("' AND ");

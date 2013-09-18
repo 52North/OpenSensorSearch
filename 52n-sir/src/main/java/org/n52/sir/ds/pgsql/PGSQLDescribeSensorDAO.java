@@ -115,7 +115,7 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
         query.append(" FROM ");
         query.append(PGDAOConstants.sensor);
         query.append(" WHERE ");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = '");
         query.append(sensorId);
         query.append("'");

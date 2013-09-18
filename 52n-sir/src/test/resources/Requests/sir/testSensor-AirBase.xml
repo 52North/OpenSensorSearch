@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sml:SensorML xmlns:sml="http://www.opengis.net/sensorML/1.0.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:swe="http://www.opengis.net/swe/1.0.1"
+	xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd"
+	version="1.0.1">
+	<sml:member>
+		<sml:System>
+			<gml:description>Sensor of the European air quality database
+				AirBase in BELGIUM</gml:description>
+			<sml:keywords>
+				<sml:KeywordList>
+					<sml:keyword>MECHELEN</sml:keyword>
+					<sml:keyword>BELGIUM</sml:keyword>
+					<sml:keyword>BE</sml:keyword>
+				</sml:KeywordList>
+			</sml:keywords>
+			<sml:identification>
+				<sml:IdentifierList>
+					<sml:identifier>
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+							<sml:value>urn:ogc:object:feature:Sensor:eea:airbase:BE:LML01</sml:value>
+						</sml:Term>
+					</sml:identifier>
+					<sml:identifier>
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+							<sml:value>40ML01 - MECHELEN</sml:value>
+						</sml:Term>
+					</sml:identifier>
+					<sml:identifier>
+						<sml:Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+							<sml:value>40ML01 - MECHELEN</sml:value>
+						</sml:Term>
+					</sml:identifier>
+				</sml:IdentifierList>
+			</sml:identification>
+			<sml:classification>
+				<sml:ClassifierList>
+					<sml:classifier name="intendedApplication">
+						<sml:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+							<sml:value>air quality</sml:value>
+						</sml:Term>
+					</sml:classifier>
+					<sml:classifier name="sensorType">
+						<sml:Term
+							definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+							<sml:value>Traffic</sml:value>
+						</sml:Term>
+					</sml:classifier>
+					<sml:classifier name="stationAreaType">
+						<sml:Term definition="urn:ogc:def:classifier:OGC:1.0:areaType">
+							<sml:value>urban</sml:value>
+						</sml:Term>
+					</sml:classifier>
+					<sml:classifier name="streetType">
+						<sml:Term definition="urn:ogc:def:classifier:OGC:1.0:streetType">
+							<sml:value>Wide street: L/H &amp;gt; 1.5</sml:value>
+						</sml:Term>
+					</sml:classifier>
+				</sml:ClassifierList>
+			</sml:classification>
+			<sml:validTime>
+				<gml:TimePeriod>
+					<gml:beginPosition>2000-01-01</gml:beginPosition>
+					<gml:endPosition>2010-10-11</gml:endPosition>
+				</gml:TimePeriod>
+			</sml:validTime>
+			<sml:capabilities>
+				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+					<swe:field name="observedBBOX">
+						<swe:Envelope definition="urn:ogc:def:property:OGC:1.0:observedBBOX"
+							referenceFrame="urn:ogc:def:crs:EPSG:4326">
+							<swe:lowerCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree" />
+											<swe:value>51.016666</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree" />
+											<swe:value>4.463622</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:lowerCorner>
+							<swe:upperCorner>
+								<swe:Vector>
+									<swe:coordinate name="latitude">
+										<swe:Quantity axisID="y">
+											<swe:uom code="degree" />
+											<swe:value>51.016666</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="longitude">
+										<swe:Quantity axisID="x">
+											<swe:uom code="degree" />
+											<swe:value>4.463622</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:upperCorner>
+						</swe:Envelope>
+					</swe:field>
+					<swe:field name="status">
+						<swe:Boolean definition="urn:ogc:def:property:OGC:1.0:isActive">
+							<swe:value>true</swe:value>
+						</swe:Boolean>
+					</swe:field>
+					<swe:field name="EMEP_station">
+						<swe:Text definition="urn:ogc:def:property:OGC:1.0:EMEP">
+							<swe:value>no</swe:value>
+						</swe:Text>
+					</swe:field>
+					<swe:field name="station_local_code">
+						<swe:Text definition="urn:ogc:def:property:OGC:1.0:localCode">
+							<swe:value>40ML01</swe:value>
+						</swe:Text>
+					</swe:field>
+					<swe:field name="lau_level2_code">
+						<swe:Text definition="urn:ogc:def:property:OGC:1.0:lauLevel2Code">
+							<swe:value>12025</swe:value>
+						</swe:Text>
+					</swe:field>
+					<swe:field name="lau_level2_name">
+						<swe:Text definition="urn:ogc:def:property:OGC:1.0:lauLevel2Name">
+							<swe:value>Mechelen</swe:value>
+						</swe:Text>
+					</swe:field>
+				</swe:DataRecord>
+			</sml:capabilities>
+			<sml:contact>
+				<sml:ResponsibleParty gml:id="WWU_ifgi_AirBase_contact">
+					<sml:individualName>Christian Autermann</sml:individualName>
+					<sml:organizationName>Institute for Geoinformatics - Westfaelische
+						Wilhelms Universitaet Muenster - Sensor Web and Simulation Lab</sml:organizationName>
+					<sml:contactInfo>
+						<sml:address>
+							<sml:deliveryPoint>Weseler Straße 253</sml:deliveryPoint>
+							<sml:city>Münster</sml:city>
+							<sml:postalCode>48151</sml:postalCode>
+							<sml:country>Germany</sml:country>
+							<sml:electronicMailAddress>autermann@uni-muenster.de</sml:electronicMailAddress>
+						</sml:address>
+					</sml:contactInfo>
+				</sml:ResponsibleParty>
+			</sml:contact>
+			<sml:position name="BELML01">
+				<swe:Position referenceFrame="urn:ogc:def:crs:EPSG:4326"
+					fixed="true">
+					<swe:location>
+						<swe:Vector>
+							<swe:coordinate name="latitude">
+								<swe:Quantity axisID="y">
+									<swe:uom code="degree" />
+									<swe:value>51.016666</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="longitude">
+								<swe:Quantity axisID="x">
+									<swe:uom code="degree" />
+									<swe:value>4.463622</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="altitude">
+								<swe:Quantity axisID="z">
+									<swe:uom code="m" />
+									<swe:value>12.0</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:location>
+				</swe:Position>
+			</sml:position>
+			<sml:inputs>
+				<sml:InputList>
+					<sml:input name="Nitrogen monoxide (air)">
+						<swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:38" />
+					</sml:input>
+					<sml:input name="Benzene (air)">
+						<swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:20" />
+					</sml:input>
+					<sml:input name="Particulate matter &lt; 10 µm (aerosol)">
+						<swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:5" />
+					</sml:input>
+					<sml:input name="Nitrogen dioxide (air)">
+						<swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:8" />
+					</sml:input>
+					<sml:input name="Particulate matter &lt; 2.5 µm (aerosol)">
+						<swe:ObservableProperty definition="urn:ogc:def:property:eea:airbase:6001" />
+					</sml:input>
+				</sml:InputList>
+			</sml:inputs>
+			<sml:outputs>
+				<sml:OutputList>
+					<sml:output name="NITROGEN_MONOXIDE_(AIR)">
+						<swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:38">
+							<gml:metaDataProperty>
+								<offering>
+									<id>NITROGEN_MONOXIDE_(AIR)</id>
+									<name>NITROGEN_MONOXIDE_(AIR)</name>
+								</offering>
+							</gml:metaDataProperty>
+							<gml:description>Nitrogen monoxide (air)</gml:description>
+							<swe:uom code="µg/m3" />
+						</swe:Quantity>
+					</sml:output>
+					<sml:output name="BENZENE_(AIR)">
+						<swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:20">
+							<gml:metaDataProperty>
+								<offering>
+									<id>BENZENE_(AIR)</id>
+									<name>BENZENE_(AIR)</name>
+								</offering>
+							</gml:metaDataProperty>
+							<gml:description>Benzene (air)</gml:description>
+							<swe:uom code="µg/m3" />
+						</swe:Quantity>
+					</sml:output>
+					<sml:output name="PARTICULATE_MATTER_&lt;_10_ΜM_(AEROSOL)">
+						<swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:5">
+							<gml:metaDataProperty>
+								<offering>
+									<id>PARTICULATE_MATTER_&lt;_10_ΜM_(AEROSOL)</id>
+									<name>PARTICULATE_MATTER_&lt;_10_ΜM_(AEROSOL)</name>
+								</offering>
+							</gml:metaDataProperty>
+							<gml:description>Particulate matter &lt; 10 µm (aerosol)</gml:description>
+							<swe:uom code="µg/m3" />
+						</swe:Quantity>
+					</sml:output>
+					<sml:output name="NITROGEN_DIOXIDE_(AIR)">
+						<swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:8">
+							<gml:metaDataProperty>
+								<offering>
+									<id>NITROGEN_DIOXIDE_(AIR)</id>
+									<name>NITROGEN_DIOXIDE_(AIR)</name>
+								</offering>
+							</gml:metaDataProperty>
+							<gml:description>Nitrogen dioxide (air)</gml:description>
+							<swe:uom code="µg/m3" />
+						</swe:Quantity>
+					</sml:output>
+					<sml:output name="PARTICULATE_MATTER_&lt;_2.5_ΜM_(AEROSOL)">
+						<swe:Quantity definition="urn:ogc:def:phenomenon:eea:airbase:6001">
+							<gml:metaDataProperty>
+								<offering>
+									<id>PARTICULATE_MATTER_&lt;_2.5_ΜM_(AEROSOL)</id>
+									<name>PARTICULATE_MATTER_&lt;_2.5_ΜM_(AEROSOL)</name>
+								</offering>
+							</gml:metaDataProperty>
+							<gml:description>Particulate matter &lt; 2.5 µm (aerosol)</gml:description>
+							<swe:uom code="µg/m3" />
+						</swe:Quantity>
+					</sml:output>
+				</sml:OutputList>
+			</sml:outputs>
+		</sml:System>
+	</sml:member>
+</sml:SensorML>

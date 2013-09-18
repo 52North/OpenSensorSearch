@@ -21,9 +21,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirPhenomenon;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
@@ -49,27 +49,26 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     @Override
     public String addNewReference(SirSensorIdentification sensIdent, SirServiceReference servDesc) throws OwsExceptionReport {
-        String insertedSensorId;
+        String insertedSensorId = null;
 
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
-            String id = getInternalSensorId(sensIdent);
+            String id = getDatabaseSensorId(sensIdent);
 
             // build add service query
-            String addService = addServiceString(servDesc);
+            String addService = addServiceCommand(servDesc);
             log.debug(">>>Database Query: {}", addService);
             stmt.execute(addService);
 
             // build add reference query
-            String addReference = addReferenceString(id, servDesc);
+            String addReference = addReferenceCommand(id, servDesc);
             log.debug(">>>Database Query: {}", addReference);
             ResultSet rs = stmt.executeQuery(addReference);
             if (rs.next()) {
-                insertedSensorId = rs.getString(PGDAOConstants.internalSensorId);
-            }
-            else {
-                insertedSensorId = null;
-            }
+                String result = rs.getString(PGDAOConstants.databaseSensorId);
 
+                if (result.equals(id))
+                    insertedSensorId = getInternalSensorId(sensIdent);
+            }
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();
@@ -83,7 +82,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         return insertedSensorId;
     }
 
-    private String addReferenceString(String sensorId, SirServiceReference servDesc) {
+    private String addReferenceCommand(String sensorId, SirServiceReference servDesc) {
         StringBuilder query = new StringBuilder();
 
         query.append("INSERT INTO ");
@@ -141,13 +140,13 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         query.append(" = '");
         query.append(servDesc.getServiceSpecificSensorId());
         query.append("') RETURNING ");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.databaseSensorId);
         query.append(";");
 
         return query.toString();
     }
 
-    private String addServiceString(SirServiceReference servDesc) {
+    private String addServiceCommand(SirServiceReference servDesc) {
         StringBuilder query = new StringBuilder();
 
         query.append("INSERT INTO ");
@@ -190,7 +189,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             log.debug(">>>Database Query: {}", removeReference);
             ResultSet rs = stmt.executeQuery(removeReference);
             if (rs.next()) {
-                sensorIdWithDeletedReference = rs.getString(PGDAOConstants.internalSensorId);
+                sensorIdWithDeletedReference = rs.getString(PGDAOConstants.sensorId);
             }
             else {
                 sensorIdWithDeletedReference = null;
@@ -211,20 +210,20 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     @Override
     public String deleteSensor(SirSensorIdentification sensIdent) throws OwsExceptionReport {
+        log.debug("Deleting sensor {}", sensIdent);
+
         String sensorId;
 
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             sensorId = getInternalSensorId(sensIdent);
-            // build delete sensor query
             String removeSensor = removeSensorString(sensorId);
             log.debug(">>>Database Query: {}", removeSensor);
+
             ResultSet rs = stmt.executeQuery(removeSensor);
-            if (rs.next()) {
-                sensorId = rs.getString(PGDAOConstants.internalSensorId);
-            }
-            else {
+            if (rs.next())
+                sensorId = rs.getString(PGDAOConstants.sensorId);
+            else
                 sensorId = null;
-            }
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();
@@ -266,6 +265,42 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             InternalSensorID temp = (InternalSensorID) sensIdent;
             return temp.getId();
         }
+
+        return sensorID;
+    }
+
+    private String getDatabaseSensorId(SirSensorIdentification sensIdent) throws OwsExceptionReport {
+        String sensorID = null;
+
+        String getSensorID = null;
+        if (sensIdent instanceof SirServiceReference) {
+            getSensorID = getDatabaseSensorIdString((SirServiceReference) sensIdent);
+        }
+        else {
+            InternalSensorID temp = (InternalSensorID) sensIdent;
+            getSensorID = getDatabaseSensorIdString(temp);
+        }
+
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+
+            log.debug(">>> Database Query: {}", getSensorID);
+            ResultSet rs = stmt.executeQuery(getSensorID);
+            if (rs == null) {
+                return sensorID;
+            }
+            while (rs.next()) {
+                sensorID = rs.getString(PGDAOConstants.sensorIdSirSensServ);
+            }
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport();
+            log.error("Error while requesting a sensor ID: " + sqle.getMessage());
+            se.addCodedException(ExceptionCode.NoApplicableCode,
+                                 "InsertSensorInfoDAO",
+                                 "Error while requesting a sensor ID: " + sqle.getMessage());
+            throw se;
+        }
+
         return sensorID;
     }
 
@@ -273,7 +308,53 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.sensorService);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.serviceSpecId);
+        query.append(" = '");
+        query.append(servDesc.getServiceSpecificSensorId());
+        query.append("') AND (");
+        query.append(PGDAOConstants.serviceIdOfSensServ);
+        query.append(" = (SELECT ");
+        query.append(PGDAOConstants.serviceId);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.service);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.serviceUrl);
+        query.append(" = '");
+        query.append(servDesc.getService().getUrl());
+        query.append("') AND (");
+        query.append(PGDAOConstants.serviceType);
+        query.append(" = '");
+        query.append(servDesc.getService().getType());
+        query.append("')));");
+
+        return query.toString();
+    }
+
+    private String getDatabaseSensorIdString(InternalSensorID sensorId) {
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT ");
+        query.append(PGDAOConstants.databaseSensorId);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.sensor);
+        query.append(" WHERE (");
+        query.append(PGDAOConstants.sensorId);
+        query.append(" = '");
+        query.append(sensorId.getId());
+        query.append("');");
+
+        return query.toString();
+    }
+
+    private String getDatabaseSensorIdString(SirServiceReference servDesc) {
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT ");
+        query.append(PGDAOConstants.databaseSensorId);
         query.append(" FROM ");
         query.append(PGDAOConstants.sensorService);
         query.append(" WHERE (");
@@ -341,11 +422,15 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             String insertSensor = insertSensorCommand(sensor);
             log.debug(">>>Database Query: {}", insertSensor.toString());
             ResultSet rs = stmt.executeQuery(insertSensor);
+
+            String dbId = null;
             if (rs.next()) {
-                sensor.setInternalSensorId(rs.getString(PGDAOConstants.internalSensorId));
+                dbId = rs.getString(PGDAOConstants.databaseSensorId);
+                log.debug(">>>Query successful, database id: {}", dbId);
             }
 
-            if (sensor.getInternalSensorID() != null) {
+            // use database id for relation tables
+            if (dbId != null) {
                 for (SirPhenomenon phenom : sensor.getPhenomenon()) {
                     // insert in phenomenon table
                     String phenomenonID = "";
@@ -365,12 +450,14 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                         }
                     }
                     // insert in sensor/phenomenon table
-                    String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensor, phenomenonID);
+                    String insertSensorPhenomenon = insertSensorPhenomenonCommand(dbId, phenomenonID);
                     log.debug(">>>Database Query: {}", insertSensorPhenomenon);
                     stmt.execute(insertSensorPhenomenon);
                 }
             }
-
+            else {
+                log.error("Error inserting sensor, but no DB exception? dbId: {}", dbId);
+            }
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();
@@ -389,7 +476,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append("INSERT INTO ");
         cmd.append(PGDAOConstants.sensor);
         cmd.append(" ( ");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
         cmd.append(", ");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(", ");
@@ -402,7 +489,10 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(", ");
         cmd.append(PGDAOConstants.lastUpdate);
-        cmd.append(") SELECT ST_GeomFromText('POLYGON((");
+        cmd.append(") SELECT '");
+        cmd.append(sensor.getInternalSensorID());
+        cmd.append("', ");
+        cmd.append("ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());
@@ -439,7 +529,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append("}', '");
         cmd.append(sensor.getLastUpdate());
         cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
         cmd.append(", ");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(", ");
@@ -453,7 +543,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(" FROM ");
         cmd.append(PGDAOConstants.sensor);
         cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
         cmd.append(" = '");
         cmd.append(sensor.getInternalSensorID());
         cmd.append("') AND (");
@@ -500,12 +590,13 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             }
             cmd.deleteCharAt(cmd.length() - 1);
         }
-        cmd.append("}'))");
+        cmd.append("}')) RETURNING ");
+        cmd.append(PGDAOConstants.databaseSensorId);
 
         return cmd.toString();
     }
 
-    private String insertSensorPhenomenonCommand(SirSensor sensor, String phenomenonID) {
+    private String insertSensorPhenomenonCommand(String sensorDbId, String phenomenonID) {
         StringBuilder cmd = new StringBuilder();
 
         cmd.append("INSERT INTO ");
@@ -515,7 +606,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(", ");
         cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
         cmd.append(") SELECT '");
-        cmd.append(sensor.getInternalSensorID());
+        cmd.append(sensorDbId);
         cmd.append("', '");
         cmd.append(phenomenonID);
         cmd.append("' WHERE NOT EXISTS (SELECT ");
@@ -527,7 +618,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(" WHERE (");
         cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
         cmd.append("='");
-        cmd.append(sensor.getInternalSensorID());
+        cmd.append(sensorDbId);
         cmd.append("' AND ");
         cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
         cmd.append("='");
@@ -585,7 +676,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         query.append(" = '");
         query.append(servDesc.getService().getType());
         query.append("'))) RETURNING ");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(";");
 
         return query.toString();
@@ -597,11 +688,11 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         query.append("DELETE FROM ");
         query.append(PGDAOConstants.sensor);
         query.append(" WHERE (");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = '");
         query.append(sensorId);
         query.append("') RETURNING ");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(";");
 
         return query.toString();
@@ -746,7 +837,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(" = '");
         cmd.append(sensor.getLastUpdate());
         cmd.append("' WHERE ");
-        cmd.append(PGDAOConstants.internalSensorId);
+        cmd.append(PGDAOConstants.sensorId);
         cmd.append(" = ");
         cmd.append(sensor.getInternalSensorID());
         cmd.append(";");

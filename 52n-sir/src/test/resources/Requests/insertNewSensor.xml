@@ -31,12 +31,12 @@
       <ns:classification>
         <ns:ClassifierList>
           <ns:classifier name="intendedApplication">
-            <ns:Term>
+            <ns:Term definition="urn:ogc:def:classifier:OGC:1.0:application">
               <ns:value>water gauge</ns:value>
             </ns:Term>
           </ns:classifier>
           <ns:classifier name="sensorType">
-            <ns:Term>
+            <ns:Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
               <ns:value>gauge station</ns:value>
             </ns:Term>
           </ns:classifier>

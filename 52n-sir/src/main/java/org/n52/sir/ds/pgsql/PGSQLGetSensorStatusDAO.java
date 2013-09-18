@@ -295,7 +295,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(") AND (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -315,7 +315,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(" = ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(") AND (");
         query.append(PGDAOConstants.phenomenon);
         query.append(".");
@@ -419,7 +419,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(" = ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
-        query.append(PGDAOConstants.internalSensorId);
+        query.append(PGDAOConstants.sensorId);
         query.append(") AND (");
         query.append(PGDAOConstants.sensorService);
         query.append(".");

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -38,14 +39,8 @@ import org.slf4j.LoggerFactory;
  */
 public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLInsertSensorInfoDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DB
-     */
     private PGConnectionPool cpool;
 
     public PGSQLInsertSensorInfoDAO(PGConnectionPool cpool) {
@@ -54,32 +49,25 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     @Override
     public String addNewReference(SirSensorIdentification sensIdent, SirServiceReference servDesc) throws OwsExceptionReport {
-        String insert;
-        Connection con = null;
-        Statement stmt = null;
+        String insertedSensorId;
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             String sensorIdInSir = getSensorIdInSir(sensIdent);
 
             // build add service query
             String addService = addServiceString(servDesc);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + addService);
+            log.debug(">>>Database Query: {}", addService);
             stmt.execute(addService);
 
             // build add reference query
             String addReference = addReferenceString(sensorIdInSir, servDesc);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + addReference);
+            log.debug(">>>Database Query: {}", addReference);
             ResultSet rs = stmt.executeQuery(addReference);
             if (rs.next()) {
-                insert = rs.getString(PGDAOConstants.sensorIdSir);
+                insertedSensorId = rs.getString(PGDAOConstants.sensorIdSir);
             }
             else {
-                insert = null;
+                insertedSensorId = null;
             }
 
         }
@@ -91,22 +79,8 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                                  "Error while adding a service reference: " + sqle.getMessage());
             throw se;
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
-
-        return insert;
+        return insertedSensorId;
     }
 
     private String addReferenceString(String sensorIdInSir, SirServiceReference servDesc) {
@@ -207,25 +181,19 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     @Override
     public String deleteReference(SirSensorIdentification sensIdent, SirServiceReference servDesc) throws OwsExceptionReport {
-        String delete;
-        Connection con = null;
-        Statement stmt = null;
+        String sensorIdWithDeletedReference;
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             String sensorIdInSir = getSensorIdInSir(sensIdent);
             // build remove reference query
             String removeReference = removeReferenceString(sensorIdInSir, servDesc);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + removeReference);
+            log.debug(">>>Database Query: {}", removeReference);
             ResultSet rs = stmt.executeQuery(removeReference);
             if (rs.next()) {
-                delete = rs.getString(PGDAOConstants.sensorIdSir);
+                sensorIdWithDeletedReference = rs.getString(PGDAOConstants.sensorIdSir);
             }
             else {
-                delete = null;
+                sensorIdWithDeletedReference = null;
             }
 
         }
@@ -237,38 +205,19 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                                  "Error while removing a service reference: " + sqle.getMessage());
             throw se;
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
-        return delete;
+        return sensorIdWithDeletedReference;
     }
 
     @Override
     public String deleteSensor(SirSensorIdentification sensIdent) throws OwsExceptionReport {
         String sensorIdInSir;
-        Connection con = null;
-        Statement stmt = null;
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             sensorIdInSir = getSensorIdInSir(sensIdent);
             // build delete sensor query
             String removeSensor = removeSensorString(sensorIdInSir);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + removeSensor);
+            log.debug(">>>Database Query: {}", removeSensor);
             ResultSet rs = stmt.executeQuery(removeSensor);
             if (rs.next()) {
                 sensorIdInSir = rs.getString(PGDAOConstants.sensorIdSir);
@@ -285,35 +234,17 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                                  "Error while removing a sensor: " + sqle.getMessage());
             throw se;
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
         return sensorIdInSir;
     }
 
     private String getSensorIdInSir(SirSensorIdentification sensIdent) throws OwsExceptionReport {
         String sensorID = null;
-        Connection con = null;
-        Statement stmt = null;
 
         if (sensIdent instanceof SirServiceReference) {
-            try {
-                con = this.cpool.getConnection();
-                stmt = con.createStatement();
+            try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
                 String getSensorID = getSensorIdInSirString((SirServiceReference) sensIdent);
-                if (log.isDebugEnabled())
-                    log.debug(">>> Database Query: " + getSensorID);
+                log.debug(">>> Database Query: {}", getSensorID);
                 ResultSet rs = stmt.executeQuery(getSensorID);
                 if (rs == null) {
                     return sensorID;
@@ -329,20 +260,6 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                                      "InsertSensorInfoDAO",
                                      "Error while requesting a sensor ID: " + sqle.getMessage());
                 throw se;
-            }
-            finally {
-                if (stmt != null) {
-                    try {
-                        stmt.close();
-                    }
-                    catch (SQLException e) {
-                        log.error("SQL Error.", e);
-                    }
-                }
-
-                if (con != null) {
-                    this.cpool.returnConnection(con);
-                }
             }
         }
         else {
@@ -418,17 +335,11 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
     @Override
     public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
 
-        Connection con = null;
-        Statement stmt = null;
-
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
 
             // insert in sensor table
             String insertSensor = insertSensorCommand(sensor);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + insertSensor.toString());
+            log.debug(">>>Database Query: {}", insertSensor.toString());
             ResultSet rs = stmt.executeQuery(insertSensor);
             if (rs.next()) {
                 sensor.setSensorIDInSIR(rs.getString(PGDAOConstants.sensorIdSir));
@@ -439,8 +350,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                     // insert in phenomenon table
                     String phenomenonID = "";
                     String insertPhenomenon = insertPhenomenonCommand(phenom);
-                    if (log.isDebugEnabled())
-                        log.debug(">>>Database Query: " + insertPhenomenon);
+                    log.debug(">>>Database Query: {}", insertPhenomenon);
                     rs = stmt.executeQuery(insertPhenomenon);
                     while (rs.next()) {
                         phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
@@ -448,8 +358,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                     if (phenomenonID.isEmpty()) {
                         // phenomenon ID query
                         String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                        if (log.isDebugEnabled())
-                            log.debug(">>>Database Query: " + phenomenonIDQuery);
+                        log.debug(">>>Database Query: {}", phenomenonIDQuery);
                         rs = stmt.executeQuery(phenomenonIDQuery);
                         while (rs.next()) {
                             phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
@@ -457,8 +366,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                     }
                     // insert in sensor/phenomenon table
                     String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensor, phenomenonID);
-                    if (log.isDebugEnabled())
-                        log.debug(">>>Database Query: " + insertSensorPhenomenon);
+                    log.debug(">>>Database Query: {}", insertSensorPhenomenon);
                     stmt.execute(insertSensorPhenomenon);
                 }
             }
@@ -471,19 +379,6 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                                  null,
                                  "Error while adding sensor to database: " + sqle.getMessage());
             throw se;
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null)
-                this.cpool.returnConnection(con);
         }
 
         return sensor.getSensorIDInSIR();
@@ -736,12 +631,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     @Override
     public String updateSensor(SirSensorIdentification sensIdent, SirSensor sensor) throws OwsExceptionReport {
-        Connection con = null;
-        Statement stmt = null;
-
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             String updateSensor = updateSensorCommand(sensor);
 
             if (log.isDebugEnabled()) {
@@ -750,7 +640,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                     debugString = debugString.substring(0, 400) + " [...] "
                             + debugString.substring(debugString.length() - 100, debugString.length());
                 }
-                log.debug(">>>Database Query: " + debugString);
+                log.debug(">>>Database Query: {}", debugString);
             }
 
             boolean sensorUpdate = stmt.execute(updateSensor);
@@ -759,14 +649,13 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                 log.warn("Wanted to do an update, but got a result set as response.");
             }
             else {
-                if (log.isDebugEnabled())
-                    log.debug("Updated sensor! " + sensor);
+                log.debug("Updated sensor: {} !", sensor);
 
                 if (sensor.getSensorIDInSIR() != null) {
                     for (SirPhenomenon phenom : sensor.getPhenomenon()) {
                         // phenomenon ID query
                         String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                        log.debug(">>>Database Query: " + phenomenonIDQuery);
+                        log.debug(">>>Database Query: {}", phenomenonIDQuery);
                         ResultSet rs = stmt.executeQuery(phenomenonIDQuery);
                         while (rs.next()) {
                             String phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
@@ -774,13 +663,13 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                         }
 
                         String updatePhenomenon = updatePhenomenonCommand(phenom);
-                        log.debug(">>>Database Query: " + updatePhenomenon);
+                        log.debug(">>>Database Query: {}", updatePhenomenon);
                         boolean phenUpdate = stmt.execute(updatePhenomenon);
 
                         if (phenUpdate)
                             log.warn("Wanted to only update phenomenon, but got a result set.");
-                        else if (log.isDebugEnabled())
-                            log.debug("Updated phenomenon: " + phenom);
+                        else
+                            log.debug("Updated phenomenon: {} ", phenom);
 
                     }
                 }
@@ -792,19 +681,6 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             se.addCodedException(ExceptionCode.NoApplicableCode, null, "Error while updating sensor in database: "
                     + sqle.getMessage());
             throw se;
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null)
-                this.cpool.returnConnection(con);
         }
 
         return sensor.getSensorIDInSIR();

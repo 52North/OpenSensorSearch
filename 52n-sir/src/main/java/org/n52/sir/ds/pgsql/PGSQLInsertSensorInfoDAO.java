@@ -485,6 +485,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             if (con != null)
                 this.cpool.returnConnection(con);
         }
+
         return sensor.getSensorIDInSIR();
     }
 
@@ -493,6 +494,8 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append("INSERT INTO ");
         cmd.append(PGDAOConstants.sensor);
         cmd.append(" ( ");
+        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(", ");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(", ");
         cmd.append(PGDAOConstants.sensorTimeStart);
@@ -541,6 +544,8 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append("}', '");
         cmd.append(sensor.getLastUpdate());
         cmd.append("' WHERE NOT EXISTS (SELECT ");
+        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(", ");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(", ");
         cmd.append(PGDAOConstants.sensorTimeStart);
@@ -553,6 +558,10 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(" FROM ");
         cmd.append(PGDAOConstants.sensor);
         cmd.append(" WHERE (");
+        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(" = '");
+        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append("') AND (");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(" = ST_GeomFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
@@ -596,8 +605,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             }
             cmd.deleteCharAt(cmd.length() - 1);
         }
-        cmd.append("}')) RETURNING ");
-        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append("}'))");
 
         return cmd.toString();
     }

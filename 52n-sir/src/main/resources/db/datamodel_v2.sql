@@ -63,7 +63,7 @@ CREATE TABLE service
 -- represents sensor 
 CREATE TABLE sensor
 (
-  sensor_id_sir SERIAL,
+  sensor_id_sir NOT NULL,
   bbox geometry,
   time_start timestamptz NOT NULL,
   time_end timestamptz,

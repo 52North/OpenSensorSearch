@@ -18,6 +18,7 @@ package org.n52.sir;
 
 import org.n52.sir.listener.GetCapabilitiesListener;
 import org.n52.sir.listener.ISirRequestListener;
+import org.n52.sir.listener.InsertSensorInfoListener;
 import org.n52.sir.listener.SearchSensorListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,7 @@ public class ListenerModule extends AbstractModule {
 
         uriBinder.addBinding().to(SearchSensorListener.class);
         uriBinder.addBinding().to(GetCapabilitiesListener.class);
+        uriBinder.addBinding().to(InsertSensorInfoListener.class);
 
         // bind plugin dependencies...
         log.debug("Configured {}", this);

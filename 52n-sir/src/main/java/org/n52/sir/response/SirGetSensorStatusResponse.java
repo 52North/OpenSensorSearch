@@ -56,7 +56,7 @@ public class SirGetSensorStatusResponse extends AbstractXmlResponse {
 
         for (SirStatusDescription statDesc : this.statusDescs) {
             StatusDescription statusDescription = getSensStatResp.addNewStatusDescription();
-            statusDescription.setSensorIDInSIR(statDesc.getSensorIdInSir());
+            statusDescription.setSensorIDInSIR(statDesc.getSensorId());
             Status status = statusDescription.addNewStatus();
 
             // property name

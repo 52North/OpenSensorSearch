@@ -42,7 +42,7 @@ import org.n52.sir.datastructure.SirPropertyConstraint;
 import org.n52.sir.datastructure.SirPropertyFilter;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
-import org.n52.sir.datastructure.SirSensorIDInSir;
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirService;
 import org.n52.sir.datastructure.SirServiceInfo;
@@ -174,7 +174,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         SirDescribeSensorRequest sirRequest = new SirDescribeSensorRequest();
 
         if (descSensDoc.getDescribeSensorRequest().getSensorIDInSIR() != null) {
-            sirRequest.setSensorIdInSir(descSensDoc.getDescribeSensorRequest().getSensorIDInSIR());
+            sirRequest.setSensorId(descSensDoc.getDescribeSensorRequest().getSensorIDInSIR());
         }
         else {
             log.error("&lt;sensorIDInSIR&gt; is missing!");
@@ -346,7 +346,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
                 // add service reference with ID
                 else if (infoToInsert.isSetSensorIDInSIR()) {
                     SirInfoToBeInserted_ServiceReference newServiceReference = new SirInfoToBeInserted_ServiceReference();
-                    newServiceReference.setSensorIDinSIR(new SirSensorIDInSir(infoToInsert.getSensorIDInSIR()));
+                    newServiceReference.setID(new InternalSensorID(infoToInsert.getSensorIDInSIR()));
 
                     // service references
                     ServiceReference[] servRefs = infoToInsert.getServiceReferenceArray();
@@ -410,7 +410,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
             log.error("&lt;SensorIDInSIR&gt; is missing!");
             throw se;
         }
-        sirRequest.setSensIdent(new SirSensorIDInSir(reqDoc.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR()));
+        sirRequest.setSensIdent(new InternalSensorID(reqDoc.getInsertSensorStatusRequest().getStatusDescription().getSensorIDInSIR()));
 
         // set status
         if (reqDoc.getInsertSensorStatusRequest().getStatusDescription().getStatusArray().length == 0) {
@@ -774,7 +774,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         if (sensIdent.getSensorIDInSIR() != null || sensIdent.getServiceReference() != null) {
             // sensorID in SIR
             if (sensIdent.getSensorIDInSIR() != null) {
-                return new SirSensorIDInSir(sensIdent.getSensorIDInSIR());
+                return new InternalSensorID(sensIdent.getSensorIDInSIR());
             }
             // serviceDescription
             if (sensIdent.getServiceReference() != null) {

@@ -107,7 +107,7 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
         SyndEntry entry = new SyndEntryImpl();
         // SyndContent title = new SyndContentImpl();
         // title.setType(MIME_TYPE_HTML)
-        entry.setTitle(ssre.getSensorIdInSir());
+        entry.setTitle(ssre.getSensorId());
         try {
             // String link = URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
             // this.configurator.getCharacterEncoding());
@@ -117,7 +117,7 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
             entry.setLink(link);
         }
         catch (UnsupportedEncodingException e) {
-            log.warn("Could not create URL for sensor {}", ssre.getSensorIdInSir());
+            log.warn("Could not create URL for sensor {}", ssre.getSensorId());
         }
 
         // TODO include service references in text using text/html as description type

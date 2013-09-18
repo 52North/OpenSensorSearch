@@ -23,32 +23,26 @@ package org.n52.sir.request;
  */
 public class SirDescribeSensorRequest extends AbstractSirRequest {
 
-    /**
-     * sensor ID in the SIR
-     */
-    private String sensorIdInSir;
+    private String sensorId;
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("DescribeSensor: ");
-        sb.append("SensorID in SIR: " + this.sensorIdInSir);
-        return sb.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("SirDescribeSensorRequest [");
+        if (this.sensorId != null) {
+            builder.append("sensorId=");
+            builder.append(this.sensorId);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

@@ -69,13 +69,13 @@ public class RestfulInterface {
         searchDao = mock(ISearchSensorDAO.class);
         SirSearchResultElement elem = new SirSearchResultElement();
         elem.setLastUpdate(new Date(0l));
-        elem.setSensorIdInSir(testId);
+        elem.setSensorId(testId);
         elem.setSensorDescription(new SirSimpleSensorDescription(null, testDesription, testUrl));
         when(searchDao.getSensorBySensorID(eq(testId), eq(true))).thenReturn(elem);
 
         SirSearchResultElement elemDetailed = new SirSearchResultElement();
         elemDetailed.setLastUpdate(new Date(0l));
-        elemDetailed.setSensorIdInSir(testId);
+        elemDetailed.setSensorId(testId);
         SirDetailedSensorDescription descr = new SirDetailedSensorDescription();
         descr.setClassifiers(Arrays.asList(new String[] {classifier01}));
         descr.setIdentifiers(Arrays.asList(new String[] {identifier01}));
@@ -101,7 +101,7 @@ public class RestfulInterface {
         Response response = this.resource.getSensor(testId, false);
         SearchResultElement actual = (SearchResultElement) response.getEntity();
 
-        assertThat("id matches", actual.getSensorIdInSir(), is(equalTo(testId)));
+        assertThat("id matches", actual.getSensorId(), is(equalTo(testId)));
         SimpleSensorDescription actualDescription = actual.getSensorDescription();
         assertThat("id matches", actualDescription.getText(), is(equalTo(testDesription)));
         assertThat("id matches", actualDescription.getUrl(), is(equalTo(testUrl)));

@@ -23,14 +23,14 @@ import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
 import org.x52North.sir.x032.InsertSensorStatusResponseDocument.InsertSensorStatusResponse;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class SirInsertSensorStatusResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirInsertSensorStatusResponse.class);
 
-    private String sensorIdInSir;
+    private String sensorId;
 
     private boolean statusUpdateSuccessful;
 
@@ -39,8 +39,7 @@ public class SirInsertSensorStatusResponse extends AbstractXmlResponse {
         InsertSensorStatusResponseDocument document = InsertSensorStatusResponseDocument.Factory.newInstance();
         InsertSensorStatusResponse insSensStatResp = document.addNewInsertSensorStatusResponse();
 
-        // set sensorID in SIR
-        insSensStatResp.setSensorIDInSIR(this.sensorIdInSir);
+        insSensStatResp.setSensorIDInSIR(this.sensorId);
 
         XmlTools.addSirAndSensorMLSchemaLocation(insSensStatResp);
 
@@ -52,32 +51,18 @@ public class SirInsertSensorStatusResponse extends AbstractXmlResponse {
         return document;
     }
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @return the statusUpdateSuccessful
-     */
     public boolean isStatusUpdateSuccessful() {
         return this.statusUpdateSuccessful;
     }
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 
-    /**
-     * @param statusUpdateSuccessful
-     *        the statusUpdateSuccessful to set
-     */
     public void setStatusUpdateSuccessful(boolean statusUpdateSuccessful) {
         this.statusUpdateSuccessful = statusUpdateSuccessful;
     }

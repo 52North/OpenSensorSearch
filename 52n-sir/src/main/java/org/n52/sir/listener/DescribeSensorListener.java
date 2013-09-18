@@ -93,15 +93,15 @@ public class DescribeSensorListener implements ISirRequestListener {
         SirDescribeSensorResponse response = new SirDescribeSensorResponse();
 
         try {
-            XmlObject sensorML = this.descSensDao.getSensorDescription(descSensReq.getSensorIdInSir());
+            XmlObject sensorML = this.descSensDao.getSensorDescription(descSensReq.getSensorId());
             if (sensorML != null) {
                 response.setSensorML(sensorML);
             }
             else {
                 OwsExceptionReport se = new OwsExceptionReport();
                 se.addCodedException(ExceptionCode.InvalidRequest, null, "Unknown sensor ID in Sir! Given ID: "
-                        + descSensReq.getSensorIdInSir());
-                log.debug("Unknown sensor ID in Sir! Given ID: " + descSensReq.getSensorIdInSir());
+                        + descSensReq.getSensorId());
+                log.debug("Unknown sensor ID in Sir! Given ID: " + descSensReq.getSensorId());
                 throw se;
             }
         }

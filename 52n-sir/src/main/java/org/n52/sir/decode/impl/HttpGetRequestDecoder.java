@@ -39,7 +39,7 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
                 String[] nameAndValue = param.split("=");
                 if (nameAndValue[0].equalsIgnoreCase(SirConstants.GetDescSensorParams.SENSORIDINSIR.name())) {
                     request = new SirDescribeSensorRequest();
-                    request.setSensorIdInSir(nameAndValue[1]);
+                    request.setSensorId(nameAndValue[1]);
                     return request;
                 }
             }

@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import org.n52.sir.datastructure.SirPropertyFilter;
 import org.n52.sir.datastructure.SirSearchCriteria;
-import org.n52.sir.datastructure.SirSensorIDInSir;
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirStatusDescription;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -53,7 +53,7 @@ public interface IGetSensorStatusDAO {
      * @return Returns a collection of status descriptions
      * @throws OwsExceptionReport
      */
-    public Collection<SirStatusDescription> getSensorStatusBySensorID(SirSensorIDInSir sensorId,
+    public Collection<SirStatusDescription> getSensorStatusBySensorID(InternalSensorID sensorId,
                                                                       Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport;
 
     /**

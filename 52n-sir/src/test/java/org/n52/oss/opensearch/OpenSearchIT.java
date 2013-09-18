@@ -177,7 +177,7 @@ public class OpenSearchIT {
         while (it.hasNext()) {
             SearchResultElement elem = it.next();
             String resultsensor = mapper.writeValueAsString(elem);
-            if (elem.getSensorIdInSir() == sensorJson.getSensorIdInSir())
+            if (elem.getSensorId() == sensorJson.getSensorId())
                 assertThat(resultsensor,
                            SameJSONAs.sameJSONAs(sensorJsonStr).allowingExtraUnexpectedFields().allowingAnyArrayOrdering());
 

@@ -57,7 +57,7 @@ public class Converter {
 
         SearchResultElement element = new SearchResultElement();
 
-        element.setSensorIdInSir(desc.getId());
+        element.setSensorId(desc.getId());
         log.trace("Begin date:" + desc.getBegineDate());
         element.setBeginDate(desc.getBegineDate());
         element.setEndDate(desc.getEndDate());
@@ -81,7 +81,7 @@ public class Converter {
     private SearchResultElement createResult(SirSearchResultElement sirSearchResultElement) {
         SearchResultElement sre = new SearchResultElement();
 
-        sre.setSensorIdInSir(sirSearchResultElement.getSensorIdInSir());
+        sre.setSensorId(sirSearchResultElement.getSensorId());
         sre.setLastUpdate(sirSearchResultElement.getLastUpdate());
 
         Collection<ServiceReference> sr = new ArrayList<>();

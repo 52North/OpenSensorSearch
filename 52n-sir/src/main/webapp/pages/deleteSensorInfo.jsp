@@ -63,9 +63,9 @@
 							</tr>
 							<tr>
 								<td class="inputTitle">Sensor ID In SIR</td>
-								<td><input type="text" name="sensorIDinSIR"
+								<td><input type="text" name="sensorId"
 									class="inputField"
-									value="<%=deleteSensorInfo.getSensorIDinSIR()%>" /></td>
+									value="<%=deleteSensorInfo.getSensorId()%>" /></td>
 							</tr>
 							<tr>
 								<td colspan="2">by Service Description:</td>

@@ -50,7 +50,7 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
     }
 
     @Override
-    public XmlObject getSensorDescription(String sensorIdInSir) throws OwsExceptionReport {
+    public XmlObject getSensorDescription(String sensorId) throws OwsExceptionReport {
         XmlObject sensorML = null;
         Statement stmt = null;
 
@@ -59,10 +59,9 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
             con = this.cpool.getConnection();
             stmt = con.createStatement();
 
-            // sensorML query by sensorID in SIR
-            String sensorMlQuery = sensorMlQuery(sensorIdInSir);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + sensorMlQuery);
+            // sensorML query by sensorId
+            String sensorMlQuery = sensorMlQuery(sensorId);
+            log.debug(">>>Database Query: {}", sensorMlQuery);
             ResultSet rs = stmt.executeQuery(sensorMlQuery);
             Timestamp timestamp = null;
 
@@ -71,9 +70,7 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
                 timestamp = rs.getTimestamp(PGDAOConstants.lastUpdate);
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Got SensorML from datbase, last update: " + timestamp);
-            }
+            log.debug("Got SensorML from datbase, last update: {}", timestamp);
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();
@@ -108,7 +105,7 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
         return sensorML;
     }
 
-    private String sensorMlQuery(String sensorIdInSir) {
+    private String sensorMlQuery(String sensorId) {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
@@ -118,9 +115,9 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
         query.append(" FROM ");
         query.append(PGDAOConstants.sensor);
         query.append(" WHERE ");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.internalSensorId);
         query.append(" = '");
-        query.append(sensorIdInSir);
+        query.append(sensorId);
         query.append("'");
 
         return query.toString();

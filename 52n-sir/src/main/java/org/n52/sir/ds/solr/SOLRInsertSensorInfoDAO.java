@@ -71,7 +71,7 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             inputDocument.addField(SolrConstants.KEYWORD, s);
         }
 
-        String id = sensor.getSensorIDInSIR();
+        String id = sensor.getInternalSensorID();
         inputDocument.addField(SolrConstants.ID, id);
         String longitude = sensor.getLongitude();
         String latitude = sensor.getLatitude();

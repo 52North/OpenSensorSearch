@@ -1,5 +1,5 @@
 {
-  "sensorIdInSir" : "1",
+  "sensorId" : "1",
   "classifiers" : [ "myClass01" ],
   "keywords" : [ "testkeyword01", "testkeyword02" ],
   "identifiers" : [ "myId01" ],

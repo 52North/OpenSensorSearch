@@ -179,13 +179,13 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
 
             ResultSet rs = stmt.executeQuery(insertSensor);
             if (rs.next()) {
-                sensor.setSensorIDInSIR(rs.getString(PGDAOConstants.sensorIdSir));
+                sensor.setInternalSensorId(rs.getString(PGDAOConstants.internalSensorId));
             }
             else {
                 log.warn("Did not receive result set when inserting sensor!");
             }
 
-            if (sensor.getSensorIDInSIR() != null) {
+            if (sensor.getInternalSensorID() != null) {
                 for (SirPhenomenon phenom : sensor.getPhenomenon()) {
                     // insert in phenomenon table
                     String phenomenonID = "";
@@ -378,7 +378,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
             cmd.deleteCharAt(cmd.length() - 1);
         }
         cmd.append("}')) RETURNING ");
-        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(PGDAOConstants.internalSensorId);
 
         return cmd.toString();
     }
@@ -399,7 +399,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(", ");
         cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
         cmd.append(") SELECT '");
-        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append(sensor.getInternalSensorID());
         cmd.append("', '");
         cmd.append(phenomenonID);
         cmd.append("' WHERE NOT EXISTS (SELECT ");
@@ -411,7 +411,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(" WHERE (");
         cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
         cmd.append("='");
-        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append(sensor.getInternalSensorID());
         cmd.append("' AND ");
         cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
         cmd.append("='");
@@ -434,7 +434,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(" (");
         cmd.append(PGDAOConstants.serviceId);
         cmd.append(", ");
-        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(PGDAOConstants.internalSensorId);
         cmd.append(", ");
         cmd.append(PGDAOConstants.serviceSpecId);
         cmd.append(") SELECT (SELECT ");
@@ -450,13 +450,13 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(" = '");
         cmd.append(sensor.getServDescs().iterator().next().getService().getType());
         cmd.append("')), '");
-        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append(sensor.getInternalSensorID());
         cmd.append("', '");
         cmd.append(sensor.getServDescs().iterator().next().getServiceSpecificSensorId());
         cmd.append("' WHERE NOT EXISTS (SELECT ");
         cmd.append(PGDAOConstants.serviceId);
         cmd.append(", ");
-        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(PGDAOConstants.internalSensorId);
         cmd.append(", ");
         cmd.append(PGDAOConstants.serviceSpecId);
         cmd.append(" FROM ");
@@ -476,9 +476,9 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(" = '");
         cmd.append(sensor.getServDescs().iterator().next().getService().getType());
         cmd.append("')) AND ");
-        cmd.append(PGDAOConstants.sensorIdSir);
+        cmd.append(PGDAOConstants.internalSensorId);
         cmd.append(" = '");
-        cmd.append(sensor.getSensorIDInSIR());
+        cmd.append(sensor.getInternalSensorID());
         cmd.append("' AND ");
         cmd.append(PGDAOConstants.serviceSpecId);
         cmd.append(" = '");

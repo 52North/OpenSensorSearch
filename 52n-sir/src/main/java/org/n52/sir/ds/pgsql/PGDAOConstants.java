@@ -94,7 +94,7 @@ public class PGDAOConstants {
 	public static String sensor;
 
 	// column names of sensor
-	public static String sensorIdSir;
+	public static String internalSensorId;
 
 	// column names of sensor_phenomenon
 	public static String sensorIdSirOfSensPhen;
@@ -273,7 +273,7 @@ public class PGDAOConstants {
 		phenomenonId = props.getProperty(this.PHENOMENONID);
 		phenomenonUrn = props.getProperty(this.PHENOMENONURN);
 		phenomenonUom = props.getProperty(this.PHENOMENONUOM);
-		sensorIdSir = props.getProperty(this.SENSORIDSIR);
+		internalSensorId = props.getProperty(this.SENSORIDSIR);
 		serviceSpecId = props.getProperty(this.SENSSERVSERVICESPECID);
 		bBox = props.getProperty(this.SENSORBBOX);
 		sensorTimeStart = props.getProperty(this.SENSORTIMESTART);

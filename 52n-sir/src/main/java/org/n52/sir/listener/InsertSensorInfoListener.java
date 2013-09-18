@@ -23,11 +23,11 @@ import java.util.Date;
 import org.n52.oss.id.IdentifierGenerator;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirInfoToBeInserted;
 import org.n52.sir.datastructure.SirInfoToBeInserted_SensorDescription;
 import org.n52.sir.datastructure.SirInfoToBeInserted_ServiceReference;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
@@ -106,7 +106,8 @@ public class InsertSensorInfoListener implements ISirRequestListener {
         if (sensor.getSensorMLDocument() != null) {
             IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
             boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
-            log.debug("The sensor is valid: " + isValid);
+            log.debug("The sensor is valid: {}", isValid);
+
             if (isValid) {
 
                 /*
@@ -130,7 +131,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
 
                     if (serviceRefs != null) {
                         for (SirServiceReference servRef : serviceRefs) {
-                            this.insSensInfoDao.addNewReference(new SirSensorIDInSir(internalSensorId), servRef);
+                            this.insSensInfoDao.addNewReference(new InternalSensorID(internalSensorId), servRef);
                             response.setNumberOfNewServiceReferences(response.getNumberOfNewServiceReferences() + 1);
                         }
 
@@ -172,9 +173,8 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                                          SirInfoToBeInserted_ServiceReference newReference) throws OwsExceptionReport {
         Collection<SirServiceReference> referenceArray = newReference.getServiceReferences();
         for (SirServiceReference sirServiceReference : referenceArray) {
-            String id = this.insSensInfoDao.addNewReference(newReference.getSensorIDinSIR(), sirServiceReference);
-            if (log.isDebugEnabled())
-                log.debug("Inserted service reference for sensor " + id + ": " + sirServiceReference.getService());
+            String id = this.insSensInfoDao.addNewReference(newReference.getID(), sirServiceReference);
+            log.debug("Inserted service reference for sensor {}: {}", id, sirServiceReference.getService());
 
             response.setNumberOfNewServiceReferences(response.getNumberOfNewServiceReferences() + 1);
         }

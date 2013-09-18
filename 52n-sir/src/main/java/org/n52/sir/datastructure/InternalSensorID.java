@@ -19,39 +19,29 @@ package org.n52.sir.datastructure;
  * @author Jan Schulte
  * 
  */
-public class SirSensorIDInSir extends SirSensorIdentification {
+public class InternalSensorID extends SirSensorIdentification {
 
-    /**
-     * sensor identification by sensorID in the SIR
-     */
-    private String sensorIdInSir;
+    private String id;
 
-    public SirSensorIDInSir() {
+    public InternalSensorID() {
         //
     }
 
-    public SirSensorIDInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public InternalSensorID(String id) {
+        this.id = id;
     }
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
+    public String getId() {
+        return this.id;
     }
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "SensorID in SIR: " + this.sensorIdInSir;
+        return "InternalSensorID: " + this.id;
     }
 
 }

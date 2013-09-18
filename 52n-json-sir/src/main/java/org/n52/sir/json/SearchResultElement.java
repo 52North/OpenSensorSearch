@@ -37,7 +37,7 @@ public class SearchResultElement {
 
     private SimpleSensorDescription sensorDescription;
 
-    private String sensorIdInSir;
+    private String sensorId;
 
     private Collection<ServiceReference> serviceReferences;
 
@@ -122,62 +122,34 @@ public class SearchResultElement {
         // empty constructor for deserialization
     }
 
-    /**
-     * @return the lastUpdate
-     */
     public Date getLastUpdate() {
         return this.lastUpdate;
     }
 
-    /**
-     * @return the sensorDescription
-     */
     public SimpleSensorDescription getSensorDescription() {
         return this.sensorDescription;
     }
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @return the serviceDescriptions
-     */
     public Collection<ServiceReference> getServiceReferences() {
         return this.serviceReferences;
     }
 
-    /**
-     * @param lastUpdate
-     *        the lastUpdate to set
-     */
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    /**
-     * @param sensorDescription
-     *        the sensorDescription to set
-     */
     public void setSensorDescription(SimpleSensorDescription sensorDescription) {
         this.sensorDescription = sensorDescription;
     }
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public void setSensorId(String id) {
+        this.sensorId = id;
     }
 
-    /**
-     * @param serviceDescriptions
-     *        the serviceDescriptions to set
-     */
     public void setServiceReferences(Collection<ServiceReference> serviceReferences) {
         this.serviceReferences = serviceReferences;
     }
@@ -197,9 +169,9 @@ public class SearchResultElement {
             builder.append(this.sensorDescription);
             builder.append(", ");
         }
-        if (this.sensorIdInSir != null) {
-            builder.append("sensorIdInSir=");
-            builder.append(this.sensorIdInSir);
+        if (this.sensorId != null) {
+            builder.append("sensorId=");
+            builder.append(this.sensorId);
             builder.append(", ");
         }
         if (this.serviceReferences != null) {

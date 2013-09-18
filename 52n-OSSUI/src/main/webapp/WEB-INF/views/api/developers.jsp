@@ -162,6 +162,30 @@ GET OpenSensorSearch/scripts/schedule
 POST OpenSensorSearch/scripts/remote/server
 </code></pre>
 
+<p>For the SIR binding , there are many supported operations for example
+the operation GetCapabilities has the following request form</p>
+
+<div class="highlight highlight-xml"><pre><span class="nt">&lt;sir:GetCapabilities</span> <span class="na">service=</span><span class="s">"SIR"</span> <span class="na">xmlns:sir=</span><span class="s">"http://swsl.uni-muenster.de/sir"</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="na">xmlns=</span><span class="s">"http://www.opengis.net/ows/1.1"</span> <span class="na">xsi:schemaLocation=</span><span class="s">"http://swsl.uni-muenster.de/sir http://giv-genesis.uni-muenster.de/schemas/sir/sirAll.xsd http://www.opengis.net/ows/1.1 http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;AcceptVersions&gt;</span>
+    <span class="nt">&lt;Version&gt;</span>0.3.0<span class="nt">&lt;/Version&gt;</span>
+  <span class="nt">&lt;/AcceptVersions&gt;</span>
+  <span class="nt">&lt;Sections&gt;</span>
+    <span class="nt">&lt;Section&gt;</span>Operationsmetadata<span class="nt">&lt;/Section&gt;</span>
+    <span class="nt">&lt;Section&gt;</span>Contents<span class="nt">&lt;/Section&gt;</span>
+  <span class="nt">&lt;/Sections&gt;</span>
+<span class="nt">&lt;/sir:GetCapabilities&gt;</span>
+</pre></div>
+
+<h3>
+<a name="for-more-operations-please-check-the-sir-documentation" class="anchor" href="#for-more-operations-please-check-the-sir-documentation"><span class="octicon octicon-link"></span></a>For more operations please check the <a href="https://52north.org/twiki/bin/view/SensorWeb/SensorInstanceRegistry">SIR Documentation</a>.</h3>
+
+<p>Finally the OpenSensorSearch supports the following specifications from OpenSearch specifications</p>
+
+<ul>
+<li><a href="http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.1">Content assist</a></li>
+<li><a href="http://www.opensearch.org/Specifications/OpenSearch/Extensions/Geo/1.0/Draft_2">GeoLocation extension</a></li>
+</ul><p>For more information please check the <a href="https://wiki.52north.org/bin/view/Projects/GSoC2013OpenSensorSearch">wiki</a>.</p>
+
 <h3>
 <a name="contact" class="anchor" href="#contact"><span class="octicon octicon-link"></span></a>Contact</h3>
 

@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.n52.oss.id;
 
-package org.n52.sir.api;
 
-import java.util.Collection;
+import com.google.inject.AbstractModule;
 
-public interface IdentifierGenerator {
+public class IdentificationModule extends AbstractModule {
 
-    public abstract String generate();
-
-    public abstract Collection<String> generate(int count);
+    @Override
+    protected void configure() {
+        bind(IdentifierGenerator.class).to(ShortAlphanumericIdentifierGenerator.class);
+    }
 
 }

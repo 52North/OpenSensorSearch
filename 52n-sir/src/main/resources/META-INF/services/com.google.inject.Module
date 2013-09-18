@@ -1,5 +1,5 @@
 org.n52.oss.guice.log.LoggerModule
-org.n52.oss.guice.UtilModule
+org.n52.oss.id.IdentificationModule
 org.n52.oss.config.ConfigModule
 org.n52.sir.ConfigModule
 org.n52.sir.ListenerModule

@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.oss.guice;
 
-import org.n52.sir.api.IdentifierGenerator;
-import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
+package org.n52.oss.id;
 
-import com.google.inject.AbstractModule;
+import java.util.Collection;
 
-// TODO move module to own package
-public class UtilModule extends AbstractModule {
+public interface IdentifierGenerator {
 
-    @Override
-    protected void configure() {
-        bind(IdentifierGenerator.class).to(ShortAlphanumericIdentifierGenerator.class);
-    }
+    public abstract String generate();
+
+    public abstract Collection<String> generate(int count);
 
 }

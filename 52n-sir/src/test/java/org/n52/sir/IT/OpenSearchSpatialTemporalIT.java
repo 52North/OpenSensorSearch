@@ -200,4 +200,35 @@ public class OpenSearchSpatialTemporalIT {
         }
 
     }
+
+    public void testTimeInValidRangeAndLocationInValidRange() throws ClientProtocolException, IOException
+    {
+        String query = temporal_search_query + "dtstart=" + TEST_START_DATE + "&dtend=" + TEST_END_DATE;
+        query += "&lat=" + TEST_LAT + "&lon=" + TEST_LNG + "&radius=" + TEST_RADIUS + "&httpAccept=application%2Fjson";
+        org.apache.http.client.HttpClient client = new DefaultHttpClient();
+        HttpGet get = new HttpGet(temporal_search_query);
+
+        HttpResponse response = client.execute(get);
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        String s;
+        while ((s = reader.readLine()) != null)
+            builder.append(s);
+
+        log.debug(builder.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        SearchResult result = mapper.readValue(builder.toString(), SearchResult.class);
+
+        Iterator<SearchResultElement> iter = result.getResults().iterator();
+        while (iter.hasNext()) {
+            SearchResultElement element = iter.next();
+            double[] latLng = element.getSensorDescription().getBoundingBox().getCenter();
+            long start = element.getBeginDate().getTime();
+            long end = element.getEndDate().getTime();
+            assertThat(haversine(latLng[0], latLng[1], TEST_LAT, TEST_LNG), lessThan(TEST_RADIUS));
+            assertThat(start, is(both(lessThanOrEqualTo(TEST_END_DATE)).and(greaterThanOrEqualTo(TEST_START_DATE))));
+            assertThat(end, is(both(lessThanOrEqualTo(TEST_END_DATE)).and(greaterThanOrEqualTo(TEST_START_DATE))));
+        }
+
+    }
 }

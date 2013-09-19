@@ -33,7 +33,7 @@ public class TestObjectGenerator {
 
     public static SearchResultElement getSearchResultElement() {
         SearchResultElement resultElement = new SearchResultElement();
-        resultElement.setSensorIdInSir("001");
+        resultElement.setSensorId("001");
         Collection<ServiceReference> references = new ArrayList<ServiceReference>();
         references.add(getServiceReference());
         resultElement.setServiceReferences(references);
@@ -45,7 +45,7 @@ public class TestObjectGenerator {
 
     public static SearchResultElement getSearchResultElement2() {
         SearchResultElement resultElement = new SearchResultElement();
-        resultElement.setSensorIdInSir("002");
+        resultElement.setSensorId("002");
         Collection<ServiceReference> references = new ArrayList<ServiceReference>();
         references.add(getServiceReference());
         resultElement.setServiceReferences(references);

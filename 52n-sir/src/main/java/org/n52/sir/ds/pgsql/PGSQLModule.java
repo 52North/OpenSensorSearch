@@ -21,6 +21,7 @@ import java.util.Properties;
 
 import org.n52.oss.config.ConfigModule;
 import org.n52.sir.ds.IDAOFactory;
+import org.n52.sir.ds.IGetCapabilitiesDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,8 @@ public class PGSQLModule extends AbstractModule {
         bind(PGConnectionPool.class).toProvider(DAOFactory.class);
 
         bind(ISearchSensorDAO.class).to(PGSQLSearchSensorDAO.class);
+        bind(IGetCapabilitiesDAO.class).to(PGSQLGetCapabilitiesDAO.class);
+        // TODO bind more DAO implementations
 
         log.debug("Configured {}", this);
     }

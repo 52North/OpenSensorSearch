@@ -235,8 +235,10 @@
 				<!-- </dependency> -->
 				<!-- </dependencies> -->
 			</plugin>
-<!-- 
 			<plugin>
+				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
+				<!-- run "mvn license:check" to check -->
+				<!-- run "mvn license:format" to add to the files -->
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
@@ -286,7 +288,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			-->
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -739,11 +741,6 @@
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-bundle</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>

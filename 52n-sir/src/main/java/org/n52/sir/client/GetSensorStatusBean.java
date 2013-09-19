@@ -71,7 +71,7 @@ public class GetSensorStatusBean extends TestClientBean {
 
     private String searchText = "";
 
-    private String sensorIDInSIR = "";
+    private String sensorId = "";
 
     private String serviceCriteriaType = "";
 
@@ -99,11 +99,6 @@ public class GetSensorStatusBean extends TestClientBean {
 
     private String upperCorner = "";
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.client.beans.AbstractBean#buildRequest()
-     */
     @Override
     public void buildRequest() {
         this.responseString = "";
@@ -124,9 +119,8 @@ public class GetSensorStatusBean extends TestClientBean {
         if (isUsingIdentification) {
             SensorIdentification sensIdent = request.addNewSensorIdentification();
 
-            // sensorIDInSIR
-            if ( !this.sensorIDInSIR.isEmpty()) {
-                sensIdent.setSensorIDInSIR(this.sensorIDInSIR);
+            if ( !this.sensorId.isEmpty()) {
+                sensIdent.setSensorIDInSIR(this.sensorId);
             }
 
             // serviceDescription
@@ -320,212 +314,119 @@ public class GetSensorStatusBean extends TestClientBean {
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
     }
 
-    /**
-     * 
-     * @param string
-     * @return
-     * @throws NumberFormatException
-     */
     private double checkNumber(String string) throws NumberFormatException {
         double number = Double.parseDouble(string);
         return number;
     }
 
-    /**
-     * @return the isBetweenLowerBoundary
-     */
     public String getIsBetweenLowerBoundary() {
         return this.isBetweenLowerBoundary;
     }
 
-    /**
-     * @return the isBetweenUpperBoundary
-     */
     public String getIsBetweenUpperBoundary() {
         return this.isBetweenUpperBoundary;
     }
 
-    /**
-     * @return the isEqualTo
-     */
     public String getIsEqualTo() {
         return this.isEqualTo;
     }
 
-    /**
-     * @return the isGreaterThan
-     */
     public String getIsGreaterThan() {
         return this.isGreaterThan;
     }
 
-    /**
-     * @return the isGreaterThanOrEqualTo
-     */
     public String getIsGreaterThanOrEqualTo() {
         return this.isGreaterThanOrEqualTo;
     }
 
-    /**
-     * @return the isLessThan
-     */
     public String getIsLessThan() {
         return this.isLessThan;
     }
 
-    /**
-     * @return the isLessThanOrEqualTo
-     */
     public String getIsLessThanOrEqualTo() {
         return this.isLessThanOrEqualTo;
     }
 
-    /**
-     * @return the isNotEqualTo
-     */
     public String getIsNotEqualTo() {
         return this.isNotEqualTo;
     }
 
-    /**
-     * @return the lowerCorner
-     */
     public String getLowerCorner() {
         return this.lowerCorner;
     }
 
-    /**
-     * 
-     * @return
-     * @return
-     */
     public SirMatchingType[] getMatchingTypes() {
         return SirMatchingType.values();
     }
 
-    /**
-     * @return the phenomenon
-     */
     public String getPhenomenonName() {
         return this.phenomenonName;
     }
 
-    /**
-     * @return the propertyName
-     */
     public String getPropertyName() {
         return this.propertyName;
     }
 
-    /**
-     * @return the searchText
-     */
     public String getSearchText() {
         return this.searchText;
     }
 
-    /**
-     * @return the sensorIDInSIR
-     */
-    public String getSensorIDInSIR() {
-        return this.sensorIDInSIR;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @return the serviceCriteriaType
-     */
     public String getServiceCriteriaType() {
         return this.serviceCriteriaType;
     }
 
-    /**
-     * @return the serviceCriteriaURL
-     */
     public String getServiceCriteriaURL() {
         return this.serviceCriteriaURL;
     }
 
-    /**
-     * @return the serviceSpecificSensorID
-     */
     public String getServiceSpecificSensorID() {
         return this.serviceSpecificSensorID;
     }
 
-    /**
-     * @return the serviceType
-     */
     public String getServiceType() {
         return this.serviceType;
     }
 
-    /**
-     * @return the serviceURL
-     */
     public String getServiceURL() {
         return this.serviceURL;
     }
 
-    /**
-     * @return the sorMatchingTypeString
-     */
     public String getSorMatchingTypeString() {
         return this.sorParamMatchingTypeString;
     }
 
-    /**
-     * @return the sorParamDepth
-     */
     public int getSorParamDepth() {
         return this.sorParamDepth;
     }
 
-    /**
-     * @return the sorParamURL
-     */
     public String getSorParamURL() {
         return this.sorParamURL;
     }
 
-    /**
-     * @return the timePeriodEnd
-     */
     public String getTimePeriodEnd() {
         return this.timePeriodEnd;
     }
 
-    /**
-     * @return the timePeriodStart
-     */
     public String getTimePeriodStart() {
         return this.timePeriodStart;
     }
 
-    /**
-     * @return the uom
-     */
     public String getUom() {
         return this.uom;
     }
 
-    /**
-     * @return the uomConstraint
-     */
     public String getUomConstraint() {
         return this.uomConstraint;
     }
 
-    /**
-     * @return the upperCorner
-     */
     public String getUpperCorner() {
         return this.upperCorner;
     }
 
-    /**
-     * 
-     * @return
-     */
     private boolean isSearchCriteria() {
         return Tools.atLeastOneIsNotEmpty(new String[] {this.serviceCriteriaURL,
                                                         this.searchText,
@@ -537,221 +438,113 @@ public class GetSensorStatusBean extends TestClientBean {
                                                         this.timePeriodStart});
     }
 
-    /**
-     * 
-     * @return
-     */
     private boolean isSensorIdentification() {
-        return Tools.atLeastOneIsNotEmpty(new String[] {this.sensorIDInSIR,
+        return Tools.atLeastOneIsNotEmpty(new String[] {this.sensorId,
                                                         this.serviceURL,
                                                         this.serviceType,
                                                         this.serviceSpecificSensorID});
     }
 
-    /**
-     * @param isBetweenLowerBoundary
-     *        the isBetweenLowerBoundary to set
-     */
     public void setIsBetweenLowerBoundary(String isBetweenLowerBoundary) {
         this.isBetweenLowerBoundary = isBetweenLowerBoundary;
     }
 
-    /**
-     * @param isBetweenUpperBoundary
-     *        the isBetweenUpperBoundary to set
-     */
     public void setIsBetweenUpperBoundary(String isBetweenUpperBoundary) {
         this.isBetweenUpperBoundary = isBetweenUpperBoundary;
     }
 
-    /**
-     * @param isEqualTo
-     *        the isEqualTo to set
-     */
     public void setIsEqualTo(String isEqualTo) {
         this.isEqualTo = isEqualTo;
     }
 
-    /**
-     * @param isGreaterThan
-     *        the isGreaterThan to set
-     */
     public void setIsGreaterThan(String isGreaterThan) {
         this.isGreaterThan = isGreaterThan;
     }
 
-    /**
-     * @param isGreaterThanOrEqualTo
-     *        the isGreaterThanOrEqualTo to set
-     */
     public void setIsGreaterThanOrEqualTo(String isGreaterThanOrEqualTo) {
         this.isGreaterThanOrEqualTo = isGreaterThanOrEqualTo;
     }
 
-    /**
-     * @param isLessThan
-     *        the isLessThan to set
-     */
     public void setIsLessThan(String isLessThan) {
         this.isLessThan = isLessThan;
     }
 
-    /**
-     * @param isLessThanOrEqualTo
-     *        the isLessThanOrEqualTo to set
-     */
     public void setIsLessThanOrEqualTo(String isLessThanOrEqualTo) {
         this.isLessThanOrEqualTo = isLessThanOrEqualTo;
     }
 
-    /**
-     * @param isNotEqualTo
-     *        the isNotEqualTo to set
-     */
     public void setIsNotEqualTo(String isNotEqualTo) {
         this.isNotEqualTo = isNotEqualTo;
     }
 
-    /**
-     * @param lowerCorner
-     *        the lowerCorner to set
-     */
     public void setLowerCorner(String lowerCorner) {
         this.lowerCorner = lowerCorner;
     }
 
-    /**
-     * @param phenomenon
-     *        the phenomenon to set
-     */
     public void setPhenomenonName(String name) {
         this.phenomenonName = name;
     }
 
-    /**
-     * @param propertyName
-     *        the propertyName to set
-     */
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
 
-    /**
-     * @param searchText
-     *        the searchText to set
-     */
     public void setSearchText(String searchText) {
         this.searchText = searchText;
     }
 
-    /**
-     * @param sensorIDInSIR
-     *        the sensorIDInSIR to set
-     */
-    public void setSensorIDInSIR(String sensorIDInSIR) {
-        this.sensorIDInSIR = sensorIDInSIR;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 
-    /**
-     * @param serviceCriteriaType
-     *        the serviceCriteriaType to set
-     */
     public void setServiceCriteriaType(String serviceCriteriaType) {
         this.serviceCriteriaType = serviceCriteriaType;
     }
 
-    /**
-     * @param serviceCriteriaURL
-     *        the serviceCriteriaURL to set
-     */
     public void setServiceCriteriaURL(String serviceCriteriaURL) {
         this.serviceCriteriaURL = serviceCriteriaURL;
     }
 
-    /**
-     * @param serviceSpecificSensorID
-     *        the serviceSpecificSensorID to set
-     */
     public void setServiceSpecificSensorID(String serviceSpecificSensorID) {
         this.serviceSpecificSensorID = serviceSpecificSensorID;
     }
 
-    /**
-     * @param serviceType
-     *        the serviceType to set
-     */
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
-    /**
-     * @param serviceURL
-     *        the serviceURL to set
-     */
     public void setServiceURL(String serviceURL) {
         this.serviceURL = serviceURL;
     }
 
-    /**
-     * @param sorMatchingTypeString
-     *        the sorMatchingTypeString to set
-     */
     public void setSorMatchingTypeString(String sorMatchingTypeString) {
         this.sorParamMatchingTypeString = sorMatchingTypeString;
     }
 
-    /**
-     * @param sorParamDepth
-     *        the sorParamDepth to set
-     */
     public void setSorParamDepth(int sorParamDepth) {
         this.sorParamDepth = sorParamDepth;
     }
 
-    /**
-     * @param sorParamURL
-     *        the sorParamURL to set
-     */
     public void setSorParamURL(String sorParamURL) {
         this.sorParamURL = sorParamURL;
     }
 
-    /**
-     * @param timePeriodEnd
-     *        the timePeriodEnd to set
-     */
     public void setTimePeriodEnd(String timePeriodEnd) {
         this.timePeriodEnd = timePeriodEnd;
     }
 
-    /**
-     * @param timePeriodStart
-     *        the timePeriodStart to set
-     */
     public void setTimePeriodStart(String timePeriodStart) {
         this.timePeriodStart = timePeriodStart;
     }
 
-    /**
-     * @param uom
-     *        the uom to set
-     */
     public void setUom(String uom) {
         this.uom = uom;
     }
 
-    /**
-     * @param uomConstraint
-     *        the uomConstraint to set
-     */
     public void setUomConstraint(String uomConstraint) {
         this.uomConstraint = uomConstraint;
     }
 
-    /**
-     * @param upperCorner
-     *        the upperCorner to set
-     */
     public void setUpperCorner(String upperCorner) {
         this.upperCorner = upperCorner;
     }

@@ -66,9 +66,9 @@
 							</tr>
 							<tr>
 								<td class="inputTitle">Sensor ID In SIR</td>
-								<td><input type="text" name="sensorIDinSIR"
+								<td><input type="text" name="sensorId"
 									class="inputField"
-									value="<%=updateSensorDescr.getSensorIDinSIR()%>" /></td>
+									value="<%=updateSensorDescr.getSensorId()%>" /></td>
 							</tr>
 						</table>
 					</li>

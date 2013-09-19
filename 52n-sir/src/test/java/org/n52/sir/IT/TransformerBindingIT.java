@@ -39,7 +39,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 
-public class validatorBindingIT {
+public class TransformerBindingIT {
 	
 	@Test
 	public void readValidSensorMLAndValidate() throws IOException{
@@ -50,10 +50,10 @@ public class validatorBindingIT {
 		while((s=reader.readLine())!=null)
 			builder.append(s);
 		String sensorML = builder.toString();
-		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/api/check/sensorML");
+		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/convert/");
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair("sensor", sensorML));
-		pairs.add(new BasicNameValuePair("format","json"));
+		pairs.add(new BasicNameValuePair("output","ebrim"));
 		post.setEntity(new UrlEncodedFormEntity(pairs));
 		
 		HttpClient client = new DefaultHttpClient();
@@ -62,39 +62,9 @@ public class validatorBindingIT {
 		reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
 		while((s=reader.readLine())!=null)
 			result.append(s);
-		StatusResponse sr = new Gson().fromJson(result.toString(), StatusResponse.class);
+		//TODO yakoub : complete teh checking here
 		
-		assertEquals("valid",sr.status);
-	}
-	@Test
-	public void readInValidSensorMLAndValidate() throws IOException{
-		File f = new File(ClassLoader.getSystemResource("Requests/testSensor.xml").getFile());
-		BufferedReader reader = new BufferedReader(new FileReader(f));
-		String s = null;
-		StringBuilder builder = new StringBuilder();
-		while((s=reader.readLine())!=null)
-			builder.append(s);
-		String sensorML = builder.toString();
-		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/api/check/sensorML");
-		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		pairs.add(new BasicNameValuePair("sensor", sensorML));
-		pairs.add(new BasicNameValuePair("format","json"));
-		post.setEntity(new UrlEncodedFormEntity(pairs));
-		
-		HttpClient client = new DefaultHttpClient();
-		HttpResponse resp = client.execute(post);
-		StringBuilder result = new StringBuilder();
-		reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-		while((s=reader.readLine())!=null)
-			result.append(s);
-		System.out.println(result.toString());
-		StatusResponse sr = new Gson().fromJson(result.toString(), StatusResponse.class);		
-		assertEquals("invalid",sr.status);
 	}
 	
-	public class StatusResponse{
-		public String status;
-		public String error;
-	}
 
 }

@@ -40,15 +40,15 @@ public interface ISearchSensorDAO {
     public Collection<SirSearchResultElement> getAllSensors(boolean simpleReponse) throws OwsExceptionReport;
 
     /**
-     * Search a sensor by given sensorID in the Sir and returns the sensor
+     * Search a sensor by given internal sensor identification and returns the sensor
      * 
-     * @param sensorIdInSir
-     *        the sensorID in the Sir
+     * @param sensorId
+     *        the identifier provided by this service
      * @param b
      * @return Returns the Sensor
      * @throws OwsExceptionReport
      */
-    public SirSearchResultElement getSensorBySensorID(String sensorIdInSir, boolean simpleReponse) throws OwsExceptionReport;
+    public SirSearchResultElement getSensorBySensorID(String sensorId, boolean simpleReponse) throws OwsExceptionReport;
 
     /**
      * Search a sensor by given service description and returns the sensor

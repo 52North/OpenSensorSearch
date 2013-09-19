@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.net.MalformedURLException;
@@ -34,43 +35,26 @@ import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLGetCapabilitiesDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DB
-     */
     private PGConnectionPool cpool;
 
-    /**
-     * constructor
-     * 
-     * @param cpool
-     *        the connection pool containing the connections to the DB
-     */
+    @Inject
     public PGSQLGetCapabilitiesDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
+
+        log.debug("NEW {}", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getCatalogConnections()
-     */
     @Override
     public Collection<ICatalogConnection> getCatalogConnections() throws OwsExceptionReport {
-        ArrayList<ICatalogConnection> result = new ArrayList<ICatalogConnection>();
-
-        Connection con = null;
-        Statement stmt = null;
+        ArrayList<ICatalogConnection> result = new ArrayList<>();
 
         StringBuffer query = new StringBuffer();
-
-        // build query
         query.append("SELECT ");
         query.append(PGDAOConstants.catalogIdSir);
         query.append(", ");
@@ -83,13 +67,10 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         query.append(PGDAOConstants.catalog);
         query.append(";");
 
-        // execute query
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + query.toString());
-            ResultSet rs = stmt.executeQuery(query.toString());
+        try (Connection con = this.cpool.getConnection();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query.toString());) {
+            log.debug(">>>Database Query: {}", query.toString());
 
             // if no phenomenon available give back empty list
             if (rs == null) {
@@ -122,46 +103,18 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
             throw se;
         }
 
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            // return connection
-            if (con != null)
-                this.cpool.returnConnection(con);
-        }
-
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getPhenomenaCount()
-     */
     @Override
     public long getPhenomenonCount() throws OwsExceptionReport {
         String tableName = PGDAOConstants.phenomenon;
         return getTableSize(tableName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getPhenomenonURNs()
-     */
     @Override
     public Collection<String> getPhenomenonURNs() throws OwsExceptionReport {
-        ArrayList<String> result = new ArrayList<String>();
-
-        Connection con = null;
-        Statement stmt = null;
+        ArrayList<String> result = new ArrayList<>();
 
         StringBuffer query = new StringBuffer();
 
@@ -169,25 +122,22 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         query.append("SELECT " + PGDAOConstants.phenomenonUrn + " FROM " + PGDAOConstants.phenomenon + ";");
 
         // execute query
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             if (log.isDebugEnabled())
                 log.debug(">>>Database Query: " + query.toString());
-            ResultSet rs = stmt.executeQuery(query.toString());
 
-            // if no phenomenon available give back empty list
-            if (rs == null) {
-                return result;
+            try (ResultSet rs = stmt.executeQuery(query.toString());) {
+                // if no phenomenon available give back empty list
+                if (rs == null) {
+                    return result;
+                }
+
+                // get result as string
+                while (rs.next()) {
+                    String phenom = rs.getString(PGDAOConstants.phenomenonUrn);
+                    result.add(phenom);
+                }
             }
-
-            // get result as string
-            while (rs.next()) {
-                String phenom = rs.getString(PGDAOConstants.phenomenonUrn);
-
-                result.add(phenom);
-            }
-
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
@@ -196,61 +146,26 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
             throw se;
         }
 
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            // return connection
-            if (con != null)
-                this.cpool.returnConnection(con);
-        }
-
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getSensorsCount()
-     */
     @Override
     public long getSensorCount() throws OwsExceptionReport {
         String tableName = PGDAOConstants.sensor;
         return getTableSize(tableName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getServicesCount()
-     */
     @Override
     public long getServiceCount() throws OwsExceptionReport {
         String tableName = PGDAOConstants.service;
         return getTableSize(tableName);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IGetCapabilitiesDAO#getServices()
-     */
     @Override
     public Collection<SirService> getServices() throws OwsExceptionReport {
-        ArrayList<SirService> result = new ArrayList<SirService>();
-
-        Connection con = null;
-        Statement stmt = null;
+        ArrayList<SirService> result = new ArrayList<>();
 
         StringBuffer query = new StringBuffer();
-
-        // build query
         query.append("SELECT ");
         query.append(PGDAOConstants.serviceUrl);
         query.append(", ");
@@ -259,26 +174,22 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         query.append(PGDAOConstants.service);
         query.append(";");
 
-        // execute query
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + query.toString());
-            ResultSet rs = stmt.executeQuery(query.toString());
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", query.toString());
 
-            // if no phenomenon available give back empty list
-            if (rs == null) {
-                return result;
+            try (ResultSet rs = stmt.executeQuery(query.toString());) {
+                // if no phenomenon available give back empty list
+                if (rs == null) {
+                    return result;
+                }
+
+                // get result as string
+                while (rs.next()) {
+                    SirService serv = new SirService(rs.getString(PGDAOConstants.serviceUrl),
+                                                     rs.getString(PGDAOConstants.serviceType));
+                    result.add(serv);
+                }
             }
-
-            // get result as string
-            while (rs.next()) {
-                SirService serv = new SirService(rs.getString(PGDAOConstants.serviceUrl),
-                                                 rs.getString(PGDAOConstants.serviceType));
-                result.add(serv);
-            }
-
         }
         catch (OwsExceptionReport se) {
             log.error("Error while query services for the getCapabilities from database!", se);
@@ -291,60 +202,31 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
             throw se;
         }
 
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            // return connection
-            if (con != null)
-                this.cpool.returnConnection(con);
-        }
-
         return result;
     }
 
-    /**
-     * @param tableName
-     * @return
-     * @throws OwsExceptionReport
-     */
     private long getTableSize(String tableName) throws OwsExceptionReport {
         long result = Long.MIN_VALUE;
 
-        Connection con = null;
-        Statement stmt = null;
-
         StringBuffer query = new StringBuffer();
-
-        // build query
         query.append("SELECT COUNT(*) FROM ");
         query.append(tableName);
         query.append(";");
 
-        // execute query
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + query.toString());
-            ResultSet rs = stmt.executeQuery(query.toString());
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", query.toString());
 
-            // if no phenomenon available give back empty list
-            if (rs == null) {
-                return result;
+            try (ResultSet rs = stmt.executeQuery(query.toString());) {
+                // if no phenomenon available give back empty list
+                if (rs == null) {
+                    return result;
+                }
+
+                // get result as long
+                while (rs.next()) {
+                    result = rs.getLong(1);
+                }
             }
-
-            // get result as long
-            while (rs.next()) {
-                result = rs.getLong(1);
-            }
-
         }
         catch (OwsExceptionReport se) {
             log.error("Error while query services for " + tableName + " from database!", se);
@@ -355,21 +237,6 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
             log.error("Error while query services for " + tableName + " from database!", sqle);
             se.addCodedException(ExceptionCode.NoApplicableCode, null, sqle);
             throw se;
-        }
-
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            // return connection
-            if (con != null)
-                this.cpool.returnConnection(con);
         }
 
         return result;

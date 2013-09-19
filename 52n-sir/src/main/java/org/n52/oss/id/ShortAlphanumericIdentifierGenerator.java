@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package org.n52.sir.util;
+package org.n52.oss.id;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.n52.sir.api.IdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,20 +33,14 @@ public class ShortAlphanumericIdentifierGenerator implements IdentifierGenerator
         log.debug("NEW {}", this);
     }
 
-    /* (non-Javadoc)
-     * @see org.n52.sir.util.IdentifierGenerator#generate()
-     */
     @Override
     public String generate() {
         return RandomStringUtils.randomAlphanumeric(ID_LENGTH).toLowerCase();
     }
     
-    /* (non-Javadoc)
-     * @see org.n52.sir.util.IdentifierGenerator#generate(int)
-     */
     @Override
     public Collection<String> generate(int count) {
-        ArrayList<String> ids = new ArrayList<String>();
+        ArrayList<String> ids = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             ids.add(generate());
         }

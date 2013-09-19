@@ -30,11 +30,11 @@ public interface IDescribeSensorDAO {
     /**
      * Returns a sensor description by a given sensorID in SIR
      * 
-     * @param sensorIdInSir
-     *        the given sensorID
+     * @param sensorId
+     *        the given sensor identification
      * @return Returns the requested sensorMLDocument
      * @throws OwsExceptionReport
      */
-    public XmlObject getSensorDescription(String sensorIdInSir) throws OwsExceptionReport;
+    public XmlObject getSensorDescription(String sensorId) throws OwsExceptionReport;
 
 }

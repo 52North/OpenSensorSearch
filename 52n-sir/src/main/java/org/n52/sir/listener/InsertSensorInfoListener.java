@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 
+import org.n52.oss.id.IdentifierGenerator;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirInfoToBeInserted;
 import org.n52.sir.datastructure.SirInfoToBeInserted_SensorDescription;
 import org.n52.sir.datastructure.SirInfoToBeInserted_ServiceReference;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
@@ -42,41 +44,35 @@ import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
  */
 public class InsertSensorInfoListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(InsertSensorInfoListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorInfo.name();
 
-    /**
-     * the data access object for the insertSensorInfo operation
-     */
     private IInsertSensorInfoDAO insSensInfoDao;
 
-    /**
-     * the factory for validators
-     */
     private IValidatorFactory validatorFactory;
 
-    public InsertSensorInfoListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+    private IdentifierGenerator identifierGenerator;
 
-        IDAOFactory factory = configurator.getFactory();
-        this.validatorFactory = configurator.getValidatorFactory();
+    @Inject
+    public InsertSensorInfoListener(IdentifierGenerator idGen, SirConfigurator configurator) {
+        IDAOFactory factory = configurator.getInstance().getFactory();
+        this.validatorFactory = configurator.getInstance().getValidatorFactory();
+        this.identifierGenerator = idGen;
 
         try {
             this.insSensInfoDao = factory.insertSensorInfoDAO();
         }
         catch (OwsExceptionReport se) {
             log.error("Error while creating the insertSensorInfoDAO", se);
-            throw se;
         }
     }
 
@@ -98,49 +94,69 @@ public class InsertSensorInfoListener implements ISirRequestListener {
      * @param sensor
      * @return
      * @throws OwsExceptionReport
-     * @throws IOException 
+     * @throws IOException
      */
     private void insertSensor(SirInsertSensorInfoResponse response,
                               Collection<SirServiceReference> serviceRefs,
                               SirSensor sensor) throws OwsExceptionReport, IOException {
-    	log.info("InsertSensorCalled");
+
+        String id = this.identifierGenerator.generate();
+        sensor.setInternalSensorId(id);
+        log.debug("InsertSensor called, generated new ID {}", id);
+
         if (sensor.getSensorMLDocument() != null) {
             IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
             boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
-            log.debug("The sensor is valid: " + isValid);
+            log.debug("The sensor is valid: {}", isValid);
+
             if (isValid) {
-            	/*
-            	 * Inserts into solr
-            	 */
-            	SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-            	String sensorIdInSirSolr = dao.insertSensor(sensor);
-            	String sensorIdInSir = sensorIdInSirSolr;
-                if (sensorIdInSir != null) {
+
+                // TODO Daniel: implement listener mechanism or event bus to support several databases
+                // dynamically
+
+                /*
+                 * Inserts into solr
+                 */
+                SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+                String sensorIdInSolr = dao.insertSensor(sensor);
+                log.debug("Inserted sensor in solr: " + sensorIdInSolr);
+                if (sensorIdInSolr == null)
+                    log.warn("Could not insert sensor to solr.");
+
+                /*
+                 * Insert to database
+                 */
+                String sensorIdInDB = this.insSensInfoDao.insertSensor(sensor);
+                log.debug("Inserted sensor in database: " + sensorIdInDB);
+
+                if (// sensorIdInSolr != null && sensorIdInSolr.equals(sensorIdInDB) &&
+                sensorIdInDB != null) {
+                    String internalSensorId = sensorIdInDB;
                     response.setNumberOfNewSensors(response.getNumberOfNewSensors() + 1);
-                    response.getInsertedSensors().add(sensorIdInSir);
-                    log.debug("Inserted Sensor: " + sensorIdInSir);
-                    log.debug("Inserted sensor in solr:"+sensorIdInSirSolr);
-                    if (log.isDebugEnabled())
-                        log.debug("Inserted Sensor: " + sensorIdInSir);
+                    response.getInsertedSensors().add(internalSensorId);
+                    log.debug("Inserted Sensor und updated response for {}", internalSensorId);
 
                     if (serviceRefs != null) {
                         for (SirServiceReference servRef : serviceRefs) {
-                            this.insSensInfoDao.addNewReference(new SirSensorIDInSir(sensorIdInSir), servRef);
+                            this.insSensInfoDao.addNewReference(new InternalSensorID(internalSensorId), servRef);
                             response.setNumberOfNewServiceReferences(response.getNumberOfNewServiceReferences() + 1);
                         }
-                        if (log.isDebugEnabled())
-                            log.debug("Inserted " + serviceRefs.size() + " for sensor " + sensorIdInSir + ": "
-                                    + serviceRefs);
+
+                        log.debug("Inserted {} references for sensor {}: {}",
+                                  serviceRefs.size(),
+                                  internalSensorId,
+                                  serviceRefs);
                     }
                 }
-                else {
-                    log.error("Could not insert sensor to database!");
-                }
+                else
+                    log.error("Could not insert sensor to databases, problem with ids: solr = {}, pg = {}",
+                              sensorIdInSolr,
+                              sensorIdInDB);
+
             }
-            else {
-                log.error("SensorML is not profile conform: "
-                        + String.valueOf(profileValidator.getValidationFailuresAsString()));
-            }
+            else
+                log.error("SensorML is not profile conform: {}",
+                          String.valueOf(profileValidator.getValidationFailuresAsString()));
 
             profileValidator = null;
         }
@@ -149,7 +165,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
             se.addCodedException(OwsExceptionReport.ExceptionCode.MissingParameterValue,
                                  "InsertSensorInfoListener.receiveRequest()",
                                  "Missing parameter: To insert a sensor, a sensorInfo element is required!");
-            log.error("OWS:",se);
+            log.error("OWS:", se);
             throw se;
         }
     }
@@ -164,9 +180,8 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                                          SirInfoToBeInserted_ServiceReference newReference) throws OwsExceptionReport {
         Collection<SirServiceReference> referenceArray = newReference.getServiceReferences();
         for (SirServiceReference sirServiceReference : referenceArray) {
-            String id = this.insSensInfoDao.addNewReference(newReference.getSensorIDinSIR(), sirServiceReference);
-            if (log.isDebugEnabled())
-                log.debug("Inserted service reference for sensor " + id + ": " + sirServiceReference.getService());
+            String id = this.insSensInfoDao.addNewReference(newReference.getID(), sirServiceReference);
+            log.debug("Inserted service reference for sensor {}: {}", id, sirServiceReference.getService());
 
             response.setNumberOfNewServiceReferences(response.getNumberOfNewServiceReferences() + 1);
         }
@@ -179,6 +194,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
      */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
+        log.debug("** Receiving request: {}", request);
 
         SirInsertSensorInfoRequest sirRequest = (SirInsertSensorInfoRequest) request;
         SirInsertSensorInfoResponse response = new SirInsertSensorInfoResponse();
@@ -189,18 +205,16 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                 if (infoToBeInserted instanceof SirInfoToBeInserted_SensorDescription) {
                     SirInfoToBeInserted_SensorDescription newSensor = (SirInfoToBeInserted_SensorDescription) infoToBeInserted;
                     SirSensor sensor = SensorMLDecoder.decode(newSensor.getSensorDescription());
-                    
+
                     sensor.setLastUpdate(new Date());
 
                     Collection<SirServiceReference> serviceReferences = newSensor.getServiceReferences();
 
-                    // INSERT
                     insertSensor(response, serviceReferences, sensor);
                 }
                 else if (infoToBeInserted instanceof SirInfoToBeInserted_ServiceReference) {
                     SirInfoToBeInserted_ServiceReference newReference = (SirInfoToBeInserted_ServiceReference) infoToBeInserted;
 
-                    // INSERT
                     insertServiceReferences(response, newReference);
                 }
             }
@@ -208,6 +222,8 @@ public class InsertSensorInfoListener implements ISirRequestListener {
         catch (OwsExceptionReport | IOException e) {
             return new ExceptionResponse(e);
         }
+
+        log.debug("** Returning response: {}", response);
 
         return response;
     }

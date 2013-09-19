@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
 
 import net.opengis.gml.x32.TimeInstantType;
@@ -39,17 +40,12 @@ public class InsertSensorStatusBean extends TestClientBean {
 
     private String propertyValue = "";
 
-    private String sensorIDInSIRValue = "";
+    private String sensorIdValue = "";
 
     private String timestamp = "";
 
     private String uom = "";
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.client.beans.AbstractBean#buildRequest()
-     */
     @Override
     public void buildRequest() {
         this.responseString = "";
@@ -61,9 +57,8 @@ public class InsertSensorStatusBean extends TestClientBean {
 
         StatusDescription statusDesc = request.addNewStatusDescription();
 
-        // sensorIDInSIR
-        if ( !this.sensorIDInSIRValue.isEmpty()) {
-            statusDesc.setSensorIDInSIR(this.sensorIDInSIRValue);
+        if ( !this.sensorIdValue.isEmpty()) {
+            statusDesc.setSensorIDInSIR(this.sensorIdValue);
         }
 
         // status
@@ -95,77 +90,42 @@ public class InsertSensorStatusBean extends TestClientBean {
             this.requestString = XmlTools.validateAndIterateErrors(requestDoc);
     }
 
-    /**
-     * @return the propertyName
-     */
     public String getPropertyName() {
         return this.propertyName;
     }
 
-    /**
-     * @return the propertyValue
-     */
     public String getPropertyValue() {
         return this.propertyValue;
     }
 
-    /**
-     * @return the sensorIDInSIRValue
-     */
-    public String getSensorIDInSIRValue() {
-        return this.sensorIDInSIRValue;
+    public String getSensorIdValue() {
+        return this.sensorIdValue;
     }
 
-    /**
-     * @return the timestamp
-     */
     public String getTimestamp() {
         return this.timestamp;
     }
 
-    /**
-     * @return the uom
-     */
     public String getUom() {
         return this.uom;
     }
 
-    /**
-     * @param propertyName
-     *        the propertyName to set
-     */
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
 
-    /**
-     * @param propertyValue
-     *        the propertyValue to set
-     */
     public void setPropertyValue(String propertyValue) {
         this.propertyValue = propertyValue;
     }
 
-    /**
-     * @param sensorIDInSIRValue
-     *        the sensorIDInSIRValue to set
-     */
-    public void setSensorIDInSIRValue(String sensorIDInSIRValue) {
-        this.sensorIDInSIRValue = sensorIDInSIRValue;
+    public void setSensorIdValue(String sensorIdValue) {
+        this.sensorIdValue = sensorIdValue;
     }
 
-    /**
-     * @param timestamp
-     *        the timestamp to set
-     */
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
-    /**
-     * @param uom
-     *        the uom to set
-     */
     public void setUom(String uom) {
         this.uom = uom;
     }

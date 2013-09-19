@@ -133,19 +133,19 @@ public class SirHarvestServiceResponse extends AbstractXmlResponse {
         // set collection of inserted sensors
         for (SirSensor inSens : this.insertedSensors) {
             InsertedSensor insertedSensor = harvServResp.addNewInsertedSensor();
-            insertedSensor.setSensorIDInSIR(inSens.getSensorIDInSIR());
+            insertedSensor.setSensorIDInSIR(inSens.getInternalSensorID());
             insertedSensor.setServiceSpecificSensorID(inSens.getServDescs().iterator().next().getServiceSpecificSensorId());
         }
         // set collection of deleted sensors
         for (SirSensor delSens : this.deletedSensors) {
             DeletedSensor deletedSensor = harvServResp.addNewDeletedSensor();
-            deletedSensor.setSensorIDInSIR(delSens.getSensorIDInSIR());
+            deletedSensor.setSensorIDInSIR(delSens.getInternalSensorID());
             deletedSensor.setServiceSpecificSensorID(delSens.getServDescs().iterator().next().getServiceSpecificSensorId());
         }
         // set collection of updated sensors
         for (SirSensor upSens : this.updatedSensors) {
             UpdatedSensor updatedSensor = harvServResp.addNewUpdatedSensor();
-            updatedSensor.setSensorIDInSIR(upSens.getSensorIDInSIR());
+            updatedSensor.setSensorIDInSIR(upSens.getInternalSensorID());
             updatedSensor.setServiceSpecificSensorID(upSens.getServDescs().iterator().next().getServiceSpecificSensorId());
         }
         // set collection of failed sensors

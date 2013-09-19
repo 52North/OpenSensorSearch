@@ -13,15 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.n52.sir.datastructure;
 
-package org.n52.sir.api;
+/**
+ * @author Jan Schulte
+ * 
+ */
+public class InternalSensorID extends SirSensorIdentification {
 
-import java.util.Collection;
+    private String id;
 
-public interface IdentifierGenerator {
+    public InternalSensorID() {
+        //
+    }
 
-    public abstract String generate();
+    public InternalSensorID(String id) {
+        this.id = id;
+    }
 
-    public abstract Collection<String> generate(int count);
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "InternalSensorID: " + this.id;
+    }
 
 }

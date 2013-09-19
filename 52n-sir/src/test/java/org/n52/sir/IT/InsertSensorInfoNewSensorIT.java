@@ -19,7 +19,10 @@
 
 package org.n52.sir.IT;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +38,8 @@ import org.junit.Test;
 import org.n52.oss.util.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.ows.OwsExceptionReport;
+import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
+import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 
@@ -47,34 +52,47 @@ public class InsertSensorInfoNewSensorIT {
         client = GuiceUtil.configureSirClient();
     }
 
+    private String sensorId;
+
     @Test
-    public void insertNewSensor() throws XmlException, IOException, OwsExceptionReport, HttpException {
-        File sensor = new File(ClassLoader.getSystemResource("AirBase-test.xml").getFile());
+    public void insertAirBaseSensor() throws XmlException, IOException, OwsExceptionReport, HttpException {
+        File sensor = new File(ClassLoader.getSystemResource("Requests/sir/testSensor-AirBase.xml").getFile());
         SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
         req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
         XmlObject res = client.xSendPostRequest(req);
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
-        System.out.println(resp);
-        assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
+        assertThat("one sensor was inserted",
+                   resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),
+                   is(equalTo(1)));
+        assertThat("no service reference was inserted",
+                   resp.getInsertSensorInfoResponse().getNumberOfInsertedServiceReferences(),
+                   is(equalTo(0)));
+        this.sensorId = resp.getInsertSensorInfoResponse().getInsertedSensors().getSensorIDInSIRArray(0);
     }
 
     @Test
-    public void insertSensorDirectly() throws XmlException, IOException, OwsExceptionReport, HttpException {
-        File f = new File(ClassLoader.getSystemResource("Requests/verifiedNewSensor.xml").getFile());
-        SensorMLDocument DOC = SensorMLDocument.Factory.parse(f);
+    public void insertTestSensorFromFile1() throws XmlException, IOException, OwsExceptionReport, HttpException {
+        File f = new File(ClassLoader.getSystemResource("Requests/sir/testSensor-1.xml").getFile());
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(f);
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
-        req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray()[0].getProcess());
+        req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(doc.getSensorML().getMemberArray()[0].getProcess());
         XmlObject res = client.xSendPostRequest(req);
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
-        assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
+        assertThat("one sensor was inserted",
+                   resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),
+                   is(equalTo(1)));
+        assertThat("no service reference was inserted",
+                   resp.getInsertSensorInfoResponse().getNumberOfInsertedServiceReferences(),
+                   is(equalTo(0)));
+        this.sensorId = resp.getInsertSensorInfoResponse().getInsertedSensors().getSensorIDInSIRArray(0);
     }
 
     @Test
-    public void insertSampleSensor() throws XmlException, IOException, OwsExceptionReport, HttpException {
-        File sensor = new File(ClassLoader.getSystemResource("Requests/testSensor.xml").getFile());
+    public void insertTestSensorFromFile() throws XmlException, IOException, OwsExceptionReport, HttpException {
+        File sensor = new File(ClassLoader.getSystemResource("Requests/sir/testSensor.xml").getFile());
         SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
 
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
@@ -82,14 +100,23 @@ public class InsertSensorInfoNewSensorIT {
         XmlObject res = client.xSendPostRequest(req);
         InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
 
-        assertNotEquals("Failed to insert sensor", resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(), 0);
+        assertThat("one sensor was inserted",
+                   resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),
+                   is(equalTo(1)));
+        assertThat("no service reference was inserted",
+                   resp.getInsertSensorInfoResponse().getNumberOfInsertedServiceReferences(),
+                   is(equalTo(0)));
+        this.sensorId = resp.getInsertSensorInfoResponse().getInsertedSensors().getSensorIDInSIRArray(0);
     }
 
     @After
-    public void cleanUp() {
-        /*
-         * TODO delete the sensor here
-         */
+    public void cleanUp() throws IOException, OwsExceptionReport, HttpException, XmlException {
+        DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.newInstance();
+        req.addNewDeleteSensorInfoRequest().addNewInfoToBeDeleted().addNewSensorIdentification().setSensorIDInSIR(this.sensorId);
+
+        XmlObject response = client.xSendPostRequest(req);
+        DeleteSensorInfoResponseDocument responseDoc = DeleteSensorInfoResponseDocument.Factory.parse(response.getDomNode());
+        assertTrue(responseDoc.validate());
     }
 
 }

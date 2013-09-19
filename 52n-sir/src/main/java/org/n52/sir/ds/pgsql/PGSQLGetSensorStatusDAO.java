@@ -25,11 +25,11 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirPropertyFilter;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
-import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirService;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirStatus;
@@ -295,7 +295,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(") AND (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -315,7 +315,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(" = ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(") AND (");
         query.append(PGDAOConstants.phenomenon);
         query.append(".");
@@ -329,7 +329,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         return query.toString();
     }
 
-    private String bySensorID(SirSensorIDInSir sensorId) {
+    private String bySensorID(InternalSensorID sensorId) {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
@@ -359,7 +359,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(".");
         query.append(PGDAOConstants.sensorIdSirOfStatus);
         query.append(" = '");
-        query.append(sensorId.getSensorIdInSir());
+        query.append(sensorId.getId());
         query.append("'");
 
         return query.toString();
@@ -419,7 +419,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(" = ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(") AND (");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -450,15 +450,13 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
                 SirStatusDescription statusDesc = new SirStatusDescription();
                 SirStatus status = new SirStatus();
 
-                // sensorIDInSIR
-                statusDesc.setSensorIdInSir(rs.getString(PGDAOConstants.sensorIdSirOfStatus));
-                // propertyName
+                statusDesc.setSensorId(rs.getString(PGDAOConstants.sensorIdSirOfStatus));
+
                 status.setPropertyName(rs.getString(PGDAOConstants.propertyName));
-                // propertyValue
                 status.setPropertyValue(rs.getString(PGDAOConstants.propertyValue));
-                // uom
+
                 status.setUom(rs.getString(PGDAOConstants.uom));
-                // timestamp
+
                 Calendar cal = Calendar.getInstance();
                 Timestamp t = rs.getTimestamp(PGDAOConstants.time);
                 cal.setTime(t);
@@ -610,7 +608,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
     }
 
     @Override
-    public Collection<SirStatusDescription> getSensorStatusBySensorID(SirSensorIDInSir sensorId,
+    public Collection<SirStatusDescription> getSensorStatusBySensorID(InternalSensorID sensorId,
                                                                       Collection<SirPropertyFilter> propertyFilter) throws OwsExceptionReport {
         // build query with sensorID in SIR
         String sensorIDQuery = bySensorID(sensorId) + propertyFilterQuery(propertyFilter);

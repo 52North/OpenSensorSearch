@@ -16,77 +16,47 @@
 package org.n52.sir.datastructure;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class SirPhenomenon {
 
-    /**
-     * identifier of phenomenon in SIR
-     */
-    String phenomenonIdInSIR;
+    String phenomenonId;
 
-    /**
-     * unit of measure
-     */
     String uom;
 
-    /**
-     * urn to the phenomenon
-     */
     String urn;
 
     public SirPhenomenon() {
         //
     }
 
-    public SirPhenomenon(String urn, String uom, String phenomenonIdInSIR) {
+    public SirPhenomenon(String urn, String uom, String phenomenonId) {
         this.urn = urn;
         this.uom = uom;
-        this.phenomenonIdInSIR = phenomenonIdInSIR;
+        this.phenomenonId = phenomenonId;
     }
 
-    /**
-     * @return the phenomenonIdInSIR
-     */
-    public String getPhenomenonIdInSIR() {
-        return this.phenomenonIdInSIR;
+    public String getPhenomenonId() {
+        return this.phenomenonId;
     }
 
-    /**
-     * @return the uom
-     */
     public String getUom() {
         return this.uom;
     }
 
-    /**
-     * @return the urn
-     */
     public String getUrn() {
         return this.urn;
     }
 
-    /**
-     * @param phenomenonIdInSIR
-     *        the phenomenonIdInSIR to set
-     */
-    public void setPhenomenonIdInSIR(String phenomenonIdInSIR) {
-        this.phenomenonIdInSIR = phenomenonIdInSIR;
+    public void setPhenomenonId(String phenomenonId) {
+        this.phenomenonId = phenomenonId;
     }
 
-    /**
-     * @param uom
-     *        the uom to set
-     */
     public void setUom(String uom) {
         this.uom = uom;
     }
 
-    /**
-     * @param urn
-     *        the urn to set
-     */
     public void setUrn(String urn) {
         this.urn = urn;
     }
@@ -100,7 +70,7 @@ public class SirPhenomenon {
         sb.append(", UOM: ");
         sb.append(this.uom);
         sb.append(", id: ");
-        sb.append(this.phenomenonIdInSIR);
+        sb.append(this.phenomenonId);
         return sb.toString();
     }
 

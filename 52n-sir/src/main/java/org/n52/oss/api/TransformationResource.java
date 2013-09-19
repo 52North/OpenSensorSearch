@@ -38,7 +38,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
 
 @Path("/api/v1/convert")
 @Api(value = "/api/v1/convert", description = "Conversion of SensorML document to different formats")
-
 @RequestScoped
 public class TransformationResource {
 
@@ -78,8 +77,11 @@ public class TransformationResource {
 
     @POST
     @Path("/")
-	@ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
-	public Response convertSensor(@FormParam("sensor")String sensor,@FormParam("output")String format){        if (format.equals("json"))
+    @ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
+    public Response convertSensor(@FormParam("sensor")
+    String sensor, @FormParam("output")
+    String format) {
+        if (format.equals("json"))
             return toJson(sensor);
         return toEbrim(sensor);
     }

@@ -141,13 +141,13 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
         }
         profileValidator = null;
 
-        String sensorIdInSIR = this.insertSensorInfoDAO.updateSensor(sensorIdent, sensor);
-        if (sensorIdInSIR != null) {
-            updatedSensors.add(sensorIdInSIR);
+        String sensorId = this.insertSensorInfoDAO.updateSensor(sensorIdent, sensor);
+        if (sensorId != null) {
+            updatedSensors.add(sensorId);
             response.setNumberOfUpdatedSensorDescriptions(response.getNumberOfUpdatedSensorDescriptions() + 1);
 
             if (log.isDebugEnabled())
-                log.debug("Updated sensor description for sensor " + sensorIdInSIR);
+                log.debug("Updated sensor description for sensor " + sensorId);
         }
     }
 }

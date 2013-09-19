@@ -26,8 +26,8 @@ import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
-import org.n52.sir.api.IdentifierGenerator;
-import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
+import org.n52.oss.id.IdentifierGenerator;
+import org.n52.oss.id.ShortAlphanumericIdentifierGenerator;
 
 public class Identifiers {
     

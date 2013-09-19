@@ -172,18 +172,7 @@ public class Client {
         }
     }
 
-    // private URI getSirURI() {
-    // return this.sirURI;
-    // try {
-    // return SirConfigurator.getInstance().getServiceUrl().toURI();
-    // }
-    // catch (URISyntaxException e) {
-    // throw new OwsExceptionReport("Could not transform service URL to URI", e);
-    // }
-    // }
-
     public XmlObject requestCapabilities(String serviceType, URI uri) throws OwsExceptionReport {
-        // create getCapabilities request
         String gcDoc = createGetCapabilities(serviceType);
 
         if (log.isDebugEnabled())

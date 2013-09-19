@@ -67,8 +67,8 @@
 							<tr>
 								<td class="inputTitle">Sensor ID In SIR</td>
 								<td><input type="text" class="inputField"
-									name="sensorIDInSIRValue" size="100"
-									value="<%=searchSensor.getSensorIDInSIRValue()%>" /></td>
+									name="sensorIdValue" size="100"
+									value="<%=searchSensor.getSensorIdValue()%>" /></td>
 							</tr>
 							<tr>
 								<td colspan="2">Search by service reference:</td>

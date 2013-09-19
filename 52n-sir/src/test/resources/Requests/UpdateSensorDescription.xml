@@ -117,11 +117,13 @@
 							</swe:coordinate>
 							<swe:coordinate name="longitude">
 								<swe:Quantity axisID="x">
+									<swe:uom code="degree"/>
 									<swe:value>7.357731467853749</swe:value>
 								</swe:Quantity>
 							</swe:coordinate>
 							<swe:coordinate name="altitude">
 								<swe:Quantity axisID="z">
+									<swe:uom code="m"/>
 									<swe:value>61.52</swe:value>
 								</swe:Quantity>
 							</swe:coordinate>

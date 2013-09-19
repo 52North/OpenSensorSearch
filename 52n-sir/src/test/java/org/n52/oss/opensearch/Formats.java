@@ -105,7 +105,7 @@ public class Formats {
         resultElements = new ArrayList<>();
         SirSearchResultElement elem = new SirSearchResultElement();
         elem.setLastUpdate(new Date(0l));
-        elem.setSensorIdInSir(sensorIdentifier);
+        elem.setSensorId(sensorIdentifier);
         elem.setSensorDescription(new SirSimpleSensorDescription(null, "description", "url"));
         resultElements.add(elem);
 
@@ -148,7 +148,7 @@ public class Formats {
         // other is SirSearchResultElement (an internal class)
         assertThat("result size is correct", actualResult.getResults().size(), is(equalTo(1)));
         assertThat("result item has correct id",
-                   actualResult.getResults().iterator().next().getSensorIdInSir(),
+                   actualResult.getResults().iterator().next().getSensorId(),
                    is(equalTo(sensorIdentifier)));
         assertThat("source is full URL path", actualResult.getSource(), is(equalTo(osConfig.getWebsiteHome())));
     }

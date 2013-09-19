@@ -111,8 +111,8 @@
 							</tr>
 							<tr>
 								<td class="inputTitle">Sensor ID in SIR</td>
-								<td><input type="text" name="sensorIDinSIR"
-									value="<%=insertSensorInfo.getSensorIDinSIR()%>" /></td>
+								<td><input type="text" name="sensorId"
+									value="<%=insertSensorInfo.getSensorId()%>" /></td>
 							</tr>
 							<tr>
 								<td class="inputTitle">Service Reference</td>

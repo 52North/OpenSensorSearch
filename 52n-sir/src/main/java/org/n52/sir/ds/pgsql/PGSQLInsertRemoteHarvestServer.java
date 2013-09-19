@@ -24,9 +24,9 @@ import java.sql.Statement;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.n52.oss.id.ShortAlphanumericIdentifierGenerator;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.util.SHA1HashGenerator;
-import org.n52.sir.util.ShortAlphanumericIdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -12,7 +12,7 @@
       "text" : "description",
       "url" : "url"
     },
-    "sensorIdInSir" : "my:mockup:id:42",
+    "sensorId" : "my:mockup:id:42",
     "serviceReferences" : null,
     "classifiers" : null,
     "keywords" : null,

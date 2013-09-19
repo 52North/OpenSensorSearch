@@ -24,9 +24,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.n52.sir.SirConstants;
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
 import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirSensorIDInSir;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
@@ -87,11 +87,11 @@ public class SearchSensorListener implements ISirRequestListener {
      * 
      * creates a GET request to retrieve the sensor description of the given sensor,
      * 
-     * @param sensorIdInSir
+     * @param sensorId
      * @return
      * @throws UnsupportedEncodingException
      */
-    private String createSensorDescriptionURL(String sensorIdInSir) throws UnsupportedEncodingException {
+    private String createSensorDescriptionURL(String sensorId) throws UnsupportedEncodingException {
         StringBuilder sb = new StringBuilder();
         sb.append(this.sirUrl);
         sb.append("?");
@@ -109,9 +109,9 @@ public class SearchSensorListener implements ISirRequestListener {
         sb.append("&");
         sb.append(SirConstants.GetDescSensorParams.SENSORIDINSIR.name());
         sb.append("=");
-        sb.append(sensorIdInSir);
+        sb.append(sensorId);
 
-        log.debug("Created description URL for sensor {}: {}", sensorIdInSir, sb.toString());
+        log.debug("Created description URL for sensor {}: {}", sensorId, sb.toString());
 
         // URL must be encoded for usage in XML documents
         if (this.encodeURLs)
@@ -150,7 +150,7 @@ public class SearchSensorListener implements ISirRequestListener {
                 searchResElements = searchBySearchCriteria(searchSensReq, fastEngineOnly);
 
             // FIXME moh-yakoub: why do you query by id manually here, there is one happening above!
-            // Object resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorIdInSir(),
+            // Object resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorId(),
             // searchSensReq.isSimpleResponse());
             // if (resultElement != null) {
             // searchResElements.add(resultElement);
@@ -181,7 +181,7 @@ public class SearchSensorListener implements ISirRequestListener {
 
             String descriptionURL;
             try {
-                descriptionURL = createSensorDescriptionURL(sirSearchResultElement.getSensorIdInSir());
+                descriptionURL = createSensorDescriptionURL(sirSearchResultElement.getSensorId());
             }
             catch (UnsupportedEncodingException e) {
                 log.error("Could not encode URL", e);
@@ -260,12 +260,12 @@ public class SearchSensorListener implements ISirRequestListener {
         ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
 
         for (SirSensorIdentification sensIdent : searchSensReq.getSensIdent()) {
-            if (sensIdent instanceof SirSensorIDInSir) {
+            if (sensIdent instanceof InternalSensorID) {
                 // sensorID in SIR
-                SirSensorIDInSir sensorId = (SirSensorIDInSir) sensIdent;
+                InternalSensorID sensorId = (InternalSensorID) sensIdent;
                 SirSearchResultElement resultElement;
 
-                resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorIdInSir(),
+                resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getId(),
                                                                        searchSensReq.isSimpleResponse());
                 if (resultElement != null) {
                     searchResElements.add(resultElement);

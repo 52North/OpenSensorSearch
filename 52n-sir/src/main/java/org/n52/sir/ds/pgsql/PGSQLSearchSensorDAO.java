@@ -64,17 +64,13 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         log.debug("NEW {}", this);
     }
 
-    /**
-     * 
-     * @return
-     */
     private String allSensors() {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -96,7 +92,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" GROUP BY ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -114,13 +110,6 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return query.toString();
     }
 
-    /**
-     * 
-     * @param searchString
-     * @param simpleResponse
-     * @return
-     * @throws OwsExceptionReport
-     */
     private Collection<SirSearchResultElement> doQuery(String searchString, boolean simpleResponse) throws OwsExceptionReport {
         ArrayList<SirSearchResultElement> results = new ArrayList<>();
 
@@ -133,8 +122,8 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
                     SirSearchResultElement result = new SirSearchResultElement();
 
                     // sensorIDSir
-                    result.setSensorIdInSir(rs.getString(PGDAOConstants.sensorIdSirSensServ));
-                    log.debug("SensorID: {}", result.getSensorIdInSir());
+                    result.setSensorId(rs.getString(PGDAOConstants.sensorIdSirSensServ));
+                    log.debug("SensorID: {}", result.getSensorId());
 
                     // sensorDescription
                     if (simpleResponse) {
@@ -176,7 +165,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
 
             // get corresponding service references
             for (SirSearchResultElement result : results) {
-                String requestServicesString = requestServices(result.getSensorIdInSir());
+                String requestServicesString = requestServices(result.getSensorId());
                 log.debug(">>>Database Query: {}", requestServicesString);
                 try (ResultSet rs = stmt.executeQuery(requestServicesString);) {
 
@@ -209,11 +198,6 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return results;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ISearchSensorDAO#getAllSensors(boolean)
-     */
     @Override
     public Collection<SirSearchResultElement> getAllSensors(boolean simpleReponse) throws OwsExceptionReport {
         // all sensors
@@ -221,11 +205,6 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return doQuery(allSensorsQuery, simpleReponse);
     }
 
-    /**
-     * 
-     * @param obj
-     * @return
-     */
     private Geometry getGeometry(Object obj) {
         if (obj instanceof PGobject) {
             PGobject pgobj = (PGobject) obj;
@@ -245,15 +224,10 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ISearchSensorDAO#getSensorBySensorID(java.lang.String, boolean)
-     */
     @Override
-    public SirSearchResultElement getSensorBySensorID(String sensorIdInSir, boolean simpleReponse) throws OwsExceptionReport {
+    public SirSearchResultElement getSensorBySensorID(String sensorId, boolean simpleReponse) throws OwsExceptionReport {
         // Sensor by sensorID query
-        String sensorIdQuery = sensorBySensorIdQuery(sensorIdInSir);
+        String sensorIdQuery = sensorBySensorIdQuery(sensorId);
 
         ArrayList<SirSearchResultElement> results = new ArrayList<>();
         results = (ArrayList<SirSearchResultElement>) doQuery(sensorIdQuery, simpleReponse);
@@ -266,13 +240,6 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.n52.sir.ds.ISearchSensorDAO#getSensorByServiceDescription(org.n52.sir.datastructure.SirServiceReference
-     * , boolean)
-     */
     @Override
     public SirSearchResultElement getSensorByServiceDescription(SirServiceReference servDesc, boolean simpleReponse) throws OwsExceptionReport {
         // Sensor by serviceDescription query
@@ -289,12 +256,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return null;
     }
 
-    /**
-     * 
-     * @param sensorIdInSir
-     * @return
-     */
-    private String requestServices(String sensorIdInSir) {
+    private String requestServices(String sensorId) {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
@@ -318,7 +280,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(".");
         query.append(PGDAOConstants.sensorIdSirSensServ);
         query.append(" = '");
-        query.append(sensorIdInSir);
+        query.append(sensorId);
         query.append("' AND ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -332,11 +294,6 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return query.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ISearchSensorDAO#searchSensor(org.n52.sir.datastructur .SirSearchCriteria)
-     */
     @Override
     public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport {
         // Sensors by search criteria
@@ -344,18 +301,13 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return doQuery(sensorsBySearchCriteria, simpleReponse);
     }
 
-    /**
-     * 
-     * @param sensorIdInSir
-     * @return
-     */
-    private String sensorBySensorIdQuery(String sensorIdInSir) {
+    private String sensorBySensorIdQuery(String sensorId) {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -377,25 +329,20 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" WHERE (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = '");
-        query.append(sensorIdInSir);
+        query.append(sensorId);
         query.append("');");
 
         return query.toString();
     }
 
-    /**
-     * 
-     * @param servDesc
-     * @return
-     */
     private String sensorByServDescQuery(SirServiceReference servDesc) {
         StringBuilder query = new StringBuilder();
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -435,11 +382,11 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("') AND (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(") AND (");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -453,11 +400,6 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return query.toString();
     }
 
-    /**
-     * 
-     * @param searchCriteria
-     * @return
-     */
     private String sensorsBySearchCriteria(SirSearchCriteria searchCriteria) {
         StringBuffer query = new StringBuffer();
 
@@ -479,7 +421,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -730,7 +672,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             query.append(" AND (");
             query.append(PGDAOConstants.sensor);
             query.append(".");
-            query.append(PGDAOConstants.sensorIdSir);
+            query.append(PGDAOConstants.sensorId);
             query.append(" = ");
             query.append(PGDAOConstants.sensorService);
             query.append(".");
@@ -753,7 +695,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             query.append(" = ");
             query.append(PGDAOConstants.sensor);
             query.append(".");
-            query.append(PGDAOConstants.sensorIdSir);
+            query.append(PGDAOConstants.sensorId);
             query.append(") AND (");
             query.append(PGDAOConstants.phenomenon);
             query.append(".");
@@ -769,7 +711,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" GROUP BY ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");

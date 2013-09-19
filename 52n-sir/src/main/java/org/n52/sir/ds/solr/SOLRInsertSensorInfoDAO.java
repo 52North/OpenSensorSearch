@@ -25,7 +25,6 @@ import java.util.Date;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
-import org.n52.oss.id.ShortAlphanumericIdentifierGenerator;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
@@ -62,6 +61,11 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         // TODO moh-yakoub: implement a mechanism to get access to the various
         // identifiers
         // Map<String, String> futherIds = sensor.getIdentifiers();
+        String id = sensor.getInternalSensorID();
+        if (id == null | id.isEmpty()) {
+            log.error("internal ID must be set outside of dao.");
+            throw new RuntimeException("internal ID must be set before inserting sensor into DAO.");
+        }
 
         Collection<String> keywords = sensor.getKeywords();
         // Get the connection of solr Server
@@ -72,8 +76,6 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             inputDocument.addField(SolrConstants.KEYWORD, s);
         }
 
-//        String id = sensor.getInternalSensorID();
-        String id = new ShortAlphanumericIdentifierGenerator().generate();
         inputDocument.addField(SolrConstants.ID, id);
         String longitude = sensor.getLongitude();
         String latitude = sensor.getLatitude();

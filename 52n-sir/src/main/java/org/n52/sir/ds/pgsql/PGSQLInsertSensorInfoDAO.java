@@ -415,6 +415,11 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     @Override
     public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
+        String id = sensor.getInternalSensorID();
+        if (id == null | id.isEmpty()) {
+            log.error("internal ID must be set outside of dao.");
+            throw new RuntimeException("internal ID must be set before inserting sensor into DAO.");
+        }
 
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
 
@@ -468,7 +473,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             throw se;
         }
 
-        return sensor.getInternalSensorID();
+        return id;
     }
 
     private String insertSensorCommand(SirSensor sensor) {

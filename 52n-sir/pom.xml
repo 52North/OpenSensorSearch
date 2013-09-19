@@ -235,10 +235,11 @@
 				<!-- </dependency> -->
 				<!-- </dependencies> -->
 			</plugin>
+			<!-- 
 			<plugin>
-				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
-				<!-- run "mvn license:check" to check -->
-				<!-- run "mvn license:format" to add to the files -->
+				 check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo 
+				 run "mvn license:check" to check 
+				 run "mvn license:format" to add to the files 
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
@@ -262,14 +263,14 @@
 						<exclude>**/*.css</exclude>
 					</excludes>
 					<includes>
-						<include>**/*.java</include>
+					 <include>**/*.java</include>
 						<include>**/*.jsp</include>
 						<include>**/*.js</include> 
 						<include>**/*.xsl</include>
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>
 						<include>**/*.css</include> 
-						<include>**/*.html</include>
+						<include>**/*.html</include> 
 					</includes>
 					<strictCheck>true</strictCheck>
 					<properties>
@@ -288,7 +289,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>

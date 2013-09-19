@@ -52,6 +52,7 @@ public class SearchByAllFieldsTest {
 		SirSensor sensor = SensorMLDecoder.decode(doc);
 		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
 		String id = dao.insertSensor(sensor);
+		System.out.println(id);
 		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
 		Collection<SirSearchResultElement> results = searchDAO
 				.searchByAll("precipitation+keyword",null,null,null,null,null,null);

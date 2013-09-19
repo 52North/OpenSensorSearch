@@ -235,7 +235,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
         SirSensor temporarySensor = this.harvServDao.insertSensor(sensor);
 
-        if (temporarySensor.getSensorIDInSIR() != null) {
+        if (temporarySensor.getInternalSensorID() != null) {
             // add to inserted sensor to response
             insertedSensorsP.add(temporarySensor);
 
@@ -255,7 +255,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
                 if (log.isDebugEnabled())
                     log.debug("Found and will update sensor: " + result);
 
-                sensor.setSensorIDInSIR(result.getSensorIdInSir());
+                sensor.setInternalSensorId(result.getSensorId());
                 String id = this.insertSensorDao.updateSensor(serviceRef, sensor);
 
                 updatedSensorsP.add(sensor);

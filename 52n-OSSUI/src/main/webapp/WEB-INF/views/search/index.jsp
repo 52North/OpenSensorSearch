@@ -1,20 +1,26 @@
 <%--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+    ﻿    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+            http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
 
 --%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,11 +38,6 @@
 <%@ include file="navBar.jsp"%>
 <!-- /container -->
 <!--/span-->
-<style>
-.form-control{
-max-width: 200px;
-}
-</style>
 <script>
 	$(document)
 			.ready(
@@ -88,6 +89,13 @@ $(document).ready(function(){
 });
 
 </script>
+
+	<c:if test="${RegisterSucceded}">
+		<div class="alert alert-error">
+			<a class="close" data-dismiss="alert"></a> <strong>Error!</strong>
+			Your account was created , contact Site administrator for activation
+		</div>
+	</c:if>
 <div class="container">
 	<div class="jumbotron">
 		<h3>Search OSS Sensors Database</h3>
@@ -96,11 +104,11 @@ $(document).ready(function(){
 			<input type="hidden" name="httpAccept" value="text/html" /> <span><input
 				name="q" type="text" class="search-input form-control" /> </span> 
 			<input name="lat" type="hidden"
-				placeholder="location" id="lat" class="form-control">
+				 id="lat" class="form-control">
 			<input name="lng" type="hidden"
-				placeholder="location" id="lng" class="form-control">
+				 id="lng" class="form-control">
 			<input name="radius" type="hidden"
-				placeholder="location" id="radius" class="form-control">
+				 id="radius" class="form-control">
 			
 			<span><input
 				value="Search" type="submit" class="btn btn-primary btn-large" id="notlocation" />

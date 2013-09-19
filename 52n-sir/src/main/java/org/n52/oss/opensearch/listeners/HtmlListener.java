@@ -282,7 +282,7 @@ public class HtmlListener implements OpenSearchListener {
      */
     private String createHTMLEntry(SirSearchResultElement sirSearchResultElement, String searchText) throws UnsupportedEncodingException {
         log.debug("Creating HTML response snipped for search result with SIR ID "
-                + sirSearchResultElement.getSensorIdInSir());
+                + sirSearchResultElement.getSensorId());
 
         StringBuilder sb = new StringBuilder();
         SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
@@ -296,7 +296,7 @@ public class HtmlListener implements OpenSearchListener {
             sb.append(Tools.encode(url));
             sb.append("\">");
             sb.append(" ");
-            // sb.append(sirSearchResultElement.getSensorIdInSir());
+            // sb.append(sirSearchResultElement.getSensorId());
             sb.append(Tools.extractEntryTitle(sirSearchResultElement));
             sb.append("</a>");
         }
@@ -360,7 +360,7 @@ public class HtmlListener implements OpenSearchListener {
         sb.append(" | ");
         sb.append(this.sensorInfo_CatalogID);
         sb.append(" ");
-        sb.append(sirSearchResultElement.getSensorIdInSir());
+        sb.append(sirSearchResultElement.getSensorId());
         if (sensorDescription.getBoundingBox() != null) {
             sb.append(" | ");
             sb.append(this.sensorInfo_BoundingBox);

@@ -54,19 +54,42 @@ CREATE TABLE remoteHarvestSensor
 ) 
 ;
 
---Table : userAccount
+--Table: userAccount
 CREATE TABLE userAccount
 (
    userId bigserial NOT NULL, 
    userName text NOT NULL, 
-   passwordSHA1 text,
+   passwordsha1 text,
    PRIMARY KEY(userId),
    CONSTRAINT uc_username UNIQUE (userName)
 );
 
-
+--Table: userAuthToken
 CREATE TABLE userAuthToken
 (
 	userId integer,
 	user_auth_token text
 );
+
+
+-- Update sensor table:
+CREATE OR REPLACE FUNCTION f_random_text(
+    length integer
+)
+RETURNS text AS
+$body$
+WITH chars AS (
+    SELECT unnest(string_to_array('a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9', ' ')) AS _char
+),
+charlist AS
+(
+    SELECT _char FROM chars ORDER BY random() LIMIT $1
+)
+SELECT string_agg(_char, '')
+FROM charlist
+;
+$body$
+LANGUAGE sql;
+
+ALTER TABLE sensor ADD sensor_id varchar(32) NOT NULL DEFAULT f_random_text(10);
+ALTER TABLE sensor ADD UNIQUE (sensor_id);

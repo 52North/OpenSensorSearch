@@ -69,11 +69,11 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
 			SearchResultElement elem = searchSensResp
 					.addNewSearchResultElement();
 
-			if (searchResult.getSensorIdInSir() != null
+			if (searchResult.getSensorId() != null
 					|| searchResult.getSensorDescription() instanceof SirDetailedSensorDescription) {
 				// sensorID in SIR
-				if (searchResult.getSensorIdInSir() != null)
-					elem.setSensorIDInSIR(searchResult.getSensorIdInSir());
+				if (searchResult.getSensorId() != null)
+					elem.setSensorIDInSIR(searchResult.getSensorId());
 
 				if (searchResult.getSensorDescription() instanceof SirDetailedSensorDescription) {
 					log.info("A result from Solr");
@@ -96,7 +96,7 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
 						} catch (XmlException e) {
 							log.error(
 									"Could not parse XML sensor description stored in database for sensor "
-											+ searchResult.getSensorIdInSir()
+											+ searchResult.getSensorId()
 											+ ".", e);
 						}
 
@@ -125,7 +125,7 @@ public class SirSearchSensorResponse extends AbstractXmlResponse {
 								log.error(
 										"Could not parse XML sensor description stored in database for sensor "
 												+ searchResult
-														.getSensorIdInSir()
+														.getSensorId()
 												+ ".", e);
 							}
 						}

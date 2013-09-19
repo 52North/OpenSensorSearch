@@ -59,7 +59,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirPhenomenon;
 import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorIDInSir;
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirTimePeriod;
 import org.n52.sir.ows.OwsExceptionReport;
@@ -372,9 +372,9 @@ public class SensorMLDecoder {
 			XmlObject sensorDescription) throws OwsExceptionReport {
 		SirSensor sensor = decode(sensorDescription);
 
-		if (sensorIdent instanceof SirSensorIDInSir) {
-			SirSensorIDInSir sid = (SirSensorIDInSir) sensorIdent;
-			sensor.setSensorIDInSIR(sid.getSensorIdInSir());
+		if (sensorIdent instanceof InternalSensorID) {
+			InternalSensorID sid = (InternalSensorID) sensorIdent;
+			sensor.setInternalSensorId(sid.getId());
 		}
 
 		return sensor;

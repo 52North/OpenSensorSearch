@@ -52,7 +52,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
     }
 
     @Override
-    public SirSearchResultElement getSensorBySensorID(String sensorIdInSir, boolean simpleReponse) throws OwsExceptionReport {
+    public SirSearchResultElement getSensorBySensorID(String sensorId, boolean simpleReponse) throws OwsExceptionReport {
         // TODO Auto-generated method stub
         return null;
     }

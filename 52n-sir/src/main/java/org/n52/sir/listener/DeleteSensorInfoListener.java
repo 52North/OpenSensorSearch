@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.util.ArrayList;
@@ -34,48 +35,38 @@ import org.n52.sir.response.SirDeleteSensorInfoResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Daniel Nüst
  * 
  */
 public class DeleteSensorInfoListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(DeleteSensorInfoListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.DeleteSensorInfo.name();
 
-    private IInsertSensorInfoDAO insertSensorInfoDAO;
+    private IInsertSensorInfoDAO sensorInfoDao;
 
-    public DeleteSensorInfoListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+    @Inject
+    public DeleteSensorInfoListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
+        this.sensorInfoDao = factory.insertSensorInfoDAO();
 
-        IDAOFactory factory = configurator.getFactory();
-
-        this.insertSensorInfoDAO = factory.insertSensorInfoDAO();
+        log.debug("NEW {}", this);
     }
 
-    /**
-     * @param response
-     * @param sensorIdent
-     * @param deletedSensors
-     * @throws OwsExceptionReport
-     */
     private void deleteSensor(SirDeleteSensorInfoResponse response,
                               SirSensorIdentification sensorIdent,
                               ArrayList<String> deletedSensors) throws OwsExceptionReport {
-        // check if ident is present, cannot delete otherwise
         if (sensorIdent != null) {
-            // DELETE
-            String sID = this.insertSensorInfoDAO.deleteSensor(sensorIdent);
+            String sID = this.sensorInfoDao.deleteSensor(sensorIdent);
 
             if (sID != null) {
                 deletedSensors.add(sID);
                 response.setNumberOfDeletedSensors(response.getNumberOfDeletedSensors() + 1);
-                if (log.isDebugEnabled())
-                    log.debug("Deleted Sensor! " + sID);
+                log.debug("Deleted Sensor: {}", sID);
             }
         }
         else {
@@ -97,16 +88,12 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
     private void deleteServiceReference(SirDeleteSensorInfoResponse response,
                                         SirServiceReference serviceReference,
                                         SirSensorIdentification sensIdent) throws OwsExceptionReport {
-        // check if ident is present, cannot delete otherwise
         if (serviceReference != null) {
-            // DELETE
-            String sID = this.insertSensorInfoDAO.deleteReference(sensIdent, serviceReference);
+            String sID = this.sensorInfoDao.deleteReference(sensIdent, serviceReference);
 
             if (sID != null) {
                 response.setNumberOfDeletedServiceReferences(response.getNumberOfDeletedServiceReferences() + 1);
-
-                if (log.isDebugEnabled())
-                    log.debug("Deleted ServiceReference! " + sID);
+                log.debug("Deleted ServiceReference for sensor {}" + sID);
             }
         }
         else {
@@ -118,23 +105,14 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return DeleteSensorInfoListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
+        log.debug("** request: {}", request);
 
         SirDeleteSensorInfoRequest sirRequest = (SirDeleteSensorInfoRequest) request;
         SirDeleteSensorInfoResponse response = new SirDeleteSensorInfoResponse();
@@ -146,14 +124,12 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
                 SirSensorIdentification sensorIdent = intoToBeDeleted.getSensorIdentification();
 
                 if (intoToBeDeleted.isDeleteSensor()) {
-                    // DELETE sensor
                     deleteSensor(response, sensorIdent, deletedSensors);
                 }
                 else if (intoToBeDeleted.getServiceInfo() != null) {
                     Collection<SirServiceReference> serviceReferences = intoToBeDeleted.getServiceInfo().getServiceReferences();
 
                     for (SirServiceReference serviceReference : serviceReferences) {
-                        // DELETE service reference
                         deleteServiceReference(response, serviceReference, sensorIdent);
                     }
                 }
@@ -165,6 +141,7 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
 
         response.setDeletedSensors(deletedSensors);
 
+        log.debug("** response: {}", response);
         return response;
     }
 

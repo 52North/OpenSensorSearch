@@ -44,7 +44,7 @@ import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 
-public class harvestScheduleIT {
+public class HarvestScheduleIT {
 	public static final String SCRIPT_ID = "org.n52.sir.harvest.scriptId";
 	public static final String randomString = "z7ecmioktu";
 	@Before

@@ -20,10 +20,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -34,6 +32,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.xmlbeans.XmlException;
 import org.junit.Test;
+import org.n52.oss.util.Util;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
@@ -67,13 +66,8 @@ public class AutoCompleteServletIT {
         HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/suggest?q=te");
 
         HttpResponse response = client.execute(get);
-        StringBuilder builder = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        String s;
-        while ( (s = reader.readLine()) != null)
-            builder.append(s);
+        String actual = Util.getResponsePayload(response);
 
-        String actual = builder.toString().trim();
         String expected = "{ \"suggestions\": [\"structual\", \"stringtheory\", \"a really strange keyword to use in a sensor description\"] }";
         assertThat("reponse string is correct", actual, is(equalTo(expected)));
     }

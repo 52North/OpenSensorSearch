@@ -1,21 +1,20 @@
 <%--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+    ﻿    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+            http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
 
 --%>
-
 <style type="text/css">
 body {
 	padding-top: 40px;
@@ -69,7 +68,7 @@ body {
 							a Remote Server</a></li>
 					<li><a href="${context}/OSSUI/script/index">Harvest a
 							javascript script</a></li>
-					<li><a href="http://moh-yakoub.github.io/OpenSensorSearch/">Developers
+					<li><a href="${context}/OSSUI/api/developer">Developers
 							Documentation</a></li>
 					<li><a href="http://localhost:8080/OSSUI/api/">API
 							Documentation</a></li>
@@ -81,19 +80,18 @@ body {
 			<!--/.nav-collapse -->
 		</div>
 	</div>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span3">
-				<div class="well sidebar-nav">
-					<ul class="nav nav-list">
-						<li class="nav-header">Upload</li>
-						<li id="upload-pin"><a href="${context}/OSSUI/remote/upload">Upload
-								a remote server</a></li>
-						<li class="nav-header">Harvest</li>
-						<li id="schedule-pin"><a
-							href="${context}/OSSUI/remote/schedule">Schedule a harvest</a></li>
+	<div class="row-fluid">
+		<div class="span3">
+			<div class="well sidebar-nav">
+				<ul class="nav nav-list">
+					<li class="nav-header">Upload</li>
+					<li id="upload-pin"><a href="${context}/OSSUI/remote/upload">Upload
+							a remote server</a></li>
+					<li class="nav-header">Harvest</li>
+					<li id="schedule-pin"><a
+						href="${context}/OSSUI/remote/schedule">Schedule a harvest</a></li>
 
-					</ul>
-				</div>
-				<!--/.well -->
+				</ul>
 			</div>
+			<!--/.well -->
+		</div>

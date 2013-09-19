@@ -35,16 +35,10 @@ import org.slf4j.LoggerFactory;
  */
 public class InsertSensorStatusListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(InsertSensorStatusListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.InsertSensorStatus.name();
 
-    /**
-     * the data access object for the insertSensorStatus operation
-     */
     private IInsertSensorStatusDAO insSensStatDao;
 
     public InsertSensorStatusListener() throws OwsExceptionReport {
@@ -61,21 +55,11 @@ public class InsertSensorStatusListener implements ISirRequestListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return InsertSensorStatusListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirInsertSensorStatusRequest insSensStatReq = (SirInsertSensorStatusRequest) request;
@@ -83,10 +67,10 @@ public class InsertSensorStatusListener implements ISirRequestListener {
         SirInsertSensorStatusResponse response = new SirInsertSensorStatusResponse();
 
         try {
-            String sensorIdInSir = this.insSensStatDao.insertSensorStatus(insSensStatReq.getSensIdent(),
+            String sensorId = this.insSensStatDao.insertSensorStatus(insSensStatReq.getSensIdent(),
                                                                           insSensStatReq.getStatus());
-            if (sensorIdInSir != null) {
-                response.setSensorIdInSir(sensorIdInSir);
+            if (sensorId != null) {
+                response.setSensorId(sensorId);
             }
             else {
                 OwsExceptionReport se = new OwsExceptionReport();

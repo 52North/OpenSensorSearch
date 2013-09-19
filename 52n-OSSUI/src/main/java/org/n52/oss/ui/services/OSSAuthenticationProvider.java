@@ -1,17 +1,17 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * ﻿    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
  */
 /** @author Yakoub
  */
@@ -53,14 +53,22 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 		String username = arg0.getName();
 		String password = arg0.getCredentials().toString();
 
-		String token = authenticateOSS(username, password);
-		if (token != null) {
+		AuthToken token = authenticateOSS(username, password);
+		
+		if (token.auth_token != null) {
+		    if(!token.isValid)
+	                    throw new UsernameNotFoundException("Username is not validated please contact site administration!");
+	                
 			final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
 			grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-			final UserDetails principal = new User(username, token,
+			grantedAuths.add(new SimpleGrantedAuthority("ROLE_SCRIPT_AUTHOR"));
+                        
+			if(token.isAdmin)
+			    grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			final UserDetails principal = new User(username, token.auth_token,
 					grantedAuths);
 			final Authentication auth = new UsernamePasswordAuthenticationToken(
-					principal, token, grantedAuths);
+					principal, token.auth_token, grantedAuths);
 			return auth;
 
 		} else
@@ -75,9 +83,11 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 
 	public class AuthToken {
 		String auth_token;
+		boolean isValid;
+		boolean isAdmin;
 	}
 
-	private String authenticateOSS(String username, String password) {
+	private AuthToken authenticateOSS(String username, String password) {
 		try {
 			HttpPost post = new HttpPost(
 					"http://localhost:8080/OpenSensorSearch/api/user/login");
@@ -97,7 +107,7 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 
 			AuthToken token = new Gson().fromJson(result.toString(),
 					AuthToken.class);
-			return token.auth_token;
+			return token;
 		} catch (Exception e) {
 			return null;
 		}

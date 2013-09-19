@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.datastructure;
 
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class SirSearchResultElement {
 
     private SirSensorDescription sensorDescription;
 
-    private String sensorIdInSir;
+    private String sensorId;
 
     private Collection<SirServiceReference> serviceReferences;
 
@@ -36,62 +37,34 @@ public class SirSearchResultElement {
         // empty constructor for deserialization
     }
 
-    /**
-     * @return the lastUpdate
-     */
     public Date getLastUpdate() {
         return this.lastUpdate;
     }
 
-    /**
-     * @return the sensorDescription
-     */
     public SirSensorDescription getSensorDescription() {
         return this.sensorDescription;
     }
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @return the serviceDescriptions
-     */
     public Collection<SirServiceReference> getServiceReferences() {
         return this.serviceReferences;
     }
 
-    /**
-     * @param lastUpdate
-     *        the lastUpdate to set
-     */
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    /**
-     * @param sensorDescription
-     *        the sensorDescription to set
-     */
     public void setSensorDescription(SirSensorDescription sensorDescription) {
         this.sensorDescription = sensorDescription;
     }
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public void setSensorId(String id) {
+        this.sensorId = id;
     }
 
-    /**
-     * @param serviceDescriptions
-     *        the serviceDescriptions to set
-     */
     public void setServiceReferences(Collection<SirServiceReference> serviceReferences) {
         this.serviceReferences = serviceReferences;
     }
@@ -103,8 +76,8 @@ public class SirSearchResultElement {
         builder.append(this.lastUpdate);
         builder.append(", sensorDescription=");
         builder.append(this.sensorDescription);
-        builder.append(", sensorIdInSir=");
-        builder.append(this.sensorIdInSir);
+        builder.append(", sensorId=");
+        builder.append(this.sensorId);
         builder.append(", serviceReferences=");
         builder.append(this.serviceReferences);
         builder.append("]");

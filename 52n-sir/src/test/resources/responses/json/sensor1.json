@@ -5,5 +5,5 @@
     "text" : "test description",
     "url" : "http://a.test.url"
   },
-  "sensorIdInSir" : "1"
+  "sensorId" : "1"
 }

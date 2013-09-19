@@ -21,36 +21,22 @@ package org.n52.sir.datastructure;
  */
 public class SirStatusDescription {
 
-    private String sensorIdInSir;
+    private String sensorId;
 
     private SirStatus status;
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @return the status
-     */
     public SirStatus getStatus() {
         return this.status;
     }
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public void setSensorId(String id) {
+        this.sensorId = id;
     }
 
-    /**
-     * @param status
-     *        the status to set
-     */
     public void setStatus(SirStatus status) {
         this.status = status;
     }
@@ -58,7 +44,7 @@ public class SirStatusDescription {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("SensorID in SIR: " + this.sensorIdInSir);
+        sb.append("SensorID in SIR: " + this.sensorId);
         sb.append(" Status: " + this.status);
         return sb.toString();
     }

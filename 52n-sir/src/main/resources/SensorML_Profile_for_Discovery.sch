@@ -271,7 +271,7 @@
 			have a "definition" attribute. This attribute links to the semantics of the 
 			identifier. -->
 		<rule context="//sml:classifier/sml:Term">
-			<assert test="string-length(@definition) > 0">Error: 'definition' attribute has to be present
+			<assert test="string-length(@definition) > 0">Error: 'definition' attribute has to be present 
 				and its value has to be > 0.
 			</assert>
 		</rule>
@@ -283,7 +283,7 @@
 			be used here to specify the capabilities of the "System". The child-element 
 			of each "swe:Field" element has to contain a "definition" attribute. -->
 		<rule context="//sml:capabilities/swe:DataRecord/swe:field">
-			<assert test="string-length(child::node()[@definition]) > 0">Error: 'definition' attribute has to be present
+			<assert test="string-length(child::node()[@definition]) > 0">Error: 'definition' attribute has to be present 
 				and its value has to be > 0.
 			</assert>
 		</rule>

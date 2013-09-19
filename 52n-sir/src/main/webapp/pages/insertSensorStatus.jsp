@@ -61,8 +61,8 @@
 							<tr>
 								<td class="inputTitle">SensorID In SIR</td>
 								<td><input type="text" class="inputField"
-									name="sensorIDInSIRValue" size="100"
-									value="<%=insertSensorStatus.getSensorIDInSIRValue()%>" /></td>
+									name="sensorIdValue" size="100"
+									value="<%=insertSensorStatus.getSensorIdValue()%>" /></td>
 							</tr>
 							<tr>
 								<td class="inputTitle">Property Name:</td>

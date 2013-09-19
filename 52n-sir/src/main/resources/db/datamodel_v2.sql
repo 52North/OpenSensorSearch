@@ -16,9 +16,6 @@
 
 -- Database structure for PostGIS 2
 
--- last change: 2013-08
--- last change by: Moh-Yakoub
-
 -- Dropping Tables
 ----------------------
 DROP TABLE IF EXISTS catalog CASCADE;
@@ -42,9 +39,7 @@ DROP TABLE IF EXISTS userAccount CASCADE;
 CREATE TABLE sensor_service (
   service_id integer,
   sensor_id_sir integer,
-  service_spec_id varchar(200) NOT NULL --,
-  --PRIMARY KEY (sens_serv_id)
-  --PRIMARY KEY(service_id, sensor_id_sir)
+  service_spec_id varchar(200) NOT NULL
 );
 
 -- Table: service
@@ -64,13 +59,15 @@ CREATE TABLE service
 CREATE TABLE sensor
 (
   sensor_id_sir SERIAL,
+  sensor_id varchar(32) NOT NULL,
   bbox geometry,
   time_start timestamptz NOT NULL,
   time_end timestamptz,
   sensorml text,
   text text[],
   last_update timestamptz,
-  PRIMARY KEY (sensor_id_sir)
+  PRIMARY KEY (sensor_id_sir),
+  CONSTRAINT uc_sensor_id UNIQUE (sensor_id)
 );
 
 -- Table: status
@@ -147,7 +144,9 @@ CREATE TABLE userAccount
 (
    userId bigserial NOT NULL, 
    userName text NOT NULL, 
-   passwordSHA1 text,
+   passwordsha1 text,
+   isAdmin boolean,
+   isValid boolean,
    PRIMARY KEY(userId),
    CONSTRAINT uc_username UNIQUE (userName)
 );
@@ -166,7 +165,8 @@ CREATE TABLE userAuthToken
 -----------------------------------------------------------------------------------------------------------------------
 CREATE INDEX phenIndex ON phenomenon(phenomenon_urn);
 CREATE INDEX bbox_index ON sensor USING
-        GIST (bbox GIST_GEOMETRY_OPS); 
+        GIST (bbox GIST_GEOMETRY_OPS);
+
 
 -----------------------------------------------------------------------------------------------------------------------
 -- add references and foreign keys

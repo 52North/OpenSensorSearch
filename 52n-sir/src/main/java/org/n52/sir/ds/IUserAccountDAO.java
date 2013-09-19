@@ -13,14 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * @author Yakoub
- */package org.n52.sir.ds;
+ */
+package org.n52.sir.ds;
 
 public interface IUserAccountDAO {
-	
-	
-	//return null if the authentication fail , authToken otherwise
-	public String authenticateUser(String name,String password);
-	public String getUserIDForToken(String token);
 
+    // return null if the authentication fail , authToken otherwise
+    public String authenticateUser(String name,
+            String password);
+
+    public String userNameForId(String id);
+
+    public String getUserIDForUsername(String username);
+
+    public String getUserIDForToken(String token);
+
+    public boolean isAdmin(String user);
+
+    public boolean isValid(String user);
+
+    public boolean validate(String id);
+
+    public boolean nameExists(String name);
+
+    public boolean register(String name,
+            String passwordHash);
 
 }

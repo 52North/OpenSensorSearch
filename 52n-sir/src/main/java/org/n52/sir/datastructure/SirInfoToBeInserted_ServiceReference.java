@@ -23,42 +23,22 @@ import java.util.Collection;
  */
 public class SirInfoToBeInserted_ServiceReference extends SirInfoToBeInserted {
 
-    /**
-     * 
-     */
-    private SirSensorIDInSir sensorIDinSIR;
+    private InternalSensorID id;
 
-    /**
-     * service association
-     */
     private Collection<SirServiceReference> serviceReferences;
 
-    /**
-     * @return the sensorIDinSIR
-     */
-    public SirSensorIDInSir getSensorIDinSIR() {
-        return this.sensorIDinSIR;
+    public InternalSensorID getID() {
+        return this.id;
     }
 
-    /**
-     * @return the serviceReferences
-     */
     public Collection<SirServiceReference> getServiceReferences() {
         return this.serviceReferences;
     }
 
-    /**
-     * @param sensorIDinSIR
-     *        the sensorIDinSIR to set
-     */
-    public void setSensorIDinSIR(SirSensorIDInSir sensorIDinSIR) {
-        this.sensorIDinSIR = sensorIDinSIR;
+    public void setID(InternalSensorID id) {
+        this.id = id;
     }
 
-    /**
-     * @param serviceReferences
-     *        the serviceReferences to set
-     */
     public void setServiceReferences(Collection<SirServiceReference> serviceReferences) {
         this.serviceReferences = serviceReferences;
     }
@@ -66,8 +46,8 @@ public class SirInfoToBeInserted_ServiceReference extends SirInfoToBeInserted {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("InfoToBeInserted_ServiceReference:\nSensorIDinSIR:");
-        sb.append(this.sensorIDinSIR);
+        sb.append("InfoToBeInserted_ServiceReference:\nSensorID:");
+        sb.append(this.id);
         sb.append("\nServiceReferences: ");
         sb.append(this.serviceReferences);
         return sb.toString();

@@ -35,5 +35,7 @@ public class JSONSensor {
     public List<String> keywords;
     public String contacts;
     public List<Object> Identifiers;
+    public String lat;
+    public String lng;
 
 }

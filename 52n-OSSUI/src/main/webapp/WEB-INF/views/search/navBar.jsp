@@ -75,9 +75,9 @@ max-width: 200px;
 							Documentation</a></li>
 
 					<li><a
-						onclick="window.external.AddSearchProvider('http://localhost:8080/OSSUI/resources/searchPlugin.xml');">Add
+						onclick="window.external.AddSearchProvider('${context}/OSSUI/resources/searchPlugin.xml');">Add
 							as search plugin</a></li>
-					<li><a href="http://localhost:8080/OSSUI/api/">API
+					<li><a href="${context}/OSSUI/api/">API
 							Documentation</a></li>
 
 

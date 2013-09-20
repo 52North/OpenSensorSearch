@@ -36,7 +36,7 @@
   <script type="text/javascript">
     $(function () {
       window.swaggerUi = new SwaggerUi({
-      url: "http://localhost:8080/OpenSensorSearch/api-docs",
+      url: "${context}/OpenSensorSearch/api-docs",
       dom_id: "swagger-ui-container",
       supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
       onComplete: function(swaggerApi, swaggerUi){

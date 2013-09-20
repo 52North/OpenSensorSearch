@@ -43,7 +43,7 @@
 		$
 				.ajax({
 					type : "POST",
-					url : "http://localhost:8080/OpenSensorSearch/script/remote/server/harvest",
+					url : "${context}/OpenSensorSearch/script/remote/server/harvest",
 					data : $("#schedule-form").serialize(),
 					statusCode : {
 						200 : function(data) {

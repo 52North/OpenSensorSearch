@@ -30,6 +30,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.n52.oss.ui.OSSConstants;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -89,8 +90,8 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 
 	private AuthToken authenticateOSS(String username, String password) {
 		try {
-			HttpPost post = new HttpPost(
-					"http://localhost:8080/OpenSensorSearch/api/user/login");
+			HttpPost post = new HttpPost(OSSConstants.BASE_URL+
+					"/OpenSensorSearch/api/user/login");
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("username", username));
 			pairs.add(new BasicNameValuePair("password", password));

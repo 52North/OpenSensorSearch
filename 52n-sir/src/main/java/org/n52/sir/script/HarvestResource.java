@@ -171,15 +171,16 @@ public class HarvestResource {
             log.info("Executing script");
             String result = this.jsEngine.execute(script);
             log.info("Script result:" + result);
+            log.info(fileName + "." + type + ":was uploaded at:" + System.currentTimeMillis());
+            return Response.ok(id).build();
         }
         catch (Exception e) {
             log.error("Exception on executing script:", e);
             return Response.status(500).build();
         }
-        log.info(fileName + "." + type + ":was uploaded at:" + System.currentTimeMillis());
 
         // TODO add id to response
-        return Response.ok(new Viewable("/success")).build();
+        
     }
 
     @GET

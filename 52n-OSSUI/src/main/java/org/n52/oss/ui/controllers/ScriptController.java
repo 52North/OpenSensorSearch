@@ -20,13 +20,10 @@ package org.n52.oss.ui.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -133,10 +130,13 @@ public class ScriptController {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
             while ((str = reader.readLine()) != null)
                 builder.append(str);
+            System.out.println("return  id:" + builder.toString());
+            log.info("return id:" + builder.toString());
+            
 
             if (responseCode == 200) {
                 map.addAttribute("harvestSuccess", true);
-                map.addAttribute("scriptID", builder.toString());
+                map.addAttribute("resultScript", builder.toString());
                 map.addAttribute("license", form.getLicense());
                 return "script/status";
             } else {

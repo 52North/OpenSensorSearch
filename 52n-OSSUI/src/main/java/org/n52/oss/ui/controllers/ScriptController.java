@@ -94,6 +94,8 @@ public class ScriptController {
     @RequestMapping("/schedule")
     public String harvest(ModelMap map)
     {
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        map.addAttribute("auth_token",details.getPassword());
         return "script/schedule";
     }
 

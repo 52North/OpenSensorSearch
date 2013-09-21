@@ -40,7 +40,7 @@
 		$("#datepicker").prop("disabled", true);
 		var d = $("#datepicker").val()
 		var scriptId = $("#scriptId").val();
-		var url = "/OpenSensorSearch/harvest/script/schedule?id="+scriptId;
+		var url = "/OpenSensorSearch/script/schedule?authToken=${auth_token}&id="+scriptId;
 		if(d!="")url=url+"&date="+Date.parse(d);
 		
 		$("#datepicker").val(Date.parse(d));

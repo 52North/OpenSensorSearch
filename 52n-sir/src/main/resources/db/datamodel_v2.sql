@@ -14,10 +14,17 @@
 -- limitations under the License.
 --
 
--- Database structure for PostGIS 2
+-- Database structure for PostGIS 2.x only
 
+-----------------------------------------------------------------------------------------------------------------------
+-- Creating the extensions - DISABLE IF YOU CREATED THE DATABASE WITH A TEMPLATE
+-----------------------------------------------------------------------------------------------------------------------
+CREATE EXTENSION postgis;
+CREATE EXTENSION postgis_topology;
+
+-----------------------------------------------------------------------------------------------------------------------
 -- Dropping Tables
-----------------------
+-----------------------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS catalog CASCADE;
 DROP TABLE IF EXISTS phenomenon CASCADE;
 DROP TABLE IF EXISTS sensor CASCADE;
@@ -159,14 +166,12 @@ CREATE TABLE userAuthToken
 );
 
 
-
 -----------------------------------------------------------------------------------------------------------------------
---add indices
+-- add indices
 -----------------------------------------------------------------------------------------------------------------------
 CREATE INDEX phenIndex ON phenomenon(phenomenon_urn);
 CREATE INDEX bbox_index ON sensor USING
-        GIST (bbox GIST_GEOMETRY_OPS);
-
+        GIST (bbox gist_geometry_ops_2d);
 
 -----------------------------------------------------------------------------------------------------------------------
 -- add references and foreign keys

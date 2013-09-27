@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -41,19 +42,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
 
-    /**
-     * The logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLGetSensorStatusDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DB
-     */
     private PGConnectionPool cpool;
 
     public PGSQLGetSensorStatusDAO(PGConnectionPool cpool) {
@@ -98,8 +93,8 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         query.append(" WHERE ((");
 
         // extract url and type of service criteria
-        ArrayList<String> urls = new ArrayList<String>();
-        ArrayList<String> types = new ArrayList<String>();
+        ArrayList<String> urls = new ArrayList<>();
+        ArrayList<String> types = new ArrayList<>();
         for (SirService service : searchCriteria.getServiceCriteria()) {
             if (service.getUrl() != null) {
                 urls.add(service.getUrl());
@@ -434,16 +429,11 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
     }
 
     private Collection<SirStatusDescription> doQuery(String query) throws OwsExceptionReport {
-        ArrayList<SirStatusDescription> result = new ArrayList<SirStatusDescription>();
-        Connection con = null;
-        Statement stmt = null;
+        ArrayList<SirStatusDescription> result = new ArrayList<>();
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", query);
 
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + query);
             ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
@@ -475,27 +465,13 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
                                  "Error while quering for sensor status with search criteria: " + sqle.getMessage());
             throw se;
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
 
         return result;
     }
 
     private Collection<SirStatusDescription> filter(Collection<SirStatusDescription> unfiltered,
                                                     SirPropertyFilter sirPropertyFilter) throws OwsExceptionReport {
-        Collection<SirStatusDescription> filtered = new ArrayList<SirStatusDescription>();
+        Collection<SirStatusDescription> filtered = new ArrayList<>();
 
         // do filtering other than text-based equals
         if (sirPropertyFilter.getPropConst() != null) {
@@ -575,22 +551,18 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
      */
     private Collection<SirStatusDescription> filterQueryResult(Collection<SirPropertyFilter> propertyFilter,
                                                                Collection<SirStatusDescription> fullQuery) throws OwsExceptionReport {
-        Collection<SirStatusDescription> filtered = new ArrayList<SirStatusDescription>(fullQuery);
+        Collection<SirStatusDescription> filtered = new ArrayList<>(fullQuery);
 
-        if (propertyFilter == null) {
-            if (log.isDebugEnabled()) {
+        if (propertyFilter == null)
                 log.debug("No property filter given!");
-            }
-        }
         else {
             for (SirPropertyFilter sirPropertyFilter : propertyFilter) {
                 filtered = filter(filtered, sirPropertyFilter);
             }
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Filtered to " + filtered.size() + " of " + fullQuery.size() + " results.");
-        }
+        log.debug("Filtered to {} of {} results.", filtered.size(), fullQuery.size());
+
         return filtered;
     }
 

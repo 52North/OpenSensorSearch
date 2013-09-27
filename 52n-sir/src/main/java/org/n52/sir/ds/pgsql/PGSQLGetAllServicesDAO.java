@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -31,41 +32,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class PGSQLGetAllServicesDAO implements IGetAllServicesDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLGetAllServicesDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DB
-     */
     private PGConnectionPool cpool;
 
-    /**
-     * constructor
-     * 
-     * @param cpool
-     *        the connection pool containing the connections to the DB
-     */
     public PGSQLGetAllServicesDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }
 
     @Override
     public Collection<SirService> getServices() throws OwsExceptionReport {
-        ArrayList<SirService> result = new ArrayList<SirService>();
-
-        Connection con = null;
-        Statement stmt = null;
+        ArrayList<SirService> result = new ArrayList<>();
 
         StringBuffer query = new StringBuffer();
-
-        // build query
         query.append("SELECT ");
         query.append(PGDAOConstants.serviceUrl);
         query.append(", ");
@@ -75,11 +59,8 @@ public class PGSQLGetAllServicesDAO implements IGetAllServicesDAO {
         query.append(";");
 
         // execute query
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + query.toString());
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", query.toString());
             ResultSet rs = stmt.executeQuery(query.toString());
 
             // if no phenomenon available give back empty list
@@ -104,21 +85,6 @@ public class PGSQLGetAllServicesDAO implements IGetAllServicesDAO {
             log.error("Error while query services for the getAllServices from database!", sqle);
             se.addCodedException(ExceptionCode.NoApplicableCode, null, sqle);
             throw se;
-        }
-
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            // return connection
-            if (con != null)
-                this.cpool.returnConnection(con);
         }
 
         return result;

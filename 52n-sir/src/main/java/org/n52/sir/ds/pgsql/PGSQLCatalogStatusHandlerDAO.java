@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -26,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class PGSQLCatalogStatusHandlerDAO implements ICatalogStatusHandlerDAO {
@@ -39,44 +40,22 @@ public class PGSQLCatalogStatusHandlerDAO implements ICatalogStatusHandlerDAO {
         this.cpool = cpool;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ICatalogStatusHandlerDAO#setNewStatus(java.lang.String, java.lang.String)
-     */
     @Override
     public void setNewStatus(String connectionID, String status) throws OwsExceptionReport {
-        Connection con = null;
-        Statement stmt = null;
-
         String setNewStatusQuery = setNewStatusQuery(connectionID, status);
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLCatalogStatusHandlerDAO.log.debug(">>>Database Query: " + setNewStatusQuery);
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", setNewStatusQuery);
             stmt.execute(setNewStatusQuery);
+
+            con.close();
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(ExceptionCode.NoApplicableCode, null, "Error while set a new Status for ID "
                     + connectionID + " in database: " + sqle.getMessage());
-            PGSQLCatalogStatusHandlerDAO.log.error("Error while set a new Status for ID " + connectionID
+            log.error("Error while set a new Status for ID " + connectionID
                     + " in database: " + sqle.getMessage());
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
         }
     }
 

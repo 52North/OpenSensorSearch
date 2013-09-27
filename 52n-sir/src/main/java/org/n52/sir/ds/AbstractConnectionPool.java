@@ -16,9 +16,9 @@
 package org.n52.sir.ds;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.n52.oss.db.ConnectionPool;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author Jan Schulte
  * 
  */
-public abstract class AbstractConnectionPool {
+public abstract class AbstractConnectionPool implements ConnectionPool {
 
     private static Logger log = LoggerFactory.getLogger(AbstractConnectionPool.class);
 
@@ -75,34 +75,19 @@ public abstract class AbstractConnectionPool {
 
     }
 
-    /**
-     * Abstract method returns an available connection from the pool. After the query operation, you have to
-     * "give back" the connection to the pool with the returnConnection method!
-     * 
-     * @return DB Connection to execute the query
-     * @throws OwsExceptionReport
-     *         If all connections are in use and no further connection could be established
-     */
+    @Override
     public abstract Connection getConnection() throws OwsExceptionReport;
 
-    /**
-     * Invoke this method after executing the query with this connection, so that the connection is already
-     * available in the pool
-     * 
-     * @param conn
-     *        the connection which was used and now is available again
-     * @throws OwsExceptionReport
-     *         If closing the connection failed
-     */
-    public void returnConnection(Connection conn) throws OwsExceptionReport {
-        try {
-            conn.close();
-        }
-        catch (SQLException sqle) {
-            OwsExceptionReport se = new OwsExceptionReport(sqle);
-            log.error("Error closing active connection: " + sqle.toString());
-            throw se;
-        }
-    }
+    // @Override
+    // public void returnConnection(Connection conn) throws OwsExceptionReport {
+    // try {
+    // conn.close();
+    // }
+    // catch (SQLException sqle) {
+    // OwsExceptionReport se = new OwsExceptionReport(sqle);
+    // log.error("Error closing active connection: " + sqle.toString());
+    // throw se;
+    // }
+    // }
 
 }

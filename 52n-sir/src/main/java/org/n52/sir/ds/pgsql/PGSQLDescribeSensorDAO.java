@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -30,19 +31,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLDescribeSensorDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DB
-     */
     private PGConnectionPool cpool;
 
     public PGSQLDescribeSensorDAO(PGConnectionPool cpool) {
@@ -52,13 +47,8 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
     @Override
     public XmlObject getSensorDescription(String sensorId) throws OwsExceptionReport {
         XmlObject sensorML = null;
-        Statement stmt = null;
 
-        Connection con = null;
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             // sensorML query by sensorId
             String sensorMlQuery = sensorMlQuery(sensorId);
             log.debug(">>>Database Query: {}", sensorMlQuery);
@@ -87,19 +77,6 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
                                  "DescribeSensorDAO",
                                  "Error while parsing sensorMLDocument: " + xmle.getMessage());
             throw se;
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null)
-                this.cpool.returnConnection(con);
         }
 
         return sensorML;

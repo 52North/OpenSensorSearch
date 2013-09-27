@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.net.MalformedURLException;
@@ -58,22 +59,15 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
 
     @Override
     public List<ICatalogConnection> getCatalogConnectionList() throws OwsExceptionReport {
-        ArrayList<ICatalogConnection> connections = new ArrayList<ICatalogConnection>();
-        Connection con = null;
-        Statement stmt = null;
-
+        ArrayList<ICatalogConnection> connections = new ArrayList<>();
         String catalogConnectionList = catalogConnectionsListQuery();
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + catalogConnectionList);
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", catalogConnectionList);
             ResultSet rs = stmt.executeQuery(catalogConnectionList);
 
-            if (rs == null) {
+            if (rs == null)
                 return connections;
-            }
 
             while (rs.next()) {
                 String connectionID = rs.getString(PGDAOConstants.catalogIdSir);
@@ -88,8 +82,7 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
             se.addCodedException(ExceptionCode.NoApplicableCode,
                                  null,
                                  "Error while requesting a connection to catalog from database: " + sqle.getMessage());
-            PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
-                    + sqle.getMessage());
+            log.error("Error while requesting a connection to catalog from database: " + sqle.getMessage());
         }
         catch (MalformedURLException e) {
             OwsExceptionReport se = new OwsExceptionReport();
@@ -99,35 +92,17 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
             PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
                     + e.getMessage());
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
         return connections;
     }
 
     @Override
     public String getConnectionID(URL cswUrl, int pushInterval) throws OwsExceptionReport {
         String connectionID = null;
-        Connection con = null;
-        Statement stmt = null;
-
         String getConnectionQuery = getConnectionQuery(cswUrl);
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + getConnectionQuery);
+
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", getConnectionQuery);
             ResultSet rs = stmt.executeQuery(getConnectionQuery);
             while (rs.next()) {
                 connectionID = rs.getString(PGDAOConstants.catalogIdSir);
@@ -141,20 +116,7 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
             PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
                     + sqle.getMessage());
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
         return connectionID;
     }
 
@@ -201,16 +163,10 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
     @Override
     public String insertConnection(URL cswUrl, int pushInterval) throws OwsExceptionReport {
         String connectionID = null;
-        Connection con = null;
-        Statement stmt = null;
-
         String insertCatalogQuery = insertCatalogQuery(cswUrl, pushInterval);
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + insertCatalogQuery);
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: {}", insertCatalogQuery);
             ResultSet rs = stmt.executeQuery(insertCatalogQuery);
             while (rs.next()) {
                 connectionID = rs.getString(PGDAOConstants.catalogIdSir);
@@ -221,37 +177,18 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
             se.addCodedException(ExceptionCode.NoApplicableCode,
                                  null,
                                  "Error while adding a connection to catalog to database: " + sqle.getMessage());
-            PGSQLConnectToCatalogDAO.log.error("Error while adding a connection to catalog to database: "
-                    + sqle.getMessage());
+            log.error("Error while adding a connection to catalog to database: " + sqle.getMessage());
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
         return connectionID;
     }
 
     @Override
     public void updateConnection(URL cswUrl, int pushInterval) throws OwsExceptionReport {
-        Connection con = null;
-        Statement stmt = null;
-
         String updateConnectionQuery = updateConnectionQuery(cswUrl, pushInterval);
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: " + updateConnectionQuery);
+
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", updateConnectionQuery);
             stmt.execute(updateConnectionQuery);
         }
         catch (SQLException sqle) {
@@ -261,20 +198,6 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
                                  "Error while requesting a connection to catalog from database: " + sqle.getMessage());
             PGSQLConnectToCatalogDAO.log.error("Error while requesting a connection to catalog from database: "
                     + sqle.getMessage());
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
         }
     }
 

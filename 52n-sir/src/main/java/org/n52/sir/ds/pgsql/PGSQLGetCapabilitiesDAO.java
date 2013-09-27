@@ -85,6 +85,7 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
                                                      rs.getString(PGDAOConstants.catalogStatus)));
             }
 
+            con.close();
         }
         catch (OwsExceptionReport se) {
             log.error("Error while query catalog connections for the getCapabilities from database!", se);
@@ -123,8 +124,7 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
 
         // execute query
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + query.toString());
+            log.debug(">>>Database Query: {}", query.toString());
 
             try (ResultSet rs = stmt.executeQuery(query.toString());) {
                 // if no phenomenon available give back empty list

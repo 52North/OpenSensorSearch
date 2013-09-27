@@ -12,7 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * @author Yakoub
  */
 package org.n52.oss.api;
 
@@ -36,6 +35,10 @@ import com.google.inject.servlet.RequestScoped;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
+/**
+ * @author Yakoub
+ * 
+ */
 @Path("/api/v1/convert")
 @Api(value = "/api/v1/convert", description = "Conversion of SensorML document to different formats")
 @RequestScoped

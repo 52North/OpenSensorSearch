@@ -16,6 +16,7 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -23,140 +24,138 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 
-import org.joda.time.DateTime;
-import org.n52.oss.id.ShortAlphanumericIdentifierGenerator;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
 import org.n52.sir.util.SHA1HashGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author Daniel, Moh-Yakoub
+ * 
+ */
 public class PGSQLInsertRemoteHarvestServer implements IInsertRemoteHarvestServer {
-	private static Logger log = LoggerFactory
-			.getLogger(PGSQLInsertRemoteHarvestServer.class);
+    private static Logger log = LoggerFactory.getLogger(PGSQLInsertRemoteHarvestServer.class);
 
+    private PGConnectionPool cpool;
 
-	/**
-	 * Connection pool for creating connections to the DB
-	 */
-	private PGConnectionPool cpool;
-	
-	public  PGSQLInsertRemoteHarvestServer(PGConnectionPool cpool){
-		this.cpool = cpool;
-		
-	}
-	
+    public PGSQLInsertRemoteHarvestServer(PGConnectionPool cpool) {
+        this.cpool = cpool;
 
-	@Override
-	public String insertRemoteServer(String url) {
-		Connection con = null;
-		Statement stmt = null;
-		
-		try {
-			con = this.cpool.getConnection();
-			stmt = con.createStatement();
-			String insertQuery = insertRemoteServerString(url);
-			log.info(insertQuery);
-			stmt.execute(insertQuery);
-			String authtoken = null;
-			ResultSet rs = stmt.executeQuery(searchByURLQuery(url));
-			if(rs.next()){
-				authtoken = rs.getString(PGDAOConstants.AUTH_TOKEN);
-			}
-			return authtoken;
-		} catch (Exception e) {
-			log.error("Cannot insert harvest Script",e);
-			return null;
-		}
+    }
 
-	}
-	
-	public String getRemoteSensorServer(String auth_token){
-		Connection con = null;
-		Statement stmt = null;
-		try {
-			con = this.cpool.getConnection();
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(searchByAuthTokenQuery(auth_token));
-			String url = null;;
-			if(rs.next()){
-				 url = rs.getString(PGDAOConstants.SERVER_URL);
-			}
-			return url;
-		} catch (Exception e) {
-			log.error("Cannot insert harvest Script",e);
-			return null;
-		}
+    @Override
+    public String insertRemoteServer(String url) {
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            String insertQuery = insertRemoteServerString(url);
+            log.debug("Query: {}", insertQuery);
 
-	}
+            stmt.execute(insertQuery);
+            String authtoken = null;
 
-	@Override
-	public int getRemoteServerHarvestState(String authToken) {
-		return 0;
-	}
+            try (ResultSet rs = stmt.executeQuery(searchByURLQuery(url));) {
+                if (rs.next()) {
+                    authtoken = rs.getString(PGDAOConstants.AUTH_TOKEN);
+                }
+            }
 
-	@Override
-	public String harvestRemoteServer(String authToken) {
-		return getRemoteSensorServer(authToken);
-	}
+            return authtoken;
+        }
+        catch (Exception e) {
+            log.error("Cannot insert harvest Script", e);
+            return null;
+        }
 
-	private String insertRemoteServerString(String url){
-		String hash = new Date().getTime()+url;
-		String _hash = new SHA1HashGenerator().generate(hash);
-		if(_hash == null){
-			log.error("Cannot create SHA1 hash");
-			return null;
-		}
-		StringBuilder query = new StringBuilder();
-		query.append("INSERT INTO ");
-		query.append(PGDAOConstants.remoteHarvestSensor);
-		query.append("(");
-		query.append(PGDAOConstants.SERVER_URL);
-		query.append(",");
-		query.append(PGDAOConstants.AUTH_TOKEN);
-		query.append(") values(");
-		query.append("'");
-		query.append(url);
-		query.append("'");
-		query.append(",");
-		query.append("'");
-		query.append(_hash);
-		query.append("'");
-		query.append(");");
-		log.info(query.toString());
-		return query.toString();
-	}
-	private String searchByAuthTokenQuery(String auth_token){
-		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT ");
-		builder.append(PGDAOConstants.SERVER_URL);
-		builder.append(" FROM ");
-		builder.append(PGDAOConstants.remoteHarvestSensor);
-		builder.append(" WHERE ");
-		builder.append(PGDAOConstants.AUTH_TOKEN);
-		builder.append(" LIKE ");
-		builder.append("'");
-		builder.append(auth_token);
-		builder.append("'");
-		return builder.toString();
-	}
-	private String searchByURLQuery(String url){
-		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT ");
-		builder.append(PGDAOConstants.AUTH_TOKEN);
-		builder.append(" FROM ");
-		builder.append(PGDAOConstants.remoteHarvestSensor);
-		builder.append(" WHERE ");
-		builder.append(PGDAOConstants.SERVER_URL);
-		builder.append(" LIKE ");
-		builder.append("'");
-		builder.append(url);
-		builder.append("'");
-		return builder.toString();
-	}
-	
-	private String updateState(String auth_token,int state){
-		//TODO yakoub implement updating harvest state HAR31
-		return "";
-	}
+    }
+
+    public String getRemoteSensorServer(String auth_token) {
+        String url = null;
+
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            try (ResultSet rs = stmt.executeQuery(searchByAuthTokenQuery(auth_token));) {
+                if (rs.next()) {
+                    url = rs.getString(PGDAOConstants.SERVER_URL);
+                }
+            }
+
+            return url;
+        }
+        catch (Exception e) {
+            log.error("Cannot insert harvest Script", e);
+            return null;
+        }
+    }
+
+    @Override
+    public int getRemoteServerHarvestState(String authToken) {
+        return 0;
+    }
+
+    @Override
+    public String harvestRemoteServer(String authToken) {
+        return getRemoteSensorServer(authToken);
+    }
+
+    private String insertRemoteServerString(String url) {
+        String hash = new Date().getTime() + url;
+        String _hash = new SHA1HashGenerator().generate(hash);
+        if (_hash == null) {
+            log.error("Cannot create SHA1 hash");
+            return null;
+        }
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO ");
+        query.append(PGDAOConstants.remoteHarvestSensor);
+        query.append("(");
+        query.append(PGDAOConstants.SERVER_URL);
+        query.append(",");
+        query.append(PGDAOConstants.AUTH_TOKEN);
+        query.append(") values(");
+        query.append("'");
+        query.append(url);
+        query.append("'");
+        query.append(",");
+        query.append("'");
+        query.append(_hash);
+        query.append("'");
+        query.append(");");
+        log.info(query.toString());
+        return query.toString();
+    }
+
+    private String searchByAuthTokenQuery(String auth_token) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SELECT ");
+        builder.append(PGDAOConstants.SERVER_URL);
+        builder.append(" FROM ");
+        builder.append(PGDAOConstants.remoteHarvestSensor);
+        builder.append(" WHERE ");
+        builder.append(PGDAOConstants.AUTH_TOKEN);
+        builder.append(" LIKE ");
+        builder.append("'");
+        builder.append(auth_token);
+        builder.append("'");
+        return builder.toString();
+    }
+
+    private String searchByURLQuery(String url) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SELECT ");
+        builder.append(PGDAOConstants.AUTH_TOKEN);
+        builder.append(" FROM ");
+        builder.append(PGDAOConstants.remoteHarvestSensor);
+        builder.append(" WHERE ");
+        builder.append(PGDAOConstants.SERVER_URL);
+        builder.append(" LIKE ");
+        builder.append("'");
+        builder.append(url);
+        builder.append("'");
+        return builder.toString();
+    }
+
+    private String updateState(String auth_token, int state) {
+        // TODO yakoub implement updating harvest state HAR31
+        return "";
+    }
 
 }

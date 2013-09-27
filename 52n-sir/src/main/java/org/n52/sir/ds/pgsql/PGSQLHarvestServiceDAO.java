@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -35,59 +36,35 @@ import org.slf4j.LoggerFactory;
  */
 public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLHarvestServiceDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DB
-     */
     private PGConnectionPool cpool;
 
-    /**
-     * 
-     * @param cpool
-     */
     public PGSQLHarvestServiceDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IHarvestServiceDAO#addService(java.lang.String, java.lang.String)
-     */
     @Override
     public String addService(String serviceUrl, String serviceType) throws OwsExceptionReport {
         String result = "";
 
-        Connection con = null;
-        Statement stmt = null;
-
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             // insert service
             String insertService = insertServiceCommand(serviceUrl, serviceType);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + insertService.toString());
+            log.debug(">>>Database Query: {}", insertService.toString());
+
             stmt.execute(insertService.toString());
 
             // service ID query
             String serviceIDQuery = serviceIDQuery(serviceUrl, serviceType);
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + serviceIDQuery.toString());
+            log.debug(">>>Database Query: {}", serviceIDQuery.toString());
+
             ResultSet rs = stmt.executeQuery(serviceIDQuery.toString());
-            if (rs == null) {
+            if (rs == null)
                 return result;
-            }
 
-            while (rs.next()) {
+            while (rs.next())
                 result = rs.getString(PGDAOConstants.serviceId);
-            }
-
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();
@@ -96,19 +73,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
                     + sqle.getMessage());
             throw se;
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null)
-                this.cpool.returnConnection(con);
-        }
         return result;
     }
 
@@ -157,14 +122,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
      */
     @Override
     public SirSensor insertSensor(SirSensor sensor) throws OwsExceptionReport {
-
-        Connection con = null;
-        Statement stmt = null;
-
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             // insert in sensor table
             String insertSensor = insertSensorCommand(sensor);
 
@@ -173,25 +131,23 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
                 if (debugString.length() > 500) {
                     debugString = debugString.substring(0, 500) + " [...]";
                 }
-                if (log.isDebugEnabled())
-                    log.debug(">>>Database Query (partial): " + debugString);
+
+                log.debug(">>>Database Query (partial): {}", debugString);
             }
 
             ResultSet rs = stmt.executeQuery(insertSensor);
-            if (rs.next()) {
+            if (rs.next())
                 sensor.setInternalSensorId(rs.getString(PGDAOConstants.sensorId));
-            }
-            else {
+            else
                 log.warn("Did not receive result set when inserting sensor!");
-            }
 
             if (sensor.getInternalSensorID() != null) {
                 for (SirPhenomenon phenom : sensor.getPhenomenon()) {
                     // insert in phenomenon table
                     String phenomenonID = "";
                     String insertPhenomenon = insertPhenomenonCommand(phenom);
-                    if (log.isDebugEnabled())
-                        log.debug(">>>Database Query: " + insertPhenomenon);
+                    log.debug(">>>Database Query: {}", insertPhenomenon);
+
                     rs = stmt.executeQuery(insertPhenomenon);
                     while (rs.next()) {
                         phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
@@ -199,8 +155,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
                     if (phenomenonID.isEmpty()) {
                         // phenomenon ID query
                         String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                        if (log.isDebugEnabled())
-                            log.debug(">>>Database Query: " + phenomenonIDQuery);
+                        log.debug(">>>Database Query: {}", phenomenonIDQuery);
                         rs = stmt.executeQuery(phenomenonIDQuery);
                         while (rs.next()) {
                             phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
@@ -208,20 +163,17 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
                     }
                     // insert in sensor/phenomenon table
                     String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensor, phenomenonID);
-                    if (log.isDebugEnabled())
-                        log.debug(">>>Database Query: " + insertSensorPhenomenon);
+                    log.debug(">>>Database Query: {}", insertSensorPhenomenon);
                     stmt.execute(insertSensorPhenomenon);
                 }
 
                 // insert in sensor/service table
                 String insertSensorService = insertSensorServiceCommand(sensor);
-                if (log.isDebugEnabled())
-                    log.debug(">>>Database Query: " + insertSensorService);
+                log.debug(">>>Database Query: {}", insertSensorService);
                 stmt.execute(insertSensorService);
 
                 // end transaction to insert service and sensors
-                if (log.isDebugEnabled())
-                    log.debug(">>>Database Query: COMMIT;");
+                log.debug(">>>Database Query: COMMIT;");
                 stmt.execute("COMMIT;");
             }
             else {
@@ -239,19 +191,6 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
                                  null,
                                  "Error while adding sensor to database: " + sqle.getMessage());
             throw se;
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null)
-                this.cpool.returnConnection(con);
         }
 
         return sensor;

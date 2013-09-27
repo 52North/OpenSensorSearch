@@ -43,15 +43,10 @@ public class PGSQLDisconnetFromCatalogDAO implements IDisconnectFromCatalogDAO {
     @Override
     public String deleteConnection(String cswURL) throws OwsExceptionReport {
         String connectionID = null;
-        Connection con = null;
-        Statement stmt = null;
-
         String deleteConnectionQuery = deleteConnectionQuery(cswURL);
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + deleteConnectionQuery);
+
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", deleteConnectionQuery);
             ResultSet rs = stmt.executeQuery(deleteConnectionQuery);
             while (rs.next()) {
                 connectionID = rs.getString(PGDAOConstants.catalogIdSir);
@@ -64,20 +59,7 @@ public class PGSQLDisconnetFromCatalogDAO implements IDisconnectFromCatalogDAO {
                                  "Error while deleting a connection from catalog from database: " + sqle.getMessage());
             log.error("Error while deleting a connection from catalog from database: " + sqle.getMessage());
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
         return connectionID;
     }
 

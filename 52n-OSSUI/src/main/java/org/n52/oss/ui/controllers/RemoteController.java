@@ -34,7 +34,6 @@ public class RemoteController {
 		UserDetails userDetails =
 				 (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String token = userDetails.getPassword();
-		System.out.println("Login token:"+token);
 		map.addAttribute("token",token);
 		return "remote/index";
 	}

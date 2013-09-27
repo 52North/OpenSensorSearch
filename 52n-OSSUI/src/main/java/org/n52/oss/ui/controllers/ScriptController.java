@@ -20,13 +20,10 @@ package org.n52.oss.ui.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -34,6 +31,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.n52.oss.ui.OSSConstants;
 import org.n52.oss.ui.uploadForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +61,7 @@ public class ScriptController {
             ModelMap map)
     {
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet("http://localhost:8080/OpenSensorSearch/script/" + scriptId);
+        HttpGet get = new HttpGet(OSSConstants.BASE_URL+"/OpenSensorSearch/script/" + scriptId);
         try {
             HttpResponse resp = client.execute(get);
             StringBuilder builder = new StringBuilder();
@@ -96,6 +94,8 @@ public class ScriptController {
     @RequestMapping("/schedule")
     public String harvest(ModelMap map)
     {
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        map.addAttribute("auth_token",details.getPassword());
         return "script/schedule";
     }
 
@@ -121,7 +121,7 @@ public class ScriptController {
             multipartEntity.addPart("user", new StringBody(details.getUsername()));
             multipartEntity.addPart("licenseCode", new StringBody(form.getLicense()));
             multipartEntity.addPart("auth_token", new StringBody(token));
-            HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/script/submit");
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/script/submit");
             post.setEntity(multipartEntity);
             org.apache.http.client.HttpClient client = new DefaultHttpClient();
             HttpResponse resp;
@@ -132,10 +132,13 @@ public class ScriptController {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
             while ((str = reader.readLine()) != null)
                 builder.append(str);
+            System.out.println("return  id:" + builder.toString());
+            log.info("return id:" + builder.toString());
+            
 
             if (responseCode == 200) {
                 map.addAttribute("harvestSuccess", true);
-                map.addAttribute("scriptID", builder.toString());
+                map.addAttribute("resultScript", builder.toString());
                 map.addAttribute("license", form.getLicense());
                 return "script/status";
             } else {

@@ -1,17 +1,17 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * ﻿    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
  */
 /** @author Yakoub
  */
@@ -30,6 +30,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.n52.oss.ui.OSSConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,7 +56,7 @@ public class RegisterController {
     public String registerUser(@ModelAttribute (value="username") String username,@ModelAttribute (value="password") String password,ModelMap map,RedirectAttributes rs)
     {
         try {
-            HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/api/user/register");
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/api/user/register");
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));

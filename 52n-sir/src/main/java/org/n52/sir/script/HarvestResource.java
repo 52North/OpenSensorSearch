@@ -58,12 +58,12 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
-import com.sun.jersey.api.view.Viewable;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
@@ -171,15 +171,16 @@ public class HarvestResource {
             log.info("Executing script");
             String result = this.jsEngine.execute(script);
             log.info("Script result:" + result);
+            log.info(fileName + "." + type + ":was uploaded at:" + System.currentTimeMillis());
+            return Response.ok(id).build();
         }
         catch (Exception e) {
             log.error("Exception on executing script:", e);
             return Response.status(500).build();
         }
-        log.info(fileName + "." + type + ":was uploaded at:" + System.currentTimeMillis());
 
         // TODO add id to response
-        return Response.ok(new Viewable("/success")).build();
+        
     }
 
     @GET
@@ -205,7 +206,7 @@ public class HarvestResource {
 
         try {
             Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + scriptId).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(d).build();
-            Scheduler sch = this.schedulerFactory.getScheduler();
+            Scheduler sch = new StdSchedulerFactory().getScheduler();
             sch.scheduleJob(detail, tr);
             sch.start();
             log.info("Scheduled successfully :_J" + scriptId);
@@ -264,7 +265,7 @@ public class HarvestResource {
 
         try {
             Trigger tr = TriggerBuilder.newTrigger().withIdentity("_T" + auth_token).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).build();
-            Scheduler sch = this.schedulerFactory.getScheduler();
+            Scheduler sch = new StdSchedulerFactory().getScheduler();
             sch.scheduleJob(detail, tr);
             sch.start();
             log.info("Scheduled successfully :_J" + auth_token);

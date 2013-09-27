@@ -33,14 +33,14 @@
 
 		<c:if test="${harvestError}">
 			<div class="alert alert-error">
-				<a class="close" data-dismiss="alert">×</a> <strong>Error!</strong>
+				<a class="close" data-dismiss="alert">x</a> <strong>Error!</strong>
 				Error on harvesting ${errorMSG}
 			</div>
 		</c:if>
 		<c:if test="${harvestSuccess}">
 			<div class="alert alert-success">
-				<a class="close" data-dismiss="alert">×</a> <strong>Successful!</strong>
-				Script uploaded successfully! , your Script Id : ${scriptID}
+				<a class="close" data-dismiss="alert">x</a> <strong>Successful!</strong>
+				Script uploaded successfully! , your Script Id : ${resultScript}
 			</div>
 		</c:if>
 		

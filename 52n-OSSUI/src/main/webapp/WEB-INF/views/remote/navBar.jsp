@@ -70,7 +70,7 @@ body {
 							javascript script</a></li>
 					<li><a href="${context}/OSSUI/api/developer">Developers
 							Documentation</a></li>
-					<li><a href="http://localhost:8080/OSSUI/api/">API
+					<li><a href="${context}/OSSUI/api/">API
 							Documentation</a></li>
 
 					<li><a href="#contact">Contact</a></li>

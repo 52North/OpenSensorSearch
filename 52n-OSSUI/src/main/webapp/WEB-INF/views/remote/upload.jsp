@@ -79,7 +79,7 @@
 		$
 				.ajax({
 					type : "POST",
-					url : "http://localhost:8080/OpenSensorSearch/script/remote/server",
+					url : "${context}/OpenSensorSearch/script/remote/server",
 					data : $("#harvest-form").serialize(),
 					success : function(data) {
 						if (data) {

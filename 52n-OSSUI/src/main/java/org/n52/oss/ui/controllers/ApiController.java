@@ -13,6 +13,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+/** @author Yakoub
+ */
 package org.n52.oss.ui.controllers;
 
 import org.springframework.stereotype.Controller;

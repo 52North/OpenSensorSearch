@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalog.csw;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -143,7 +145,7 @@ public class CswCatalog implements ICatalog {
     }
 
     @Override
-    public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport {
+    public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport, IOException {
         IProfileValidator validator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
 
         boolean b = Boolean.valueOf(validator.validate(doc)).booleanValue();
@@ -745,7 +747,7 @@ public class CswCatalog implements ICatalog {
         ITransformer transformer = SirConfigurator.getInstance().getTransformerFactory().getSensorMLtoCatalogXMLTransformer();
         for (SirSearchResultElement sensorResultElem : sensors) {
             if (log.isDebugEnabled())
-                log.debug("Transforming sensor description of sensor " + sensorResultElem.getSensorIdInSir());
+                log.debug("Transforming sensor description of sensor " + sensorResultElem.getSensorId());
 
             // get SensorML
             SirXmlSensorDescription sensorDescr = (SirXmlSensorDescription) sensorResultElem.getSensorDescription();
@@ -758,7 +760,7 @@ public class CswCatalog implements ICatalog {
             try {
                 isConform = acceptsDocument(copy);
             }
-            catch (OwsExceptionReport e) {
+            catch (OwsExceptionReport | IOException e) {
                 log.error("Could not check if catalog accepts the given document!", e);
                 continue;
             }
@@ -780,22 +782,10 @@ public class CswCatalog implements ICatalog {
                                 + copy.xmlText());
                     }
                 }
-                catch (XmlException e) {
-                    log.error("Exception: Could not transform sensor description: " + XmlTools.inspect(description)
-                            + "\n  - XmlException: " + e);
-                    transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
-                    continue;
-                }
-                catch (TransformerException e) {
-                    log.error("Exception: Could not transform sensor description: " + XmlTools.inspect(description)
-                            + "\n - TransformerException: " + e);
-                    transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
-                    continue;
-                }
-                catch (XmlValueDisconnectedException e) {
+                catch (XmlException | TransformerException | XmlValueDisconnectedException | IOException e) {
                     log.error("Exception: Could not transform sensor description: " + XmlTools.inspect(description)
                             + "\n  - TransformerException: " + e);
-                    transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
+                    transformedDocs.put(sensorResultElem.getSensorId(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
                     continue;
                 }
 
@@ -808,7 +798,7 @@ public class CswCatalog implements ICatalog {
                     log.warn("Could not parse sensor description to IdentifiableType: "
                                      + XmlTools.inspect(ebrimDescription),
                              e);
-                    transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
+                    transformedDocs.put(sensorResultElem.getSensorId(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
                     continue;
                 }
 
@@ -817,11 +807,11 @@ public class CswCatalog implements ICatalog {
                     if (registryPackage.validate()) {
                         if (log.isDebugEnabled())
                             log.debug("Added new (valid!) transformed sensor description for sensor with id "
-                                    + sensorResultElem.getSensorIdInSir() + "\n" + XmlTools.inspect(ebrimDescription));
+                                    + sensorResultElem.getSensorId() + "\n" + XmlTools.inspect(ebrimDescription));
                     }
                     else {
                         String errors = XmlTools.validateAndIterateErrors(registryPackage);
-                        log.warn("Transformed sensor description sensor with id " + sensorResultElem.getSensorIdInSir()
+                        log.warn("Transformed sensor description sensor with id " + sensorResultElem.getSensorId()
                                 + " IS NOT VALID and might not be accepted by the service.");
                         if (log.isDebugEnabled())
                             log.debug("\nErrors:\t" + errors + "\nebRIM:\t" + ebrimDescription.xmlText());
@@ -830,15 +820,15 @@ public class CswCatalog implements ICatalog {
                 }
 
                 // add transformed document and sensor id
-                transformedDocs.put(sensorResultElem.getSensorIdInSir(), registryPackage);
+                transformedDocs.put(sensorResultElem.getSensorId(), registryPackage);
 
-                log.info("Transformed sensor with id " + sensorResultElem.getSensorIdInSir()
+                log.info("Transformed sensor with id " + sensorResultElem.getSensorId()
                         + " to RegistryPackage with id " + registryPackage.getIdentifiable().getId());
             }
             else {
-                log.warn("Could not transform sensor description of sensor " + sensorResultElem.getSensorIdInSir()
+                log.warn("Could not transform sensor description of sensor " + sensorResultElem.getSensorId()
                         + ". It is not conform with this catalog's required profile!");
-                transformedDocs.put(sensorResultElem.getSensorIdInSir(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
+                transformedDocs.put(sensorResultElem.getSensorId(), ITransformer.TRANSFORMATION_ERROR_OBJECT);
             }
         } // for loop
         return transformedDocs;

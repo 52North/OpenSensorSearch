@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.response;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import net.opengis.ows.x11.ServiceProviderDocument.ServiceProvider;
 import net.opengis.ows.x11.ValueType;
 
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConfigurator.Section;
+import org.n52.sir.SirConstants.CapabilitiesSection;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.datastructure.SirService;
 import org.n52.sir.util.XmlTools;
@@ -54,30 +55,24 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
     private static final Object VERSION_PARAMETER_NAME = "version";
 
-    /**
-     * Collection of catalog connections
-     */
-    private Collection<ICatalogConnection> catalogConnection;
+    private Collection<ICatalogConnection> catalogConnections;
 
-    private ArrayList<Section> sections;
+    private ArrayList<CapabilitiesSection> sections;
 
-    /**
-     * Collection of all services harvested by the SIR
-     */
-    private Collection<SirService> services;
+    private Collection<SirService> harvestedServices;
 
     private Contents createContents() {
         Contents contents = Contents.Factory.newInstance();
 
         // set list of services
-        for (SirService service : this.services) {
+        for (SirService service : this.harvestedServices) {
             HarvestedService harvestedService = contents.addNewHarvestedService();
             harvestedService.setServiceType(service.getType());
             harvestedService.setServiceURL(service.getUrl());
         }
 
         // set catalog connections
-        for (ICatalogConnection catConn : this.catalogConnection) {
+        for (ICatalogConnection catConn : this.catalogConnections) {
             LinkedCatalog linkedCatalog = contents.addNewLinkedCatalog();
             linkedCatalog.setCatalogURL(catConn.getCatalogURL().toString());
             linkedCatalog.setStatus(catConn.getStatus());
@@ -103,28 +98,24 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
             // parameter acceptVersion in operation GetCapabilities
             for (DomainType parameter : operation.getParameterArray()) {
                 if (parameter.getName().equals(ACCEPT_VERSIONS_PARAMETER_NAME)) {
-                    // remove existing placeholder
-                    for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
-                        parameter.getAllowedValues().removeValue(i);
-                    }
-                    // set value
-                    AllowedValues values = parameter.getAllowedValues();
+                    AllowedValues newAllowedValues = AllowedValues.Factory.newInstance();
                     for (String s : SirConfigurator.getInstance().getAcceptedServiceVersions()) {
-                        values.addNewValue().setStringValue(s);
+                        newAllowedValues.addNewValue().setStringValue(s);
                     }
+                    // replace the old values
+                    parameter.setAllowedValues(newAllowedValues);
+
+                    break;
                 }
             }
         }
-        // parameter version
+        // parameter version in other operations
         for (DomainType parameter : opMeData.getParameterArray()) {
             if (parameter.getName().equals(VERSION_PARAMETER_NAME)) {
-                // remove existing
-                for (int i = 0; i < parameter.getAllowedValues().getValueArray().length; i++) {
-                    parameter.getAllowedValues().removeValue(i);
-                }
-                // set value
-                ValueType value = parameter.getAllowedValues().addNewValue();
+                AllowedValues newAllowedValues = AllowedValues.Factory.newInstance();
+                ValueType value = newAllowedValues.addNewValue();
                 value.setStringValue(SirConfigurator.getInstance().getServiceVersion());
+                parameter.setAllowedValues(newAllowedValues);
             }
         }
         return opMeData;
@@ -157,7 +148,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
         if (this.sections != null) {
             // set all
-            if (this.sections.contains(Section.All)) {
+            if (this.sections.contains(CapabilitiesSection.All)) {
                 caps.setServiceIdentification(createServiceIdentification());
                 caps.setServiceProvider(createServiceProvider());
                 caps.setOperationsMetadata(createOperationsMetadata());
@@ -165,20 +156,20 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
             }
             else {
                 // set ServiceIdentification
-                if (this.sections.contains(Section.ServiceIdentification)) {
+                if (this.sections.contains(CapabilitiesSection.ServiceIdentification)) {
                     caps.setServiceIdentification(createServiceIdentification());
                 }
                 // set ServiceProvider
-                if (this.sections.contains(Section.ServiceProvider)) {
+                if (this.sections.contains(CapabilitiesSection.ServiceProvider)) {
                     caps.setServiceProvider(createServiceProvider());
                 }
                 // set OperationsMetadata
-                if (this.sections.contains(Section.OperationsMetadata)) {
+                if (this.sections.contains(CapabilitiesSection.OperationsMetadata)) {
                     caps.setOperationsMetadata(createOperationsMetadata());
                 }
                 // set Contents
-                if (this.sections.contains(Section.Contents)
-                        && (this.services.size() != 0 || this.catalogConnection.size() != 0)) {
+                if (this.sections.contains(CapabilitiesSection.Contents)
+                        && (this.harvestedServices.size() != 0 || this.catalogConnections.size() != 0)) {
                     caps.setContents(createContents());
                 }
             }
@@ -194,49 +185,50 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
         return capDoc;
     }
 
-    /**
-     * @return the catalog collections
-     */
     public Collection<ICatalogConnection> getCatalogConnection() {
-        return this.catalogConnection;
+        return this.catalogConnections;
     }
 
-    /**
-     * @return the sections
-     */
-    public ArrayList<Section> getSections() {
+    public ArrayList<CapabilitiesSection> getSections() {
         return this.sections;
     }
 
-    /**
-     * @return the services
-     */
     public Collection<SirService> getServices() {
-        return this.services;
+        return this.harvestedServices;
     }
 
-    /**
-     * @param collection
-     *        the catalog connections to set
-     */
     public void setCatalogConnection(Collection<ICatalogConnection> collection) {
-        this.catalogConnection = collection;
+        this.catalogConnections = collection;
     }
 
-    /**
-     * @param sections
-     *        the sections to set
-     */
-    public void setSections(ArrayList<Section> sections) {
+    public void setSections(ArrayList<CapabilitiesSection> sections) {
         this.sections = sections;
     }
 
-    /**
-     * @param services
-     *        the services to set
-     */
     public void setServices(Collection<SirService> services) {
-        this.services = services;
+        this.harvestedServices = services;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SirGetCapabilitiesResponse [");
+        if (this.catalogConnections != null) {
+            builder.append("catalogConnections=");
+            builder.append(this.catalogConnections);
+            builder.append(", ");
+        }
+        if (this.sections != null) {
+            builder.append("sections=");
+            builder.append(this.sections);
+            builder.append(", ");
+        }
+        if (this.harvestedServices != null) {
+            builder.append("harvestedServices=");
+            builder.append(this.harvestedServices);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

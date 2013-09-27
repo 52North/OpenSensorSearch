@@ -1,58 +1,66 @@
 /**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.n52.sir.json;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SerializeSensorDescription {
 
+    private static File f;
     private ObjectMapper mapper;
     private ByteArrayOutputStream baos;
+    private SimpleSensorDescription expected;
+    
+    @BeforeClass
+    public static void prepare() {
+        f = new File(SerializeSensorDescription.class.getResource("/sensordescription.json").getFile());
+    }
 
     @Before
     public void setUp() throws Exception {
         this.mapper = MapperFactory.getMapper();
         this.baos = new ByteArrayOutputStream();
+        this.expected = this.mapper.readValue(f, SimpleSensorDescription.class);
     }
 
     @Test
-    public void test() throws Exception {
-        SensorDescription sd = Util.getSensorDescription();
+    public void mappingMatchesTestFile() throws Exception {
+        SimpleSensorDescription sd = TestObjectGenerator.getSensorDescription();
         this.mapper.writeValue(this.baos, sd);
-        System.out.println(new String(this.baos.toByteArray()));
 
-        System.out.println("");
-        
-        sd.getBoundingBox().setSrid(4326);
-        this.mapper.writeValue(this.baos, sd);
-        System.out.println(new String(this.baos.toByteArray()));
+        try (BufferedReader br = new BufferedReader(new FileReader(f));) {
+            StringBuilder sb = new StringBuilder();
+            String line = "";
+            while ( (line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            JSONAssert.assertEquals(sb.toString(), new String(this.baos.toByteArray()), false);
+        }
+
     }
-
 }

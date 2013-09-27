@@ -16,7 +16,7 @@
 package org.n52.sir.opensearch;
 
 public interface ICapabilitiesPermalinkMapper {
-    
+
     public String getServiceURL();
 
     public boolean isValidCombinationProcFoi(String procedure, String featureOfInterest);

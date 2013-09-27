@@ -24,7 +24,7 @@ import org.n52.sir.catalog.ICatalogStatusHandler;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class CatalogPushInfoBean extends AbstractBean {
+public class CatalogPushInfoBean extends TestClientBean {
 
     private ICatalogStatusHandler catalogStatusHandler;
 

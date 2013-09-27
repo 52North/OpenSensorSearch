@@ -22,7 +22,7 @@ import java.util.Collection;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.SirConstants;
 import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
-import org.n52.sir.datastructure.SirSensorIDInSir;
+import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirStatusDescription;
@@ -86,20 +86,20 @@ public class GetSensorStatusListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirGetSensorStatusRequest getSensStatReq = (SirGetSensorStatusRequest) request;
         SirGetSensorStatusResponse response = new SirGetSensorStatusResponse();
-        ArrayList<SirStatusDescription> statDescs = new ArrayList<SirStatusDescription>();
+        ArrayList<SirStatusDescription> statDescs = new ArrayList<>();
 
         if (getSensStatReq.getSensIdent() != null) {
             // search by sensorIdentification
             for (SirSensorIdentification sensIdent : getSensStatReq.getSensIdent()) {
-                if (sensIdent instanceof SirSensorIDInSir) {
+                if (sensIdent instanceof InternalSensorID) {
                     // sensorID in SIR
-                    SirSensorIDInSir sensorId = (SirSensorIDInSir) sensIdent;
+                    InternalSensorID sensorId = (InternalSensorID) sensIdent;
                     try {
                         statDescs = (ArrayList<SirStatusDescription>) this.getSensStatDao.getSensorStatusBySensorID(sensorId,
                                                                                                                     getSensStatReq.getPropertyFilter());
                     }
                     catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e.getDocument());
+                        return new ExceptionResponse(e);
                     }
                 }
                 else {
@@ -110,7 +110,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
                                                                                                                               getSensStatReq.getPropertyFilter());
                     }
                     catch (OwsExceptionReport e) {
-                        return new ExceptionResponse(e.getDocument());
+                        return new ExceptionResponse(e);
                     }
                 }
             }
@@ -136,7 +136,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
                                                                                                                   getSensStatReq.getPropertyFilter());
             }
             catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e.getDocument());
+                return new ExceptionResponse(e);
             }
         }
         response.setStatusDescs(statDescs);

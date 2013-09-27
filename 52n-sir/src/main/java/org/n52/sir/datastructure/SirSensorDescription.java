@@ -21,6 +21,6 @@ package org.n52.sir.datastructure;
  */
 public abstract class SirSensorDescription {
 
-    //
+    // TODO make this an interface and add common methods from subclasses.
 
 }

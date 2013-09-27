@@ -1,0 +1,19 @@
+{
+licenses:
+[
+ {
+	 code:"pddl",
+	 description:"Public Domain for Data/Database",
+	 link:"http://opendatacommons.org/licenses/pddl/"
+ },
+ {
+	 code:"ODC",
+	 description:"Attribution for Data",
+	 link:"http://opendatacommons.org/licenses/by/"
+ },{
+	 code:"ODBL",
+	 description:"Attribution and Share-Alike for Data",
+	 link:"http://opendatacommons.org/licenses/odbl/"
+ }
+]
+}

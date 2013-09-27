@@ -25,29 +25,18 @@ import org.x52North.sir.x032.DescribeSensorRequestDocument.DescribeSensorRequest
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class DescribeSensorBean extends AbstractBean {
+public class DescribeSensorBean extends TestClientBean {
 
-    private String sensorIdInSir = "";
+    private String sensorId = "";
 
-    /**
-     * 
-     */
     public DescribeSensorBean() {
         //
     }
 
-    /**
-     * @param sensorIdInSir
-     */
-    public DescribeSensorBean(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public DescribeSensorBean(String sensorId) {
+        this.sensorId = sensorId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.client.beans.AbstractBean#buildRequest()
-     */
     @Override
     public void buildRequest() {
         this.responseString = "";
@@ -57,11 +46,10 @@ public class DescribeSensorBean extends AbstractBean {
         request.setService(SirConstants.SERVICE_NAME);
         request.setVersion(SirConfigurator.getInstance().getServiceVersionEnum());
 
-        this.sensorIdInSir = this.sensorIdInSir.trim();
+        this.sensorId = this.sensorId.trim();
 
-        // sensorIdInSir
-        if ( !this.sensorIdInSir.isEmpty()) {
-            request.setSensorIDInSIR(this.sensorIdInSir);
+        if ( !this.sensorId.isEmpty()) {
+            request.setSensorIDInSIR(this.sensorId);
 
             if (requestDoc.validate())
                 this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
@@ -72,18 +60,11 @@ public class DescribeSensorBean extends AbstractBean {
             this.requestString = "Please enter an ID!";
     }
 
-    /**
-     * @return the sensorIdInSir
-     */
-    public String getSensorIdInSir() {
-        return this.sensorIdInSir;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @param sensorIdInSir
-     *        the sensorIdInSir to set
-     */
-    public void setSensorIdInSir(String sensorIdInSir) {
-        this.sensorIdInSir = sensorIdInSir;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 }

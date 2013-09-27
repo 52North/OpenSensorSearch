@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
+
+import java.io.IOException;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -28,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class TestSensorMLBean extends AbstractBean {
+public class TestSensorMLBean extends TestClientBean {
 
     private static Logger log = LoggerFactory.getLogger(TestSensorMLBean.class);
 
@@ -77,20 +80,20 @@ public class TestSensorMLBean extends AbstractBean {
         SensorMLDocument sml = null;
         try {
             sml = SensorMLDocument.Factory.parse(getRequestString());
+
+            boolean b = validator.validate(sml);
+            if (b) {
+                setResponseString("The document is conform!");
+            }
+            else {
+                setResponseString(validator.getValidationFailuresAsString());
+            }
         }
-        catch (XmlException e) {
+        catch (XmlException | IOException e) {
             log.error("Error parsing input.", e);
             setResponseString("Exception:\n" + e.getMessage());
             setRequestString("");
             return;
-        }
-
-        boolean b = validator.validate(sml);
-        if (b) {
-            setResponseString("The document is conform!");
-        }
-        else {
-            setResponseString(validator.getValidationFailuresAsString());
         }
 
         return;

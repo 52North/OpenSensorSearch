@@ -32,8 +32,7 @@
 	}
 
 	if (request.getParameter("sendRequest") != null) {
-		describeSensor.setResponseString(Client
-				.sendPostRequest(describeSensor.getRequestString()));
+		describeSensor.sendRequest(describeSensor.getRequestString());
 	}
 %>
 
@@ -59,8 +58,8 @@
 	<table style="">
 		<tr>
 			<td class="inputTitle">Sensor ID in SIR:</td>
-			<td><input type="text" class="inputField" name="sensorIdInSir"
-				value="<%=describeSensor.getSensorIdInSir()%>" /></td>
+			<td><input type="text" class="inputField" name="sensorId"
+				value="<%=describeSensor.getSensorId()%>" /></td>
 		</tr>
 	</table>
 	</li>

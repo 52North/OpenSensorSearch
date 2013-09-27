@@ -93,7 +93,7 @@
 			<xsl:attribute name="slotType"><xsl:value-of
 				select="concat($iso19107DataTypePrefix, 'GM_Envelope')" /></xsl:attribute>
 			<xsl:choose>
-				<!-- do not use SWE namespace for compatibility issues  -->
+				<!-- do not use SWE namespace for compatibility issues -->
 				<xsl:when test="$noSWE">
 					<xsl:element name="wrs:ValueList" namespace="{$nswrs}">
 						<xsl:element name="wrs:AnyValue" namespace="{$nswrs}">
@@ -129,7 +129,7 @@
 			<xsl:value-of select="."></xsl:value-of>
 		</xsl:comment>
 	</xsl:template>
-	
+
 	<xsl:template match="swe:lowerCorner" mode="buildGmlEnvelope">
 		<xsl:element name="gml:lowerCorner" namespace="{$nsgml}">
 			<xsl:apply-templates mode="buildGmlEnvelope" />
@@ -142,6 +142,8 @@
 		</xsl:element>
 	</xsl:template>
 
+	<!-- set axis order to "y x", though this may differe depending on the used 
+		coordinate reference system -->
 	<xsl:template match="swe:Vector" mode="buildGmlEnvelope">
 		<xsl:value-of
 			select="concat(swe:coordinate/swe:Quantity[@axisID='y']/swe:value, ' ', swe:coordinate/swe:Quantity[@axisID='x']/swe:value)" />

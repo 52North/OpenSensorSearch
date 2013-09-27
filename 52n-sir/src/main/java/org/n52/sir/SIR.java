@@ -13,225 +13,138 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
-import javax.servlet.http.HttpServlet;
+import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.TransformerException;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import javax.ws.rs.core.UriInfo;
 
-import org.n52.sir.catalog.ICatalogStatusHandler;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.config.ApplicationConstants;
 import org.n52.sir.response.ISirResponse;
-import org.n52.sir.util.jobs.impl.TimerServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.servlet.RequestScoped;
+import com.sun.jersey.api.view.Viewable;
 
 /**
  * 
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class SIR extends HttpServlet {
+@Path("/sir")
+@RequestScoped
+public class SIR {
 
-    /**
-     * The init parameter of the configFile
-     */
-    private static final String INIT_PARAM_CONFIG_FILE = "configFile";
-
-    /**
-     * The init parameter of the database configFile
-     */
-    private static final String INIT_PARAM_DBCONFIG_FILE = "dbConfigFile";
-
-    /**
-     * The logger, used to log exceptions and additional information
-     */
     private static Logger log = LoggerFactory.getLogger(SIR.class);
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8056397366588482503L;
+    private ApplicationConstants appConstants;
 
-    /**
-     * Handles POST and GET operations
-     */
-    private RequestOperator requestOperator;
+    @Inject
+    RequestOperator requestOperator;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#destroy()
-     */
-    @Override
-    public void destroy() {
-        log.info("destroy() called...");
+    @Inject
+    public SIR(ApplicationConstants constants) {
+        this.appConstants = constants;
 
-        super.destroy();
-        SirConfigurator.getInstance().getExecutor().shutdown();
+        log.info("{} | Version: {} | Build: {} | From: {}",
+                 this,
+                 this.appConstants.getApplicationVersion(),
+                 this.appConstants.getApplicationCommit(),
+                 this.appConstants.getApplicationTimestamp());
 
-        log.info("done destroy()");
+        log.info(" ***** NEW {} *****", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest ,
-     * javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug(" ****** (GET) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
-        String queryString = req.getQueryString();
-        if (log.isDebugEnabled())
-            log.debug("Query String: " + queryString);
-        ISirResponse sirResp = this.requestOperator.doGetOperation(queryString);
-        doResponse(resp, sirResp);
+    @PreDestroy
+    protected void shutdown() throws Throwable {
+        log.info("SHUTDOWN called...");
+        // SirConfigurator.getInstance().getExecutor().shutdown();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @GET
+    public Response doGet(@Context
+    UriInfo uriInfo) {
+        String query = uriInfo.getRequestUri().getQuery();
+        log.debug(" ****** (GET) Connected: {} ****** ", query);
+
+        // TODO limit the scope of the input parameters to this method
+        // MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+
+        ISirResponse sirResp = this.requestOperator.doGetOperation(query);
+        return doResponse(sirResp);
+    }
+
+    @POST
+    public Response doPost(@Context
+    HttpServletRequest req) {
         if (log.isDebugEnabled())
             log.debug(" ****** (POST) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
 
         // Read the request
-        InputStream in = req.getInputStream();
         String inputString = "";
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String line;
-        StringBuffer sb = new StringBuffer();
-        while ( (line = br.readLine()) != null) {
-            sb.append(line + "\n");
-        }
-        br.close();
-        inputString = sb.toString();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));) {
+            String line;
+            StringBuffer sb = new StringBuffer();
+            while ( (line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            inputString = sb.toString();
 
-        // discard "request="
-        if (inputString.startsWith("request=")) {
-            inputString = inputString.substring(8, inputString.length());
-            inputString = java.net.URLDecoder.decode(inputString, "UTF-8");
+            // discard "request="
+            if (inputString.startsWith("request=")) {
+                inputString = inputString.substring(8, inputString.length());
+                inputString = java.net.URLDecoder.decode(inputString, "UTF-8");
+            }
+        }
+        catch (Exception e) {
+            log.error("Exception reading input stream.", e);
         }
 
         ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
-        doResponse(resp, sirResp);
+        return doResponse(sirResp);
     }
 
-    /**
-     * 
-     * @param resp
-     * @param sirResp
-     */
-    private void doResponse(HttpServletResponse resp, ISirResponse sirResp) {
-        try {
-            String contentType = sirResp.getContentType();
-            int contentLength = sirResp.getContentLength();
+    private Response doResponse(final ISirResponse sirResp) {
+        StreamingOutput stream = new StreamingOutput() {
+            @Override
+            public void write(OutputStream os) throws IOException, WebApplicationException {
+                try (BufferedOutputStream bus = new BufferedOutputStream(os);) {
+                    log.debug("Writing streamed response of: {}", sirResp);
+
             byte[] bytes = sirResp.getByteArray();
-            resp.setContentLength(contentLength);
-            OutputStream out = resp.getOutputStream();
-            resp.setContentType(contentType);
-            out.write(bytes);
-            out.close();
+                    bus.write(bytes);
+            }
+            catch (Exception e) {
+                log.error("Could not write to response stream.", e);
+            }
+
         }
-        catch (IOException ioe) {
-            log.error("doResponse", ioe);
+        };
+
+        return Response.ok(stream).build();
         }
-        catch (TransformerException te) {
-            log.error("doResponse", te);
-        }
+    @GET
+    @Path("/search")
+    public Response index(){
+    	return Response.ok().entity(new Viewable("/search")).build();
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#init()
-     */
-    @Override
-    public void init() throws ServletException {
-        super.init();
-
-        // get ServletContext
-        ServletContext context = getServletContext();
-        String basepath = context.getRealPath("/");
-
-        // get configFile as Inputstream
-        InputStream configStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_CONFIG_FILE));
-        if (configStream == null) {
-            throw new UnavailableException("could not open the config file");
-        }
-
-        // get dbconfigFile as Inputstream
-        InputStream dbConfigStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_DBCONFIG_FILE));
-        if (dbConfigStream == null) {
-            throw new UnavailableException("could not open the database config file");
-        }
-
-        // get the timer servlet
-        TimerServlet timerServlet = (TimerServlet) context.getAttribute(TimerServlet.NAME_IN_CONTEXT);
-
-        // initialize configurator
-        SirConfigurator configurator;
-        try {
-            configurator = SirConfigurator.getInstance(configStream, dbConfigStream, basepath, timerServlet);
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Error instantiating SirConfigurator.", e);
-            throw new RuntimeException(e);
-        }
-
-        // initialize requestOperator
-        try {
-            this.requestOperator = configurator.buildRequestOperator();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("the instantiation of RequestOperator failed");
-            throw new UnavailableException(se.getMessage());
-        }
-
-        // put handler for status updated into context (where it is used by
-        // other servlets)
-        ICatalogStatusHandler handler = configurator.getCatalogStatusHandler();
-        context.setAttribute(ICatalogStatusHandler.NAME_IN_CONTEXT, handler);
-
-        File manifestFile = new File(basepath, "META-INF/MANIFEST.MF");
-        Manifest mf = null;
-        try {
-            mf = new Manifest();
-            mf.read(new FileInputStream(manifestFile));
-
-            Attributes atts = mf.getMainAttributes();
-            log.info("Version: {} | Build: {}",
-                     atts.getValue("Implementation-Version"),
-                     atts.getValue("Implementation-Build"));
-        }
-        catch (FileNotFoundException e) {
-            log.warn("Could not read manifest file.");
-        }
-        catch (IOException e) {
-            log.warn("Could not read manifest file.");
-        }
-
-        log.info(" ***** SIR initiated successfully! ***** ");
-    }
+    
 }

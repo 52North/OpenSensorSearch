@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.util;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,36 +79,4 @@ public class ListenersTools {
         }
     }
 
-    /**
-     * 
-     * creates a GET request to retrieve the sensor description of the given sensor,
-     * 
-     * @param sensorIdInSir
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    public static String createSensorDescriptionURL(String sensorIdInSir) throws UnsupportedEncodingException {
-        SirConfigurator sc = SirConfigurator.getInstance();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(sc.getServiceUrl());
-        sb.append("?");
-        sb.append(SirConstants.SERVICEPARAM);
-        sb.append("=");
-        sb.append(SirConstants.SERVICE_NAME);
-        sb.append("&");
-        sb.append(SirConstants.GETVERSIONPARAM);
-        sb.append("=");
-        sb.append(sc.getServiceVersion());
-        sb.append("&");
-        sb.append(SirConstants.GETREQUESTPARAM);
-        sb.append("=");
-        sb.append(SirConstants.Operations.DescribeSensor.name());
-        sb.append("&");
-        sb.append(SirConstants.GetDescSensorParams.SENSORIDINSIR.name());
-        sb.append("=");
-        sb.append(sensorIdInSir);
-
-        return sb.toString();
-    }
 }

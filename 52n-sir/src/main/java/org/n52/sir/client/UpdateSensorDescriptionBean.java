@@ -34,11 +34,11 @@ import org.x52North.sir.x032.UpdateSensorDescriptionRequestDocument.UpdateSensor
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class UpdateSensorDescriptionBean extends AbstractBean {
+public class UpdateSensorDescriptionBean extends TestClientBean {
 
     private String sensorDescription = "";
 
-    private String sensorIDinSIR = "";
+    private String sensorId = "";
 
     private String serviceSpecificSensorID = "";
 
@@ -74,9 +74,9 @@ public class UpdateSensorDescriptionBean extends AbstractBean {
         }
 
         // sensor identification
-        if ( !this.sensorIDinSIR.isEmpty()) {
+        if ( !this.sensorId.isEmpty()) {
             // by id
-            desrcToBeUpdated.addNewSensorIdentification().setSensorIDInSIR(this.sensorIDinSIR);
+            desrcToBeUpdated.addNewSensorIdentification().setSensorIDInSIR(this.sensorId);
         }
         else {
             // by service reference
@@ -99,61 +99,34 @@ public class UpdateSensorDescriptionBean extends AbstractBean {
             this.requestString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
     }
 
-    /**
-     * @return the sensorDescription
-     */
     public String getSensorDescription() {
         return this.sensorDescription;
     }
 
-    /**
-     * @return the sensorIDinSIR
-     */
-    public String getSensorIDinSIR() {
-        return this.sensorIDinSIR;
+    public String getSensorId() {
+        return this.sensorId;
     }
 
-    /**
-     * @return the serviceSpecificSensorID
-     */
     public String getServiceSpecificSensorID() {
         return this.serviceSpecificSensorID;
     }
 
-    /**
-     * @return the serviceType
-     */
     public String getServiceType() {
         return this.serviceType;
     }
 
-    /**
-     * @return the serviceURL
-     */
     public String getServiceURL() {
         return this.serviceURL;
     }
 
-    /**
-     * @param sensorDescription
-     *        the sensorDescription to set
-     */
     public void setSensorDescription(String sensorDescription) {
         this.sensorDescription = sensorDescription;
     }
 
-    /**
-     * @param sensorIDinSIR
-     *        the sensorIDinSIR to set
-     */
-    public void setSensorIDinSIR(String sensorIDinSIR) {
-        this.sensorIDinSIR = sensorIDinSIR;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 
-    /**
-     * @param serviceSpecificSensorID
-     *        the serviceSpecificSensorID to set
-     */
     public void setServiceSpecificSensorID(String serviceInfosServiceSpecificSensorID) {
         this.serviceSpecificSensorID = serviceInfosServiceSpecificSensorID;
     }

@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml.impl;
+
+import java.nio.file.Paths;
 
 import org.n52.sir.xml.ITransformer;
 import org.n52.sir.xml.ITransformerFactory;
@@ -32,23 +35,17 @@ public class TransformerFactoryImpl implements ITransformerFactory {
     private String xsltDir;
 
     /**
-     * Creates new transformer with the given directory where they can try to load the XSL definitions.
-     * 
      * @param xsltDir
+     *        directory where the required XSL files are
      */
     public TransformerFactoryImpl(String xsltDir) {
         this.xsltDir = xsltDir;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.ITransformerFactory#getSensorMLtoEbRIMTransformer()
-     */
     @Override
     public ITransformer getSensorMLtoCatalogXMLTransformer() {
-        ITransformer t = new SMLtoEbRIMTransformer(this.xsltDir);
-        t.setValidating(IS_TRANSFORMER_VALIDATING);
+        ITransformer t = new SMLtoEbRIMTransformer(Paths.get(this.xsltDir));
+        t.setValidatingInputAndOutput(IS_TRANSFORMER_VALIDATING);
         return t;
     }
 

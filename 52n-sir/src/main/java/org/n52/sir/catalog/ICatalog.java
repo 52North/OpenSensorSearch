@@ -15,6 +15,7 @@
  */
 package org.n52.sir.catalog;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +42,9 @@ public interface ICatalog {
      * @param doc
      * @return
      * @throws OwsExceptionReport
+     * @throws IOException 
      */
-    public abstract boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport;
+    public abstract boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport, IOException;
 
     /**
      * 

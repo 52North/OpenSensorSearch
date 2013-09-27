@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Array;
@@ -44,41 +45,32 @@ import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
  */
 public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLSearchSensorDAO.class);
 
-    /**
-     * Connection pool for creating connections to the DBs
-     */
     private PGConnectionPool cpool;
 
-    /**
-     * 
-     * @param cpool
-     */
+    @Inject
     public PGSQLSearchSensorDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
+
+        log.debug("NEW {}", this);
     }
 
-    /**
-     * 
-     * @return
-     */
     private String allSensors() {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -100,7 +92,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" GROUP BY ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -118,144 +110,94 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return query.toString();
     }
 
-    /**
-     * 
-     * @param searchString
-     * @param simpleResponse
-     * @return
-     * @throws OwsExceptionReport
-     */
     private Collection<SirSearchResultElement> doQuery(String searchString, boolean simpleResponse) throws OwsExceptionReport {
-        ArrayList<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
-        Connection con = null;
-        Statement stmt = null;
+        ArrayList<SirSearchResultElement> results = new ArrayList<>();
 
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement()) {
 
-            if (log.isDebugEnabled())
-                log.debug(">>>Database Query: " + searchString);
-            ResultSet rs = stmt.executeQuery(searchString);
+            log.debug(">>>Database Query: {}", searchString);
+            try (ResultSet rs = stmt.executeQuery(searchString);) {
 
-            while (rs.next()) {
-                SirSearchResultElement result = new SirSearchResultElement();
+                while (rs.next()) {
+                    SirSearchResultElement result = new SirSearchResultElement();
 
-                // sensorIDSir
-                result.setSensorIdInSir(rs.getString(PGDAOConstants.sensorIdSirSensServ));
-                if (log.isDebugEnabled())
-                    log.debug("SensorID: " + result.getSensorIdInSir());
+                    // sensorIDSir
+                    result.setSensorId(rs.getString(PGDAOConstants.sensorIdSirSensServ));
+                    log.debug("SensorID: {}", result.getSensorId());
 
-                // sensorDescription
-                if (simpleResponse) {
-                    SirSimpleSensorDescription descr = new SirSimpleSensorDescription();
+                    // sensorDescription
+                    if (simpleResponse) {
+                        SirSimpleSensorDescription descr = new SirSimpleSensorDescription();
 
-                    // sensorDescriptionText
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("![CDATA[\n"); // preserve line breaks in text
-                    Array text = rs.getArray(PGDAOConstants.sensorText);
-                    String[] texts = (String[]) text.getArray();
-                    for (String temp : texts) {
-                        sb.append(temp.trim());
-                        sb.append("\n\n");
+                        // sensorDescriptionText
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("![CDATA[\n"); // preserve line breaks in text
+                        Array text = rs.getArray(PGDAOConstants.sensorText);
+                        String[] texts = (String[]) text.getArray();
+                        for (String temp : texts) {
+                            sb.append(temp.trim());
+                            sb.append("\n\n");
+                        }
+                        sb.append("]");
+                        log.debug("Description text: {}", sb.toString());
+
+                        descr.setDescriptionText(sb.toString());
+                        result.setSensorDescription(descr);
+
+                        Object object = rs.getObject(PGDAOConstants.bBox);
+                        Geometry boundingGeom = getGeometry(object);
+                        SirBoundingBox bbox = new SirBoundingBox(boundingGeom);
+                        log.debug("Description bounding box: {}", bbox);
+
+                        descr.setBoundingBox(bbox);
                     }
-                    sb.append("]");
-                    if (log.isDebugEnabled())
-                        log.debug("Description text: " + sb.toString());
+                    else {
+                        XmlObject sD = XmlObject.Factory.parse(rs.getString(PGDAOConstants.sensorml));
+                        result.setSensorDescription(new SirXmlSensorDescription(sD));
+                    }
 
-                    descr.setDescriptionText(sb.toString());
-                    result.setSensorDescription(descr);
+                    // last update
+                    result.setLastUpdate(rs.getDate(PGDAOConstants.lastUpdate));
 
-                    Object object = rs.getObject(PGDAOConstants.bBox);
-                    Geometry boundingGeom = getGeometry(object);
-                    SirBoundingBox bbox = new SirBoundingBox(boundingGeom);
-                    if (log.isDebugEnabled())
-                        log.debug("Description bounding box: " + bbox);
-
-                    descr.setBoundingBox(bbox);
+                    results.add(result);
                 }
-                else {
-                    XmlObject sD = XmlObject.Factory.parse(rs.getString(PGDAOConstants.sensorml));
-                    result.setSensorDescription(new SirXmlSensorDescription(sD));
-                }
-
-                // last update
-                result.setLastUpdate(rs.getDate(PGDAOConstants.lastUpdate));
-
-                results.add(result);
-            }
+            } // try-with ResultSet
 
             // get corresponding service references
             for (SirSearchResultElement result : results) {
-                String requestServicesString = requestServices(result.getSensorIdInSir());
-                if (log.isDebugEnabled())
-                    log.debug(">>>Database Query: " + requestServicesString);
-                rs = stmt.executeQuery(requestServicesString);
+                String requestServicesString = requestServices(result.getSensorId());
+                log.debug(">>>Database Query: {}", requestServicesString);
+                try (ResultSet rs = stmt.executeQuery(requestServicesString);) {
 
-                ArrayList<SirServiceReference> servRefs = new ArrayList<SirServiceReference>();
-                while (rs.next()) {
-                    // serviceDescription
+                    ArrayList<SirServiceReference> servRefs = new ArrayList<>();
+                    while (rs.next()) {
+                        // serviceDescription
 
-                    SirServiceReference servDesc = new SirServiceReference();
-                    servDesc.setServiceSpecificSensorId(rs.getString(PGDAOConstants.serviceSpecId));
-                    servDesc.setService(new SirService(rs.getString(PGDAOConstants.serviceUrl),
-                                                       rs.getString(PGDAOConstants.serviceType)));
-                    servRefs.add(servDesc);
-                }
-                result.setServiceReferences(servRefs);
-                if (log.isDebugEnabled()) {
-                    log.debug("ServiceReferences: " + servRefs + ", lastUpdate: " + result.getLastUpdate());
+                        SirServiceReference servDesc = new SirServiceReference();
+                        servDesc.setServiceSpecificSensorId(rs.getString(PGDAOConstants.serviceSpecId));
+                        servDesc.setService(new SirService(rs.getString(PGDAOConstants.serviceUrl),
+                                                           rs.getString(PGDAOConstants.serviceType)));
+                        servRefs.add(servDesc);
+                    }
+                    result.setServiceReferences(servRefs);
+
+                    log.debug("ServiceReferences: {}, lastUpdate: {}", servRefs, result.getLastUpdate());
                 }
             }
 
         }
-        catch (SQLException sqle) {
+        catch (SQLException | XmlException e) {
             OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while quering with search criteria: " + sqle.getMessage());
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 "SearchSensorDAO",
-                                 "Error while quering with search criteria: " + sqle.getMessage());
-            throw se;
-        }
-        catch (XmlException xmle) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while parsing sensorMLDocument: " + xmle.getMessage());
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 "SearchSensorDAO",
-                                 "Error while parsing sensorMLDocument: " + xmle.getMessage());
-            throw se;
-        }
-        catch (Exception e) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            log.error("Error while parsing sensorMLDocument: " + e.getMessage());
+            log.error("Error while quering with search criteria: " + e.getMessage());
             se.addCodedException(ExceptionCode.NoApplicableCode,
                                  "SearchSensorDAO",
                                  "Error while quering with search criteria: " + e.getMessage());
             throw se;
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
-
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
 
         return results;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ISearchSensorDAO#getAllSensors(boolean)
-     */
     @Override
     public Collection<SirSearchResultElement> getAllSensors(boolean simpleReponse) throws OwsExceptionReport {
         // all sensors
@@ -263,26 +205,16 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return doQuery(allSensorsQuery, simpleReponse);
     }
 
-    /**
-     * 
-     * @param obj
-     * @return
-     */
     private Geometry getGeometry(Object obj) {
         if (obj instanceof PGobject) {
             PGobject pgobj = (PGobject) obj;
 
-            if (log.isDebugEnabled())
-                log.debug("Trying to get geometry from " + pgobj);
+            log.debug("Trying to get geometry from {}", pgobj);
 
             if (pgobj instanceof PGgeometry) {
                 PGgeometry pggeo = (PGgeometry) pgobj;
 
-                if (log.isDebugEnabled())
-                    log.debug("Found PGGeometry: " + pggeo);
-                // System.out.println(geom.getGeometry().getClass().getCanonicalName());
-                // System.out.println(geom.getType());
-                // System.out.println(geom.getGeoType());
+                log.debug("Found PGGeometry: {} of type {} and geotype {}", pggeo, pggeo.getType(), pggeo.getGeoType());
 
                 Geometry g = pggeo.getGeometry();
                 return g;
@@ -292,17 +224,12 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ISearchSensorDAO#getSensorBySensorID(java.lang.String, boolean)
-     */
     @Override
-    public SirSearchResultElement getSensorBySensorID(String sensorIdInSir, boolean simpleReponse) throws OwsExceptionReport {
+    public SirSearchResultElement getSensorBySensorID(String sensorId, boolean simpleReponse) throws OwsExceptionReport {
         // Sensor by sensorID query
-        String sensorIdQuery = sensorBySensorIdQuery(sensorIdInSir);
+        String sensorIdQuery = sensorBySensorIdQuery(sensorId);
 
-        ArrayList<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+        ArrayList<SirSearchResultElement> results = new ArrayList<>();
         results = (ArrayList<SirSearchResultElement>) doQuery(sensorIdQuery, simpleReponse);
 
         Iterator<SirSearchResultElement> iter = results.iterator();
@@ -313,19 +240,12 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.n52.sir.ds.ISearchSensorDAO#getSensorByServiceDescription(org.n52.sir.datastructure.SirServiceReference
-     * , boolean)
-     */
     @Override
     public SirSearchResultElement getSensorByServiceDescription(SirServiceReference servDesc, boolean simpleReponse) throws OwsExceptionReport {
         // Sensor by serviceDescription query
         String servDescQuery = sensorByServDescQuery(servDesc);
 
-        ArrayList<SirSearchResultElement> results = new ArrayList<SirSearchResultElement>();
+        ArrayList<SirSearchResultElement> results = new ArrayList<>();
         results = (ArrayList<SirSearchResultElement>) doQuery(servDescQuery, simpleReponse);
 
         Iterator<SirSearchResultElement> iter = results.iterator();
@@ -336,12 +256,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return null;
     }
 
-    /**
-     * 
-     * @param sensorIdInSir
-     * @return
-     */
-    private String requestServices(String sensorIdInSir) {
+    private String requestServices(String sensorId) {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
@@ -365,7 +280,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(".");
         query.append(PGDAOConstants.sensorIdSirSensServ);
         query.append(" = '");
-        query.append(sensorIdInSir);
+        query.append(sensorId);
         query.append("' AND ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -379,11 +294,6 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return query.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ISearchSensorDAO#searchSensor(org.n52.sir.datastructur .SirSearchCriteria)
-     */
     @Override
     public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport {
         // Sensors by search criteria
@@ -391,18 +301,13 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return doQuery(sensorsBySearchCriteria, simpleReponse);
     }
 
-    /**
-     * 
-     * @param sensorIdInSir
-     * @return
-     */
-    private String sensorBySensorIdQuery(String sensorIdInSir) {
+    private String sensorBySensorIdQuery(String sensorId) {
         StringBuilder query = new StringBuilder();
 
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -424,25 +329,20 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" WHERE (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = '");
-        query.append(sensorIdInSir);
+        query.append(sensorId);
         query.append("');");
 
         return query.toString();
     }
 
-    /**
-     * 
-     * @param servDesc
-     * @return
-     */
     private String sensorByServDescQuery(SirServiceReference servDesc) {
         StringBuilder query = new StringBuilder();
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -482,11 +382,11 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("') AND (");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(" = ");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(") AND (");
         query.append(PGDAOConstants.sensorService);
         query.append(".");
@@ -500,17 +400,12 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return query.toString();
     }
 
-    /**
-     * 
-     * @param searchCriteria
-     * @return
-     */
     private String sensorsBySearchCriteria(SirSearchCriteria searchCriteria) {
         StringBuffer query = new StringBuffer();
 
         // extract url and type of service criteria
-        ArrayList<String> urls = new ArrayList<String>();
-        ArrayList<String> types = new ArrayList<String>();
+        ArrayList<String> urls = new ArrayList<>();
+        ArrayList<String> types = new ArrayList<>();
 
         if (searchCriteria.getServiceCriteria() != null) {
             for (SirService service : searchCriteria.getServiceCriteria()) {
@@ -526,7 +421,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append("SELECT ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
@@ -777,7 +672,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             query.append(" AND (");
             query.append(PGDAOConstants.sensor);
             query.append(".");
-            query.append(PGDAOConstants.sensorIdSir);
+            query.append(PGDAOConstants.sensorId);
             query.append(" = ");
             query.append(PGDAOConstants.sensorService);
             query.append(".");
@@ -800,7 +695,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             query.append(" = ");
             query.append(PGDAOConstants.sensor);
             query.append(".");
-            query.append(PGDAOConstants.sensorIdSir);
+            query.append(PGDAOConstants.sensorId);
             query.append(") AND (");
             query.append(PGDAOConstants.phenomenon);
             query.append(".");
@@ -816,7 +711,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         query.append(" GROUP BY ");
         query.append(PGDAOConstants.sensor);
         query.append(".");
-        query.append(PGDAOConstants.sensorIdSir);
+        query.append(PGDAOConstants.sensorId);
         query.append(", ");
         query.append(PGDAOConstants.sensor);
         query.append(".");

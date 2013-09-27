@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.client;
+
+import java.io.IOException;
 
 import javax.xml.transform.TransformerException;
 
@@ -30,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class TransformSensorMLBean extends AbstractBean {
+public class TransformSensorMLBean extends TestClientBean {
 
     private static Logger log = LoggerFactory.getLogger(TransformSensorMLBean.class);
 
@@ -65,11 +68,7 @@ public class TransformSensorMLBean extends AbstractBean {
             XmlObject ebrim = transformer.transform(sml);
             setResponseString(ebrim.toString());
         }
-        catch (XmlException e) {
-            log.error("Error during transformation.", e);
-            setResponseString("Exception:\n" + e.getMessage());
-        }
-        catch (TransformerException e) {
+        catch (XmlException | TransformerException | IOException e) {
             log.error("Error during transformation.", e);
             setResponseString("Exception:\n" + e.getMessage());
         }

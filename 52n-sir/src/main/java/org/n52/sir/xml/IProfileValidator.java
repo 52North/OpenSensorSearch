@@ -16,12 +16,13 @@
 package org.n52.sir.xml;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sir.ows.OwsExceptionReport;
-
-import net.opengis.sensorML.x101.SensorMLDocument;
 
 /**
  * @author Daniel Nüst
@@ -29,36 +30,14 @@ import net.opengis.sensorML.x101.SensorMLDocument;
  */
 public interface IProfileValidator {
 
-    /**
-     * 
-     * @return
-     */
     public abstract List<String> getValidationFailures();
 
-    /**
-     * 
-     * @return
-     */
     public abstract String getValidationFailuresAsString();
 
-    /**
-     * 
-     * @param file
-     * @return
-     * @throws OwsExceptionReport
-     */
     boolean validate(File file) throws OwsExceptionReport;
 
-    /**
-     * 
-     * @return
-     */
-    public abstract boolean validate(SensorMLDocument smlDoc);
+    public abstract boolean validate(SensorMLDocument smlDoc) throws IOException;
 
-    /**
-     * 
-     * @return
-     */
-    public abstract boolean validate(XmlObject xml);
+    public abstract boolean validate(XmlObject xml) throws IOException;
 
 }

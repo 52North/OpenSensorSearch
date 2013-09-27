@@ -49,5 +49,5 @@ public interface ISirResponse {
      * @return Returns the content type of this response
      */
     public String getContentType();
-    
+
 }

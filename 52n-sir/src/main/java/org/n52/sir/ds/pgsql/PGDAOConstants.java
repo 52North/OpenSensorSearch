@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.util.Properties;
@@ -35,21 +36,21 @@ public class PGDAOConstants {
 
     public static String connectionString;
 
-    private static final String CONNECTIONSTRING = "CONNECTIONSTRING";
+    private static final String CONNECTIONSTRING = "oss.db.CONNECTIONSTRING";
 
     // other constants
     public static String daoFactory;
 
     // other propertynames
-    private static final String DAOFACTORY = "DAOFACTORY";
+    private static final String DAOFACTORY = "oss.db.DAOFACTORY";
 
     public static String driver;
 
-    private static final String DRIVER = "DRIVER";
+    private static final String DRIVER = "oss.db.DRIVER";
 
     public static int initcon = 0;
 
-    private static final String INITCON = "INITCON";
+    private static final String INITCON = "oss.db.INITCON";
 
     /**
      * instance attribute due to singleton pattern
@@ -57,19 +58,17 @@ public class PGDAOConstants {
     private static PGDAOConstants instance = null;
 
     public static String lastUpdate;
-
-    /**
-     * logger, used for logging while initializing the constants from config file
+    /** logger, used for logging while initializing the constants from config file
      */
     private static Logger log = LoggerFactory.getLogger(PGDAOConstants.class);
 
     public static int maxcon = 0;
 
-    private static final String MAXCON = "MAXCON";
+    private static final String MAXCON = "oss.db.MAXCON";
 
     public static String password;
 
-    private static final String PASSWORD = "PASSWORD";
+    private static final String PASSWORD = "oss.db.PASSWORD";
 
     // table names
     public static String phenomenon;
@@ -93,6 +92,7 @@ public class PGDAOConstants {
 
     // column names of sensor
     public static String sensorIdSir;
+    public static String sensorId;
 
     // column names of sensor_phenomenon
     public static String sensorIdSirOfSensPhen;
@@ -138,103 +138,154 @@ public class PGDAOConstants {
 
     public static String user;
 
-    private static final String USER = "USER";
+    private static final String USER = "oss.db.USER";
 
-    /**
-     * getInstance method due to singleton pattern
-     * 
-     * @param daoProps
-     *        the Properties for the DAO
-     * @return The only PGDAOConstants instance
-     */
-    public static synchronized PGDAOConstants getInstance(Properties daoProps) {
-        if (instance == null) {
-            instance = new PGDAOConstants(daoProps);
-            return instance;
-        }
-        return instance;
-    }
+    // harvestScript tables;
+    public static String harvestScript;
 
-    private final String CATALOGIDSIR = "CATALOGIDSIR";
+    public static String SCRIPTID;
 
-    private final String CATALOGSTATUS = "CATALOGSTATUS";
+    public static String SCRIPT_VERSION;
+
+    public static String PATH_URL;
+
+    public static String SCRIPT_LAST_RUN_DATE;
+
+    public static String SCRIPT_LAST_RUN_RESULT;
+
+    public static String SCRIPT_UPLOAD_TIME;
+
+    public static String SCRIPT_OWNER_USERNAME;
+
+    // User token constants
+    public static String USER_ACCOUNT_TABLE;
+
+    public static String PASSWORD_HASH;
+
+    public static String USER_AUTH_TOKEN;
+
+    public static String USER_NAME;
+
+    public static String USER_ID;
+
+    public static String AUTH_TOKEN_TABLE;
+
+    public static String USER_IS_ADMIN;
+
+    public static String USER_IS_VALID;
+
+    private static final String SENSORID = "oss.db.SENSORID";
+/*
+    * getInstance method due to singleton pattern
+    * 
+    * @param daoProps
+    *        the Properties for the DAO
+    * @return The only PGDAOConstants instance
+    */
+   @Deprecated
+   public static synchronized PGDAOConstants getInstance(Properties daoProps) {
+       if (instance == null) {
+           instance = new PGDAOConstants(daoProps);
+           return instance;
+       }
+       return instance;
+   }
+    private final String CATALOGIDSIR = "oss.db.CATALOGIDSIR";
+
+    private final String CATALOGSTATUS = "oss.db.CATALOGSTATUS";
 
     // propertynames of column names
-    private final String CATALOGURL = "CATALOGURL";
+    private final String CATALOGURL = "oss.db.CATALOGURL";
 
-    private final String PHENOMENONID = "PHENOMENONID";
+    private final String PHENOMENONID = "oss.db.PHENOMENONID";
 
-    private final String PHENOMENONUOM = "PHENOMENONUOM";
+    private final String PHENOMENONUOM = "oss.db.PHENOMENONUOM";
 
-    private final String PHENOMENONURN = "PHENOMENONURN";
+    private final String PHENOMENONURN = "oss.db.PHENOMENONURN";
 
-    private final String PUSHINTERVAL = "PUSHINTERVAL";
+    private final String PUSHINTERVAL = "oss.db.PUSHINTERVAL";
 
-    private final String SENSORBBOX = "SENSORBBOX";
+    private final String SENSORBBOX = "oss.db.SENSORBBOX";
 
-    private final String SENSORIDSIR = "SENSORIDSIR";
+    private final String SENSORIDSIR = "oss.db.SENSORIDSIR";
 
-    private final String SENSORLASTUPDATE = "SENSORLASTUPDATE";
+    private final String SENSORLASTUPDATE = "oss.db.SENSORLASTUPDATE";
 
-    private final String SENSORSENSORML = "SENSORSENSORML";
+    private final String SENSORSENSORML = "oss.db.SENSORSENSORML";
 
-    private final String SENSORTEXT = "SENSORTEXT";
+    private final String SENSORTEXT = "oss.db.SENSORTEXT";
 
-    private final String SENSORTIMEEND = "SENSORTIMEEND";
+    private final String SENSORTIMEEND = "oss.db.SENSORTIMEEND";
 
-    private final String SENSORTIMESTART = "SENSORTIMESTART";
+    private final String SENSORTIMESTART = "oss.db.SENSORTIMESTART";
 
-    private final String SENSPHENPHENOMENONID = "SENSPHENPHENOMENONID";
+    private final String SENSPHENPHENOMENONID = "oss.db.SENSPHENPHENOMENONID";
 
-    private final String SENSPHENSENSORIDSIR = "SENSPHENSENSORIDSIR";
+    private final String SENSPHENSENSORIDSIR = "oss.db.SENSPHENSENSORIDSIR";
 
-    private final String SENSSERVSENSORIDSIR = "SENSSERVSENSORIDSIR";
+    private final String SENSSERVSENSORIDSIR = "oss.db.SENSSERVSENSORIDSIR";
 
-    private final String SENSSERVSERVICESID = "SENSSERVSERVICESID";
+    private final String SENSSERVSERVICESID = "oss.db.SENSSERVSERVICESID";
 
-    private final String SENSSERVSERVICESPECID = "SENSSERVSERVICESPECID";
+    private final String SENSSERVSERVICESPECID = "oss.db.SENSSERVSERVICESPECID";
 
-    private final String SERVICEID = "SERVICEID";
+    private final String SERVICEID = "oss.db.SERVICEID";
 
-    private final String SERVICETYPE = "SERVICETYPE";
+    private final String SERVICETYPE = "oss.db.SERVICETYPE";
 
-    private final String SERVICEURL = "SERVICEURL";
+    private final String SERVICEURL = "oss.db.SERVICEURL";
 
-    private final String STATUSID = "STATUSID";
+    private final String STATUSID = "oss.db.STATUSID";
 
-    private final String STATUSPROPERTYNAME = "STATUSPROPERTYNAME";
+    private final String STATUSPROPERTYNAME = "oss.db.STATUSPROPERTYNAME";
 
-    private final String STATUSPROPERTYVALUE = "STATUSPROPERTYVALUE";
+    private final String STATUSPROPERTYVALUE = "oss.db.STATUSPROPERTYVALUE";
 
-    private final String STATUSSENSORIDSIR = "STATUSSENSORIDSIR";
+    private final String STATUSSENSORIDSIR = "oss.db.STATUSSENSORIDSIR";
 
-    private final String STATUSTIME = "STATUSTIME";
+    private final String STATUSTIME = "oss.db.STATUSTIME";
 
-    private final String STATUSUOM = "STATUSUOM";
+    private final String STATUSUOM = "oss.db.STATUSUOM";
 
-    private final String TNCATALOG = "TNCATALOG";
+    private final String TNCATALOG = "oss.db.TNCATALOG";
 
-    // propertyNames of table names
-    private final String TNPHENOMENON = "TNPHENOMENON";
+    private final String TNPHENOMENON = "oss.db.TNPHENOMENON";
 
-    private final String TNSENSOR = "TNSENSOR";
+    private final String TNSENSOR = "oss.db.TNSENSOR";
 
-    private final String TNSENSOR_PHEN = "TNSENSOR_PHEN";
+    private final String TNSENSOR_PHEN = "oss.db.TNSENSOR_PHEN";
 
-    private final String TNSENSOR_SERVICE = "TNSENSOR_SERVICE";
+    private final String TNSENSOR_SERVICE = "oss.db.TNSENSOR_SERVICE";
 
-    private final String TNSERVICE = "TNSERVICE";
+    private final String TNSERVICE = "oss.db.TNSERVICE";
 
-    private final String TNSTATUS = "TNSTATUS";
+    private final String TNSTATUS = "oss.db.TNSTATUS";
+
+    // remoteHarvestSensor table
+    public static String remoteHarvestSensor;
+
+    public static String SERVER_ID;
+
+    public static String SERVER_URL;
+
+    public static String AUTH_TOKEN;
+
+    public static String REMOTE_LAST_UPDATE;
 
     /**
      * constructor
      * 
      * @param props
-     *        the Properties for the DAO
+     *            the Properties for the DAO
      */
-    public PGDAOConstants(Properties props) {
 
+    private static final String DATABASE_SENSOR_ID = "oss.db.SENSORIDSIR";
+
+
+
+    public static String databaseSensorId;
+
+    public PGDAOConstants(Properties props) {
         phenomenon = props.getProperty(this.TNPHENOMENON);
         sensor = props.getProperty(this.TNSENSOR);
         sensorPhen = props.getProperty(this.TNSENSOR_PHEN);
@@ -246,6 +297,8 @@ public class PGDAOConstants {
         phenomenonUrn = props.getProperty(this.PHENOMENONURN);
         phenomenonUom = props.getProperty(this.PHENOMENONUOM);
         sensorIdSir = props.getProperty(this.SENSORIDSIR);
+        databaseSensorId = props.getProperty(DATABASE_SENSOR_ID);
+        sensorId = props.getProperty(SENSORID);
         serviceSpecId = props.getProperty(this.SENSSERVSERVICESPECID);
         bBox = props.getProperty(this.SENSORBBOX);
         sensorTimeStart = props.getProperty(this.SENSORTIMESTART);
@@ -277,7 +330,28 @@ public class PGDAOConstants {
         driver = props.getProperty(DRIVER);
         initcon = new Integer(props.getProperty(INITCON)).intValue();
         maxcon = new Integer(props.getProperty(MAXCON)).intValue();
+        harvestScript = props.getProperty("TNSCRIPT");
+        SCRIPTID = props.getProperty("SCRIPTID");
+        SCRIPT_VERSION = props.getProperty("SCRIPTVERSION");
+        PATH_URL = props.getProperty("PATHURL");
+        SCRIPT_LAST_RUN_DATE = props.getProperty("LASTRUN");
+        SCRIPT_UPLOAD_TIME = props.getProperty("UPLOADTIME");
+        SCRIPT_LAST_RUN_RESULT = props.getProperty("lastRunResult");
+        SCRIPT_OWNER_USERNAME = props.getProperty("USERNAME");
+        SERVER_ID = props.getProperty("SERVER_ID");
+        SERVER_URL = props.getProperty("SERVER_URL");
+        AUTH_TOKEN = props.getProperty("AUTH_TOKEN");
+        REMOTE_LAST_UPDATE = props.getProperty("REMOTE_LAST_UPDATE");
+        remoteHarvestSensor = props.getProperty("remoteHarvestSensor");
+        USER_ACCOUNT_TABLE = props.getProperty("oss.db.USER_ACCOUNT_TABLE");
+        PASSWORD_HASH = props.getProperty("oss.db.PASSWORD_HASH");
+        USER_NAME = props.getProperty("oss.db.USER_NAME");
+        USER_ID = props.getProperty("oss.db.USER_ID");
+        AUTH_TOKEN_TABLE = props.getProperty("oss.db.AUTH_TOKEN_TABLE");
+        USER_IS_ADMIN = props.getProperty("oss.db.USER_IS_ADMIN");
+        USER_IS_VALID = props.getProperty("oss.db.USER_IS_VALID");
+        USER_AUTH_TOKEN = props.getProperty("oss.db.USER_AUTH_TOKEN");
 
-        log.info("PGDAOConstants initialized successfully!");
+        log.debug("PGDAOConstants initialized successfully: {}", this);
     }
 }

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml.impl;
 
 import java.io.File;
@@ -168,128 +169,83 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     private static TransformerFactory tFactory = TransformerFactory.newInstance();
 
-    private List<String> activatedPatterns = new ArrayList<String>();
+    private List<String> activatedPatterns = new ArrayList<>();
 
-    private List<String> assertionFailures = new ArrayList<String>();
+    private List<String> assertionFailures = new ArrayList<>();
 
-    private List<String> firedRules = new ArrayList<String>();
+    private List<String> firedRules = new ArrayList<>();
 
     private Transformer transformer;
 
-    /**
-     * 
-     * @param profileFile
-     * @param svrlFile
-     * @throws TransformerConfigurationException
-     * @throws TransformerFactoryConfigurationError
-     * @throws ParserConfigurationException
-     */
     public SensorML4DiscoveryValidatorImpl(File profileFile, File svrlFile) throws TransformerConfigurationException,
-            TransformerFactoryConfigurationError,
-            ParserConfigurationException {
+            TransformerFactoryConfigurationError {
         initializeTempXSLFile(profileFile, svrlFile);
 
         this.transformer = tFactory.newTransformer(source);
-        // this.db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-        if (log.isDebugEnabled())
-            log.debug("NEW SensorML4DiscoveryValidatorImpl");
+        log.debug("NEW SensorML4DiscoveryValidatorImpl");
     }
 
-    /**
-     * 
-     * @param smlDoc
-     * @return
-     */
-    private boolean actualValidate(SensorMLDocument smlDoc) {
-        if (log.isDebugEnabled()) {
-            log.debug("Validating SensorMLDocument against Discovery Profile...");
-        }
+    private boolean actualValidate(SensorMLDocument smlDoc) throws IOException {
+        log.debug("Validating SensorMLDocument against Discovery Profile...");
 
         // encapsulate input document in a Source
         Source input = new DOMSource(smlDoc.getDomNode());
 
         // create output string
-        StringWriter sw = new StringWriter();
-        StreamResult output = new StreamResult(sw);
+        try (StringWriter sw = new StringWriter();) {
+            StreamResult output = new StreamResult(sw);
 
-        // do the transformation
-        try {
-            this.transformer.transform(input, output);
+            // do the transformation
+            try {
+                this.transformer.transform(input, output);
 
-            String outputString = output.getWriter().toString();
-            processSVRL(new InputSource(new StringReader(outputString)));
-        }
-        catch (TransformerException e) {
-            log.error("Error transforming SensorML for validation against profile for discovery!", e);
-            return false;
-        }
-        catch (SAXException e) {
-            log.error("Error transforming SensorML for validation against profile for discovery!", e);
-            return false;
-        }
-        catch (IOException e) {
-            log.error("Error transforming SensorML for validation against profile for discovery!", e);
-            return false;
-        }
-        catch (ParserConfigurationException e) {
-            log.error("Error processing SVRL output!", e);
-            return false;
+                String outputString = output.getWriter().toString();
+                processSVRL(new InputSource(new StringReader(outputString)));
+            }
+            catch (TransformerException e) {
+                log.error("Error transforming SensorML for validation against profile for discovery!", e);
+                return false;
+            }
+            catch (SAXException e) {
+                log.error("Error transforming SensorML for validation against profile for discovery!", e);
+                return false;
+            }
+            catch (IOException e) {
+                log.error("Error transforming SensorML for validation against profile for discovery!", e);
+                return false;
+            }
+            catch (ParserConfigurationException e) {
+                log.error("Error processing SVRL output!", e);
+                return false;
+            }
         }
 
-        // clean up
-        input = null;
-        sw = null;
-        output = null;
-
-        if (log.isDebugEnabled()) {
-            log.debug("Validation result: " + this.getAssertionFailures().size() + " failures, "
-                    + this.activatedPatterns.size() + " activated patterns, and " + this.firedRules.size()
-                    + " fired rules.");
-        }
+        log.debug("Validation result: {} failures, {} activated patterns, and {} fired rules.",
+                  this.getAssertionFailures().size(),
+                  this.activatedPatterns.size(),
+                  this.firedRules.size());
 
         return (this.getAssertionFailures().size() == 0) ? true : false;
     }
 
-    /**
-     * 
-     * @return
-     */
     public List<String> getActivatedPatterns() {
         return this.activatedPatterns;
     }
 
-    /**
-     * 
-     * @return
-     */
     public List<String> getAssertionFailures() {
         return this.assertionFailures;
     }
 
-    /**
-     * 
-     * @return
-     */
     public List<String> getFiredRules() {
         return this.firedRules;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.IProfileValidator#getValidationFailures()
-     */
     @Override
     public List<String> getValidationFailures() {
         return this.getAssertionFailures();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.IProfileValidator#getValidationFailuresAsString()
-     */
     @Override
     public String getValidationFailuresAsString() {
         List<String> failures = getValidationFailures();
@@ -321,11 +277,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
             Executors.newSingleThreadExecutor().submit(new Runnable() {
 
-                /*
-                 * (non-Javadoc)
-                 * 
-                 * @see java.lang.Runnable#run()
-                 */
                 @Override
                 public void run() {
                     // transform the schematron to XSL,
@@ -357,12 +308,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         }
     }
 
-    /**
-     * @param inputSource
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
-     */
     private void processSVRL(InputSource inputSource) throws SAXException, IOException, ParserConfigurationException {
         /*
          * an extension of DefaultHandler
@@ -378,35 +323,18 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         parser = null;
     }
 
-    /**
-     * 
-     * @param patterns
-     */
     public void setActivatedPatterns(List<String> patterns) {
         this.activatedPatterns = patterns;
     }
 
-    /**
-     * 
-     * @param assertionFailures
-     */
     protected void setAssertionFailures(List<String> assertionFailures) {
         this.assertionFailures = assertionFailures;
     }
 
-    /**
-     * 
-     * @param firedRules
-     */
     public void setFiredRules(List<String> firedRules) {
         this.firedRules = firedRules;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.IProfileValidator#validate(java.io.File)
-     */
     @Override
     public boolean validate(File file) throws OwsExceptionReport {
         try {
@@ -423,23 +351,13 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.IProfileValidator#validate(net.opengis.sensorML.x101.SensorMLDocument)
-     */
     @Override
-    public boolean validate(SensorMLDocument smlDoc) {
+    public boolean validate(SensorMLDocument smlDoc) throws IOException {
         return this.actualValidate(smlDoc);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.xml.IProfileValidator#validate(org.apache.xmlbeans.XmlObject)
-     */
     @Override
-    public boolean validate(XmlObject xml) {
+    public boolean validate(XmlObject xml) throws IOException {
         if (xml instanceof SensorMLDocument) {
             SensorMLDocument smlDoc = (SensorMLDocument) xml;
             return validate(smlDoc);

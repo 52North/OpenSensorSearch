@@ -57,6 +57,8 @@ import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
@@ -73,22 +75,21 @@ public abstract class Harvester implements Callable<ISirResponse> {
     protected ArrayList<SirSensor> updatedSensors;
     protected IValidatorFactory validatorFactory;
 
-    /**
-     * @throws OwsExceptionReport
-     * 
-     */
+    @Inject
+    private Client client;
+
     public Harvester(IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
         this.harvServDao = harvServDao;
 
-        this.insertedSensors = new ArrayList<SirSensor>();
-        this.updatedSensors = new ArrayList<SirSensor>();
-        this.failedSensors = new HashMap<String, String>();
+        this.insertedSensors = new ArrayList<>();
+        this.updatedSensors = new ArrayList<>();
+        this.failedSensors = new HashMap<>();
 
         SirConfigurator configurator = SirConfigurator.getInstance();
         this.validatorFactory = configurator.getValidatorFactory();
 
         try {
-            IDAOFactory factory = SirConfigurator.getInstance().getFactory();
+            IDAOFactory factory = configurator.getFactory();
             this.insertSensorDao = factory.insertSensorInfoDAO();
             this.searchSensorDao = factory.searchSensorDAO();
         }
@@ -139,7 +140,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
         SensorMLDocument sensorMLDocument = null;
         try {
-            XmlObject xmlResponse = Client.xSendPostRequest(descSensorDoc, uri);
+            XmlObject xmlResponse = this.client.xSendPostRequest(descSensorDoc, uri);
             sensorMLDocument = SensorMLDocument.Factory.parse(xmlResponse.getDomNode());
 
             processSensorMLDocument(request.getServiceUrl(),
@@ -197,13 +198,14 @@ public abstract class Harvester implements Callable<ISirResponse> {
      * @param sensorMLDocument
      * @param serviceSpecificSensorId
      * @throws OwsExceptionReport
+     * @throws IOException
      */
     protected void processSensorMLDocument(String serviceURL,
                                            String serviceType,
                                            Collection<SirSensor> insertedSensorsP,
                                            Collection<SirSensor> updatedSensorsP,
                                            SensorMLDocument sensorMLDocument,
-                                           String serviceSpecificSensorId) throws OwsExceptionReport {
+                                           String serviceSpecificSensorId) throws OwsExceptionReport, IOException {
         // check SensorML for conformity with profile
         IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
         boolean isValid = profileValidator.validate(sensorMLDocument);
@@ -223,7 +225,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         sensor.setLastUpdate(new Date());
 
         // set service description
-        ArrayList<SirServiceReference> servDescs = new ArrayList<SirServiceReference>();
+        ArrayList<SirServiceReference> servDescs = new ArrayList<>();
         servDescs.add(new SirServiceReference(new SirService(serviceURL, serviceType), serviceSpecificSensorId));
         sensor.setServDescs(servDescs);
 
@@ -233,7 +235,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
         SirSensor temporarySensor = this.harvServDao.insertSensor(sensor);
 
-        if (temporarySensor.getSensorIDInSIR() != null) {
+        if (temporarySensor.getInternalSensorID() != null) {
             // add to inserted sensor to response
             insertedSensorsP.add(temporarySensor);
 
@@ -253,7 +255,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
                 if (log.isDebugEnabled())
                     log.debug("Found and will update sensor: " + result);
 
-                sensor.setSensorIDInSIR(result.getSensorIdInSir());
+                sensor.setInternalSensorId(result.getSensorId());
                 String id = this.insertSensorDao.updateSensor(serviceRef, sensor);
 
                 updatedSensorsP.add(sensor);
@@ -292,7 +294,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         SensorMLDocument sensorMLDocument = null;
         try {
             // request sensor descriptions
-            XmlObject xmlResponse = Client.xSendGetRequest(sensorDefinition);
+            XmlObject xmlResponse = this.client.xSendGetRequest(sensorDefinition);
 
             if (xmlResponse instanceof SensorMLDocument) {
                 sensorMLDocument = (SensorMLDocument) xmlResponse;
@@ -316,8 +318,8 @@ public abstract class Harvester implements Callable<ISirResponse> {
             }
 
         }
-        catch (OwsExceptionReport e) {
-            log.error("OWS Report", e.getDocument());
+        catch (OwsExceptionReport | IOException e) {
+            log.error("Error processing SensorML Document", e);
             failedSensorsP.put(sensorID, e.getMessage());
         }
     }

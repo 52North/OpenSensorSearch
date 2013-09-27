@@ -12,8 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * @author Yakoub
  */
+
 package org.n52.sir.harvest.exec.impl;
 
 import java.util.Date;
@@ -31,24 +31,21 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
-public class RemoteCallbackHarvestJobExec implements IHarvestJobExec{
+/**
+ * @author Yakoub
+ * 
+ */
+public class RemoteCallbackHarvestJobExec implements IHarvestJobExec {
 
-	@Override
-	public void execute(JobDataMap map, String identity,String triggerIdentity, Date start) throws SchedulerException {
-		JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class)
-				.withIdentity(identity).usingJobData(map).build();
+    @Override
+    public void execute(JobDataMap map, String identity, String triggerIdentity, Date start) throws SchedulerException {
+        JobDetail detail = JobBuilder.newJob(RemoteHarvestJob.class).withIdentity(identity).usingJobData(map).build();
 
-		Trigger tr = TriggerBuilder
-				.newTrigger()
-				.withIdentity(identity)
-				.withSchedule(
-						CronScheduleBuilder.cronSchedule("0/10 * * * * ?"))
-				.startAt(start).build();
-		SchedulerFactory factory = new StdSchedulerFactory();
-		Scheduler sch = factory.getScheduler();
-		sch.scheduleJob(detail, tr);
-		sch.start();
-	}
-	
+        Trigger tr = TriggerBuilder.newTrigger().withIdentity(identity).withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?")).startAt(start).build();
+        SchedulerFactory factory = new StdSchedulerFactory();
+        Scheduler sch = factory.getScheduler();
+        sch.scheduleJob(detail, tr);
+        sch.start();
+    }
 
 }

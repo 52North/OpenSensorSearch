@@ -12,8 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * @author Yakoub
  */
+
 package org.n52.sir.harvest.exec;
 
 import java.util.Date;
@@ -21,6 +21,10 @@ import java.util.Date;
 import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
 
+/**
+ * @author Yakoub
+ * 
+ */
 public interface IHarvestJobExec {
-	public void execute(JobDataMap map,String identity,String triggerIdentity,Date start)throws SchedulerException;
+    public void execute(JobDataMap map, String identity, String triggerIdentity, Date start) throws SchedulerException;
 }

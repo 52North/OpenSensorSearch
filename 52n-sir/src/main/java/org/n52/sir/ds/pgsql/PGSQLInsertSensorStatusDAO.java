@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -33,19 +34,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(PGSQLInsertSensorStatusDAO.class);
 
-    /**
-     * Connection pool for creating connections to the database
-     */
     private PGConnectionPool cpool;
 
     public PGSQLInsertSensorStatusDAO(PGConnectionPool cpool) {
@@ -128,29 +123,18 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
         return query.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.IInsertSensorStatusDAO#insertSensorStatus(org.n52.sir.
-     * datastructur.SirSensorIdentification, org.n52.sir.datastructur.SirStatus)
-     */
     @Override
     public String insertSensorStatus(SirSensorIdentification ident, Collection<SirStatus> status) throws OwsExceptionReport {
         String sensorId = null;
 
-        Connection con = null;
-        Statement stmt = null;
-
-        try {
-            con = this.cpool.getConnection();
-            stmt = con.createStatement();
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
 
             // query identification
             // check sensorID in SIR
             if (ident instanceof InternalSensorID) {
                 String sensorIdQuery = getSensorIdByInternalID((InternalSensorID) ident);
-                if (log.isDebugEnabled())
-                    log.debug(">>>Database Query: " + sensorIdQuery);
+                log.debug(">>>Database Query: {}", sensorIdQuery);
+
                 ResultSet rs = stmt.executeQuery(sensorIdQuery);
                 while (rs.next()) {
                     sensorId = rs.getString(PGDAOConstants.sensorId);
@@ -159,8 +143,8 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
             // check service description
             if (ident instanceof SirServiceReference) {
                 String sensorIdQuery = getSensorIdByServiceDescription((SirServiceReference) ident);
-                if (log.isDebugEnabled())
-                    log.debug(">>>Database Query: " + sensorIdQuery);
+                log.debug(">>>Database Query: {}", sensorIdQuery);
+
                 ResultSet rs = stmt.executeQuery(sensorIdQuery);
                 while (rs.next()) {
                     sensorId = rs.getString(PGDAOConstants.sensorId);
@@ -176,8 +160,8 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
                 // get status id
                 String statusID = null;
                 String statusIdQuery = getStatusId(sirStatus, sensorId);
-                if (log.isDebugEnabled())
-                    log.debug(">>> Database Query: " + statusIdQuery);
+                log.debug(">>> Database Query: {}", statusIdQuery);
+
                 ResultSet rs = stmt.executeQuery(statusIdQuery);
                 while (rs.next()) {
                     statusID = rs.getString(PGDAOConstants.statusId);
@@ -185,8 +169,8 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
                 if (statusID == null) {
                     // insert status
                     String insertSensorStatus = insertStatus(sirStatus, sensorId);
-                    if (log.isDebugEnabled())
-                        log.debug(">>> Database Query: " + insertSensorStatus);
+                    log.debug(">>> Database Query: {}", insertSensorStatus);
+
                     rs = stmt.executeQuery(insertSensorStatus);
                     while (rs.next()) {
                         sensorId = rs.getString(PGDAOConstants.sensorIdSirOfStatus);
@@ -208,20 +192,7 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
             log.error("Error while adding a sensor status to database: " + sqle.getMessage());
             throw se;
         }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                }
-                catch (SQLException e) {
-                    log.error("SQL Error.", e);
-                }
-            }
 
-            if (con != null) {
-                this.cpool.returnConnection(con);
-            }
-        }
         return sensorId;
     }
 

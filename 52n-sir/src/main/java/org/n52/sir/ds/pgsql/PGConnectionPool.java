@@ -76,8 +76,8 @@ public class PGConnectionPool extends AbstractConnectionPool {
                 se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
                                      "PGConnection.getConnection()",
                                      "All db connections are in use. Please try again later! " + sqle.toString());
-                if (log.isDebugEnabled())
-                    log.debug("All db connections are in use. Please try again later! " + sqle.toString());
+
+                log.debug("All db connections are in use. Please try again later! Error: {}", sqle.toString());
                 throw se;
             }
             OwsExceptionReport se = new OwsExceptionReport();
@@ -85,9 +85,8 @@ public class PGConnectionPool extends AbstractConnectionPool {
                                  "PGConnection.getConnection()",
                                  "Could not get connection from connection pool. Please make sure that your database server is running and configured properly. "
                                          + sqle.toString());
-            if (log.isDebugEnabled())
-                log.debug("Could not get connection from connection pool. Please make sure that your database server is running and configured properly. "
-                        + sqle.toString());
+            log.debug("Could not get connection from connection pool. Please make sure that your database server is running and configured properly. Error: {}",
+                      sqle.toString());
 
             throw se;
         }

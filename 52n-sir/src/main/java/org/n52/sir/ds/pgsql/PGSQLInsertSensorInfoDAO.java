@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {

@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.n52.oss.db;
 
-package org.n52.sir.harvest.exec;
+import java.sql.Connection;
 
-import java.util.Date;
+import org.n52.sir.ows.OwsExceptionReport;
 
-import org.quartz.JobDataMap;
-import org.quartz.SchedulerException;
+public interface ConnectionPool {
 
-/**
- * @author Yakoub
- * 
- */
-public interface IHarvestJobExec {
-    public void execute(JobDataMap map, String identity, String triggerIdentity, Date start) throws SchedulerException;
+    /**
+     * Abstract method returns an available connection from the pool. After the query operation, you have to
+     * the user must "give back" the connection to the pool with the returnConnection method!
+     * 
+     * @return DB Connection to execute the query
+     * @throws OwsExceptionReport
+     *         If all connections are in use and no further connection could be established
+     */
+    public Connection getConnection() throws OwsExceptionReport;
+
 }

@@ -12,10 +12,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- */
-/*
- *  @author Yakoub
  */
 package org.n52.oss.api;
 
@@ -33,6 +29,10 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
 
+/**
+ * @author Yakoub
+ * 
+ */
 @Path("/api/user")
 @RequestScoped
 public class UserAccessResource {

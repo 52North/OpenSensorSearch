@@ -258,8 +258,8 @@
 		<!-- ~~~~~~~~~~~~~~ -->
 		<rule context="//sml:classification">
 			<assert
-				test="count(sml:ClassifierList/sml:classifier/sml:Term[@definition = 'urn:ogc:def:classifier:OGC:1.0:sensorType']) >= 1">Error: one classifier for the sensorType classification scheme
-				has to be given!
+				test="count(sml:ClassifierList/sml:classifier/sml:Term[@definition = 'urn:ogc:def:classifier:OGC:1.0:sensorType']) >= 1">
+				Error: one classifier for the sensorType classification scheme has to be given!
 			</assert>
 			<assert
 				test="count(sml:ClassifierList/sml:classifier/sml:Term[@definition = 'urn:ogc:def:classifier:OGC:1.0:application']) >= 1">Error: one classifier for the intendedApplication

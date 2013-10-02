@@ -82,9 +82,9 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
          * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
          */
         @Override
-        public void characters(char[] ch, int start, int length) throws SAXException {
-            if (this.insideFail) {
-                this.failTmp += new String(ch, start, length).trim();
+        public void characters(final char[] ch, final int start, final int length) throws SAXException {
+            if (insideFail) {
+                failTmp += new String(ch, start, length).trim();
             }
         }
 
@@ -95,19 +95,19 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
          * java.lang.String)
          */
         @Override
-        public void endElement(String uri, String localName, String qName) throws SAXException {
+        public void endElement(final String uri, final String localName, final String qName) throws SAXException {
             if (qName.endsWith(QNAME_FAILED_ASSERT)) {
-                getAssertionFailures().add(this.failTmp);
-                this.failTmp = null;
-                this.insideFail = false;
+                getAssertionFailures().add(failTmp);
+                failTmp = null;
+                insideFail = false;
             }
             else if (qName.endsWith(QNAME_FIRED_RULE)) {
-                getFiredRules().add(this.ruleTmp);
-                this.ruleTmp = null;
+                getFiredRules().add(ruleTmp);
+                ruleTmp = null;
             }
             else if (qName.endsWith(QNAME_ACTIVE_PATTERN)) {
-                getActivatedPatterns().add(this.patternTmp);
-                this.patternTmp = null;
+                getActivatedPatterns().add(patternTmp);
+                patternTmp = null;
             }
         }
 
@@ -117,25 +117,25 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
          * @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)
          */
         @Override
-        public void setDocumentLocator(Locator locator) {
+        public void setDocumentLocator(final Locator locator) {
             this.locator = locator;
         }
 
         @Override
-        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException {
             if (qName.endsWith(QNAME_FAILED_ASSERT)) {
-                this.failTmp = "[line " + this.locator.getLineNumber() + "]\tAssertion error at \""
+                failTmp = "[line " + locator.getLineNumber() + "]\tAssertion error at \""
                         + attributes.getValue(ATTRIBUTE_NAME_TEST) + "\"" + " (location: \""
                         + attributes.getValue(ATTRIBUTE_NAME_LOCATION) + "\"): ";
-                this.insideFail = true;
+                insideFail = true;
             }
             else if (qName.endsWith(QNAME_FIRED_RULE)) {
-                this.ruleTmp = "Fired rule in context \"" + attributes.getValue(ATTRIBUTE_NAME_CONTEXT) + "\" (line "
-                        + this.locator.getLineNumber() + ").";
+                ruleTmp = "Fired rule in context \"" + attributes.getValue(ATTRIBUTE_NAME_CONTEXT) + "\" (line "
+                        + locator.getLineNumber() + ").";
             }
             else if (qName.endsWith(QNAME_ACTIVE_PATTERN)) {
-                this.patternTmp = "Active pattern id: \"" + attributes.getValue(ATTRIBUTE_NAME_ID) + " -- name: \""
-                        + attributes.getValue(ATTRIBUTE_NAME_NAME) + "\" (line " + this.locator.getLineNumber() + ").";
+                patternTmp = "Active pattern id: \"" + attributes.getValue(ATTRIBUTE_NAME_ID) + " -- name: \""
+                        + attributes.getValue(ATTRIBUTE_NAME_NAME) + "\" (line " + locator.getLineNumber() + ").";
             }
         }
 
@@ -175,83 +175,86 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     private List<String> firedRules = new ArrayList<>();
 
-    private Transformer transformer;
+    private final Transformer transformer;
 
-    public SensorML4DiscoveryValidatorImpl(File profileFile, File svrlFile) throws TransformerConfigurationException,
+    public SensorML4DiscoveryValidatorImpl(final File profileFile, final File svrlFile) throws TransformerConfigurationException,
             TransformerFactoryConfigurationError {
         initializeTempXSLFile(profileFile, svrlFile);
 
-        this.transformer = tFactory.newTransformer(source);
+        transformer = tFactory.newTransformer(source);
 
         log.debug("NEW SensorML4DiscoveryValidatorImpl");
     }
 
-    private boolean actualValidate(SensorMLDocument smlDoc) throws IOException {
+    private boolean actualValidate(final SensorMLDocument smlDoc) throws IOException {
         log.debug("Validating SensorMLDocument against Discovery Profile...");
 
         // encapsulate input document in a Source
-        Source input = new DOMSource(smlDoc.getDomNode());
+        final Source input = new DOMSource(smlDoc.getDomNode());
 
         // create output string
         try (StringWriter sw = new StringWriter();) {
-            StreamResult output = new StreamResult(sw);
+            final StreamResult output = new StreamResult(sw);
 
             // do the transformation
             try {
-                this.transformer.transform(input, output);
+                transformer.transform(input, output);
 
-                String outputString = output.getWriter().toString();
+                final String outputString = output.getWriter().toString();
                 processSVRL(new InputSource(new StringReader(outputString)));
             }
-            catch (TransformerException e) {
+            catch (final TransformerException e) {
                 log.error("Error transforming SensorML for validation against profile for discovery!", e);
                 return false;
             }
-            catch (SAXException e) {
+            catch (final SAXException e) {
                 log.error("Error transforming SensorML for validation against profile for discovery!", e);
                 return false;
             }
-            catch (IOException e) {
+            catch (final IOException e) {
                 log.error("Error transforming SensorML for validation against profile for discovery!", e);
                 return false;
             }
-            catch (ParserConfigurationException e) {
+            catch (final ParserConfigurationException e) {
                 log.error("Error processing SVRL output!", e);
                 return false;
             }
         }
 
         log.debug("Validation result: {} failures, {} activated patterns, and {} fired rules.",
-                  this.getAssertionFailures().size(),
-                  this.activatedPatterns.size(),
-                  this.firedRules.size());
+                  getAssertionFailures().size(),
+                  activatedPatterns.size(),
+                  firedRules.size());
+        if (getValidationFailures().size()>0) {
+        	log.debug("Validation errors: {}",getValidationFailuresAsString());
+        }
 
-        return (this.getAssertionFailures().size() == 0) ? true : false;
+        return (getAssertionFailures().size() == 0) ? true : false;
     }
 
     public List<String> getActivatedPatterns() {
-        return this.activatedPatterns;
+        return activatedPatterns;
     }
 
     public List<String> getAssertionFailures() {
-        return this.assertionFailures;
+        return assertionFailures;
     }
 
     public List<String> getFiredRules() {
-        return this.firedRules;
+        return firedRules;
     }
 
     @Override
     public List<String> getValidationFailures() {
-        return this.getAssertionFailures();
+        return getAssertionFailures();
     }
 
     @Override
     public String getValidationFailuresAsString() {
-        List<String> failures = getValidationFailures();
-        StringBuilder sb = new StringBuilder();
+        final List<String> failures = getValidationFailures();
+        final StringBuilder sb = new StringBuilder();
         sb.append("The document is NOT valid:\n");
-        for (String string : failures) {
+        for (final String string : failures) {
             sb.append(string);
             sb.append("\n");
         }
@@ -281,10 +284,10 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
                 public void run() {
                     // transform the schematron to XSL,
                     // http://www.saxonica.com/documentation/index.html#!using-xsl/commandline
-                    Transform trans = new Transform();
+                    final Transform trans = new Transform();
 
                     // http://blog.eight02.com/2011/05/validating-xml-with-iso-schematron-on.html
-                    String[] arguments = new String[] {"-x:org.apache.xerces.parsers.SAXParser",
+                    final String[] arguments = new String[] {"-x:org.apache.xerces.parsers.SAXParser",
                                                        // "-w1",
                                                        "-o:" + tempXSLFile.getAbsolutePath(),
                                                        "-s:" + profileFile.getAbsolutePath(),
@@ -308,7 +311,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         }
     }
 
-    private void processSVRL(InputSource inputSource) throws SAXException, IOException, ParserConfigurationException {
+    private void processSVRL(final InputSource inputSource) throws SAXException, IOException, ParserConfigurationException {
         /*
          * an extension of DefaultHandler
          */
@@ -323,43 +326,44 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         parser = null;
     }
 
-    public void setActivatedPatterns(List<String> patterns) {
-        this.activatedPatterns = patterns;
+    public void setActivatedPatterns(final List<String> patterns) {
+        activatedPatterns = patterns;
     }
 
-    protected void setAssertionFailures(List<String> assertionFailures) {
+    protected void setAssertionFailures(final List<String> assertionFailures) {
         this.assertionFailures = assertionFailures;
     }
 
-    public void setFiredRules(List<String> firedRules) {
+    public void setFiredRules(final List<String> firedRules) {
         this.firedRules = firedRules;
     }
 
     @Override
-    public boolean validate(File file) throws OwsExceptionReport {
+    public boolean validate(final File file) throws OwsExceptionReport {
         try {
-            SensorMLDocument smlDoc = SensorMLDocument.Factory.parse(file);
+            final SensorMLDocument smlDoc = SensorMLDocument.Factory.parse(file);
+            log.debug("File: {}", file.getAbsolutePath());
             return validate(smlDoc);
         }
-        catch (XmlException e) {
+        catch (final XmlException e) {
             log.error("XmlException when parsing SensorMLDocument from file.", e);
             throw new OwsExceptionReport("Could not test given file for compliance with profile for discovery!", e);
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             log.error("IOException when parsing SensorMLDocument from file.", e);
             throw new OwsExceptionReport("Could not test given file for compliance with profile for discovery!", e);
         }
     }
 
     @Override
-    public boolean validate(SensorMLDocument smlDoc) throws IOException {
-        return this.actualValidate(smlDoc);
+    public boolean validate(final SensorMLDocument smlDoc) throws IOException {
+        return actualValidate(smlDoc);
     }
 
     @Override
-    public boolean validate(XmlObject xml) throws IOException {
+    public boolean validate(final XmlObject xml) throws IOException {
         if (xml instanceof SensorMLDocument) {
-            SensorMLDocument smlDoc = (SensorMLDocument) xml;
+            final SensorMLDocument smlDoc = (SensorMLDocument) xml;
             return validate(smlDoc);
         }
         log.error("The given XmlObject could was not a SensorMLDocument!");

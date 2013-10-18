@@ -41,5 +41,5 @@ public class SolrConstants {
     /**
      * TODO Remove this an configure it later in SIR configurations
      */
-    public static final String SOLR_URL = "http://gsoc.dev.52north.org:8093/solr";
+    public static final String SOLR_URL = "http://gsoc.dev.52north.org:8093/solr/opensensorsearch/";
 }

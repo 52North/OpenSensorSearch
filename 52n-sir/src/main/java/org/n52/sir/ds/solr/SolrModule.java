@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.solr;
 
-import org.apache.solr.common.SolrInputDocument;
-import org.n52.sir.datastructure.SirSensor;
+import org.n52.sir.ds.ISearchSensorDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * @author Yakoub
- * 
- */
-public class SolrIndexDocumentHelper {
-    /*
-     * A static class for helping in forming input indexing document
-     */
+import com.google.inject.AbstractModule;
+import com.google.inject.name.Names;
 
-    public static SolrInputDocument prepareDocument(SirSensor sensor) {
-        /*
-         * TODO check which fields we will store in description
-         */
-        return null;
+public class SolrModule extends AbstractModule {
+
+    private static Logger log = LoggerFactory.getLogger(SolrModule.class);
+
+    @Override
+    protected void configure() {
+        bind(SolrConnection.class);
+
+        // FIXME change .named to recommended explicit binding annotation:
+        // http://code.google.com/p/google-guice/wiki/BindingAnnotations
+        bind(ISearchSensorDAO.class).annotatedWith(Names.named("autocomplete")).to(SOLRSearchSensorDAO.class);
+
+        log.debug("Configured {}", this);
     }
+
 }

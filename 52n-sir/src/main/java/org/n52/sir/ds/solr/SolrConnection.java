@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.solr;
 
 /** 
@@ -20,19 +21,29 @@ package org.n52.sir.ds.solr;
  */
 import java.io.IOException;
 
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.SolrParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class SolrConnection {
 
-    private SolrServer server;
+    private static Logger log = LoggerFactory.getLogger(SolrConnection.class);
 
-    public SolrConnection() {
-        this.server = new HttpSolrServer(SolrConstants.SOLR_URL);
+    private HttpSolrServer server;
+
+    @Inject
+    public SolrConnection(@Named("oss.solr.url")
+    String url) {
+        this.server = new HttpSolrServer(url);
+
+        log.info("NEW {} for URL {}", this, url);
     }
 
     public void addInputDocument(SolrInputDocument doc) throws SolrServerException, IOException {
@@ -45,17 +56,30 @@ public class SolrConnection {
 
     public QueryResponse SolrQuery(SolrParams params) throws SolrServerException {
         return this.server.query(params);
+    }
 
-    }
-    
     public void deleteSensorWithID(String sensorID) throws SolrServerException, IOException {
-    	this.server.deleteByQuery(SolrConstants.ID+":"+sensorID);
-    	commitChanges();
+        this.server.deleteByQuery(SolrConstants.ID + ":" + sensorID);
+        commitChanges();
     }
-    
-    public void deleteByQuery(String query) throws SolrServerException, IOException{
-    	this.server.deleteByQuery("*:*");
-    	commitChanges();
+
+    public void deleteByQuery(String query) throws SolrServerException, IOException {
+        this.server.deleteByQuery("*:*");
+        commitChanges();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SolrConnection [");
+        if (this.server != null) {
+            builder.append("serverBaseURL=");
+            builder.append(this.server.getBaseURL());
+            builder.append(", server=");
+            builder.append(this.server);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

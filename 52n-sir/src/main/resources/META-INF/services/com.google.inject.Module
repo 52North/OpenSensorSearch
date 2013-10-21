@@ -4,6 +4,7 @@ org.n52.oss.config.ConfigModule
 org.n52.sir.ConfigModule
 org.n52.sir.ListenerModule
 org.n52.sir.ds.pgsql.PGSQLModule
+org.n52.sir.ds.solr.SolrModule
 org.n52.oss.guice.ServletModule
 org.n52.oss.guice.OpenSensorSearchModule
 org.n52.oss.opensearch.listeners.ListenerModule

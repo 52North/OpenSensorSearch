@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.google.inject.servlet.RequestScoped;
 
 /**
@@ -49,7 +50,8 @@ public class SensorResource {
     private Converter converter;
 
     @Inject
-    public SensorResource(ISearchSensorDAO searchDao) {
+    public SensorResource(@Named("full")
+    ISearchSensorDAO searchDao) {
         log.info("NEW {}", this);
 
         this.dao = searchDao;

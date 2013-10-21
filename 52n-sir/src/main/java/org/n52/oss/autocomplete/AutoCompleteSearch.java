@@ -19,6 +19,7 @@ package org.n52.oss.autocomplete;
 /**
  * @author Yakoub 
  */
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -33,14 +34,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
-import org.n52.sir.listener.SearchSensorListener;
+import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.google.inject.servlet.RequestScoped;
 import com.sun.jersey.api.core.HttpContext;
 
@@ -58,11 +62,12 @@ public class AutoCompleteSearch {
     @Context
     private HttpContext servletContext;
 
-    SearchSensorListener searchSensor;
+    private ISearchSensorDAO searchSensorDao;
 
     @Inject
-    public AutoCompleteSearch(SearchSensorListener ssl) {
-        this.searchSensor = ssl;
+    public AutoCompleteSearch(@Named("autocomplete")
+    ISearchSensorDAO dao) {
+        this.searchSensorDao = dao;
 
         log.debug("NEW {}", this);
     }
@@ -70,16 +75,27 @@ public class AutoCompleteSearch {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response doGet(@QueryParam(REQUEST_PARAM_AUTOCOMPLETE)
-    String text) {
-        log.debug("Autocomplete request: '{}'", text);
+    String query) {
+        log.debug("Autocomplete request: '{}'", query);
 
-        if (text == null || text.isEmpty())
+        if (query == null || query.isEmpty())
             return Response.status(Status.BAD_REQUEST).entity(" { error: \"Query parameter "
                     + REQUEST_PARAM_AUTOCOMPLETE + " must be given.\" }").build();
 
         Collection<String> results = new HashSet<>();
-        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-        Collection<SirSearchResultElement> searchResults = dao.searchByAll(text, null, null, null, null, null, null);
+
+        SirSearchCriteria crit = new SirSearchCriteria();
+        Collection<String> text = new ArrayList<>();
+        text.add(query);
+        crit.setSearchText(text);
+
+        Collection<SirSearchResultElement> searchResults;
+        try {
+            searchResults = this.searchSensorDao.searchSensor(crit, false);
+        }
+        catch (OwsExceptionReport e) {
+            return Response.serverError().entity(e).build();
+        }
 
         for (SirSearchResultElement element : searchResults) {
             SirDetailedSensorDescription desc = (SirDetailedSensorDescription) element.getSensorDescription();
@@ -106,10 +122,12 @@ public class AutoCompleteSearch {
             StringBuilder sb = new StringBuilder();
             sb.append("{ [");
             for (String s : results) {
-                if (s.contains(text)) {
+                if (s.contains(query)) {
                     sb.append(s);
                     sb.append(", ");
                 }
+                else
+                    log.debug("Got a result that is not contained in the query: {}", s);
             }
             if (sb.length() > 4)
                 sb.replace(sb.length() - 2, sb.length(), ""); // remove last comma

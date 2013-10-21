@@ -733,4 +733,16 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         return query.toString();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PGSQLSearchSensorDAO [");
+        if (this.cpool != null) {
+            builder.append("cpool=");
+            builder.append(this.cpool);
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

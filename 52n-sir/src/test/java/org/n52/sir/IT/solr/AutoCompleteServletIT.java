@@ -34,6 +34,7 @@ import org.apache.xmlbeans.XmlException;
 import org.junit.Test;
 import org.n52.oss.util.Util;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 import org.slf4j.Logger;
@@ -55,7 +56,8 @@ public class AutoCompleteServletIT {
         File sensor_status = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_status);
 
-        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        // FIXME use mocked up up database backend
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(new SolrConnection("http://localhost:8983/solr"));
         this.insertedSensorId = dao.insertSensor(SensorMLDecoder.decode(doc));
         log.debug("inserted test sensor: {}", this.insertedSensorId);
     }

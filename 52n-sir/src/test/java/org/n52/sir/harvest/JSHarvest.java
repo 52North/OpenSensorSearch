@@ -43,8 +43,9 @@ public class JSHarvest {
 
         assertNotNull(id);
 
-        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-        Collection<SirSearchResultElement> elements = searchDAO.searchByID(id);
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(c);
+        Collection<SirSearchResultElement> elements = dao.searchByID(id);
         assertNotEquals(elements.size(), 0);
 
         SirSearchResultElement element = elements.iterator().next();
@@ -61,8 +62,7 @@ public class JSHarvest {
         assertTrue(contacts.contains("52north"));
         assertTrue(contacts.contains("rhino"));
 
-        new SolrConnection().deleteByQuery("id:" + id);
-
+        new SolrConnection("http://localhost:8983/solr").deleteByQuery("id:" + id);
     }
 
 }

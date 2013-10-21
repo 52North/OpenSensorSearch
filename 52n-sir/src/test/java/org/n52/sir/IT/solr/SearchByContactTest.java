@@ -33,18 +33,27 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.xmlbeans.XmlException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByContactTest {
 
     private String id = UUID.randomUUID().toString();
+
+    private static SolrConnection connection;
+
+    @BeforeClass
+    public static void prepare() {
+        connection = new SolrConnection("http://localhost:8983/solr");
+    }
 
 	@Before
 	public void insertSensor() throws XmlException, IOException,
@@ -54,13 +63,13 @@ public class SearchByContactTest {
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
 		SirSensor sensor = SensorMLDecoder.decode(doc);
         sensor.setInternalSensorId(this.id);
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(connection);
 		dao.insertSensor(sensor);
 	}
 
 	@Test
 	public void searchByContact() {
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
 		String contact = "Me";
 		Collection<SirSearchResultElement> results = searchDAO
 				.searchByContact(contact);

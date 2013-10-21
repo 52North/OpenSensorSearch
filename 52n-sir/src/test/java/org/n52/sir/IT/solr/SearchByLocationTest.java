@@ -21,6 +21,7 @@ package org.n52.sir.IT.solr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -32,6 +33,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
@@ -43,6 +45,13 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByLocationTest {
+
+    private static SolrConnection connection;
+
+    @BeforeClass
+    public static void prepare() {
+        connection = new SolrConnection("http://localhost:8983/solr");
+    }
 
     @Before
     public void insertSensor() throws XmlException, IOException, OwsExceptionReport {
@@ -59,14 +68,14 @@ public class SearchByLocationTest {
          * Inserts this sensor
          */
         // probably this will take some configuration - haven't decided yet.
-        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(connection);
         dao.insertSensor(sensor);
     }
 
     @Test
     public void searchByLocation() {
         //
-        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
         /*
          * Prepare the list of keywords
          */
@@ -91,7 +100,7 @@ public class SearchByLocationTest {
     @Test
     public void searchByLocationNotInRange() {
         //
-        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
         /*
          * Prepare the list of keywords
          */
@@ -103,13 +112,9 @@ public class SearchByLocationTest {
         assertEquals(results.size(), 0);
 
     }
-    /**TODO LET the delete delete only by the given id not all  
-     * 
-     */
     
     @After
     public void deleteSensor() throws SolrServerException, IOException{
-        new SolrConnection().deleteByQuery("");
-        
+        connection.deleteByQuery(""); // FIXME delete inserted sensor only
     }
 }

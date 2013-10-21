@@ -116,7 +116,7 @@ public class Formats {
         when(queryMap.getFirst("q")).thenReturn(query);
         when(queryUriInfo.getQueryParameters()).thenReturn(queryMap);
 
-        ssl = new SearchSensorListener(mockupDao);
+        ssl = new SearchSensorListener(mockupDao, mockupDao);
         Injector i = GuiceUtil.configurePropertiesFiles();
         i.injectMembers(ssl);
 

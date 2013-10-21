@@ -16,6 +16,7 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.IT.solr;
 
 import static org.junit.Assert.assertEquals;
@@ -32,7 +33,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
@@ -43,36 +43,37 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class IndexDescriptionTest {
-    
-	@Before
-	public void insertSensorInfo() throws XmlException, IOException,
-			OwsExceptionReport {
-		String basePath = (this.getClass().getResource("/Requests").getFile());
-		File sensor_file = new File(basePath+"/testSensor.xml");
-		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-		SirSensor sensor = SensorMLDecoder.decode(doc);
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-		dao.insertSensor(sensor);
-	}
 
-	//@Test
-	public void searchForSensorByDescription() {
-		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-		Collection<SirSearchResultElement> results = dao
-				.searchByDescription("A test sensor.");
-		assertNotNull(results);
-		assertTrue(results.size() > 0);
-		for (SirSearchResultElement element : results)
-			assertEquals(
-					((SirDetailedSensorDescription) element.getSensorDescription())
-							.getDescription(),
-					"A test sensor.");
-	}
+    private SOLRSearchSensorDAO searchDao;
 
-	@After
-	public void deleteSensor() throws SolrServerException, IOException {
-		new SolrConnection().deleteByQuery("");
+    @Before
+    public void insertSensorInfo() throws XmlException, IOException, OwsExceptionReport {
+        String basePath = (this.getClass().getResource("/Requests").getFile());
+        File sensor_file = new File(basePath + "/testSensor.xml");
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
+        SirSensor sensor = SensorMLDecoder.decode(doc);
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
 
-	}
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(c);
+        dao.insertSensor(sensor);
+
+        searchDao = new SOLRSearchSensorDAO(c);
+    }
+
+    // @Test
+    public void searchForSensorByDescription() {
+        Collection<SirSearchResultElement> results = searchDao.searchByDescription("A test sensor.");
+        assertNotNull(results);
+        assertTrue(results.size() > 0);
+        for (SirSearchResultElement element : results)
+            assertEquals( ((SirDetailedSensorDescription) element.getSensorDescription()).getDescription(),
+                         "A test sensor.");
+    }
+
+    @After
+    public void deleteSensor() throws SolrServerException, IOException {
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        c.deleteByQuery("");
+    }
 
 }

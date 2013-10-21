@@ -21,6 +21,7 @@ package org.n52.sir.IT.solr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -32,6 +33,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirBoundingBox;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -45,6 +47,13 @@ import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByBoundingBoxTest {
 
+    private static SolrConnection c;
+
+    @BeforeClass
+    public static void prepare() {
+        c = new SolrConnection("http://localhost:8983/solr");
+    }
+
     @Before
     public void insertSensor() throws XmlException, IOException, OwsExceptionReport {
         /*
@@ -56,18 +65,13 @@ public class SearchByBoundingBoxTest {
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
         SirSensor sensor = SensorMLDecoder.decode(doc);
 
-        /*
-         * Inserts this sensor
-         */
-        // probably this will take some configuration - haven't decided yet.
-        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(c);
         dao.insertSensor(sensor);
     }
 
     @Test
     public void searchByBoundingBox() {
-        //
-        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(c);
         /*
          * Prepare the list of keywords
          */
@@ -90,11 +94,7 @@ public class SearchByBoundingBoxTest {
      */
     @Test
     public void searchByLocationNotInRange() {
-        //
-        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-        /*
-         * Prepare the list of keywords
-         */
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(c);
         SirBoundingBox box = new SirBoundingBox(5,6,7,8);
         
         Collection<SirSearchResultElement> results = searchDAO.searchSensorByBoundingBox(box);
@@ -103,12 +103,10 @@ public class SearchByBoundingBoxTest {
         assertEquals(results.size(), 0);
 
     }
-    /**TODO LET the delete delete only by the given id not all  
-     * 
-     */
+
+    // FIXME let the delete delete only by the given id not all
     @After
     public void deleteSensor() throws SolrServerException, IOException{
-        new SolrConnection().deleteByQuery("");
-        
+        c.deleteByQuery("");
     }
 }

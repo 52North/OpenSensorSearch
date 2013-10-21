@@ -37,6 +37,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
@@ -54,6 +55,13 @@ public class SearchByQueryTest {
 	public String id;
 	public static final double R = 6372.8; // In kilometers
 
+    private static SolrConnection connection;
+
+    @BeforeClass
+    public static void prepare() {
+        connection = new SolrConnection("http://localhost:8983/solr");
+    }
+
 	@Before
 	public void insertSensor() throws XmlException, IOException,
 			OwsExceptionReport {
@@ -61,22 +69,22 @@ public class SearchByQueryTest {
 		File sensor_file = new File(basePath+"/testSensor.xml");
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
 		SirSensor sensor = SensorMLDecoder.decode(doc);
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(connection);
 		dao.insertSensor(sensor);
 	}
 
 	@Test
 	public void keywordTemporalSearch() {
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
 		// Search by keywords and By StartDate
 		Map<String, String> map = new HashMap<>();
-		Calendar c = Calendar.getInstance();
-		c.set(2009, 11, 31);
-		Date start = c.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.set(2009, 11, 31);
+        Date start = cal.getTime();
 
-		c = Calendar.getInstance();
-		c.set(2012, 0, 30);
-		Date end = c.getTime();
+        cal = Calendar.getInstance();
+        cal.set(2012, 0, 30);
+        Date end = cal.getTime();
 
 		map.put("keyword", "TEST");
 		map.put("dtstart", SolrUtils.getISO8601UTCString(start));
@@ -103,7 +111,7 @@ public class SearchByQueryTest {
 
 	@Test
 	public void keywordSpatialSearch() {
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
 		// Search by keywords and By StartDate
 		Map<String, String> map = new HashMap<>();
 		map.put("keyword", "test");
@@ -133,16 +141,16 @@ public class SearchByQueryTest {
 
 	@Test
 	public void temporalSpatialSearch() {
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
 		// Search by keywords and By StartDate
 		Map<String, String> map = new HashMap<>();
-		Calendar c = Calendar.getInstance();
-		c.set(2009, 11, 31);
-		Date start = c.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.set(2009, 11, 31);
+        Date start = cal.getTime();
 
-		c = Calendar.getInstance();
-		c.set(2012, 0, 30);
-		Date end = c.getTime();
+        cal = Calendar.getInstance();
+        cal.set(2012, 0, 30);
+        Date end = cal.getTime();
 
 		map.put("lat", "1.5");
 		map.put("lng", "3.49");
@@ -176,16 +184,16 @@ public class SearchByQueryTest {
 
 	@Test
 	public void keywordTemporalSpatialSearch() {
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
 		// Search by keywords and By StartDate
 		Map<String, String> map = new HashMap<>();
-		Calendar c = Calendar.getInstance();
-		c.set(2009, 11, 31);
-		Date start = c.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.set(2009, 11, 31);
+        Date start = cal.getTime();
 
-		c = Calendar.getInstance();
-		c.set(2012, 0, 30);
-		Date end = c.getTime();
+        cal = Calendar.getInstance();
+        cal.set(2012, 0, 30);
+        Date end = cal.getTime();
 
 		map.put("keyword", "TEST");
 		map.put("lat", "1.5");
@@ -232,8 +240,7 @@ public class SearchByQueryTest {
 
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
-		new SolrConnection().deleteByQuery("");
-
+        connection.deleteByQuery(""); // FIXME delete inserted sensor only
 	}
 
 }

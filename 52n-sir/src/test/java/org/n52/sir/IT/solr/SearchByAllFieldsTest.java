@@ -32,6 +32,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Test;
+import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
@@ -41,37 +42,43 @@ import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
+import scala.actors.threadpool.Arrays;
+
 public class SearchByAllFieldsTest {
 
-	
-	@Test
-	public void searchByAllFields() throws XmlException, IOException, OwsExceptionReport {
-		String basePath = (this.getClass().getResource("/Requests").getFile());
-		File sensor_file = new File(basePath+"/testSensor.xml");
-		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-		SirSensor sensor = SensorMLDecoder.decode(doc);
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-		String id = dao.insertSensor(sensor);
-		System.out.println(id);
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
-		Collection<SirSearchResultElement> results = searchDAO
-				.searchByAll("precipitation+keyword",null,null,null,null,null,null);
-		Iterator<SirSearchResultElement> resultsIterator = results.iterator();
-		boolean found = false;
-		while(resultsIterator.hasNext()){
-			SirDetailedSensorDescription description = (SirDetailedSensorDescription)resultsIterator.next().getSensorDescription();
-			if(description.getId().equals(id)){
-				found=true;
-				break;
-			}
-		}
-		assertTrue(found);
-		
-	}
+    @Test
+    public void searchByAllFields() throws XmlException, IOException, OwsExceptionReport {
+        String basePath = (this.getClass().getResource("/Requests").getFile());
+        File sensor_file = new File(basePath + "/testSensor.xml");
+        SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
+        SirSensor sensor = SensorMLDecoder.decode(doc);
 
-	@After
-	public void deleteSensor() throws SolrServerException, IOException {
-		new SolrConnection().deleteByQuery("");
-	}
-//	
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(c);
+        String id = dao.insertSensor(sensor);
+        System.out.println(id);
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(c);
+        SirSearchCriteria searchCriteria = new SirSearchCriteria();
+        searchCriteria.setSearchText(Arrays.asList(new String[] {"precipitation+keyword"}));
+        Collection<SirSearchResultElement> results = searchDAO.searchSensor(searchCriteria, false);
+        Iterator<SirSearchResultElement> resultsIterator = results.iterator();
+        boolean found = false;
+        while (resultsIterator.hasNext()) {
+            SirDetailedSensorDescription description = (SirDetailedSensorDescription) resultsIterator.next().getSensorDescription();
+            if (description.getId().equals(id)) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
+
+    }
+
+    @After
+    public void deleteSensor() throws SolrServerException, IOException {
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        c.deleteByQuery("");
+    }
+    //
 }

@@ -3,7 +3,7 @@ This is the contribute.md of 52°North project [Open Sensor Search](https://githu
 # Contribute.md
 
 ## Learn & listen
-Best way to get started is to start with these:
+Best way to get started is to start with these "quickstart" links. More details can be found in the sections below.
 
 * OSS Wiki: <https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch>
 * Sensor Web Community Mailing list: <http://sensorweb.forum.52north.org/> (subscribe [here](http://52north.org/resources/mailing-lists-and-forums))
@@ -39,16 +39,14 @@ Don’t get discouraged! We estimate that the response time from the maintainers i
 # Bug triage
 
 You can help report bugs by filing them here: <https://github.com/52North/OpenSensorSearch/issues>
-Don't forget to check the existing ones first and take a look at the mailing list guidelines - going through these steps makes it likely that you can fix the bug yourself: <http://52north.org/resources/mailing-list-and-forums/mailinglist-guidelines>
 
-Look at existing bugs and help us understand if the bug is reproducible. Is it reproducible in other environments (browsers)? What are the steps to reproduce? 
+* Don't forget to check the existing ones first and take a look at the mailing list guidelines - going through these steps makes it likely that you can fix the bug yourself: <http://52north.org/resources/mailing-list-and-forums/mailinglist-guidelines>
+* Look at existing bugs and help us understand if the bug is reproducible. Is it reproducible in other environments (browsers)? What are the steps to reproduce? 
 
 
 # Documentation
 
-This section includes any help you need with the documentation and where it can be found. Code needs explanation, and sometimes those who know the code well have trouble explaining it to someone just getting into it. 
-
-Help with documentation is very welcome.
+All documentation is [in the 52°North wiki](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch), and a critical read as well as feedback are always welcome.
 
 ## Maintainer Documentation
 
@@ -61,14 +59,15 @@ Documentation for people who want to install and run their own OSS server can be
 
 People who just "use" OSS might need help in using the variety of features. Help is very welcome by exending the user documentation wiki page and also as feedback on the design and structure of the website.
 
-* User documentation: <to be added...>
+* User documentation: [to be added...]
 
 
 # Community 
 
-You can help us making OSS more useful for you by adding a [user story](http://en.wikipedia.org/wiki/User_story) in the form *As a <role>, I want <goal/desire> so that <benefit>* as an issue here: <https://github.com/52North/OpenSensorSearch/issues>
+You can help us making OSS more useful for you by writing your requirements as a [user story](http://en.wikipedia.org/wiki/User_story) in the form *"As a <role>, I want <goal/desire> so that <benefit>"* and add it as an issue tagged ["user story"](https://github.com/52North/OpenSensorSearch/issues?labels=user+story) here: <https://github.com/52North/OpenSensorSearch/issues>
 
 Tell us about how you use OSS on the community mailing list: <http://sensorweb.forum.52north.org/>
 
+# My question is not answered
 
-* If you have further questions, contact: 
+If you have further questions, contact Daniel: [@nuest](https://github.com/nuest), d.nuest@52north.org

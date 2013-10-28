@@ -50,7 +50,7 @@ All documentation is [in the 52°North wiki](https://wiki.52north.org/bin/view/Se
 
 ## Maintainer Documentation
 
-Documentation for people who want to install and run their own OSS server can be found in the wiki. Just try installing and configuring the software on your system based on the tutorials in the Wiki, let us know what works and what does not, and if possible fix it yourself:
+Documentation for people who want to install and run their own OSS server can be found in the wiki. Just try installing and configuring the software on your system based on the tutorials in the Wiki, let us know what works and what does not, or just go ahead and fix the documentation yourself:
 
 * Installation tutorial: <https://wiki.52north.org/bin/view/SensorWeb/OssInstallation>
 * Configuration: <https://wiki.52north.org/bin/view/SensorWeb/OssConfiguration>
@@ -64,7 +64,7 @@ People who just "use" OSS might need help in using the variety of features. Help
 
 # Community 
 
-You can help us making OSS more useful for you by writing your requirements as a [user story](http://en.wikipedia.org/wiki/User_story) in the form *"As a <role>, I want <goal/desire> so that <benefit>"* and add it as an issue tagged ["user story"](https://github.com/52North/OpenSensorSearch/issues?labels=user+story) here: <https://github.com/52North/OpenSensorSearch/issues>
+You can help us making OSS more useful for you by writing your requirements as a [user story](http://en.wikipedia.org/wiki/User_story) in the form *"As a MY_ROLE, I want MY_GOAL_OR_DESIRE so that A_BENEFIT"* and add it as an issue tagged ["user story"](https://github.com/52North/OpenSensorSearch/issues?labels=user+story) here: <https://github.com/52North/OpenSensorSearch/issues>
 
 Tell us about how you use OSS on the community mailing list: <http://sensorweb.forum.52north.org/>
 

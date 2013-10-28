@@ -93,4 +93,17 @@ public class PGConnectionPool extends AbstractConnectionPool {
 
         return conn;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PGConnectionPool [");
+        if (this.dataSource != null) {
+            builder.append("dataSource user name=");
+            builder.append(this.dataSource.getUsername());
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

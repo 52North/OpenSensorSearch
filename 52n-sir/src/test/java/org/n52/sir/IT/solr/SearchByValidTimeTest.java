@@ -32,6 +32,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
@@ -44,6 +45,13 @@ import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByValidTimeTest {
 
+    private static SolrConnection connection;
+
+    @BeforeClass
+    public static void prepare() {
+        connection = new SolrConnection("http://localhost:8983/solr");
+    }
+
 	@Before
 	public void insertTestSensor() throws XmlException, IOException,
 			OwsExceptionReport {
@@ -51,13 +59,13 @@ public class SearchByValidTimeTest {
 		File sensor_file = new File(basePath+"/testSensor.xml");
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
 		SirSensor sensor = SensorMLDecoder.decode(doc);
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(connection);
 		dao.insertSensor(sensor);
 	}
 
 	@Test
 	public void searchByValidTime() {
-		SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(connection);
 		Date start = new Date(1262296800000l);
 		Date end = new Date(1325282400000l);
 
@@ -72,15 +80,9 @@ public class SearchByValidTimeTest {
 
 	}
 
-	/**
-	 * TODO LET the delete delete only by the given id not all
-	 * 
-	 */
-
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
-		new SolrConnection().deleteByQuery("");
-
+        connection.deleteByQuery(""); // FIXME delete inserted sensor
 	}
 
 }

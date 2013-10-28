@@ -13,26 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.solr;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Yakoub 
- *
- */
-public class SOLRDeleteSensorInfoDAO  {
-	//Delete a sensor identified by ID
-	 private static Logger log = LoggerFactory.getLogger(SOLRInsertSensorInfoDAO.class);
+import com.google.inject.Inject;
 
-	public void deleteSensorById(String id){
-		try{
-		SolrConnection connection = new SolrConnection();
-		connection.deleteSensorWithID(id);
-		}catch(Exception e){
-			log.error("Error on deleting sensor",e);
-		}
-	}
+/**
+ * @author Yakoub
+ * 
+ */
+public class SOLRDeleteSensorInfoDAO {
+
+    private static Logger log = LoggerFactory.getLogger(SOLRInsertSensorInfoDAO.class);
+
+    private SolrConnection connection;
+
+    @Inject
+    public SOLRDeleteSensorInfoDAO(SolrConnection c) {
+        this.connection = c;
+
+        log.debug("NEW {}", this);
+    }
+
+    public void deleteSensorById(String id) {
+        log.debug("Deleting sensor with id {}", id);
+
+        try {
+            this.connection.deleteSensorWithID(id);
+        }
+        catch (Exception e) {
+            log.error("Error on deleting sensor", e);
+        }
+
+        log.debug("Deleted {}", id);
+    }
 
 }

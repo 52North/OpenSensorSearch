@@ -36,7 +36,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.BeforeClass;
 import org.n52.sir.datastructure.SirSearchCriteria;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
@@ -57,6 +57,13 @@ public class SearchByKeywordTest {
 
     private SirSensor sensor;
 
+    private static SolrConnection connection;
+
+    @BeforeClass
+    public static void prepare() {
+        connection = new SolrConnection("http://localhost:8983/solr");
+    }
+
     @Before
     public void insertTestSensor() throws OwsExceptionReport, XmlException, IOException {
         // Inserts the sensor
@@ -67,13 +74,13 @@ public class SearchByKeywordTest {
         log.trace(this.sensor.getText().toArray()[0].toString());
 
         // FIXME Moh-Yakoub: probably this will take some configuration - haven't decided yet.
-        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(connection);
         this.id = dao.insertSensor(this.sensor);
     }
 
-    //@Test
+    // @Test
     public void searchKeywords() throws OwsExceptionReport {
-        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
         SirSearchCriteria criteria = new SirSearchCriteria();
 
         ArrayList<String> searchkeywords = new ArrayList<>();
@@ -85,7 +92,7 @@ public class SearchByKeywordTest {
         Collection<SirSearchResultElement> results = searchDAO.searchSensor(criteria, true);
 
         assertNotNull(results);
- //       assertEquals(results.size(), 1);
+        // assertEquals(results.size(), 1);
 
         Iterator<SirSearchResultElement> iter = results.iterator();
         SirSearchResultElement result = iter.next();
@@ -106,6 +113,6 @@ public class SearchByKeywordTest {
 
     @After
     public void deleteSensor() throws SolrServerException, IOException {
-        new SolrConnection().deleteByQuery(this.id);
+        connection.deleteByQuery(this.id); // FIXME delete inserted sensor only
     }
 }

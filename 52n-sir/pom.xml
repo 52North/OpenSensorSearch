@@ -103,7 +103,7 @@
 
 	<profiles>
 		<profile>
-			<id>sir.dev</id>
+			<id>oss.dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -112,22 +112,22 @@
 				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
 				<db.driver>org.postgresql.Driver</db.driver>
 				<db.user>postgres</db.user>
-				<db.password>123456789</db.password>
+				<db.password>postgres</db.password>
 			</properties>
 		</profile>
 		<profile>
-			<id>sir.deploy</id>
+			<id>oss.deploy</id>
 			<properties>
 				<!-- add these to your settings.xml file to ensure passwords are not
 					uploaded to SCM: <profile> <id>sir.deploy</id> <properties> <sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server>
 					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user> <sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password>
 					</properties> </profile> -->
-				<service.url>${sir.deploy.server}</service.url>
-				<service.contact>${sir.deploy.contact}</service.contact>
+				<service.url>${oss.deploy.server}</service.url>
+				<service.contact>${oss.deploy.contact}</service.contact>
 				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
 				<db.driver>org.postgresql.Driver</db.driver>
-				<db.user>${sir.deploy.database.user}</db.user>
-				<db.password>${sir.deploy.database.password}</db.password>
+				<db.user>${oss.deploy.database.user}</db.user>
+				<db.password>${oss.deploy.database.password}</db.password>
 			</properties>
 		</profile>
 	</profiles>

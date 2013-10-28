@@ -33,6 +33,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.SirSensor;
@@ -47,6 +48,13 @@ public class SearchByClassifierTest {
 
 	public String id;
 
+    private static SolrConnection connection;
+
+    @BeforeClass
+    public static void prepare() {
+        connection = new SolrConnection("http://localhost:8983/solr");
+    }
+
 	@Before
 	public void insertSensor() throws XmlException, IOException,
 			OwsExceptionReport {
@@ -54,14 +62,14 @@ public class SearchByClassifierTest {
 		File sensor_file = new File(basePath+"/testSensor.xml");
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
 		SirSensor sensor = SensorMLDecoder.decode(doc);
-		SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(connection);
 		dao.insertSensor(sensor);
 	}
 
 	@Test
 	public void searchByClassifer() {
 
-		SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
 		String classifer = "classifer";
 		Collection<SirSearchResultElement> results = searchDAO
 				.searchByClassifer(classifer);
@@ -81,8 +89,7 @@ public class SearchByClassifierTest {
 
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
-		new SolrConnection().deleteByQuery("");
-
+        connection.deleteByQuery(""); // FIXME delete only inserted sensor
 	}
 
 }

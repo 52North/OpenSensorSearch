@@ -62,11 +62,16 @@ public class InsertSensorInfoListener implements ISirRequestListener {
 
     private IdentifierGenerator identifierGenerator;
 
+    private SOLRInsertSensorInfoDAO anotherInsSensInfoDao;
+
     @Inject
-    public InsertSensorInfoListener(IdentifierGenerator idGen, SirConfigurator configurator) {
+    public InsertSensorInfoListener(IdentifierGenerator idGen,
+                                    SirConfigurator configurator,
+                                    SOLRInsertSensorInfoDAO anotherInsSensorInfoDao) {
         IDAOFactory factory = configurator.getInstance().getFactory();
         this.validatorFactory = configurator.getInstance().getValidatorFactory();
         this.identifierGenerator = idGen;
+        this.anotherInsSensInfoDao = anotherInsSensorInfoDao;
 
         try {
             this.insSensInfoDao = factory.insertSensorInfoDAO();
@@ -117,8 +122,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
                 /*
                  * Inserts into solr
                  */
-                SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
-                String sensorIdInSolr = dao.insertSensor(sensor);
+                String sensorIdInSolr = this.anotherInsSensInfoDao.insertSensor(sensor);
                 log.debug("Inserted sensor in solr: " + sensorIdInSolr);
                 if (sensorIdInSolr == null)
                     log.warn("Could not insert sensor to solr.");

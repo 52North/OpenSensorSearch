@@ -16,6 +16,7 @@
 /**
  * @author Yakoub
  */
+
 package org.n52.sir.IT.solr;
 
 import static org.junit.Assert.assertTrue;
@@ -29,49 +30,58 @@ import java.util.Collection;
 import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.oss.util.GuiceUtil;
 import org.n52.sir.client.Client;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.InsertedSensor;
 
 public class Harvesting {
-	
+
     private static Client client;
 
     private String serviceURL = "http://sensorweb.demo.52north.org/EO2HeavenSOS/sos";
 
-	private String serviceType = "SOS";
+    private String serviceType = "SOS";
 
-	@BeforeClass
+    private SOLRSearchSensorDAO dao;
+
+    @BeforeClass
     public static void setUp() {
         client = GuiceUtil.configureSirClient();
     }
 
-	@Test
-	public void harvestService() throws IOException, OwsExceptionReport,
-			HttpException, XmlException, URISyntaxException {
-		File f = new File(ClassLoader.getSystemResource(
-				"Requests/HarvestService_WeatherSOS.xml").getFile());
-		HarvestServiceRequestDocument doc = HarvestServiceRequestDocument.Factory
-				.parse(f);
-		XmlObject resp = client.xSendPostRequest(doc, new URI(this.serviceURL));
-		System.out.println(resp);
+    @Before
+    public void prepare() {
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        this.dao = new SOLRSearchSensorDAO(c);
+    }
 
-		HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory
-				.parse(resp.getDomNode());
-		InsertedSensor[] sensors = respDoc.getHarvestServiceResponse()
-				.getInsertedSensorArray();
-		for (int i = 0; i < sensors.length; i++) {
-			String id = sensors[i].getSensorIDInSIR();
-			SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-			Collection<SirSearchResultElement> elements = dao.searchByID(id);
-			assertTrue(elements.size() > 0);
-		}
-	}
+    @Test
+    public void harvestService() throws IOException,
+            OwsExceptionReport,
+            HttpException,
+            XmlException,
+            URISyntaxException {
+        File f = new File(ClassLoader.getSystemResource("Requests/HarvestService_WeatherSOS.xml").getFile());
+        HarvestServiceRequestDocument doc = HarvestServiceRequestDocument.Factory.parse(f);
+        XmlObject resp = client.xSendPostRequest(doc, new URI(this.serviceURL));
+        System.out.println(resp);
+
+        HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory.parse(resp.getDomNode());
+        InsertedSensor[] sensors = respDoc.getHarvestServiceResponse().getInsertedSensorArray();
+
+        for (int i = 0; i < sensors.length; i++) {
+            String id = sensors[i].getSensorIDInSIR();
+            Collection<SirSearchResultElement> elements = this.dao.searchByID(id);
+            assertTrue(elements.size() > 0);
+        }
+    }
 }

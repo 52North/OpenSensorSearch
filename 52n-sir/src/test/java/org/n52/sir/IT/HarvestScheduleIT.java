@@ -43,67 +43,62 @@ import org.junit.Before;
 import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 
 public class HarvestScheduleIT {
-	public static final String SCRIPT_ID = "org.n52.sir.harvest.scriptId";
-	public static final String randomString = "z7ecmioktu";
-	@Before
-	public void uploadAFileAndRetrieveScriptId() throws ClientProtocolException, IOException {
-		File harvestScript = new File(ClassLoader.getSystemResource(
-				"Requests/randomSensor.js").getFile());
-		PostMethod method = new PostMethod(
-				"http://localhost:8080/OpenSensorSearch/script/submit");
-		Part[] parts = new Part[] { new StringPart("user", "User"),
-				new FilePart("file", harvestScript) };
-		method.setRequestEntity(new MultipartRequestEntity(parts, method
-				.getParams()));
-		MultipartEntity multipartEntity = new MultipartEntity();
-		// upload the file
-		multipartEntity.addPart("file", new FileBody(harvestScript));
-		multipartEntity.addPart("user", new StringBody("User"));
-		HttpPost post = new HttpPost(
-				"http://localhost:8080/OpenSensorSearch/script/submit");
-		post.setEntity(multipartEntity);
-		org.apache.http.client.HttpClient client = new DefaultHttpClient();
-		HttpResponse resp = client.execute(post);
-		int responseCode = resp.getStatusLine().getStatusCode();
-		
-		assertEquals(responseCode, 200);
-		StringBuilder response = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(resp
-				.getEntity().getContent()));
-		String s = null;
-		while ((s = reader.readLine()) != null)
-			response.append(s);
+    public static final String SCRIPT_ID = "org.n52.sir.harvest.scriptId";
+    public static final String randomString = "z7ecmioktu";
 
-		int scriptId = Integer.parseInt(response.toString());
-		
-		System.setProperty(SCRIPT_ID, scriptId + "");
-	}
+    @Before
+    public void uploadAFileAndRetrieveScriptId() throws ClientProtocolException, IOException {
+        File harvestScript = new File(ClassLoader.getSystemResource("Requests/randomSensor.js").getFile());
+        PostMethod method = new PostMethod("http://localhost:8080/OpenSensorSearch/script/submit");
+        Part[] parts = new Part[] {new StringPart("user", "User"), new FilePart("file", harvestScript)};
+        method.setRequestEntity(new MultipartRequestEntity(parts, method.getParams()));
+        MultipartEntity multipartEntity = new MultipartEntity();
+        // upload the file
+        multipartEntity.addPart("file", new FileBody(harvestScript));
+        multipartEntity.addPart("user", new StringBody("User"));
+        HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/script/submit");
+        post.setEntity(multipartEntity);
+        org.apache.http.client.HttpClient client = new DefaultHttpClient();
+        HttpResponse resp = client.execute(post);
+        int responseCode = resp.getStatusLine().getStatusCode();
 
-	@Test
-	public void doAScheduleAtTime() throws InterruptedException, ClientProtocolException, IOException {
-		String scriptId = System.getProperty(SCRIPT_ID);
-		StringBuilder scheduleRequest = new StringBuilder();
-		scheduleRequest
-				.append("http://localhost:8080/OpenSensorSearch/script/schedule");
-		scheduleRequest.append("?id=");
-		scheduleRequest.append(scriptId);
-		Date d = new Date();
-		scheduleRequest.append("&date=" + (d.getTime() + (10 * 1000)));
+        assertEquals(responseCode, 200);
+        StringBuilder response = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+        String s = null;
+        while ( (s = reader.readLine()) != null)
+            response.append(s);
 
-		HttpGet get = new HttpGet(scheduleRequest.toString());
-		HttpResponse resp = new DefaultHttpClient().execute(get);
+        int scriptId = Integer.parseInt(response.toString());
 
-		assertEquals(resp.getStatusLine().getStatusCode(), 200);
+        System.setProperty(SCRIPT_ID, scriptId + "");
+    }
 
-		Thread.sleep(10 * 1000);
+    @Test
+    public void doAScheduleAtTime() throws InterruptedException, ClientProtocolException, IOException {
+        String scriptId = System.getProperty(SCRIPT_ID);
+        StringBuilder scheduleRequest = new StringBuilder();
+        scheduleRequest.append("http://localhost:8080/OpenSensorSearch/script/schedule");
+        scheduleRequest.append("?id=");
+        scheduleRequest.append(scriptId);
+        Date d = new Date();
+        scheduleRequest.append("&date=" + (d.getTime() + (10 * 1000)));
 
-		SOLRSearchSensorDAO DAO = new SOLRSearchSensorDAO();
-		Collection<SirSearchResultElement> results = DAO
-				.searchByContact(randomString);
+        HttpGet get = new HttpGet(scheduleRequest.toString());
+        HttpResponse resp = new DefaultHttpClient().execute(get);
 
-		assertTrue(results.size() > 0);
+        assertEquals(resp.getStatusLine().getStatusCode(), 200);
 
-	}
+        Thread.sleep(10 * 1000);
+
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(c);
+        Collection<SirSearchResultElement> results = dao.searchByContact(randomString);
+
+        assertTrue(results.size() > 0);
+
+    }
 }

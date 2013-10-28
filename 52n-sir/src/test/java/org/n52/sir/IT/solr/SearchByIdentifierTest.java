@@ -37,6 +37,7 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.sir.datastructure.InternalSensorID;
 import org.n52.sir.datastructure.SirSearchResultElement;
@@ -44,6 +45,7 @@ import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
@@ -52,6 +54,13 @@ public class SearchByIdentifierTest {
     private String id = UUID.randomUUID().toString();
     private SOLRInsertSensorInfoDAO dao;
 
+    private static SolrConnection connection;
+
+    @BeforeClass
+    public static void prepare() {
+        connection = new SolrConnection("http://localhost:8983/solr");
+    }
+
     @Before
     public void insertSensor() throws XmlException, IOException, OwsExceptionReport {
         String basePath = (this.getClass().getResource("/Requests").getFile());
@@ -59,13 +68,13 @@ public class SearchByIdentifierTest {
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
         SirSensor sensor = SensorMLDecoder.decode(doc);
         sensor.setInternalSensorId(this.id);
-        this.dao = new SOLRInsertSensorInfoDAO();
+        this.dao = new SOLRInsertSensorInfoDAO(connection);
         this.dao.insertSensor(sensor);
     }
 
     @Test
     public void searchByIdentification() {
-        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO();
+        SOLRSearchSensorDAO searchDAO = new SOLRSearchSensorDAO(connection);
         Collection<SirSearchResultElement> results = searchDAO.searchByIdentification(this.id);
 
         assertNotNull(results);

@@ -38,8 +38,4 @@ public class SolrConstants {
     public static final String AND_OP ="AND";
     public static final String OR_OP = "OR";
     
-    /**
-     * TODO Remove this an configure it later in SIR configurations
-     */
-    public static final String SOLR_URL = "http://gsoc.dev.52north.org:8093/solr";
 }

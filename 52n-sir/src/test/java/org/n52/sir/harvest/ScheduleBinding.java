@@ -93,11 +93,13 @@ public class ScheduleBinding {
 		
 		Thread.sleep(10*1000);
 		
-		SOLRSearchSensorDAO DAO  = new SOLRSearchSensorDAO();
-		Collection<SirSearchResultElement> results = DAO.searchByContact(randomString);
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(c);
+        Collection<SirSearchResultElement> results = dao.searchByContact(randomString);
 		
 		assertTrue(results.size() > 0 );
 		
-		new SolrConnection().deleteByQuery("contacts:"+randomString);
+        // FIXME use transactional delete operation, or just use a mocked up database
+        c.deleteByQuery("contacts:" + randomString);
 	}
 }

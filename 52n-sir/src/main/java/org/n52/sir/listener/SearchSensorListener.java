@@ -31,7 +31,6 @@ import org.n52.sir.datastructure.SirSensorIdentification;
 import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.datastructure.SirSimpleSensorDescription;
 import org.n52.sir.ds.ISearchSensorDAO;
-import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirSearchSensorRequest;
@@ -71,6 +70,8 @@ public class SearchSensorListener implements ISirRequestListener {
     @Named("oss.sir.version")
     private String sirVersion;
 
+    private ISearchSensorDAO autocompleteDao;
+
     /**
      * TODO implement injection mechanism for search DAO so that only that what needed is injected, not the
      * complete configurator
@@ -78,8 +79,12 @@ public class SearchSensorListener implements ISirRequestListener {
      * @throws OwsExceptionReport
      */
     @Inject
-    public SearchSensorListener(ISearchSensorDAO dao) throws OwsExceptionReport {
+    public SearchSensorListener(@Named("full")
+    ISearchSensorDAO dao, @Named("autocomplete")
+    ISearchSensorDAO autocompleteDao) throws OwsExceptionReport {
         this.searchSensDao = dao;
+        this.autocompleteDao = autocompleteDao;
+
         log.debug("NEW {}", this);
     }
 
@@ -134,7 +139,7 @@ public class SearchSensorListener implements ISirRequestListener {
         return receiveRequest(request, false);
     }
 
-    public ISirResponse receiveRequest(AbstractSirRequest request, boolean fastEngineOnly) {
+    public ISirResponse receiveRequest(AbstractSirRequest request, boolean autocompleteEngineOnly) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
         // SirSearchCriteria crit = searchSensReq.getSearchCriteria();
         // String lat = crit.getLat();
@@ -147,7 +152,7 @@ public class SearchSensorListener implements ISirRequestListener {
             if (searchSensReq.getSensIdent() != null)
                 searchResElements = searchByIdentification(searchSensReq);
             else
-                searchResElements = searchBySearchCriteria(searchSensReq, fastEngineOnly);
+                searchResElements = searchBySearchCriteria(searchSensReq, autocompleteEngineOnly);
 
             // FIXME moh-yakoub: why do you query by id manually here, there is one happening above!
             // Object resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorId(),
@@ -198,10 +203,10 @@ public class SearchSensorListener implements ISirRequestListener {
     }
 
     private ArrayList<SirSearchResultElement> searchBySearchCriteria(SirSearchSensorRequest searchSensReq,
-                                                                     boolean fastEngineOnly) {
-        log.debug("Searching with criteria {} using only the fast engine: {}",
+                                                                     boolean autocompleteOnly) {
+        log.debug("Searching with criteria {} using only the autocomplete engine: {}",
                   searchSensReq.getSearchCriteria(),
-                  fastEngineOnly);
+                  autocompleteOnly);
 
         ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
 
@@ -221,11 +226,10 @@ public class SearchSensorListener implements ISirRequestListener {
         Collection<SirSearchResultElement> searchResElementsSolr = null;
         Collection<SirSearchResultElement> searchResElementsPgSQL = null;
 
-        // search Solr
+        // search autocomplete database
         try {
-            SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
-            searchResElementsSolr = dao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                     searchSensReq.isSimpleResponse());
+            searchResElementsSolr = this.autocompleteDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                      searchSensReq.isSimpleResponse());
         }
         catch (OwsExceptionReport e) {
             log.error("Could not query data from search backend.", e);
@@ -233,7 +237,7 @@ public class SearchSensorListener implements ISirRequestListener {
             // return new ExceptionResponse(e);
         }
 
-        if ( !fastEngineOnly) {
+        if ( !autocompleteOnly) {
             // search PostGreSQL
             try {
                 searchResElementsPgSQL = this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
@@ -303,6 +307,8 @@ public class SearchSensorListener implements ISirRequestListener {
         builder.append(this.sirVersion);
         builder.append(", searchSensDao=");
         builder.append(this.searchSensDao);
+        builder.append(", autocompleteDao=");
+        builder.append(this.autocompleteDao);
         builder.append("]");
         return builder.toString();
     }

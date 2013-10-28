@@ -34,9 +34,20 @@ import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     private static Logger log = LoggerFactory.getLogger(SOLRInsertSensorInfoDAO.class);
+
+    private SolrConnection connection;
+
+    @Inject
+    public SOLRInsertSensorInfoDAO(SolrConnection c) {
+        this.connection = c;
+
+        log.debug("NEW {}", this);
+    }
 
     @Override
     public String addNewReference(SirSensorIdentification sensIdent, SirServiceReference servRef) throws OwsExceptionReport {
@@ -69,7 +80,6 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
         Collection<String> keywords = sensor.getKeywords();
         // Get the connection of solr Server
-        SolrConnection connection = new SolrConnection();
         SolrInputDocument inputDocument = new SolrInputDocument();
 
         for (String s : keywords) {
@@ -139,8 +149,8 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         }
 
         try {
-            connection.addInputDocument(inputDocument);
-            connection.commitChanges();
+            this.connection.addInputDocument(inputDocument);
+            this.connection.commitChanges();
         }
         catch (SolrServerException e) {
             log.error("Could not create connection to Solr.", e);

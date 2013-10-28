@@ -63,7 +63,8 @@ public class OpenSearchTemporalExtensionIT {
         File sensor_status = new File(ClassLoader.getSystemResource("Requests/testsensor.xml").getFile());
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_status);
 
-        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO();
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(c);
         dao.insertSensor(SensorMLDecoder.decode(doc));
     }
 
@@ -102,6 +103,7 @@ public class OpenSearchTemporalExtensionIT {
 
     @After
     public void deleteTestSensor() throws SolrServerException, IOException {
-        new SolrConnection().deleteByQuery("");
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        c.deleteByQuery("");
     }
 }

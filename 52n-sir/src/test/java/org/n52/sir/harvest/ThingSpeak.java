@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.n52.sir.datastructure.SirSearchResultElement;
 import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 
@@ -40,7 +41,8 @@ public class ThingSpeak {
         assertFalse(id.equals("-1"));
 
         // TODO use mockup DB
-        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO();
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(c);
         Collection<SirSearchResultElement> elements = dao.searchByID(id);
         assertNotEquals(elements.size(), 0);
 

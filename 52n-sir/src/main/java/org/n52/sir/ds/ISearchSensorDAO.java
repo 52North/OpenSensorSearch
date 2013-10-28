@@ -23,10 +23,10 @@ import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ows.OwsExceptionReport;
 
 /**
- * interface for the specific DAOFactories, offers methods to create the matching DAOs for the searchSensor
+ * Interface for the specific DAOFactories, offers methods to create the matching DAOs for the searchSensor
  * operation
  * 
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public interface ISearchSensorDAO {

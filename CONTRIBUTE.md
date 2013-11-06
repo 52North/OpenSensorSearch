@@ -1,4 +1,4 @@
-This is the contribute.md of 52°North project [Open Sensor Search](https://github.com/52North/OpenSensorSearch), sometimes abbreviated to OSS. Great to have you here! Here are a few ways you can help!
+This is the contribute.md of 52Â°North project [Open Sensor Search](https://github.com/52North/OpenSensorSearch), sometimes abbreviated to OSS. Great to have you here! Here are a few ways you can help!
 
 # Contribute.md
 
@@ -9,18 +9,19 @@ Best way to get started is to start with these "quickstart" links. More details 
 * Sensor Web Community Mailing list: <http://sensorweb.forum.52north.org/> (subscribe [here](http://52north.org/resources/mailing-lists-and-forums))
 * IRC channel:  #52north on irc.freenode.net
 * Background information on discovery in the sensor web:  <http://52north.org/communities/sensorweb/incubation/discovery/>
+* General information about contributing to 52Â°North projects: <http://52north.org/about/get-involved/>
 
 ## Team Members
-* Daniel Nüst [@nuest](https://github.com/nuest)
+* Daniel NÃ¼st [@nuest](https://github.com/nuest)
 * Mohammad Yakoub, [@Moh-Yakoub](https://github.com/Moh-Yakoub)
 * Jan Schulte, [@janschulte](https://github.com/janschulte)
-* Eike H. Jürrens, [@EHJ-52n](https://github.com/EHJ-52n)
+* Eike H. JÃ¼rrens, [@EHJ-52n](https://github.com/EHJ-52n)
 * Arne de Wall, [@dewall](https://github.com/dewall)
 * Simon Jirka, [@simonjirka](https://github.com/simonjirka)
 
 ## Contributor License Agreement
 
-52°North requires all contributors to sign a contributors license agreement (CLA). This is not scary but essential for open source projects to live beyond projects and individual contributions.
+52Â°North requires all contributors to sign a contributors license agreement (CLA). This is not scary but essential for open source projects to live beyond projects and individual contributions.
 
 Find all information on our licensing page at <http://52north.org/about/licensing/> and our CLA FAQ at <http://52north.org/about/licensing/cla-guidelines>.
 
@@ -30,10 +31,10 @@ This section includes advice on how to build new features for the project & what
 
 * Before you start working on a new feature, create a new issue and start a discussion on the mailing list.
 * We follow the fork & pull development model: <https://help.github.com/articles/using-pull-requests>
-* Use the 52°North code style for Eclise: <https://wiki.52north.org/bin/view/Documentation/WebHome#Software_Development>
+* Use the 52Â°North code style for Eclise: <https://wiki.52north.org/bin/view/Documentation/WebHome#Software_Development>
 * Follow the OSS code guidelines: <https://wiki.52north.org/bin/view/SensorWeb/OssDevelopment#Development_Process>
 
-Don’t get discouraged! We estimate that the response time from the maintainers is around 3 days.
+Don't get discouraged! We estimate that the response time from the maintainers is around 3 days.
 
 
 # Bug triage
@@ -46,7 +47,7 @@ You can help report bugs by filing them here: <https://github.com/52North/OpenSe
 
 # Documentation
 
-All documentation is [in the 52°North wiki](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch), and a critical read as well as feedback are always welcome.
+All documentation is [in the 52Â°North wiki](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch), and a critical read as well as feedback are always welcome.
 
 ## Maintainer Documentation
 

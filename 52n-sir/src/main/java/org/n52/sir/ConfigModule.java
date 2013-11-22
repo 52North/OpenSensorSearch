@@ -16,7 +16,7 @@
 
 package org.n52.sir;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
@@ -33,29 +33,30 @@ public class ConfigModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        try {
-            Properties sirProps = loadProperties("/prop/sir.properties");
-            Names.bindProperties(binder(), sirProps);
+        Properties sirProps = loadProperties("/prop/sir.properties");
+        Names.bindProperties(binder(), sirProps);
 
-            log.debug("Loaded and bound properties:\n\t{}", sirProps);
-        }
-        catch (IOException e) {
-            log.error("Could not load properties.", e);
-        }
+        log.debug("Loaded and bound properties:\n\t{}", sirProps);
 
         bind(OwsExMessageBodyWriter.class);
 
         log.info("Configured {}", this);
     }
 
-    private static Properties loadProperties(String name) throws IOException {
+    // FIXME use this method everywhere for file loading with try-with
+    private static Properties loadProperties(String name) {
         URL url = ConfigModule.class.getResource(name);
         log.trace("Loading properties for {} from {}", name, url);
 
         Properties properties = new Properties();
-        properties.load(url.openStream());
+        try (InputStream s = url.openStream();) {
+            properties.load(s);
+            log.trace("Loaded properties: {}", properties);
+        }
+        catch (Exception e) {
+            log.error("Could not load properties file.", e);
+        }
 
-        log.trace("Loaded properties: {}", properties);
         return properties;
     }
 }

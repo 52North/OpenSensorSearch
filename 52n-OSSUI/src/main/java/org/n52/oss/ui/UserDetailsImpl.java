@@ -13,24 +13,20 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-/** @author Yakoub
- */
-
 package org.n52.oss.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.n52.oss.ui.services.GrantedAuthorityImpl;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class userDetailsImp implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 	private String username;
 	private String password;
 	private Collection<org.n52.oss.ui.services.GrantedAuthorityImpl> authorities;
 
-	public userDetailsImp(String user, String password,
+	public UserDetailsImpl(String user, String password,
 			Collection<GrantedAuthorityImpl> authorities) {
 		this.username = user;
 		this.password = password;

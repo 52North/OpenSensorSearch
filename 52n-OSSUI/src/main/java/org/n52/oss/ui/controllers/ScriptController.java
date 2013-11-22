@@ -32,7 +32,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.n52.oss.ui.OSSConstants;
-import org.n52.oss.ui.uploadForm;
+import org.n52.oss.ui.UploadForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -102,7 +102,7 @@ public class ScriptController {
     @RequestMapping(
             method = RequestMethod.POST, value = "/upload")
     public String processForm(@ModelAttribute(
-            value = "uploadForm") uploadForm form,
+            value = "uploadForm") UploadForm form,
             ModelMap map)
     {
         String s = form.getFile().getFileItem().getName();

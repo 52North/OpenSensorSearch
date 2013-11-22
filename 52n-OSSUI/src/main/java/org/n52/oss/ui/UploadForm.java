@@ -20,10 +20,10 @@ package org.n52.oss.ui;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-public class uploadForm{
+public class UploadForm{
 	private String name;
 	//added to allow spring to instantiate
-	public uploadForm(){
+	public UploadForm(){
 		
 	}
 	public String getName() {

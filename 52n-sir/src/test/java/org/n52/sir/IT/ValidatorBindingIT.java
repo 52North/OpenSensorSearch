@@ -50,7 +50,7 @@ public class ValidatorBindingIT {
 		while((s=reader.readLine())!=null)
 			builder.append(s);
 		String sensorML = builder.toString();
-		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/api/check/sensorML");
+		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/api/v1/check/sensorML");
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair("sensor", sensorML));
 		pairs.add(new BasicNameValuePair("format","json"));
@@ -75,7 +75,7 @@ public class ValidatorBindingIT {
 		while((s=reader.readLine())!=null)
 			builder.append(s);
 		String sensorML = builder.toString();
-		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/api/check/sensorML");
+		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/api/v1/check/sensorML");
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair("sensor", sensorML));
 		pairs.add(new BasicNameValuePair("format","json"));

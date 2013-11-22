@@ -91,7 +91,7 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 	private AuthToken authenticateOSS(String username, String password) {
 		try {
 			HttpPost post = new HttpPost(OSSConstants.BASE_URL+
-					"/OpenSensorSearch/api/user/login");
+					"/OpenSensorSearch/api/v1/user/login");
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			pairs.add(new BasicNameValuePair("username", username));
 			pairs.add(new BasicNameValuePair("password", password));

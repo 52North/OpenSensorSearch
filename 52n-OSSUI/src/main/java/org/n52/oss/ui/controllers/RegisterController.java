@@ -56,7 +56,7 @@ public class RegisterController {
     public String registerUser(@ModelAttribute (value="username") String username,@ModelAttribute (value="password") String password,ModelMap map,RedirectAttributes rs)
     {
         try {
-            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/api/user/register");
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/api/v1/user/register");
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));

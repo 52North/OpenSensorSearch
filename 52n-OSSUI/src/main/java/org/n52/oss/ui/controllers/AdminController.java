@@ -57,7 +57,7 @@ public class AdminController {
         try {
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String token = userDetails.getPassword();
-            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/api/user/validate");
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/api/v1/user/validate");
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("auth_token", token));

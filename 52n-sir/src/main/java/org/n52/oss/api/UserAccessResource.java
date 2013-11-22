@@ -33,7 +33,7 @@ import com.google.inject.servlet.RequestScoped;
  * @author Yakoub
  * 
  */
-@Path("/api/user")
+@Path("/api/v1/user")
 @RequestScoped
 public class UserAccessResource {
     protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);

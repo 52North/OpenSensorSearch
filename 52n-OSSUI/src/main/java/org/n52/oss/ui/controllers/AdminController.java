@@ -38,26 +38,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping(
-        value = "/admin")
+@RequestMapping(value = "/admin")
 public class AdminController {
 
-    @RequestMapping("/validate")
-    public String validateUserUI()
-    {
-        return "admin/validate";
-    }
-
-    @RequestMapping(
-            method = RequestMethod.POST, value = "/validate")
-    public String validateUser(@ModelAttribute(
-            value = "username") String username,
-            ModelMap map)
-    {
+    @RequestMapping(method = RequestMethod.POST, value = "/validate")
+    public String validateUser(@ModelAttribute(value = "username")
+    String username, ModelMap map) {
         try {
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String token = userDetails.getPassword();
-            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/api/v1/user/validate");
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL + "/OpenSensorSearch/api/v1/user/validate");
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("auth_token", token));
@@ -68,18 +58,25 @@ public class AdminController {
             HttpResponse resp = client.execute(post);
             map.put("ValidationCalled", true);
             if (resp.getStatusLine().getStatusCode() == 200) {
-                map.put("ValidationMsg", username+" validated succesfully");
-            } else {
-                map.put("ValidationMsg", username+" couldn't be validated!");
+                map.put("ValidationMsg", username + " validated succesfully");
+            }
+            else {
+                map.put("ValidationMsg", username + " couldn't be validated!");
             }
             return "admin/validate";
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             map.put("ValidationCalled", true);
-            map.put("ValidationMsg","Validation couldn't be done at the moment!");
+            map.put("ValidationMsg", "Validation couldn't be done at the moment!");
             return "admin/validate";
-            
+
         }
 
+    }
+
+    @RequestMapping("/validate")
+    public String validateUserUI() {
+        return "admin/validate";
     }
 
 }

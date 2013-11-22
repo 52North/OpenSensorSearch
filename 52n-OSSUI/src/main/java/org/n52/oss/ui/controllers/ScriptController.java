@@ -49,62 +49,29 @@ import com.google.gson.Gson;
 @Controller
 @RequestMapping("/script")
 public class ScriptController {
+    public class ScriptContent {
+        public String content;
+    }
+
     public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
 
     private static Logger log = LoggerFactory.getLogger(ScriptController.class);
-    @RequestMapping("/show/")
-    public String selectScript(ModelMap map){
-        return "script/selectScript";
-    }
-    @RequestMapping("/show/{scriptId}")
-    public String show(@PathVariable String scriptId,
-            ModelMap map)
-    {
-        HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(OSSConstants.BASE_URL+"/OpenSensorSearch/script/" + scriptId);
-        try {
-            HttpResponse resp = client.execute(get);
-            StringBuilder builder = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-            String s = null;
-            while ((s = reader.readLine()) != null)
-                builder.append(s);
-            ScriptContent content = new Gson().fromJson(builder.toString(), ScriptContent.class);
-            map.addAttribute("content", content.content);
-            return "script/show";
-        } catch (Exception e) {
-            map.addAttribute("error",e);
-            return "script/error";
-        }
-
-    }
-
-    @RequestMapping("/index")
-    public String index(ModelMap map)
-    {
-        return "script/index";
-    }
-
-    @RequestMapping("/upload")
-    public String upload(ModelMap map)
-    {
-        return "script/upload";
-    }
 
     @RequestMapping("/schedule")
-    public String harvest(ModelMap map)
-    {
+    public String harvest(ModelMap map) {
         UserDetails details = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        map.addAttribute("auth_token",details.getPassword());
+        map.addAttribute("auth_token", details.getPassword());
         return "script/schedule";
     }
 
-    @RequestMapping(
-            method = RequestMethod.POST, value = "/upload")
-    public String processForm(@ModelAttribute(
-            value = "uploadForm") UploadForm form,
-            ModelMap map)
-    {
+    @RequestMapping("/index")
+    public String index(ModelMap map) {
+        return "script/index";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/upload")
+    public String processForm(@ModelAttribute(value = "uploadForm")
+    UploadForm form, ModelMap map) {
         String s = form.getFile().getFileItem().getName();
         MultipartEntity multipartEntity = new MultipartEntity();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -121,7 +88,7 @@ public class ScriptController {
             multipartEntity.addPart("user", new StringBody(details.getUsername()));
             multipartEntity.addPart("licenseCode", new StringBody(form.getLicense()));
             multipartEntity.addPart("auth_token", new StringBody(token));
-            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/script/submit");
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL + "/OpenSensorSearch/script/submit");
             post.setEntity(multipartEntity);
             org.apache.http.client.HttpClient client = new DefaultHttpClient();
             HttpResponse resp;
@@ -130,25 +97,54 @@ public class ScriptController {
             StringBuilder builder = new StringBuilder();
             String str = null;
             BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-            while ((str = reader.readLine()) != null)
+            while ( (str = reader.readLine()) != null)
                 builder.append(str);
             System.out.println("return  id:" + builder.toString());
             log.info("return id:" + builder.toString());
-            
 
             if (responseCode == 200) {
                 map.addAttribute("harvestSuccess", true);
                 map.addAttribute("resultScript", builder.toString());
                 map.addAttribute("license", form.getLicense());
                 return "script/status";
-            } else {
+            }
+            else {
                 map.addAttribute("harvestError", true);
                 return "script/status";
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             map.addAttribute("errorMSG", e);
             return "script/status?fail";
         }
+    }
+
+    @RequestMapping("/show/")
+    public String selectScript(ModelMap map) {
+        return "script/selectScript";
+    }
+
+    @RequestMapping("/show/{scriptId}")
+    public String show(@PathVariable
+    String scriptId, ModelMap map) {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet get = new HttpGet(OSSConstants.BASE_URL + "/OpenSensorSearch/script/" + scriptId);
+        try {
+            HttpResponse resp = client.execute(get);
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+            String s = null;
+            while ( (s = reader.readLine()) != null)
+                builder.append(s);
+            ScriptContent content = new Gson().fromJson(builder.toString(), ScriptContent.class);
+            map.addAttribute("content", content.content);
+            return "script/show";
+        }
+        catch (Exception e) {
+            map.addAttribute("error", e);
+            return "script/error";
+        }
+
     }
 
     // private void addLicenseToHeader(File f,License l) throws IOException{
@@ -168,7 +164,8 @@ public class ScriptController {
     // return builder.toString();
     // }
 
-    public class ScriptContent {
-        public String content;
+    @RequestMapping("/upload")
+    public String upload(ModelMap map) {
+        return "script/upload";
     }
 }

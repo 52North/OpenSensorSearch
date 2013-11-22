@@ -37,7 +37,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -48,70 +47,67 @@ import com.google.gson.Gson;
 @Service("userAuthService")
 public class OSSAuthenticationProvider implements AuthenticationProvider {
 
-	@Override
-	public Authentication authenticate(Authentication arg0)
-			throws AuthenticationException {
-		String username = arg0.getName();
-		String password = arg0.getCredentials().toString();
+    public class AuthToken {
+        String auth_token;
+        boolean isValid;
+        boolean isAdmin;
+    }
 
-		AuthToken token = authenticateOSS(username, password);
-		
-		if (token.auth_token != null) {
-		    if(!token.isValid)
-	                    throw new UsernameNotFoundException("Username is not validated please contact site administration!");
-	                
-			final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-			grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-			grantedAuths.add(new SimpleGrantedAuthority("ROLE_SCRIPT_AUTHOR"));
-                        
-			if(token.isAdmin)
-			    grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-			final UserDetails principal = new User(username, token.auth_token,
-					grantedAuths);
-			final Authentication auth = new UsernamePasswordAuthenticationToken(
-					principal, token.auth_token, grantedAuths);
-			return auth;
+    @Override
+    public Authentication authenticate(Authentication arg0) throws AuthenticationException {
+        String username = arg0.getName();
+        String password = arg0.getCredentials().toString();
 
-		} else
-			throw new UsernameNotFoundException(
-					"Wrong username/password combination");
-	}
+        AuthToken token = authenticateOSS(username, password);
 
-	@Override
-	public boolean supports(Class<?> arg0) {
-		return arg0.equals(UsernamePasswordAuthenticationToken.class);
-	}
+        if (token.auth_token != null) {
+            if ( !token.isValid)
+                throw new UsernameNotFoundException("Username is not validated please contact site administration!");
 
-	public class AuthToken {
-		String auth_token;
-		boolean isValid;
-		boolean isAdmin;
-	}
+            final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
+            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+            grantedAuths.add(new SimpleGrantedAuthority("ROLE_SCRIPT_AUTHOR"));
 
-	private AuthToken authenticateOSS(String username, String password) {
-		try {
-			HttpPost post = new HttpPost(OSSConstants.BASE_URL+
-					"/OpenSensorSearch/api/v1/user/login");
-			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-			pairs.add(new BasicNameValuePair("username", username));
-			pairs.add(new BasicNameValuePair("password", password));
-			post.setEntity(new UrlEncodedFormEntity(pairs));
+            if (token.isAdmin)
+                grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            final UserDetails principal = new User(username, token.auth_token, grantedAuths);
+            final Authentication auth = new UsernamePasswordAuthenticationToken(principal,
+                                                                                token.auth_token,
+                                                                                grantedAuths);
+            return auth;
 
-			HttpClient client = new DefaultHttpClient();
-			HttpResponse resp = client.execute(post);
-			StringBuilder result = new StringBuilder();
-			String s = null;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					resp.getEntity().getContent()));
-			while ((s = reader.readLine()) != null)
-				result.append(s);
+        }
+        else
+            throw new UsernameNotFoundException("Wrong username/password combination");
+    }
 
-			AuthToken token = new Gson().fromJson(result.toString(),
-					AuthToken.class);
-			return token;
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    private AuthToken authenticateOSS(String username, String password) {
+        try {
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL + "/OpenSensorSearch/api/v1/user/login");
+            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            pairs.add(new BasicNameValuePair("username", username));
+            pairs.add(new BasicNameValuePair("password", password));
+            post.setEntity(new UrlEncodedFormEntity(pairs));
+
+            HttpClient client = new DefaultHttpClient();
+            HttpResponse resp = client.execute(post);
+            StringBuilder result = new StringBuilder();
+            String s = null;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+            while ( (s = reader.readLine()) != null)
+                result.append(s);
+
+            AuthToken token = new Gson().fromJson(result.toString(), AuthToken.class);
+            return token;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean supports(Class< ? > arg0) {
+        return arg0.equals(UsernamePasswordAuthenticationToken.class);
+    }
 
 }

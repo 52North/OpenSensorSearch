@@ -40,23 +40,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 
 @Controller
-@RequestMapping(
-        value = "/register")
+@RequestMapping(value = "/register")
 public class RegisterController {
 
-    @RequestMapping(
-            value = "/")
-    public String index(ModelMap map)
-    {
+    public class status {
+        public boolean success;
+        public String reason;
+    }
+
+    @RequestMapping(value = "/")
+    public String index(ModelMap map) {
         return "register/index";
     }
 
-    @RequestMapping(
-            value = "/user")
-    public String registerUser(@ModelAttribute (value="username") String username,@ModelAttribute (value="password") String password,ModelMap map,RedirectAttributes rs)
-    {
+    @RequestMapping(value = "/user")
+    public String registerUser(@ModelAttribute(value = "username")
+    String username, @ModelAttribute(value = "password")
+    String password, ModelMap map, RedirectAttributes rs) {
         try {
-            HttpPost post = new HttpPost(OSSConstants.BASE_URL+"/OpenSensorSearch/api/v1/user/register");
+            HttpPost post = new HttpPost(OSSConstants.BASE_URL + "/OpenSensorSearch/api/v1/user/register");
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));
@@ -67,30 +69,25 @@ public class RegisterController {
             StringBuilder result = new StringBuilder();
             String s = null;
             BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-            while ((s = reader.readLine()) != null)
+            while ( (s = reader.readLine()) != null)
                 result.append(s);
 
             status reg_result = new Gson().fromJson(result.toString(), status.class);
-            if(reg_result.success){
+            if (reg_result.success) {
                 map.put("RegisterSucceded", true);
                 return "redirect:/";
             }
-            else{
+            else {
                 String errorMsg = reg_result.reason == null ? "Cannot register currently" : reg_result.reason;
                 map.put("RegisterFailed", true);
-                map.put("ErrorMsg",errorMsg);
+                map.put("ErrorMsg", errorMsg);
                 return "register/index";
             }
-                
-            
-        } catch (Exception e) {
+
+        }
+        catch (Exception e) {
             return null;
         }
 
-    }
-
-    public class status {
-        public boolean success;
-        public String reason;
     }
 }

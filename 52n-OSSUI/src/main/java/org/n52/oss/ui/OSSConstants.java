@@ -15,9 +15,10 @@
  */
 /** @author Yakoub
  */
+
 package org.n52.oss.ui;
 
 public class OSSConstants {
-    
+
     public static final String BASE_URL = "http://gsoc.dev.52north.org:8093";
 }

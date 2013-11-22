@@ -15,20 +15,22 @@
  */
 /** @author Yakoub
  */
+
 package org.n52.oss.ui.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value="/api")
+@RequestMapping(value = "/api")
 public class ApiController {
-    @RequestMapping("/")
-    public String index(){
-        return "api/index";
-    }
     @RequestMapping("/developer")
-    public String developers(){
+    public String developers() {
         return "api/developers";
+    }
+
+    @RequestMapping("/")
+    public String index() {
+        return "api/index";
     }
 }

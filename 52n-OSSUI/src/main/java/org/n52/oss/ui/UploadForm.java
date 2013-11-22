@@ -20,30 +20,39 @@ package org.n52.oss.ui;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-public class UploadForm{
-	private String name;
-	//added to allow spring to instantiate
-	public UploadForm(){
-		
-	}
-	public String getName() {
-		return this.name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public CommonsMultipartFile getFile() {
-		return this.file;
-	}
-	public void setFile(CommonsMultipartFile file) {
-		this.file = file;
-	}
-	private CommonsMultipartFile file;
-	public String getLicense() {
-		return license;
-	}
-	public void setLicense(String license) {
-		this.license = license;
-	}
-	private String license;
+public class UploadForm {
+    private String name;
+
+    private CommonsMultipartFile file;
+
+    private String license;
+
+    // added to allow spring to instantiate
+    public UploadForm() {
+
+    }
+
+    public CommonsMultipartFile getFile() {
+        return this.file;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setFile(CommonsMultipartFile file) {
+        this.file = file;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -13,6 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+
 package org.n52.oss.ui;
 
 import java.util.ArrayList;
@@ -22,54 +23,54 @@ import org.n52.oss.ui.services.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserDetailsImpl implements UserDetails {
-	private String username;
-	private String password;
-	private Collection<org.n52.oss.ui.services.GrantedAuthorityImpl> authorities;
+    private String username;
+    private String password;
+    private Collection<org.n52.oss.ui.services.GrantedAuthorityImpl> authorities;
 
-	public UserDetailsImpl(String user, String password,
-			Collection<GrantedAuthorityImpl> authorities) {
-		this.username = user;
-		this.password = password;
-		if (authorities == null) {
-			this.authorities = new ArrayList<GrantedAuthorityImpl>();
-			this.authorities.add(new GrantedAuthorityImpl("ROLE_USER"));
-		} else
-			this.authorities = authorities;
-	}
+    public UserDetailsImpl(String user, String password, Collection<GrantedAuthorityImpl> authorities) {
+        this.username = user;
+        this.password = password;
+        if (authorities == null) {
+            this.authorities = new ArrayList<GrantedAuthorityImpl>();
+            this.authorities.add(new GrantedAuthorityImpl("ROLE_USER"));
+        }
+        else
+            this.authorities = authorities;
+    }
 
-	@Override
-	public Collection<GrantedAuthorityImpl> getAuthorities() {
-		
-		return authorities;
-	}
+    @Override
+    public Collection<GrantedAuthorityImpl> getAuthorities() {
 
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
+        return authorities;
+    }
 
-	@Override
-	public String getUsername() {
-		return this.username;
-	}
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

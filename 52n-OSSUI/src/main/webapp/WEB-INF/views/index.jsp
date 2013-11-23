@@ -46,23 +46,28 @@
 				</div>
 			</c:if>
 
+			<%
+			    /* http://eltimn.github.io/jquery-bs-alerts/ */
+			%>
+			<div data-alerts="alerts"></div>
+
 			<h1>Open Sensor Search</h1>
 
 			<form class="form-inline" role="form" name="requestform" method="get"
 				action="/OpenSensorSearch/search" onsubmit="return validate()">
 				<div class="row">
-					<div class="col-xs-4">
-						<input name="q" type="text" class="search-input form-control"
+					<div class="col-xs-6 col-sm-4 col-md-2">
+						<input name="q" id="inputSearch" type="text"
+							class="form-control input-large search-query"
 							placeholder="Search term..." />
 					</div>
 
-					<div class="col-xs-1">
-						<button type="submit" class="btn btn-primary btn-large btn-block"
+					<div class="col-xs-6 col-md-4">
+						<button type="submit" class="btn btn-primary btn-large"
 							id="btnSearch">Search</button>
-					</div>
-					<div class="col-xs-1">
-						<button type="submit" data-toggle="tooltip" title="first tooltip"
-							class="btn btn-primary btn-large" id="btnSearchNearby">Search
+						<button type="submit" data-toggle="tooltip"
+							data-placement="bottom" title="Uses the Geolocation API"
+							class="btn btn-info btn-large" id="btnSearchNearby">Search
 							nearby</button>
 					</div>
 				</div>
@@ -80,12 +85,13 @@
 			<!-- 				<div class="panel-body">[...]</div> -->
 			<!-- 			</div> -->
 
-			<div class="pull-right" style="margin-bottom: 10px;">
-				<small><label id="location_info"></label></small>
-			</div>
+			<!-- 			<div class="pull-right" style="margin-bottom: 10px;"> -->
+			<!-- 				<label id="location_info"></label> -->
+			<!-- 			</div> -->
 		</div>
 
 		<div id="push"></div>
+
 	</div>
 
 	<div id="footer">
@@ -125,7 +131,8 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script src="./${context}/lib/bootstrap.js"></script>
-	
+	<script src="./${context}/lib/jquery.bsAlerts.min.js"></script>
+
 	<script src="./${context}/scripts/autocomplete.js"></script>
 	<script src="./${context}/scripts/oss.js"></script>
 

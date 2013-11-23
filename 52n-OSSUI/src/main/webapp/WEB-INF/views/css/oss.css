@@ -15,7 +15,7 @@ html,body {
 }
 
 /* fixed height of the footer */
-#push,#footer {
+#push, #footer {
 	height: 80px;
 }
 
@@ -43,6 +43,8 @@ html,body {
 	}
 }
 
+/*
 .form-control {
-	max-width: 200px;
+	/max-width: 200px;
 }
+*/

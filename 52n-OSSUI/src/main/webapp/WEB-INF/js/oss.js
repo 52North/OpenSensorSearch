@@ -17,19 +17,32 @@ function showPosition(position) {
 	$("#lat").val(position.coords.latitude);
 	$("#lng").val(position.coords.longitude);
 	$("#radius").val("1000");
-	var str = "You are near:" + position.coords.latitude + ","
-			+ position.coords.longitude;
-    $("#location_info").html(str);
+	console.log("Retrieved location: " + position.coords.latitude + ", " + position.coords.longitude);
+	
+	var str = "You are near: " + Number((position.coords.latitude).toFixed(3)) + ", "
+			+ Number((position.coords.longitude).toFixed(3));
+	// $("#location_info").html(str);
+
+	$('#btnSearchNearby').tooltip('hide').attr('data-original-title', str)
+			.tooltip('fixTitle').tooltip('show');
 }
 
 function validate() {
+	// close open alerts
+	// $(".close").click(function() {
+	// $(".alert").alert();
+	// });
+
 	var q = document.forms["requestform"]["q"].value;
 	if (q == null || q == "" || q.toString().trim().length == 0) {
-		alert("Please enter a valid query!");
+		// $(document).trigger("add-alerts", {
+		// message : "Please enter a search term.",
+		// priority : "error"
+		// });
+
 		return false;
 	}
 	return true;
-
 }
 
 $(document)
@@ -41,6 +54,9 @@ $(document)
 						$("#radius").attr("disabled", true);
 					});
 
+					// activate all tooltips
+					$("[data-toggle='tooltip']").tooltip();
+
 					$("#btnSearchNearby")
 							.click(
 									function() {
@@ -48,9 +64,9 @@ $(document)
 											navigator.geolocation
 													.getCurrentPosition(showPosition);
 										} else {
-											$(".alert-msg")
+											$("#alerts")
 													.append(
-															'<div class="alert alert-danger">Your browser doesn\'t support	geolocation!</div>');
+															'<div class="alert alert-danger">Your browser does not support	geolocation!<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a></div>');
 										}
 
 										$("#lat").attr("disabled", false);

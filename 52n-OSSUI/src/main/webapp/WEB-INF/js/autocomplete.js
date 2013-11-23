@@ -14,8 +14,8 @@
  *     limitations under the License.
  */
 $(document).ready(function() {
-	$(".search-input").keyup(function() {
-		var p = $(".search-input");
+	$("#inputSearch").keyup(function() {
+		var p = $("#inputSearch");
 		var written = (p.val());
 		if (written.toString().length > 1) {
 			var tokens = written.toString().split(" ");
@@ -34,7 +34,7 @@ $(document).ready(function() {
 					var available = d.split(",");
 					for ( var i = 0; i < available.length; i++)
 						available[i] = first + " " + available[i];
-					$(".search-input").autocomplete({
+					$("#inputSearch").autocomplete({
 						source : available
 					});
 				}

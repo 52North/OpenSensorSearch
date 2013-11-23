@@ -15,8 +15,8 @@
         limitations under the License.
 
 --%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ taglib prefix="security"
@@ -28,62 +28,16 @@
 
 <%@ include file="common-head.jsp"%>
 
-<title>Open Sensor Seary by 52°North</title>
-
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="./${context }/scripts/autocomplete.js"></script>
-<script src="./${context}/scripts/bootstrap.min.js"></script>
+<title>Open Sensor Search by 52Â°North</title>
 
 </head>
-
-<script>
-	function showPosition(position) {
-		$("#lat").val(position.coords.latitude);
-		$("#lng").val(position.coords.longitude);
-		$("#radius").val("1000");
-		var str = "You are near:" + position.coords.latitude + ","
-				+ position.coords.longitude
-
-		function validate() {
-		var q = document.forms["requestform"]["q"].value;
-		if (q == null || q == "" || q.toString().trim().length == 0) {
-			alert("Please enter a valid query!");
-			return false;
-		}
-		return true;
-
-	}
-
-	$(document).ready(function() {
-		
-		if (navigator.geolocation) {
-			navigator.geolocation
-					.getCurrentPosition(showPosition);
-		} else {
-			$(".alert-msg")
-					.append('<div class="alert alert-danger">Your browser doesn\'t support	geolocation!</div>');
-		}
-		
-		$("#notlocation").click(function() {
-			$("#lat").attr("disabled", true);
-			$("#lng").attr("disabled", true);
-			$("#radius").attr("disabled", true);
-		});
-		$("#location").click(function() {
-			$("#lat").attr("disabled", false);
-			$("#lng").attr("disabled", false);
-			$("#radius").attr("disabled", false);
-		});
-	});
-</script>
 
 <body>
 
 	<div id="wrap">
 		<%@ include file="navigation.jsp"%>
 
-		<div class="container" style="padding-top: 70px;">
+		<div class="container" style="padding-top: 10%;">
 			<c:if test="${RegisterSucceded}">
 				<div class="alert alert-error">
 					<a class="close" data-dismiss="alert"></a> <strong>Error!</strong>
@@ -94,19 +48,29 @@
 
 			<h1>Open Sensor Search</h1>
 
-			<form name="requestform" method="get"
+			<form class="form-inline" role="form" name="requestform" method="get"
 				action="/OpenSensorSearch/search" onsubmit="return validate()">
-				<input type="hidden" name="httpAccept" value="text/html" /> <span><input
-					name="q" type="text" class="search-input form-control" /> </span> <input
+				<div class="row">
+					<div class="col-xs-4">
+						<input name="q" type="text" class="search-input form-control"
+							placeholder="Search term..." />
+					</div>
+
+					<div class="col-xs-1">
+						<button type="submit" class="btn btn-primary btn-large btn-block"
+							id="btnSearch">Search</button>
+					</div>
+					<div class="col-xs-1">
+						<button type="submit" data-toggle="tooltip" title="first tooltip"
+							class="btn btn-primary btn-large" id="btnSearchNearby">Search
+							nearby</button>
+					</div>
+				</div>
+
+				<input type="hidden" name="httpAccept" value="text/html" /> <input
 					name="lat" type="hidden" id="lat" class="form-control"> <input
 					name="lng" type="hidden" id="lng" class="form-control"> <input
 					name="radius" type="hidden" id="radius" class="form-control">
-
-				<span><input value="Search" type="submit"
-					class="btn btn-primary btn-large" id="notlocation" /> <input
-					value="Search nearby my location" type="submit"
-					class="btn btn-primary btn-large" id="location" /> </span>
-				<p>
 			</form>
 
 			<!-- 			<div class="panel panel-default"> -->
@@ -128,15 +92,16 @@
 		<div class="container">
 			<div class="row" style="margin-top: 10px;">
 				<dl class="dl-horizontal col-md-6" style="margin: 0px;">
-					<dt>52°North</dt>
+					<dt>52Â°North</dt>
 					<dd>
 						<a href="http://www.52north.org/">http://www.52north.org</a>
 					</dd>
 					<dt>GitHub Project</dt>
 					<dd>
 						<a href="https://github.com/52North/OpenSensorSearch">https://github.com/52North/OpenSensorSearch</a>
-							<a href="https://github.com/52North/OpenSensorSearch" style="text-decoration:none"><span class="label label-info">Fork us!</span>
-						</a>
+						<a href="https://github.com/52North/OpenSensorSearch"
+							style="text-decoration: none"><span class="label label-info">Fork
+								us!</span> </a>
 					</dd>
 				</dl>
 				<dl class="dl-horizontal col-md-6" style="margin: 0px;">
@@ -150,10 +115,19 @@
 					<!-- 					</dd> -->
 				</dl>
 			</div>
-			<p class="text-center" style="margin-top: 10px;">Copyright © 2013
-				52°North Initiative for Geospatial Open Source Software GmbH. All
+			<p class="text-center" style="margin-top: 10px;">Copyright Â© 2013
+				52Â°North Initiative for Geospatial Open Source Software GmbH. All
 				Rights Reserved.</p>
 		</div>
 	</div>
+
+	<!-- load scripts -->
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="./${context}/lib/bootstrap.js"></script>
+	
+	<script src="./${context}/scripts/autocomplete.js"></script>
+	<script src="./${context}/scripts/oss.js"></script>
+
 </body>
 </html>

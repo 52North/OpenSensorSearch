@@ -12,16 +12,16 @@
 
 	<context:component-scan
 		base-package="org.n52.oss.ui.controllers,org.n52.oss.ui.services" />
-	<mvc:annotation-driven />
-	<mvc:resources mapping="/styles/**" location="/WEB-INF/views/css/"></mvc:resources>
-	<mvc:resources mapping="/scripts/**" location="/WEB-INF/views/js/"></mvc:resources>
-	<mvc:resources mapping="/lib/**" location="/WEB-INF/views/lib/"></mvc:resources>
-	<mvc:resources mapping="/resources/**" location="/WEB-INF/views/resources/"></mvc:resources>
-	<mvc:resources mapping="/images/**" location="/WEB-INF/views/images/"></mvc:resources>
 
-	<mvc:resources mapping="/tempelates/**" location="/WEB-INF/views/tempelates/"></mvc:resources>
+	<mvc:resources mapping="/styles/**" location="/WEB-INF/views/css/" />
+	<mvc:resources mapping="/scripts/**" location="/WEB-INF/js/" />
+	<mvc:resources mapping="/lib/**" location="/WEB-INF/js/lib/" />
+	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
+	<mvc:resources mapping="/images/**" location="/WEB-INF/views/images/" />
+
 	<mvc:annotation-driven
 		ignoreDefaultModelOnRedirect="true" />
+
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />

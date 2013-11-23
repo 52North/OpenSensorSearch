@@ -15,8 +15,8 @@
         limitations under the License.
 
 --%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ taglib prefix="security"
@@ -100,7 +100,7 @@ body {
 <body>
 	<c:if test="${LoginFailed}">
 		<div class="alert alert-error">
-			<a class="close" data-dismiss="alert">×</a> <strong>Error!</strong>
+			<a class="close" data-dismiss="alert">Ã</a> <strong>Error!</strong>
 			${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
 		</div>
 	</c:if>

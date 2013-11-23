@@ -35,17 +35,45 @@
 
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="${context}/OSSUI/remote/index">Harvest
-						a Remote Server</a></li>
-				<li><a href="${context}/OSSUI/script/index">Harvest a
-						javascript script</a></li>
-				<li><a href="${context}/OSSUI/api/developer">Developers
-						Documentation</a></li>
-				<li><a
-					onclick="window.external.AddSearchProvider('${context}/OSSUI/resources/searchPlugin.xml');">Add
-						as search plugin</a></li>
-				<li><a href="${context}/OSSUI/api/">API Documentation</a></li>
-				<li><a href="#contact">Contact</a></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown">Documentation <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li class="dropdown-header">OSS</li>
+						<li><a href="#">Users</a></li>
+						<li><a href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch">Developers</a></li>
+						<li><a href="${context}/OSSUI/api/">API</a></li>
+						<li class="divider"></li>
+						<li class="dropdown-header">Meta</li>
+						<li><a href="http://52north.org/communities/sensorweb/discovery/">Sensor Discovery</a></li>
+					</ul></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown">Harvesting <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="${context}/OSSUI/script/index">Javascript</a></li>
+						<li class="divider"></li>
+						<li class="dropdown-header">Remote Server</li>
+						<li><a href="${context}/OSSUI/remote/index">OSS API
+								Server</a></li>
+						<li><a href="#">OGC Web Service</a></li>
+						<li class="divider"></li>
+						<li class="dropdown-header">Documentation</li>
+						<li><a href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch/ScriptDevelopers">Script Developers</a></li>
+					</ul></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown">More <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li class="dropdown-header">SIR</li>
+						<li><a href="/extendedClient">Extended Client</a></li>
+						<li><a href="/formClient">Form Client</a></li>
+						<li><a href="https://52north.org/twiki/bin/view/SensorWeb/SensorInstanceRegistry">Documentation</a></li>
+						<li class="divider"></li>
+						<li class="dropdown-header">Meta</li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+						<li><a
+							onclick="window.external.AddSearchProvider('${context}/OSSUI/resources/searchPlugin.xml');">Add
+								as search plugin</a></li>
+					</ul></li>
 			</ul>
 		</div>
 	</div>

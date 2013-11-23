@@ -24,13 +24,12 @@
 	rel="shortcut icon" type="image/x-icon" />
 	
 <link href="./${context}/styles/bootstrap.css" rel="stylesheet">
-
+<link href="./${context}/styles/bootstrap-responsive.css"
+	rel="stylesheet">
+	
 <link type="text/css" rel="stylesheet"
 	href="./${context}/styles/oss.css" />
 	
-<link href="./${context}/styles/bootstrap-responsive.css"
-	rel="stylesheet">
-
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

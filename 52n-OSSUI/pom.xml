@@ -138,13 +138,14 @@
 						<exclude>**/logback*</exclude>
 						<exclude>**/test/resources/**</exclude>
 						<exclude>**/*.xml</exclude>
-						<exclude>**/*.js</exclude>
+						<exclude>**/js/lib/**</exclude>
+						<exclude>**/js/min/lib/**</exclude>
 						<exclude>**/*.css</exclude>
 					</excludes>
 					<includes>
 						<include>**/*.java</include>
 						<include>**/*.jsp</include>
-						<!-- <include>**/*.js</include> -->
+						<include>**/*.js</include>
 						<include>**/*.xsl</include>
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>

@@ -23,9 +23,14 @@ import org.n52.oss.ui.services.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserDetailsImpl implements UserDetails {
+
+    private static final long serialVersionUID = -8738381602816277740L;
+
     private String username;
+
     private String password;
-    private Collection<org.n52.oss.ui.services.GrantedAuthorityImpl> authorities;
+
+    private Collection<GrantedAuthorityImpl> authorities;
 
     public UserDetailsImpl(String user, String password, Collection<GrantedAuthorityImpl> authorities) {
         this.username = user;
@@ -40,8 +45,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<GrantedAuthorityImpl> getAuthorities() {
-
-        return authorities;
+        return this.authorities;
     }
 
     @Override

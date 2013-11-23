@@ -77,13 +77,11 @@ public class RegisterController {
                 map.put("RegisterSucceded", true);
                 return "redirect:/";
             }
-            else {
-                String errorMsg = reg_result.reason == null ? "Cannot register currently" : reg_result.reason;
-                map.put("RegisterFailed", true);
-                map.put("ErrorMsg", errorMsg);
-                return "register/index";
-            }
 
+            String errorMsg = reg_result.reason == null ? "Cannot register currently" : reg_result.reason;
+            map.put("RegisterFailed", true);
+            map.put("ErrorMsg", errorMsg);
+            return "register/index";
         }
         catch (Exception e) {
             return null;

@@ -27,9 +27,8 @@ public class UploadForm {
 
     private String license;
 
-    // added to allow spring to instantiate
     public UploadForm() {
-
+        // added to allow spring to instantiate
     }
 
     public CommonsMultipartFile getFile() {
@@ -37,7 +36,7 @@ public class UploadForm {
     }
 
     public String getLicense() {
-        return license;
+        return this.license;
     }
 
     public String getName() {

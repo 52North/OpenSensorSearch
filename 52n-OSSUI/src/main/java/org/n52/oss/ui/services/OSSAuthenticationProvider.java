@@ -77,8 +77,8 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
             return auth;
 
         }
-        else
-            throw new UsernameNotFoundException("Wrong username/password combination");
+
+        throw new UsernameNotFoundException("Wrong username/password combination");
     }
 
     private AuthToken authenticateOSS(String username, String password) {

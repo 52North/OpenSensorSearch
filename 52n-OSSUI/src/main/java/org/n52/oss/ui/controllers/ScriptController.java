@@ -49,6 +49,7 @@ import com.google.gson.Gson;
 @Controller
 @RequestMapping("/script")
 public class ScriptController {
+
     public class ScriptContent {
         public String content;
     }
@@ -108,10 +109,9 @@ public class ScriptController {
                 map.addAttribute("license", form.getLicense());
                 return "script/status";
             }
-            else {
+
                 map.addAttribute("harvestError", true);
                 return "script/status";
-            }
         }
         catch (Exception e) {
             map.addAttribute("errorMSG", e);

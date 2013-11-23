@@ -22,6 +22,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class GrantedAuthorityImpl implements GrantedAuthority {
 
+    private static final long serialVersionUID = -2782331899728518616L;
+
     private String rolename;
 
     public GrantedAuthorityImpl(String rolename) {

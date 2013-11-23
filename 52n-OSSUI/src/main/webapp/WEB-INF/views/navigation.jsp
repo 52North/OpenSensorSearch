@@ -30,7 +30,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Open Sensor Search</a>
+			<!-- 			<a class="navbar-brand" href="#">Open Sensor Search</a> -->
 		</div>
 
 		<div class="navbar-collapse collapse">
@@ -40,11 +40,14 @@
 					<ul class="dropdown-menu">
 						<li class="dropdown-header">OSS</li>
 						<li><a href="#">Users</a></li>
-						<li><a href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch">Developers</a></li>
+						<li><a
+							href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch">Developers</a></li>
 						<li><a href="${context}/OSSUI/api/">API</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Meta</li>
-						<li><a href="http://52north.org/communities/sensorweb/discovery/">Sensor Discovery</a></li>
+						<li><a
+							href="http://52north.org/communities/sensorweb/discovery/">Sensor
+								Discovery</a></li>
 					</ul></li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown">Harvesting <b class="caret"></b></a>
@@ -57,7 +60,9 @@
 						<li><a href="#">OGC Web Service</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Documentation</li>
-						<li><a href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch/ScriptDevelopers">Script Developers</a></li>
+						<li><a
+							href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch/ScriptDevelopers">Script
+								Developers</a></li>
 					</ul></li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown">More <b class="caret"></b></a>
@@ -65,7 +70,8 @@
 						<li class="dropdown-header">SIR</li>
 						<li><a href="/extendedClient">Extended Client</a></li>
 						<li><a href="/formClient">Form Client</a></li>
-						<li><a href="https://52north.org/twiki/bin/view/SensorWeb/SensorInstanceRegistry">Documentation</a></li>
+						<li><a
+							href="https://52north.org/twiki/bin/view/SensorWeb/SensorInstanceRegistry">Documentation</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Meta</li>
 						<li><a href="#about">About</a></li>

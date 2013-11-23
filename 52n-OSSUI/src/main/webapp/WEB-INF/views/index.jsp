@@ -78,6 +78,17 @@
 					name="radius" type="hidden" id="radius" class="form-control">
 			</form>
 
+			<div class="row">
+				<!-- #TODO add links to the RESTful URLs /sensors, /phenomena and /services -->
+				Searching across ... sensors with ... observed properties from ...
+				services.
+			</div>
+
+			<div class="row">
+				<span class="infotextHighlight">Is your data missing? <a
+					href="mailto:${sir.deploy.contact}">Write us an email!</a></span>
+			</div>
+
 			<!-- 			<div class="panel panel-default"> -->
 			<!-- 				<div class="panel-heading"> -->
 			<!-- 					<h3 class="panel-title">Test</h3> -->

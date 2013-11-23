@@ -6,10 +6,6 @@
 	<display-name>${project.name} ${project.version}-${build-commit} build
 		at ${build-tstamp}</display-name>
 
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
-
 	<filter>
 		<filter-name>guiceFilter</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>

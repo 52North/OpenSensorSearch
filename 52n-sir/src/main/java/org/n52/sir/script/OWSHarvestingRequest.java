@@ -16,10 +16,14 @@
 
 package org.n52.sir.script;
 
+import org.n52.sir.SirConfigurator;
+import org.n52.sir.SirConstants;
 import org.n52.sir.client.Client;
-import org.n52.sir.client.HarvestServiceBean;
+import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.x52North.sir.x032.HarvestServiceRequestDocument;
+import org.x52North.sir.x032.HarvestServiceRequestDocument.HarvestServiceRequest;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse;
 
@@ -36,15 +40,13 @@ public class OWSHarvestingRequest {
         //
     }
 
-    public int harvestOWSService(String url, String serviceType) {
-
-        HarvestServiceBean harvestBean = new HarvestServiceBean(url, serviceType);
+    public int harvestOWSService(String url, String serviceType, String interval) {
         log.info("Harvesting server at:" + url + " : " + serviceType);
 
-        harvestBean.buildRequest();
+        String request = buildRequest(url, serviceType, interval);
         try {
 
-            String response = this.client.sendPostRequest(harvestBean.getRequestString());
+            String response = this.client.sendPostRequest(request);
             HarvestServiceResponseDocument respDoc = HarvestServiceResponseDocument.Factory.parse(response);
 
             HarvestServiceResponse harvestResponse = respDoc.getHarvestServiceResponse();
@@ -56,6 +58,35 @@ public class OWSHarvestingRequest {
             return -1;
         }
 
+    }
+
+    private String buildRequest(String url, String serviceType, String interval) {
+        String responseString = "";
+
+        HarvestServiceRequestDocument requestDoc = HarvestServiceRequestDocument.Factory.newInstance();
+        HarvestServiceRequest request = requestDoc.addNewHarvestServiceRequest();
+        request.setService(SirConstants.SERVICE_NAME);
+        request.setVersion(SirConfigurator.getInstance().getServiceVersionEnum());
+
+        if (url != null && !url.equals("")) {
+            request.setServiceURL(url);
+        }
+        if (serviceType != null && !serviceType.equals("")) {
+            request.setServiceType(serviceType);
+        }
+        // interval
+        if (interval != null && !interval.equals("")) {
+            request.setHarvestIntervalSeconds(Integer.parseInt(interval));
+        }
+
+        XmlTools.addSirAndSensorMLSchemaLocation(request);
+
+        if (requestDoc.validate())
+            responseString = requestDoc.xmlText(XmlTools.xmlOptionsForNamespaces());
+        else
+            responseString = XmlTools.validateAndIterateErrors(requestDoc);
+
+        return responseString;
     }
 
 }

@@ -1,6 +1,6 @@
-<!--
+<%--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+    ﻿Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -14,32 +14,32 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
+--%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-	
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 <title>SIR Form Client</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <link href="sir.css" rel="stylesheet" type="text/css" />
+<link href="../lib/codemirror/codemirror.css" rel="stylesheet"
+	type="text/css" />
 <link rel="shortcut icon"
-	href="https://52north.org/templates/52n/favicon.ico" />
-
-<script src="codemirror/codemirror.js" type="text/javascript"></script>
-
-<script type="text/javascript" src="formClient.js"></script>
+	href="http://52north.org/templates/52n-2012/favicon.ico" />
 
 </head>
-<body bgcolor="#ffffff" text="#000000" onload="load()">
+<body>
 	<div id="content">
 		<div id="header">
 			<div id="headline">
-				<span class="title">SIR Form Client</span><span class="infotext">Version
-					0.4</span>
+				<span class="title">SIR Form Client</span>
 			</div>
 			<div class="infotext">
 				For more information about the Sensor Instance Registry please
@@ -56,13 +56,13 @@
 		<h3>
 			Request Examples:&nbsp;&nbsp;<select id="selRequest"
 				onchange="insertSelected();">
-				<option value=" "></option>
+				<option value="empty">&nbsp;</option>
 			</select>
 		</h3>
 
 		<div class="infotext">
 			<p>
-				You can change the examples in the folder <font face="monospace">[project-directory]/WebContent/TestRequests/</font>.
+				You can change the examples in the folder <span class="path">[project-directory]/WEB-INF/sir/form/requests/</span>.
 			</p>
 		</div>
 
@@ -82,11 +82,7 @@
 			</form>
 			<p class="infotext">${project.build.finalName}
 				${version}-r${buildNumber} as of ${buildTimestamp}</p>
-			<p class="infotext">This TestClient was successfully tested in
-				Firefox 3.0, Safari 4.0.3, Opera 10.10, Chrome 4.0 and
-				InternetExplorer 8.0.6001.18702 and should work properly in Firefox
-				1.0 or higher, Safari 1.2 or higher, Opera 8 or higher and
-				InternetExplorer 5 or higher. The editor is based on CodeMirror
+			<p class="infotext">The editor is based on CodeMirror
 				(http://marijn.haverbeke.nl/codemirror/).</p>
 		</div>
 
@@ -99,5 +95,16 @@
 		</div>
 
 	</div>
+
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<%
+    /* compressed version from : codemirror, xml, active-line, foldcode, foldgutter, xml-fold, */
+%>
+	<script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
+	<script src="../lib/codemirror/xml.js"></script>
+
+	<script type="text/javascript" src="form/formClient.js"></script>
+
+
 </body>
 </html>

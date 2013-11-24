@@ -1,5 +1,5 @@
 /*
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var datafolder = window.location.href.substring(0, window.location.href
-		.lastIndexOf("/") + 1)
-		+ "TestRequests/";
+
 var editor = null;
 var defaultString = "<!-- Insert your request here or select one of the examples from the menu above. -->";
 
-function load() {
-	if (editor == null) {
-		initEditor();
-	}
-	initExamples();
-}
+$(document).ready(
+		function() {
+			var datafolder = window.location.href.substring(0,
+					window.location.href.lastIndexOf("/form") + 5)
+					+ "/requests/";
+			console.log("Requests loaded from " + datafolder);
 
-function initExamples() {
+			initExamples(datafolder);
+
+			editor = CodeMirror.fromTextArea(requestTextarea);
+			// if (editor == null) {
+			// editor = CodeMirror.fromTextArea("requestTextarea", {
+			// /* height : "380px", */
+			// mode : "xml",
+			// /* path : "codemirror/", */
+			// lineNumbers : true,
+			// content : "test"
+			// });
+			// }
+		});
+
+function initExamples(datafolder) {
 	var placeholderIndex = "PLACEHOLDER";
 	// load files
 	var requests = new Array();
-	requests[1] = datafolder + "GetCapabilities.xml";
+	requests[0] = datafolder + "GetCapabilities.xml";
+	requests[1] = placeholderIndex;
 	requests[2] = placeholderIndex;
 	requests[3] = datafolder + "DescribeSensor.xml";
 
@@ -85,15 +98,18 @@ function initExamples() {
 	}
 }
 
-function initEditor() {
-	editor = CodeMirror.fromTextArea("requestTextarea", {
-		height : "380px",
-		parserfile : "parsexml.js",
-		stylesheet : "codemirror/xmlcolors.css",
-		path : "codemirror/",
-		lineNumbers : true,
-		content : defaultString
-	});
+function xmlToString(xmlData) { 
+
+    var xmlString;
+    //IE
+    if (window.ActiveXObject){
+        xmlString = xmlData.xml;
+    }
+    // code for Mozilla, Firefox, Opera, etc.
+    else{
+        xmlString = (new XMLSerializer()).serializeToString(xmlData);
+    }
+    return xmlString;
 }
 
 function insertSelected() {
@@ -105,48 +121,29 @@ function insertSelected() {
 	}
 
 	try {
-		var requestString = "";
-
 		if (selObj.selectedIndex != 0) {
 			// Handle selection of empty drop down entry.
-			requestString = getFile(selObj.options[selObj.selectedIndex].value);
+			// requestString =
+			// getFile(selObj.options[selObj.selectedIndex].value);
+			$.ajax({
+				url : selObj.options[selObj.selectedIndex].value,
+				success : function(data) {
+					var string = xmlToString(data);
+					if (data == null) {
+						string = "Sorry! There is a problem with the Server, please refresh the page.";
+					}
+					
+					editor.setValue(string);
+				}
+			});
 		} else {
 			requestString = defaultString;
 		}
-
-		if (requestString == null) {
-			requestString = "Sorry! There is a problem with the Server, please refresh the page.";
-		}
-
-		editor.setCode(requestString);
 	} catch (err) {
 		var txt = "";
 		txt += "Error loading file: "
 				+ selObj.options[selObj.selectedIndex].value;
-		txt += "Error: " + err + "\n\n";
-		editor.setCode(txt);
+		txt += "\n\nError: " + err + "\n\n";
+		editor.setValue(txt);
 	}
-}
-
-function getFile(fileName) {
-	oxmlhttp = null;
-	try {
-		oxmlhttp = new XMLHttpRequest();
-		oxmlhttp.overrideMimeType("text/xml");
-	} catch (e) {
-		try {
-			oxmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-		} catch (e) {
-			return null;
-		}
-	}
-	if (!oxmlhttp)
-		return null;
-	try {
-		oxmlhttp.open("POST", fileName, false);
-		oxmlhttp.send(null);
-	} catch (e) {
-		return null;
-	}
-	return oxmlhttp.responseText;
 }

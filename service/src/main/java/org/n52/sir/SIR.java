@@ -17,9 +17,7 @@
 package org.n52.sir;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import javax.annotation.PreDestroy;
@@ -27,13 +25,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
 
 import org.n52.oss.config.ApplicationConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,22 +94,26 @@ public class SIR {
     }
 
     @POST
+    @Produces(MediaType.APPLICATION_XML)
     public Response doPost(@Context
-    HttpServletRequest req) {
+    HttpServletRequest req, String body) {
         log.debug(" ****** (POST) Connected from: {} {}", req.getRemoteAddr(), req.getRemoteHost());
+        log.debug("POST body: {}", body);
 
         // Read the request
-        String inputString = "";
+        String inputString = body;
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));) {
-            String line;
-            StringBuffer sb = new StringBuffer();
-            while ( (line = br.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            br.close();
-            inputString = sb.toString();
+        // // try (BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));) {
+        // try (BufferedReader br = req.getReader();) {
+        // String line;
+        // StringBuffer sb = new StringBuffer();
+        // while ( (line = br.readLine()) != null) {
+        // sb.append(line + "\n");
+        // }
+        // br.close();
+        // inputString = sb.toString();
 
+        try {
             // discard "request="
             if (inputString.startsWith("request=")) {
                 inputString = inputString.substring(8, inputString.length());
@@ -115,7 +122,13 @@ public class SIR {
         }
         catch (Exception e) {
             log.error("Exception reading input stream.", e);
+            return doResponse(new ExceptionResponse(e));
         }
+
+        if (inputString.isEmpty())
+            return doResponse(new ExceptionResponse(new OwsExceptionReport(ExceptionCode.InvalidRequest,
+                                                                           "request",
+                                                                           "request is empty.")));
 
         ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
         return doResponse(sirResp);

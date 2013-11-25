@@ -17,6 +17,8 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+	
+<%@page import="org.n52.oss.ui.Config"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,14 +70,13 @@
 
 		<div class="request-form">
 			<form name="requestform" method="post"
-				action="${service.path}/${service.endpoint.service}">
+				action="<%=new Config().getSirEndpoint() %>">
 				<div class="textareaBorder">
 					<textarea name="request" id="requestTextarea" class="largeTextarea"
 						rows="10" cols="10"></textarea>
 				</div>
 				<div class="request-form-buttons">
-					<input value="Send"
-						onclick="requestform.action = urlform.url.value" type="submit" />
+					<input value="Send" type="submit" />
 					<input value="Clear" name="reset" type="reset"
 						onclick="document.getElementById('selRequest').selectedIndex = 0; insertSelected();" />
 				</div>

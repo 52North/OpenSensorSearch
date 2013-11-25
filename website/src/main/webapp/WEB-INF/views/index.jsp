@@ -125,10 +125,10 @@
 					<dd>
 						<a href="http://www.geoviqua.org/">http://www.geoviqua.org/</a>
 					</dd>
-					<!-- 					<dt>GEO label</dt> -->
-					<!-- 					<dd> -->
-					<!-- 						<a href="http://www.geolabel.info/">http://www.geolabel.info/</a> -->
-					<!-- 					</dd> -->
+					<dt>More Projects</dt>
+					<dd>
+						<a href="http://52north.org/resources/references/sensor-web/osiris">OSIRIS</a>, GENESIS
+					</dd>
 				</dl>
 			</div>
 			<p class="text-center" style="margin-top: 10px;">Copyright © 2013

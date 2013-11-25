@@ -49,8 +49,8 @@ public class ServletModule extends JerseyServletModule {
         String basepath = getServletContext().getRealPath("/");
         bindConstant().annotatedWith(Names.named("context.basepath")).to(basepath);
 
-         bind(IJSExecute.class).to(RhinoJSExecute.class);
-       //  bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
+        bind(IJSExecute.class).to(RhinoJSExecute.class);
+        // bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
         // bind the JAX-RS resources
@@ -65,17 +65,17 @@ public class ServletModule extends JerseyServletModule {
         bind(ValidatorResource.class);
         bind(UserAccessResource.class);
         bind(StatisticsResource.class);
-    //    bind(ValidatorResource.class);
-     //   filter("*").through(DebugFilter.class);
-        Map<String, String> params = new HashMap<String, String>(); 
-        params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF"); 
+        // bind(ValidatorResource.class);
+        // filter("*").through(DebugFilter.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF");
 
         params.put("com.sun.jersey.config.property.WebPageContentRegex", "/.*\\.(jpg|ico|png|gif|html|id|txt|css|js)");
-        params.put("com.sun.jersey.config.property.packages","org.n52.oss.api;com.wordnik.swagger.jersey.listing");
-//        params.put("api.version","1.0.0");
-     //   filter("/doc/api/*").through(GuiceContainer.class,params);
-      //  filter("/api-docs/*").through(GuiceContainer.class,params);
-        filter("/*").through(GuiceContainer.class,params);    
+        params.put("com.sun.jersey.config.property.packages", "org.n52.oss.api;com.wordnik.swagger.jersey.listing");
+        // params.put("api.version","1.0.0");
+        // filter("/doc/api/*").through(GuiceContainer.class,params);
+        // filter("/api-docs/*").through(GuiceContainer.class,params);
+        filter("/*").through(GuiceContainer.class, params);
         log.debug("configured {} with context {}", this, getServletContext());
     }
 

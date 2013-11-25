@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/** @author Yakoub
- */
-
 package org.n52.oss.ui;
 
-public class OSSConstants {
+public class Config {
 
     public static final String BASE_URL = "http://gsoc.dev.52north.org:8093";
+
+    public static final String SIR_ENDPOINT = "http://localhost:8080/oss/sir";
 }

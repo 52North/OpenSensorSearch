@@ -16,20 +16,32 @@
 package org.n52.oss.ui.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/sir")
 public class SirClientController {
 
     @RequestMapping(value = "/client")
-    public String login(ModelMap map) {
+    public String mapClient() {
         return "../sir/client/index";
     }
 
+    @RequestMapping(value = "/client/")
+    public ModelAndView mapClientSlash() {
+        return new ModelAndView("redirect:/sir/client");
+    }
+
+    @RequestMapping(value = "/client/{page}")
+    public String login(@PathVariable("page")
+    String page) {
+        return "../sir/client/pages/" + page;
+    }
+
     @RequestMapping(value = "/form")
-    public String loginWithFail(ModelMap map) {
+    public String mapForm() {
         return "../sir/form/index";
     }
 

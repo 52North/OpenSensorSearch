@@ -17,6 +17,7 @@
 package org.n52.oss.ui.beans;
 
 import org.n52.oss.sir.Client;
+import org.n52.oss.ui.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,12 @@ public abstract class TestClientBean {
 
     protected String responseString = "";
 
-    private Client client = new Client("http://inject.this/sir");
+    private Client client;
+
+    public TestClientBean() {
+        this.client = new Client(Config.SIR_ENDPOINT);
+        log.info("NEW {}", this);
+    }
 
     /**
      * Build the request based on the user input, then save it in {@link TestClientBean#requestString}.

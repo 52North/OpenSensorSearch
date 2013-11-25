@@ -52,7 +52,7 @@
 
 <h2>Describe Sensor Request</h2>
 
-<form action="describeSensor.jsp" method="post">
+<form action="describeSensor" method="post">
 <ul class="inputTablesList">
 	<li>
 	<table style="">
@@ -66,7 +66,7 @@
 </ul>
 <p><input type="submit" name="build" value="Build request" /></p>
 </form>
-<form action="describeSensor.jsp" method="post">
+<form action="describeSensor" method="post">
 <p class="textareaBorder"><textarea id="requestStringArea"
 	class="smallTextarea" name="requestString" rows="10" cols="10"><%=describeSensor.getRequestString()%></textarea></p>
 <p><input type="submit" name="sendRequest" value="Send request" /></p>

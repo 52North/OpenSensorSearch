@@ -30,7 +30,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.n52.oss.ui.OSSConstants;
+import org.n52.oss.ui.Config;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,7 +58,7 @@ public class RegisterController {
     String username, @ModelAttribute(value = "password")
     String password, ModelMap map, RedirectAttributes rs) {
         try {
-            HttpPost post = new HttpPost(OSSConstants.BASE_URL + "/OpenSensorSearch/api/v1/user/register");
+            HttpPost post = new HttpPost(Config.BASE_URL + "/OpenSensorSearch/api/v1/user/register");
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));

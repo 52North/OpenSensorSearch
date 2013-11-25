@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.n52.sensorweb</groupId>
-	<artifactId>52n-sir</artifactId>
+	<groupId>org.n52.oss</groupId>
+	<artifactId>service</artifactId>
 
-	<name>OpenSensorSearch</name>
+	<name>Open Sensor Search Service</name>
 	<description>52North Open Sensor Search</description>
 	<packaging>war</packaging>
 
@@ -133,7 +133,7 @@
 	</profiles>
 
 	<build>
-		<finalName>${project.name}</finalName>
+		<finalName>oss-service</finalName>
 
 		<plugins>
 			<plugin>

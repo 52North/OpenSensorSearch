@@ -144,7 +144,7 @@
 	<script src="lib/jquery.bsAlerts.min.js"></script>
 
 	<script src="scripts/autocomplete.js"></script>
-	<script src=".ext}/scripts/oss.js"></script>
+	<script src="scripts/oss.js"></script>
 
 </body>
 </html>

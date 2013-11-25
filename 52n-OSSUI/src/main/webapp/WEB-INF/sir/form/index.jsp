@@ -96,12 +96,12 @@
 
 	</div>
 
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
 	<%
     /* compressed version from : codemirror, xml, active-line, foldcode, foldgutter, xml-fold, */
 %>
 	<script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
-	<script src="../lib/codemirror/xml.js"></script>
+	<script src="../lib/codemirror/xml.js"  type="text/javascript"></script>
 
 	<script type="text/javascript" src="form/formClient.js"></script>
 

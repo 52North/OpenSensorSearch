@@ -58,16 +58,14 @@ public class Client {
 
     @Inject
     public Client(@Named("oss.sir.serviceurl")
-    String sirUrl) {
-        this.uri = URI.create(sirUrl);
+    String endpoint) {
+        this.uri = URI.create(endpoint);
 
         log.info("NEW {}", this);
     }
 
     private XmlObject doSend(String request, String requestMethod, URI requestUri) {
-        if (log.isDebugEnabled())
-            log.debug("Sending request (first 100 characters): "
-                    + request.substring(0, Math.min(request.length(), 100)));
+        log.debug("Sending request (first 100 characters): {}", request.substring(0, Math.min(request.length(), 100)));
 
         HttpClient client = new DefaultHttpClient();
         // configure timeout to handle really slow servers
@@ -91,8 +89,7 @@ public class Client {
             method = get;
         }
         else if (requestMethod.equals(POST_METHOD)) {
-            if (log.isDebugEnabled())
-                log.debug("Client connecting via POST to " + requestUri);
+            log.debug("Client connecting via POST to {}" + requestUri);
             HttpPost postMethod = new HttpPost(requestUri.toString());
 
             postMethod.setEntity(new StringEntity(request, ContentType.create(SirConstants.REQUEST_CONTENT_TYPE)));

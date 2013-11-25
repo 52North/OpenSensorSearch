@@ -21,7 +21,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <%@page import="org.n52.oss.sir.Client"%>
-<%@page import="org.n52.sir.api.SirSearchCriteria_Phenomenon"%>
+<%@page import="org.n52.oss.sir.api.SirMatchingType"%>
 
 <jsp:useBean id="searchSensor"
 	class="org.n52.oss.ui.beans.SearchSensorBean" scope="page" />
@@ -137,8 +137,8 @@
 								<td class="inputTitle">SOR Matching Type</td>
 								<td><select name="sorMatchingType" class="inputField">
 										<%
-										    SirSearchCriteria_Phenomenon.SirMatchingType[] types = searchSensor.getMatchingTypes();
-										    for (SirSearchCriteria_Phenomenon.SirMatchingType t : types) {
+										    SirMatchingType[] types = searchSensor.getMatchingTypes();
+										    for (SirMatchingType t : types) {
 										%>
 										<option value="<%=t%>"><%=t.toString()%></option>
 										<%

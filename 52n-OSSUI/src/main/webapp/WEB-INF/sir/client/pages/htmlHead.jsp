@@ -22,27 +22,28 @@
 <link rel="shortcut icon"
 	href="https://52north.org/templates/52n/favicon.ico" />
 
-<script src="<%=request.getContextPath()%>/codemirror/codemirror.js"
+<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+	
+<script src="<%=request.getContextPath()%>/lib/codemirror/codemirror.js"
 	type="text/javascript"></script>
-
+<script src="<%=request.getContextPath()%>/lib/codemirror/xml.js"
+	type="text/javascript"></script>
+	
 <script type="text/javascript">
-
 	var requestEditor = null;
 	var responseEditor = null;
 	var descriptionEditor = null;
 	var defaultString = "<!-- Insert your request here or build one using the input options above. -->";
-	var style = "<%=request.getContextPath()%>/codemirror/xmlcolors.css";
-	var p = "<%=request.getContextPath()%>/codemirror/";
-	
+
 	function load() {
 
-		if(requestEditor == null) {
+		if (requestEditor == null) {
 			initRequestEditor();
 		}
-		if(responseEditor == null) {
+		if (responseEditor == null) {
 			initResponseEditor();
 		}
-		if(descriptionEditor == null) {
+		if (descriptionEditor == null) {
 			initDescriptionEditor();
 		}
 	}
@@ -50,50 +51,50 @@
 	function initRequestEditor() {
 		var s;
 		var ta = document.getElementById('requestStringArea');
-		if(ta.value != "") {
+		if (ta.value != "") {
 			s = document.getElementById('requestStringArea').value;
-		}
-		else {
+		} else {
 			s = defaultString;
 		}
-		
-		requestEditor = CodeMirror.fromTextArea("requestStringArea", {
-			parserfile: "parsexml.js",
-			height: ta.clientHeight + 'px',
-			stylesheet: style,
-			path: p,
-			lineNumbers: true,
-			content: s
-		});
+
+		requestEditor = CodeMirror.fromTextArea("requestStringArea");
+		// 		{
+		// 			parserfile : "parsexml.js",
+		// 			height : ta.clientHeight + 'px',
+		// 			stylesheet : style,
+		// 			path : p,
+		// 			lineNumbers : true,
+		// 			content : s
+		// 		});
 	}
 
 	function initResponseEditor() {
 		var ta = document.getElementById('responseStringArea');
-	
-		responseEditor = CodeMirror.fromTextArea("responseStringArea", {
-			parserfile: "parsexml.js",
-			height: ta.clientHeight + 'px',
-			stylesheet: style,
-			path: p,
-			lineNumbers: true
-		});
+
+		responseEditor = CodeMirror.fromTextArea("responseStringArea");
+		// 		, {
+		// 			parserfile : "parsexml.js",
+		// 			height : ta.clientHeight + 'px',
+		// 			stylesheet : style,
+		// 			path : p,
+		// 			lineNumbers : true
+		// 		});
 	}
 
 	function initDescriptionEditor() {
 		var ta = document.getElementById('descriptionStringArea');
 
 		// description string area is not given on all pages
-		if(ta != null) {
-			responseEditor = CodeMirror.fromTextArea("descriptionStringArea", {
-				parserfile: "parsexml.js",
-				height: ta.clientHeight + 'px',
-				stylesheet: style,
-				path: p,
-				lineNumbers: true
-			});
+		if (ta != null) {
+			responseEditor = CodeMirror.fromTextArea("descriptionStringArea");
+			// 	, {
+			// 				parserfile: "parsexml.js",
+			// 				height: ta.clientHeight + 'px',
+			// 				stylesheet: style,
+			// 				path: p,
+			// 				lineNumbers: true
+			// 			});
 		}
 	}
-		
-	
 </script>
 

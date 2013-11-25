@@ -16,19 +16,25 @@
 
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <div id="header">
-	<div id="headline"><a href="<%= request.getContextPath() %>/index.jsp" title="Home">
-		<span class="title">SIR</span><br /><span class="infotext">Sensor Instance Registry</span><br /><span class="infotext">Test Client -
-	Version 0.3</span></a>
+	<div id="headline">
+		<span class="title">SIR</span><br />
+		<span class="infotext">Sensor Instance Registry Test Client</span>
 	</div>
 	<div id="logos">
 		<a href="http://52north.org" title="52° North Open Source Initiative">
-			<img src="<%= request.getContextPath() %>/images/logo.gif" height="62" alt="52N logo" /></a>
-		<a href="http://www.genesis-fp7.eu/" title="EC Project: GENeric European Sustainable Information Space for environment">
-			<img src="<%= request.getContextPath() %>/images/genesis_logo_blue_border__200.jpg" height="63" alt ="GENESIS logo"/></a>
-		<a href="http://ifgi.uni-muenster.de/" title="Institute for Geoinformatics, University of Münster">
-			<img src="<%= request.getContextPath() %>/images/ifgilogo.gif" width="180" height="63" alt="ifgi logo" /></a>
+			<img src="<%=request.getContextPath()%>/images/logo.gif"
+			height="62" alt="52N logo" />
+		</a> <a href="http://www.genesis-fp7.eu/"
+			title="EC Project: GENeric European Sustainable Information Space for environment">
+			<img
+			src="<%=request.getContextPath()%>/images/genesis_logo_blue_border__200.jpg"
+			height="63" alt="GENESIS logo" />
+		</a> <a href="http://ifgi.uni-muenster.de/"
+			title="Institute for Geoinformatics, University of Münster"> <img
+			src="<%=request.getContextPath()%>/images/ifgilogo.gif" width="180"
+			height="63" alt="ifgi logo" /></a>
 	</div>
-	
+
 </div>

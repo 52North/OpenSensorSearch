@@ -52,7 +52,7 @@
 
 			<h2>Harvest Service Request</h2>
 
-			<form action="harvestService.jsp" method="post">
+			<form action="harvestService" method="post">
 
 				<ul class="inputTablesList">
 					<li>
@@ -85,7 +85,7 @@
 					<input type="submit" name="build" value="Build request" />
 				</p>
 			</form>
-			<form action="harvestService.jsp" method="post">
+			<form action="harvestService" method="post">
 				<p class="textareaBorder">
 					<textarea id="requestStringArea" class="smallTextarea"
 						name="requestString" rows="10" cols="10"><%=harvestService.getRequestString()%></textarea>

@@ -93,8 +93,7 @@ public class SIR {
     @POST
     public Response doPost(@Context
     HttpServletRequest req) {
-        if (log.isDebugEnabled())
-            log.debug(" ****** (POST) Connected from: " + req.getRemoteAddr() + " " + req.getRemoteHost());
+        log.debug(" ****** (POST) Connected from: {} {}", req.getRemoteAddr(), req.getRemoteHost());
 
         // Read the request
         String inputString = "";
@@ -129,22 +128,23 @@ public class SIR {
                 try (BufferedOutputStream bus = new BufferedOutputStream(os);) {
                     log.debug("Writing streamed response of: {}", sirResp);
 
-            byte[] bytes = sirResp.getByteArray();
+                    byte[] bytes = sirResp.getByteArray();
                     bus.write(bytes);
-            }
-            catch (Exception e) {
-                log.error("Could not write to response stream.", e);
-            }
+                }
+                catch (Exception e) {
+                    log.error("Could not write to response stream.", e);
+                }
 
-        }
+            }
         };
 
         return Response.ok(stream).build();
-        }
+    }
+
     @GET
     @Path("/search")
-    public Response index(){
-    	return Response.ok().entity(new Viewable("/search")).build();
+    public Response index() {
+        return Response.ok().entity(new Viewable("/search")).build();
     }
-    
+
 }

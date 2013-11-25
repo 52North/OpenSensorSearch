@@ -31,7 +31,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.n52.oss.ui.OSSConstants;
+import org.n52.oss.ui.Config;
 import org.n52.oss.ui.UploadForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +89,7 @@ public class ScriptController {
             multipartEntity.addPart("user", new StringBody(details.getUsername()));
             multipartEntity.addPart("licenseCode", new StringBody(form.getLicense()));
             multipartEntity.addPart("auth_token", new StringBody(token));
-            HttpPost post = new HttpPost(OSSConstants.BASE_URL + "/OpenSensorSearch/script/submit");
+            HttpPost post = new HttpPost(Config.BASE_URL + "/OpenSensorSearch/script/submit");
             post.setEntity(multipartEntity);
             org.apache.http.client.HttpClient client = new DefaultHttpClient();
             HttpResponse resp;
@@ -128,7 +128,7 @@ public class ScriptController {
     public String show(@PathVariable
     String scriptId, ModelMap map) {
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(OSSConstants.BASE_URL + "/OpenSensorSearch/script/" + scriptId);
+        HttpGet get = new HttpGet(Config.BASE_URL + "/OpenSensorSearch/script/" + scriptId);
         try {
             HttpResponse resp = client.execute(get);
             StringBuilder builder = new StringBuilder();

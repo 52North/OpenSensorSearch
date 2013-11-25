@@ -17,9 +17,9 @@ package org.n52.sir.ds;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirSensorIdentification;
-import org.n52.sir.datastructure.SirStatus;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.api.SirSensorIdentification;
+import org.n52.oss.sir.api.SirStatus;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * interface for the specific DAOFactories, offers methods to create the matching DAOs for the

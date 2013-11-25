@@ -33,9 +33,9 @@ import org.n52.oss.opensearch.OpenSearchConfigurator;
 import org.n52.oss.opensearch.OpenSearchConstants;
 import org.n52.oss.opensearch.listeners.OpenSearchListener;
 import org.n52.oss.opensearch.listeners.feed.AbstractFeedListener;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.util.XmlTools;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

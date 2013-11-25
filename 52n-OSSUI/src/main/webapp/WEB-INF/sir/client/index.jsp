@@ -1,6 +1,6 @@
 <%--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+    ﻿Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 
 <head>
 <title>Sensor Instance Registry - Test Client</title>
+
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <link href="sir.css" rel="stylesheet" type="text/css" />

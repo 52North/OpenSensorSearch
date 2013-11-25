@@ -17,8 +17,8 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirSensorIdentification;
-import org.n52.sir.datastructure.SirStatus;
+import org.n52.oss.sir.api.SirSensorIdentification;
+import org.n52.oss.sir.api.SirStatus;
 
 /**
  * @author Jan Schulte

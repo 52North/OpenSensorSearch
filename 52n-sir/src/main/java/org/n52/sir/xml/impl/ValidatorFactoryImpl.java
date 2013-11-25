@@ -20,8 +20,8 @@ import java.io.File;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;

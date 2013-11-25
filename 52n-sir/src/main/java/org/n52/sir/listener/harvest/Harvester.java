@@ -33,21 +33,20 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sos.x10.DescribeSensorDocument;
 import net.opengis.sos.x10.DescribeSensorDocument.DescribeSensor;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.Client;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.api.SirService;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.client.Client;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirService;
-import org.n52.sir.datastructure.SirServiceReference;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.request.SirHarvestServiceRequest;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
@@ -171,14 +170,6 @@ public abstract class Harvester implements Callable<ISirResponse> {
             response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
         }
         catch (OwsExceptionReport e) {
-            String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
-                    + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
-            log.error(errMsg);
-
-            failedSensorsP.put(serviceSpecificSensorId, e.getMessage());
-            response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
-        }
-        catch (HttpException e) {
             String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
                     + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
             log.error(errMsg);

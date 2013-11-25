@@ -15,10 +15,10 @@
  */
 package org.n52.sir.ds;
 
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorIdentification;
-import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.api.SirSensorIdentification;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * interface for the specific DAOFactories, offers methods to create the matching DAOs for the

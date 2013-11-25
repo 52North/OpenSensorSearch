@@ -1,6 +1,6 @@
 <%--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+    ﻿Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<%@page import="org.n52.sir.client.Client"%>
+<%@page import="org.n52.oss.sir.Client"%>
 
 <jsp:useBean id="deleteSensorInfo"
-	class="org.n52.sir.client.DeleteSensorInfoBean" scope="page" />
+	class="org.n52.oss.ui.beans.DeleteSensorInfoBean" scope="page" />
 <jsp:setProperty property="*" name="deleteSensorInfo" />
 
 <%

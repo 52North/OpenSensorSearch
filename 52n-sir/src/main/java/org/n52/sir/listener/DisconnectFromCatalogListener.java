@@ -15,13 +15,13 @@
  */
 package org.n52.sir.listener;
 
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDisconnectFromCatalogDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirDisconnectFromCatalogRequest;
 import org.n52.sir.response.ExceptionResponse;

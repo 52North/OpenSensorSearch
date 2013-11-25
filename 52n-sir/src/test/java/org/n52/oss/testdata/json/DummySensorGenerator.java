@@ -38,11 +38,11 @@ import org.apache.xmlbeans.XmlObject;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.sir.Client;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.api.SirTimePeriod;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.util.GuiceUtil;
-import org.n52.sir.client.Client;
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirTimePeriod;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
 import org.x52North.sir.x032.InsertSensorInfoResponseDocument;
 

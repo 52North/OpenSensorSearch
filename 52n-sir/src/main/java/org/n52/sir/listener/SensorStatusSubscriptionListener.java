@@ -15,8 +15,8 @@
  */
 package org.n52.sir.listener;
 
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;

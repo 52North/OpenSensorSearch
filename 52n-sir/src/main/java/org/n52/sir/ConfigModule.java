@@ -20,7 +20,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.n52.sir.ows.OwsExMessageBodyWriter;
+import org.n52.sir.util.OwsExMessageBodyWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

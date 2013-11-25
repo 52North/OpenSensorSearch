@@ -21,8 +21,8 @@ import java.io.IOException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.SirConstants;
-import org.n52.sir.util.XmlTools;
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.util.XmlTools;
 
 /**
  * @author Daniel Nüst

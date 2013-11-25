@@ -65,12 +65,12 @@ import net.opengis.swe.x101.VectorType;
 import net.opengis.swe.x101.VectorType.Coordinate;
 
 import org.apache.xmlbeans.XmlException;
-import org.n52.sir.datastructure.SirBoundingBox;
+import org.n52.oss.sir.SMLConstants;
+import org.n52.oss.sir.api.SirBoundingBox;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.SirHarvestServiceRequest;
-import org.n52.sir.sml.SMLConstants;
-import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;

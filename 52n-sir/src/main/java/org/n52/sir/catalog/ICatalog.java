@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * 

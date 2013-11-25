@@ -16,10 +16,10 @@
 package org.n52.sir.ds;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.n52.oss.db.ConnectionPool;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,21 +73,10 @@ public abstract class AbstractConnectionPool implements ConnectionPool {
         // important! allow access to underlying connection
         this.dataSource.setAccessToUnderlyingConnectionAllowed(true);
 
+        log.info("NEW {}", this);
     }
 
     @Override
-    public abstract Connection getConnection() throws OwsExceptionReport;
-
-    // @Override
-    // public void returnConnection(Connection conn) throws OwsExceptionReport {
-    // try {
-    // conn.close();
-    // }
-    // catch (SQLException sqle) {
-    // OwsExceptionReport se = new OwsExceptionReport(sqle);
-    // log.error("Error closing active connection: " + sqle.toString());
-    // throw se;
-    // }
-    // }
+    public abstract Connection getConnection() throws SQLException;
 
 }

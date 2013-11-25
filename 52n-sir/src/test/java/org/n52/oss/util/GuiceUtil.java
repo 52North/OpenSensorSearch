@@ -19,9 +19,8 @@ package org.n52.oss.util;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.n52.oss.sir.Client;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.IT.GetCapabilitiesIT;
-import org.n52.sir.client.Client;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.pgsql.DAOFactory;
 import org.slf4j.Logger;
@@ -93,8 +92,8 @@ public class GuiceUtil {
                 try {
                     Properties sirProps = new Properties();
                     Properties dbProps = new Properties();
-                    sirProps.load(GetCapabilitiesIT.class.getResourceAsStream("/prop/sir.properties"));
-                    dbProps.load(GetCapabilitiesIT.class.getResourceAsStream("/prop/db.properties"));
+                    sirProps.load(GuiceUtil.class.getResourceAsStream("/prop/sir.properties"));
+                    dbProps.load(GuiceUtil.class.getResourceAsStream("/prop/db.properties"));
                     Names.bindProperties(binder(), sirProps);
                     Names.bindProperties(binder(), dbProps);
 

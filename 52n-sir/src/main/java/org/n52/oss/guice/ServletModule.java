@@ -16,7 +16,6 @@
 
 package org.n52.oss.guice;
 
-import org.n52.oss.autocomplete.AutoCompleteSearch;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +23,7 @@ import org.n52.oss.api.StatisticsResource;
 import org.n52.oss.api.TransformationResource;
 import org.n52.oss.api.UserAccessResource;
 import org.n52.oss.api.ValidatorResource;
+import org.n52.oss.autocomplete.AutoCompleteSearch;
 import org.n52.oss.opensearch.OpenSearch;
 import org.n52.sir.SIR;
 import org.n52.sir.harvest.exec.IJSExecute;
@@ -32,9 +32,7 @@ import org.n52.sir.script.HarvestResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Guice;
 import com.google.inject.name.Names;
-import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 

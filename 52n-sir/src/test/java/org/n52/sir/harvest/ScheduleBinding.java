@@ -39,7 +39,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.n52.sir.datastructure.SirSearchResultElement;
+import org.n52.oss.sir.api.SirSearchResultElement;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ds.solr.SolrConnection;
 

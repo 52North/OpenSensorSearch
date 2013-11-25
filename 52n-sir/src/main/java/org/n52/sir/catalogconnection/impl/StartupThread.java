@@ -17,12 +17,12 @@ package org.n52.sir.catalogconnection.impl;
 
 import java.util.List;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.pgsql.DAOFactory;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

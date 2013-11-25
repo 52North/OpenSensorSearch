@@ -23,8 +23,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.n52.oss.opensearch.OpenSearchConstants;
-import org.n52.sir.datastructure.SirBoundingBox;
-import org.n52.sir.datastructure.SirSearchCriteria;
+import org.n52.oss.sir.api.SirBoundingBox;
+import org.n52.oss.sir.api.SirSearchCriteria;
 import org.n52.sir.util.ext.GeoLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -27,8 +27,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.IProfileValidator;
 
 import com.google.inject.Inject;

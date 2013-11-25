@@ -19,9 +19,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;

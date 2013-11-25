@@ -16,8 +16,8 @@
 
 package org.n52.sir.catalogconnection;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalogConnection;
-import org.n52.sir.ows.OwsExceptionReport;
 
 /**
  * 

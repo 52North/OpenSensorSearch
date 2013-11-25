@@ -22,7 +22,7 @@ import java.util.List;
 import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * @author Daniel Nüst

@@ -20,10 +20,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogStatusHandler;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

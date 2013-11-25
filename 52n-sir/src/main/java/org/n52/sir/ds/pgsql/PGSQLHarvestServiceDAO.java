@@ -21,12 +21,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.n52.sir.datastructure.SirPhenomenon;
-import org.n52.sir.datastructure.SirSensor;
+import org.n52.oss.sir.api.SirPhenomenon;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -245,7 +244,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append("', '");
 
         // check if the document contains characters, namely ' which could break the insert command
-        String sensorMLDocument = Tools.escapeSQLString(sensor.getSensorMLDocument().xmlText());
+        String sensorMLDocument = SqlTools.escapeSQLString(sensor.getSensorMLDocument().xmlText());
         cmd.append(sensorMLDocument);
 
         cmd.append("', '{");

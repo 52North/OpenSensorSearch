@@ -15,9 +15,9 @@
  */
 package org.n52.sir.decode.impl;
 
-import org.n52.sir.SirConstants;
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.decode.IHttpGetRequestDecoder;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirDescribeSensorRequest;
 import org.n52.sir.request.SirGetCapabilitiesRequest;

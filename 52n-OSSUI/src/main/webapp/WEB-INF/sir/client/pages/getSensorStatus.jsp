@@ -1,6 +1,6 @@
 <%--
 
-    ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+    ﻿Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<%@page import="org.n52.sir.client.Client"%>
-<%@page import="org.n52.sir.datastructure.SirSearchCriteria_Phenomenon"%>
+<%@page import="org.n52.oss.sir.Client"%>
+<%@page import="org.n52.oss.sir.api.SirSearchCriteria_Phenomenon"%>
+<%@page import="org.n52.oss.sir.api.SirMatchingType"%>
 <%@page
 	import="org.x52North.sir.x032.SearchCriteriaDocument.SearchCriteria"%>
 
 <jsp:useBean id="getSensorStatus"
-	class="org.n52.sir.client.GetSensorStatusBean" scope="page" />
+	class="org.n52.oss.ui.beans.GetSensorStatusBean" scope="page" />
 
 <jsp:setProperty property="*" name="getSensorStatus" />
 
@@ -134,8 +135,8 @@
 								<td class="inputTitle">Matching Type</td>
 								<td><select name="matchingTypeString" class="inputField">
 										<%
-										    SirSearchCriteria_Phenomenon.SirMatchingType[] types = getSensorStatus.getMatchingTypes();
-										    for (SirSearchCriteria_Phenomenon.SirMatchingType t : types) {
+										    SirMatchingType[] types = getSensorStatus.getMatchingTypes();
+										    for (SirMatchingType t : types) {
 										%>
 										<option value="<%=t%>"><%=t.toString()%></option>
 										<%

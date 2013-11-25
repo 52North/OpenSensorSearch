@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.n52.sir.datastructure.SirSearchCriteria;
+import org.n52.oss.sir.api.SirSearchCriteria;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ds.solr.SolrConnection;
 

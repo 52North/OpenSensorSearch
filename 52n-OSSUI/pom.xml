@@ -4,10 +4,10 @@
 	<groupId>org.n52.oss</groupId>
 	<artifactId>website</artifactId>
 	<packaging>war</packaging>
-	
+
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Open Sensor Search Website</name>
-	
+
 	<inceptionYear>2013</inceptionYear>
 
 	<properties>
@@ -112,9 +112,15 @@
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>sir-common</artifactId>
+			<version>0.3</version>
+		</dependency>
 	</dependencies>
 	<build>
-		<finalName>OSSUI</finalName>
+		<finalName>oss</finalName>
 
 		<plugins>
 			<plugin>

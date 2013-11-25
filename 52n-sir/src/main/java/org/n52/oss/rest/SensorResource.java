@@ -26,10 +26,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.n52.oss.json.Converter;
-import org.n52.sir.datastructure.SirSearchResultElement;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.json.SearchResultElement;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

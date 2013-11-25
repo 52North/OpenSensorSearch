@@ -50,11 +50,11 @@ import net.opengis.ows.ServiceIdentificationDocument.ServiceIdentification;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.util.Pair;
 import org.n52.sir.util.SoapTools;
-import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;

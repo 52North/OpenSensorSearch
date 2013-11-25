@@ -17,7 +17,7 @@ package org.n52.sir.catalog;
 
 import java.net.URL;
 
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * 

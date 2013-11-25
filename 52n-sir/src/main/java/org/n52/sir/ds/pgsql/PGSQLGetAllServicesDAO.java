@@ -23,11 +23,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirService;
+import org.n52.oss.sir.api.SirService;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.n52.sir.ds.IGetAllServicesDAO;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,10 +75,6 @@ public class PGSQLGetAllServicesDAO implements IGetAllServicesDAO {
                 result.add(serv);
             }
 
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while query services for the getAllServices from database!", se);
-            throw se;
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);

@@ -18,6 +18,7 @@ package org.n52.sir.ds.pgsql;
 
 import java.util.Properties;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.ICatalogStatusHandlerDAO;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
@@ -32,7 +33,6 @@ import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.IInsertSensorStatusDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.IUserAccountDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 
 /**
  * DAO factory for PostgreSQL

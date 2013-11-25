@@ -17,7 +17,7 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirInfoToBeDeleted;
+import org.n52.oss.sir.api.SirInfoToBeDeleted;
 
 /**
  * @author Daniel Nüst

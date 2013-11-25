@@ -16,12 +16,12 @@
 package org.n52.sir.listener;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDescribeSensorDAO;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirDescribeSensorRequest;
 import org.n52.sir.response.ExceptionResponse;

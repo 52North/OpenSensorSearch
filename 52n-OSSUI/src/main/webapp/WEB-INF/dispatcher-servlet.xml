@@ -17,7 +17,8 @@
 	<mvc:resources mapping="/scripts/**" location="/WEB-INF/js/" />
 	<mvc:resources mapping="/lib/**" location="/WEB-INF/js/lib/" />
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
-	<mvc:resources mapping="/images/**" location="/WEB-INF/views/images/" />
+	<mvc:resources mapping="/images/**" location="/WEB-INF/images/" />
+	<mvc:resources mapping="/sir/**" location="/WEB-INF/sir/" />
 
 	<mvc:annotation-driven
 		ignoreDefaultModelOnRedirect="true" />
@@ -27,7 +28,13 @@
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	
+
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="useTrailingSlashMatch" value="true">
+		</property>
+	</bean>
+
 	<!-- Configure the multipart resolver -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

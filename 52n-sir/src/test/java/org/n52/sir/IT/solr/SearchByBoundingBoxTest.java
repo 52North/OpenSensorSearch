@@ -35,14 +35,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.sir.datastructure.SirBoundingBox;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.oss.sir.api.SirBoundingBox;
+import org.n52.oss.sir.api.SirDetailedSensorDescription;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ds.solr.SolrConnection;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class SearchByBoundingBoxTest {

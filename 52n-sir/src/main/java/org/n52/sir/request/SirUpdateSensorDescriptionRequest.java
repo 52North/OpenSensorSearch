@@ -17,7 +17,7 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirDescriptionToBeUpdated;
+import org.n52.oss.sir.api.SirDescriptionToBeUpdated;
 
 /**
  * @author Jan Schulte

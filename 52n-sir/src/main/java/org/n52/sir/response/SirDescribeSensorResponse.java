@@ -22,9 +22,9 @@ import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.values.XmlAnyTypeImpl;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.util.Tools;
-import org.n52.sir.util.XmlTools;
+import org.n52.sir.sml.SmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ public class SirDescribeSensorResponse extends AbstractXmlResponse {
         if (this.sensorML instanceof SystemType) {
             log.debug("Have SystemType in response, wrapping in SensorMLDocument.");
 
-            document = Tools.wrapSystemTypeInSensorMLDocument((SystemType) this.sensorML);
+            document = SmlTools.wrapSystemTypeInSensorMLDocument((SystemType) this.sensorML);
         }
         else if (this.sensorML instanceof SensorMLDocument) {
             log.debug("Returning SensorMLDocument from database.");

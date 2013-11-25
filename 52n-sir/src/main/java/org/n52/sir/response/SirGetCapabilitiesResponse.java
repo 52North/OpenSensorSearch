@@ -30,11 +30,11 @@ import net.opengis.ows.x11.ServiceIdentificationDocument.ServiceIdentification;
 import net.opengis.ows.x11.ServiceProviderDocument.ServiceProvider;
 import net.opengis.ows.x11.ValueType;
 
+import org.n52.oss.sir.SirConstants.CapabilitiesSection;
+import org.n52.oss.sir.api.SirService;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants.CapabilitiesSection;
 import org.n52.sir.catalog.ICatalogConnection;
-import org.n52.sir.datastructure.SirService;
-import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;

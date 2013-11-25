@@ -17,15 +17,15 @@ package org.n52.sir.listener;
 
 import java.net.URL;
 
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirConnectToCatalogRequest;
 import org.n52.sir.response.ExceptionResponse;

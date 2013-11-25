@@ -18,10 +18,10 @@ package org.n52.sir.catalog;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.ICatalogStatusHandlerDAO;
 import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

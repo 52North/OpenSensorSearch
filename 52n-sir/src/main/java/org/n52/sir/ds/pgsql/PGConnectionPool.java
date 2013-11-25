@@ -19,7 +19,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.n52.sir.ds.AbstractConnectionPool;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +62,7 @@ public class PGConnectionPool extends AbstractConnectionPool {
     }
 
     @Override
-    public Connection getConnection() throws OwsExceptionReport {
+    public Connection getConnection() throws SQLException {
         // pooled connection
         Connection conn;
 
@@ -72,23 +71,24 @@ public class PGConnectionPool extends AbstractConnectionPool {
         }
         catch (SQLException sqle) {
             if (this.dataSource.getNumActive() == this.dataSource.getMaxActive()) {
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "PGConnection.getConnection()",
-                                     "All db connections are in use. Please try again later! " + sqle.toString());
+                // OwsExceptionReport se = new OwsExceptionReport();
+                // se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
+                // "PGConnection.getConnection()",
+                // "All db connections are in use. Please try again later! " + sqle.toString());
 
                 log.debug("All db connections are in use. Please try again later! Error: {}", sqle.toString());
-                throw se;
+                // throw se;
             }
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                 "PGConnection.getConnection()",
-                                 "Could not get connection from connection pool. Please make sure that your database server is running and configured properly. "
-                                         + sqle.toString());
+
+            // OwsExceptionReport se = new OwsExceptionReport();
+            // se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
+            // "PGConnection.getConnection()",
+            // "Could not get connection from connection pool. Please make sure that your database server is running and configured properly. "
+            // + sqle.toString());
             log.debug("Could not get connection from connection pool. Please make sure that your database server is running and configured properly. Error: {}",
                       sqle.toString());
 
-            throw se;
+            throw sqle;
         }
 
         return conn;

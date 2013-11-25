@@ -28,7 +28,7 @@ import net.opengis.sensorML.x101.SystemType;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.datastructure.SirSensorDescription;
+import org.n52.oss.sir.api.SirSensorDescription;
 
 import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;
 

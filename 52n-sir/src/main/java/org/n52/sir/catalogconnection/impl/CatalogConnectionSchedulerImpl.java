@@ -19,10 +19,10 @@ package org.n52.sir.catalogconnection.impl;
 import java.util.Date;
 import java.util.TimerTask;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

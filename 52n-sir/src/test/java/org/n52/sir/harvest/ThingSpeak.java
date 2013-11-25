@@ -24,8 +24,8 @@ import java.io.File;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.oss.sir.api.SirDetailedSensorDescription;
+import org.n52.oss.sir.api.SirSearchResultElement;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.harvest.exec.IJSExecute;

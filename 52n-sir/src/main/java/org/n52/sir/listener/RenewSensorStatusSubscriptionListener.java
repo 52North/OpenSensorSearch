@@ -15,7 +15,7 @@
  */
 package org.n52.sir.listener;
 
-import org.n52.sir.SirConstants;
+import org.n52.oss.sir.SirConstants;
 
 /**
  * 

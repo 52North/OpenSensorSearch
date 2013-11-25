@@ -30,12 +30,12 @@ import java.util.Properties;
 import java.util.TimerTask;
 
 import org.apache.xmlbeans.XmlException;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalog.csw.CswFactory;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

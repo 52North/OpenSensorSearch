@@ -16,8 +16,6 @@
 
 package org.n52.sir.util;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -26,13 +24,13 @@ import java.util.Collection;
 import net.opengis.ows.ExceptionReportDocument;
 import net.opengis.ows.x11.SectionsType;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.client.Client;
-import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
-import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon.SirMatchingType;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.sir.Client;
+import org.n52.oss.sir.api.SirMatchingType;
+import org.n52.oss.sir.api.SirSearchCriteria_Phenomenon;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.x52North.sor.x031.CapabilitiesDocument;
@@ -174,35 +172,15 @@ public class SORClient {
         }
 
         XmlObject response;
-        try {
-            response = this.client.xSendPostRequest(getCapRequestDoc, sorUri);
+        response = this.client.xSendPostRequest(getCapRequestDoc, sorUri);
 
-            if (response instanceof CapabilitiesDocument) {
-                CapabilitiesDocument caps = (CapabilitiesDocument) response;
-                return caps;
-            }
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request capabilities from given url " + sorUri.toString());
+        if (response instanceof CapabilitiesDocument) {
+            CapabilitiesDocument caps = (CapabilitiesDocument) response;
+            return caps;
         }
-        catch (UnsupportedEncodingException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request capabilities from given url " + sorUri.toString()
-                                                 + " because of\n\n" + e);
-        }
-        catch (HttpException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request capabilities from given url " + sorUri.toString()
-                                                 + " because of\n\n" + e);
-        }
-        catch (IOException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request capabilities from given url " + sorUri.toString()
-                                                 + " because of\n\n" + e);
-        }
+        throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                     "SorURL",
+                                     "Could not request capabilities from given url " + sorUri.toString());
     }
 
     /**
@@ -226,44 +204,24 @@ public class SORClient {
                                                                            matchingType,
                                                                            searchDepth,
                                                                            validateXml);
-        try {
-            XmlObject response = this.client.xSendPostRequest(getDefRequest, serviceURI);
+        XmlObject response = this.client.xSendPostRequest(getDefRequest, serviceURI);
 
-            if (response instanceof GetMatchingDefinitionsResponseDocument) {
-                GetMatchingDefinitionsResponseDocument getMatchinDefsRespDoc = (GetMatchingDefinitionsResponseDocument) response;
+        if (response instanceof GetMatchingDefinitionsResponseDocument) {
+            GetMatchingDefinitionsResponseDocument getMatchinDefsRespDoc = (GetMatchingDefinitionsResponseDocument) response;
 
-                String[] matchingURIArray = getMatchinDefsRespDoc.getGetMatchingDefinitionsResponse().getMatchingURIArray();
+            String[] matchingURIArray = getMatchinDefsRespDoc.getGetMatchingDefinitionsResponse().getMatchingURIArray();
 
-                return parseMatchingURIs(matchingURIArray);
-            }
-            if (response instanceof ExceptionReportDocument) {
-                ExceptionReportDocument er = (ExceptionReportDocument) response;
-                log.info("Received ExceptionReport, could be a sign for no matches found!\n" + er.xmlText());
-                return new ArrayList<>();
-            }
-            log.error("Did not get GetMatchingDefinitionsResponseDocument, but \n" + response.xmlText());
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + response.xmlText());
+            return parseMatchingURIs(matchingURIArray);
         }
-        catch (UnsupportedEncodingException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + e);
+        if (response instanceof ExceptionReportDocument) {
+            ExceptionReportDocument er = (ExceptionReportDocument) response;
+            log.info("Received ExceptionReport, could be a sign for no matches found!\n" + er.xmlText());
+            return new ArrayList<>();
         }
-        catch (HttpException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + e);
-        }
-        catch (IOException e) {
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "SorURL",
-                                         "Could not request matching types from given url " + serviceURI.toString()
-                                                 + " because of\n\n" + e);
-        }
+        log.error("Did not get GetMatchingDefinitionsResponseDocument, but \n" + response.xmlText());
+        throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
+                                     "SorURL",
+                                     "Could not request matching types from given url " + serviceURI.toString()
+                                             + " because of\n\n" + response.xmlText());
     }
 }

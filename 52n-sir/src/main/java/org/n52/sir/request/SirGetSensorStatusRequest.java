@@ -17,9 +17,9 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirPropertyFilter;
-import org.n52.sir.datastructure.SirSearchCriteria;
-import org.n52.sir.datastructure.SirSensorIdentification;
+import org.n52.oss.sir.api.SirPropertyFilter;
+import org.n52.oss.sir.api.SirSearchCriteria;
+import org.n52.oss.sir.api.SirSensorIdentification;
 
 /**
  * Internal request to get sensor status

@@ -42,7 +42,7 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.sir.util.XmlTools;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.xml.impl.SMLtoEbRIMTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

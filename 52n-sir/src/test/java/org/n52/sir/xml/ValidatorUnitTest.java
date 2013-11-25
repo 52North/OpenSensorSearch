@@ -19,8 +19,6 @@
 
 package org.n52.sir.xml;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,7 +26,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.junit.Test;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 
 /*

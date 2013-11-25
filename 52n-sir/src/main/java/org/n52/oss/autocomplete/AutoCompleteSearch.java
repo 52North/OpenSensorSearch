@@ -34,12 +34,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.n52.sir.datastructure.SirSearchCriteria;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.oss.sir.api.SirDetailedSensorDescription;
+import org.n52.oss.sir.api.SirSearchCriteria;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

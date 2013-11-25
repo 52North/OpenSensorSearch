@@ -15,7 +15,7 @@
  */
 package org.n52.sir.decode;
 
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 
 /**

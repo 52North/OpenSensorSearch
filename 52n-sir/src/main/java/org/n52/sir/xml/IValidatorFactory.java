@@ -17,7 +17,7 @@ package org.n52.sir.xml;
 
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * @author Daniel Nüst

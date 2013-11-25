@@ -58,14 +58,14 @@ import org.n52.ext.link.sos.TimeSeriesParameters;
 import org.n52.ext.link.sos.TimeSeriesPermalinkBuilder;
 import org.n52.oss.opensearch.OpenSearchConfigurator;
 import org.n52.oss.opensearch.OpenSearchConstants;
-import org.n52.sir.client.Client;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.api.SirSimpleSensorDescription;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.opensearch.ICapabilitiesPermalinkMapper;
 import org.n52.sir.opensearch.instanceSupport.PegelOnlineCPM;
 import org.n52.sir.opensearch.instanceSupport.WeatherSosCPM;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.sir.util.OwsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,7 +138,7 @@ public class HtmlListener implements OpenSearchListener {
     private boolean createTimeSeriesLinks = false;
 
     @Inject
-    Client sirClient;
+    OwsClient sirClient;
 
     @Inject
     public HtmlListener(OpenSearchConfigurator configurator) {
@@ -293,11 +293,11 @@ public class HtmlListener implements OpenSearchListener {
         String url = sensorDescription.getSensorDescriptionURL();
         if (url != null) {
             sb.append("<a href=\"");
-            sb.append(Tools.encode(url));
+            sb.append(OpenSearchTools.encode(url));
             sb.append("\">");
             sb.append(" ");
             // sb.append(sirSearchResultElement.getSensorId());
-            sb.append(Tools.extractEntryTitle(sirSearchResultElement));
+            sb.append(OpenSearchTools.extractEntryTitle(sirSearchResultElement));
             sb.append("</a>");
         }
 
@@ -308,8 +308,8 @@ public class HtmlListener implements OpenSearchListener {
             sb.append("");
             sb.append("Service");
             sb.append(": <a href=\"");
-            String getCapRequest = Tools.createGetCapabilitiesRequestURL(reference);
-            getCapRequest = Tools.encode(getCapRequest);
+            String getCapRequest = OpenSearchTools.createGetCapabilitiesRequestURL(reference);
+            getCapRequest = OpenSearchTools.encode(getCapRequest);
             sb.append(getCapRequest);
             sb.append("\">");
             sb.append(reference.getService().getUrl());
@@ -335,7 +335,7 @@ public class HtmlListener implements OpenSearchListener {
 
                 if (permalinkUrl != null) {
                     sb.append("<span style=\"float: right;\"><a href=\"");
-                    sb.append(Tools.encode(permalinkUrl));
+                    sb.append(OpenSearchTools.encode(permalinkUrl));
                     sb.append("\" title=\"");
                     sb.append(this.openTimeSeries);
                     sb.append("\">");
@@ -370,8 +370,8 @@ public class HtmlListener implements OpenSearchListener {
         sb.append("</div>");
 
         sb.append("<div class=\"result-description\">");
-        String text = Tools.extractDescriptionText(sensorDescription);
-        text = Tools.highlightHTML(text, searchText, this.highlightSearchText, this.linksInSearchText);
+        String text = OpenSearchTools.extractDescriptionText(sensorDescription);
+        text = OpenSearchTools.highlightHTML(text, searchText, this.highlightSearchText, this.linksInSearchText);
         sb.append(text);
         sb.append("</div>");
 
@@ -386,7 +386,7 @@ public class HtmlListener implements OpenSearchListener {
             public void write(OutputStream os) throws IOException, WebApplicationException {
                 String query = params.getFirst(OpenSearchConstants.QUERY_PARAM);
                 if (query.contains("&"))
-                    query = Tools.encode(query);
+                    query = OpenSearchTools.encode(query);
 
                 PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os)));
 

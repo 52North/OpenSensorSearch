@@ -42,7 +42,7 @@ import net.sf.saxon.Transform;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.IProfileValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

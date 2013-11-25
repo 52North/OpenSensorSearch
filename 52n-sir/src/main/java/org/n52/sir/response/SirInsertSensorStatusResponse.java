@@ -15,8 +15,8 @@
  */
 package org.n52.sir.response;
 
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.InsertSensorStatusResponseDocument;

@@ -45,11 +45,11 @@ import net.sf.saxon.lib.StandardErrorListener;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.SMLConstants;
+import org.n52.oss.sir.api.SirSensorDescription;
+import org.n52.oss.sir.api.SirXmlSensorDescription;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.datastructure.SirSensorDescription;
-import org.n52.sir.datastructure.SirXmlSensorDescription;
-import org.n52.sir.sml.SMLConstants;
-import org.n52.sir.util.XmlTools;
 import org.n52.sir.xml.ITransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

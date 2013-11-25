@@ -19,9 +19,9 @@ package org.n52.sir.util;
 import java.util.Arrays;
 import java.util.List;
 
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

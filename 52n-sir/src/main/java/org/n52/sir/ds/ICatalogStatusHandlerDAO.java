@@ -15,7 +15,7 @@
  */
 package org.n52.sir.ds;
 
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * @author Jan Schulte

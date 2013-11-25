@@ -18,8 +18,8 @@ package org.n52.sir.ds;
 import java.net.URL;
 import java.util.List;
 
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalogConnection;
-import org.n52.sir.ows.OwsExceptionReport;
 
 /**
  * @author Jan Schulte

@@ -20,10 +20,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.xmlbeans.XmlException;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.csw.CswFactory;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

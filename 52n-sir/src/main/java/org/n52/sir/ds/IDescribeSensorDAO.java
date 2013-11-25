@@ -16,7 +16,7 @@
 package org.n52.sir.ds;
 
 import org.apache.xmlbeans.XmlObject;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * interface for the specific DAOFactories, offers methods to create the matching DAOs to the describeSensor

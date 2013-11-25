@@ -23,10 +23,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.SirHarvestServiceRequest;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;

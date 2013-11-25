@@ -17,7 +17,6 @@
 package org.n52.sir;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,6 +39,10 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.UnavailableException;
 
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.decode.IHttpGetRequestDecoder;
@@ -47,9 +50,6 @@ import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.licenses.License;
 import org.n52.sir.licenses.Licenses;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.n52.sir.xml.ITransformerFactory;
 import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
@@ -467,6 +467,9 @@ public class SirConfigurator {
 
         if (sv.equals(SirConstants.SERVICE_VERSION_0_3_1))
             return VersionAttribute.Version.X_0_3_1;
+
+        if (sv.equals(SirConstants.SERVICE_VERSION_0_3_2))
+            return VersionAttribute.Version.X_0_3_2;
 
         throw new RuntimeException("Not a supported version!");
     }

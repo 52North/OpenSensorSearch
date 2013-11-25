@@ -17,7 +17,7 @@ package org.n52.sir.request;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirInfoToBeInserted;
+import org.n52.oss.sir.api.SirInfoToBeInserted;
 
 /**
  * @author Jan Schulte

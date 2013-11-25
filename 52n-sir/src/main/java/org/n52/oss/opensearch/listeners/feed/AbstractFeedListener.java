@@ -36,10 +36,10 @@ import javax.ws.rs.core.StreamingOutput;
 import org.n52.oss.opensearch.OpenSearchConfigurator;
 import org.n52.oss.opensearch.OpenSearchConstants;
 import org.n52.oss.opensearch.listeners.OpenSearchListener;
-import org.n52.oss.opensearch.listeners.Tools;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.opensearch.listeners.OpenSearchTools;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.api.SirSimpleSensorDescription;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,7 +111,7 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
         try {
             // String link = URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
             // this.configurator.getCharacterEncoding());
-            String link = Tools.decode(URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
+            String link = OpenSearchTools.decode(URLDecoder.decode(sensorDescription.getSensorDescriptionURL(),
                                                          OpenSearchConstants.URL_DECODE_ENCODING));
 
             entry.setLink(link);
@@ -135,7 +135,7 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
         entry.setPublishedDate(ssre.getLastUpdate());
         SyndContent descr = new SyndContentImpl();
         descr.setType(OpenSearchConstants.MIME_TYPE_PLAIN); // alternative e.g. text/html
-        descr.setValue(Tools.extractDescriptionText(sensorDescription));
+        descr.setValue(OpenSearchTools.extractDescriptionText(sensorDescription));
         entry.setDescription(descr);
 
         return entry;

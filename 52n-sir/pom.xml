@@ -570,49 +570,49 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-wrs-v101</artifactId>
-			<version>${sensorweb.schemas.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-sir-v032</artifactId>
-			<version>${sensorweb.schemas.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-sor-v031</artifactId>
-			<version>${sensorweb.schemas.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-sps-v100</artifactId>
-			<version>${sensorweb.schemas.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.n52.sensorweb</groupId>
-					<artifactId>52n-xml-gml-v311</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-sos-v100</artifactId>
-			<version>${sensorweb.schemas.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.n52.sensorweb</groupId>
-					<artifactId>52n-xml-gml-v311</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-wrs-v101</artifactId> -->
+		<!-- <version>${sensorweb.schemas.version}</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-sir-v032</artifactId> -->
+		<!-- <version>${sensorweb.schemas.version}</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-sor-v031</artifactId> -->
+		<!-- <version>${sensorweb.schemas.version}</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-sps-v100</artifactId> -->
+		<!-- <version>${sensorweb.schemas.version}</version> -->
+		<!-- <exclusions> -->
+		<!-- <exclusion> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-gml-v311</artifactId> -->
+		<!-- </exclusion> -->
+		<!-- </exclusions> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-sos-v100</artifactId> -->
+		<!-- <version>${sensorweb.schemas.version}</version> -->
+		<!-- <exclusions> -->
+		<!-- <exclusion> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-gml-v311</artifactId> -->
+		<!-- </exclusion> -->
+		<!-- </exclusions> -->
+		<!-- </dependency> -->
 
-		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-xml-kml-v220</artifactId>
-			<version>${sensorweb.schemas.version}</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.n52.sensorweb</groupId> -->
+		<!-- <artifactId>52n-xml-kml-v220</artifactId> -->
+		<!-- <version>${sensorweb.schemas.version}</version> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -666,8 +666,14 @@
 
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-json-sir</artifactId>
-			<version>0.2.1</version>
+			<artifactId>sir-json</artifactId>
+			<version>0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>sir-common</artifactId>
+			<version>0.3</version>
 		</dependency>
 
 		<dependency>

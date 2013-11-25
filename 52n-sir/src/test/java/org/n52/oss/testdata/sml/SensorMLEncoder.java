@@ -65,8 +65,8 @@ import net.opengis.swe.x101.VectorType;
 import net.opengis.swe.x101.VectorType.Coordinate;
 
 import org.apache.xmlbeans.XmlCursor;
-import org.n52.sir.sml.SMLConstants;
-import org.n52.sir.util.XmlTools;
+import org.n52.oss.sir.SMLConstants;
+import org.n52.oss.util.XmlTools;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)

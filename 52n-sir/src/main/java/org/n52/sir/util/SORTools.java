@@ -19,8 +19,8 @@ package org.n52.sir.util;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.n52.oss.sir.api.SirSearchCriteria_Phenomenon;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.datastructure.SirSearchCriteria_Phenomenon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

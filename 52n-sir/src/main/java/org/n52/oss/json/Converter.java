@@ -19,13 +19,13 @@ package org.n52.oss.json;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.n52.oss.opensearch.listeners.Tools;
-import org.n52.sir.datastructure.SirBoundingBox;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirService;
-import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirSimpleSensorDescription;
-import org.n52.sir.datastructure.detailed.SirDetailedSensorDescription;
+import org.n52.oss.opensearch.listeners.OpenSearchTools;
+import org.n52.oss.sir.api.SirBoundingBox;
+import org.n52.oss.sir.api.SirDetailedSensorDescription;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.api.SirService;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.api.SirSimpleSensorDescription;
 import org.n52.sir.json.BoundingBox;
 import org.n52.sir.json.SearchResultElement;
 import org.n52.sir.json.Service;
@@ -106,7 +106,7 @@ public class Converter {
                 bbox.setSrid(b.getSrid());
             }
 
-            String text = Tools.extractDescriptionText(d);
+            String text = OpenSearchTools.extractDescriptionText(d);
             SimpleSensorDescription sd = new SimpleSensorDescription(d.getSensorDescriptionURL(), text, bbox);
             sre.setSensorDescription(sd);
         }

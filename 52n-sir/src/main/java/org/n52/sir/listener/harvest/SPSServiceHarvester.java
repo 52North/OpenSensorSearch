@@ -28,16 +28,15 @@ import net.opengis.sps.x10.CapabilitiesDocument;
 import net.opengis.sps.x10.SensorOfferingType;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.client.Client;
-import org.n52.sir.datastructure.SirSensor;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.SirHarvestServiceRequest;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
+import org.n52.sir.util.OwsClient;
 import org.n52.sir.util.Pair;
-import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +53,7 @@ public class SPSServiceHarvester extends Harvester {
     private SirHarvestServiceRequest request;
 
     @Inject
-    private Client client;
+    private OwsClient client;
 
     /**
      * 

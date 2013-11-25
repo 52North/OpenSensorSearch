@@ -16,8 +16,7 @@
 package org.n52.oss.db;
 
 import java.sql.Connection;
-
-import org.n52.sir.ows.OwsExceptionReport;
+import java.sql.SQLException;
 
 public interface ConnectionPool {
 
@@ -26,9 +25,7 @@ public interface ConnectionPool {
      * the user must "give back" the connection to the pool with the returnConnection method!
      * 
      * @return DB Connection to execute the query
-     * @throws OwsExceptionReport
-     *         If all connections are in use and no further connection could be established
      */
-    public Connection getConnection() throws OwsExceptionReport;
+    public Connection getConnection() throws SQLException;
 
 }

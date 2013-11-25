@@ -21,15 +21,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.n52.sir.datastructure.InternalSensorID;
-import org.n52.sir.datastructure.SirPhenomenon;
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorIdentification;
-import org.n52.sir.datastructure.SirServiceReference;
+import org.n52.oss.sir.api.InternalSensorID;
+import org.n52.oss.sir.api.SirPhenomenon;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.api.SirSensorIdentification;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -522,7 +521,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append("', '");
         cmd.append(sensor.getTimePeriod().getEndTime());
         cmd.append("', '");
-        cmd.append(Tools.escapeSQLString(sensor.getSensorMLDocument().xmlText()));
+        cmd.append(SqlTools.escapeSQLString(sensor.getSensorMLDocument().xmlText()));
         cmd.append("', '{");
         if ( !sensor.getText().isEmpty()) {
             for (String text : sensor.getText()) {
@@ -584,7 +583,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append("') AND (");
         cmd.append(PGDAOConstants.sensorml);
         cmd.append(" = '");
-        cmd.append(Tools.escapeSQLString(sensor.getSensorMLDocument().xmlText()));
+        cmd.append(SqlTools.escapeSQLString(sensor.getSensorMLDocument().xmlText()));
         cmd.append("') AND (");
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(" = '{");
@@ -824,7 +823,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         cmd.append(", ");
         cmd.append(PGDAOConstants.sensorml);
         cmd.append(" = '");
-        cmd.append(Tools.escapeSQLString(sensor.getSensorMLDocument().xmlText()));
+        cmd.append(SqlTools.escapeSQLString(sensor.getSensorMLDocument().xmlText()));
         cmd.append("'");
         cmd.append(", ");
         cmd.append(PGDAOConstants.sensorText);

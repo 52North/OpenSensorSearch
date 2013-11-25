@@ -17,8 +17,8 @@ package org.n52.sir.ds;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirService;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.api.SirService;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * interface for the specific DAOFactories, offers methods to create the matching DAOs for the getAllServices

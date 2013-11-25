@@ -25,12 +25,12 @@ import java.util.Date;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.datastructure.SirSensorIdentification;
-import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirTimePeriod;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.api.SirSensorIdentification;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.api.SirTimePeriod;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

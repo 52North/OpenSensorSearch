@@ -25,13 +25,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.n52.oss.sir.api.SirService;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.csw.CatalogConnectionImpl;
-import org.n52.sir.datastructure.SirService;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,10 +86,6 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
             }
 
             con.close();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while query catalog connections for the getCapabilities from database!", se);
-            throw se;
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
@@ -191,10 +187,6 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
                 }
             }
         }
-        catch (OwsExceptionReport se) {
-            log.error("Error while query services for the getCapabilities from database!", se);
-            throw se;
-        }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
             log.error("Error while query services for the getCapabilities from database!", sqle);
@@ -227,10 +219,6 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
                     result = rs.getLong(1);
                 }
             }
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while query services for " + tableName + " from database!", se);
-            throw se;
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);

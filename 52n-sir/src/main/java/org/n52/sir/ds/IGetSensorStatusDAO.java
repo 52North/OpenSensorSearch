@@ -17,12 +17,12 @@ package org.n52.sir.ds;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirPropertyFilter;
-import org.n52.sir.datastructure.SirSearchCriteria;
-import org.n52.sir.datastructure.InternalSensorID;
-import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.datastructure.SirStatusDescription;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.api.InternalSensorID;
+import org.n52.oss.sir.api.SirPropertyFilter;
+import org.n52.oss.sir.api.SirSearchCriteria;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.api.SirStatusDescription;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * @author Jan Schulte

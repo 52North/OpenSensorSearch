@@ -28,8 +28,8 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import org.apache.xmlbeans.XmlException;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.sir.datastructure.SirSensor;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.sml.SensorMLDecoder;
 
 public class Decoder {

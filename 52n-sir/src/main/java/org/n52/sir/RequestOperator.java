@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.util.Tools;
 import org.n52.sir.decode.IHttpGetRequestDecoder;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.listener.ConnectToCatalogListener;
@@ -38,7 +41,6 @@ import org.n52.sir.listener.InsertSensorInfoListener;
 import org.n52.sir.listener.InsertSensorStatusListener;
 import org.n52.sir.listener.SearchSensorListener;
 import org.n52.sir.listener.UpdateSensorDescriptionListener;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirConnectToCatalogRequest;
 import org.n52.sir.request.SirDeleteSensorInfoRequest;
@@ -54,7 +56,6 @@ import org.n52.sir.request.SirSubscriptionRequest;
 import org.n52.sir.request.SirUpdateSensorDescriptionRequest;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
-import org.n52.sir.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

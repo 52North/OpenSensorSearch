@@ -15,7 +15,6 @@
  */
 package org.n52.sir.ds;
 
-import java.io.File;
 
 
 public interface IInsertHarvestScriptDAO {

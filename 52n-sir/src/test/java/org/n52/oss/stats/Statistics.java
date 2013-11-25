@@ -26,8 +26,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.oss.api.StatisticsResource;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
-import org.n52.sir.ows.OwsExceptionReport;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 public class Statistics {

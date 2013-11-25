@@ -25,6 +25,8 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFault;
 import javax.xml.soap.SOAPMessage;
 
+import org.n52.oss.util.XmlTools;
+
 /**
  * 
  * Some helper methods when dealing with SOAP classes (from the package <code>java.xml.soap</code>).

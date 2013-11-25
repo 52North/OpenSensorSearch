@@ -15,12 +15,12 @@
  */
 package org.n52.sir.listener;
 
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorStatusDAO;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirInsertSensorStatusRequest;
 import org.n52.sir.response.ExceptionResponse;

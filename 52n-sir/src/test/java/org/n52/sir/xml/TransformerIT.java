@@ -31,7 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.junit.Test;
-import org.n52.sir.util.XmlTools;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.xml.impl.SMLtoEbRIMTransformer;
 
 import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;

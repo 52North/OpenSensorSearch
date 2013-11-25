@@ -17,10 +17,10 @@ package org.n52.sir.ds;
 
 import java.util.Collection;
 
-import org.n52.sir.datastructure.SirSearchCriteria;
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.datastructure.SirServiceReference;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.api.SirSearchCriteria;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.api.SirServiceReference;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * Interface for the specific DAOFactories, offers methods to create the matching DAOs for the searchSensor

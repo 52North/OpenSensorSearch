@@ -21,8 +21,8 @@ import java.util.Collection;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.n52.sir.datastructure.SirSearchResultElement;
-import org.n52.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.ows.OwsExceptionReport;
 
 public interface OpenSearchListener {
 

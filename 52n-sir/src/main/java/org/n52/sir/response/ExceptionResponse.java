@@ -26,12 +26,12 @@ import net.opengis.ows.ExceptionType;
 
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlOptions;
+import org.n52.oss.sir.SirConstants;
+import org.n52.oss.sir.ows.OWSConstants;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.SirConstants;
-import org.n52.sir.ows.OWSConstants;
-import org.n52.sir.ows.OwsExceptionReport;
-import org.n52.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.util.XmlTools;
 
 /**
  * Implementation of the <code>ISirResponse</code> interface for OGC service exceptions.

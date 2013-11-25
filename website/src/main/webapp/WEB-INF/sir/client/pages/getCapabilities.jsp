@@ -52,7 +52,7 @@
 
 			<h2>Get Capabilities Request</h2>
 
-			<form action="getCapabilities.jsp" method="post">
+			<form action="getCapabilities" method="post">
 				<ul class="inputTablesList">
 					<li>
 						<table style="">
@@ -115,7 +115,7 @@
 					<input type="submit" name="build" value="Build request" />
 				</p>
 			</form>
-			<form action="getCapabilities.jsp" method="post">
+			<form action="getCapabilities" method="post">
 				<p class="textareaBorder">
 					<textarea id="requestStringArea" class="mediumTextarea"
 						name="requestString" cols="10" rows="10"><%=getCapabilities.getRequestString()%></textarea>

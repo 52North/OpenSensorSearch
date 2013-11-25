@@ -81,6 +81,7 @@ public class SIR {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_XML)
     public Response doGet(@Context
     UriInfo uriInfo) {
         String query = uriInfo.getRequestUri().getQuery();
@@ -130,8 +131,14 @@ public class SIR {
                                                                            "request",
                                                                            "request is empty.")));
 
-        ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
-        return doResponse(sirResp);
+        try {
+            ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
+            return doResponse(sirResp);
+        }
+        catch (Exception e) {
+            log.error("Unhanlded error processing operation.", e);
+            return doResponse(new ExceptionResponse(e));
+        }
     }
 
     private Response doResponse(final ISirResponse sirResp) {

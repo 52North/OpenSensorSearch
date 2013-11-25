@@ -19,68 +19,58 @@
 	pageEncoding="UTF-8"%>
 
 <%
-    final String baseUrl = request.getRequestURL().toString().replace("/index.jsp", "/");
+    final String baseUrl = request.getContextPath() + "/sir/client";
 %>
 <div id="menu">
 	<div class="menu_operationList">
 		<div class="menu_title">sensor search</div>
 		<ul>
-			<li><a href="client/searchSensor">SearchSensor</a></li>
-			<li><a href="client/describeSensor">DescribeSensor</a></li>
+			<li><a href="<%=baseUrl%>/searchSensor">SearchSensor</a></li>
+			<li><a href="<%=baseUrl%>/describeSensor">DescribeSensor</a></li>
 		</ul>
 	</div>
 
 	<div class="menu_operationList">
 		<div class="menu_title">metadata handling</div>
 		<ul>
-			<li><a
-				href="<%=request.getContextPath()%>/sir/client/harvestService">HarvestService</a></li>
-			<li><a
-				href="<%=request.getContextPath()%>/pages/insertSensorInfo.jsp">InsertSensorInfo</a></li>
-			<li><a
-				href="<%=request.getContextPath()%>/pages/deleteSensorInfo.jsp">DeleteSensorInfo</a></li>
-			<li><a
-				href="<%=request.getContextPath()%>/pages/updateSensorDescription.jsp">UpdateSensorDescription</a></li>
+			<li><a href="<%=baseUrl%>/harvestService">HarvestService</a></li>
+			<li><a href="<%=baseUrl%>/insertSensorInfo">InsertSensorInfo</a></li>
+			<li><a href="<%=baseUrl%>/deleteSensorInfo">DeleteSensorInfo</a></li>
+			<li><a href="<%=baseUrl%>/updateSensorDescription">UpdateSensorDescription</a></li>
 		</ul>
 	</div>
 
 	<div class="menu_operationList">
 		<div class="menu_title">status handling</div>
 		<ul>
+			<li><a href="<%=baseUrl%>/getSensorStatus">GetSensorStatus</a></li>
 			<li><a
-				href="<%=request.getContextPath()%>/pages/getSensorStatus.jsp">GetSensorStatus</a></li>
-			<li><a
-				href="<%=request.getContextPath()%>/pages/insertSensorStatus.jsp">InsertSensorStatus</a></li>
-			<li><a style="font-style: italic;"
-				href="<%=request.getContextPath()%>/pages/unsupportedOperation.jsp">Subscribe[..]Status</a></li>
-			<li><a style="font-style: italic;"
-				href="<%=request.getContextPath()%>/pages/unsupportedOperation.jsp">Renew[..]Subscription</a></li>
-			<li><a style="font-style: italic;"
-				href="<%=request.getContextPath()%>/pages/unsupportedOperation.jsp">Cancel[..]Subscription</a></li>
+				href="<%=baseUrl%>/insertSensorStatus">InsertSensorStatus</a></li>
+			<!-- 			<li><a style="font-style: italic;" -->
+			<%-- 				href="<%=baseUrl%>/unsupportedOperation">Subscribe[..]Status</a></li> --%>
+			<!-- 			<li><a style="font-style: italic;" -->
+			<%-- 				href="<%=baseUrl%>/unsupportedOperation">Renew[..]Subscription</a></li> --%>
+			<!-- 			<li><a style="font-style: italic;" -->
+			<%-- 				href="<%=baseUrl%>/unsupportedOperation">Cancel[..]Subscription</a></li> --%>
 		</ul>
 	</div>
 
 	<div class="menu_operationList">
 		<div class="menu_title">catalog connection</div>
 		<ul>
-			<li><a
-				href="<%=request.getContextPath()%>/pages/connectToCatalog.jsp">ConnectToCatalog</a></li>
-			<li><a
-				href="<%=request.getContextPath()%>/pages/disconnectFromCatalog.jsp">DisconnectFromCatalog</a></li>
+			<li><a href="<%=baseUrl%>/connectToCatalog">ConnectToCatalog</a></li>
+			<li><a href="<%=baseUrl%>/disconnectFromCatalog">DisconnectFromCatalog</a></li>
 		</ul>
 	</div>
 
 	<div class="menu_operationList">
 		<div class="menu_title">other</div>
 		<ul>
-			<li><a
-				href="<%=request.getContextPath()%>/pages/getCapabilities.jsp">GetCapabilities</a></li>
+			<li><a href="<%=baseUrl%>/getCapabilities">GetCapabilities</a></li>
 			<li>&nbsp;&nbsp;&nbsp;</li>
-			<li><i><a
-					href="<%=request.getContextPath()%>/pages/transformSensorML.jsp">SML
-						to ebRIM Transformation</a></i></li>
-			<li><i><a
-					href="<%=request.getContextPath()%>/pages/testSensorML.jsp">Check
+			<li><i><a href="<%=baseUrl%>/transformSensorML">SML to
+						ebRIM Transformation</a></i></li>
+			<li><i><a href="<%=baseUrl%>/testSensorML">Check
 						SensorML Conformity</a></i></li>
 		</ul>
 	</div>

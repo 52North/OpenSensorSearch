@@ -52,7 +52,7 @@
 
 			<h2>Delete Sensor Info Request</h2>
 
-			<form action="deleteSensorInfo.jsp" method="post">
+			<form action="deleteSensorInfo" method="post">
 
 				<ul class="inputTablesList">
 					<li>
@@ -128,7 +128,7 @@
 				</p>
 			</form>
 
-			<form action="deleteSensorInfo.jsp" method="post">
+			<form action="deleteSensorInfo" method="post">
 				<p class="textareaBorder">
 					<textarea id="requestStringArea" class="mediumTextarea"
 						name="requestString" rows="10" cols="10"><%=deleteSensorInfo.getRequestString()%></textarea>

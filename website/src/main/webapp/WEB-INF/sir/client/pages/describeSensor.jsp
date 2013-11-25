@@ -27,13 +27,13 @@
 <jsp:setProperty property="*" name="describeSensor" />
 
 <%
-	if (request.getParameter("build") != null) {
-		describeSensor.buildRequest();
-	}
+    if (request.getParameter("build") != null) {
+        describeSensor.buildRequest();
+    }
 
-	if (request.getParameter("sendRequest") != null) {
-		describeSensor.sendRequest(describeSensor.getRequestString());
-	}
+    if (request.getParameter("sendRequest") != null) {
+        describeSensor.sendRequest(describeSensor.getRequestString());
+    }
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,36 +45,44 @@
 </head>
 <body onload="load()">
 
-<div id="content"><jsp:include page="header.jsp" /> <jsp:include
-	page="../menu.jsp" />
+	<div id="content"><jsp:include page="header.jsp" />
+		<jsp:include page="../menu.jsp" />
 
-<div id="pageContent">
+		<div id="pageContent">
 
-<h2>Describe Sensor Request</h2>
+			<h2>Describe Sensor Request</h2>
 
-<form action="describeSensor" method="post">
-<ul class="inputTablesList">
-	<li>
-	<table style="">
-		<tr>
-			<td class="inputTitle">Sensor ID in SIR:</td>
-			<td><input type="text" class="inputField" name="sensorId"
-				value="<%=describeSensor.getSensorId()%>" /></td>
-		</tr>
-	</table>
-	</li>
-</ul>
-<p><input type="submit" name="build" value="Build request" /></p>
-</form>
-<form action="describeSensor" method="post">
-<p class="textareaBorder"><textarea id="requestStringArea"
-	class="smallTextarea" name="requestString" rows="10" cols="10"><%=describeSensor.getRequestString()%></textarea></p>
-<p><input type="submit" name="sendRequest" value="Send request" /></p>
-</form>
-<p class="textareaBorder"><textarea id="responseStringArea"
-	class="largeTextarea" rows="10" cols="10"><%=describeSensor.getResponseString()%></textarea></p>
+			<form action="describeSensor" method="post">
+				<ul class="inputTablesList">
+					<li>
+						<table style="">
+							<tr>
+								<td class="inputTitle">Sensor ID in SIR:</td>
+								<td><input type="text" class="inputField" name="sensorId"
+									value="<%=describeSensor.getSensorId()%>" /></td>
+							</tr>
+						</table>
+					</li>
+				</ul>
+				<p>
+					<input type="submit" name="build" value="Build request" />
+				</p>
+			</form>
+			<form action="describeSensor" method="post">
+				<p class="textareaBorder">
+					<textarea id="requestStringArea" class="smallTextarea"
+						name="requestString" rows="10" cols="10"><%=describeSensor.getRequestString()%></textarea>
+				</p>
+				<p>
+					<input type="submit" name="sendRequest" value="Send request" />
+				</p>
+			</form>
+			<p class="textareaBorder">
+				<textarea id="responseStringArea" class="largeTextarea" rows="10"
+					cols="10"><%=describeSensor.getResponseString()%></textarea>
+			</p>
 
-</div>
-</div>
+		</div>
+	</div>
 </body>
 </html>

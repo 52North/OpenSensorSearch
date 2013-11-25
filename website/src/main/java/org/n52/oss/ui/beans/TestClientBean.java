@@ -36,7 +36,7 @@ public abstract class TestClientBean {
     private Client client;
 
     public TestClientBean() {
-        this.client = new Client(Config.SIR_ENDPOINT);
+        this.client = new Client(new Config().getSirEndpoint());
         log.info("NEW {}", this);
     }
 
@@ -62,9 +62,13 @@ public abstract class TestClientBean {
     }
 
     public String sendRequest(String request) {
+        log.debug("Sending request: {}", request);
+
         String response;
         response = this.client.sendPostRequest(request);
 
+        log.debug("Got response: {}", response);
+        setResponseString(response);
         return response;
     }
 

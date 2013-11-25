@@ -53,7 +53,7 @@
 
 			<h2>Search Sensor Request</h2>
 
-			<form action="searchSensor.jsp" method="post">
+			<form action="searchSensor" method="post">
 
 				<ul class="inputTablesList">
 					<li>
@@ -207,7 +207,7 @@
 					<input type="submit" name="build" value="Build request" />
 				</p>
 			</form>
-			<form action="searchSensor.jsp" method="post">
+			<form action="searchSensor" method="post">
 				<p class="textareaBorder">
 					<textarea id="requestStringArea" class="mediumTextarea"
 						name="requestString" rows="10" cols="10"><%=searchSensor.getRequestString()%></textarea>

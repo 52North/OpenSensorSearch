@@ -89,7 +89,7 @@ public class Client {
             method = get;
         }
         else if (requestMethod.equals(POST_METHOD)) {
-            log.debug("Client connecting via POST to {}" + requestUri);
+            log.debug("Client connecting via POST to {}", requestUri);
             HttpPost postMethod = new HttpPost(requestUri.toString());
 
             postMethod.setEntity(new StringEntity(request, ContentType.create(SirConstants.REQUEST_CONTENT_TYPE)));

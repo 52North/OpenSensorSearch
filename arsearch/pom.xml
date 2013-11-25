@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.n52.ar.service</groupId>
-	<artifactId>52n-arsearch</artifactId>
-	<name>52N AR Sensor Search Service</name>
+	<groupId>org.n52.oss</groupId>
+	<artifactId>arsearch</artifactId>
+	<name>AR Open Sensor Search Service</name>
 	<description>52North Augmented Reality Sensor Search Service</description>
 
 	<packaging>war</packaging>

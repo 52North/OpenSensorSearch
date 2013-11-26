@@ -80,9 +80,10 @@ public class SensorResource {
     }
 
     @GET
-    @Path("/")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getSensors() {
+    public Response getSensors(@QueryParam("start")
+    int start, @QueryParam("limit")
+    int limit) {
         StreamingOutput stream = new StreamingOutput() {
             @Override
             public void write(OutputStream os) throws IOException, WebApplicationException {

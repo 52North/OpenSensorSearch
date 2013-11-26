@@ -24,6 +24,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/sir")
 public class SirClientController {
 
+    @RequestMapping(value = "/")
+    public String mapClientRoot() {
+        return "../sir/client/index";
+    }
+
     @RequestMapping(value = "/client")
     public String mapClient() {
         return "../sir/client/index";

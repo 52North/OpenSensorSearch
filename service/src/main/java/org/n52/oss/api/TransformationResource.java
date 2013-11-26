@@ -80,7 +80,6 @@ public class TransformationResource {
     }
 
     @POST
-    @Path("/")
     @ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
     public Response convertSensor(@FormParam("sensor")
     String sensor, @FormParam("output")

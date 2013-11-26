@@ -37,7 +37,6 @@ public class ApiResource {
     }
 
     @GET
-    @Path("/")
     @ApiOperation(value = "List of available API versions")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApiRoot() {

@@ -57,7 +57,6 @@ public class StatisticsResource {
     }
 
     @GET
-    @Path("/")
     @ApiOperation(value = "List of available statistics")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getStatisticsIndex() {

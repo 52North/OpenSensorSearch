@@ -642,4 +642,10 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         return builder.toString();
     }
 
+    @Override
+    public Collection<String> getAllSensorIds() throws OwsExceptionReport {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

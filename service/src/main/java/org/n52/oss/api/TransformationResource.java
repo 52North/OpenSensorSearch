@@ -39,12 +39,13 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @author Yakoub
  * 
  */
-@Path("/api/v1/convert")
-@Api(value = "/api/v1/convert", description = "Conversion of SensorML document to different formats")
+@Path(ApiPaths.TRANSFORMATION_PATH)
+@Api(value = "/" + ApiPaths.TRANSFORMATION_PATH, description = "Conversion of SensorML document to different formats")
 @RequestScoped
 public class TransformationResource {
 
     private Gson gson;
+
     private SirConfigurator config;
 
     @Inject

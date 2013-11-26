@@ -19,7 +19,11 @@ package org.n52.oss.stats;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -54,8 +58,10 @@ public class Statistics {
     }
 
     @Before
-    public void setUp() {
-        this.resource = new StatisticsResource(dao, "TEST_URL");
+    public void setUp() throws URISyntaxException {
+        UriInfo uriInfo = mock(UriInfo.class);
+        when(uriInfo.getBaseUri()).thenReturn(new URI("TEST_URL"));
+        this.resource = new StatisticsResource(dao, uriInfo);
     }
 
     @Test

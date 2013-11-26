@@ -22,8 +22,10 @@ import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
@@ -31,34 +33,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-@Path("/api/v1/statistics")
-@Api(value = "/api/v1/statistics", description = "Endpoint of all of the statistics related to sensors in OSS")
+@Path(ApiPaths.STATISTICS_PATH)
+@Api(value = ApiPaths.STATISTICS_PATH, description = "Endpoint of all of the statistics related to sensors in OSS")
 @Singleton
 public class StatisticsResource {
 
-    private static final String SENSORS_PATH = "/sensors";
-
-    private static final String SERVICES_PATH = "/services";
-
-    private static final String PHENOMENA_PATH = "/phenomena";
-
-    protected static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
+    private static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
 
     private IGetCapabilitiesDAO capabilitiesDao;
 
     private String baseUrl;
 
     @Inject
-    public StatisticsResource(IGetCapabilitiesDAO dao, @Named("oss.serviceurl")
-    String baseUrl) {
+    public StatisticsResource(IGetCapabilitiesDAO dao, @Context
+    UriInfo uri) {
         this.capabilitiesDao = dao;
-        this.baseUrl = baseUrl;
+        this.baseUrl = uri.getBaseUri() + ApiPaths.STATISTICS_PATH;
 
-        log.debug("NEW {}", this);
+        log.debug("NEW {} @ {}", this, this.baseUrl);
     }
 
     @GET
@@ -68,18 +63,27 @@ public class StatisticsResource {
     public Response getStatisticsIndex() {
         StringBuilder sb = new StringBuilder();
         sb.append(" { ");
-        sb.append("\"sensors\" : \"" + this.baseUrl + "/api/v1/statistics" + SENSORS_PATH + "\"");
+        sb.append("\"sensors\" : \"");
+        sb.append(this.baseUrl);
+        sb.append(ApiPaths.STATS_SENSORS);
+        sb.append("\"");
         sb.append(" , ");
-        sb.append("\"phenomena\" : \"" + this.baseUrl + "/api/v1/statistics" + PHENOMENA_PATH + "\"");
+        sb.append("\"phenomena\" : \"");
+        sb.append(this.baseUrl);
+        sb.append(ApiPaths.STATS_PHENOMENA);
+        sb.append("\"");
         sb.append(" , ");
-        sb.append("\"services\" : \"" + this.baseUrl + "/api/v1/statistics" + SERVICES_PATH + "\"");
+        sb.append("\"services\" : \"");
+        sb.append(this.baseUrl);
+        sb.append(ApiPaths.STATS_SERVICES);
+        sb.append("\"");
         sb.append(" } ");
 
         return Response.ok(sb.toString()).build();
     }
 
     @GET
-    @Path(SENSORS_PATH)
+    @Path(ApiPaths.STATS_SENSORS)
     @ApiOperation(value = "Find the number of sensors stored in OSS")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumberOfSensors() {
@@ -98,7 +102,7 @@ public class StatisticsResource {
     }
 
     @GET
-    @Path(PHENOMENA_PATH)
+    @Path(ApiPaths.STATS_PHENOMENA)
     @ApiOperation(value = "Find the number of phenomena stored in OSS")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumberOfPhenomena() {
@@ -117,7 +121,7 @@ public class StatisticsResource {
     }
 
     @GET
-    @Path(SERVICES_PATH)
+    @Path(ApiPaths.STATS_SERVICES)
     @ApiOperation(value = "Find the number of services stored in OSS")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumberOfServices() {

@@ -39,9 +39,8 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @author Yakoub
  * 
  */
-@Path("/api/v1/check")
-@Api(
-        value = "/check", description = "validation of SensorML for future harvesting")
+@Path(ApiPaths.CHECK_PATH)
+@Api(value = "/" + ApiPaths.CHECK_PATH, description = "validation of SensorML for future harvesting")
 public class ValidatorResource {
     // private IProfileValidator validator;
 
@@ -57,14 +56,14 @@ public class ValidatorResource {
         return b;
     }
 
-    private String returnJSON(String s) throws OwsExceptionReport {
+    private String returnJSON(String s) {
         try {
             boolean b = validateSensorMLDocument(s);
             if (b)
-                return "{status:'valid'}";
+                return "{\"status\": \"valid\"}";
 
             String details = this.validator.getValidationFailuresAsString();
-            return "{status:'invalid',error:" + details + "}";
+            return "{\"status\" : \"invalid \", \"error\" : \" " + details + " \" }";
 
         }
         catch (XmlException | IOException exception) {
@@ -78,13 +77,11 @@ public class ValidatorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response check(@FormParam("sensor")
     String sensor, @FormParam("format")
-    String format) throws OwsExceptionReport {
+    String format) {
         if (format.equals("json")) {
             return Response.ok(returnJSON(sensor)).build();
         }
-        else {
-            return Response.ok().build();
-        }
+        return Response.ok().build();
     }
 
 }

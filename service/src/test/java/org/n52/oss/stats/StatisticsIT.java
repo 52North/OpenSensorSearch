@@ -26,6 +26,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.api.ApiPaths;
 import org.n52.oss.util.Util;
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -39,7 +40,7 @@ public class StatisticsIT {
     private static String phenomenaResponse = "{ \"phenomena\": " + phenomena.toString() + "}";
     private static String servicesResponse = "{ \"services\": " + services.toString() + "}";
 
-    private static String path = "/api/v1/statistics";
+    private static String path = ApiPaths.STATISTICS_PATH; // "/api/v1/statistics";
 
     private static String endpoint;
 

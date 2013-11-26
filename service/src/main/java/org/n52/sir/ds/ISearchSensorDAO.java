@@ -70,4 +70,11 @@ public interface ISearchSensorDAO {
      */
     public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport;
 
+    /**
+     * 
+     * @return a list of all the sensor ids
+     * @throws OwsExceptionReport
+     */
+    public Collection<String> getAllSensorIds() throws OwsExceptionReport;
+
 }

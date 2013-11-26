@@ -73,6 +73,17 @@
 				management of sensor metadata. This is the landing page for the
 				service.</p>
 
+			<p>
+				The entry point into the API: <a href="api"
+					title="Open Sensor Search API entry point">/api</a>
+			</p>
+
+			<p>
+				Current statistics: <span id="statsSensors">..</span> sensors, <span
+					id="statsPhenonema">..</span> phenomena, <span id="statsServices">..</span>
+				services.
+			</p>
+
 			<!--  				Endpoints: -->
 			<!-- 			<ul> -->
 			<!-- 				<li>SIR: ...</li> -->
@@ -105,7 +116,9 @@
 					</dd>
 					<dt>More Projects</dt>
 					<dd>
-						<a href="http://52north.org/resources/references/sensor-web/osiris">OSIRIS</a>, GENESIS
+						<a
+							href="http://52north.org/resources/references/sensor-web/osiris">OSIRIS</a>,
+						GENESIS
 					</dd>
 					<!-- 					<dt>GEO label</dt> -->
 					<!-- 					<dd> -->
@@ -126,6 +139,39 @@
 	<!-- 	<script src="lib/jquery.bsAlerts.min.js"></script> -->
 	<!-- 	<script src="scripts/autocomplete.js"></script> -->
 	<!-- 	<script src="scripts/oss.js"></script> -->
+
+	<script>
+		var basePath = window.location.pathname;
+		basePath = basePath.replace("index.html", "");
+		console.log(basePath);
+			
+		$.ajax({
+			dataType : "json",
+			url : basePath + "api/v1/statistics/sensors",
+			success : function(data) {
+				// 				console.log(data);
+				$("#statsSensors").html(data.sensors);
+			}
+		});
+
+		$.ajax({
+			dataType : "json",
+			url : basePath + "api/v1/statistics/phenomena",
+			success : function(data) {
+				// 				console.log(data);
+				$("#statsPhenonema").html(data.phenomena);
+			}
+		});
+
+		$.ajax({
+			dataType : "json",
+			url : basePath + "api/v1/statistics/services",
+			success : function(data) {
+				// 				console.log(data);
+				$("#statsServices").html(data.services);
+			}
+		});
+	</script>
 
 </body>
 </html>

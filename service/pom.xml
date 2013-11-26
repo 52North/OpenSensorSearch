@@ -10,7 +10,7 @@
 	<packaging>war</packaging>
 
 	<!-- http://semver.org/ -->
-	<version>0.5.4</version>
+	<version>0.6</version>
 
 	<url>http://52north.org/communities/sensorweb/discovery/</url>
 	<inceptionYear>2012</inceptionYear>

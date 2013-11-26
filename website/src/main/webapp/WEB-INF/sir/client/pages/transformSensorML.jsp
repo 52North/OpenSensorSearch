@@ -20,7 +20,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<%@page import="org.n52.sir.client.Client"%>
+<%@page import="org.n52.oss.sir.Client"%>
 
 <jsp:useBean id="transformSensorML" class="org.n52.sir.client.TransformSensorMLBean"
 	scope="page" />

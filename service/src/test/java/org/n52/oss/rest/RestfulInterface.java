@@ -24,10 +24,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Date;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -92,8 +95,10 @@ public class RestfulInterface {
     }
 
     @Before
-    public void prepare() {
-        this.resource = new SensorResource(searchDao);
+    public void prepare() throws URISyntaxException {
+        UriInfo uriInfo = mock(UriInfo.class);
+        when(uriInfo.getBaseUri()).thenReturn(new URI("TEST_URL"));
+        this.resource = new SensorResource(searchDao, uriInfo);
     }
 
     @Test

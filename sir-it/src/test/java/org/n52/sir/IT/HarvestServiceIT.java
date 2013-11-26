@@ -23,6 +23,8 @@ import java.io.File;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.sir.Client;
+import org.n52.oss.ui.beans.HarvestServiceBean;
 import org.n52.oss.util.GuiceUtil;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;

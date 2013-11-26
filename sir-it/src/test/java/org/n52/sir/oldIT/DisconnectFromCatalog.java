@@ -22,6 +22,8 @@ import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
+import org.n52.oss.ui.beans.ConnectToCatalogBean;
+import org.n52.oss.ui.beans.DisconnectFromCatalogBean;
 import org.x52North.sir.x032.DisconnectFromCatalogRequestDocument;
 import org.x52North.sir.x032.DisconnectFromCatalogResponseDocument;
 

@@ -29,13 +29,12 @@ import java.io.IOException;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.Client;
 import org.n52.oss.util.GuiceUtil;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
 import org.x52North.sir.x032.DeleteSensorInfoResponseDocument;
@@ -54,7 +53,7 @@ public class InsertSensorInfoNewSensorIT {
     private String sensorId;
 
     @Test
-    public void insertAirBaseSensor() throws XmlException, IOException, OwsExceptionReport, HttpException {
+    public void insertAirBaseSensor() throws XmlException, IOException {
         File sensor = new File(ClassLoader.getSystemResource("Requests/sir/testSensor-AirBase.xml").getFile());
         SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
@@ -72,7 +71,7 @@ public class InsertSensorInfoNewSensorIT {
     }
 
     @Test
-    public void insertTestSensorFromFile1() throws XmlException, IOException, OwsExceptionReport, HttpException {
+    public void insertTestSensorFromFile1() throws XmlException, IOException {
         File f = new File(ClassLoader.getSystemResource("Requests/sir/testSensor-1.xml").getFile());
         SensorMLDocument doc = SensorMLDocument.Factory.parse(f);
         InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
@@ -90,7 +89,7 @@ public class InsertSensorInfoNewSensorIT {
     }
 
     @Test
-    public void insertTestSensorFromFile() throws XmlException, IOException, OwsExceptionReport, HttpException {
+    public void insertTestSensorFromFile() throws XmlException, IOException {
         File sensor = new File(ClassLoader.getSystemResource("Requests/sir/testSensor.xml").getFile());
         SensorMLDocument DOC = SensorMLDocument.Factory.parse(sensor);
 
@@ -109,7 +108,7 @@ public class InsertSensorInfoNewSensorIT {
     }
 
     @After
-    public void cleanUp() throws IOException, OwsExceptionReport, HttpException, XmlException {
+    public void cleanUp() throws XmlException {
         DeleteSensorInfoRequestDocument req = DeleteSensorInfoRequestDocument.Factory.newInstance();
         req.addNewDeleteSensorInfoRequest().addNewInfoToBeDeleted().addNewSensorIdentification().setSensorIDInSIR(this.sensorId);
 

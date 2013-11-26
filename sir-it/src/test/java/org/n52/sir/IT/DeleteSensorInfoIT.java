@@ -24,20 +24,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import net.opengis.ows.ExceptionReportDocument;
 import net.opengis.ows.impl.ExceptionReportDocumentImpl;
 import net.opengis.sensorML.x101.SensorMLDocument;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.Client;
 import org.n52.oss.util.GuiceUtil;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument.DeleteSensorInfoRequest.InfoToBeDeleted;
@@ -63,7 +61,7 @@ public class DeleteSensorInfoIT {
     }
 
     @Before
-    public void insertSensor() throws IOException, OwsExceptionReport, HttpException, XmlException {
+    public void insertSensor() throws IOException, XmlException {
 
         InsertSensorInfoRequestDocument doc = InsertSensorInfoRequestDocument.Factory.parse(testSensorInfo);
         XmlObject response = client.xSendPostRequest(doc);
@@ -76,10 +74,7 @@ public class DeleteSensorInfoIT {
     }
 
     @After
-    public void sensorMustBeGone() throws UnsupportedEncodingException,
-            HttpException,
-            IOException,
-            OwsExceptionReport,
+    public void sensorMustBeGone() throws
             XmlException {
         XmlObject response = client.xSendGetRequest("request=DescribeSensor&service=SIR&sensorIDinSIR=" + sensorID);
 

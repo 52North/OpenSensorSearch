@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.BeforeClass;
+import org.n52.oss.sir.Client;
 import org.n52.oss.util.GuiceUtil;
 
 /**

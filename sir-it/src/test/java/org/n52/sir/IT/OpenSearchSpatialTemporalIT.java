@@ -44,9 +44,9 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirTimePeriod;
-import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.testdata.json.JSONSensor;
 import org.n52.oss.testdata.json.JSONSensorsCollection;
 import org.n52.oss.util.GuiceUtil;
@@ -84,14 +84,14 @@ public class OpenSearchSpatialTemporalIT {
     public static Client client;
 
     @BeforeClass
-    public void setUpClient()
-    {
+    public void setUpClient() {
         client = GuiceUtil.configureSirClient();
     }
 
     @Before
-    public void parseJsonSensorsAndInsert() throws IOException, OwsExceptionReport, XmlException, org.apache.http.HttpException
-    {
+    public void parseJsonSensorsAndInsert() throws IOException,
+
+    XmlException {
 
         File sensor_file = new File(ClassLoader.getSystemResource("data/randomSensors.json").getFile());
         File sensor_temp = new File(ClassLoader.getSystemResource("AirBase-test.xml").getFile());
@@ -99,38 +99,39 @@ public class OpenSearchSpatialTemporalIT {
         Gson gson = new Gson();
         StringBuilder builder = new StringBuilder();
         String s;
-        BufferedReader reader = new BufferedReader((new FileReader(sensor_file)));
-        while ((s = reader.readLine()) != null)
-            builder.append(s);
-        JSONSensorsCollection collection = gson.fromJson(builder.toString(), JSONSensorsCollection.class);
-        Iterator<JSONSensor> sensors = collection.sensors.iterator();
-        while (sensors.hasNext()) {
-            SirSensor sensor = new SirSensor();
-            JSONSensor jsensor = sensors.next();
-            sensor.setKeywords(jsensor.keywords);
-            SirTimePeriod period = new SirTimePeriod();
-            DateTime begin = DateTime.parse(jsensor.beginPosition);
-            DateTime end = DateTime.parse(jsensor.endPosition);
-            period.setStartTime(begin.toDate());
-            period.setEndTime(end.toDate());
-            sensor.setTimePeriod(period);
-            sensor.setIdentificationsList(jsensor.Identifiers);
-            sensor.setLatitude(jsensor.lat);
-            sensor.setLongitude(jsensor.lng);
-            KeywordList klist = KeywordList.Factory.newInstance();
-            klist.setKeywordArray(jsensor.keywords.toArray(new String[] {}));
-            DOC.getSensorML().getMemberArray(0).getProcess().getKeywordsArray(0).setKeywordList(klist);
-            InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
-            req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
-            XmlObject res = client.xSendPostRequest(req);
-            InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
+        try (BufferedReader reader = new BufferedReader( (new FileReader(sensor_file)));) {
+            while ( (s = reader.readLine()) != null)
+                builder.append(s);
+            JSONSensorsCollection collection = gson.fromJson(builder.toString(), JSONSensorsCollection.class);
+            Iterator<JSONSensor> sensors = collection.sensors.iterator();
+            while (sensors.hasNext()) {
+                SirSensor sensor = new SirSensor();
+                JSONSensor jsensor = sensors.next();
+                sensor.setKeywords(jsensor.keywords);
+                SirTimePeriod period = new SirTimePeriod();
+                DateTime begin = DateTime.parse(jsensor.beginPosition);
+                DateTime end = DateTime.parse(jsensor.endPosition);
+                period.setStartTime(begin.toDate());
+                period.setEndTime(end.toDate());
+                sensor.setTimePeriod(period);
+                sensor.setIdentificationsList(jsensor.Identifiers);
+                sensor.setLatitude(jsensor.lat);
+                sensor.setLongitude(jsensor.lng);
+                KeywordList klist = KeywordList.Factory.newInstance();
+                klist.setKeywordArray(jsensor.keywords.toArray(new String[] {}));
+                DOC.getSensorML().getMemberArray(0).getProcess().getKeywordsArray(0).setKeywordList(klist);
+                InsertSensorInfoRequestDocument req = InsertSensorInfoRequestDocument.Factory.newInstance();
+                req.addNewInsertSensorInfoRequest().addNewInfoToBeInserted().setSensorDescription(DOC.getSensorML().getMemberArray(0).getProcess());
+                XmlObject res = client.xSendPostRequest(req);
+                InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
+            }
         }
     }
 
     @Test
-    public void testDistanceLessThanSearchRadius() throws ClientProtocolException, IOException
-    {
-        lon_lat_radius_query += "lat=" + TEST_LAT + "&lon=" + TEST_LNG + "&radius=" + TEST_RADIUS + "&httpAccept=application%2Fjson";
+    public void testDistanceLessThanSearchRadius() throws ClientProtocolException, IOException {
+        lon_lat_radius_query += "lat=" + TEST_LAT + "&lon=" + TEST_LNG + "&radius=" + TEST_RADIUS
+                + "&httpAccept=application%2Fjson";
         org.apache.http.client.HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(lon_lat_radius_query);
 
@@ -138,7 +139,7 @@ public class OpenSearchSpatialTemporalIT {
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         String s;
-        while ((s = reader.readLine()) != null)
+        while ( (s = reader.readLine()) != null)
             builder.append(s);
 
         log.debug(builder.toString());
@@ -156,25 +157,22 @@ public class OpenSearchSpatialTemporalIT {
 
     // implement the haversine formula for distances
 
-    public static double haversine(double lat1,
-            double lon1,
-            double lat2,
-            double lon2)
-    {
+    public static double haversine(double lat1, double lon1, double lat2, double lon2) {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
         lat1 = Math.toRadians(lat1);
         lat2 = Math.toRadians(lat2);
 
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1)
+                * Math.cos(lat2);
         double c = 2 * Math.asin(Math.sqrt(a));
         return R * c;
     }
 
     @Test
-    public void testTimeInValidRange() throws ClientProtocolException, IOException
-    {
-        temporal_search_query += "dtstart=" + TEST_START_DATE + "&dtend=" + TEST_END_DATE + "&httpAccept=application%2Fjson";
+    public void testTimeInValidRange() throws ClientProtocolException, IOException {
+        temporal_search_query += "dtstart=" + TEST_START_DATE + "&dtend=" + TEST_END_DATE
+                + "&httpAccept=application%2Fjson";
         org.apache.http.client.HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(temporal_search_query);
 
@@ -182,7 +180,7 @@ public class OpenSearchSpatialTemporalIT {
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         String s;
-        while ((s = reader.readLine()) != null)
+        while ( (s = reader.readLine()) != null)
             builder.append(s);
 
         log.debug(builder.toString());
@@ -200,8 +198,7 @@ public class OpenSearchSpatialTemporalIT {
 
     }
 
-    public void testTimeInValidRangeAndLocationInValidRange() throws ClientProtocolException, IOException
-    {
+    public void testTimeInValidRangeAndLocationInValidRange() throws ClientProtocolException, IOException {
         String query = temporal_search_query + "dtstart=" + TEST_START_DATE + "&dtend=" + TEST_END_DATE;
         query += "&lat=" + TEST_LAT + "&lon=" + TEST_LNG + "&radius=" + TEST_RADIUS + "&httpAccept=application%2Fjson";
         org.apache.http.client.HttpClient client = new DefaultHttpClient();
@@ -211,7 +208,7 @@ public class OpenSearchSpatialTemporalIT {
         StringBuilder builder = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         String s;
-        while ((s = reader.readLine()) != null)
+        while ( (s = reader.readLine()) != null)
             builder.append(s);
 
         log.debug(builder.toString());

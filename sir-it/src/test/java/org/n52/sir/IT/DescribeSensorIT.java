@@ -30,7 +30,6 @@ import java.io.IOException;
 import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sensorML.x101.SensorMLDocument;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.custommonkey.xmlunit.Diff;
@@ -38,7 +37,7 @@ import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.Client;
 import org.n52.oss.util.GuiceUtil;
 import org.n52.oss.util.XmlTools;
 import org.x52North.sir.x032.DeleteSensorInfoRequestDocument;
@@ -57,7 +56,7 @@ public class DescribeSensorIT {
     private static String sensorID;
 
     @BeforeClass
-    public static void setup() throws OwsExceptionReport, XmlException, IOException, HttpException {
+    public static void setup() throws XmlException, IOException {
         client = GuiceUtil.configureSirClient();
 
         File f = new File(ClassLoader.getSystemResource("Requests/InsertSensorInfo_newSensor.xml").getFile());
@@ -101,7 +100,8 @@ public class DescribeSensorIT {
 
     @Test
     public void getDescribeSensor() throws Exception {
-        XmlObject response = client.xSendGetRequest("request=DescribeSensor&service=SIR&sensorIDinSIR=" + this.sensorID);
+        XmlObject response = client.xSendGetRequest("request=DescribeSensor&service=SIR&sensorIDinSIR="
+                + DescribeSensorIT.sensorID);
 
         SensorMLDocument actual = SensorMLDocument.Factory.parse(response.getDomNode());
         checkSensor(actual);

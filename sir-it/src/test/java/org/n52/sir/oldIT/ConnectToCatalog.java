@@ -23,6 +23,7 @@ import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
+import org.n52.oss.ui.beans.ConnectToCatalogBean;
 import org.x52North.sir.x032.ConnectToCatalogRequestDocument;
 import org.x52North.sir.x032.ConnectToCatalogResponseDocument;
 

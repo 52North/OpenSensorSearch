@@ -47,7 +47,7 @@ public class TransformerBindingIT {
 			builder.append(s);
 		String sensorML = builder.toString();
 		HttpPost post = new HttpPost("http://localhost:8080/OpenSensorSearch/convert/");
-		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        List<NameValuePair> pairs = new ArrayList<>();
 		pairs.add(new BasicNameValuePair("sensor", sensorML));
 		pairs.add(new BasicNameValuePair("output","ebrim"));
 		post.setEntity(new UrlEncodedFormEntity(pairs));

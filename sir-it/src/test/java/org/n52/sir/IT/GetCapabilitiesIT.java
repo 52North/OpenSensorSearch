@@ -25,15 +25,15 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirConstants;
-import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.ui.beans.GetCapabilitiesBean;
 import org.n52.oss.util.GuiceUtil;
 import org.x52North.sir.x032.CapabilitiesDocument;
 import org.x52North.sir.x032.GetCapabilitiesDocument;
@@ -68,7 +68,7 @@ public class GetCapabilitiesIT {
     }
 
     @Test
-    public void postRequest() throws IOException, OwsExceptionReport, HttpException, XmlException, SAXException {
+    public void postRequest() throws IOException, XmlException, SAXException {
         File f = new File(ClassLoader.getSystemResource("Requests/GetCapabilities.xml").getFile());
 
         GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.parse(f);
@@ -79,7 +79,7 @@ public class GetCapabilitiesIT {
     }
 
     @Test
-    public void getRequest() throws IOException, OwsExceptionReport, HttpException, XmlException, SAXException {
+    public void getRequest() throws IOException, XmlException, SAXException {
         XmlObject response = client.xSendGetRequest("request=GetCapabilities&service=SIR");
         CapabilitiesDocument actual = CapabilitiesDocument.Factory.parse(response.getDomNode());
 

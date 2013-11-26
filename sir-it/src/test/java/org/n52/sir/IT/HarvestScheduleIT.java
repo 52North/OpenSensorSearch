@@ -94,7 +94,7 @@ public class HarvestScheduleIT {
 
         Thread.sleep(10 * 1000);
 
-        SolrConnection c = new SolrConnection("http://localhost:8983/solr");
+        SolrConnection c = new SolrConnection("http://localhost:8983/solr", 2000);
         SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(c);
         Collection<SirSearchResultElement> results = dao.searchByContact(randomString);
 

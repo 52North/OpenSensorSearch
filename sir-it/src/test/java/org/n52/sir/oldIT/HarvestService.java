@@ -21,6 +21,7 @@ import java.io.File;
 
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
+import org.n52.oss.ui.beans.HarvestServiceBean;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
 
@@ -37,12 +38,10 @@ public class HarvestService extends SirTest {
 
     @Test
     public void testPost() throws Exception {
-        // buildRequest
         HarvestServiceBean hsb = new HarvestServiceBean(this.serviceURL, this.serviceType);
 
         hsb.buildRequest();
 
-        // send request
         String response = client.sendPostRequest(hsb.getRequestString());
 
         // parse and validate response

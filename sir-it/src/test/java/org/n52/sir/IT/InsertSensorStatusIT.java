@@ -26,13 +26,12 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.Client;
 import org.n52.oss.util.GuiceUtil;
 import org.x52North.sir.x032.InsertSensorStatusRequestDocument;
 import org.x52North.sir.x032.InsertSensorStatusResponseDocument;
@@ -47,7 +46,7 @@ public class InsertSensorStatusIT {
     }
 
     @Test
-    public void insertSensorStatus() throws XmlException, IOException, OwsExceptionReport, HttpException {
+    public void insertSensorStatus() throws XmlException, IOException {
         File sensor_status = new File(ClassLoader.getSystemResource("Requests/InsertSensorStatus.xml").getFile());
         InsertSensorStatusRequestDocument request = InsertSensorStatusRequestDocument.Factory.parse(sensor_status);
 

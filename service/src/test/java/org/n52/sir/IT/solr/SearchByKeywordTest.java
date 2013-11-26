@@ -113,6 +113,6 @@ public class SearchByKeywordTest {
 
     @After
     public void deleteSensor() throws SolrServerException, IOException {
-        connection.deleteByQuery(this.id); // FIXME delete inserted sensor only
+        connection.deleteSensor(this.id); // FIXME delete inserted sensor only
     }
 }

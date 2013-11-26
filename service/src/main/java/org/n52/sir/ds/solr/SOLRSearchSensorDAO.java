@@ -130,7 +130,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         params.set("qf", SolrConstants.EDISMAX);
 
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -151,7 +151,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         params.set("pt", lat + "," + lng);
         params.set("d", kms + "");
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -229,7 +229,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         params.set("q", temporalQuery(start, end));
         QueryResponse response;
         try {
-            response = this.connection.SolrQuery(params);
+            response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -320,7 +320,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         builder.append('"');
         params.set("q", builder.toString());
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -341,7 +341,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         builder.append('"');
         params.set("q", builder.toString());
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -362,7 +362,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         builder.append('"');
         params.set("q", builder.toString());
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -383,7 +383,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         builder.append('"');
         params.set("q", builder.toString());
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -403,7 +403,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         builder.append('"');
         params.set("q", builder.toString());
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -423,7 +423,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         builder.append('"');
         params.set("q", builder.toString());
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -443,7 +443,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
         builder.append('"');
         params.set("q", builder.toString());
         try {
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             return encodeResult(list);
         }
@@ -517,7 +517,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
 
         try {
             log.debug("Posting query: {}", params);
-            QueryResponse response = this.connection.SolrQuery(params);
+            QueryResponse response = this.connection.query(params);
             SolrDocumentList list = response.getResults();
             result.addAll(encodeResult(list));
             log.debug("Got results: {} found, max score is {}", list.getNumFound(), list.getMaxScore());
@@ -618,7 +618,7 @@ public class SOLRSearchSensorDAO implements ISearchSensorDAO {
             params.set("q", builder.toString());
             log.info(params.toString());
             try {
-                QueryResponse response = this.connection.SolrQuery(params);
+                QueryResponse response = this.connection.query(params);
                 SolrDocumentList list = response.getResults();
                 return encodeResult(list);
             }

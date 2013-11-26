@@ -107,6 +107,6 @@ public class SearchByBoundingBoxTest {
     // FIXME let the delete delete only by the given id not all
     @After
     public void deleteSensor() throws SolrServerException, IOException{
-        c.deleteByQuery("");
+        c.deleteSensor("");
     }
 }

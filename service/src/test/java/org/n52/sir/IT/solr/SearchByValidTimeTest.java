@@ -82,7 +82,7 @@ public class SearchByValidTimeTest {
 
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
-        connection.deleteByQuery(""); // FIXME delete inserted sensor
+        connection.deleteSensor(""); // FIXME delete inserted sensor
 	}
 
 }

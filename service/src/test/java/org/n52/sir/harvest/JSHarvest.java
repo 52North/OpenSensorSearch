@@ -62,7 +62,7 @@ public class JSHarvest {
         assertTrue(contacts.contains("52north"));
         assertTrue(contacts.contains("rhino"));
 
-        new SolrConnection("http://localhost:8983/solr").deleteByQuery("id:" + id);
+        new SolrConnection("http://localhost:8983/solr").deleteSensor("id:" + id);
     }
 
 }

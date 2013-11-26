@@ -115,6 +115,6 @@ public class SearchByLocationTest {
     
     @After
     public void deleteSensor() throws SolrServerException, IOException{
-        connection.deleteByQuery(""); // FIXME delete inserted sensor only
+        connection.deleteSensor(""); // FIXME delete inserted sensor only
     }
 }

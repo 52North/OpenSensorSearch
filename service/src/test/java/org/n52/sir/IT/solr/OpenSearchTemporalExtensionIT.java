@@ -104,6 +104,6 @@ public class OpenSearchTemporalExtensionIT {
     @After
     public void deleteTestSensor() throws SolrServerException, IOException {
         SolrConnection c = new SolrConnection("http://localhost:8983/solr");
-        c.deleteByQuery("");
+        c.deleteSensor("");
     }
 }

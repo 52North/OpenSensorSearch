@@ -78,7 +78,7 @@ public class SearchByAllFieldsTest {
     @After
     public void deleteSensor() throws SolrServerException, IOException {
         SolrConnection c = new SolrConnection("http://localhost:8983/solr");
-        c.deleteByQuery("");
+        c.deleteSensor("");
     }
     //
 }

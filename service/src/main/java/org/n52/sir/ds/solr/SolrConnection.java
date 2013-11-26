@@ -40,8 +40,10 @@ public class SolrConnection {
 
     @Inject
     public SolrConnection(@Named("oss.solr.url")
-    String url) {
+    String url, @Named("oss.solr.timeoutMillis")
+    int timeout) {
         this.server = new HttpSolrServer(url);
+        this.server.setConnectionTimeout(timeout);
 
         log.info("NEW {} for URL {}", this, url);
     }
@@ -54,7 +56,7 @@ public class SolrConnection {
         this.server.commit();
     }
 
-    public QueryResponse SolrQuery(SolrParams params) throws SolrServerException {
+    public QueryResponse query(SolrParams params) throws SolrServerException {
         return this.server.query(params);
     }
 
@@ -63,7 +65,7 @@ public class SolrConnection {
         commitChanges();
     }
 
-    public void deleteByQuery(String query) throws SolrServerException, IOException {
+    public void deleteSensor(String query) throws SolrServerException, IOException {
         this.server.deleteByQuery("*:*");
         commitChanges();
     }

@@ -120,7 +120,7 @@ public class SearchByInputOutputTest {
 
     @After
     public void deleteSensor() throws SolrServerException, IOException {
-        c.deleteByQuery("");
+        c.deleteSensor("");
     }
 
 }

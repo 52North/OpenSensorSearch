@@ -100,6 +100,6 @@ public class ScheduleBinding {
 		assertTrue(results.size() > 0 );
 		
         // FIXME use transactional delete operation, or just use a mocked up database
-        c.deleteByQuery("contacts:" + randomString);
+        c.deleteSensor("contacts:" + randomString);
 	}
 }

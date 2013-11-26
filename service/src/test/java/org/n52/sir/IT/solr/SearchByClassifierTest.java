@@ -89,7 +89,7 @@ public class SearchByClassifierTest {
 
 	@After
 	public void deleteSensor() throws SolrServerException, IOException {
-        connection.deleteByQuery(""); // FIXME delete only inserted sensor
+        connection.deleteSensor(""); // FIXME delete only inserted sensor
 	}
 
 }

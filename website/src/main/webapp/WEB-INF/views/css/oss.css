@@ -5,6 +5,13 @@ html,body {
 	height: 100%;
 }
 
+.betaBanner {
+    position: fixed;
+    margin-top: 20px;
+    top: 0%;
+    right: 0%;
+}
+
 /* Wrapper for page content to push down footer */
 #wrap {
 	min-height: 100%;

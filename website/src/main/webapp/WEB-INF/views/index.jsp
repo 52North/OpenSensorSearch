@@ -32,8 +32,9 @@
 </head>
 
 <body>
-
 	<div id="wrap">
+		<img class="betaBanner" src="images/beta.png" height="180px" alt="beta banner" />
+	
 		<%@ include file="navigation.jsp"%>
 
 		<div class="container" style="padding-top: 10%;">
@@ -50,11 +51,13 @@
 			%>
 			<div data-alerts="alerts"></div>
 
-			<h1>Open Sensor Search</h1>
+			<div class="row">
+				<h1>Open Sensor Search</h1>
+			</div>
 
-			<form class="form-inline" role="form" name="requestform" method="get"
-				action="/OpenSensorSearch/search" onsubmit="return validate()">
-				<div class="row">
+			<form class="form-inline" name="requestform" method="get"
+				action="/oss-service/search" onsubmit="return validate()">
+				<div class="row" style="margin-top: 42px;">
 					<div class="col-xs-6 col-sm-4 col-md-2">
 						<input name="q" id="inputSearch" type="text"
 							class="form-control input-large search-query"
@@ -77,15 +80,16 @@
 					name="radius" type="hidden" id="radius" class="form-control">
 			</form>
 
-			<div class="row">
-				<!-- #TODO add links to the RESTful URLs /sensors, /phenomena and /services -->
-				Searching across ... sensors with ... observed properties from ...
-				services.
-			</div>
-
-			<div class="row">
-				<span class="infotextHighlight">Is your data missing? <a
-					href="mailto:${sir.deploy.contact}">Write us an email!</a></span>
+			<div class="row" style="margin-top: 42px;">
+				<p>
+					Searching across... <span id="statsSensors">..</span> sensors, <span
+						id="statsPhenonema">..</span> phenomena, and <span
+						id="statsServices">..</span> services.
+				</p>
+				<p>
+					<span class="infotextHighlight">Is your data missing? <a
+						href="mailto:${sir.deploy.contact}">Write us an email!</a></span>
+				</p>
 			</div>
 
 			<!-- 			<div class="panel panel-default"> -->
@@ -127,7 +131,9 @@
 					</dd>
 					<dt>More Projects</dt>
 					<dd>
-						<a href="http://52north.org/resources/references/sensor-web/osiris">OSIRIS</a>, GENESIS
+						<a
+							href="http://52north.org/resources/references/sensor-web/osiris">OSIRIS</a>,
+						GENESIS
 					</dd>
 				</dl>
 			</div>

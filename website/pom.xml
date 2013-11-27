@@ -5,7 +5,7 @@
 	<artifactId>website</artifactId>
 	<packaging>war</packaging>
 
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.6</version>
 	<name>Open Sensor Search Website</name>
 
 	<inceptionYear>2013</inceptionYear>

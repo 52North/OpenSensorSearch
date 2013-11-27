@@ -36,8 +36,7 @@
 	var descriptionEditor = null;
 	var defaultString = "<!-- Insert your request here or build one using the input options above. -->";
 
-	function load() {
-
+	$(document).ready(function() {
 		if (requestEditor == null) {
 			initRequestEditor();
 		}
@@ -47,7 +46,7 @@
 		if (descriptionEditor == null) {
 			initDescriptionEditor();
 		}
-	}
+	});
 
 	function initRequestEditor() {
 		var s;

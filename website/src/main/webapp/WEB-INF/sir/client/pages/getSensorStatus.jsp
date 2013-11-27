@@ -48,7 +48,7 @@
 <jsp:include page="htmlHead.jsp"></jsp:include>
 
 </head>
-<body onload="load()">
+<body>
 
 	<div id="content"><jsp:include page="header.jsp" />
 		<jsp:include page="../menu.jsp" />

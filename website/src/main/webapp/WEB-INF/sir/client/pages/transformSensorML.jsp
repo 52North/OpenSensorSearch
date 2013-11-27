@@ -15,25 +15,11 @@
     limitations under the License.
 
 --%>
-<?xml version="1.0" encoding="utf-8"?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html>
 
-<%@page import="org.n52.oss.sir.Client"%>
-
-<jsp:useBean id="transformSensorML" class="org.n52.sir.client.TransformSensorMLBean"
-	scope="page" />
-<jsp:setProperty property="*" name="transformSensorML"/>
-
-<%
-	if (request.getParameter("requestTransformation") != null) {
-	    transformSensorML.buildRequest();
-	    transformSensorML.requestTransformation();
-	}
-%>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
 <title>Transform SensorML Document</title>
 
@@ -41,26 +27,34 @@
 
 </head>
 
-<body onload="load()">
+<body>
 
-<div id="content">
+	<div id="content">
 
-	<jsp:include page="header.jsp" />
-	<jsp:include page="../menu.jsp" />
+		<jsp:include page="header.jsp" />
+		<jsp:include page="../menu.jsp" />
 
-	<h2>Transform SensorML Document</h2>
-	
-	<p>Insert the SensorML description of a sensor:</p>
-	
-	<form action="transformSensorML.jsp" method="post">
-		<p class="textareaBorder"><textarea id="requestStringArea" name="requestString" class="smallTextarea" rows="10" cols="10"><%=transformSensorML.getRequestString()%></textarea></p>
-		<p><input type="submit" name="requestTransformation" value="Transform" /></p>
-	</form>
-	
-	<p>Transformed ebRIM representation of sensor description:</p>
-	
-	<p class="textareaBorder"><textarea id="responseStringArea" class="largeTextarea" rows="10" cols="10"><%=transformSensorML.getResponseString()%></textarea></p>
+		<h2>Transform SensorML Document</h2>
 
-</div>
+		<p>Insert the SensorML description of a sensor:</p>
+
+		<form action="transformSensorML.jsp" method="post">
+			<p class="textareaBorder">
+				<textarea id="requestStringArea" name="requestString"
+					class="smallTextarea" rows="10" cols="10">...</textarea>
+			</p>
+			<p>
+				<input type="submit" name="requestTransformation" value="Transform" />
+			</p>
+		</form>
+
+		<p>Transformed ebRIM representation of sensor description:</p>
+
+		<p class="textareaBorder">
+			<textarea id="responseStringArea" class="largeTextarea" rows="10"
+				cols="10">...</textarea>
+		</p>
+
+	</div>
 </body>
 </html>

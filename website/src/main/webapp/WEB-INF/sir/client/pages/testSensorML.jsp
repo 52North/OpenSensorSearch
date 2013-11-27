@@ -15,54 +15,41 @@
     limitations under the License.
 
 --%>
-<?xml version="1.0" encoding="utf-8"?>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<%@page import="org.n52.oss.sir.Client"%>
-
-<jsp:useBean id="testSensorML"
-	class="org.n52.oss.ui.beans.TestSensorMLBean" scope="page" />
-<jsp:setProperty property="*" name="testSensorML" />
-
-<%
-    if (request.getParameter("testDoc") != null) {
-        testSensorML.requestTest();
-    }
-%>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Discovery Profile Validation</title>
+<title>Discovery Profile Validation | Open Sensor Search</title>
 
 <jsp:include page="htmlHead.jsp"></jsp:include>
 
 </head>
 
-<body onload="load()">
+<body>
 
 <div id="content"><jsp:include page="header.jsp" /><jsp:include
 	page="../menu.jsp" />
 
-<h2>Discovery Profile Validation</h2>
+<h1>Discovery Profile Validation</h1>
 
 <p>Test a SensorML document for conformity with SensorML profile for
 discovery. Insert the SensorML description of a sensor:</p>
 
 <form action="testSensorML.jsp" method="post">
 <p class="textareaBorder"><textarea id="requestStringArea"
-	name="requestString" class="smallTextarea" rows="10" cols="10"><%=testSensorML.getRequestString()%></textarea></p>
+	name="requestString" class="smallTextarea" rows="10" cols="10">...</textarea></p>
 <p><input type="submit" name="testDoc" value="Validate" /></p>
 </form>
 
 <p>Test Result:</p>
 
 <p class="textareaBorder"><textarea id="responseStringArea"
-	class="largeTextarea" rows="10" cols="10"><%=testSensorML.getResponseString()%></textarea></p>
+	class="largeTextarea" rows="10" cols="10">...</textarea></p>
 
 <p>You can download the used profile here: <a
-	href="<%=testSensorML.getSchematronDownloadLink()%>"
+	href="https://raw.github.com/52North/OpenSensorSearch/master/service/src/main/resources/SensorML_Profile_for_Discovery.sch"
 	title="SensorML Profile for Discovery - Schematron">Schematron File</a>.</p>
 	
 </div>

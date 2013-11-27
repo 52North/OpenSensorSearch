@@ -22,7 +22,7 @@
 	xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
 	xmlns:sml="http://www.opengis.net/sensorML/1.0.1" version="2.0"
 	xsi:schemaLocation="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0 http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd 
-  http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd">
+  http://www.opengis.net/cat/wrs/1.0 http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd http://www.w3.org/1999/XSL/Transform http://www.w3.org/2007/schema-for-xslt20.xsd">
 
 	<!-- <xsl:import href="SensorML-to-ebRIM_classification.xsl" /> -->
 	<xsl:import href="SensorML-to-ebRIM_contentForSystemAndComponent.xsl" />

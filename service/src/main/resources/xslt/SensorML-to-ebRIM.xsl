@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software 
+	﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software
 	GmbH
 
 	Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,11 +38,13 @@
 	<xsl:strip-space elements="*" />
 	<xsl:template match="sml:member">
 		<xsl:comment>
-			This document was created using the 52North Sensor Instance Registry
-			(SIR).
+			This document was created using 52North Open Sensor Search.
+
 			Homepage:
-			https://52north.org/communities/sensorweb/incubation/discovery/
-			Contact: daniel.nuest@uni-muenster.de
+			https://github.com/52North/OpenSensorSearch
+
+			Contact:
+			d.nuest@52north.org
 		</xsl:comment>
 		<xsl:if test="$debugOn">
 			<xsl:comment>

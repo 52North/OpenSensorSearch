@@ -28,9 +28,9 @@ public class ListenerModule extends AbstractModule {
     
     @Override
     protected void configure() {
-        Multibinder<OpenSearchListener> uriBinder = Multibinder.newSetBinder(binder(), OpenSearchListener.class);
-        uriBinder.addBinding().to(AtomListener.class);
-        uriBinder.addBinding().to(RssListener.class);
+        Multibinder<OpenSearchListener> listenerBinder = Multibinder.newSetBinder(binder(), OpenSearchListener.class);
+        listenerBinder.addBinding().to(AtomListener.class);
+        listenerBinder.addBinding().to(RssListener.class);
         
         log.debug("Configured {}", this);
     }

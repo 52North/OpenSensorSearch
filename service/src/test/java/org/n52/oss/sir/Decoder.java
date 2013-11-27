@@ -44,7 +44,8 @@ public class Decoder {
     
     @Test
     public void keywordsAreDecoded() throws OwsExceptionReport {
-        SirSensor sensor = SensorMLDecoder.decode(doc);
+        SensorMLDecoder decoder = new SensorMLDecoder();
+        SirSensor sensor = decoder.decode(doc);
         
         Collection<String> keywords = sensor.getKeywords();
         ArrayList<String> actual = new ArrayList<>();

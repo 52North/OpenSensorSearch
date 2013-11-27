@@ -54,7 +54,7 @@ public class CatalogTest {
 
         ICatalogFactory factory;
         try {
-            factory = new CswFactory(url, classInit, slotInit, Boolean.FALSE);
+            factory = new CswFactory(url, classInit, slotInit, Boolean.FALSE, null);
         }
         catch (XmlException e) {
             log.error("Could not parse classification scheme file!", e);

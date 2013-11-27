@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalogconnection.impl;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,8 +45,13 @@ import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalog.csw.CswFactory;
+import org.n52.sir.xml.ITransformer;
+import org.n52.sir.xml.ITransformer.TransformableFormat;
+import org.n52.sir.xml.TransformerModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -69,13 +76,6 @@ public class TimerServlet extends GenericServlet {
         protected long period;
         protected TimerTask task;
 
-        /**
-         * 
-         * @param identifier
-         * @param task
-         * @param delay
-         * @param period
-         */
         protected TaskElement(String identifier, TimerTask task, long delay, long period) {
             this.id = identifier;
             this.task = task;
@@ -100,26 +100,14 @@ public class TimerServlet extends GenericServlet {
         }
     }
 
-    /**
-     * propertyname of CLASSIFICATION_INIT_FILENAME property
-     */
     private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
 
     private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
 
-    /**
-     * 
-     */
     private static final String DO_NOT_CHECK_CATALOGS = "DO_NOT_CHECK_CATALOGS";
 
-    /**
-     * The init parameter of the configFile
-     */
     private static final String INIT_PARAM_CONFIG_FILE = "configFile";
 
-    /**
-     * 
-     */
     private static final String IS_DAEMON_INIT_PARAM_NAME = "isDaemon";
 
     private static Logger log = LoggerFactory.getLogger(TimerServlet.class);
@@ -129,9 +117,6 @@ public class TimerServlet extends GenericServlet {
      */
     public static final String NAME_IN_CONTEXT = "TimerServlet";
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 4704774153636727580L;
 
     /**
@@ -145,7 +130,7 @@ public class TimerServlet extends GenericServlet {
      */
     private static Timer timer;
 
-    private Map<URI, ICatalog> catalogCache = new HashMap<URI, ICatalog>();
+    private Map<URI, ICatalog> catalogCache = new HashMap<>();
 
     private String[] catalogInitClassificationFiles;
 
@@ -153,9 +138,6 @@ public class TimerServlet extends GenericServlet {
 
     private ICatalogStatusHandler catalogStatusHandler;
 
-    /**
-     * propertyname of CONFIG_DIRECTORY property
-     */
     private final String CONFIG_DIRECTORY = "CONFIG_DIRECTORY";
 
     private Properties props;
@@ -170,17 +152,17 @@ public class TimerServlet extends GenericServlet {
      */
     private ArrayList<TaskElement> tasks;
 
-    /**
-     * Default constructor.
-     */
-    public TimerServlet() {
-        super();
+    private ITransformer transformer;
+
+    @Inject
+    public TimerServlet(Set<ITransformer> transformers) {
+        this.transformer = TransformerModule.getFirstMatchFor(transformers,
+                                                              TransformableFormat.SML,
+                                                              TransformableFormat.EBRIM);
+
+        log.info("NEW {}", this);
     }
 
-    /**
-     * 
-     * @param identifier
-     */
     public void cancel(String identifier) {
         for (TaskElement te : this.tasks) {
             if (te.id.equals(identifier)) {
@@ -191,11 +173,6 @@ public class TimerServlet extends GenericServlet {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#destroy()
-     */
     @Override
     public void destroy() {
         log.info("called destroy()...");
@@ -206,12 +183,6 @@ public class TimerServlet extends GenericServlet {
         log.info("destroyed.");
     }
 
-    /**
-     * 
-     * @param conn
-     * @return
-     * @throws OwsExceptionReport
-     */
     public ICatalog getCatalog(ICatalogConnection conn) throws OwsExceptionReport {
         try {
             if ( !this.catalogCache.containsKey(conn.getCatalogURL().toURI())) {
@@ -243,7 +214,8 @@ public class TimerServlet extends GenericServlet {
             ICatalogFactory newFactory = new CswFactory(catalogUrl,
                                                         this.catalogInitClassificationFiles,
                                                         this.catalogSlotInitFile,
-                                                        Boolean.valueOf(this.staticDoNotCheckCatalogsList.contains(catalogUrl)));
+                                                        Boolean.valueOf(this.staticDoNotCheckCatalogsList.contains(catalogUrl)),
+                                                        this.transformer);
             return newFactory;
         }
         catch (XmlException xe) {
@@ -283,9 +255,8 @@ public class TimerServlet extends GenericServlet {
         log.info(" * Initializing Timer ... ");
 
         ServletContext context = getServletContext();
-        context.setAttribute(NAME_IN_CONTEXT, this);
 
-        this.tasks = new ArrayList<TaskElement>();
+        this.tasks = new ArrayList<>();
 
         // create inner Timer
         timer = new Timer(getServletName(), Boolean.parseBoolean(getInitParameter(IS_DAEMON_INIT_PARAM_NAME)));
@@ -319,7 +290,7 @@ public class TimerServlet extends GenericServlet {
         this.catalogSlotInitFile = basepath + configDirectory + this.props.getProperty(SLOT_INIT_FILENAME);
 
         // check if given url does not need to be checked
-        this.staticDoNotCheckCatalogsList = new ArrayList<URL>();
+        this.staticDoNotCheckCatalogsList = new ArrayList<>();
         splitted = this.props.getProperty(DO_NOT_CHECK_CATALOGS).split(",");
         for (String s : splitted) {
             if ( !s.isEmpty()) {

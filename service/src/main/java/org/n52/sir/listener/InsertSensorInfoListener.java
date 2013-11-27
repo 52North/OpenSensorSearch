@@ -202,13 +202,14 @@ public class InsertSensorInfoListener implements ISirRequestListener {
 
         SirInsertSensorInfoRequest sirRequest = (SirInsertSensorInfoRequest) request;
         SirInsertSensorInfoResponse response = new SirInsertSensorInfoResponse();
+        SensorMLDecoder decoder = new SensorMLDecoder();
 
         try {
             for (SirInfoToBeInserted infoToBeInserted : sirRequest.getInfoToBeInserted()) {
 
                 if (infoToBeInserted instanceof SirInfoToBeInserted_SensorDescription) {
                     SirInfoToBeInserted_SensorDescription newSensor = (SirInfoToBeInserted_SensorDescription) infoToBeInserted;
-                    SirSensor sensor = SensorMLDecoder.decode(newSensor.getSensorDescription());
+                    SirSensor sensor = decoder.decode(newSensor.getSensorDescription());
 
                     sensor.setLastUpdate(new Date());
 

@@ -26,7 +26,7 @@ import java.io.File;
 import org.junit.Test;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 
-public class ValidatorIT {
+public class Validator {
     private void failIfFileNotExists(File f) {
         if ( !f.exists())
             fail(f.getName() + " Is missing!");
@@ -61,7 +61,6 @@ public class ValidatorIT {
             boolean v = validator.validate(f);
             if ( !v)
                 fail("Not a valid test sensor - invalid validator!");
-
         }
         catch (Exception e) {
             fail(e.toString());

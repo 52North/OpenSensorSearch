@@ -13,30 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.api;
 
 import java.io.IOException;
+import java.util.Set;
 
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.transform.TransformerException;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.xmlbeans.XmlException;
-import org.n52.sir.SirConfigurator;
+import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.json.Converter;
+import org.n52.oss.sir.api.SirSensor;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.sir.json.SearchResultElement;
+import org.n52.sir.sml.SensorMLDecoder;
 import org.n52.sir.xml.ITransformer;
+import org.n52.sir.xml.ITransformer.TransformableFormat;
+import org.n52.sir.xml.TransformerModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
- * @author Yakoub
+ * @author Yakoub, Daniel
  * 
  */
 @Path(ApiPaths.TRANSFORMATION_PATH)
@@ -44,48 +55,101 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @RequestScoped
 public class TransformationResource {
 
-    private Gson gson;
+    private static Logger log = LoggerFactory.getLogger(TransformationResource.class);
 
-    private SirConfigurator config;
+    private SensorMLDecoder decoder;
+
+    private Converter converter;
+
+    private Set<ITransformer> transformers;
 
     @Inject
-    public TransformationResource(SirConfigurator config) {
-        this.gson = new Gson();
-        this.config = config;
+    public TransformationResource(Set<ITransformer> transformers) {
+        this.transformers = transformers;
+
+        this.decoder = new SensorMLDecoder();
+        this.converter = new Converter();
     }
 
-    private String toJsonString(String sensorML) throws XmlException {
-        SensorMLDocument document = SensorMLDocument.Factory.parse(sensorML);
-        return this.gson.toJson(document);
-    }
+    // private String toJsonString(String sensorML) throws XmlException {
+    // SensorMLDocument document = SensorMLDocument.Factory.parse(sensorML);
+    // return this.gson.toJson(document);
+    // }
 
-    public Response toJson(String sensor) {
+    // public Response toJson(String sensor) {
+    // try {
+    // String response = toJsonString(sensor);
+    // return Response.ok(response).build();
+    // }
+    // catch (XmlException e) {
+    // return Response.ok("{ \"error\" : \"Cannot parse sensorML\" }").build();
+    // }
+    // }
+
+    private Response toEbrim(String sensor) {
+        SensorMLDocument sensorMLDocument;
         try {
-            String response = toJsonString(sensor);
-            return Response.ok(response).build();
+            sensorMLDocument = SensorMLDocument.Factory.parse(sensor);
         }
         catch (XmlException e) {
-            return Response.ok("{error:Cannot parse sensorML}").build();
+            log.error("Could not parse SensorML: " + sensor, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" "
+                    + e.getMessage() + "\" }").build();
         }
+
+        return toEbrim(sensorMLDocument);
     }
 
-    public Response toEbrim(String sensor) {
+    private Response toEbrim(SensorMLDocument sensorMLDocument) {
+        log.debug("Transforming SML to EbRim... SML: {} [...]", sensorMLDocument.xmlText().substring(0, 300));
+
+        ITransformer transformer = TransformerModule.getFirstMatchFor(this.transformers,
+                                                                      TransformableFormat.SML,
+                                                                      TransformableFormat.EBRIM);
+
         try {
-            ITransformer transformer = this.config.getInstance().getTransformerFactory().getSensorMLtoCatalogXMLTransformer();
-            return Response.ok(transformer.transform(SensorMLDocument.Factory.parse(sensor))).build();
+            XmlObject transformed = transformer.transform(sensorMLDocument);
+            // Document doc = (Document) transformed.getDomNode();
+            return Response.ok(transformed).build();
         }
         catch (XmlException | TransformerException | IOException e) {
-            return Response.ok("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" " + e.getMessage() + "\" }").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" "
+                    + e.getMessage() + "\" }").build();
         }
     }
 
     @POST
-    @ApiOperation(value = "Convert to a specific form", notes = "The output can be either json or ebrim")
-    public Response convertSensor(@FormParam("sensor")
-    String sensor, @FormParam("output")
-    String format) {
-        if (format.equals("json"))
-            return toJson(sensor);
-        return toEbrim(sensor);
+    @ApiOperation(value = "Convert sensor description to a specific form", notes = "The output can be json or ebrim.")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response convertSmlToJson(String data) {
+        log.debug("Transforming to json: {}", data);
+
+        try {
+            SensorMLDocument sml = SensorMLDocument.Factory.parse(data);
+
+            SirSensor decoded = this.decoder.decode(sml);
+
+            SearchResultElement converted = this.converter.convert(decoded, true);
+
+            return Response.ok(converted).build();
+        }
+        catch (XmlException e) {
+            log.error("Could not *parse* SensorML for transformation.", e);
+            return Response.serverError().entity("{\"error\" : \"" + e.getMessage() + "\" } ").build();
+        }
+        catch (OwsExceptionReport e) {
+            log.error("Could not *decode* SensorML for transformation.", e);
+            return Response.serverError().entity("{\"error\" : \"" + e.getMessage() + "\" } ").build();
+        }
     }
+
+    @POST
+    @ApiOperation(value = "Convert sensor description to a specific form", notes = "The output can be json or ebrim.")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response convertSmlToEbrim(String data) {
+        log.debug("Transforming to xml: {}", data.substring(0, 1000));
+
+        return toEbrim(data);
+    }
+
 }

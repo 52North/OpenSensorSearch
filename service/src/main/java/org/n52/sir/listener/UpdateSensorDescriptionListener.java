@@ -90,13 +90,15 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
 
         ArrayList<String> updatedSensors = new ArrayList<>();
 
+        SensorMLDecoder decoder = new SensorMLDecoder();
+
         try {
             for (SirDescriptionToBeUpdated descrToBeUpdated : sirRequest.getDescriptionToBeUpdated()) {
 
                 SirSensorIdentification sensorIdent = descrToBeUpdated.getSensorIdentification();
                 XmlObject sensorDescription = descrToBeUpdated.getSensorDescription();
 
-                SirSensor sensor = SensorMLDecoder.decode(sensorIdent, sensorDescription);
+                SirSensor sensor = decoder.decode(sensorIdent, sensorDescription);
                 sensor.setLastUpdate(new Date());
 
                 // UPDATE

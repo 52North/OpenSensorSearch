@@ -50,7 +50,6 @@ import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.licenses.License;
 import org.n52.sir.licenses.Licenses;
-import org.n52.sir.xml.ITransformerFactory;
 import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +72,7 @@ public class SirConfigurator {
 
     private static final String ACCEPTED_SERVICE_VERSIONS = "oss.sir.acceptedVersions";
 
-    private static final String CAPABILITIESSKELETON_FILENAME = "CAPABILITIESSKELETON_FILENAME";
+    private static final String CAPABILITIESSKELETON_FILENAME = "oss.sir.capabilities.skeleton";
 
     private static final String CATALOGFACTORY = "oss.sir.catalog.csw.factoryImpl";
 
@@ -128,8 +127,6 @@ public class SirConfigurator {
 
     private static final int THREAD_POOL_SIZE = 10;
 
-    private static final String TRANSFORMERFACTORY = "TRANSFORMERFACTORY";
-
     private static final String VALIDATE_XML_REQUESTS = "VALIDATE_XML_REQUESTS";
 
     private static final String VALIDATE_XML_RESPONSES = "VALIDATE_XML_RESPONSES";
@@ -137,8 +134,6 @@ public class SirConfigurator {
     private static final String VALIDATORFACTORY = "VALIDATORFACTORY";
 
     private static final String VERSION_SPLIT_CHARACTER = ",";
-
-    private static final String XSTL_DIRECTORY = "XSTL_DIRECTORY";
 
     private static final String SCRIPTS_PATH = "SCRIPTS_PATH";
 
@@ -214,18 +209,17 @@ public class SirConfigurator {
 
     private String testRequestPath;
 
-    private ITransformerFactory transformerFactory;
-
     private String ScriptsPath;
-    public LinkedHashMap<String,License> getLicenses() {
-		return licenses;
-	}
 
-	public void setLicenses(LinkedHashMap<String,License> licenses) {
-		this.licenses = licenses;
-	}
+    public LinkedHashMap<String, License> getLicenses() {
+        return licenses;
+    }
 
-	private LinkedHashMap<String,License> licenses;
+    public void setLicenses(LinkedHashMap<String, License> licenses) {
+        this.licenses = licenses;
+    }
+
+    private LinkedHashMap<String, License> licenses;
 
     private String updateSequence;
 
@@ -489,13 +483,6 @@ public class SirConfigurator {
     }
 
     /**
-     * @return the transformerFactory
-     */
-    public ITransformerFactory getTransformerFactory() {
-        return this.transformerFactory;
-    }
-
-    /**
      * @return the updateSequence
      */
     public String getUpdateSequence() {
@@ -606,33 +593,31 @@ public class SirConfigurator {
         // initialize status handler
         initializeStatusHandler(this.props);
 
-        // initialize transformer
-        initializeTransformerFactory(this.props);
-
         // initialize validator
         initializeValidatorFactory(this.props);
 
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
     }
 
-    private LinkedHashMap<String,License> initializeLicenses() {
+    private LinkedHashMap<String, License> initializeLicenses() {
         try (InputStream licensesStream = SirConfigurator.class.getResourceAsStream("/prop/licenses.json");) {
 
-    	LinkedHashMap<String, License> licensesMap = new LinkedHashMap<>();
-    	Gson gson = new Gson();
-		Licenses list = gson.fromJson(new InputStreamReader(licensesStream),Licenses.class);
-		List<License> licenses = list.licenses;
-		
-		for(int i=0;i<licenses.size();i++){
-			License l = licenses.get(i);
-			licensesMap.put(l.code,l);
-		}
-		log.info("The list of licenses initialized successfully! {}",list);
-		return licensesMap; 
-        } catch (IOException e) {
-        	log.error("Cannot load licesnes",e);
-        	return null;
-		}
+            LinkedHashMap<String, License> licensesMap = new LinkedHashMap<>();
+            Gson gson = new Gson();
+            Licenses list = gson.fromJson(new InputStreamReader(licensesStream), Licenses.class);
+            List<License> licenses = list.licenses;
+
+            for (int i = 0; i < licenses.size(); i++) {
+                License l = licenses.get(i);
+                licensesMap.put(l.code, l);
+            }
+            log.info("The list of licenses initialized successfully! {}", list);
+            return licensesMap;
+        }
+        catch (IOException e) {
+            log.error("Cannot load licesnes", e);
+            return null;
+        }
     }
 
     private void initializeCatalogFactory(Properties sirProps) throws OwsExceptionReport {
@@ -692,7 +677,7 @@ public class SirConfigurator {
             log.error("Error while loading catalog factory, required class could not be loaded.", e);
             throw new OwsExceptionReport(e.getMessage(), e.getCause());
         }
-        }
+    }
 
     private String getAbsolutePath(String file) {
         try {
@@ -700,13 +685,13 @@ public class SirConfigurator {
             Path p = Paths.get(r.toURI());
             String s = p.toAbsolutePath().toString();
             return s;
-            }
+        }
         catch (URISyntaxException e) {
             log.error("Could not load resource " + file, e);
         }
 
         return file;
-        }
+    }
 
     private void initializeHttpGetRequestDecoder(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(GETREQUESTDECODER);
@@ -735,7 +720,7 @@ public class SirConfigurator {
             log.error("Error while loading GET RequestDecoder", e);
             throw new OwsExceptionReport(e.getMessage(), e.getCause());
         }
-        }
+    }
 
     private void initializeHttpPostRequestDecoder(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(POSTREQUESTDECODER);
@@ -765,7 +750,7 @@ public class SirConfigurator {
             log.error("Error while loading POST RequestDecoder", e);
             throw new OwsExceptionReport(e.getMessage(), e.getCause());
         }
-        }
+    }
 
     private void initializeStatusHandler(Properties sirProps) throws OwsExceptionReport {
         String className = sirProps.getProperty(STATUS_HANDLER);
@@ -793,36 +778,7 @@ public class SirConfigurator {
             log.error("Error while loading catalogStatusHandler.", e);
             throw new OwsExceptionReport(e.getMessage(), e.getCause());
         }
-        }
-
-    private void initializeTransformerFactory(Properties p) throws OwsExceptionReport {
-        String xsltDir = p.getProperty(XSTL_DIRECTORY);
-        String className = p.getProperty(TRANSFORMERFACTORY);
-        try {
-            if (className == null) {
-                log.error("No transformer factory implementation is set in the config file!");
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "SirConfigurator.initializeHttpPostRequestDecoder()",
-                                     "No postRequestDecoder Implementation is set in the config file!");
-                throw se;
-            }
-            // get Class of the httpGetRequestDecoderClass Implementation
-            Class<ITransformerFactory> transformerFactoryClass = (Class<ITransformerFactory>) Class.forName(className);
-
-            // get Constructor of this class with matching parameter types
-            Constructor<ITransformerFactory> constructor = transformerFactoryClass.getConstructor(String.class);
-
-            this.transformerFactory = constructor.newInstance(this.basepath + xsltDir);
-
-            log.info(" ***** " + className + " loaded successfully! Using files from folder " + this.basepath + xsltDir
-                    + ". ***** ");
-        }
-        catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException
-                | ClassNotFoundException e) {
-            throw new OwsExceptionReport(e.getMessage(), e.getCause());
-        }
-        }
+    }
 
     private void initializeValidatorFactory(Properties p) throws OwsExceptionReport {
         String className = p.getProperty(VALIDATORFACTORY);
@@ -850,7 +806,7 @@ public class SirConfigurator {
             log.error("Error while loading validator factory.", e);
             throw new OwsExceptionReport(e.getMessage(), e.getCause());
         }
-        }
+    }
 
     public boolean isExtendedDebugToConsole() {
         return this.extendedDebugToConsole;

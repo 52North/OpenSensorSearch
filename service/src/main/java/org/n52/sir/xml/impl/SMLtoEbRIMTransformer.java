@@ -18,9 +18,8 @@ package org.n52.sir.xml.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,7 +48,6 @@ import org.n52.oss.sir.SMLConstants;
 import org.n52.oss.sir.api.SirSensorDescription;
 import org.n52.oss.sir.api.SirXmlSensorDescription;
 import org.n52.oss.util.XmlTools;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.xml.ITransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +58,9 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * 
@@ -77,11 +78,7 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;
 public class SMLtoEbRIMTransformer implements ITransformer {
 
     /**
-     * 
      * Class catches {@link SAXParseException}s and is used during validated transformation.
-     * 
-     * @author Daniel Nüst
-     * 
      */
     protected static class ParseExceptionHandler extends DefaultHandler {
 
@@ -102,8 +99,6 @@ public class SMLtoEbRIMTransformer implements ITransformer {
 
     private static Logger log = LoggerFactory.getLogger(SMLtoEbRIMTransformer.class);
 
-    private static final String TESTING_ENCODING = "UTF-8";
-
     private static TransformerFactory tFactory = TransformerFactory.newInstance();
 
     public static final String TRANSFORMATION_FILE_NAME = "SensorML-to-ebRIM.xsl";
@@ -120,29 +115,40 @@ public class SMLtoEbRIMTransformer implements ITransformer {
 
     /**
      * 
-     * @param xsltDirPath
+     * @param xsltDir
      *        the directory with the XSLT transformation files needed
+     * @param validate
+     *        validation of inputs and outputs
      * @throws InstantiationError
      */
-    public SMLtoEbRIMTransformer(Path xsltDirPath) throws InstantiationError {
-        Path p = Paths.get(xsltDirPath.toString(), TRANSFORMATION_FILE_NAME);
-        this.xsltSource = new StreamSource(p.toString());
+    @Inject
+    public SMLtoEbRIMTransformer(@Named("oss.transform.xsltDir")
+    String xsltDir, @Named("oss.transform.validate")
+    boolean validate) throws InstantiationError {
+        this.validating = validate;
 
-        try {
+        String path = xsltDir + TRANSFORMATION_FILE_NAME;
+
+        // http://stackoverflow.com/questions/3699860/resolving-relative-paths-when-loading-xslt-files
+        try (InputStream is = SMLtoEbRIMTransformer.class.getResourceAsStream(path);) {
+            tFactory.setErrorListener(new LogErrorListener());
+            // URIResolver uriResolver = tFactory.getURIResolver();
+            ClasspathResourceURIResolver ur = new ClasspathResourceURIResolver(xsltDir);
+            tFactory.setURIResolver(ur);
+
+            log.debug("Loading transformation file from path: {}, is: {}, with URI resolver: {}", path, is, ur);
+
+            this.xsltSource = new StreamSource(is);
             this.transformer = tFactory.newTransformer(this.xsltSource);
             this.transformer.setOutputProperty(OutputKeys.INDENT, INDENT_OUTPUT_PROPERTY_VALUE);
-            SirConfigurator configurator = SirConfigurator.getInstance();
-            if (configurator != null) {
-                this.transformer.setOutputProperty(OutputKeys.ENCODING,
-                                                   SirConfigurator.getInstance().getCharacterEncoding());
-            }
-            else {
-                this.transformer.setOutputProperty(OutputKeys.ENCODING, TESTING_ENCODING);
-            }
+            this.transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
         }
-        catch (TransformerConfigurationException e) {
+        catch (Exception e) {
+            log.error("Could not create transformer, path: {}", path, e);
             throw new InstantiationError("Could not instantiate Transformer from file " + this.xsltSource);
         }
+
+        log.info("NEW {}", this);
     }
 
     /**
@@ -163,13 +169,27 @@ public class SMLtoEbRIMTransformer implements ITransformer {
         log.debug("Start transforming SensorMLDocument: {}", XmlTools.inspect(smlDoc));
 
         // encapsulate input document in a Source
-        Source input = new DOMSource(smlDoc.getDomNode());
+        // Source input = new DOMSource(smlDoc.getDomNode());
 
-        // create output string
+        // transform input to DOM Level 3 capable instance
+        // https://issues.apache.org/jira/browse/XMLBEANS-100
+
         try (StringWriter sw = new StringWriter();) {
-            StreamResult output = new StreamResult(sw);
+
+            // trying to wrap in DOM 3 Object > NOT WORKING
+            /*
+             * Document inputDoc = (Document) smlDoc.getDomNode(); DocumentBuilder builder =
+             * DocumentBuilderFactory.newInstance().newDocumentBuilder(); Document document =
+             * builder.newDocument(); Node newRoot = document.importNode(inputDoc.getDocumentElement(), true);
+             * document.appendChild(newRoot); Source input = new DOMSource(document); StreamResult output =
+             * new StreamResult(sw);
+             */
+
+            // do not use DOM at all:
+            StreamSource input = new StreamSource(smlDoc.newReader());
 
             // do the transformation
+            StreamResult output = new StreamResult(sw);
             this.transformer.transform(input, output);
 
             // create output document
@@ -182,9 +202,9 @@ public class SMLtoEbRIMTransformer implements ITransformer {
             output = null;
             outputString = null;
 
-            if (SirConfigurator.getInstance().isValidateRequests()) {
+            if (this.validating) {
                 if ( !regPackDoc.validate()) {
-                    log.warn("Created RegistryPackageDocument is not valid!");
+                    log.warn("Created RegistryPackageDocument is not valid! {}", XmlTools.inspect(regPackDoc));
                 }
             }
 
@@ -346,6 +366,16 @@ public class SMLtoEbRIMTransformer implements ITransformer {
 
         log.error("TransformerFactory does not support required SAXSource.FEATURE");
         throw new TransformerConfigurationException("TransformerFactory does not support required SAXSource.FEATURE");
+    }
+
+    @Override
+    public boolean acceptsInput(TransformableFormat input) {
+        return input.equals(TransformableFormat.SML);
+    }
+
+    @Override
+    public boolean producesOutput(TransformableFormat output) {
+        return output.equals(TransformableFormat.EBRIM);
     }
 
 }

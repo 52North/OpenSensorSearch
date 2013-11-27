@@ -23,6 +23,7 @@ import org.n52.oss.opensearch.listeners.OpenSearchTools;
 import org.n52.oss.sir.api.SirBoundingBox;
 import org.n52.oss.sir.api.SirDetailedSensorDescription;
 import org.n52.oss.sir.api.SirSearchResultElement;
+import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirService;
 import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.api.SirSimpleSensorDescription;
@@ -110,6 +111,45 @@ public class Converter {
             SimpleSensorDescription sd = new SimpleSensorDescription(d.getSensorDescriptionURL(), text, bbox);
             sre.setSensorDescription(sd);
         }
+
+        return sre;
+    }
+
+    public SearchResultElement convert(SirSensor decoded, boolean detailed) {
+        SearchResultElement sre = new SearchResultElement();
+
+        sre.setSensorId(decoded.getInternalSensorID());
+        // sre.setLastUpdate(.getLastUpdate());
+
+        Collection<ServiceReference> sr = new ArrayList<>();
+        // Collection<SirServiceReference> serviceReferences = decoded.get
+
+        // if (serviceReferences != null) {
+        // for (SirServiceReference sirServiceReference : serviceReferences) {
+        // SirService service = sirServiceReference.getService();
+        // sr.add(new ServiceReference(new Service(service.getUrl(), service.getType()),
+        // sirServiceReference.getServiceSpecificSensorId()));
+        // }
+        // sre.setServiceReferences(sr);
+        // }
+
+        // if (sirSearchResultElement.getSensorDescription() instanceof SirSimpleSensorDescription) {
+        // SirSimpleSensorDescription d = (SirSimpleSensorDescription)
+        // sirSearchResultElement.getSensorDescription();
+        //
+        // SirBoundingBox b = d.getBoundingBox();
+        // BoundingBox bbox = null;
+        // if (b != null) {
+        // bbox = new BoundingBox(b.getEast(), b.getSouth(), b.getWest(), b.getNorth());
+        // bbox.setSrid(b.getSrid());
+        // }
+        //
+        // String text = OpenSearchTools.extractDescriptionText(d);
+        // SimpleSensorDescription sd = new SimpleSensorDescription(d.getSensorDescriptionURL(), text, bbox);
+        // sre.setSensorDescription(sd);
+        // }
+
+        // TODO implement conversion to Json
 
         return sre;
     }

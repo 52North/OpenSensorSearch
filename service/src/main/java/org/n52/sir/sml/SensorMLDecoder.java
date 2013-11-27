@@ -89,10 +89,6 @@ public class SensorMLDecoder {
     private static final ArrayList<String> Y_AXIS_IDENTIFIERS = new ArrayList<>(Arrays.asList(new String[] {"y",
                                                                                                             "northing"}));
 
-    /**
-     * @param classifications
-     * @return
-     */
     private static String createClassificationString(Classification[] classifications) {
         StringBuilder sbClass = new StringBuilder();
         sbClass.append("Classifications: ");
@@ -112,11 +108,6 @@ public class SensorMLDecoder {
         return sbClass.toString();
     }
 
-    /**
-     * 
-     * @param identifications
-     * @return
-     */
     private static String createIdentifierString(Identification[] identifications) {
         StringBuilder sbIdent = new StringBuilder();
         sbIdent.append("Identifications: ");
@@ -136,11 +127,6 @@ public class SensorMLDecoder {
         return sbIdent.toString();
     }
 
-    /**
-     * 
-     * @param keywords
-     * @return
-     */
     private static String createKeywordsString(Keywords[] keywords) {
         StringBuilder sbKeywords = new StringBuilder();
         sbKeywords.append("Keywords: ");
@@ -156,13 +142,7 @@ public class SensorMLDecoder {
         return sbKeywords.toString();
     }
 
-    /**
-     * 
-     * @param sensorML
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public static SirSensor decode(SensorMLDocument sensorML) throws OwsExceptionReport {
+    public SirSensor decode(SensorMLDocument sensorML) throws OwsExceptionReport {
         SirSensor sensor = new SirSensor();
 
         // TODO check how this creates the identification part...
@@ -186,158 +166,6 @@ public class SensorMLDecoder {
         return sensor;
     }
 
-    private static Collection<String> getOutputs(SensorMLDocument sensorML) {
-        List<String> output_results = new ArrayList<>();
-        if (sensorML.getSensorML().getMemberArray().length != 0) {
-            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
-            Outputs inputs = type.getOutputs();
-            OutputList list = inputs.getOutputList();
-            IoComponentPropertyType[] outputsarr = list.getOutputArray();
-            for (int i = 0; i < outputsarr.length; i++) {
-                StringBuilder builder = new StringBuilder();
-                builder.append(outputsarr[i].getName());
-                builder.append(" ");
-                if (outputsarr[i].getQuantity() != null)
-                    builder.append(outputsarr[i].getQuantity().getUom().getCode().toString());
-                output_results.add(builder.toString());
-            }
-        }
-        return output_results;
-
-    }
-
-    private static Collection<String> getInputs(SensorMLDocument sensorML) {
-        List<String> inputs_results = new ArrayList<>();
-        if (sensorML.getSensorML().getMemberArray().length != 0) {
-            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
-            Inputs inputs = type.getInputs();
-            InputList list = inputs.getInputList();
-            IoComponentPropertyType[] inputsarr = list.getInputArray();
-            for (int i = 0; i < inputsarr.length; i++) {
-                StringBuilder builder = new StringBuilder();
-                builder.append(inputsarr[i].getName());
-                builder.append(" ");
-                if (inputsarr[i].getQuantity() != null)
-                    builder.append(inputsarr[i].getQuantity().getUom().getCode().toString());
-                inputs_results.add(builder.toString());
-            }
-        }
-        return inputs_results;
-
-    }
-
-    private static Collection<String> getInterfaces(SensorMLDocument sensorML) {
-        List<String> interfaces_result = new ArrayList<>();
-        if (sensorML.getSensorML().getMemberArray().length != 0) {
-            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
-            Interfaces interfaces = type.getInterfaces();
-            if (interfaces == null)
-                return null;
-            InterfaceList list = interfaces.getInterfaceList();
-            if (list == null)
-                return null;
-            Interface[] interfacearr = list.getInterfaceArray();
-            for (int i = 0; i < interfacearr.length; i++) {
-                DataRecordType t = (DataRecordType) (interfacearr[i].getInterfaceDefinition().getServiceLayer().getAbstractDataRecord());
-                DataComponentPropertyType fields[] = t.getFieldArray();
-                for (int j = 0; j < fields.length; j++)
-                    interfaces_result.add(fields[j].getText().getValue().toString());
-            }
-        }
-        return interfaces_result;
-    }
-
-    private static Collection<String> getContacts(SensorMLDocument sensorML) {
-        List<String> contacts = new ArrayList<>();
-        if (sensorML.getSensorML().getMemberArray().length != 0) {
-            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
-            contacts.addAll(getContacts(type));
-        }
-
-        return contacts;
-    }
-
-    private static Collection<Object> getIdentificationList(SensorMLDocument sensorML) {
-        List<Object> identifications = new ArrayList<>();
-        if (sensorML.getSensorML().getMemberArray().length != 0) {
-            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
-            identifications.addAll(getIdentificationList(type));
-        }
-
-        return identifications;
-
-    }
-
-    private static Object getClassificationList(SensorMLDocument sensorML) {
-        List<String> classifications = new ArrayList<>();
-        if (sensorML.getSensorML().getMemberArray().length != 0) {
-            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
-            return getClassificationList(type);
-        }
-        return classifications;
-    }
-
-    private static Object getDescription(SensorMLDocument sensorML) {
-        if (sensorML.getSensorML().getMemberArray().length == 0)
-            return "";
-        SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
-        return getDescription(type);
-    }
-
-    private static String getLatitude(SensorMLDocument sensorML) {
-        if (sensorML.getSensorML().getMemberArray().length == 0)
-            return "";
-        SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
-        if (type.getPosition() == null)
-            return "";
-        return getLatitude(type);
-    }
-
-    private static String getLongitude(SensorMLDocument sensorML) {
-        if (sensorML.getSensorML().getMemberArray().length == 0)
-            return "";
-        SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
-        if (type.getPosition() == null)
-            return "";
-        return getLongitude(type);
-    }
-
-    private static Collection<String> getKeywords(SensorMLDocument sensorML) {
-        return getKeywords(sensorML.getSensorML());
-    }
-
-    private static Collection<String> getKeywords(SensorML sensorML) {
-        ArrayList<String> keywords = new ArrayList<>();
-
-        // sensorML.getSensorML().getMemberArray()[0].getProcess().getKeywordsArray()
-        Member[] members = sensorML.getMemberArray();
-
-        Member member = members[0];
-        if (member.getProcess() instanceof SystemType) {
-            SystemType system = (SystemType) member.getProcess();
-            Collection<String> systemsKeywords = getKeywords(system);
-
-            keywords.addAll(systemsKeywords);
-        }
-
-        return keywords;
-    }
-
-    private static Collection<String> getKeywords(SystemType system) {
-        ArrayList<String> keywordList = new ArrayList<>();
-
-        Keywords[] keywords = system.getKeywordsArray();
-        for (Keywords k : keywords) {
-            String[] kwArray = k.getKeywordList().getKeywordArray();
-
-            for (String currentKeyword : kwArray) {
-                keywordList.add(currentKeyword);
-            }
-        }
-
-        return keywordList;
-    }
-
     /**
      * 
      * decodes the given sensor description and also adds the given identification to the returned SirSensor
@@ -348,7 +176,7 @@ public class SensorMLDecoder {
      * @return
      * @throws OwsExceptionReport
      */
-    public static SirSensor decode(SirSensorIdentification sensorIdent, XmlObject sensorDescription) throws OwsExceptionReport {
+    public SirSensor decode(SirSensorIdentification sensorIdent, XmlObject sensorDescription) throws OwsExceptionReport {
         SirSensor sensor = decode(sensorDescription);
 
         if (sensorIdent instanceof InternalSensorID) {
@@ -359,12 +187,6 @@ public class SensorMLDecoder {
         return sensor;
     }
 
-    /**
-     * 
-     * @param system
-     * @return
-     * @throws OwsExceptionReport
-     */
     public static SirSensor decode(SystemType system) throws OwsExceptionReport {
         SirSensor sensor = new SirSensor();
 
@@ -393,100 +215,7 @@ public class SensorMLDecoder {
         return sensor;
     }
 
-    private static Collection<String> getContacts(SystemType system) {
-        Collection<String> contacts = new ArrayList<>();
-        Contact[] contactsarr = system.getContactArray();
-        for (Contact m : contactsarr) {
-            if (m.getPerson() != null) {
-                Person p = m.getPerson();
-                contacts.add(p.getName());
-                contacts.add(p.getEmail());
-                contacts.add(p.getPhoneNumber());
-            }
-            if (m.getResponsibleParty() != null) {
-                ResponsibleParty party = m.getResponsibleParty();
-                contacts.add(party.getIndividualName());
-                contacts.add(party.getOrganizationName());
-            }
-        }
-        return contacts;
-
-    }
-
-    private static Collection<Object> getIdentificationList(SystemType system) {
-        Collection<Object> identifications = new ArrayList<>();
-        Identification[] ids = system.getIdentificationArray();
-        for (Identification id : ids) {
-            Identifier[] iden = id.getIdentifierList().getIdentifierArray();
-            for (int i = 0; i < iden.length; i++)
-                identifications.add(iden[i].getTerm().getValue());
-        }
-        return identifications;
-
-    }
-
-    private static Object getClassificationList(SystemType system) {
-        List<String> classifications = new ArrayList<>();
-        Classification cs[] = system.getClassificationArray();
-        for (Classification c : cs)
-            classifications.add(c.getClassifierList().getId());
-        return classifications;
-
-    }
-
-    private static String getLongitude(SystemType system) {
-        PositionType p = system.getPosition().getPosition();
-        if (p == null)
-            return "";
-        VectorType vector = (p.getLocation().getVector());
-        if (vector == null)
-            return "";
-        Coordinate[] coordinates = vector.getCoordinateArray();
-        if (coordinates.length == 0)
-            return "";
-        StringBuilder latitude = new StringBuilder();
-        for (Coordinate cord : coordinates) {
-            if (cord.getName().equals("longitude")) {
-                latitude.append(cord.getQuantity().getValue());
-                break;
-            }
-        }
-        return latitude.toString();
-    }
-
-    private static String getLatitude(SystemType system) {
-        PositionType p = system.getPosition().getPosition();
-        if (p == null)
-            return "";
-        VectorType vector = (p.getLocation().getVector());
-        if (vector == null)
-            return "";
-        Coordinate[] coordinates = vector.getCoordinateArray();
-        if (coordinates.length == 0)
-            return "";
-        StringBuilder latitude = new StringBuilder();
-        for (Coordinate cord : coordinates) {
-            if (cord.getName().equals("latitude")) {
-                latitude.append(cord.getQuantity().getValue());
-                break;
-            }
-        }
-        return latitude.toString();
-
-    }
-
-    private static Object getDescription(SystemType system) {
-        // TODO Auto-generated method stub
-        return system.getDescription().getStringValue();
-    }
-
-    /**
-     * 
-     * @param sensorML
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public static SirSensor decode(XmlObject sensorML) throws OwsExceptionReport {
+    public SirSensor decode(XmlObject sensorML) throws OwsExceptionReport {
         // check if sensoML is a standalone sensor description or a
         // sir:sensorDescription
         if (sensorML instanceof SystemType) {
@@ -539,11 +268,6 @@ public class SensorMLDecoder {
         return decode(sensorMLDocument);
     }
 
-    /**
-     * 
-     * @param sensDoc
-     * @return
-     */
     private static SirBoundingBox getBoundingBox(SensorMLDocument sensDoc) {
         SirBoundingBox bb = new SirBoundingBox(Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MIN_VALUE);
 
@@ -557,11 +281,6 @@ public class SensorMLDecoder {
         return bb;
     }
 
-    /**
-     * 
-     * @param system
-     * @return
-     */
     private static SirBoundingBox getBoundingBox(SystemType system) {
         Capabilities[] capabilitiesArray = system.getCapabilitiesArray();
         for (Capabilities capabilities : capabilitiesArray) {
@@ -603,11 +322,244 @@ public class SensorMLDecoder {
         return null;
     }
 
-    /**
-     * 
-     * @param system
-     * @return
-     */
+    private static Object getClassificationList(SensorMLDocument sensorML) {
+        List<String> classifications = new ArrayList<>();
+        if (sensorML.getSensorML().getMemberArray().length != 0) {
+            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
+            return getClassificationList(type);
+        }
+        return classifications;
+    }
+
+    private static Object getClassificationList(SystemType system) {
+        List<String> classifications = new ArrayList<>();
+        Classification cs[] = system.getClassificationArray();
+        for (Classification c : cs)
+            classifications.add(c.getClassifierList().getId());
+        return classifications;
+
+    }
+
+    private static Collection<String> getContacts(SensorMLDocument sensorML) {
+        List<String> contacts = new ArrayList<>();
+        if (sensorML.getSensorML().getMemberArray().length != 0) {
+            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
+            contacts.addAll(getContacts(type));
+        }
+
+        return contacts;
+    }
+
+    private static Collection<String> getContacts(SystemType system) {
+        Collection<String> contacts = new ArrayList<>();
+        Contact[] contactsarr = system.getContactArray();
+        for (Contact m : contactsarr) {
+            if (m.getPerson() != null) {
+                Person p = m.getPerson();
+                contacts.add(p.getName());
+                contacts.add(p.getEmail());
+                contacts.add(p.getPhoneNumber());
+            }
+            if (m.getResponsibleParty() != null) {
+                ResponsibleParty party = m.getResponsibleParty();
+                contacts.add(party.getIndividualName());
+                contacts.add(party.getOrganizationName());
+            }
+        }
+        return contacts;
+
+    }
+
+    private static Object getDescription(SensorMLDocument sensorML) {
+        if (sensorML.getSensorML().getMemberArray().length == 0)
+            return "";
+        SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
+        return getDescription(type);
+    }
+
+    private static Object getDescription(SystemType system) {
+        return system.getDescription().getStringValue();
+    }
+
+    private static Collection<Object> getIdentificationList(SensorMLDocument sensorML) {
+        List<Object> identifications = new ArrayList<>();
+        if (sensorML.getSensorML().getMemberArray().length != 0) {
+            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
+            identifications.addAll(getIdentificationList(type));
+        }
+
+        return identifications;
+
+    }
+
+    private static Collection<Object> getIdentificationList(SystemType system) {
+        Collection<Object> identifications = new ArrayList<>();
+        Identification[] ids = system.getIdentificationArray();
+        for (Identification id : ids) {
+            Identifier[] iden = id.getIdentifierList().getIdentifierArray();
+            for (int i = 0; i < iden.length; i++)
+                identifications.add(iden[i].getTerm().getValue());
+        }
+        return identifications;
+
+    }
+
+    private static Collection<String> getInputs(SensorMLDocument sensorML) {
+        List<String> inputs_results = new ArrayList<>();
+        if (sensorML.getSensorML().getMemberArray().length != 0) {
+            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
+            Inputs inputs = type.getInputs();
+            InputList list = inputs.getInputList();
+            IoComponentPropertyType[] inputsarr = list.getInputArray();
+            for (int i = 0; i < inputsarr.length; i++) {
+                StringBuilder builder = new StringBuilder();
+                builder.append(inputsarr[i].getName());
+                builder.append(" ");
+                if (inputsarr[i].getQuantity() != null)
+                    builder.append(inputsarr[i].getQuantity().getUom().getCode().toString());
+                inputs_results.add(builder.toString());
+            }
+        }
+        return inputs_results;
+
+    }
+
+    private static Collection<String> getInterfaces(SensorMLDocument sensorML) {
+        List<String> interfaces_result = new ArrayList<>();
+        if (sensorML.getSensorML().getMemberArray().length != 0) {
+            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
+            Interfaces interfaces = type.getInterfaces();
+            if (interfaces == null)
+                return null;
+            InterfaceList list = interfaces.getInterfaceList();
+            if (list == null)
+                return null;
+            Interface[] interfacearr = list.getInterfaceArray();
+            for (int i = 0; i < interfacearr.length; i++) {
+                DataRecordType t = (DataRecordType) (interfacearr[i].getInterfaceDefinition().getServiceLayer().getAbstractDataRecord());
+                DataComponentPropertyType fields[] = t.getFieldArray();
+                for (int j = 0; j < fields.length; j++)
+                    interfaces_result.add(fields[j].getText().getValue().toString());
+            }
+        }
+        return interfaces_result;
+    }
+
+    private static Collection<String> getKeywords(SensorML sensorML) {
+        ArrayList<String> keywords = new ArrayList<>();
+
+        // sensorML.getSensorML().getMemberArray()[0].getProcess().getKeywordsArray()
+        Member[] members = sensorML.getMemberArray();
+
+        Member member = members[0];
+        if (member.getProcess() instanceof SystemType) {
+            SystemType system = (SystemType) member.getProcess();
+            Collection<String> systemsKeywords = getKeywords(system);
+
+            keywords.addAll(systemsKeywords);
+        }
+
+        return keywords;
+    }
+
+    private static Collection<String> getKeywords(SensorMLDocument sensorML) {
+        return getKeywords(sensorML.getSensorML());
+    }
+
+    private static Collection<String> getKeywords(SystemType system) {
+        ArrayList<String> keywordList = new ArrayList<>();
+
+        Keywords[] keywords = system.getKeywordsArray();
+        for (Keywords k : keywords) {
+            String[] kwArray = k.getKeywordList().getKeywordArray();
+
+            for (String currentKeyword : kwArray) {
+                keywordList.add(currentKeyword);
+            }
+        }
+
+        return keywordList;
+    }
+
+    private static String getLatitude(SensorMLDocument sensorML) {
+        if (sensorML.getSensorML().getMemberArray().length == 0)
+            return "";
+        SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
+        if (type.getPosition() == null)
+            return "";
+        return getLatitude(type);
+    }
+
+    private static String getLatitude(SystemType system) {
+        PositionType p = system.getPosition().getPosition();
+        if (p == null)
+            return "";
+        VectorType vector = (p.getLocation().getVector());
+        if (vector == null)
+            return "";
+        Coordinate[] coordinates = vector.getCoordinateArray();
+        if (coordinates.length == 0)
+            return "";
+        StringBuilder latitude = new StringBuilder();
+        for (Coordinate cord : coordinates) {
+            if (cord.getName().equals("latitude")) {
+                latitude.append(cord.getQuantity().getValue());
+                break;
+            }
+        }
+        return latitude.toString();
+
+    }
+
+    private static String getLongitude(SensorMLDocument sensorML) {
+        if (sensorML.getSensorML().getMemberArray().length == 0)
+            return "";
+        SystemType type = (SystemType) sensorML.getSensorML().getMemberArray(0).getProcess();
+        if (type.getPosition() == null)
+            return "";
+        return getLongitude(type);
+    }
+
+    private static String getLongitude(SystemType system) {
+        PositionType p = system.getPosition().getPosition();
+        if (p == null)
+            return "";
+        VectorType vector = (p.getLocation().getVector());
+        if (vector == null)
+            return "";
+        Coordinate[] coordinates = vector.getCoordinateArray();
+        if (coordinates.length == 0)
+            return "";
+        StringBuilder latitude = new StringBuilder();
+        for (Coordinate cord : coordinates) {
+            if (cord.getName().equals("longitude")) {
+                latitude.append(cord.getQuantity().getValue());
+                break;
+            }
+        }
+        return latitude.toString();
+    }
+
+    private static Collection<String> getOutputs(SensorMLDocument sensorML) {
+        List<String> output_results = new ArrayList<>();
+        if (sensorML.getSensorML().getMemberArray().length != 0) {
+            SystemType type = (SystemType) sensorML.getSensorML().getMemberArray()[0].getProcess();
+            Outputs inputs = type.getOutputs();
+            OutputList list = inputs.getOutputList();
+            IoComponentPropertyType[] outputsarr = list.getOutputArray();
+            for (int i = 0; i < outputsarr.length; i++) {
+                StringBuilder builder = new StringBuilder();
+                builder.append(outputsarr[i].getName());
+                builder.append(" ");
+                if (outputsarr[i].getQuantity() != null)
+                    builder.append(outputsarr[i].getQuantity().getUom().getCode().toString());
+                output_results.add(builder.toString());
+            }
+        }
+        return output_results;
+
+    }
+
     private static ArrayList<SirPhenomenon> getPhenomenon(SystemType system) {
         ArrayList<SirPhenomenon> phenomenona = new ArrayList<>();
 
@@ -641,11 +593,6 @@ public class SensorMLDecoder {
         return phenomenona;
     }
 
-    /**
-     * 
-     * @param sensDoc
-     * @return
-     */
     private static ArrayList<SirPhenomenon> getPhenomenona(SensorMLDocument sensDoc) {
         ArrayList<SirPhenomenon> phenomenona = new ArrayList<>();
 
@@ -680,21 +627,12 @@ public class SensorMLDecoder {
         return texts;
     }
 
-    /**
-     * 
-     * @param sensDoc
-     * @return
-     */
     private static Collection<String> getText(SensorMLDocument sensDoc) {
         return getText(sensDoc.getSensorML());
     }
 
     /**
-     * 
      * method handles the extraction of string descriptions
-     * 
-     * @param system
-     * @return
      */
     private static Collection<String> getText(SystemType system) {
         Collection<String> texts = new ArrayList<>();
@@ -720,12 +658,6 @@ public class SensorMLDecoder {
         return texts;
     }
 
-    /**
-     * 
-     * @param sensDoc
-     * @return
-     * @throws OwsExceptionReport
-     */
     private static SirTimePeriod getTimePeriod(SensorMLDocument sensDoc) throws OwsExceptionReport {
         SirTimePeriod sirTimePeriod = null;
         Member[] members = sensDoc.getSensorML().getMemberArray();
@@ -741,12 +673,6 @@ public class SensorMLDecoder {
         return sirTimePeriod;
     }
 
-    /**
-     * 
-     * @param system
-     * @return
-     * @throws OwsExceptionReport
-     */
     private static SirTimePeriod getTimePeriod(SystemType system) throws OwsExceptionReport {
         SirTimePeriod sirTimePeriod = new SirTimePeriod();
 
@@ -797,11 +723,6 @@ public class SensorMLDecoder {
         return sirTimePeriod;
     }
 
-    /**
-     * 
-     * @param coordinates
-     * @return
-     */
     private static double[] getXYCoords(Coordinate[] coordinates) {
         double[] xy = new double[2];
 
@@ -820,11 +741,8 @@ public class SensorMLDecoder {
         return xy;
     }
 
-    /**
-     * 
-     */
-    private SensorMLDecoder() {
-        //
+    public SensorMLDecoder() {
+        log.info("NEW {}", this);
     }
 
 }

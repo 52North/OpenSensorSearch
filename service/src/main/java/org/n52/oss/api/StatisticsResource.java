@@ -41,7 +41,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @Singleton
 public class StatisticsResource {
 
-    private static Logger log = LoggerFactory.getLogger(UserAccessResource.class);
+    private static Logger log = LoggerFactory.getLogger(StatisticsResource.class);
 
     private IGetCapabilitiesDAO capabilitiesDao;
 

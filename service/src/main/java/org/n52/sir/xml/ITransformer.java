@@ -45,6 +45,10 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;
  */
 public interface ITransformer {
 
+    public static enum TransformableFormat {
+        SML, EBRIM;
+    }
+
     public static final boolean IS_VALIDATING_DEFAULT = true;
 
     public static final RegistryPackageDocument PROCESSING_ERROR_OBJECT = RegistryPackageDocument.Factory.newInstance();
@@ -66,5 +70,9 @@ public interface ITransformer {
     public abstract Result transform(String file) throws FileNotFoundException, TransformerException;
 
     public abstract XmlObject transform(SystemType copy) throws XmlException, TransformerException, IOException;
+
+    public abstract boolean acceptsInput(TransformableFormat input);
+
+    public abstract boolean producesOutput(TransformableFormat output);
 
 }

@@ -17,7 +17,7 @@
 	limitations under the License.
 
 -->
-<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	version="2.0"
 	xsi:schemaLocation="http://www.w3.org/1999/XSL/Transform http://www.w3.org/2007/schema-for-xslt20.xsd">
 

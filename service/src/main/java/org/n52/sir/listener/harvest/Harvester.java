@@ -210,7 +210,8 @@ public abstract class Harvester implements Callable<ISirResponse> {
         log.info("Sensor description is conform with discovery profile!");
 
         // set sensor
-        SirSensor sensor = SensorMLDecoder.decode(sensorMLDocument);
+        SensorMLDecoder decoder = new SensorMLDecoder();
+        SirSensor sensor = decoder.decode(sensorMLDocument);
 
         // set last update time
         sensor.setLastUpdate(new Date());

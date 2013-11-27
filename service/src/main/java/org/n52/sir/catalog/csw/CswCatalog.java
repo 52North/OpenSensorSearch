@@ -121,27 +121,15 @@ public class CswCatalog implements ICatalog {
 
     private IValidatorFactory validatorFactory;
 
-    /**
-     * 
-     * @param c
-     * @param classificationInitDocs
-     * @param slotInitDoc
-     */
-    public CswCatalog(SimpleSoapCswClient c, List<XmlObject> classificationInitDocs, XmlObject slotInitDoc) {
+    private ITransformer transformer;
+
+    public CswCatalog(SimpleSoapCswClient c,
+                      List<XmlObject> classificationInitDocs,
+                      XmlObject slotInitDoc,
+                      ITransformer transformer) {
         initialize(c, classificationInitDocs, slotInitDoc);
         this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
-    }
-
-    /**
-     * 
-     * @param client
-     * @param slotInitDoc
-     * @param classificationInitDoc
-     */
-    public CswCatalog(SimpleSoapCswClient c, XmlObject classificationInitDoc, XmlObject slotInitDoc) {
-        ArrayList<XmlObject> docs = new ArrayList<XmlObject>();
-        docs.add(classificationInitDoc);
-        initialize(c, docs, slotInitDoc);
+        this.transformer = transformer;
     }
 
     @Override
@@ -207,7 +195,7 @@ public class CswCatalog implements ICatalog {
      * @throws OwsExceptionReport
      */
     private List<Pair<Document, Integer>> createInsertTransactions(Date lastPushToCatalog) throws OwsExceptionReport {
-        ArrayList<Pair<Document, Integer>> documents = new ArrayList<Pair<Document, Integer>>();
+        ArrayList<Pair<Document, Integer>> documents = new ArrayList<>();
 
         // get all sensor descriptions
         Collection<SirSearchResultElement> sensors;
@@ -226,7 +214,7 @@ public class CswCatalog implements ICatalog {
         }
 
         // handle only a limited number of sensors at a time to limit the size of the transaction
-        Collection<SirSearchResultElement> currentSensors = new ArrayList<SirSearchResultElement>();
+        Collection<SirSearchResultElement> currentSensors = new ArrayList<>();
         Hashtable<String, RegistryPackageDocument> transformedDocs;
 
         if (log.isDebugEnabled())
@@ -261,7 +249,7 @@ public class CswCatalog implements ICatalog {
             // check if there was a problem with some documents
             if (transformedDocs.containsValue(ITransformer.TRANSFORMATION_ERROR_OBJECT)) {
                 Set<Entry<String, RegistryPackageDocument>> transformedEntries = transformedDocs.entrySet();
-                ArrayList<String> nulledKeys = new ArrayList<String>();
+                ArrayList<String> nulledKeys = new ArrayList<>();
                 for (Entry<String, RegistryPackageDocument> entry : transformedEntries) {
                     if (entry.getValue() == ITransformer.TRANSFORMATION_ERROR_OBJECT) {
                         log.warn("Could not transform sensor description for sensor with ID " + entry.getKey()
@@ -288,7 +276,7 @@ public class CswCatalog implements ICatalog {
                     transactionDoc = createTransaction(transformedDocs);
 
                     // add transaction to list as document and number of expected inserts
-                    Pair<Document, Integer> p = new Pair<Document, Integer>((Document) transactionDoc.getDomNode(),
+                    Pair<Document, Integer> p = new Pair<>((Document) transactionDoc.getDomNode(),
                                                                             Integer.valueOf(transformedDocs.size()));
                     documents.add(p);
                     if (log.isDebugEnabled())
@@ -407,7 +395,7 @@ public class CswCatalog implements ICatalog {
         }
 
         // use a set to remove duplicates
-        SortedSet<String> ids = new TreeSet<String>();
+        SortedSet<String> ids = new TreeSet<>();
         for (int i = 0; i < identifiableArray.length; i++) {
             if ( !this.identifiableCache.contains(identifiableArray[i])) {
                 boolean added = ids.add(identifiableArray[i].getId());
@@ -456,7 +444,7 @@ public class CswCatalog implements ICatalog {
         }
 
         // build list of updateable / removeable objects
-        Map<IdentifiableType, Boolean> toUpdate = new HashMap<IdentifiableType, Boolean>();
+        Map<IdentifiableType, Boolean> toUpdate = new HashMap<>();
         NodeList nodes = getRecordByIdResponse.getDomNode().getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node n = nodes.item(i);
@@ -603,7 +591,7 @@ public class CswCatalog implements ICatalog {
 
             // query service which Identifiables can be found
             Map<IdentifiableType, Boolean> existing = getExistingIdentifiablesById(identifableArray);
-            ArrayList<String> idsToRemove = new ArrayList<String>();
+            ArrayList<String> idsToRemove = new ArrayList<>();
 
             // iterate through all identifiables
             for (Entry<IdentifiableType, Boolean> entry : existing.entrySet()) {
@@ -676,7 +664,7 @@ public class CswCatalog implements ICatalog {
         List<Pair<Document, Integer>> inserts = createInsertTransactions(lastPush);
 
         // send request and handle response seperately for each document, log errors if any occured
-        List<OwsExceptionReport> reports = new ArrayList<OwsExceptionReport>();
+        List<OwsExceptionReport> reports = new ArrayList<>();
         for (Pair<Document, Integer> currentPair : inserts) {
             try {
                 if (log.isDebugEnabled()) {
@@ -742,9 +730,9 @@ public class CswCatalog implements ICatalog {
      * @return
      */
     private Hashtable<String, RegistryPackageDocument> transformSensorDescriptions(Collection<SirSearchResultElement> sensors) {
-        Hashtable<String, RegistryPackageDocument> transformedDocs = new Hashtable<String, RegistryPackageDocument>();
+        Hashtable<String, RegistryPackageDocument> transformedDocs = new Hashtable<>();
         XmlObject description;
-        ITransformer transformer = SirConfigurator.getInstance().getTransformerFactory().getSensorMLtoCatalogXMLTransformer();
+
         for (SirSearchResultElement sensorResultElem : sensors) {
             if (log.isDebugEnabled())
                 log.debug("Transforming sensor description of sensor " + sensorResultElem.getSensorId());
@@ -771,11 +759,11 @@ public class CswCatalog implements ICatalog {
                 try {
                     if (copy instanceof SystemType) {
                         SystemType st = (SystemType) copy;
-                        ebrimDescription = transformer.transform(st);
+                        ebrimDescription = this.transformer.transform(st);
                     }
                     else if (copy instanceof SensorMLDocument) {
                         SensorMLDocument smlDoc = (SensorMLDocument) copy;
-                        ebrimDescription = transformer.transform(smlDoc);
+                        ebrimDescription = this.transformer.transform(smlDoc);
                     }
                     else {
                         throw new UnsupportedOperationException("Sensor description is of unsupported type (must be either SystemType or SensorMLDocument): "

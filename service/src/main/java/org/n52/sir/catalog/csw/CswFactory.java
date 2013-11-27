@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalog.csw;
 
 import java.io.FileReader;
@@ -28,6 +29,7 @@ import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
+import org.n52.sir.xml.ITransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,29 +42,40 @@ public class CswFactory implements ICatalogFactory {
     private static Logger log = LoggerFactory.getLogger(CswFactory.class);
 
     private URL catalogUrl;
+
     private List<XmlObject> classificationInitDocs;
+
     private String[] classificationInitFiles;
+
     private boolean doNotCheck;
+
     private XmlObject slotInitDoc;
+
     private String slotInitFile;
 
-    public CswFactory(URL catalogUrl, String[] classificationInitFiles, String slotInitFile, boolean doNotCheckCatalog) throws XmlException,
-            IOException {
+    private ITransformer transformer;
+
+    public CswFactory(URL catalogUrl,
+                      String[] classificationInitFiles,
+                      String slotInitFile,
+                      boolean doNotCheckCatalog,
+                      ITransformer transformer) throws XmlException, IOException {
         this.catalogUrl = catalogUrl;
         this.classificationInitFiles = classificationInitFiles;
         this.slotInitFile = slotInitFile;
+        this.transformer = transformer;
 
         XmlObject e;
         this.classificationInitDocs = new ArrayList<>();
         for (String filename : classificationInitFiles) {
             try (FileReader reader = new FileReader(filename);) {
-            e = XmlObject.Factory.parse(reader);
-            this.classificationInitDocs.add(e);
+                e = XmlObject.Factory.parse(reader);
+                this.classificationInitDocs.add(e);
             }
         }
 
         try (FileReader reader = new FileReader(this.slotInitFile);) {
-        this.slotInitDoc = XmlObject.Factory.parse(reader);
+            this.slotInitDoc = XmlObject.Factory.parse(reader);
         }
 
         this.doNotCheck = doNotCheckCatalog;
@@ -70,15 +83,10 @@ public class CswFactory implements ICatalogFactory {
         log.info("NEW {}", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ds.ICatalogFactory#getClient()
-     */
     @Override
     public ICatalog getCatalog() throws OwsExceptionReport {
         SimpleSoapCswClient client = new SimpleSoapCswClient(this.catalogUrl, this.doNotCheck);
-        CswCatalog catalog = new CswCatalog(client, this.classificationInitDocs, this.slotInitDoc);
+        CswCatalog catalog = new CswCatalog(client, this.classificationInitDocs, this.slotInitDoc, this.transformer);
         return catalog;
     }
 

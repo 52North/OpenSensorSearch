@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.TimerTask;
 
 import org.apache.xmlbeans.XmlException;
@@ -36,6 +37,9 @@ import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalog.csw.CswFactory;
+import org.n52.sir.xml.ITransformer;
+import org.n52.sir.xml.ITransformer.TransformableFormat;
+import org.n52.sir.xml.TransformerModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,12 +128,18 @@ public class Timer {
 
     private ArrayList<TaskElement> tasks = new ArrayList<>();
 
+    private ITransformer transformer;
+
     @Inject
     public Timer(ICatalogStatusHandler handler, @Named(CLASSIFICATION_INIT_FILENAMES)
     String classificationFilenames, @Named(SLOT_INIT_FILENAME)
     String slotInitFile, @Named(DO_NOT_CHECK_CATALOGS)
-    String doNotCheckCatalogs) {
+    String doNotCheckCatalogs, Set<ITransformer> transformers) {
         this.catalogStatusHandler = handler;
+
+        this.transformer = TransformerModule.getFirstMatchFor(transformers,
+                                                              TransformableFormat.SML,
+                                                              TransformableFormat.EBRIM);
 
         // TODO create inner quartz timer
         // timer = new Timer(getServletName(),
@@ -202,7 +212,8 @@ public class Timer {
             ICatalogFactory newFactory = new CswFactory(catalogUrl,
                                                         this.catalogInitClassificationFiles,
                                                         this.catalogSlotInitFile,
-                                                        staticDoNotCheckCatalogsList.contains(catalogUrl));
+                                                        staticDoNotCheckCatalogsList.contains(catalogUrl),
+                                                        this.transformer);
             return newFactory;
         }
         catch (XmlException | IOException e) {

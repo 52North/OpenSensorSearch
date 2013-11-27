@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
+import org.n52.sir.util.EbRimMessageBodyWriter;
 import org.n52.sir.util.OwsExMessageBodyWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +40,13 @@ public class ConfigModule extends AbstractModule {
         log.debug("Loaded and bound properties:\n\t{}", sirProps);
 
         bind(OwsExMessageBodyWriter.class);
+        bind(EbRimMessageBodyWriter.class);
 
         log.info("Configured {}", this);
     }
 
     // FIXME use this method everywhere for file loading with try-with
-    private static Properties loadProperties(String name) {
+    public static Properties loadProperties(String name) {
         URL url = ConfigModule.class.getResource(name);
         log.trace("Loading properties for {} from {}", name, url);
 

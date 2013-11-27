@@ -19,6 +19,7 @@ package org.n52.oss.api;
 import java.io.IOException;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -69,6 +70,21 @@ public class ValidatorResource {
         catch (XmlException | IOException exception) {
             return "{error:" + exception.getMessage() + "}";
         }
+    }
+
+    @GET
+    @ApiOperation(value = "index of the available validations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIndex() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("{ \"validations\" : [");
+        sb.append(" { \"text/xml;subtype='sensorML/1.0.0'\" : ");
+        sb.append("conformity with discovery profile");
+        sb.append(" } ");
+        sb.append("] }");
+
+        return Response.ok(sb.toString()).build();
     }
 
     @POST

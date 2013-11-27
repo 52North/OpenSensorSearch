@@ -19,6 +19,7 @@ package org.n52.oss.api;
 import java.io.IOException;
 import java.util.Set;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -40,6 +41,7 @@ import org.n52.sir.xml.ITransformer.TransformableFormat;
 import org.n52.sir.xml.TransformerModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.RequestScoped;
@@ -86,36 +88,21 @@ public class TransformationResource {
     // }
     // }
 
-    private Response toEbrim(String sensor) {
-        SensorMLDocument sensorMLDocument;
-        try {
-            sensorMLDocument = SensorMLDocument.Factory.parse(sensor);
-        }
-        catch (XmlException e) {
-            log.error("Could not parse SensorML: " + sensor, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" "
-                    + e.getMessage() + "\" }").build();
-        }
+    @GET
+    @ApiOperation(value = "index of the available transformations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIndex() {
+        StringBuilder sb = new StringBuilder();
 
-        return toEbrim(sensorMLDocument);
-    }
+        sb.append("{ \"transformations\" : [");
+        sb.append(" { \"input\" : ");
+        sb.append("\"text/xml;subtype='sensorML/1.0.0'\"");
+        sb.append(" , \"output\" : ");
+        sb.append("\"text/xml;subtype='EbRIM/1.0.1'\"");
+        sb.append(" } ");
+        sb.append("] }");
 
-    private Response toEbrim(SensorMLDocument sensorMLDocument) {
-        log.debug("Transforming SML to EbRim... SML: {} [...]", sensorMLDocument.xmlText().substring(0, 300));
-
-        ITransformer transformer = TransformerModule.getFirstMatchFor(this.transformers,
-                                                                      TransformableFormat.SML,
-                                                                      TransformableFormat.EBRIM);
-
-        try {
-            XmlObject transformed = transformer.transform(sensorMLDocument);
-            // Document doc = (Document) transformed.getDomNode();
-            return Response.ok(transformed).build();
-        }
-        catch (XmlException | TransformerException | IOException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" "
-                    + e.getMessage() + "\" }").build();
-        }
+        return Response.ok(sb.toString()).build();
     }
 
     @POST
@@ -148,8 +135,31 @@ public class TransformationResource {
     @Produces(MediaType.APPLICATION_XML)
     public Response convertSmlToEbrim(String data) {
         log.debug("Transforming to xml: {}", data.substring(0, 1000));
+        SensorMLDocument sensorMLDocument;
+        try {
+            sensorMLDocument = SensorMLDocument.Factory.parse(data);
+        }
+        catch (XmlException e) {
+            log.error("Could not parse SensorML: " + data, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" "
+                    + e.getMessage() + "\" }").build();
+        }
 
-        return toEbrim(data);
+        log.debug("Transforming SML to EbRim... SML: {} [...]", sensorMLDocument.xmlText().substring(0, 300));
+
+        ITransformer transformer = TransformerModule.getFirstMatchFor(this.transformers,
+                                                                      TransformableFormat.SML,
+                                                                      TransformableFormat.EBRIM);
+
+        try {
+            XmlObject transformed = transformer.transform(sensorMLDocument);
+            Document doc = (Document) transformed.getDomNode();
+            return Response.ok(doc).build();
+        }
+        catch (XmlException | TransformerException | IOException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" "
+                    + e.getMessage() + "\" }").build();
+        }
     }
 
 }

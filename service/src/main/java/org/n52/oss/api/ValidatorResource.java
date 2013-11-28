@@ -103,10 +103,14 @@ public class ValidatorResource {
     public Response checkReturnJSON(String data, @QueryParam("version")
     @DefaultValue("1")
     String version) {
+        log.debug("Checking SensorML (validator version: {}: {}",
+                  version,
+                  data.substring(0, Math.min(data.length(), 1000)));
+
         StringBuilder response = new StringBuilder();
 
         try {
-            IProfileValidator smlValidator = createValidator(data, version);
+            IProfileValidator smlValidator = getValidator(version);
             boolean b = validate(data, smlValidator);
 
             if (b)
@@ -131,8 +135,8 @@ public class ValidatorResource {
             }
         }
         catch (XmlException | IOException exception) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{ \"error\" : "
-                    + exception.getMessage() + "}").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{ \"error\" : \""
+                    + exception.getMessage() + "\" }").build();
         }
 
         return Response.ok(response.toString()).build();
@@ -145,9 +149,13 @@ public class ValidatorResource {
     public Response checkReturnXML(String data, @QueryParam("version")
     @DefaultValue("1")
     String version) {
+        log.debug("Checking SensorML (validator version: {}: {}",
+                  version,
+                  data.substring(0, Math.min(data.length(), 1000)));
+
         String response = null;
         try {
-            IProfileValidator smlValidator = createValidator(data, version);
+            IProfileValidator smlValidator = getValidator(version);
             boolean b = validate(data, smlValidator);
 
             if (b)
@@ -171,11 +179,7 @@ public class ValidatorResource {
         return b;
     }
 
-    private IProfileValidator createValidator(String data, String version) {
-        log.debug("Checking SensorML (validator version: {}: {}",
-                  version,
-                  data.substring(0, Math.min(data.length(), 1000)));
-
+    private IProfileValidator getValidator(String version) {
         IProfileValidator smlValidator = ValidatorModule.getFirstMatchFor(this.validators,
                                                                           ValidatableFormatAndProfile.SML_DISCOVERY);
         return smlValidator;

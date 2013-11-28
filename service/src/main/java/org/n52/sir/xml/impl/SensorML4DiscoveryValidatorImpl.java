@@ -282,6 +282,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
                     StreamSource source = new StreamSource(tempXSLFile);
                     Transformer t = tFactory.newTransformer(source);
                     log.debug("Created {}", t);
+
                     return t;
                 }
             });

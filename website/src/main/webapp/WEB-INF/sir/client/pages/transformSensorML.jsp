@@ -21,7 +21,7 @@
 
 <html lang="en">
 <head>
-<title>Transform SensorML Document</title>
+<title>Transform SensorML Document | Open Sensor Search</title>
 
 <jsp:include page="htmlHead.jsp"></jsp:include>
 
@@ -64,17 +64,19 @@
 				function(e) {
 					e.preventDefault();
 					var url = ossApiEndpoint + "/convert";
+					var payload = $("#input").val();
 					console.log("Sending request to " + url + " with data: "
-							+ $(this).serialize());
+							+ payload);
 					$.ajax({
 						type : "POST",
 						cache : false,
 						url : url,
-						data : $(this).serialize(),
+						data : payload, //$(this).serialize(),
 						dataType : "xml",
 						success : function(data) {
 							console.log(data);
-							$("#input").val(data);
+							var xmlstr = data.xml ? data.xml : (new XMLSerializer()).serializeToString(data);
+							$("#output").val(xmlstr);
 						}
 					}).fail(
 							function(data) {

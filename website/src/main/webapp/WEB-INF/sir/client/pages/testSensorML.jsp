@@ -38,11 +38,12 @@
 			for discovery. Insert the SensorML description of a sensor:</p>
 
 		<!-- TODO: add listing of available checks based on API endpoint /oss-service/api/v1/check -->
+		<!-- TODO: add selection of output formats -->
 
-		<form action="testSensorML.jsp" method="post">
+		<form id="testform">
 			<p class="textareaBorder">
-				<textarea id="requestStringArea" name="requestString"
-					class="smallTextarea" rows="10" cols="10">...</textarea>
+				<textarea id="input" name="request" class="smallTextarea" rows="10"
+					cols="10">...</textarea>
 			</p>
 			<p>
 				<input type="submit" name="testDoc" value="Validate" />
@@ -52,8 +53,7 @@
 		<p>Test Result:</p>
 
 		<p class="textareaBorder">
-			<textarea id="responseStringArea" class="largeTextarea" rows="10"
-				cols="10">...</textarea>
+			<textarea id="output" class="largeTextarea" rows="10" cols="10">...</textarea>
 		</p>
 
 		<p>
@@ -66,22 +66,26 @@
 	</div>
 
 	<script type="text/javascript">
-		$("#sml").on(
+		$("#testform").on(
 				"submit",
 				function(e) {
 					e.preventDefault();
-					var url = ossApiEndpoint + "/convert";
+					var url = ossApiEndpoint + "/check/sml";
+					var payload = $("#input").val();
 					console.log("Sending request to " + url + " with data: "
-							+ $(this).serialize());
+							+ payload);
 					$.ajax({
 						type : "POST",
 						cache : false,
 						url : url,
-						data : $(this).serialize(),
-						dataType : "xml",
+						data : payload, //$(this).serialize(),
+						dataType : "json", //"xml",
 						success : function(data) {
 							console.log(data);
-							$("#input").val(data);
+							// 									var xmlstr = data.xml ? data.xml
+							// 											: (new XMLSerializer())
+							// 													.serializeToString(data);
+							$("#output").val(JSON.stringify(data));
 						}
 					}).fail(
 							function(data) {

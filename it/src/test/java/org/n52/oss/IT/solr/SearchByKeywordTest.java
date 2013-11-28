@@ -70,7 +70,8 @@ public class SearchByKeywordTest {
         String basePath = (this.getClass().getResource("/Requests").getFile());
         File sensor_file = new File(basePath + "/testSensor.xml");
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        this.sensor = SensorMLDecoder.decode(doc);
+        SensorMLDecoder d = new SensorMLDecoder();
+        this.sensor = d.decode(doc);
         log.trace(this.sensor.getText().toArray()[0].toString());
 
         // FIXME Moh-Yakoub: probably this will take some configuration - haven't decided yet.

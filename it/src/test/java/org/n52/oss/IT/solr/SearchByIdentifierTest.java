@@ -66,7 +66,8 @@ public class SearchByIdentifierTest {
         String basePath = (this.getClass().getResource("/Requests").getFile());
         File sensor_file = new File(basePath + "/testSensor.xml");
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        SirSensor sensor = SensorMLDecoder.decode(doc);
+        SensorMLDecoder d = new SensorMLDecoder();
+        SirSensor sensor = d.decode(doc);
         sensor.setInternalSensorId(this.id);
         this.dao = new SOLRInsertSensorInfoDAO(connection);
         this.dao.insertSensor(sensor);

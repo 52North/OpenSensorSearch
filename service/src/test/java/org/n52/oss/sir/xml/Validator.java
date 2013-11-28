@@ -19,51 +19,59 @@
 
 package org.n52.oss.sir.xml;
 
-import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.util.GuiceUtil;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 
-public class Validator {
-    private void failIfFileNotExists(File f) {
-        if ( !f.exists())
-            fail(f.getName() + " Is missing!");
-    }
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 
-    private void failIfURLNull(String resource) {
-        if (ClassLoader.getSystemResource(resource) == null)
-            fail(resource + " Is missing");
+public class Validator {
+
+    private static String schematronFile;
+
+    private static String svrlFile;
+
+    @BeforeClass
+    public static void prepare() {
+        Injector i = GuiceUtil.configurePropertiesFiles();
+        schematronFile = i.getInstance(Key.get(String.class, Names.named("oss.sir.validation.profile.sml.discovery")));
+        svrlFile = i.getInstance(Key.get(String.class, Names.named("oss.sir.validation.svrlSchema")));
     }
 
     @Test
-    public void readFile() {
+    public void testAirBase() throws OwsExceptionReport, URISyntaxException {
+        File f = new File(getClass().getResource("/AirBase-test.xml").getFile());
 
-        failIfURLNull("AirBase-test.xml");
-        failIfURLNull("SensorML_Profile_for_Discovery.sch");
-        failIfURLNull("xslt/iso_svrl_for_xslt2.xsl");
+        SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
 
-        File f = new File(ClassLoader.getSystemResource("AirBase-test.xml").getFile());
+        boolean v = validator.validate(f);
+        assertThat("tested file is valid", v, is(true));
+    }
 
-        failIfFileNotExists(f);
-        // Read schema
-        File schematronFile = new File(ClassLoader.getSystemResource("SensorML_Profile_for_Discovery.sch").getFile());
-        failIfFileNotExists(schematronFile);
-        // Read svrl
-        File svrlFile = new File(ClassLoader.getSystemResource("xslt/iso_svrl_for_xslt2.xsl").getFile());
-        failIfFileNotExists(svrlFile);
+    @Test
+    public void testInvalidAirBase() throws OwsExceptionReport, URISyntaxException {
+        File f = new File(getClass().getResource("/AirBase-test-invalid.xml").getFile());
 
-        // Now validate
-        SensorML4DiscoveryValidatorImpl validator;
-        try {
-            validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
-            boolean v = validator.validate(f);
-            if ( !v)
-                fail("Not a valid test sensor - invalid validator!");
-        }
-        catch (Exception e) {
-            fail(e.toString());
-        }
+        SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
+
+        boolean v = validator.validate(f);
+        assertThat("tested file is INvalid", v, is(false));
+        List<String> validationFailures = validator.getValidationFailures();
+        assertThat(validationFailures.size(), is(2));
+        assertThat(Arrays.toString(validationFailures.toArray()), containsString("gml:description"));
+        assertThat(Arrays.toString(validationFailures.toArray()), containsString("sml:validTime"));
     }
 }

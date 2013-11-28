@@ -6,10 +6,8 @@
 	version="1.0.1">
 	<sml:member>
 		<sml:System>
-			<gml:description>Sensor of the European air quality database
-				AirBase
-				in BELGIUM
-			</gml:description>
+			<!-- <gml:description>Sensor of the European air quality database -->
+			<!-- AirBase in BELGIUM</gml:description> -->
 			<sml:keywords>
 				<sml:KeywordList>
 					<sml:keyword>MECHELEN</sml:keyword>
@@ -60,12 +58,12 @@
 					</sml:classifier>
 				</sml:ClassifierList>
 			</sml:classification>
-			<sml:validTime>
-				<gml:TimePeriod>
-					<gml:beginPosition>2000-01-01</gml:beginPosition>
-					<gml:endPosition>2010-10-11</gml:endPosition>
-				</gml:TimePeriod>
-			</sml:validTime>
+			<!-- <sml:validTime> -->
+			<!-- <gml:TimePeriod> -->
+			<!-- <gml:beginPosition>2000-01-01</gml:beginPosition> -->
+			<!-- <gml:endPosition>2010-10-11</gml:endPosition> -->
+			<!-- </gml:TimePeriod> -->
+			<!-- </sml:validTime> -->
 			<sml:capabilities>
 				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
 					<swe:field name="observedBBOX">

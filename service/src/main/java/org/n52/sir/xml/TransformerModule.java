@@ -40,7 +40,7 @@ public class TransformerModule extends AbstractModule {
         return getForOutput(getForInput(transformers, input), output);
     }
 
-    private static Set<ITransformer> getForOutput(Set<ITransformer> transformers, TransformableFormat output) {
+    public static Set<ITransformer> getForOutput(Set<ITransformer> transformers, TransformableFormat output) {
         Set<ITransformer> filtered = new HashSet<>();
         for (ITransformer t : transformers) {
             if (t.producesOutput(output))
@@ -49,7 +49,7 @@ public class TransformerModule extends AbstractModule {
         return filtered;
     }
 
-    private static Set<ITransformer> getForInput(Set<ITransformer> transformers, TransformableFormat input) {
+    public static Set<ITransformer> getForInput(Set<ITransformer> transformers, TransformableFormat input) {
         Set<ITransformer> filtered = new HashSet<>();
         for (ITransformer t : transformers) {
             if (t.acceptsInput(input))

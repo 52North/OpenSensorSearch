@@ -29,29 +29,70 @@
 
 <body>
 
-<div id="content"><jsp:include page="header.jsp" /><jsp:include
-	page="../menu.jsp" />
+	<div id="content"><jsp:include page="header.jsp" /><jsp:include
+			page="../menu.jsp" />
 
-<h1>Discovery Profile Validation</h1>
+		<h1>Discovery Profile Validation</h1>
 
-<p>Test a SensorML document for conformity with SensorML profile for
-discovery. Insert the SensorML description of a sensor:</p>
+		<p>Test a SensorML document for conformity with SensorML profile
+			for discovery. Insert the SensorML description of a sensor:</p>
 
-<form action="testSensorML.jsp" method="post">
-<p class="textareaBorder"><textarea id="requestStringArea"
-	name="requestString" class="smallTextarea" rows="10" cols="10">...</textarea></p>
-<p><input type="submit" name="testDoc" value="Validate" /></p>
-</form>
+		<!-- TODO: add listing of available checks based on API endpoint /oss-service/api/v1/check -->
 
-<p>Test Result:</p>
+		<form action="testSensorML.jsp" method="post">
+			<p class="textareaBorder">
+				<textarea id="requestStringArea" name="requestString"
+					class="smallTextarea" rows="10" cols="10">...</textarea>
+			</p>
+			<p>
+				<input type="submit" name="testDoc" value="Validate" />
+			</p>
+		</form>
 
-<p class="textareaBorder"><textarea id="responseStringArea"
-	class="largeTextarea" rows="10" cols="10">...</textarea></p>
+		<p>Test Result:</p>
 
-<p>You can download the used profile here: <a
-	href="https://raw.github.com/52North/OpenSensorSearch/master/service/src/main/resources/SensorML_Profile_for_Discovery.sch"
-	title="SensorML Profile for Discovery - Schematron">Schematron File</a>.</p>
-	
-</div>
+		<p class="textareaBorder">
+			<textarea id="responseStringArea" class="largeTextarea" rows="10"
+				cols="10">...</textarea>
+		</p>
+
+		<p>
+			You can download the used profile here: <a
+				href="https://raw.github.com/52North/OpenSensorSearch/master/service/src/main/resources/SensorML_Profile_for_Discovery.sch"
+				title="SensorML Profile for Discovery - Schematron">Schematron
+				File</a>.
+		</p>
+
+	</div>
+
+	<script type="text/javascript">
+		$("#sml").on(
+				"submit",
+				function(e) {
+					e.preventDefault();
+					var url = ossApiEndpoint + "/convert";
+					console.log("Sending request to " + url + " with data: "
+							+ $(this).serialize());
+					$.ajax({
+						type : "POST",
+						cache : false,
+						url : url,
+						data : $(this).serialize(),
+						dataType : "xml",
+						success : function(data) {
+							console.log(data);
+							$("#input").val(data);
+						}
+					}).fail(
+							function(data) {
+								console.log(data);
+								$("#output").val(
+										data.status + " " + data.statusText
+												+ "\n\n" + data.responseText);
+							});
+
+				});
+	</script>
+
 </body>
 </html>

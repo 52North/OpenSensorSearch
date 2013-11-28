@@ -38,7 +38,7 @@ class ClasspathResourceURIResolver implements URIResolver {
         StringBuilder builder = new StringBuilder();
         builder.append("ClasspathResourceURIResolver [");
         if (this.resolveBase != null) {
-            builder.append("myBase=");
+            builder.append("resolveBase=");
             builder.append(this.resolveBase);
         }
         builder.append("]");

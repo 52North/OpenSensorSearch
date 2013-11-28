@@ -18,7 +18,6 @@ package org.n52.sir.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
@@ -26,14 +25,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import net.opengis.ows.ExceptionReportDocument;
 
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 
 import com.google.inject.Singleton;
 
@@ -42,6 +47,8 @@ import com.google.inject.Singleton;
  * 
  * Writer must be binded:
  * http://stackoverflow.com/questions/11216321/guice-jersey-custom-serialization-of-entities
+ * 
+ * Based on DocumentProvider.class
  * 
  * @author Daniel
  * 
@@ -53,13 +60,19 @@ public class OwsExMessageBodyWriter implements MessageBodyWriter<OwsExceptionRep
 
     private static Logger log = LoggerFactory.getLogger(OwsExMessageBodyWriter.class);
 
+    private final TransformerFactory tf;
+
+    public OwsExMessageBodyWriter() {
+        this.tf = TransformerFactory.newInstance();
+    }
+
     @Override
     public boolean isWriteable(Class< ? > type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return type == OwsExceptionReport.class;
     }
 
     @Override
-    public long getSize(OwsExceptionReport myBean,
+    public long getSize(OwsExceptionReport report,
                         Class< ? > type,
                         Type genericType,
                         Annotation[] annotations,
@@ -69,33 +82,56 @@ public class OwsExMessageBodyWriter implements MessageBodyWriter<OwsExceptionRep
     }
 
     @Override
-    public void writeTo(OwsExceptionReport myBean,
+    public void writeTo(OwsExceptionReport report,
                         Class< ? > type,
                         Type genericType,
                         Annotation[] annotations,
                         MediaType mediaType,
                         MultivaluedMap<String, Object> httpHeaders,
                         OutputStream entityStream) throws IOException, WebApplicationException {
-        log.debug("Writing {}", myBean);
+        log.debug("Writing {}", report);
 
-        // FIXME writeTo method not working for OwsExMessageBodyWriter
-        if (mediaType.equals(MediaType.TEXT_HTML_TYPE)) {
-            PrintWriter writer = new PrintWriter(entityStream);
-            writer.println("<html><body>");
-            ExceptionReportDocument document = myBean.getDocument();
-            writer.println(document.xmlText());
-            writer.println("</body></html>");
+        // FIX ME: writeTo method not working for OwsExMessageBodyWriter:
+        // if (mediaType.equals(MediaType.TEXT_HTML_TYPE)) {
+        // PrintWriter writer = new PrintWriter(entityStream);
+        // writer.println("<html><body>");
+        // ExceptionReportDocument document = myBean.getDocument();
+        // writer.println(document.xmlText());
+        // writer.println("</body></html>");
+        //
+        // writer.flush();
+        // return;
+        // }
+        //
+        // ExceptionReportDocument document = myBean.getDocument();
+        //
+        // // serialize the entity myBean to the entity output stream
+        // document.save(entityStream);
+        // entityStream.flush();
 
-            writer.flush();
-            return;
+        // next try, does not work:
+        // try {
+        // JAXBContext jaxbContext = JAXBContext.newInstance(OwsExceptionReport.class);
+        //
+        // // serialize the entity myBean to the entity output stream
+        // jaxbContext.createMarshaller().marshal(report, entityStream);
+        // }
+        // catch (JAXBException e) {
+        // throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+        // }
+
+        ExceptionReportDocument document = report.getDocument();
+        Document doc = (Document) document.getDomNode();
+
+        try {
+            StreamResult sr = new StreamResult(entityStream);
+            this.tf.newTransformer().transform(new DOMSource(doc), sr);
+        }
+        catch (TransformerException ex) {
+            throw new WebApplicationException(ex, Status.INTERNAL_SERVER_ERROR);
         }
 
-        ExceptionReportDocument document = myBean.getDocument();
-
-        // serialize the entity myBean to the entity output stream
-        document.save(entityStream);
         entityStream.flush();
-
         // do not close stream, done by jersey!
     }
 

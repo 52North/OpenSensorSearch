@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package org.n52.oss.IT.solr;
+package org.n52.oss.IT;
+
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,12 +50,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * @author Yakoub
  */
-public class OpenSearchSpatialExtensionIT {
+public class OpenSearchTemporalExtensionIT {
     private static Logger log = LoggerFactory.getLogger(OpenSearchTemporalExtensionIT.class);
-    private static String lon_lat_radius_query = "http://localhost:8080/OpenSensorSearch/search?q=pre&lat=1.5&lon=3.49&radius=2&httpAccept=application%2Fjson";
+    
+    // TODO get the base URL using dependency injectin
+    private static String query = "http://localhost:8080/OpenSensorSearch/search?q=test&dtstart=2009-12-31T22:00:00Z&dtend=2011-12-30T22:00:00Z&httpAccept=application%2Fjson";
     private Date start = new Date(1262296800000l);
     private Date end = new Date(1325282400000l);
-    public static final double R = 6372.8; // In kilometers
 
     @Before
     public void insertSensor() throws OwsExceptionReport, XmlException, IOException {
@@ -62,13 +65,14 @@ public class OpenSearchSpatialExtensionIT {
 
         SolrConnection c = new SolrConnection("http://localhost:8983/solr", 2000);
         SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(c);
-        dao.insertSensor(SensorMLDecoder.decode(doc));
+        SensorMLDecoder d = new SensorMLDecoder();
+        dao.insertSensor(d.decode(doc));
     }
 
     @Test
-    public void testSpatialLonLatRadius() throws ClientProtocolException, IOException {
+    public void testTemporal() throws ClientProtocolException, IOException {
         org.apache.http.client.HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(lon_lat_radius_query);
+        HttpGet get = new HttpGet(query);
 
         HttpResponse response = client.execute(get);
         StringBuilder builder = new StringBuilder();
@@ -78,30 +82,24 @@ public class OpenSearchSpatialExtensionIT {
             builder.append(s);
 
         log.debug(builder.toString());
+        System.out.println(builder.toString());
         ObjectMapper mapper = new ObjectMapper();
         SearchResult result = mapper.readValue(builder.toString(), SearchResult.class);
 
         Iterator<SearchResultElement> iter = result.getResults().iterator();
         while (iter.hasNext()) {
             SearchResultElement element = iter.next();
-            /**
-             * TODO Add LngLat to searchResult and assert here
-             */
+            if (element.getBeginDate() != null) {
+                assertTrue(element.getBeginDate().getTime() >= this.start.getTime());
+                assertTrue(element.getBeginDate().getTime() <= this.end.getTime());
+            }
+            if (element.getEndDate() != null) {
+                assertTrue(element.getEndDate().getTime() >= this.start.getTime());
+                assertTrue(element.getEndDate().getTime() <= this.end.getTime());
+            }
 
         }
 
-    }
-
-    public static double haversine(double lat1, double lon1, double lat2, double lon2) {
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1)
-                * Math.cos(lat2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        return R * c;
     }
 
     @After

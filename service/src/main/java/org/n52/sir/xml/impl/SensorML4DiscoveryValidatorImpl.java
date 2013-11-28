@@ -20,19 +20,23 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import javax.inject.Named;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -53,17 +57,14 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.LocatorImpl;
 
+import com.google.inject.Inject;
+
 /**
  * @author Daniel Nüst
  * 
  */
 public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
-    /**
-     * 
-     * @author Daniel Nüst
-     * 
-     */
     private class SchematronResultHandler extends DefaultHandler {
 
         private String failTmp;
@@ -76,11 +77,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             super();
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
-         */
         @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             if (this.insideFail) {
@@ -88,12 +84,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String,
-         * java.lang.String)
-         */
         @Override
         public void endElement(String uri, String localName, String qName) throws SAXException {
             if (qName.endsWith(QNAME_FAILED_ASSERT)) {
@@ -111,11 +101,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)
-         */
         @Override
         public void setDocumentLocator(Locator locator) {
             this.locator = locator;
@@ -151,8 +136,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     protected static final String ATTRIBUTE_NAME_TEST = "test";
 
-    protected static boolean first = true;
-
     protected static Logger log = LoggerFactory.getLogger(SensorML4DiscoveryValidatorImpl.class);
 
     protected static final String QNAME_ACTIVE_PATTERN = "active-pattern";
@@ -160,8 +143,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
     protected static final String QNAME_FAILED_ASSERT = "failed-assert";
 
     protected static final String QNAME_FIRED_RULE = "fired-rule";
-
-    private static StreamSource source;
 
     private static final String tempDir = System.getProperty("java.io.tmpdir") + "/";
 
@@ -175,15 +156,15 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     private List<String> firedRules = new ArrayList<>();
 
-    private Transformer transformer;
+    private Future<Transformer> transformerFuture;
 
-    public SensorML4DiscoveryValidatorImpl(File profileFile, File svrlFile) throws TransformerConfigurationException,
-            TransformerFactoryConfigurationError {
-        initializeTempXSLFile(profileFile, svrlFile);
+    @Inject
+    public SensorML4DiscoveryValidatorImpl(@Named("oss.sir.validation.profile.sml.discovery")
+    String profilePath, @Named("oss.sir.validation.svrlSchema")
+    String svrlSchemaPath) throws URISyntaxException {
+        initialize(profilePath, svrlSchemaPath);
 
-        this.transformer = tFactory.newTransformer(source);
-
-        log.debug("NEW SensorML4DiscoveryValidatorImpl");
+        log.debug("NEW {}", this);
     }
 
     private boolean actualValidate(SensorMLDocument smlDoc) throws IOException {
@@ -198,25 +179,24 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
             // do the transformation
             try {
-                this.transformer.transform(input, output);
+                Transformer t = this.transformerFuture.get();
+                log.debug("Starting transformation from {} to {} using {}", input, output, t);
+                t.transform(input, output);
 
                 String outputString = output.getWriter().toString();
+
                 processSVRL(new InputSource(new StringReader(outputString)));
             }
-            catch (TransformerException e) {
-                log.error("Error transforming SensorML for validation against profile for discovery!", e);
-                return false;
-            }
-            catch (SAXException e) {
-                log.error("Error transforming SensorML for validation against profile for discovery!", e);
-                return false;
-            }
-            catch (IOException e) {
+            catch (TransformerException | SAXException | IOException e) {
                 log.error("Error transforming SensorML for validation against profile for discovery!", e);
                 return false;
             }
             catch (ParserConfigurationException e) {
                 log.error("Error processing SVRL output!", e);
+                return false;
+            }
+            catch (InterruptedException | ExecutionException e) {
+                log.error("Error with getting transformer from Future.", e);
                 return false;
             }
         }
@@ -258,60 +238,62 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @param profileFile
-     */
-    private synchronized void initializeTempXSLFile(final File profileFile, final File svrlFile) {
-        // File temp = new File(tempDir);
-        // boolean dir = temp.isDirectory();
-        // boolean write = temp.canWrite();
-
-        tempXSLFile = new File(tempDir + profileFile.getName() + ".xsl");
+    private synchronized void initialize(final String profilePath, final String svrlSchemaPath) throws URISyntaxException {
+        final File discoveryFile = new File(getClass().getResource(profilePath).toURI());
+        final File svrlFile = new File(getClass().getResource(svrlSchemaPath).toURI());
+        tempXSLFile = new File(tempDir + discoveryFile.getName() + ".xsl");
         // tempXSLFile.canWrite();
 
-        if (first | !tempXSLFile.exists()) {
-            if (log.isDebugEnabled()) {
-                log.debug("Creating XSL from Schematron profile: " + profileFile);
-            }
+        log.debug("Initializing validator with Schematron file from {} and SVRL from {} into file {}",
+                  discoveryFile,
+                  svrlFile,
+                  tempXSLFile);
 
-            Executors.newSingleThreadExecutor().submit(new Runnable() {
+        // run this thread if the transformed file does not exist or if the transformer future is not yet
+        // created
+        if ( !tempXSLFile.exists() || this.transformerFuture == null) {
+            log.debug("Creating XSL from schematron in a new thread ... ");
+
+            this.transformerFuture = Executors.newSingleThreadExecutor().submit(new Callable<Transformer>() {
 
                 @Override
-                public void run() {
-                    // transform the schematron to XSL,
-                    // http://www.saxonica.com/documentation/index.html#!using-xsl/commandline
-                    Transform trans = new Transform();
+                public Transformer call() throws Exception {
+                    log.debug("Creating XSL from schematron in a new Thread ...");
 
                     // http://blog.eight02.com/2011/05/validating-xml-with-iso-schematron-on.html
                     String[] arguments = new String[] {"-x:org.apache.xerces.parsers.SAXParser",
                                                        // "-w1",
                                                        "-o:" + tempXSLFile.getAbsolutePath(),
-                                                       "-s:" + profileFile.getAbsolutePath(),
+                                                       "-s:" + discoveryFile.getAbsolutePath(),
                                                        svrlFile.getAbsolutePath() // "docs/iso_svrl_for_xslt2.xsl",
                     // "generate-paths=yes"
                     };
+                    log.debug("Transformation arguments: {}", Arrays.toString(arguments));
+
+                    // transform the schematron to XSL,
+                    // http://www.saxonica.com/documentation/index.html#!using-xsl/commandline
+                    Transform trans = new Transform();
+
                     trans.doTransform(arguments, "java net.sf.saxon.Transform");
 
-                    first = false;
-                    log.info("Created XSL file for validation: " + tempXSLFile);
+                    log.info("Created XSL file for validation: {}", tempXSLFile);
+
+                    log.debug("Creating transformer...");
+                    StreamSource source = new StreamSource(tempXSLFile);
+                    Transformer t = tFactory.newTransformer(source);
+                    log.debug("Created {}", t);
+                    return t;
                 }
             });
 
-            if (source == null) {
-                log.debug("Created Stream Source of svrl xsl file.");
-                source = new StreamSource(tempXSLFile);
-            }
         }
-        else if (log.isDebugEnabled()) {
-            log.debug("Reusing existing XSL file " + tempXSLFile + " for " + profileFile + ".");
-        }
+        else
+            log.debug("Reusing existing XSL file {} for {}.", tempXSLFile, profilePath);
     }
 
     private void processSVRL(InputSource inputSource) throws SAXException, IOException, ParserConfigurationException {
-        /*
-         * an extension of DefaultHandler
-         */
+        log.debug("Processing SVRL now: {}", inputSource);
+
         DefaultHandler handler = new SchematronResultHandler();
         LocatorImpl locator = new LocatorImpl();
         handler.setDocumentLocator(locator);
@@ -365,6 +347,11 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         log.error("The given XmlObject could was not a SensorMLDocument!");
 
         return false;
+    }
+
+    @Override
+    public boolean validates(ValidatableFormatAndProfile profile) {
+        return IProfileValidator.ValidatableFormatAndProfile.SML_DISCOVERY.equals(profile);
     }
 
 }

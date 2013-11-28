@@ -62,7 +62,8 @@ public class SearchByLocationTest {
 		File sensor_file = new File(basePath+"/testSensor.xml");
 		
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        SirSensor sensor = SensorMLDecoder.decode(doc);
+        SensorMLDecoder d = new SensorMLDecoder();
+        SirSensor sensor = d.decode(doc);
 
         /*
          * Inserts this sensor

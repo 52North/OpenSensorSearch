@@ -27,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.transform.TransformerException;
 
+import net.opengis.ows.ExceptionReportDocument;
 import net.opengis.sensorML.x101.SensorMLDocument;
 
 import org.apache.xmlbeans.XmlException;
@@ -34,6 +35,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.json.Converter;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.json.SearchResultElement;
 import org.n52.sir.sml.SensorMLDecoder;
 import org.n52.sir.xml.ITransformer;
@@ -122,7 +124,7 @@ public class TransformationResource {
         }
         catch (XmlException e) {
             log.error("Could not *parse* SensorML for transformation.", e);
-            return Response.serverError().entity("{\"error\" : \"" + e.getMessage() + "\" } ").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("{\"error\" : \"" + e.getMessage() + "\" } ").build();
         }
         catch (OwsExceptionReport e) {
             log.error("Could not *decode* SensorML for transformation.", e);
@@ -134,15 +136,21 @@ public class TransformationResource {
     @ApiOperation(value = "Convert sensor description to a specific form", notes = "The output can be json or ebrim.")
     @Produces(MediaType.APPLICATION_XML)
     public Response convertSmlToEbrim(String data) {
-        log.debug("Transforming to xml: {}", data.substring(0, 1000));
+        log.debug("Transforming to EbRIM: {}", data.substring(0, Math.min(data.length(), 1000)));
         SensorMLDocument sensorMLDocument;
         try {
             sensorMLDocument = SensorMLDocument.Factory.parse(data);
         }
         catch (XmlException e) {
             log.error("Could not parse SensorML: " + data, e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\": \"Cannot parse sensorML\"; \"reason\":\" "
-                    + e.getMessage() + "\" }").build();
+            OwsExceptionReport oer = new OwsExceptionReport(ExceptionCode.InvalidRequest,
+                                                            "input",
+                                                            "Could not parse SensorML from '" + data + "'");
+
+            ExceptionReportDocument document = oer.getDocument();
+            Document doc = (Document) document.getDomNode();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(doc).build();
+            // return Response.status(Response.Status.BAD_REQUEST).entity(oer).build();
         }
 
         log.debug("Transforming SML to EbRim... SML: {} [...]", sensorMLDocument.xmlText().substring(0, 300));

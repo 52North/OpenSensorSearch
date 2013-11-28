@@ -63,7 +63,8 @@ public class SearchByBoundingBoxTest {
 		File sensor_file = new File(basePath+"/testSensor.xml");
 		
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        SirSensor sensor = SensorMLDecoder.decode(doc);
+        SensorMLDecoder d = new SensorMLDecoder();
+        SirSensor sensor = d.decode(doc);
 
         SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(c);
         dao.insertSensor(sensor);

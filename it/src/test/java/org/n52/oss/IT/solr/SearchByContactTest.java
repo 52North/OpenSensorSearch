@@ -61,7 +61,8 @@ public class SearchByContactTest {
 		String basePath = (this.getClass().getResource("/Requests").getFile());
 		File sensor_file = new File(basePath+"/testSensor.xml");
 		SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-		SirSensor sensor = SensorMLDecoder.decode(doc);
+        SensorMLDecoder d = new SensorMLDecoder();
+        SirSensor sensor = d.decode(doc);
         sensor.setInternalSensorId(this.id);
         SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(connection);
 		dao.insertSensor(sensor);

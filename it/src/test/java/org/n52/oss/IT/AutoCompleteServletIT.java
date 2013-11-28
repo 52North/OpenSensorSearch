@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.oss.IT.solr;
+package org.n52.oss.IT;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.equalTo;
@@ -58,7 +58,8 @@ public class AutoCompleteServletIT {
 
         // FIXME use mocked up up database backend
         SOLRInsertSensorInfoDAO dao = new SOLRInsertSensorInfoDAO(new SolrConnection("http://localhost:8983/solr", 1000));
-        this.insertedSensorId = dao.insertSensor(SensorMLDecoder.decode(doc));
+        SensorMLDecoder d = new SensorMLDecoder();
+        this.insertedSensorId = dao.insertSensor(d.decode(doc));
         log.debug("inserted test sensor: {}", this.insertedSensorId);
     }
 

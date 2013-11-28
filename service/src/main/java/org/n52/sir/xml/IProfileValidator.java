@@ -30,6 +30,10 @@ import org.n52.oss.sir.ows.OwsExceptionReport;
  */
 public interface IProfileValidator {
 
+    public enum ValidatableFormatAndProfile {
+        SML_DISCOVERY
+    }
+
     public abstract List<String> getValidationFailures();
 
     public abstract String getValidationFailuresAsString();
@@ -39,5 +43,7 @@ public interface IProfileValidator {
     public abstract boolean validate(SensorMLDocument smlDoc) throws IOException;
 
     public abstract boolean validate(XmlObject xml) throws IOException;
+
+    public abstract boolean validates(ValidatableFormatAndProfile profile);
 
 }

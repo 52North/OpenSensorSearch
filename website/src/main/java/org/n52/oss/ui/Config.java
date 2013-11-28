@@ -19,7 +19,11 @@ public class Config {
 
     public static final String BASE_URL = "http://gsoc.dev.52north.org:8093";
 
-    private String sirEndpoint = "http://localhost:8080/oss-service/sir";
+    private String ossService = "http://localhost:8080/oss-service";
+
+    private String sirEndpoint = this.ossService + "/sir";
+
+    private String apiEndpoint = this.ossService + "/api/v1";
 
     public String getSirEndpoint() {
         return this.sirEndpoint;
@@ -27,5 +31,13 @@ public class Config {
 
     public void setSirEndpoint(String sirEndpoint) {
         this.sirEndpoint = sirEndpoint;
+    }
+
+    public String getApiEndpoint() {
+        return this.apiEndpoint;
+    }
+
+    public void setApiEndpoint(String apiEndpoint) {
+        this.apiEndpoint = apiEndpoint;
     }
 }

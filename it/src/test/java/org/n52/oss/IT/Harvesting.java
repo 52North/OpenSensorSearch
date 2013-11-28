@@ -17,7 +17,7 @@
  * @author Yakoub
  */
 
-package org.n52.oss.IT.solr;
+package org.n52.oss.IT;
 
 import static org.junit.Assert.assertTrue;
 

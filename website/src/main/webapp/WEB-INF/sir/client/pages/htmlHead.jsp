@@ -30,7 +30,13 @@
 <script src="<%=request.getContextPath()%>/lib/codemirror/xml.js"
 	type="text/javascript"></script>
 
+<jsp:useBean id="configBean" scope="application"
+	class="org.n52.oss.ui.Config" />
+
 <script type="text/javascript">
+	var ossApiEndpoint = "<%=configBean.getApiEndpoint()%>";
+	console.log("OSS API endpoint: " + ossApiEndpoint);
+
 	var requestEditor = null;
 	var responseEditor = null;
 	var descriptionEditor = null;
@@ -49,31 +55,21 @@
 	});
 
 	function initRequestEditor() {
-		var s;
-		var area = document.getElementById('requestStringArea');
-		if (area.value != "") {
-			s = area.value;
-		} else {
-			s = defaultString;
-		}
-
-		requestEditor = CodeMirror.fromTextArea("requestStringArea");
-		requestEditor.setValue(s);
+		var area = document.getElementById("requestStringArea");
+		if (area != null)
+			requestEditor = CodeMirror.fromTextArea(area);
 	}
 
 	function initResponseEditor() {
-		var area = document.getElementById('responseStringArea');
+		var area = document.getElementById("responseStringArea");
 		if (area != null)
-			responseEditor = CodeMirror.fromTextArea("responseStringArea");
+			responseEditor = CodeMirror.fromTextArea(area);
 	}
 
 	function initDescriptionEditor() {
-		var area = document.getElementById('descriptionStringArea');
-
-		// description string area is not given on all pages
-		if (area != null) {
-			responseEditor = CodeMirror.fromTextArea("descriptionStringArea");
-		}
+		var area = document.getElementById("descriptionStringArea");
+		if (area != null)
+			responseEditor = CodeMirror.fromTextArea(area);
 	}
 </script>
 

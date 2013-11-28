@@ -38,10 +38,12 @@
 
 		<p>Insert the SensorML description of a sensor:</p>
 
-		<form action="transformSensorML.jsp" method="post">
+		<form id="sml" method="post">
 			<p class="textareaBorder">
-				<textarea id="requestStringArea" name="requestString"
-					class="smallTextarea" rows="10" cols="10">...</textarea>
+				<textarea id="input" name="request" class="smallTextarea" rows="10"
+					cols="10">
+					<!-- enter SensorML here -->
+				</textarea>
 			</p>
 			<p>
 				<input type="submit" name="requestTransformation" value="Transform" />
@@ -51,10 +53,38 @@
 		<p>Transformed ebRIM representation of sensor description:</p>
 
 		<p class="textareaBorder">
-			<textarea id="responseStringArea" class="largeTextarea" rows="10"
-				cols="10">...</textarea>
+			<textarea id="output" class="largeTextarea" rows="10" cols="10">...</textarea>
 		</p>
 
 	</div>
+
+	<script type="text/javascript">
+		$("#sml").on(
+				"submit",
+				function(e) {
+					e.preventDefault();
+					var url = ossApiEndpoint + "/convert";
+					console.log("Sending request to " + url + " with data: "
+							+ $(this).serialize());
+					$.ajax({
+						type : "POST",
+						cache : false,
+						url : url,
+						data : $(this).serialize(),
+						dataType : "xml",
+						success : function(data) {
+							console.log(data);
+							$("#input").val(data);
+						}
+					}).fail(
+							function(data) {
+								console.log(data);
+								$("#output").val(
+										data.status + " " + data.statusText
+												+ "\n\n" + data.responseText);
+							});
+
+				});
+	</script>
 </body>
 </html>

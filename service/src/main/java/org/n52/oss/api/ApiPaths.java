@@ -23,6 +23,8 @@ public abstract class ApiPaths {
 
     public static final String CHECK_PATH = API_PATH + "/check";
 
+    public static final String CHECK_SENSORML = "/sml";
+
     public static final String SENSORS_PATH = API_PATH + "/sensors";
 
 }

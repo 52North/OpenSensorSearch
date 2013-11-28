@@ -51,7 +51,8 @@ public class SearchByAllFieldsTest {
         String basePath = (this.getClass().getResource("/Requests").getFile());
         File sensor_file = new File(basePath + "/testSensor.xml");
         SensorMLDocument doc = SensorMLDocument.Factory.parse(sensor_file);
-        SirSensor sensor = SensorMLDecoder.decode(doc);
+        SensorMLDecoder d = new SensorMLDecoder();
+        SirSensor sensor = d.decode(doc);
 
         SolrConnection c = new SolrConnection("http://localhost:8983/solr", 2000);
 

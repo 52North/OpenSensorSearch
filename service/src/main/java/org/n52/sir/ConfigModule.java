@@ -20,8 +20,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.n52.sir.util.EbRimMessageBodyWriter;
-import org.n52.sir.util.OwsExMessageBodyWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +37,9 @@ public class ConfigModule extends AbstractModule {
 
         log.debug("Loaded and bound properties:\n\t{}", sirProps);
 
-        bind(OwsExMessageBodyWriter.class);
-        bind(EbRimMessageBodyWriter.class);
+        // these don't work yet - use workaround with org.w3c.dom.Document
+        // bind(OwsExMessageBodyWriter.class);
+        // bind(EbRimMessageBodyWriter.class);
 
         log.info("Configured {}", this);
     }

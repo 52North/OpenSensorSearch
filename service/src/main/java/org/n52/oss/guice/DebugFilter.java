@@ -42,7 +42,7 @@ public class DebugFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        log.info("Init: {}", filterConfig);
+        log.warn("DEBUG FILTER is enabled: {}", filterConfig);
     }
 
     @Override
@@ -51,6 +51,8 @@ public class DebugFilter implements Filter {
         String url = getFullURL((HttpServletRequest) request);
         log.debug("URL: {}", url);
         
+        // TODO make this output available in admin pages
+
         chain.doFilter(request, response);
     }
 

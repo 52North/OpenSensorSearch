@@ -22,16 +22,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/")
 public class ApiController {
 
-    @RequestMapping("/developer")
+    @RequestMapping("/api")
     public String developers() {
-        return "api/developers";
+        return "underdevelopment";
     }
 
-    @RequestMapping("/")
-    public String index() {
+    @RequestMapping("/api/swagger")
+    public String swagger() {
         return "api/index";
     }
+
+    @RequestMapping("/api/scriptDevelopers")
+    public String scriptDevs() {
+        return "api/scriptDevelopers";
+    }
+
 }

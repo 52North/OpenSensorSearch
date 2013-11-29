@@ -15,15 +15,15 @@
     limitations under the License.
 
 --%>
-<img class="betaBanner" src="images/beta.png" height="100px"
+<img class="betaBanner" src="images/beta.png" height="100"
 	alt="beta banner" />
 
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse">
 	<div class="container">
-		<a href="http://52north.org" alt="52°North Website"><img
+		<a href="http://52north.org" title="52°North Website"><img
 			alt="52N logo" src="./${context}/images/52n-icon.png"
 			style="float: right; margin-top: 4px; margin-right: 10px;"
-			width="42px" height="42px"></a>
+			width="42" height="42"></a>
 
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -41,10 +41,10 @@
 					data-toggle="dropdown">Documentation <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li class="dropdown-header">OSS</li>
-						<li><a href="#">Users</a></li>
+						<li><a href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch">Users</a></li>
 						<li><a
-							href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch">Developers</a></li>
-						<li><a href="${context}/OSSUI/api/">API</a></li>
+							href="api/scriptDevelopers">Script Developers</a></li>
+						<li><a href="api">API</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Meta</li>
 						<li><a
@@ -54,16 +54,15 @@
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown">Harvesting <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="${context}/OSSUI/script/index">Javascript</a></li>
+						<li><a href="script/index">Javascript</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Remote Server</li>
-						<li><a href="${context}/OSSUI/remote/index">OSS API
-								Server</a></li>
+						<li><a href="remote/index">OSS API Server</a></li>
 						<li><a href="#">OGC Web Service</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Documentation</li>
 						<li><a
-							href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch/ScriptDevelopers">Script
+							href="api/scriptDevelopers">Script
 								Developers</a></li>
 					</ul></li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -79,10 +78,14 @@
 						<li><a href="form/discoveryProfile">Discovery Profile</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Meta</li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
 						<li><a
-							onclick="window.external.AddSearchProvider('${context}/OSSUI/resources/searchPlugin.xml');">Add
+							href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch">About</a></li>
+						<!-- 						<li><a href="#contact">Contact</a></li> -->
+						<li><a href="login">Login</a></li>
+						<li><a href="https://github.com/52North/OpenSensorSearch">Source Code</a></li>
+						<li class="divider"></li>
+						<li><a
+							onclick="window.external.AddSearchProvider('resources/searchPlugin.xml');">Add
 								as search plugin</a></li>
 					</ul></li>
 			</ul>

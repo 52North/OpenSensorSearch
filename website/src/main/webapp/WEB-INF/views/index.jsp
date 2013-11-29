@@ -49,13 +49,11 @@
 			%>
 			<div data-alerts="alerts"></div>
 
-			<div class="row">
-				<h1>Open Sensor Search</h1>
-			</div>
+			<h1>Open Sensor Search</h1>
 
 			<form class="form-inline" name="requestform" method="get"
 				action="/oss-service/search" onsubmit="return validate()">
-				<div class="row" style="margin-top: 42px;">
+				<div class="row" style="margin-top: 42px; margin-left: 0px;">
 					<div class="col-xs-6 col-sm-4 col-md-2">
 						<input name="q" id="inputSearch" type="text"
 							class="form-control input-large search-query"
@@ -78,7 +76,7 @@
 					name="radius" type="hidden" id="radius" class="form-control">
 			</form>
 
-			<div class="row" style="margin-top: 42px;">
+			<div style="margin-top: 42px;">
 				<p>
 					Searching across... <span id="statsSensors">..</span> sensors, <span
 						id="statsPhenonema">..</span> phenomena, and <span

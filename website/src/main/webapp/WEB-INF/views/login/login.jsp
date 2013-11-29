@@ -26,75 +26,11 @@
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-<title>Sign in</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in | Open Sensor Search</title>
 
-<link href="../OSSUI/styles/bootstrap.css" rel="stylesheet">
-<style type="text/css">
-body {
-	padding-top: 40px;
-	padding-bottom: 40px;
-	background-color: #eee;
-}
+<%@ include file="../common-head.jsp"%>
 
-.form-signin {
-	max-width: 330px;
-	padding: 15px;
-	margin: 0 auto;
-}
 
-.form-signin .form-signin-heading,.form-signin .checkbox {
-	margin-bottom: 10px;
-}
-
-.form-signin .checkbox {
-	font-weight: normal;
-}
-
-.form-signin .form-control {
-	position: relative;
-	font-size: 16px;
-	height: auto;
-	padding: 10px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.form-signin .form-control:focus {
-	z-index: 2;
-}
-
-.form-signin input[type="text"] {
-	margin-bottom: -1px;
-	border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0;
-}
-
-.form-signin input[type="password"] {
-	margin-bottom: 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-}
-</style>
-<link href="OSSUI/styles/bootstrap-responsive.css" rel="stylesheet">
-
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-
-<!-- Fav and touch icons -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144"
-	href="../assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="../assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="../assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed"
-	href="../assets/ico/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="../assets/ico/favicon.png">
 </head>
 
 <body>
@@ -104,25 +40,50 @@ body {
 			${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
 		</div>
 	</c:if>
-	<div class="container">
-		<form method="post" class="form-signin"
-			action="<c:url value='j_spring_security_check' />">
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<input type="text" class="form-control" placeholder="Email address"
-				id="username_or_email" name="j_username" /> <input type="password"
-				class="form-control" placeholder="Password" id="password"
-				name="j_password"> <label class="checkbox"> <input
-				type="checkbox" value="remember-me"> Remember me
-			</label>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-				in</button>
-		</form>
+	<%@ include file="../navigation.jsp"%>
 
+	<div id="wrap">
+		<%@ include file="../navigation.jsp"%>
+
+		<div class="container" style="padding-top: 60px;">
+			<h1>Login</h1>
+
+			<form class="form-horizontal" method="post"
+				action="<c:url value='j_spring_security_check' />">
+				<div class="form-group">
+					<label for="username" class="col-sm-2 control-label">Username</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							placeholder="Email address" id="username" name="j_username" />
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-2 control-label">Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" placeholder="Password"
+							id="password" name="j_password">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="checkbox">
+							<label> <input type="checkbox" value="remember-me">
+								Remember me
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">Sign in</button>
+					</div>
+				</div>
+			</form>
+
+		</div>
 	</div>
-	<!-- /container -->
 
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="../OSSUI/scripts/bootstrap.min.js"></script>
-
+	<%@ include file="../footer.jsp"%>
 </body>
 </html>

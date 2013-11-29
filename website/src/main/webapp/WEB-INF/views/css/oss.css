@@ -6,10 +6,10 @@ html,body {
 }
 
 .betaBanner {
-    position: fixed;
-    margin-top: 20px;
-    top: 0%;
-    right: 0%;
+	position: fixed;
+	margin-top: 51px;
+	top: 0%;
+	right: 0%;
 }
 
 /* Wrapper for page content to push down footer */
@@ -22,7 +22,7 @@ html,body {
 }
 
 /* fixed height of the footer */
-#push, #footer {
+#push,#footer {
 	height: 80px;
 }
 

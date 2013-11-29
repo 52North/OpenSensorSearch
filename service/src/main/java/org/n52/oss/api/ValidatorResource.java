@@ -118,7 +118,7 @@ public class ValidatorResource {
             else {
                 JsonStringEncoder encoder = new JsonStringEncoder();
 
-                response.append("{\"status\" : \"invalid \", \"errors\" : [ ");
+                response.append("{\"status\" : \"invalid\", \"errors\" : [ ");
                 List<String> details = smlValidator.getValidationFailures();
                 for (int i = 0; i < details.size(); i++) {
                     response.append("{ \"message");

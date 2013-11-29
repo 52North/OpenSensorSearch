@@ -15,6 +15,9 @@
     limitations under the License.
 
 --%>
+<img class="betaBanner" src="images/beta.png" height="100px"
+	alt="beta banner" />
+
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse">
 	<div class="container">
 		<a href="http://52north.org" alt="52°North Website"><img
@@ -29,7 +32,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<!-- 			<a class="navbar-brand" href="#">Open Sensor Search</a> -->
+			<a class="navbar-brand" href="#">Open Sensor Search</a>
 		</div>
 
 		<div class="navbar-collapse collapse">
@@ -71,6 +74,9 @@
 						<li><a href="sir/form">Form Client</a></li>
 						<li><a
 							href="https://52north.org/twiki/bin/view/SensorWeb/SensorInstanceRegistry">Documentation</a></li>
+						<li class="divider"></li>
+						<li class="dropdown-header">Tools</li>
+						<li><a href="form/discoveryProfile">Discovery Profile</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Meta</li>
 						<li><a href="#about">About</a></li>

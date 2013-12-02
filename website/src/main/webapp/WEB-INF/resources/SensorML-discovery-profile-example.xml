@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SensorML xmlns="http://www.opengis.net/sensorML/1.0.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:swe="http://www.opengis.net/swe/1.0.1"
+	xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="http://www.opengis.net/sensorML/1.0.1 http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd"
+	version="1.0.1">
+	<member>
+		<!--
+			The SensorML document contains (as defined in the schema) at least
+			one "member" element. profile-specific: Each "member" contains a
+			"Process" instance (either a "Component" or a "System") which shall
+			be discoverable.
+		-->
+		<System>
+			<!--
+				profile-specific: A short textual description of the system shall be
+				provided.
+			-->
+			<gml:description>Weather station located on the roof of the
+				Insititute for Geoinformatics of the University Münster, Germany.
+			</gml:description>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Keywords -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--
+				profile-specific: For allowing a reliable search, keywords have to
+				be given. At least the observed phenomenon has to be mentioned.
+			-->
+			<keywords>
+				<KeywordList>
+					<keyword>weather station</keyword>
+					<keyword>precipitation</keyword>
+					<keyword>wind speed</keyword>
+					<keyword>temperature</keyword>
+				</KeywordList>
+			</keywords>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Identification -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<identification>
+				<!--
+					profile-specific: Each "identifier/Term" element contained in the
+					"IdentifierList" must have a "definition" attribute. This attribute
+					links to the semantics of the identifier. One identifier has to
+					carry the definition "urn:ogc:def:identifier:OGC:uniqueID". The
+					value of its contained "Term" element uniquely identifies the
+					System or Component instance. One identifier has to contain the
+					definition "urn:ogc:def:identifier:OGC:longName". The value of its
+					contained "Term" element represents a human understandable name for
+					the instance. One identifier has to contain the definition
+					"urn:ogc:def:identifier:OGC:shortName". The value of its contained
+					"Term" element represents a short representation of the human
+					understandable name for the instance.
+				-->
+				<IdentifierList>
+					<identifier name="uniqueID">
+						<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+							<value>urn:ogc:object:feature:Sensor:IFGI:weatherStation123</value>
+						</Term>
+					</identifier>
+					<identifier name="longName">
+						<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+							<value>Weather station 123 on top of the IfGI building</value>
+						</Term>
+					</identifier>
+					<identifier name="shortName">
+						<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+							<value>Weather Station 123</value>
+						</Term>
+					</identifier>
+				</IdentifierList>
+			</identification>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Classification -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<classification>
+				<!--
+					profile-specific: Each "classifier/Term" element contained in the
+					"ClassifierList" must have a "definition" attribute. This attribute
+					links to the semantics of the identifier. The classifiers
+					"intendedApplication" and "sensorType" are required.
+				-->
+				<ClassifierList>
+					<classifier name="intendedApplication">
+						<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+							<value>weather</value>
+						</Term>
+					</classifier>
+					<classifier name="sensorType">
+						<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+							<value>weather station</value>
+						</Term>
+					</classifier>
+				</ClassifierList>
+			</classification>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Valid time -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<validTime>
+				<!--
+					profile-specific: Each System must contain information about the
+					time the SensorML description is valid. Within this profile a
+					gml:TimePeriod is expected.
+				-->
+				<gml:TimePeriod>
+					<gml:beginPosition>2010-01-15</gml:beginPosition>
+					<gml:endPosition>2010-01-30</gml:endPosition>
+				</gml:TimePeriod>
+			</validTime>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Capabilities -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<capabilities>
+				<!--
+					profile-specific: A "swe:DataRecord" containing a number of
+					"swe:field" elements must be used here to specify the capabilities
+					of the "System" or "Component". The child-element of each
+					"swe:Field" element has to contain a "definition" attribute. If the
+					child-element of the "swe:Field" is a "swe:Quantity" it has to
+					contain the "swe:uom" element which specifies the "code" attribute.
+					One "swe:field" has to contain a "swe:Envelope" element with the
+					definition "urn:ogc:def:property:OGC:1.0:observedBBOX". It
+					describes the bounding box of the area that is observed by the
+					System. In case of an in-situ sensor this bounding box only
+					contains the position of the sensor.
+				-->
+				<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+					<swe:field name="observedBBOX">
+						<swe:Envelope referenceFrame="urn:ogc:def:crs:EPSG:6.14:31466"
+							definition="urn:ogc:def:property:OGC:1.0:observedBBOX">
+							<swe:lowerCorner>
+								<swe:Vector>
+									<swe:coordinate name="easting">
+										<swe:Quantity axisID="x">
+											<swe:uom code="m" />
+											<swe:value>2592308.332</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="northing">
+										<swe:Quantity axisID="y">
+											<swe:uom code="m" />
+											<swe:value>5659592.542</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:lowerCorner>
+							<swe:upperCorner>
+								<swe:Vector>
+									<swe:coordinate name="easting">
+										<swe:Quantity axisID="x">
+											<swe:uom code="m" />
+											<swe:value>2592308.332</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+									<swe:coordinate name="northing">
+										<swe:Quantity axisID="y">
+											<swe:uom code="m" />
+											<swe:value>5659592.542</swe:value>
+										</swe:Quantity>
+									</swe:coordinate>
+								</swe:Vector>
+							</swe:upperCorner>
+						</swe:Envelope>
+					</swe:field>
+				</swe:DataRecord>
+			</capabilities>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Contact -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--
+				profile-specific: A "contact" element has to be present.
+			-->
+			<contact>
+				<ResponsibleParty gml:id="WWU_IfGI_weather_station_contact">
+					<individualName>Simon Jirka</individualName>
+					<organizationName>Institute for Geoinformatics - Westfälische
+						Wilhelms
+						Universität Münster - Sensor Web and Simulation Lab</organizationName>
+					<contactInfo>
+						<address>
+							<deliveryPoint>Weseler Straße
+								253</deliveryPoint>
+							<city>Münster</city>
+							<postalCode>48151</postalCode>
+							<country>Germany</country>
+							<electronicMailAddress>swsl-ifgi@listserv.uni-muenster.de</electronicMailAddress>
+						</address>
+					</contactInfo>
+				</ResponsibleParty>
+			</contact>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Position -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<position name="weatherStationPosition">
+				<!--
+					profile-specific: The "System" has to contain a "position" element
+					which defines the position of the System itself. The "position"
+					element contains a "swe:Position" which uses the "referenceFrame"
+					attribute to specify its spatial reference system. This
+					"swe:Position" element contains a "swe:location" which specifies a
+					"swe:Vector/swe:coordinate/swe:Quantity". It is required that this
+					"swe:Quantity" uses the "axisID" attribute to specify the axis to
+					which it refers. One "swe:coordinate/swe:Quantity" has to specify
+					an "axisID" named "x" which refers to the x-axis (= easting- /
+					longitude-axis) of the crs. One "swe:coordinate/swe:Quantity" has
+					to specify an "axisID" named "y" which refers to the y-axis (=
+					northing- / latitude-axis) of the crs. An optional
+					"swe:coordinate/swe:Quantity" may specify an "axisID" named "z"
+					which refers to the z-axis (= altitude-axis) of the crs.
+					Furthermore the "swe:value" element is utilized to specify the
+					coordinate value. The "swe:uom" element with a "code" attribute
+					defines the unit of the coordinate value.
+				-->
+				<swe:Position referenceFrame="urn:ogc:def:crs:EPSG:6.14:31466">
+					<swe:location>
+						<swe:Vector gml:id="SYSTEM_LOCATION">
+							<swe:coordinate name="easting">
+								<swe:Quantity axisID="x">
+									<swe:uom code="m" />
+									<swe:value>2592308.332</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="northing">
+								<swe:Quantity axisID="y">
+									<swe:uom code="m" />
+									<swe:value>5659592.542</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+							<swe:coordinate name="altitude">
+								<swe:Quantity axisID="z">
+									<swe:uom code="m" />
+									<swe:value>297.0</swe:value>
+								</swe:Quantity>
+							</swe:coordinate>
+						</swe:Vector>
+					</swe:location>
+				</swe:Position>
+			</position>
+			<!--~~~~~~~~~~~~~ -->
+			<!--System Interfaces -->
+			<!--~~~~~~~~~~~~~ -->
+			<!--
+				profile-specific: For each sensor (system or component) information
+				about the SWE services that encapsulate them shall be provided. Each
+				SWE service that offers access to the sensor shall be described as a
+				serviceLayer interface definition. This definition shall consist of
+				a data record with the definition
+				"urn:ogc:def:interface:OGC:1.0:SWEServiceInterface". Such this data
+				record shall contain the following fields:
+				urn:ogc:def:interface:OGC:1.0:ServiceURL: the URL of the SWE service
+				urn:ogc:def:interface:OGC:1.0:ServiceType: the type of the SWE
+				service urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID: the
+				id of the sensor within the SWE service
+			-->
+			<interfaces>
+				<InterfaceList>
+					<interface name="SOS1">
+						<InterfaceDefinition>
+							<serviceLayer>
+								<swe:DataRecord
+									definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://v-swe.uni-muenster.de:8080/WeatherSOS/sos
+											</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SOS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field
+										name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>sensor01</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</serviceLayer>
+						</InterfaceDefinition>
+					</interface>
+					<interface name="SPS1">
+						<InterfaceDefinition>
+							<serviceLayer>
+								<swe:DataRecord
+									definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+										<swe:Text>
+											<swe:value>http://v-swe.uni-muenster.de:8080/SPS/sps
+											</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+										<swe:Text>
+											<swe:value>SPS</swe:value>
+										</swe:Text>
+									</swe:field>
+									<swe:field
+										name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+										<swe:Text>
+											<swe:value>sensor01</swe:value>
+										</swe:Text>
+									</swe:field>
+								</swe:DataRecord>
+							</serviceLayer>
+						</InterfaceDefinition>
+					</interface>
+				</InterfaceList>
+			</interfaces>
+			<!--~~~~~~~~~~~~~ -->
+			<!--System Inputs -->
+			<!--~~~~~~~~~~~~~ -->
+			<inputs>
+				<InputList>
+					<!--
+						profile-specific: The "InputList"-element lists up the phenomena
+						observed by the different sensors. Therefore the
+						"swe:ObservableProperty" element is used. The
+						"swe:ObservableProperty" element uses the "definition"-attribute
+						to specify the URN identifier of the observed property.
+					-->
+					<input name="precipitation">
+						<swe:ObservableProperty
+							definition="urn:ogc:def:property:OGC:1.0:precipitation" />
+					</input>
+					<input name="wind">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:wind" />
+					</input>
+					<input name="atmosphericTemperature">
+						<swe:ObservableProperty definition="urn:ogc:def:property:OGC:1.0:temperature" />
+					</input>
+				</InputList>
+			</inputs>
+			<!--~~~~~~~~~~~~~~ -->
+			<!--System Outputs -->
+			<!--~~~~~~~~~~~~~~ -->
+			<outputs>
+				<OutputList>
+					<!--
+						profile-specific: The "OutputList"-element has to list up at least
+						all "output"s of the system. Each child-element of an "output" has
+						to use the "definition"-attribute to specify the URN identifier of
+						the observed property. If the child-element of the output is a
+						"swe:Quantity" it has to contain the "swe:uom" element which
+						specifies the "code" attribute.
+					-->
+					<output name="precipitation">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:precipitation">
+							<swe:uom code="mm" />
+						</swe:Quantity>
+					</output>
+					<output name="windDirection">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:windDirection">
+							<swe:uom code="deg" />
+						</swe:Quantity>
+					</output>
+					<output name="windSpeed">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:windSpeed">
+							<swe:uom code="m/s" />
+						</swe:Quantity>
+					</output>
+					<output name="temperature">
+						<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:temperature">
+							<swe:uom code="Cel" />
+						</swe:Quantity>
+					</output>
+				</OutputList>
+			</outputs>
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!--Components associated with the System -->
+			<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<components>
+				<!--
+					The components which are associated with the System can either be
+					defined inline within the System document or they can be referenced
+					using the "xlink:href" attribute (as in this example).
+				-->
+				<ComponentList>
+					<!--
+						<component name="rainGauge" xlink:type="simple"
+						xlink:href="http://mySensorMLregistry.com?object=98765" />
+						<component name="anemoneter" xlink:type="simple"
+						xlink:href="http://mySensorMLregistry.com?object=33333" />
+
+						<component name="dummyComponent" xlink:type="simple"
+						xlink:href="http://ifgi.uni-muenster.de/~d_nues01/swsl/singleTestComponent.xml"
+						/>
+					-->
+					<component name="thermometer">
+						<Component>
+							<!--
+								profile-specific: A short textual description of the component
+								shall be provided..
+							-->
+							<gml:description>Temperature sensor within the weather station
+								located on the roof of the Insititute for Geoinformatics of the
+								University Münster, Germany.</gml:description>
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<!--Keywords -->
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<keywords>
+								<!--
+									profile-specific: For allowing a reliable search, keywords have
+									to be given. At least the observed phenomenon has to be
+									mentioned.
+								-->
+								<KeywordList>
+									<keyword>thermometer</keyword>
+									<keyword>temperature</keyword>
+								</KeywordList>
+							</keywords>
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<!--Identification -->
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<identification>
+								<!--
+									profile-specific: Each "identifier/Term" element contained in
+									the "IdentifierList" must have a "definition" attribute. This
+									attribute links to the semantics of the identifier. One
+									identifier has to carry the definition
+									"urn:ogc:def:identifier:OGC:uniqueID". The value of its
+									contained "Term" element uniquely identifies the System or
+									Component instance. One identifier has to contain the
+									definition "urn:ogc:def:identifier:OGC:longName". The value of
+									its contained "Term" element represents a human understandable
+									name for the instance. One identifier has to contain the
+									definition "urn:ogc:def:identifier:OGC:shortName". The value of
+									its contained "Term" element represents a short representation
+									of the human understandable name for the instance. One
+									identifier has to contain the definition
+									"urn:ogc:def:identifier:OGC:1.0:parentSystemUniqueID". The
+									value of its contained "Term" element consists of the uniqueID
+									of the system that contains this component.
+								-->
+								<IdentifierList>
+									<identifier name="uniqueID">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:uniqueID">
+											<value>urn:ogc:object:feature:Sensor:IFGI:thermometer123</value>
+										</Term>
+									</identifier>
+									<identifier name="longName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:longName">
+											<value>OSIRIS Thermometer at weather station 123</value>
+										</Term>
+									</identifier>
+									<identifier name="shortName">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:shortName">
+											<value>OSIRIS Thermometer 123</value>
+										</Term>
+									</identifier>
+									<identifier name="parentSystemUniqueID">
+										<Term definition="urn:ogc:def:identifier:OGC:1.0:parentSystemUniqueID">
+											<value>OSIRIS Weather Station 123</value>
+										</Term>
+									</identifier>
+								</IdentifierList>
+							</identification>
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<!--Classification -->
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<classification>
+								<!--
+									profile-specific: Each "classifier/Term" element contained in
+									the "ClassifierList" must have a "definition" attribute. This
+									attribute represents the link to the semantics of the
+									identifier. The classifiers "intendedApplication" and
+									"sensorType" are required.
+								-->
+								<ClassifierList>
+									<classifier name="intendedApplication">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:application">
+											<value>weather</value>
+										</Term>
+									</classifier>
+									<classifier name="sensorType">
+										<Term definition="urn:ogc:def:classifier:OGC:1.0:sensorType">
+											<value>thermometer</value>
+										</Term>
+									</classifier>
+								</ClassifierList>
+							</classification>
+							<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<!--Valid time -->
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<validTime>
+								<!--
+									profile-specific: Each System must contain information about
+									the time the SensorML description is valid. Within this profile
+									a gml:TimePeriod is expected.
+								-->
+								<gml:TimePeriod>
+									<gml:beginPosition>2009-01-15</gml:beginPosition>
+									<gml:endPosition>2009-01-20</gml:endPosition>
+								</gml:TimePeriod>
+							</validTime>
+							<!--~~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<!--Capabilities -->
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<capabilities>
+								<!--
+									profile-specific: A "swe:DataRecord" containing a number of
+									"swe:field" elements must be used here to specify the
+									capabilities of the "Component". The child-element of each
+									"swe:Field" element has to contain a "definition" attribute. If
+									the child-element of the "swe:Field" is a "swe:Quantity" it has
+									to contain the "swe:uom" element which specifies the "code"
+									attribute. One "swe:field" has to contain a "swe:Envelope"
+									element with the definition
+									"urn:ogc:def:property:OGC:1.0:observedBBOX". It describes the
+									bounding box of the area that is observed by the System. In
+									case of an in-situ sensor this bounding box only contains the
+									position of the sensor.
+								-->
+								<swe:DataRecord definition="urn:ogc:def:property:capabilities">
+									<swe:field name="observedBBOX">
+										<swe:Envelope referenceFrame="urn:ogc:def:crs:EPSG:6.14:31466"
+											definition="urn:ogc:def:property:OGC:1.0:observedBBOX">
+											<swe:lowerCorner>
+												<swe:Vector>
+													<swe:coordinate name="easting">
+														<swe:Quantity axisID="x">
+															<swe:uom code="m" />
+															<swe:value>2592308.332</swe:value>
+														</swe:Quantity>
+													</swe:coordinate>
+													<swe:coordinate name="northing">
+														<swe:Quantity axisID="y">
+															<swe:uom code="m" />
+															<swe:value>5659592.542</swe:value>
+														</swe:Quantity>
+													</swe:coordinate>
+												</swe:Vector>
+											</swe:lowerCorner>
+											<swe:upperCorner>
+												<swe:Vector>
+													<swe:coordinate name="easting">
+														<swe:Quantity axisID="x">
+															<swe:uom code="m" />
+															<swe:value>2592308.332</swe:value>
+														</swe:Quantity>
+													</swe:coordinate>
+													<swe:coordinate name="northing">
+														<swe:Quantity axisID="y">
+															<swe:uom code="m" />
+															<swe:value>5659592.542</swe:value>
+														</swe:Quantity>
+													</swe:coordinate>
+												</swe:Vector>
+											</swe:upperCorner>
+										</swe:Envelope>
+									</swe:field>
+								</swe:DataRecord>
+							</capabilities>
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<!--Contact -->
+							<!--~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<contact>
+								<!--
+									profile-specific: A "contact" element has to be present.
+								-->
+								<ResponsibleParty gml:id="WWU_IfGI_thermometer_contact">
+									<individualName>Simon Jirka</individualName>
+									<organizationName>Institute for Geoinformatics - Westfaelische
+										Wilhelms
+										Universität Münster - Sensor Web and Simulation Lab</organizationName>
+									<contactInfo>
+										<address>
+											<deliveryPoint>Weseler Straße 253</deliveryPoint>
+											<city>Münster</city>
+											<postalCode>48151</postalCode>
+											<country>Germany</country>
+											<electronicMailAddress>swsl-ifgi@listserv.uni-muenster.de</electronicMailAddress>
+										</address>
+									</contactInfo>
+								</ResponsibleParty>
+							</contact>
+							<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<!--Position -->
+							<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<position name="thermometerPosition">
+								<!--
+									profile-specific: The "Component" has to contain a "position"
+									element which defines the position of the Component itself. The
+									"position" element contains a "swe:Position" which uses the
+									"referenceFrame" attribute to specify its spatial reference
+									system. This "swe:Position" element contains a "swe:location"
+									which specifies a "swe:Vector/swe:coordinate/swe:Quantity". It
+									is required that this "swe:Quantity" uses the "axisID"
+									attribute to specify the axis to which it refers. One
+									"swe:coordinate/swe:Quantity" has to specify an "axisID" named
+									"x" which refers to the x-axis (= easting- / longitude-axis) of
+									the crs. One "swe:coordinate/swe:Quantity" has to specify an
+									"axisID" named "y" which refers to the y-axis (= northing- /
+									latitude-axis) of the crs. An optional
+									"swe:coordinate/swe:Quantity" may specify an "axisID" named "z"
+									which refers to the z-axis (= altitude-axis) of the crs.
+									Furthermore the "swe:value" element is utilized to specify the
+									coordinate value. The "swe:uom" element with a "code" attribute
+									defines the unit of the coordinate value.
+								-->
+								<swe:Position referenceFrame="urn:ogc:def:crs:EPSG:6.14:31466">
+									<swe:location>
+										<swe:Vector gml:id="THERMOMETER_LOCATION">
+											<swe:coordinate name="easting">
+												<swe:Quantity axisID="x">
+													<swe:uom code="m" />
+													<swe:value>2592308.332</swe:value>
+												</swe:Quantity>
+											</swe:coordinate>
+											<swe:coordinate name="northing">
+												<swe:Quantity axisID="y">
+													<swe:uom code="m" />
+													<swe:value>5659592.542</swe:value>
+												</swe:Quantity>
+											</swe:coordinate>
+											<swe:coordinate name="altitude">
+												<swe:Quantity axisID="z">
+													<swe:uom code="m" />
+													<swe:value>297.0</swe:value>
+												</swe:Quantity>
+											</swe:coordinate>
+										</swe:Vector>
+									</swe:location>
+								</swe:Position>
+							</position>
+							<!--~~~~~~~~~~~~~ -->
+							<!--Sensor Interfaces -->
+							<!--~~~~~~~~~~~~~ -->
+							<!--
+								profile-specific: For each sensor (system or component)
+								information about the SWE services that encapsulate them shall
+								be provided. Each SWE service that offers access to the sensor
+								shall be described as a serviceLayer interface definition. This
+								definition shall consist of a data record with the definition
+								"urn:ogc:def:interface:OGC:1.0:SWEServiceInterface". Such this
+								data record shall contain the following fields:
+								urn:ogc:def:interface:OGC:1.0:ServiceURL: the URL of the SWE
+								service urn:ogc:def:interface:OGC:1.0:ServiceType: the type of
+								the SWE service
+								urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID: the id of
+								the sensor within the SWE service
+							-->
+							<interfaces>
+								<InterfaceList>
+									<interface name="SOS1">
+										<InterfaceDefinition>
+											<serviceLayer>
+												<swe:DataRecord
+													definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+													<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+														<swe:Text>
+															<swe:value>http://v-swe.uni-muenster.de:8080/WeatherSOS/sos
+															</swe:value>
+														</swe:Text>
+													</swe:field>
+													<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+														<swe:Text>
+															<swe:value>SOS</swe:value>
+														</swe:Text>
+													</swe:field>
+													<swe:field
+														name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+														<swe:Text>
+															<swe:value>sensor02</swe:value>
+														</swe:Text>
+													</swe:field>
+												</swe:DataRecord>
+											</serviceLayer>
+										</InterfaceDefinition>
+									</interface>
+									<interface name="SPS1">
+										<InterfaceDefinition>
+											<serviceLayer>
+												<swe:DataRecord
+													definition="urn:ogc:def:interface:OGC:1.0:SWEServiceInterface">
+													<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceURL">
+														<swe:Text>
+															<swe:value>http://v-swe.uni-muenster.de:8080/SPS/sps
+															</swe:value>
+														</swe:Text>
+													</swe:field>
+													<swe:field name="urn:ogc:def:interface:OGC:1.0:ServiceType">
+														<swe:Text>
+															<swe:value>SPS</swe:value>
+														</swe:Text>
+													</swe:field>
+													<swe:field
+														name="urn:ogc:def:interface:OGC:1.0:ServiceSpecificSensorID">
+														<swe:Text>
+															<swe:value>sensor02</swe:value>
+														</swe:Text>
+													</swe:field>
+												</swe:DataRecord>
+											</serviceLayer>
+										</InterfaceDefinition>
+									</interface>
+								</InterfaceList>
+							</interfaces>
+							<!--~~~~~~~~~~~~~ -->
+							<!--Sensor Inputs -->
+							<!--~~~~~~~~~~~~~ -->
+							<inputs>
+								<InputList>
+									<!--
+										profile-specific: The "InputList"-element lists up the
+										phenomena observed by this sensor. Therefore the
+										"swe:ObservableProperty" element is used. The
+										"swe:ObservableProperty" element uses the
+										"definition"-attribute to specify the URN identifier of the
+										observed property.
+									-->
+									<input name="atmosphericTemperature">
+										<swe:ObservableProperty
+											definition="urn:ogc:def:property:OGC:1.0:temperature" />
+									</input>
+								</InputList>
+							</inputs>
+							<!--~~~~~~~~~~~~~~ -->
+							<!--Sensor Outputs -->
+							<!--~~~~~~~~~~~~~~ -->
+							<outputs>
+								<OutputList>
+									<!--
+										profile-specific: The "OutputList"-element lists up all
+										"output"s of the sensor. Each child-element of an "output" has
+										to use the "definition"-attribute to specify the URN
+										identifier of the observed property. If the child-element of
+										the output is a "swe:Quantity" it has to specify the "swe:uom"
+										attribute as well.
+									-->
+									<output name="temperature">
+										<swe:Quantity definition="urn:ogc:def:property:OGC:1.0:temperature">
+											<gml:groupName codeSpace="ObservationOffering"> Weather
+											</gml:groupName>
+											<swe:uom code="Cel" />
+										</swe:Quantity>
+									</output>
+								</OutputList>
+							</outputs>
+						</Component>
+					</component>
+				</ComponentList>
+			</components>
+		</System>
+	</member>
+</SensorML>

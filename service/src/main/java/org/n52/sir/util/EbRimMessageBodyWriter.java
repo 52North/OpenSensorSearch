@@ -1,0 +1,71 @@
+
+package org.n52.sir.util;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.MessageBodyWriter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
+import x0.oasisNamesTcEbxmlRegrepXsdRim3.RegistryPackageDocument;
+import x0.oasisNamesTcEbxmlRegrepXsdRim3.impl.RegistryPackageDocumentImpl;
+
+/**
+ * https://jersey.java.net/documentation/latest/message-body-workers.html
+ * 
+ * FIXME this does not work yet, instead I'm casting the response to a org.w3c.dom.Document before returning
+ * it:
+ * 
+ * <code>
+ * XmlObject transformed = transformer.transform(sensorMLDocument);
+ * Document doc = (Document) transformed.getDomNode();
+ * return Response.ok(doc).build();G
+ * </code>
+ * 
+ * @author Daniel
+ * 
+ */
+public class EbRimMessageBodyWriter implements MessageBodyWriter<RegistryPackageDocumentImpl> {
+
+    @Override
+    public boolean isWriteable(Class< ? > type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+        return type == RegistryPackageDocument.class;
+    }
+
+    @Override
+    public long getSize(RegistryPackageDocumentImpl t,
+                        Class< ? > type,
+                        Type genericType,
+                        Annotation[] annotations,
+                        MediaType mediaType) {
+        return 0;
+    }
+
+    @Override
+    public void writeTo(RegistryPackageDocumentImpl t,
+                        Class< ? > type,
+                        Type genericType,
+                        Annotation[] annotations,
+                        MediaType mediaType,
+                        MultivaluedMap<String, Object> httpHeaders,
+                        OutputStream entityStream) throws IOException, WebApplicationException {
+
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(RegistryPackageDocument.class);
+
+            // serialize the entity myBean to the entity output stream
+            jaxbContext.createMarshaller().marshal(t, entityStream);
+        }
+        catch (JAXBException e) {
+            throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+}

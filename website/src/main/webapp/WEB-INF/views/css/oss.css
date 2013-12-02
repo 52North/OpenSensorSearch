@@ -1,0 +1,57 @@
+/* Sticky footer styles
+         See http://getbootstrap.com/2.3.2/examples/sticky-footer-navbar.html
+      */
+html,body {
+	height: 100%;
+}
+
+.betaBanner {
+	position: fixed;
+	margin-top: 51px;
+	top: 0%;
+	right: 0%;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height */
+	margin: 0 auto -80px;
+}
+
+/* fixed height of the footer */
+#push,#footer {
+	height: 80px;
+}
+
+#footer {
+	background-color: #f5f5f5;
+	font-size: 80%;
+}
+
+/* responsive CSS fixes */
+@media ( max-width : 991px) {
+	#push,#footer {
+		height: 110px;
+	}
+	#wrap {
+		margin-bottom: -110px;
+	}
+}
+
+@media ( max-width : 767px) {
+	#push,#footer {
+		height: 180px;
+	}
+	#wrap {
+		margin-bottom: -180px;
+	}
+}
+
+/*
+.form-control {
+	/max-width: 200px;
+}
+*/

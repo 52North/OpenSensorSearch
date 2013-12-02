@@ -1,0 +1,67 @@
+{
+  "source" : "http://service.url",
+  "query" : "temperature",
+  "url" : "http://service.url/search?q=temperature",
+  "description" : "Search results for the keyword 'temperature' from Open Sensor Search.",
+  "author" : "52°North",
+  "date" : 1377875141655,
+  "results" : [ {
+    "lastUpdate" : 1377875141657,
+    "sensorDescription" : {
+      "boundingBox" : {
+        "east" : 1.0,
+        "north" : 4.0,
+        "south" : 2.0,
+        "srid" : -1,
+        "west" : 3.0
+      },
+      "text" : "This text describes the sensor.",
+      "url" : "http://domain.tld:port/path/001"
+    },
+    "sensorIdInSir" : "001",
+    "serviceReferences" : [ {
+      "service" : {
+        "type" : "SOS",
+        "url" : "http://host:port/path"
+      },
+      "serviceSpecificSensorId" : "urn:sos:001"
+    } ],
+    "classifiers" : null,
+    "keywords" : null,
+    "identifiers" : null,
+    "contacts" : null,
+    "inputs" : null,
+    "outputs" : null,
+    "beginDate" : null,
+    "endDate" : null
+  }, {
+    "lastUpdate" : 1377875141658,
+    "sensorDescription" : {
+      "boundingBox" : {
+        "east" : 1.0,
+        "north" : 4.0,
+        "south" : 2.0,
+        "srid" : -1,
+        "west" : 3.0
+      },
+      "text" : "This text describes the sensor.",
+      "url" : "http://domain.tld:port/path/001"
+    },
+    "sensorIdInSir" : "002",
+    "serviceReferences" : [ {
+      "service" : {
+        "type" : "SOS",
+        "url" : "http://host:port/path"
+      },
+      "serviceSpecificSensorId" : "urn:sos:001"
+    } ],
+    "classifiers" : null,
+    "keywords" : null,
+    "identifiers" : null,
+    "contacts" : null,
+    "inputs" : null,
+    "outputs" : null,
+    "beginDate" : null,
+    "endDate" : null
+  } ]
+}

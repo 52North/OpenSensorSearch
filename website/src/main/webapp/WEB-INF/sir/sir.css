@@ -1,0 +1,302 @@
+﻿
+body {
+	padding: 0;
+	margin: 0;
+	background-color: #fff;
+	color: #000;
+}
+
+#content {
+	margin-top: 10px;
+	margin-right: auto;
+	margin-left: auto;
+	width: 780px;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+
+#header {
+	position: relative;
+	height: 80px;
+	margin-bottom: 12px;
+}
+
+#headline {
+	
+}
+
+#logos {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#logos a,#logos a:link,#logos a:visited,#logos a:hover,#headline a,#headline a:link,#headline a:visited,#headline a:hover
+	{
+	text-decoration: none;
+	color: #000;
+}
+
+.center {
+	text-align: center;
+}
+
+img {
+	border: 0;
+}
+
+.textareaBorder {
+	border: 1px solid #999;
+	padding: 0px;
+}
+
+.tinyTextarea {
+	width: 772px;
+	height: 30px;
+}
+
+.smallTextarea {
+	width: 772px;
+	height: 100px;
+}
+
+.mediumTextarea {
+	width: 772px;
+	height: 200px;
+}
+
+.largeTextarea {
+	width: 772px;
+	height: 300px;
+}
+
+.hugeTextarea {
+	width: 772px;
+	height: 500px;
+}
+
+h1,.title {
+	font-size: 20pt;
+	margin-right: 6pt;
+}
+
+h2 {
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+h3 {
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.infotext {
+	color: #999;
+	font-size: 10pt;
+}
+
+.infotext,.infotext a:link {
+	color: #999;
+	font-size: 10pt;
+}
+
+.infotextHighlight {
+	color: #FFA500;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+.infotext a,.infotext a:active,.infotext a:visited {
+	color: #999;
+	text-decoration: none;
+}
+
+.infotext a:hover {
+	text-decoration: underline;
+}
+
+.infotextHighlight a:hover {
+	text-decoration: underline;
+}
+
+.infotextHighlight a,.infotextHighlight a:active,.infotextHighlight a:visited
+	{
+	color: #FFA500;
+	font-size: 10pt;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.request-form {
+	margin-bottom: 12px;
+}
+
+.request-form-buttons {
+	margin: 6px;
+}
+
+.CodeMirror-line-numbers {
+	width: 2.2em;
+	color: #aaa;
+	background-color: #eee;
+	text-align: right;
+	padding-right: .3em;
+	font-size: 10pt;
+	font-family: monospace;
+	padding-top: .4em;
+}
+
+#menu {
+	font-size: 12px;
+}
+
+#menu a {
+	padding: 2px;
+}
+
+#menu a:link,#menu a:visited {
+	color: #fff;
+	background-color: #999;
+	text-decoration: none;
+}
+
+#menu a:hover {
+	color: #fff;
+	background-color: #66c5e4;
+	text-decoration: none;
+}
+
+.menu_operationList {
+	border-bottom: 1px solid #999;
+	margin: 0 0 6px 0;
+	padding: 0 2px 1px 2px;
+}
+
+/* ul */
+.menu_operationList ul {
+	display: inline;
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+	list-style-type: none;
+}
+
+/* li */
+.menu_operationList ul li {
+	display: inline;
+	padding: 0;
+	margin: 0;
+}
+
+.menu_title {
+	display: inline-block;
+	width: 112px;
+}
+
+/* input tables etc. */
+.inputTablesList {
+	list-style-type: none;
+}
+
+.inputTablesList li {
+	padding: 2px;
+	margin: 0 0 0 12px;
+	display: inline;
+}
+
+.inputTablesList li p {
+	font-style: italic;
+}
+
+.inputTable {
+	table-layout: fixed;
+	border: none;
+}
+
+.inputTitle {
+	width: 300px;
+	text-align: right;
+}
+
+.inputField {
+	width: 300px;
+}
+
+/* open search */
+.search-header {
+	margin: 100px 0 50px 0;
+	font-size: 25pt;
+	font-weight: bold;
+	text-align: center;
+}
+
+/*
+.search-button {
+	font-family: Arial, Verdana, sans-serif;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #0099CC;
+	height: 24px;
+	vertical-align: middle;
+}
+*/
+.search-result-header {
+	margin: 40px 0 20px 0;
+	font-size: 20pt;
+	font-weight: bold;
+}
+
+.search-result-header a {
+	text-decoration: none;
+	color: #000000;
+}
+
+.search-input {
+	margin: 0;
+	width: 300px;
+	border: 1px solid gray;
+	font-size: 14px;
+	height: 18px;
+	padding: 2px;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+.result-header {
+	font-size: 13px;
+	margin: 20px 0 0 0;
+	padding: 4px 0 0 0;
+	color: #0000FF;
+}
+
+.result-header a {
+	color: #0000FF;
+}
+
+.result-service {
+	font-size: 12px;
+	color: green;
+	margin: 0px;
+	padding: 0px;
+}
+
+.result-service a {
+	color: green;
+}
+
+.result-properties {
+	margin: 0px;
+	font-size: 10px;
+	color: gray;
+}
+
+.result-description {
+	margin: 2px 0 0 0;
+	font-size: 10px;
+}
+
+#footer {
+	text-align: center;
+	margin: 100px 0 20px 0;
+}
+
+.path {
+	font-family: monospace;

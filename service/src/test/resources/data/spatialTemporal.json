@@ -1,0 +1,67 @@
+{
+"sensors":
+	[
+  {
+    "beginPosition": "1985-01-03T15:20:46.272Z",
+    "uniqueId": 0,
+    "keywords": [
+      "Edmenton"
+    ],
+    "lat":"53.54",
+    "lng":"-113.54",
+    "contacts": "Tina@emelie.tv",
+    "endPosition": "1998-11-19T10:36:30.161Z"
+  },
+  {
+    "beginPosition": "2002-09-28T04:41:51.790Z",
+    "uniqueId": 1,
+    "keywords": [
+    "british columbia"
+     ],
+    "lat":"53.28",
+    "lng":"-111.06",
+    "contacts": "Colleen@everardo.biz",
+    "endPosition": "2003-08-04T07:37:07.158Z"
+  },
+  {
+    "beginPosition": "2002-09-28T04:41:51.790Z",
+    "uniqueId": 2,
+    "keywords": [
+      "manitoba"
+    ],
+    "lat":"53.38",
+    "lng":"-117.06",
+    "contacts": "Monique.Morissette@yasmeen.info",
+    "endPosition": "2003-08-04T07:37:07.158Z"
+  }
+  ,
+  {
+    "beginPosition": "2002-09-28T04:41:51.790Z",
+    "uniqueId": 3,
+    "keywords": [
+    "edmenton east"
+    ],
+    "lat":"52.28",
+    "lng":"-113.28",
+    "contacts": "Donald_Ankunding@jimmy.us",
+    "endPosition": "2003-08-04T07:37:07.158Z"
+  }
+  ,
+  {
+    "beginPosition": "2005-09-28T04:41:51.790Z",
+    "uniqueId": 4,
+    "Identifiers": [
+      "veniam",
+      "odit",
+      "est"
+    ],
+    "keywords": [
+    "alberta"
+    ],
+    "lat":"56.75",
+    "lng":"-113.70",
+    "contacts":"Mateo@jett.me",
+    "endPosition": "2007-08-04T07:37:07.158Z"
+  }
+  ]
+  }

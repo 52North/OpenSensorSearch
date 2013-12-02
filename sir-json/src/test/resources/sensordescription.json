@@ -1,0 +1,11 @@
+{
+  "boundingBox" : {
+    "east" : 1.0,
+    "north" : 4.0,
+    "south" : 2.0,
+    "srid" : -1,
+    "west" : 3.0
+  },
+  "text" : "This text describes the sensor.",
+  "url" : "http://domain.tld:port/path/001"
+}

@@ -76,8 +76,6 @@ public class SirConfigurator {
 
     private static final String CATALOGFACTORY = "oss.sir.catalog.csw.factoryImpl";
 
-    private static final String CHARACTER_ENCODING = "oss.characterencoding";
-
     private static final String CLASSIFICATION_INIT_FILENAMES = "oss.catalogconnection.csw-ebrim.classificationInitFilenanes";
 
     private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
@@ -102,8 +100,6 @@ public class SirConfigurator {
     private static final String NAMESPACE_PREFIX = "NAMESPACE_PREFIX";
 
     private static final String NAMESPACE_URI = "NAMESPACE_URI";
-
-    private static final String OPENSEARCH_ENDPOINT = "OPENSEARCH_ENDPOINT";
 
     private static final String POSTREQUESTDECODER = "oss.sir.requestdecoder.post";
 
@@ -502,17 +498,6 @@ public class SirConfigurator {
         // to be used by listeners, saved here to allow shutdown.
         this.exec = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-        String characterEncodingString = this.props.getProperty(CHARACTER_ENCODING);
-        if (characterEncodingString == null) {
-            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "No characterEncoding is defined in the config file!");
-            log.error("No characterEncoding is defined in the config file!");
-            throw se;
-        }
-
-        this.characterEncoding = characterEncodingString;
         this.serviceVersion = this.props.getProperty(SERVICEVERSION);
         this.gmlDateFormat = this.props.getProperty(GMLDATEFORMAT);
         this.schemaUrl = this.props.getProperty(SCHEMA_URL);
@@ -572,8 +557,6 @@ public class SirConfigurator {
             log.error("No valid service url is defined in the config file: " + url);
             throw se;
         }
-
-        this.openSearchPath = this.props.getProperty(OPENSEARCH_ENDPOINT);
 
         // set updateSequence
         newUpdateSequence();

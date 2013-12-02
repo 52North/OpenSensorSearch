@@ -37,9 +37,6 @@ import org.n52.oss.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
 /**
  * @author Jan Schulte, Daniel Nüst (daniel.nuest@uni-muenster.de)
  * 
@@ -54,11 +51,9 @@ public class Client {
 
     private static final int CONNECTION_TIMEOUT = 1000 * 30;
 
-    private URI uri;
+    protected URI uri;
 
-    @Inject
-    public Client(@Named("oss.sir.serviceurl")
-    String endpoint) {
+    public Client(String endpoint) {
         this.uri = URI.create(endpoint);
 
         log.info("NEW {}", this);
@@ -178,7 +173,7 @@ public class Client {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Client [sirURI=");
+        builder.append("Client [uri=");
         builder.append(this.uri);
         builder.append("]");
         return builder.toString();

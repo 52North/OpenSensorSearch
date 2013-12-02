@@ -97,8 +97,9 @@ public class SIR {
     @POST
     @Produces(MediaType.APPLICATION_XML)
     public Response doPost(@Context
-    HttpServletRequest req, String body) {
-        log.debug(" ****** (POST) Connected from: {} {}", req.getRemoteAddr(), req.getRemoteHost());
+    HttpServletRequest req, @Context
+    UriInfo uri, String body) {
+        log.debug(" ****** (POST) Connected from: {}", uri.getAbsolutePath());
         log.debug("POST body: {}", body);
 
         // Read the request
@@ -132,7 +133,7 @@ public class SIR {
                                                                            "request is empty.")));
 
         try {
-            ISirResponse sirResp = this.requestOperator.doPostOperation(inputString);
+            ISirResponse sirResp = this.requestOperator.doPostOperation(inputString, uri.getAbsolutePath());
             return doResponse(sirResp);
         }
         catch (Exception e) {

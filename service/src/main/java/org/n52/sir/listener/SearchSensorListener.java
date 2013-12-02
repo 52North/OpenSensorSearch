@@ -17,12 +17,12 @@
 package org.n52.sir.listener;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.api.InternalSensorID;
 import org.n52.oss.sir.api.SirSearchCriteria_Phenomenon;
@@ -58,19 +58,11 @@ public class SearchSensorListener implements ISirRequestListener {
 
     private ISearchSensorDAO searchSensDao;
 
-    @Inject
-    @Named("oss.characterencoding")
-    private String urlCharacterEncoding;
-
-    @Inject
-    @Named("oss.sir.serviceurl")
-    private String sirUrl;
-
-    @Inject
-    @Named("oss.sir.version")
     private String sirVersion;
 
     private ISearchSensorDAO autocompleteDao;
+
+    private SirClient client;
 
     /**
      * TODO implement injection mechanism for search DAO so that only that what needed is injected, not the
@@ -81,48 +73,12 @@ public class SearchSensorListener implements ISirRequestListener {
     @Inject
     public SearchSensorListener(@Named("full")
     ISearchSensorDAO dao, @Named("autocomplete")
-    ISearchSensorDAO autocompleteDao) throws OwsExceptionReport {
+    ISearchSensorDAO autocompleteDao, SirClient client) throws OwsExceptionReport {
+        this.client = client;
         this.searchSensDao = dao;
         this.autocompleteDao = autocompleteDao;
 
         log.debug("NEW {}", this);
-    }
-
-    /**
-     * 
-     * creates a GET request to retrieve the sensor description of the given sensor,
-     * 
-     * @param sensorId
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    private String createSensorDescriptionURL(String sensorId) throws UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.sirUrl);
-        sb.append("?");
-        sb.append(SirConstants.SERVICEPARAM);
-        sb.append("=");
-        sb.append(SirConstants.SERVICE_NAME);
-        sb.append("&");
-        sb.append(SirConstants.GETVERSIONPARAM);
-        sb.append("=");
-        sb.append(this.sirVersion);
-        sb.append("&");
-        sb.append(SirConstants.GETREQUESTPARAM);
-        sb.append("=");
-        sb.append(SirConstants.Operations.DescribeSensor.name());
-        sb.append("&");
-        sb.append(SirConstants.GetDescSensorParams.SENSORIDINSIR.name());
-        sb.append("=");
-        sb.append(sensorId);
-
-        log.debug("Created description URL for sensor {}: {}", sensorId, sb.toString());
-
-        // URL must be encoded for usage in XML documents
-        if (this.encodeURLs)
-            return URLEncoder.encode(sb.toString(), this.urlCharacterEncoding);
-
-        return sb.toString();
     }
 
     @Override
@@ -186,7 +142,7 @@ public class SearchSensorListener implements ISirRequestListener {
 
             String descriptionURL;
             try {
-                descriptionURL = createSensorDescriptionURL(sirSearchResultElement.getSensorId());
+                descriptionURL = this.client.createDescribeSensorURL(sirSearchResultElement.getSensorId(), true);
             }
             catch (UnsupportedEncodingException e) {
                 log.error("Could not encode URL", e);
@@ -299,10 +255,8 @@ public class SearchSensorListener implements ISirRequestListener {
         StringBuilder builder = new StringBuilder();
         builder.append("SearchSensorListener [encodeURLs=");
         builder.append(this.encodeURLs);
-        builder.append(", urlCharacterEncoding=");
-        builder.append(this.urlCharacterEncoding);
         builder.append(", sirUrl=");
-        builder.append(this.sirUrl);
+        // builder.append(this.sirUrl);
         builder.append(", sirVersion=");
         builder.append(this.sirVersion);
         builder.append(", searchSensDao=");

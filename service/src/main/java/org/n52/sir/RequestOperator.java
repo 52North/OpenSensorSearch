@@ -18,6 +18,7 @@ package org.n52.sir;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -161,7 +162,7 @@ public class RequestOperator {
      *        the post request document
      * @return Returns the related ISirResponse
      */
-    public ISirResponse doPostOperation(String inputString) {
+    public ISirResponse doPostOperation(String inputString, URI requestUri) {
         ISirResponse response = null;
         AbstractSirRequest request = null;
 

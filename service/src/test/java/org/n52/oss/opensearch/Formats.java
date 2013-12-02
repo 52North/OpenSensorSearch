@@ -46,6 +46,7 @@ import org.mockito.Mock;
 import org.n52.oss.config.ApplicationConstants;
 import org.n52.oss.opensearch.listeners.JsonListener;
 import org.n52.oss.opensearch.listeners.OpenSearchListener;
+import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.api.SirSearchCriteria;
 import org.n52.oss.sir.api.SirSearchResultElement;
 import org.n52.oss.sir.api.SirSimpleSensorDescription;
@@ -118,7 +119,7 @@ public class Formats {
         when(queryMap.getFirst("q")).thenReturn(query);
         when(queryUriInfo.getQueryParameters()).thenReturn(queryMap);
 
-        ssl = new SearchSensorListener(mockupDao, mockupDao);
+        ssl = new SearchSensorListener(mockupDao, mockupDao, new SirClient("test", "beta"));
         Injector i = GuiceUtil.configurePropertiesFiles();
         i.injectMembers(ssl);
 

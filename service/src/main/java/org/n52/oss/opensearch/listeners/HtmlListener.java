@@ -59,6 +59,7 @@ import org.n52.ext.link.sos.TimeSeriesParameters;
 import org.n52.ext.link.sos.TimeSeriesPermalinkBuilder;
 import org.n52.oss.opensearch.OpenSearchConfigurator;
 import org.n52.oss.opensearch.OpenSearchConstants;
+import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.api.SirSearchResultElement;
 import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.api.SirSimpleSensorDescription;
@@ -66,7 +67,6 @@ import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.opensearch.ICapabilitiesPermalinkMapper;
 import org.n52.sir.opensearch.instanceSupport.PegelOnlineCPM;
 import org.n52.sir.opensearch.instanceSupport.WeatherSosCPM;
-import org.n52.sir.util.OwsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,7 +139,7 @@ public class HtmlListener implements OpenSearchListener {
     private boolean createTimeSeriesLinks = false;
 
     @Inject
-    OwsClient sirClient;
+    SirClient sirClient;
 
     private URI openSearchEndpoint;
 

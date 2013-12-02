@@ -87,17 +87,12 @@
 
 		<!-- would like to use filtering here, but I did not get it to work with
 			Tomcat and Jetty plugins: http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
-		<service.path>/SIR</service.path>
-		<service.endpoint.service>sir</service.endpoint.service>
-		<service.endpoint.rest>rest</service.endpoint.rest>
-		<service.endpoint.opensearch>search</service.endpoint.opensearch>
-		<service.endpoint.autocomplete>autocomplete</service.endpoint.autocomplete>
 		<guice.version>3.0</guice.version>
 		<jersey.version>1.8</jersey.version>
 		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
 		<logback.version>1.0.13</logback.version>
 
-		<oss.logger.filepath>${catalina.base:-.}/logs/52n-oss</oss.logger.filepath>
+		<oss.logger.filepath>${catalina.base:-.}/logs/oss-service</oss.logger.filepath>
 		<oss.logger.level>DEBUG</oss.logger.level>
 	</properties>
 
@@ -245,24 +240,6 @@
 						<phase>test</phase>
 						<goals>
 							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.15</version>
-				<configuration>
-					<includes>
-						<include>**/*IT*</include>
-					</includes>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
 						</goals>
 					</execution>
 				</executions>

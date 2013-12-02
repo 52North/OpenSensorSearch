@@ -16,6 +16,7 @@
 
 package org.n52.oss.opensearch.listeners;
 
+import java.net.URI;
 import java.util.Collection;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -32,5 +33,9 @@ public interface OpenSearchListener {
     public String getMimeType();
 
     public String getName();
+
+    public void setOpenSearchEndpoint(URI uri);
+
+    public void setHomeURI(URI uri);
 
 }

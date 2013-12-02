@@ -64,6 +64,8 @@ public class ApiResource {
         StringBuilder sb = new StringBuilder();
         sb.append(" { ");
 
+        // TODO this must work dynamically, i.e. the respective modules must register themselves!
+
         sb.append("\"statistics\" : \"");
         sb.append(this.baseUri);
         sb.append(ApiPaths.STATISTICS_PATH);
@@ -85,6 +87,12 @@ public class ApiResource {
         sb.append("\"check\" : \"");
         sb.append(this.baseUri);
         sb.append(ApiPaths.CHECK_PATH);
+        sb.append("\"");
+        sb.append(" , ");
+
+        sb.append("\"opensearch\" : \"");
+        sb.append(this.baseUri);
+        sb.append(ApiPaths.OPENSEARCH_PATH);
         sb.append("\"");
 
         sb.append(" } ");

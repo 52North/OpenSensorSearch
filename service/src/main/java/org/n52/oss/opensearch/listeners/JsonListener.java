@@ -16,6 +16,7 @@
 
 package org.n52.oss.opensearch.listeners;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Date;
 
@@ -47,6 +48,10 @@ public class JsonListener implements OpenSearchListener {
 
     private Converter converter;
 
+    private URI openSearchEndpoint;
+
+    private URI homeUri;
+
     @Inject
     public JsonListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
@@ -62,15 +67,18 @@ public class JsonListener implements OpenSearchListener {
                                    MultivaluedMap<String, String> params) throws OwsExceptionReport {
         log.debug("Creating response for {} search results with params {}", searchResult.size(), params);
 
+        String website = this.homeUri.toString();
+        String searchUri = this.openSearchEndpoint.toString();
+
         String searchText = params.getFirst(OpenSearchConstants.QUERY_PARAM);
 
         String responseDescription = "These are the search hits for the keyword(s) '" + searchText
-                + "' from Open Sensor Search (" + this.conf.getWebsiteHome().toString() + ").";
-        String responseURL = this.conf.getFullOpenSearchPath() + "?" + OpenSearchConstants.QUERY_PARAM + "="
+                + "' from Open Sensor Search (" + website + ").";
+        String responseURL = searchUri + "?" + OpenSearchConstants.QUERY_PARAM + "="
                 + searchText + "&" + OpenSearchConstants.FORMAT_PARAM + "=" + MIME_TYPE;
 
         // build the response object
-        SearchResult result = new SearchResult(this.conf.getWebsiteHome().toString(),
+        SearchResult result = new SearchResult(website,
                                                searchText,
                                                responseURL,
                                                responseDescription,
@@ -93,6 +101,16 @@ public class JsonListener implements OpenSearchListener {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public void setOpenSearchEndpoint(URI uri) {
+        this.openSearchEndpoint = uri;
+    }
+
+    @Override
+    public void setHomeURI(URI uri) {
+        this.homeUri = uri;
     }
 
 }

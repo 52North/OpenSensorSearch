@@ -30,6 +30,7 @@ import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OWSConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.util.Tools;
 import org.n52.oss.util.XmlTools;
 import org.n52.sir.SirConfigurator;
 
@@ -66,7 +67,13 @@ public class ExceptionResponse implements ISirResponse {
         this.erd = ExceptionReportDocument.Factory.newInstance();
         ExceptionReport exceptionReport = this.erd.addNewExceptionReport();
         ExceptionType exception = exceptionReport.addNewException();
-        exception.addExceptionText(e.getMessage());
+        StringBuilder sb = new StringBuilder();
+        sb.append(e.getClass().toString());
+        sb.append(": ");
+        sb.append(e.getMessage());
+        sb.append("\n\n");
+        sb.append(Tools.getStackTrace(e));
+        exception.addExceptionText(sb.toString());
         exception.setExceptionCode(ExceptionCode.NoApplicableCode.toString());
 
         addNamespace();

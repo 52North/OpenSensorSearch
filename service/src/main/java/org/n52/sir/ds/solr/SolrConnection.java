@@ -38,14 +38,17 @@ public class SolrConnection {
 
     private HttpSolrServer server;
 
+    private int timeoutMillis;
+
     @Inject
     public SolrConnection(@Named("oss.solr.url")
     String url, @Named("oss.solr.timeoutMillis")
     int timeout) {
+        this.timeoutMillis = timeout;
         this.server = new HttpSolrServer(url);
-        this.server.setConnectionTimeout(timeout);
+        this.server.setConnectionTimeout(this.timeoutMillis);
 
-        log.info("NEW {} for URL {}", this, url);
+        log.info("NEW {} for URL {} with timeout {}", this, url, timeout);
     }
 
     public void addInputDocument(SolrInputDocument doc) throws SolrServerException, IOException {
@@ -80,6 +83,8 @@ public class SolrConnection {
             builder.append(", server=");
             builder.append(this.server);
         }
+        builder.append(", timeoutMillis=");
+        builder.append(this.timeoutMillis);
         builder.append("]");
         return builder.toString();
     }

@@ -18,6 +18,7 @@ package org.n52.oss.opensearch.listeners.xml;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.Collection;
 
 import javax.ws.rs.WebApplicationException;
@@ -56,6 +57,8 @@ public class KmlListener implements OpenSearchListener {
 
     private OpenSearchConfigurator conf;
 
+    protected URI homeUri;
+
     @Inject
     public KmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
@@ -79,6 +82,7 @@ public class KmlListener implements OpenSearchListener {
                 
                 AbstractFeatureType abstractFeatureGroup = kml.addNewAbstractFeatureGroup();
                 abstractFeatureGroup.addNewAuthor().addName("Open Sensor Search");
+                abstractFeatureGroup.addNewLink().addNewHref().setStringValue(KmlListener.this.homeUri.toString());
 
                 // TODO add kml content
 
@@ -100,6 +104,16 @@ public class KmlListener implements OpenSearchListener {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public void setOpenSearchEndpoint(URI uri) {
+        // do nothing with it yet
+    }
+
+    @Override
+    public void setHomeURI(URI uri) {
+        this.homeUri = uri;
     }
 
 }

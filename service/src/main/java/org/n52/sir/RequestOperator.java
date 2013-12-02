@@ -127,6 +127,10 @@ public class RequestOperator {
         catch (OwsExceptionReport se) {
             return new ExceptionResponse(se.getDocument());
         }
+        catch (Exception e) {
+            log.error("Could not receive request, error: {} \nRequest: {}", e.getMessage(), queryString, e);
+            return new ExceptionResponse(e);
+        }
 
         if (request instanceof SirGetCapabilitiesRequest) {
             GetCapabilitiesListener capListener = (GetCapabilitiesListener) this.reqListener.get(SirConstants.Operations.GetCapabilities.name());

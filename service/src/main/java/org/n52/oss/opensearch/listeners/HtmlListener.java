@@ -23,6 +23,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -140,6 +141,10 @@ public class HtmlListener implements OpenSearchListener {
     @Inject
     OwsClient sirClient;
 
+    private URI openSearchEndpoint;
+
+    private URI homeUri;
+
     @Inject
     public HtmlListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
@@ -177,12 +182,14 @@ public class HtmlListener implements OpenSearchListener {
                                    PrintWriter writer,
                                    String searchText) throws UnsupportedEncodingException {
         writer.print("<form name=\"requestform\" method=\"get\" action=\"");
-        writer.print(this.conf.getFullOpenSearchPath());
+        String searchActionPath = this.openSearchEndpoint.toString();
+        writer.print(searchActionPath); // writer.print(this.conf.getFullOpenSearchPath());
         writer.println("\">");
 
         writer.print("<div class=\"search-result-header\">");
         writer.print("<a href=\"");
-        writer.print(this.conf.getWebsiteHome());
+        String websiteHome = this.homeUri.toString();
+        writer.print(websiteHome);
         writer.print("\" title=\"Home\">");
         writer.print(this.searchResultHeadline);
         writer.print("</a>");
@@ -218,7 +225,7 @@ public class HtmlListener implements OpenSearchListener {
 
         // dropdown for response format
         writer.print("<form action=\"");
-        writer.print(this.conf.getWebsiteHome() + this.conf.getOpenSearchPath());
+        writer.print(searchActionPath);
         writer.print("\" method=\"get\">");
         writer.print("<input type=\"hidden\" name=\"");
         writer.print(OpenSearchConstants.QUERY_PARAM);
@@ -677,6 +684,16 @@ public class HtmlListener implements OpenSearchListener {
         }
 
         return this.capabilitiesCache.get(url);
+    }
+
+    @Override
+    public void setOpenSearchEndpoint(URI uri) {
+        this.openSearchEndpoint = uri;
+    }
+
+    @Override
+    public void setHomeURI(URI uri) {
+        this.homeUri = uri;
     }
 
 }

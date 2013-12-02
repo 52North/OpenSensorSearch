@@ -27,4 +27,6 @@ public abstract class ApiPaths {
 
     public static final String SENSORS_PATH = API_PATH + "/sensors";
 
+    public static final String OPENSEARCH_PATH = API_PATH + "/search";
+
 }

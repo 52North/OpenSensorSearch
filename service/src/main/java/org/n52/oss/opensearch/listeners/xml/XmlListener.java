@@ -18,6 +18,7 @@ package org.n52.oss.opensearch.listeners.xml;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.Collection;
 
 import javax.ws.rs.WebApplicationException;
@@ -88,6 +89,16 @@ public class XmlListener implements OpenSearchListener {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public void setOpenSearchEndpoint(URI uri) {
+        // doing nothing with it yet
+    }
+
+    @Override
+    public void setHomeURI(URI uri) {
+        // doing nothing with it yet
     }
 
 }

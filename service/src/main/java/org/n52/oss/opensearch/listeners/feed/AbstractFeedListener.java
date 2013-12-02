@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,6 +66,10 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
 
     private OpenSearchConfigurator conf;
 
+    private URI openSearchEndpoint;
+
+    private URI homeUri;
+
     public AbstractFeedListener(OpenSearchConfigurator configurator) {
         this.conf = configurator;
         this.conf.addResponseFormat(this);
@@ -73,8 +78,11 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
     protected SyndFeed createFeed(Collection<SirSearchResultElement> searchResult, String query) {
         SyndFeed feed = new SyndFeedImpl();
 
+        String searchUri = this.openSearchEndpoint.toString();
+        String website = this.homeUri.toString();
+
         feed.setTitle("Sensor Search for " + query);
-        String channelURL = this.conf.getFullOpenSearchPath() + "?" + OpenSearchConstants.QUERY_PARAM + "=" + query
+        String channelURL = searchUri + "?" + OpenSearchConstants.QUERY_PARAM + "=" + query
                 + "&" + OpenSearchConstants.FORMAT_PARAM + "=" + getMimeType();
         feed.setLink(channelURL);
         feed.setPublishedDate(new Date());
@@ -84,12 +92,12 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
 
         SyndImage image = new SyndImageImpl();
         image.setUrl("http://52north.org/templates/52n/images/52n-logo.gif");
-        image.setLink(this.conf.getWebsiteHome().toString());
+        image.setLink(website);
         image.setTitle("52°North Logo");
         image.setDescription("Logo of the provider of Open Sensor Search: 52°North");
         feed.setImage(image);
         feed.setDescription("These are the sensors for the keywords '" + query + "' from Open Sensor Search ("
-                + this.conf.getWebsiteHome().toString() + ").");
+                + website + ").");
 
         List<SyndEntry> entries = new ArrayList<>();
         for (SirSearchResultElement ssre : searchResult) {
@@ -171,6 +179,16 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
         };
 
         return Response.ok(stream).build();
+    }
+
+    @Override
+    public void setOpenSearchEndpoint(URI uri) {
+        this.openSearchEndpoint = uri;
+    }
+
+    @Override
+    public void setHomeURI(URI uri) {
+        this.homeUri = uri;
     }
 
     protected abstract String getFeedType();

@@ -16,6 +16,7 @@
 
 package org.n52.oss.opensearch;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,6 +36,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.n52.oss.api.ApiPaths;
 import org.n52.oss.config.ApplicationConstants;
 import org.n52.oss.opensearch.listeners.OpenSearchListener;
 import org.n52.oss.sir.SirConstants;
@@ -59,7 +61,7 @@ import com.google.inject.servlet.RequestScoped;
  * 
  * @author Daniel Nüst (d.nuest@52north.org)
  */
-@Path("/search")
+@Path(ApiPaths.OPENSEARCH_PATH)
 @RequestScoped
 public class OpenSearch {
 
@@ -73,11 +75,16 @@ public class OpenSearch {
 
     private SearchSensorListener sensorSearcher;
 
+    private URI uri;
+
     @Inject
     public OpenSearch(ApplicationConstants constants,
                       SearchSensorListener listener,
                       OpenSearchConfigurator config,
-                      Set<OpenSearchListener> listeners) {
+                      Set<OpenSearchListener> listeners,
+                      @Context
+                      UriInfo uri) {
+        this.uri = uri.getAbsolutePath();
 
         this.sensorSearcher = listener;
         this.sensorSearcher.setEncodeURLs(false);
@@ -87,11 +94,15 @@ public class OpenSearch {
 
         this.listeners = new HashMap<>();
         for (OpenSearchListener l : listeners) {
+            l.setOpenSearchEndpoint(this.uri);
+            URI homeUri = uri.getBaseUri();
+            l.setHomeURI(homeUri);
             this.listeners.put(l.getMimeType(), l);
+
             log.debug("Added listener for {}:\t{}", l.getMimeType(), l);
         }
 
-        log.info("NEW {} based on {}", this, constants);
+        log.info("NEW {} based on {} running at {}", this, constants, this.uri);
     }
 
     @GET
@@ -175,6 +186,9 @@ public class OpenSearch {
         log.debug("Accept header: {}", acceptHeader);
 
         MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
+
+        if ( !params.containsKey(OpenSearchConstants.QUERY_PARAM))
+            return Response.status(Status.BAD_REQUEST).entity("query parameter 'q' is missing").build();
 
         String responseFormat = detectResponseFormat(acceptHeader, params);
 
@@ -382,8 +396,13 @@ public class OpenSearch {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("OpenSearch [");
-        if (this.configurator != null)
-            sb.append(this.configurator.getOpenSearchPath());
+        if (this.configurator != null) {
+            sb.append("config = ");
+            sb.append(this.configurator);
+            sb.append(", ");
+        }
+        sb.append("URI = ");
+        sb.append(this.uri);
         sb.append("]");
         return sb.toString();
     }

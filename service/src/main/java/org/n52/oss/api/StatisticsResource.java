@@ -36,6 +36,13 @@ import com.google.inject.Inject;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
+/**
+ * 
+ * TODO: add a cache of the values so that the database is only queried every x minutes.
+ * 
+ * @author Daniel
+ * 
+ */
 @Path(ApiPaths.STATISTICS_PATH)
 @Api(value = ApiPaths.STATISTICS_PATH, description = "Endpoint of all of the statistics related to sensors in OSS")
 @Singleton

@@ -35,10 +35,6 @@ public class OpenSearchConfigurator {
 
     private static Logger log = LoggerFactory.getLogger(OpenSearchConfigurator.class);
 
-    public static final String HOME_URL = "/OpenSensorSearch";
-
-    // private static SirConfigurator sirConfigurator = SirConfigurator.getInstance();
-
     private int capabilitiesCacheMaximumAgeSeconds = 60 * 60;
 
     /**
@@ -59,10 +55,6 @@ public class OpenSearchConfigurator {
 
     private String responseAuthor = "52°North";
 
-    private String openSearchPath = "/search";
-
-    private String fullServicePath = "http://localhost:8080" + HOME_URL;
-
     public OpenSearchConfigurator() {
         log.info("NEW {}", this);
     }
@@ -81,18 +73,6 @@ public class OpenSearchConfigurator {
 
     public String getFeedAuthor() {
         return this.feedAuthor;
-    }
-
-    public String getFullOpenSearchPath() {
-        return getWebsiteHome().toString() + getOpenSearchPath();
-    }
-
-    public String getWebsiteHome() {
-        return this.fullServicePath;
-    }
-
-    public String getOpenSearchPath() {
-        return this.openSearchPath;
     }
 
     public String getPermalinkBaseURL() {

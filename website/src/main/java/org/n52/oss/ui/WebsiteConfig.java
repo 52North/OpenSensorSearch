@@ -80,7 +80,7 @@ public class WebsiteConfig {
                             log.debug("Loaded properties (overwriting defaults) from {}", configFile);
                         }
                     else
-                        log.info("No config file in user home, let's see if the defaults work...");
+                        log.info("No config file in user home ({}), let's see if the defaults work...", homeDirectory);
                 }
             }
             catch (IOException e) {

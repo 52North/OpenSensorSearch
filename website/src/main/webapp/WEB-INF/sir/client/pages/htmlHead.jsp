@@ -31,7 +31,7 @@
 	type="text/javascript"></script>
 
 <jsp:useBean id="configBean" scope="application"
-	class="org.n52.oss.ui.Config" />
+	class="org.n52.oss.ui.WebsiteConfig" />
 
 <script type="text/javascript">
 	var ossApiEndpoint = "<%=configBean.getApiEndpoint()%>";

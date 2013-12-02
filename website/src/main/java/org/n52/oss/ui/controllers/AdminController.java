@@ -28,7 +28,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.n52.oss.ui.Config;
+import org.n52.oss.ui.WebsiteConfig;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -47,7 +47,7 @@ public class AdminController {
         try {
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String token = userDetails.getPassword();
-            HttpPost post = new HttpPost(Config.BASE_URL + "/OpenSensorSearch/api/v1/user/validate");
+            HttpPost post = new HttpPost(WebsiteConfig.BASE_URL + "/OpenSensorSearch/api/v1/user/validate");
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("auth_token", token));

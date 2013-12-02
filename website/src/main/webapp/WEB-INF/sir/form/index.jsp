@@ -18,7 +18,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 	
-<%@page import="org.n52.oss.ui.Config"%>
+<%@page import="org.n52.oss.ui.WebsiteConfig"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +70,7 @@
 
 		<div class="request-form">
 			<form name="requestform" method="post"
-				action="<%=new Config().getSirEndpoint() %>">
+				action="<%=new WebsiteConfig().getSirEndpoint()%>">
 				<div class="textareaBorder">
 					<textarea name="request" id="requestTextarea" class="largeTextarea"
 						rows="10" cols="10"></textarea>

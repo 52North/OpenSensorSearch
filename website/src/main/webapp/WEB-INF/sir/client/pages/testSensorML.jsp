@@ -37,7 +37,7 @@
 		<p>Test a SensorML document for conformity with SensorML profile
 			for discovery. Insert the SensorML description of a sensor:</p>
 
-		<!-- TODO: add listing of available checks based on API endpoint /oss-service/api/v1/check -->
+		<!-- TODO: add listing of available checks based on API endpoint .../api/v1/check -->
 		<!-- TODO: add selection of output formats -->
 
 		<form id="testform">

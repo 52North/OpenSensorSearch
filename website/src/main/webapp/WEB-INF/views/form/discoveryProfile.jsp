@@ -60,9 +60,20 @@
 
 				<div class="form-group">
 					<button type="submit" class="btn btn-lg btn-primary">Check!</button>
+					<div class="btn-group" data-toggle="buttons" id="responseFormat"
+						style="top: 8px;" title="Format of the check result"
+						data-toggle="tooltip">
+						<label for="inputJson" class="btn btn-default btn-sm active">
+							<input type="radio" name="format" id="inputJson" value="json"
+							checked="checked"> JSON
+						</label> <label for="inputXml" class="btn btn-default btn-sm"> <input
+							type="radio" name="format" id="inputXml" value="xml"> XML
+						</label>
+					</div>
 				</div>
 
-				<div id="resultGroup" class="form-group">
+
+				<div id="resultGroup" class="form-group" style="margin-top: 42px;">
 					<label for="input" class="control-label">Check output</label>
 					<textarea id="output" name="output" class="form-control" rows="3"></textarea>
 					<span class="help-block">The output is the result of
@@ -99,11 +110,16 @@
 			// 			var outArea = document.getElementById("output");
 			// 			CodeMirror.fromTextArea(outArea);
 
+			$("responseFormat").tooltip({
+				container : "body",
+				placement : "top"
+			});
 		});
 
 		$("#input").bind("input propertychange", function() {
 			$("#resultGroup").removeClass("has-success");
 			$("#resultGroup").removeClass("has-error");
+			$("#output").val("");
 		});
 
 		$('#btnAddExample')
@@ -124,43 +140,68 @@
 									});
 						});
 
-		$("#testform").on(
-				"submit",
-				function(e) {
-					e.preventDefault();
-					var url = ossApiEndpoint + "/check/sml";
-					var payload = $("#input").val();
-					console.log("Sending request to " + url + " with data: "
-							+ payload);
-					$.ajax({
-						type : "POST",
-						cache : false,
-						url : url,
-						data : payload, //$(this).serialize(),
-						dataType : "json", //"xml",
-						success : function(data) {
-							console.log(data);
-							// 									var xmlstr = data.xml ? data.xml
-							// 											: (new XMLSerializer())
-							// 													.serializeToString(data);
-							$("#output").val(JSON.stringify(data));
-							var status = data.status;
-							if (status == "valid") {
-								$("#resultGroup").addClass("has-success");
-							}
-							if (status == "invalid") {
-								$("#resultGroup").addClass("has-error");
-							}
-						}
-					}).fail(
-							function(data) {
-								console.log(data);
-								$("#output").val(
-										data.status + " " + data.statusText
-												+ "\n\n" + data.responseText);
-							});
+		$("#testform")
+				.on(
+						"submit",
+						function(e) {
+							e.preventDefault();
+							var url = ossApiEndpoint + "/check/sml";
+							var payload = $("#input").val();
+							var format = $("input:radio[name='format']:checked")
+									.val();
+							console.log("Sending request to " + url
+									+ ", response format " + format
+									+ ", data: " + payload);
 
-				});
+							$
+									.ajax(
+											{
+												type : "POST",
+												cache : false,
+												url : url,
+												data : payload, //$(this).serialize(),
+												dataType : format, // "json", //"xml",
+												success : function(data) {
+													console.log(data);
+													var output;
+													if (format == "json") {
+														output = JSON
+																.stringify(data);
+													} else if (format == "xml") {
+														output = data.xml ? data.xml
+																: (new XMLSerializer())
+																		.serializeToString(data);
+													} else {
+														output = data;
+													}
+													$("#output").val(output);
+
+													var status = data.status;
+													if (status == "valid") {
+														$("#resultGroup")
+																.addClass(
+																		"has-success");
+													}
+													if (status == "invalid") {
+														$("#resultGroup")
+																.addClass(
+																		"has-error");
+													}
+												}
+											})
+									.fail(
+											function(data) {
+												console.log(data);
+												$("#output")
+														.val(
+																data.status
+																		+ " "
+																		+ data.statusText
+																		+ "\n\n"
+																		+ data.responseText);
+											});
+
+						});
 	</script>
 
 </body>

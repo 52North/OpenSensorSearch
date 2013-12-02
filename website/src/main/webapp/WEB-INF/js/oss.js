@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-var ossApiUrl = "http://localhost:8080/oss-service/api/v1";
-
 function showPosition(position) {
 	$("#lat").val(position.coords.latitude);
 	$("#lng").val(position.coords.longitude);
@@ -77,12 +75,9 @@ $(document)
 										$("#radius").attr("disabled", false);
 									});
 					
-					// load statistics
-					console.log("API URL: " + ossApiUrl);
-						
 					$.ajax({
 						dataType : "json",
-						url : ossApiUrl + "/statistics/sensors",
+						url : ossApiEndpoint + "/statistics/sensors",
 						success : function(data) {
 							// 				console.log(data);
 							$("#statsSensors").html(data.sensors);
@@ -91,7 +86,7 @@ $(document)
 
 					$.ajax({
 						dataType : "json",
-						url : ossApiUrl + "/statistics/phenomena",
+						url : ossApiEndpoint + "/statistics/phenomena",
 						success : function(data) {
 							// 				console.log(data);
 							$("#statsPhenonema").html(data.phenomena);
@@ -100,7 +95,7 @@ $(document)
 
 					$.ajax({
 						dataType : "json",
-						url : ossApiUrl + "/statistics/services",
+						url : ossApiEndpoint + "/statistics/services",
 						success : function(data) {
 							// 				console.log(data);
 							$("#statsServices").html(data.services);

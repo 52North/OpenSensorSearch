@@ -25,13 +25,12 @@
 <base
 	href="${fn:substring(url, 0, fn:length(url) - fn:length(pageContext.request.requestURI))}${pageContext.request.contextPath}/" />
 
-<link rel="stylesheet"
-	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <link href="http://52north.org/templates/52n-2012/favicon.ico"
 	rel="shortcut icon" type="image/x-icon" />
 
 <link href="styles/bootstrap.css" rel="stylesheet">
 <link href="styles/bootstrap-responsive.css" rel="stylesheet">
+<link href="styles/jquery-ui.css" rel="stylesheet" />
 
 <link type="text/css" rel="stylesheet" href="styles/oss.css" />
 
@@ -42,9 +41,11 @@
 <![endif]-->
 
 <jsp:useBean id="configBean" scope="application"
-	class="org.n52.oss.ui.Config" />
+	class="org.n52.oss.ui.WebsiteConfig" />
 
 <script type="text/javascript">
 	var ossApiEndpoint = "<%=configBean.getApiEndpoint()%>";
 	console.log("OSS API endpoint: " + ossApiEndpoint);
+	var sirEndpoint = "<%=configBean.getSirEndpoint()%>";
+	console.log("SIR endpoint: " + sirEndpoint);
 </script>

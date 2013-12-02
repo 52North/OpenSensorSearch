@@ -17,7 +17,7 @@
 package org.n52.oss.ui.beans;
 
 import org.n52.oss.sir.Client;
-import org.n52.oss.ui.Config;
+import org.n52.oss.ui.WebsiteConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +36,9 @@ public abstract class TestClientBean {
     private Client client;
 
     public TestClientBean() {
-        this.client = new Client(new Config().getSirEndpoint());
+        WebsiteConfig c = new WebsiteConfig();
+        String sirEndpoint = c.getSirEndpoint();
+        this.client = new Client(sirEndpoint);
         log.info("NEW {}", this);
     }
 

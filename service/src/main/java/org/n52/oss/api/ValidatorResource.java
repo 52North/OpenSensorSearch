@@ -119,15 +119,15 @@ public class ValidatorResource {
                 JsonStringEncoder encoder = new JsonStringEncoder();
 
                 response.append("{\"status\" : \"invalid\", \"errors\" : [ ");
-                List<String> details = smlValidator.getValidationFailures();
-                for (int i = 0; i < details.size(); i++) {
+                List<String> errors = smlValidator.getValidationFailures();
+                for (int i = 0; i < errors.size(); i++) {
                     response.append("{ \"message");
                     response.append(i);
                     response.append("\" : \"");
-                    char[] quoted = encoder.quoteAsString(details.get(i));
+                    char[] quoted = encoder.quoteAsString(errors.get(i));
                     response.append(quoted);
                     response.append("\" }");
-                    if (i < details.size() - 1)
+                    if (i < errors.size() - 1)
                         response.append(", ");
                 }
 
@@ -159,10 +159,10 @@ public class ValidatorResource {
             boolean b = validate(data, smlValidator);
 
             if (b)
-                response = "<status>valid</status>";
+                response = "<result><status>valid</status></result>";
             else {
                 String details = smlValidator.getValidationFailuresAsString();
-                response = "<status>invalid</status><errors>" + details + "</errors>";
+                response = "<result><status>invalid</status><errors>" + details + "</errors></result>";
             }
         }
         catch (XmlException | IOException exception) {
@@ -174,6 +174,9 @@ public class ValidatorResource {
     }
 
     private boolean validate(String data, IProfileValidator smlValidator) throws XmlException, IOException {
+        if (data.isEmpty())
+            return false;
+
         SensorMLDocument doc = SensorMLDocument.Factory.parse(data);
         boolean b = smlValidator.validate(doc);
         return b;

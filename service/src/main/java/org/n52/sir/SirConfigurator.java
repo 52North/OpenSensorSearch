@@ -92,8 +92,6 @@ public class SirConfigurator {
 
     private static final String PROFILE4DISCOVERY = "PROFILE4DISCOVERY";
 
-    private static final String SERVICEURL = "oss.sir.serviceurl";
-
     private static final String SERVICEVERSION = "oss.sir.version";
 
     private static final String SLOT_INIT_FILENAME = "oss.catalogconnection.csw-ebrim.slotInitFilename";
@@ -415,15 +413,6 @@ public class SirConfigurator {
 
         this.svrlSchema = location.getPath();
         checkFile(this.svrlSchema);
-
-        String url = null;
-        try {
-            url = this.props.getProperty(SERVICEURL);
-            this.serviceUrl = new URL(url);
-        }
-        catch (MalformedURLException e) {
-            log.error("No valid service url is defined in the config file: " + url);
-        }
 
         // set updateSequence
         newUpdateSequence();

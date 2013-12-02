@@ -51,9 +51,10 @@ public class ConnectToCatalogListener implements ISirRequestListener {
     @Inject
     private CatalogConnectionScheduler scheduler;
 
-    public ConnectToCatalogListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
-        IDAOFactory factory = configurator.getFactory();
+    @Inject
+    public ConnectToCatalogListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
+
         try {
             this.conToCatDao = factory.connectToCatalogDAO();
         }

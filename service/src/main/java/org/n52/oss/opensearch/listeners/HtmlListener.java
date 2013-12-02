@@ -302,7 +302,7 @@ public class HtmlListener implements OpenSearchListener {
             sb.append("<a href=\"");
             sb.append(OpenSearchTools.encode(url));
             sb.append("\">");
-            sb.append(" ");
+            // sb.append(" ");
             // sb.append(sirSearchResultElement.getSensorId());
             sb.append(OpenSearchTools.extractEntryTitle(sirSearchResultElement));
             sb.append("</a>");

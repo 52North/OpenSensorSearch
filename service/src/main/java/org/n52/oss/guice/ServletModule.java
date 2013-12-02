@@ -31,7 +31,6 @@ import org.n52.sir.script.HarvestResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.name.Names;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
@@ -45,8 +44,8 @@ public class ServletModule extends JerseyServletModule {
 
     @Override
     protected void configureServlets() {
-        String basepath = getServletContext().getRealPath("/");
-        bindConstant().annotatedWith(Names.named("context.basepath")).to(basepath);
+        // String basepath = getServletContext().getRealPath("/");
+        // bindConstant().annotatedWith(Names.named("context.basepath")).to(basepath);
 
         bind(IJSExecute.class).to(RhinoJSExecute.class);
         // bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);

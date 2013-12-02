@@ -67,7 +67,6 @@ public class GuiceUtil {
                     Names.bindProperties(binder(), sirProps);
                     Names.bindProperties(binder(), dbProps);
 
-                    bindConstant().annotatedWith(Names.named("context.basepath")).to("TEST_BASEPATH");
                     bind(IDAOFactory.class).to(DAOFactory.class);
                 }
                 catch (IOException e) {

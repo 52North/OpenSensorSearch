@@ -36,30 +36,24 @@ import org.n52.sir.util.ListenersTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
+/**
+ * 
+ * @author Daniel
+ *
+ */
 public class GetCapabilitiesListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(GetCapabilitiesListener.class);
 
-    /**
-     * Name of the operation the listener implements
-     */
     private static final String OPERATION_NAME = SirConstants.Operations.GetCapabilities.name();
 
-    /**
-     * the data access object for the getCapabilities operation
-     */
     private IGetCapabilitiesDAO capDao;
 
-    public GetCapabilitiesListener() throws OwsExceptionReport {
-
-        // get sir configurator
-        SirConfigurator configurator = SirConfigurator.getInstance();
-
-        // setting up DAOFactory
-        IDAOFactory factory = configurator.getFactory();
+    @Inject
+    public GetCapabilitiesListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
 
         try {
             this.capDao = factory.getCapabilitiesDAO();

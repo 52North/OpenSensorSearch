@@ -38,6 +38,8 @@ import org.n52.sir.util.SORTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
@@ -48,15 +50,11 @@ public class GetSensorStatusListener implements ISirRequestListener {
 
     private static final String OPERATION_NAME = SirConstants.Operations.GetSensorStatus.name();
 
-    /**
-     * the data access object for the get sensor status operation
-     */
     private IGetSensorStatusDAO getSensStatDao;
 
-    public GetSensorStatusListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
-
-        IDAOFactory factory = configurator.getFactory();
+    @Inject
+    public GetSensorStatusListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
 
         try {
             this.getSensStatDao = factory.getSensorStatusDAO();
@@ -67,21 +65,11 @@ public class GetSensorStatusListener implements ISirRequestListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return GetSensorStatusListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request .AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirGetSensorStatusRequest getSensStatReq = (SirGetSensorStatusRequest) request;

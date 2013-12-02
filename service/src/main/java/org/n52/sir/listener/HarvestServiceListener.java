@@ -36,35 +36,28 @@ import org.n52.sir.response.ISirResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst (d.nuest@52north.org)
  * 
  */
 public class HarvestServiceListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     protected static Logger log = LoggerFactory.getLogger(HarvestServiceListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.HarvestService.name();
 
     private ExecutorService exec;
 
-    /**
-     * the data access object for the harvestService operation
-     */
     private IHarvestServiceDAO harvServDao;
 
-    /**
-     * 
-     * @throws OwsExceptionReport
-     */
-    public HarvestServiceListener() throws OwsExceptionReport {
-        this.exec = SirConfigurator.getInstance().getExecutor();
+    @Inject
+    public HarvestServiceListener(SirConfigurator config) throws OwsExceptionReport {
+        this.exec = config.getInstance().getExecutor();
 
         try {
-            IDAOFactory factory = SirConfigurator.getInstance().getFactory();
+            IDAOFactory factory = config.getInstance().getFactory();
             this.harvServDao = factory.harvestServiceDAO();
         }
         catch (OwsExceptionReport se) {

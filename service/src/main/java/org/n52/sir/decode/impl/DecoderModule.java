@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package org.n52.sir;
+package org.n52.sir.decode.impl;
 
-import org.n52.sir.listener.DeleteSensorInfoListener;
-import org.n52.sir.listener.GetCapabilitiesListener;
-import org.n52.sir.listener.ISirRequestListener;
-import org.n52.sir.listener.InsertSensorInfoListener;
-import org.n52.sir.listener.SearchSensorListener;
+import org.n52.sir.decode.IHttpGetRequestDecoder;
+import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
 
 /**
  * http://code.google.com/p/google-guice/wiki/Multibindings
@@ -33,20 +29,14 @@ import com.google.inject.multibindings.Multibinder;
  * @author Daniel
  * 
  */
-public class ListenerModule extends AbstractModule {
+public class DecoderModule extends AbstractModule {
 
-    private static Logger log = LoggerFactory.getLogger(ListenerModule.class);
+    private static Logger log = LoggerFactory.getLogger(DecoderModule.class);
 
     @Override
     protected void configure() {
-        bind(RequestOperator.class);
-
-        Multibinder<ISirRequestListener> uriBinder = Multibinder.newSetBinder(binder(), ISirRequestListener.class);
-
-        uriBinder.addBinding().to(SearchSensorListener.class);
-        uriBinder.addBinding().to(GetCapabilitiesListener.class);
-        uriBinder.addBinding().to(InsertSensorInfoListener.class);
-        uriBinder.addBinding().to(DeleteSensorInfoListener.class);
+        bind(IHttpGetRequestDecoder.class).to(HttpGetRequestDecoder.class);
+        bind(IHttpPostRequestDecoder.class).to(HttpPostRequestDecoder.class);
 
         // bind plugin dependencies...
         log.debug("Configured {}", this);

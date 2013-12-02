@@ -33,7 +33,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,11 +41,8 @@ import javax.servlet.UnavailableException;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionLevel;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
-import org.n52.sir.decode.IHttpGetRequestDecoder;
-import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.licenses.License;
 import org.n52.sir.licenses.Licenses;
@@ -59,7 +55,6 @@ import org.x52North.sir.x032.VersionAttribute;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
@@ -84,16 +79,10 @@ public class SirConfigurator {
 
     private static final String EXTENDED_DEBUG_TO_CONSOLE = "EXTENDED_DEBUG_TO_CONSOLE";
 
-    private static final String FULL_SERVICE_PATH = "oss.serviceurl";
-
-    private static final String GETREQUESTDECODER = "oss.sir.requestdecoder.get";
-
     private static final String GMLDATEFORMAT = "GMLDATEFORMAT";
 
     @Deprecated
     private static SirConfigurator instance = null;
-
-    private static final String LISTENERS = "LISTENERS";
 
     protected static Logger log = LoggerFactory.getLogger(SirConfigurator.class);
 
@@ -101,13 +90,7 @@ public class SirConfigurator {
 
     private static final String NAMESPACE_URI = "NAMESPACE_URI";
 
-    private static final String POSTREQUESTDECODER = "oss.sir.requestdecoder.post";
-
     private static final String PROFILE4DISCOVERY = "PROFILE4DISCOVERY";
-
-    private static final String SCHEMA_URL = "SCHEMA_URL";
-
-    private static final String SCHEMATRON_DOWNLOAD = "SCHEMATRON_DOWNLOAD";
 
     private static final String SERVICEURL = "oss.sir.serviceurl";
 
@@ -118,8 +101,6 @@ public class SirConfigurator {
     private static final String STATUS_HANDLER = "STATUS_HANDLER";
 
     private static final String SVRL_SCHEMA = "SVRL_SCHEMA";
-
-    private static final String TESTREQUESTS = "TESTREQUESTS";
 
     private static final int THREAD_POOL_SIZE = 10;
 
@@ -144,8 +125,6 @@ public class SirConfigurator {
     }
 
     private String[] acceptedVersions;
-
-    private String basepath;
 
     private CapabilitiesDocument capabilitiesSkeleton;
 
@@ -174,41 +153,26 @@ public class SirConfigurator {
 
     private IDAOFactory factory;
 
-    private URL fullServicePath;
-
     private String gmlDateFormat;
-
-    private IHttpGetRequestDecoder httpGetDecoder;
-
-    private IHttpPostRequestDecoder httpPostDecoder;
 
     private String namespacePrefix;
 
     private String namespaceUri;
 
-    private String openSearchPath;
-
     private String profile4Discovery;
 
     private Properties props;
 
-    private String schemaUrl;
-
-    /**
-     * the url of the service, e.g. needed by test client
-     */
     private URL serviceUrl;
 
     private String serviceVersion;
 
     private String svrlSchema;
 
-    private String testRequestPath;
-
     private String ScriptsPath;
 
     public LinkedHashMap<String, License> getLicenses() {
-        return licenses;
+        return this.licenses;
     }
 
     public void setLicenses(LinkedHashMap<String, License> licenses) {
@@ -235,13 +199,12 @@ public class SirConfigurator {
      * @throws IOException
      */
     @Inject
-    public SirConfigurator(@Named("context.basepath")
-    String basepath, IDAOFactory daoFactory) throws UnavailableException, OwsExceptionReport, IOException {
+    public SirConfigurator(IDAOFactory daoFactory) throws UnavailableException, OwsExceptionReport, IOException {
         try (InputStream dbStream = SirConfigurator.class.getResourceAsStream("/prop/db.properties");
                 InputStream configStream = SirConfigurator.class.getResourceAsStream("/prop/sir.properties");) {
 
             if (instance == null) {
-                instance = new SirConfigurator(configStream, dbStream, basepath, daoFactory);
+                instance = new SirConfigurator(configStream, dbStream, daoFactory);
                 instance.initialize();
             }
             else
@@ -257,13 +220,10 @@ public class SirConfigurator {
     @Deprecated
     private SirConfigurator(InputStream configStream,
                             InputStream dbConfigStream,
-                            String basepath,
                             IDAOFactory daoFactory) throws UnavailableException {
         this.factory = daoFactory;
 
         try {
-            this.basepath = basepath;
-
             // creating common SIR properties object from inputstream
             this.props = loadProperties(configStream);
             // this.daoProps = loadProperties(dbConfigStream);
@@ -351,31 +311,10 @@ public class SirConfigurator {
     }
 
     /**
-     * @return the homepage
-     */
-    public URL getFullServicePath() {
-        return this.fullServicePath;
-    }
-
-    /**
      * @return the gmlDateFormat
      */
     public String getGmlDateFormat() {
         return this.gmlDateFormat;
-    }
-
-    /**
-     * @return the httpGetDecoder
-     */
-    public IHttpGetRequestDecoder getHttpGetDecoder() {
-        return this.httpGetDecoder;
-    }
-
-    /**
-     * @return the httpPostDecoder
-     */
-    public IHttpPostRequestDecoder getHttpPostDecoder() {
-        return this.httpPostDecoder;
     }
 
     /**
@@ -390,43 +329,6 @@ public class SirConfigurator {
      */
     public String getNamespaceUri() {
         return this.namespaceUri;
-    }
-
-    /**
-     * @return the openSearchUrl
-     */
-    public String getOpenSearchPath() {
-        return this.openSearchPath;
-    }
-
-    /**
-     * @return the profile4Discovery
-     */
-    public String getProfile4Discovery() {
-        return this.profile4Discovery;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public String getProfile4DiscoveryDownloadPath() {
-        return this.props.getProperty(PROFILE4DISCOVERY);
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public String getSchemaDownloadLink() {
-        return this.props.getProperty(SCHEMATRON_DOWNLOAD);
-    }
-
-    /**
-     * @return the schemaUrl
-     */
-    public String getSchemaUrl() {
-        return this.schemaUrl;
     }
 
     /**
@@ -464,30 +366,10 @@ public class SirConfigurator {
         throw new RuntimeException("Not a supported version!");
     }
 
-    /**
-     * @return the svrlSchema
-     */
-    public String getSvrlSchema() {
-        return this.svrlSchema;
-    }
-
-    /**
-     * @return the testRequestPath
-     */
-    public String getTestRequestPath() {
-        return this.testRequestPath;
-    }
-
-    /**
-     * @return the updateSequence
-     */
     public String getUpdateSequence() {
         return this.updateSequence;
     }
 
-    /**
-     * @return the validatorFactory
-     */
     public IValidatorFactory getValidatorFactory() {
         return this.validatorFactory;
     }
@@ -500,10 +382,8 @@ public class SirConfigurator {
 
         this.serviceVersion = this.props.getProperty(SERVICEVERSION);
         this.gmlDateFormat = this.props.getProperty(GMLDATEFORMAT);
-        this.schemaUrl = this.props.getProperty(SCHEMA_URL);
         this.namespaceUri = this.props.getProperty(NAMESPACE_URI);
         this.namespacePrefix = this.props.getProperty(NAMESPACE_PREFIX);
-        this.testRequestPath = this.basepath + this.props.getProperty(TESTREQUESTS);
 
         this.extendedDebugToConsole = Boolean.parseBoolean(this.props.getProperty(EXTENDED_DEBUG_TO_CONSOLE));
         this.acceptedVersions = this.props.getProperty(ACCEPTED_SERVICE_VERSIONS).split(VERSION_SPLIT_CHARACTER);
@@ -545,19 +425,6 @@ public class SirConfigurator {
             log.error("No valid service url is defined in the config file: " + url);
         }
 
-        try {
-            url = this.props.getProperty(FULL_SERVICE_PATH);
-            this.fullServicePath = new URL(url);
-        }
-        catch (MalformedURLException e) {
-            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            se.addCodedException(ExceptionCode.NoApplicableCode,
-                                 null,
-                                 "No valid service url is defined in the config file: " + url);
-            log.error("No valid service url is defined in the config file: " + url);
-            throw se;
-        }
-
         // set updateSequence
         newUpdateSequence();
 
@@ -566,10 +433,6 @@ public class SirConfigurator {
 
         // initialize CatalogFactory
         initializeCatalogFactory(this.props);
-
-        // initialize decoders
-        initializeHttpGetRequestDecoder(this.props);
-        initializeHttpPostRequestDecoder(this.props);
 
         loadCapabilitiesSkeleton(this.props);
 
@@ -588,10 +451,10 @@ public class SirConfigurator {
             LinkedHashMap<String, License> licensesMap = new LinkedHashMap<>();
             Gson gson = new Gson();
             Licenses list = gson.fromJson(new InputStreamReader(licensesStream), Licenses.class);
-            List<License> licenses = list.licenses;
+            List<License> licenses1 = list.licenses;
 
-            for (int i = 0; i < licenses.size(); i++) {
-                License l = licenses.get(i);
+            for (int i = 0; i < licenses1.size(); i++) {
+                License l = licenses1.get(i);
                 licensesMap.put(l.code, l);
             }
             log.info("The list of licenses initialized successfully! {}", list);
@@ -674,65 +537,6 @@ public class SirConfigurator {
         }
 
         return file;
-    }
-
-    private void initializeHttpGetRequestDecoder(Properties sirProps) throws OwsExceptionReport {
-        String className = sirProps.getProperty(GETREQUESTDECODER);
-        try {
-
-            if (className == null) {
-                log.error("No getRequestDecoder Implementation is set in the config file!");
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "SirConfigurator.initializeHttpGetRequestDecoder()",
-                                     "No getRequestDecoder Implementation is set in the config file!");
-                throw se;
-            }
-            // get Class of the httpGetRequestDecoderClass Implementation
-            Class<IHttpGetRequestDecoder> httpGetRequestDecoderClass = (Class<IHttpGetRequestDecoder>) Class.forName(className);
-
-            // get Constructor of this class with matching parameter types
-            Constructor<IHttpGetRequestDecoder> constructor = httpGetRequestDecoderClass.getConstructor();
-
-            this.httpGetDecoder = constructor.newInstance();
-
-            log.info(" ***** " + className + " loaded successfully! ***** ");
-        }
-        catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException
-                | InvocationTargetException e) {
-            log.error("Error while loading GET RequestDecoder", e);
-            throw new OwsExceptionReport(e.getMessage(), e.getCause());
-        }
-    }
-
-    private void initializeHttpPostRequestDecoder(Properties sirProps) throws OwsExceptionReport {
-        String className = sirProps.getProperty(POSTREQUESTDECODER);
-        try {
-
-            if (className == null) {
-                log.error("No postRequestDecoder Implementation is set in the config file!");
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "SirConfigurator.initializeHttpPostRequestDecoder()",
-                                     "No postRequestDecoder Implementation is set in the config file!");
-                throw se;
-            }
-            // get Class of the httpGetRequestDecoderClass Implementation
-            Class<IHttpPostRequestDecoder> httpPostRequestDecoderClass = (Class<IHttpPostRequestDecoder>) Class.forName(className);
-
-            // get Constructor of this class with matching parameter types
-            Constructor<IHttpPostRequestDecoder> constructor = httpPostRequestDecoderClass.getConstructor();
-
-            this.httpPostDecoder = constructor.newInstance();
-
-            log.info(" ***** " + className + " loaded successfully! ***** ");
-
-        }
-        catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException
-                | InvocationTargetException e) {
-            log.error("Error while loading POST RequestDecoder", e);
-            throw new OwsExceptionReport(e.getMessage(), e.getCause());
-        }
     }
 
     private void initializeStatusHandler(Properties sirProps) throws OwsExceptionReport {
@@ -825,22 +629,6 @@ public class SirConfigurator {
 
             throw se;
         }
-    }
-
-    @Deprecated
-    public ArrayList<String> getListenerClassnames() {
-        ArrayList<String> listeners = new ArrayList<>();
-        String listenersList = this.props.getProperty(LISTENERS);
-
-        if (listenersList == null) {
-            log.error("No RequestListeners are defined in the ConfigFile!");
-        }
-
-        StringTokenizer tokenizer = new StringTokenizer(listenersList, ",");
-        while (tokenizer.hasMoreTokens()) {
-            listeners.add(tokenizer.nextToken());
-        }
-        return listeners;
     }
 
     private Properties loadProperties(InputStream is) throws IOException {

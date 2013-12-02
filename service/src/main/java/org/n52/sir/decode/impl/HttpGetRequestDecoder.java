@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.decode.impl;
 
 import org.n52.oss.sir.SirConstants;
@@ -25,12 +26,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
 
     private static Logger log = LoggerFactory.getLogger(HttpGetRequestDecoder.class);
+
+    protected HttpGetRequestDecoder() {
+        log.info("NEW {}", this);
+    }
 
     private AbstractSirRequest decodeDescribeSensor(String[] params) throws OwsExceptionReport {
         try {
@@ -92,11 +97,6 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
         return sirRequest;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.decode.IHttpGetRequestDecoder#receiveRequest(java.lang.String)
-     */
     @Override
     public AbstractSirRequest receiveRequest(String queryString) throws OwsExceptionReport {
         // check queryString

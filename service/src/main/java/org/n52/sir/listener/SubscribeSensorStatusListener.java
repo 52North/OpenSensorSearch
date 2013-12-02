@@ -28,11 +28,6 @@ public class SubscribeSensorStatusListener extends SensorStatusSubscriptionListe
 
     private static final String OPERATION_NAME = SirConstants.Operations.SubscribeSensorStatus.name();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return OPERATION_NAME;

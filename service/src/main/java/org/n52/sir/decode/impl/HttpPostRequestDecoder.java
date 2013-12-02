@@ -101,6 +101,10 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
     private static Logger log = LoggerFactory.getLogger(HttpPostRequestDecoder.class);
 
+    protected HttpPostRequestDecoder() {
+        log.info("NEW {}", this);
+    }
+
     private AbstractSirRequest decodeConnectToCatalogRequest(ConnectToCatalogRequestDocument conToCatDoc) throws OwsExceptionReport {
         SirConnectToCatalogRequest sirRequest = new SirConnectToCatalogRequest();
         // csw url

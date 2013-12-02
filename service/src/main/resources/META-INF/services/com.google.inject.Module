@@ -2,7 +2,8 @@ org.n52.oss.guice.log.LoggerModule
 org.n52.oss.id.IdentificationModule
 org.n52.oss.config.ConfigModule
 org.n52.sir.ConfigModule
-org.n52.sir.ListenerModule
+org.n52.sir.decode.impl.DecoderModule
+org.n52.sir.listener.ListenerModule
 org.n52.sir.ds.pgsql.PGSQLModule
 org.n52.sir.ds.solr.SolrModule
 org.n52.oss.guice.ServletModule

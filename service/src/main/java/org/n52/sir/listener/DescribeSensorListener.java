@@ -30,37 +30,25 @@ import org.n52.sir.response.SirDescribeSensorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
  */
 public class DescribeSensorListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(DescribeSensorListener.class);
 
-    /**
-     * the name of the operation this listener handles
-     */
     private static final String OPERATION_NAME = SirConstants.Operations.DescribeSensor.name();
 
-    /**
-     * the data access object for the describeSensor operation
-     */
     private IDescribeSensorDAO descSensDao;
 
-    /**
-     * 
-     * @throws OwsExceptionReport
-     */
-    public DescribeSensorListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+    @Inject
+    public DescribeSensorListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
 
-        IDAOFactory factory = configurator.getFactory();
         IDescribeSensorDAO descSensDAO = null;
-
         try {
             descSensDAO = factory.describeSensorDAO();
         }

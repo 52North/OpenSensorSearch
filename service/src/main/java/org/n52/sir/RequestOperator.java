@@ -16,12 +16,8 @@
 
 package org.n52.sir;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -80,17 +76,15 @@ public class RequestOperator {
     private HashMap<String, ISirRequestListener> reqListener = new HashMap<>();
 
     @Inject
-    public RequestOperator(SirConfigurator config, Set<ISirRequestListener> listeners) {
-        SirConfigurator c = config.getInstance();
-        this.httpGetDecoder = c.getHttpGetDecoder();
-        this.httpPostDecoder = c.getHttpPostDecoder();
+    public RequestOperator(IHttpGetRequestDecoder getDecoder,
+                           IHttpPostRequestDecoder postDecoder,
+                           Set<ISirRequestListener> listeners) {
+        this.httpGetDecoder = getDecoder;
+        this.httpPostDecoder = postDecoder;
 
         for (ISirRequestListener listener : listeners) {
             addRequestListener(listener);
         }
-
-        ArrayList<String> listenerClassnames = config.getInstance().getListenerClassnames();
-        addListenersByClassname(listenerClassnames);
 
         log.info("NEW {}", this);
     }
@@ -293,31 +287,6 @@ public class RequestOperator {
         }
 
         return response;
-    }
-
-    @Deprecated
-    private void addListenersByClassname(Collection<String> listeners) {
-        for (String classname : listeners) {
-            log.debug("Loading {} by classname", classname);
-
-            try {
-                // get Class of the Listener
-                @SuppressWarnings("unchecked")
-                Class<ISirRequestListener> listenerClass = (Class<ISirRequestListener>) Class.forName(classname);
-
-                Class< ? >[] constrArgs = {};
-
-                // get Constructor of this class with matching parameter types
-                Constructor<ISirRequestListener> constructor = listenerClass.getConstructor(constrArgs);
-
-                ISirRequestListener instance = constructor.newInstance(new Object[] {});
-                addRequestListener(instance);
-            }
-            catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException
-                    | IllegalAccessException e) {
-                log.error("The instatiation of a RequestListener failed", e);
-            }
-        }
     }
 
     @Override

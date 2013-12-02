@@ -41,6 +41,8 @@ import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
@@ -58,13 +60,13 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
 
     private IValidatorFactory validatorFactory;
 
-    public UpdateSensorDescriptionListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
+    @Inject
+    public UpdateSensorDescriptionListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
 
-        IDAOFactory factory = configurator.getFactory();
         this.insertSensorInfoDAO = factory.insertSensorInfoDAO();
 
-        this.validatorFactory = configurator.getValidatorFactory();
+        this.validatorFactory = config.getInstance().getValidatorFactory();
     }
 
     /*

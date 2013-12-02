@@ -29,6 +29,8 @@ import org.n52.sir.response.SirInsertSensorStatusResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
@@ -41,10 +43,9 @@ public class InsertSensorStatusListener implements ISirRequestListener {
 
     private IInsertSensorStatusDAO insSensStatDao;
 
-    public InsertSensorStatusListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
-
-        IDAOFactory factory = configurator.getFactory();
+    @Inject
+    public InsertSensorStatusListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
 
         try {
             this.insSensStatDao = factory.insertSensorStatusDAO();

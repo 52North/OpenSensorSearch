@@ -142,7 +142,7 @@ public class SearchSensorListener implements ISirRequestListener {
 
             String descriptionURL;
             try {
-                descriptionURL = this.client.createDescribeSensorURL(sirSearchResultElement.getSensorId(), true);
+                descriptionURL = this.client.createDescribeSensorURL(sirSearchResultElement.getSensorId(), false);
             }
             catch (UnsupportedEncodingException e) {
                 log.error("Could not encode URL", e);

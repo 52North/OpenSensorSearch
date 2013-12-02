@@ -29,14 +29,8 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class SensorStatusSubscriptionListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(SensorStatusSubscriptionListener.class);
 
-    /**
-     * 
-     */
     public SensorStatusSubscriptionListener() {
         //
     }

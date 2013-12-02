@@ -73,15 +73,20 @@
 				management of sensor metadata. This is the landing page for the
 				service.</p>
 
+			<h3>APIs</h3>
 			<p>
 				The entry point into the API: <a href="api"
 					title="Open Sensor Search API entry point">/api</a>
 			</p>
-
 			<p>
-				Current statistics: <span id="statsSensors">..</span> sensors, <span
-					id="statsPhenonema">..</span> phenomena, and <span id="statsServices">..</span>
-				services.
+				The endpoint for the Sensor Instance Registry (SIR): <a href="sir"
+					title="SIR endpoint">/sir</a>
+			</p>
+
+			<h3>Current Statistics</h3>
+			<p>
+				<span id="statsSensors">..</span> sensors, <span id="statsPhenonema">..</span>
+				phenomena, and <span id="statsServices">..</span> services.
 			</p>
 
 			<!--  				Endpoints: -->
@@ -144,7 +149,7 @@
 		var basePath = window.location.pathname;
 		basePath = basePath.replace("index.html", "");
 		console.log(basePath);
-			
+
 		$.ajax({
 			dataType : "json",
 			url : basePath + "api/v1/statistics/sensors",

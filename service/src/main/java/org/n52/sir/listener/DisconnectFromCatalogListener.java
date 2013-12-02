@@ -47,9 +47,9 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
     @Inject
     CatalogConnectionScheduler scheduler;
 
-    public DisconnectFromCatalogListener() throws OwsExceptionReport {
-        SirConfigurator configurator = SirConfigurator.getInstance();
-        IDAOFactory factory = configurator.getFactory();
+    @Inject
+    public DisconnectFromCatalogListener(SirConfigurator config) throws OwsExceptionReport {
+        IDAOFactory factory = config.getInstance().getFactory();
         try {
             this.disconFromCatDao = factory.disconnectFromCatalogDAO();
         }

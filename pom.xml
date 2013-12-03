@@ -19,6 +19,15 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 		<!-- <module>it</module> -->
 	</modules>
 
+	<properties>
+		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<guice.version>3.0</guice.version>
+		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
+	</properties>
+
 	<build>
 		<pluginManagement>
 			<plugins>

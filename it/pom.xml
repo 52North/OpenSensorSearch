@@ -60,10 +60,6 @@
 	</licenses>
 
 	<properties>
-		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
-
 		<guice.version>3.0</guice.version>
 		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
 	</properties>

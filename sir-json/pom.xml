@@ -61,10 +61,6 @@
 	</licenses>
 
 	<properties>
-		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
-
 		<jackson.version>2.2.2</jackson.version>
 	</properties>
 

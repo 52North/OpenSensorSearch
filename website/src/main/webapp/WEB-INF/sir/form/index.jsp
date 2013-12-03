@@ -89,7 +89,7 @@
 				</div>
 			</form>
 			<p class="infotext">${project.build.finalName}
-				${version}-r${buildNumber} as of ${buildTimestamp}</p>
+				${version} as of ${buildTimestamp}</p>
 			<p class="infotext">The editor is based on CodeMirror
 				(http://marijn.haverbeke.nl/codemirror/).</p>
 		</div>

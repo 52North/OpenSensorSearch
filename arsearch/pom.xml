@@ -64,10 +64,7 @@
 	</scm>
 
 	<properties>
-		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 	</properties>
 
 	<build>

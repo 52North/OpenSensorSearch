@@ -80,17 +80,10 @@
 	</licenses>
 
 	<properties>
-		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<restlet.version>2.1.1</restlet.version>
-		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
-		<!-- would like to use filtering here, but I did not get it to work with
-			Tomcat and Jetty plugins: http://stackoverflow.com/questions/7475811/who-to-filter-resources-when-using-maven-jetty-plugin -->
-		<guice.version>3.0</guice.version>
+		<restlet.version>2.1.1</restlet.version>
 		<jersey.version>1.8</jersey.version>
-		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
 		<logback.version>1.0.13</logback.version>
 
 		<oss.logger.filepath>${catalina.base:-.}/logs/oss-service</oss.logger.filepath>

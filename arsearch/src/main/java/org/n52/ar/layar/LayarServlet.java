@@ -76,7 +76,7 @@ public class LayarServlet extends SirCallbackServlet {
 		// poi.attribution
 		h.description = sre.getSensorDescription().getText();
 		// poi.distance = calculate?
-		h.id = sre.getSensorIdInSir();
+        h.id = sre.getSensorId();
 		// poi.imageURL
 		double[] latLon = sre.getSensorDescription().getBoundingBox()
 				.getCenter();

@@ -69,7 +69,7 @@ public class WikitudeServlet extends SirCallbackServlet {
 		ArrayList<ServiceReference> references = (ArrayList<ServiceReference>) sre
 				.getServiceReferences();
 		p.title = references.get(0).getServiceSpecificSensorId(); 
-        p.id = sre.getSensorIdInSir();
+        p.id = sre.getSensorId();
         
         // location paramters
         double[] latLon = sre.getSensorDescription().getBoundingBox().getCenter();

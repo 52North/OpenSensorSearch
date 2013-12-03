@@ -42,8 +42,6 @@ import org.n52.sir.json.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonFactory;
-
 /**
  * 
  * 
@@ -72,7 +70,7 @@ public class JunaioServlet extends SirCallbackServlet {
 				.getServiceReferences();
 		p.title = references.get(0).getServiceSpecificSensorId();
 		
-        p.id = sre.getSensorIdInSir();
+        p.id = sre.getSensorId();
         
         // location paramters
         double[] latLon = sre.getSensorDescription().getBoundingBox().getCenter();
@@ -150,6 +148,6 @@ public class JunaioServlet extends SirCallbackServlet {
     }
     
     public String getLayerName(){
-    	return layerName; 
+        return this.layerName;
     }
 }

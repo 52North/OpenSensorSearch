@@ -32,6 +32,8 @@ import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
@@ -42,6 +44,7 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     private PGConnectionPool cpool;
 
+    @Inject
     public PGSQLInsertSensorInfoDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }

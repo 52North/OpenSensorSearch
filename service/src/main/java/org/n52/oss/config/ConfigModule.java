@@ -32,6 +32,10 @@ public class ConfigModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        String home = System.getProperty("user.home");
+        log.debug("Used home directory: {}", home);
+
+        // app properties
         try {
             Properties props = loadProperties("app.properties");
             Names.bindProperties(binder(), props);
@@ -39,21 +43,32 @@ public class ConfigModule extends AbstractModule {
         catch (Exception e) {
             log.error("Could not load properties file.", e);
         }
-        
+
+        // constants
         bind(ApplicationConstants.class).to(PropertyApplicationConstants.class);
+
+        // sir configurator
+        try {
+            Properties sirProps = loadProperties("/prop/sir.properties");
+            bind(Properties.class).annotatedWith(Names.named("sir_properties")).toInstance(sirProps);
+        }
+        catch (Exception e) {
+            log.error("Could not load properties file.", e);
+        }
+
         bind(SirConfigurator.class);
-        
+
         log.debug("Configured {}", this);
     }
 
-    private static Properties loadProperties(String name) throws Exception {
+    private Properties loadProperties(String name) throws Exception {
         log.trace("Loading properties for {}", name);
-        
+
         Properties properties = new Properties();
-        ClassLoader loader = ConfigModule.class.getClassLoader();
+        ClassLoader loader = getClass().getClassLoader();
         URL url = loader.getResource(name);
         properties.load(url.openStream());
-        
+
         log.trace("Loaded properties: {}", properties);
         return properties;
     }

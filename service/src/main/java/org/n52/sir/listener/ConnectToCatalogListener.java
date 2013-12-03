@@ -47,16 +47,17 @@ public class ConnectToCatalogListener implements ISirRequestListener {
 
     private IConnectToCatalogDAO conToCatDao;
 
-    @Inject
     private CatalogConnectionScheduler scheduler;
 
     private ICatalogFactory catalogFactory;
 
     @Inject
-    public ConnectToCatalogListener(IConnectToCatalogDAO dao, ICatalogFactory catalogFactory) {
+    public ConnectToCatalogListener(IConnectToCatalogDAO dao,
+                                    ICatalogFactory catalogFactory,
+                                    CatalogConnectionScheduler scheduler) {
         this.catalogFactory = catalogFactory;
-
         this.conToCatDao = dao;
+        this.scheduler = scheduler;
 
         log.info("NEW {}", this);
     }

@@ -26,10 +26,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.servlet.UnavailableException;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
@@ -46,6 +42,7 @@ import org.x52North.sir.x032.VersionAttribute;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
@@ -64,7 +61,6 @@ public class SirConfigurator {
 
     private static final String GMLDATEFORMAT = "GMLDATEFORMAT";
 
-    @Deprecated
     private static SirConfigurator instance = null;
 
     protected static Logger log = LoggerFactory.getLogger(SirConfigurator.class);
@@ -76,8 +72,6 @@ public class SirConfigurator {
     private static final String SERVICEVERSION = "oss.sir.version";
 
     private static final String STATUS_HANDLER = "STATUS_HANDLER";
-
-    private static final int THREAD_POOL_SIZE = 10;
 
     private static final String VALIDATE_XML_REQUESTS = "VALIDATE_XML_REQUESTS";
 
@@ -104,8 +98,6 @@ public class SirConfigurator {
     private CapabilitiesDocument capabilitiesSkeleton;
 
     private ICatalogStatusHandler catalogStatusHandler;
-
-    private ExecutorService exec;
 
     private boolean extendedDebugToConsole;
 
@@ -141,53 +133,15 @@ public class SirConfigurator {
 
     private IValidatorFactory validatorFactory;
 
-    /**
-     * public constructor for transition to dependency injected properties.
-     * 
-     * TODO Daniel: remove this after new configuration mechanism is in place.
-     * 
-     * @throws UnavailableException
-     * @throws OwsExceptionReport
-     * @throws IOException
-     */
     @Inject
-    public SirConfigurator(IDAOFactory daoFactory) throws UnavailableException, OwsExceptionReport, IOException {
-        try (InputStream dbStream = SirConfigurator.class.getResourceAsStream("/prop/db.properties");
-                InputStream configStream = SirConfigurator.class.getResourceAsStream("/prop/sir.properties");) {
+    public SirConfigurator(IDAOFactory daoFactory, @Named("sir_properties")
+    Properties props) throws OwsExceptionReport {
+        this.factory = daoFactory;
+        this.props = props;
 
-            if (instance == null) {
-                instance = new SirConfigurator(configStream, dbStream, daoFactory);
-                instance.initialize();
-            }
-            else
-                log.error("SHOULD BE SINGLETON");
-        }
-        catch (Exception e) {
-            log.error("could not init SirConfigurator with properties files.", e);
-        }
+        initialize();
 
         log.info("NEW {}", this);
-    }
-
-    @Deprecated
-    private SirConfigurator(InputStream configStream,
-                            InputStream dbConfigStream,
-                            IDAOFactory daoFactory) throws UnavailableException {
-        this.factory = daoFactory;
-
-        try {
-            // creating common SIR properties object from inputstream
-            this.props = loadProperties(configStream);
-            // this.daoProps = loadProperties(dbConfigStream);
-
-            log.info(" ***** Config Files loaded successfully! ***** ");
-        }
-        catch (IOException ioe) {
-            log.error("Error while loading config file.", ioe);
-            throw new UnavailableException(ioe.getMessage());
-        }
-
-        log.debug("DEPRECATED CONSTRUCTION of {}", this);
     }
 
     public String[] getAcceptedServiceVersions() {
@@ -204,10 +158,6 @@ public class SirConfigurator {
      */
     public ICatalogStatusHandler getCatalogStatusHandler() {
         return this.catalogStatusHandler;
-    }
-
-    public ExecutorService getExecutor() {
-        return this.exec;
     }
 
     @Deprecated
@@ -263,9 +213,6 @@ public class SirConfigurator {
     private void initialize() throws OwsExceptionReport {
         log.info(" * Initializing SirConfigurator ... ");
 
-        // to be used by listeners, saved here to allow shutdown.
-        this.exec = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-
         this.serviceVersion = this.props.getProperty(SERVICEVERSION);
         this.gmlDateFormat = this.props.getProperty(GMLDATEFORMAT);
         this.namespaceUri = this.props.getProperty(NAMESPACE_URI);
@@ -282,10 +229,8 @@ public class SirConfigurator {
         newUpdateSequence();
         loadCapabilitiesSkeleton(this.props);
 
-        // initialize status handler
         initializeStatusHandler(this.props);
 
-        // initialize validator
         initializeValidatorFactory(this.props);
 
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
@@ -336,7 +281,6 @@ public class SirConfigurator {
         catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException
                 | ClassNotFoundException e) {
             log.error("Error while loading catalogStatusHandler.", e);
-            throw new OwsExceptionReport(e.getMessage(), e.getCause());
         }
     }
 
@@ -364,7 +308,6 @@ public class SirConfigurator {
         catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException
                 | ClassNotFoundException e) {
             log.error("Error while loading validator factory.", e);
-            throw new OwsExceptionReport(e.getMessage(), e.getCause());
         }
     }
 

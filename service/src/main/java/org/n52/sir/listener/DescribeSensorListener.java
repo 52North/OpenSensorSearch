@@ -19,8 +19,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDescribeSensorDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirDescribeSensorRequest;
@@ -45,35 +43,15 @@ public class DescribeSensorListener implements ISirRequestListener {
     private IDescribeSensorDAO descSensDao;
 
     @Inject
-    public DescribeSensorListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
-
-        IDescribeSensorDAO descSensDAO = null;
-        try {
-            descSensDAO = factory.describeSensorDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the describeSensorDAO", se);
-            throw se;
-        }
-        this.descSensDao = descSensDAO;
+    public DescribeSensorListener(IDescribeSensorDAO dao) {
+        this.descSensDao = dao;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return DescribeSensorListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request.AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirDescribeSensorRequest descSensReq = (SirDescribeSensorRequest) request;

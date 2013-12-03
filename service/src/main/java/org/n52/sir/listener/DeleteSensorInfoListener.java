@@ -24,8 +24,6 @@ import org.n52.oss.sir.api.SirInfoToBeDeleted;
 import org.n52.oss.sir.api.SirSensorIdentification;
 import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirDeleteSensorInfoRequest;
@@ -50,9 +48,8 @@ public class DeleteSensorInfoListener implements ISirRequestListener {
     private IInsertSensorInfoDAO sensorInfoDao;
 
     @Inject
-    public DeleteSensorInfoListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
-        this.sensorInfoDao = factory.insertSensorInfoDAO();
+    public DeleteSensorInfoListener(IInsertSensorInfoDAO dao) {
+        this.sensorInfoDao = dao;
 
         log.debug("NEW {}", this);
     }

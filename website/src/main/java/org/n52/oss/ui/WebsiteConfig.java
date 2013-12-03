@@ -66,6 +66,8 @@ public class WebsiteConfig {
         }
 
         String home = System.getProperty("user.home");
+        log.debug("Used home directory: {}", home);
+
         if (home != null) {
             File homeDirectory = new File(home);
 

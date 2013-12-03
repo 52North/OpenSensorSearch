@@ -22,7 +22,12 @@ import java.util.Properties;
 import org.n52.oss.config.ConfigModule;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
+import org.n52.sir.ds.IDescribeSensorDAO;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
+import org.n52.sir.ds.IGetSensorStatusDAO;
+import org.n52.sir.ds.IHarvestServiceDAO;
+import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.IInsertSensorStatusDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +61,11 @@ public class PGSQLModule extends AbstractModule {
         bind(ISearchSensorDAO.class).annotatedWith(Names.named("full")).to(PGSQLSearchSensorDAO.class);
         bind(IGetCapabilitiesDAO.class).to(PGSQLGetCapabilitiesDAO.class);
         bind(IConnectToCatalogDAO.class).to(PGSQLConnectToCatalogDAO.class);
-        // TODO bind more DAO implementations
+        bind(IInsertSensorInfoDAO.class).to(PGSQLInsertSensorInfoDAO.class);
+        bind(IDescribeSensorDAO.class).to(PGSQLDescribeSensorDAO.class);
+        bind(IGetSensorStatusDAO.class).to(PGSQLGetSensorStatusDAO.class);
+        bind(IHarvestServiceDAO.class).to(PGSQLHarvestServiceDAO.class);
+        bind(IInsertSensorStatusDAO.class).to(PGSQLInsertSensorStatusDAO.class);
 
         log.debug("Configured {}", this);
     }

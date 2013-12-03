@@ -28,7 +28,6 @@ import org.n52.oss.sir.api.SirSensorIdentification;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirUpdateSensorDescriptionRequest;
@@ -49,9 +48,6 @@ import com.google.inject.Inject;
  */
 public class UpdateSensorDescriptionListener implements ISirRequestListener {
 
-    /**
-     * the logger, used to log exceptions and additionally information
-     */
     private static Logger log = LoggerFactory.getLogger(UpdateSensorDescriptionListener.class);
 
     private static final String OPERATION_NAME = SirConstants.Operations.UpdateSensorDescription.name();
@@ -61,29 +57,18 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
     private IValidatorFactory validatorFactory;
 
     @Inject
-    public UpdateSensorDescriptionListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
-
-        this.insertSensorInfoDAO = factory.insertSensorInfoDAO();
-
-        this.validatorFactory = config.getInstance().getValidatorFactory();
+    public UpdateSensorDescriptionListener(SirConfigurator config, IInsertSensorInfoDAO dao) {
+        this.insertSensorInfoDAO = dao;
+        this.validatorFactory = config.getValidatorFactory();
+        
+        log.info("NEW {}", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return UpdateSensorDescriptionListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
 
@@ -116,16 +101,6 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
         return response;
     }
 
-    /**
-     * @param response
-     * @param updatedSensors
-     * @param sensorIdent
-     * @param sensorIdent
-     * @param sensor
-     * @return
-     * @throws OwsExceptionReport
-     * @throws IOException
-     */
     private void updateSensor(SirUpdateSensorDescriptionResponse response,
                               ArrayList<String> updatedSensors,
                               SirSensorIdentification sensorIdent,

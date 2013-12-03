@@ -18,14 +18,13 @@ package org.n52.sir.listener;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.listener.harvest.FileHarvester;
 import org.n52.sir.listener.harvest.IOOSHarvester;
@@ -48,6 +47,8 @@ public class HarvestServiceListener implements ISirRequestListener {
 
     protected static Logger log = LoggerFactory.getLogger(HarvestServiceListener.class);
 
+    private static final int THREAD_POOL_SIZE = 10;
+
     private static final String OPERATION_NAME = SirConstants.Operations.HarvestService.name();
 
     private ExecutorService exec;
@@ -57,18 +58,13 @@ public class HarvestServiceListener implements ISirRequestListener {
     private Client client;
 
     @Inject
-    public HarvestServiceListener(SirConfigurator config, Client client) throws OwsExceptionReport {
-        this.exec = config.getInstance().getExecutor();
-        this.client = client;
+    public HarvestServiceListener(IHarvestServiceDAO dao, Client client) {
+        this.exec = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-        try {
-            IDAOFactory factory = config.getInstance().getFactory();
-            this.harvServDao = factory.harvestServiceDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the harvestServiceDAO", se);
-            throw se;
-        }
+        this.client = client;
+        this.harvServDao = dao;
+
+        log.info("NEW {}", this);
     }
 
     @Override

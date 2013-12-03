@@ -18,7 +18,6 @@ package org.n52.sir.listener;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
 import org.n52.sir.ds.IDisconnectFromCatalogDAO;
@@ -46,10 +45,15 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
 
     CatalogConnectionScheduler scheduler;
 
+    private ICatalogStatusHandler handler;
+
     @Inject
-    public DisconnectFromCatalogListener(IDisconnectFromCatalogDAO dao, CatalogConnectionScheduler scheduler) {
+    public DisconnectFromCatalogListener(IDisconnectFromCatalogDAO dao,
+                                         CatalogConnectionScheduler scheduler,
+                                         ICatalogStatusHandler handler) {
         this.disconFromCatDao = dao;
         this.scheduler = scheduler;
+        this.handler = handler;
 
         log.info("NEW {}", this);
     }
@@ -83,8 +87,7 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
             response.setCatalogUrl(disconFromCatReq.getCswURL());
 
             // set runtime status info
-            ICatalogStatusHandler runtimeHandler = SirConfigurator.getInstance().getCatalogStatusHandler();
-            runtimeHandler.setStatus(connectionID, "Disconnected from catalog " + disconFromCatReq.getCswURL());
+            this.handler.setStatus(connectionID, "Disconnected from catalog " + disconFromCatReq.getCswURL());
 
             return response;
         }

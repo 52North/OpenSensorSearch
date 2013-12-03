@@ -65,8 +65,8 @@ public class SearchSensorListener implements ISirRequestListener {
     private SirClient client;
 
     @Inject
-    public SearchSensorListener(@Named("full")
-    ISearchSensorDAO dao, @Named("autocomplete")
+    public SearchSensorListener(@Named(ISearchSensorDAO.FULL)
+    ISearchSensorDAO dao, @Named(ISearchSensorDAO.AUTOCOMPLETE)
     ISearchSensorDAO autocompleteDao, SirClient client) {
         this.client = client;
         this.searchSensDao = dao;

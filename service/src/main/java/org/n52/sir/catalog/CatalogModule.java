@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.n52.sir.catalog.csw;
+package org.n52.sir.catalog;
 
-import org.n52.sir.catalog.ICatalogFactory;
+import org.n52.sir.catalog.csw.CswFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +33,7 @@ public class CatalogModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        bind(ICatalogStatusHandler.class).to(CatalogStatusHandlerImpl.class);
         bind(ICatalogFactory.class).to(CswFactory.class);
 
         log.debug("Configured {}", this);

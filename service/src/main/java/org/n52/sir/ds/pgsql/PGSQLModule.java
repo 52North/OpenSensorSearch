@@ -20,9 +20,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.n52.oss.config.ConfigModule;
+import org.n52.sir.ds.ICatalogStatusHandlerDAO;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDescribeSensorDAO;
+import org.n52.sir.ds.IDisconnectFromCatalogDAO;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
 import org.n52.sir.ds.IGetSensorStatusDAO;
 import org.n52.sir.ds.IHarvestServiceDAO;
@@ -58,7 +60,7 @@ public class PGSQLModule extends AbstractModule {
         bind(IDAOFactory.class).to(DAOFactory.class);
         bind(PGConnectionPool.class).toProvider(DAOFactory.class);
 
-        bind(ISearchSensorDAO.class).annotatedWith(Names.named("full")).to(PGSQLSearchSensorDAO.class);
+        bind(ISearchSensorDAO.class).annotatedWith(Names.named(ISearchSensorDAO.FULL)).to(PGSQLSearchSensorDAO.class);
         bind(IGetCapabilitiesDAO.class).to(PGSQLGetCapabilitiesDAO.class);
         bind(IConnectToCatalogDAO.class).to(PGSQLConnectToCatalogDAO.class);
         bind(IInsertSensorInfoDAO.class).to(PGSQLInsertSensorInfoDAO.class);
@@ -66,6 +68,8 @@ public class PGSQLModule extends AbstractModule {
         bind(IGetSensorStatusDAO.class).to(PGSQLGetSensorStatusDAO.class);
         bind(IHarvestServiceDAO.class).to(PGSQLHarvestServiceDAO.class);
         bind(IInsertSensorStatusDAO.class).to(PGSQLInsertSensorStatusDAO.class);
+        bind(IDisconnectFromCatalogDAO.class).to(PGSQLDisconnetFromCatalogDAO.class);
+        bind(ICatalogStatusHandlerDAO.class).to(PGSQLCatalogStatusHandlerDAO.class);
 
         log.debug("Configured {}", this);
     }

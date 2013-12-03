@@ -33,7 +33,7 @@ public class ConfigModule extends AbstractModule {
     @Override
     protected void configure() {
         String home = System.getProperty("user.home");
-        log.debug("Used home directory: {}", home);
+        log.info("Used home directory: {}", home);
 
         // app properties
         try {

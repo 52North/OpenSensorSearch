@@ -23,10 +23,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSensor;
-import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.request.SirHarvestServiceRequest;
+import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
@@ -36,6 +38,9 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * 
@@ -48,11 +53,12 @@ public abstract class FileHarvester extends Harvester {
 
     private static final Logger log = LoggerFactory.getLogger(FileHarvester.class);
 
-    protected SirHarvestServiceRequest request;
+    @Inject
+    public FileHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
+    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
+        super(harvServDao, insertDao, searchDao, client, config);
 
-    public FileHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
-        super(harvServDao);
-        this.request = request;
+        log.info("NEW {}", this);
     }
 
     @Override

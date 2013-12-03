@@ -21,12 +21,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.listener.harvest.FileHarvester;
 import org.n52.sir.listener.harvest.IOOSHarvester;
 import org.n52.sir.listener.harvest.SOSServiceHarvester;
 import org.n52.sir.listener.harvest.SPSServiceHarvester;
@@ -55,14 +53,27 @@ public class HarvestServiceListener implements ISirRequestListener {
 
     private IHarvestServiceDAO harvServDao;
 
-    private Client client;
+    private SOSServiceHarvester sosHarvester;
 
+    private SPSServiceHarvester spsHarvester;
+
+    private IOOSHarvester ioosHarvester;
+
+    /**
+     * FIXME instantiate a new harvester for every request
+     * 
+     */
     @Inject
-    public HarvestServiceListener(IHarvestServiceDAO dao, Client client) {
+    public HarvestServiceListener(IHarvestServiceDAO dao,
+                                  SOSServiceHarvester sosHarvester,
+                                  SPSServiceHarvester spsHarvester,
+                                  IOOSHarvester ioosHarvester) {
         this.exec = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-        this.client = client;
         this.harvServDao = dao;
+        this.sosHarvester = sosHarvester;
+        this.spsHarvester = spsHarvester;
+        this.ioosHarvester = ioosHarvester;
 
         log.info("NEW {}", this);
     }
@@ -75,8 +86,8 @@ public class HarvestServiceListener implements ISirRequestListener {
     private ISirResponse harvestIOOSCatalog(SirHarvestServiceRequest request) throws OwsExceptionReport {
         log.debug("Start harvest IOOSCatalog: {}", request.getServiceUrl());
 
-        FileHarvester harvester = new IOOSHarvester(request, this.harvServDao);
-        Future<ISirResponse> future = this.exec.submit(harvester);
+        this.ioosHarvester.setRequest(request);
+        Future<ISirResponse> future = this.exec.submit(this.ioosHarvester);
 
         try {
             ISirResponse response = future.get();
@@ -90,8 +101,8 @@ public class HarvestServiceListener implements ISirRequestListener {
     private ISirResponse harvestSOS(SirHarvestServiceRequest request) throws OwsExceptionReport {
         log.debug("Start harvest SOS: {}", request.getServiceUrl());
 
-        SOSServiceHarvester harvester = new SOSServiceHarvester(request, this.harvServDao, this.client);
-        Future<ISirResponse> future = this.exec.submit(harvester);
+        this.sosHarvester.setRequest(request);
+        Future<ISirResponse> future = this.exec.submit(this.sosHarvester);
 
         try {
             ISirResponse response = future.get();
@@ -105,8 +116,8 @@ public class HarvestServiceListener implements ISirRequestListener {
     private ISirResponse harvestSPS(SirHarvestServiceRequest request) throws OwsExceptionReport {
         log.debug("Start harvest SPS: {}", request.getServiceUrl());
 
-        SPSServiceHarvester harvester = new SPSServiceHarvester(request, this.harvServDao);
-        Future<ISirResponse> future = this.exec.submit(harvester);
+        this.spsHarvester.setRequest(request);
+        Future<ISirResponse> future = this.exec.submit(this.spsHarvester);
 
         try {
             ISirResponse response = future.get();

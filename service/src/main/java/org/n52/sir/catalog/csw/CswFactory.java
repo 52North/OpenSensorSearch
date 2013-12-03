@@ -31,9 +31,11 @@ import java.util.Set;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.sir.catalog.CatalogConnectionImpl;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
+import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.xml.ITransformer;
 import org.n52.sir.xml.ITransformer.TransformableFormat;
 import org.n52.sir.xml.TransformerModule;
@@ -65,12 +67,17 @@ public class CswFactory implements ICatalogFactory {
 
     private ArrayList<URL> doNotCheckCatalogsList;
 
+    private ISearchSensorDAO searchDao;
+
     @Inject
     public CswFactory(@Named("oss.catalogconnection.csw-ebrim.classificationInitFilenames")
     String classificationInitFilenames, @Named("oss.catalogconnection.csw-ebrim.slotInitFilename")
     String slotInitFile, @Named("oss.catalogconnection.doNotCheckCatalogs")
-    String doNotCheckCatalogs, Set<ITransformer> transformers) throws XmlException, IOException {
+    String doNotCheckCatalogs, Set<ITransformer> transformers, @Named(ISearchSensorDAO.FULL)
+    ISearchSensorDAO searchDao) throws XmlException, IOException {
         this.slotInitFile = getAbsolutePath(slotInitFile);
+        this.searchDao = searchDao;
+
         try (FileReader reader = new FileReader(this.slotInitFile);) {
             this.slotInitDoc = XmlObject.Factory.parse(reader);
             log.debug("Loaded slot init doc: {}", this.slotInitDoc);
@@ -129,7 +136,11 @@ public class CswFactory implements ICatalogFactory {
     @Override
     public ICatalog getCatalog(URL catalogUrl) throws OwsExceptionReport {
         SimpleSoapCswClient client = new SimpleSoapCswClient(catalogUrl, catalogIsOnDoNotCheckList(catalogUrl));
-        CswCatalog catalog = new CswCatalog(client, this.classificationInitDocs, this.slotInitDoc, this.transformer);
+        CswCatalog catalog = new CswCatalog(this.searchDao,
+                                            client,
+                                            this.classificationInitDocs,
+                                            this.slotInitDoc,
+                                            this.transformer);
         return catalog;
     }
 

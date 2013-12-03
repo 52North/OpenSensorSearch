@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds;
 
-import org.n52.oss.sir.ows.OwsExceptionReport;
 
 /**
  * interface for the specific DAOFactories, offers methods to create the matching DAOs for the operations
@@ -25,31 +25,9 @@ import org.n52.oss.sir.ows.OwsExceptionReport;
  */
 public interface IDAOFactory {
 
-    ICatalogStatusHandlerDAO catalogStatusHandlerDAO();
+    IInsertHarvestScriptDAO insertHarvestScriptDAO();
 
-    IConnectToCatalogDAO connectToCatalogDAO() throws OwsExceptionReport;
-
-    IDescribeSensorDAO describeSensorDAO() throws OwsExceptionReport;
-
-    IDisconnectFromCatalogDAO disconnectFromCatalogDAO() throws OwsExceptionReport;
-
-    IGetAllServicesDAO getAllServicesDAO() throws OwsExceptionReport;
-
-    IGetCapabilitiesDAO getCapabilitiesDAO() throws OwsExceptionReport;
-
-    IGetSensorStatusDAO getSensorStatusDAO() throws OwsExceptionReport;
-
-    IHarvestServiceDAO harvestServiceDAO() throws OwsExceptionReport;
-
-    IInsertSensorInfoDAO insertSensorInfoDAO() throws OwsExceptionReport;
-
-    IInsertSensorStatusDAO insertSensorStatusDAO() throws OwsExceptionReport;
-
-    ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport;
-    
-    IInsertHarvestScriptDAO insertHarvestScriptDAO() ;
-    
     IInsertRemoteHarvestServer insertRemoteHarvestSensor();
-    
+
     IUserAccountDAO userAccountDAO();
 }

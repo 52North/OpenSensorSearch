@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.ICatalogStatusHandlerDAO;
-import org.n52.sir.ds.IDAOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * 
@@ -43,12 +43,10 @@ public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
 
     private ArrayList<String> runtimeInfo;
 
-    public CatalogStatusHandlerImpl() {
-        SirConfigurator configurator = SirConfigurator.getInstance();
-        IDAOFactory factory = configurator.getFactory();
-
-        this.catStatHandlerDao = factory.catalogStatusHandlerDAO();
-        this.runtimeInfo = new ArrayList<String>();
+    @Inject
+    public CatalogStatusHandlerImpl(ICatalogStatusHandlerDAO dao) {
+        this.catStatHandlerDao = dao;
+        this.runtimeInfo = new ArrayList<>();
     }
 
     @Override
@@ -58,7 +56,7 @@ public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
 
     @Override
     public Collection<String> getRuntimeInfo() {
-        ArrayList<String> infolist = new ArrayList<String>(this.runtimeInfo);
+        ArrayList<String> infolist = new ArrayList<>(this.runtimeInfo);
         if (infolist.size() == MAXIMUM_INFOLIST_SIZE) {
             infolist.add(0, "(Status information of the last " + MAXIMUM_INFOLIST_SIZE + " events only.)");
             infolist.add(1, " ");
@@ -77,11 +75,6 @@ public class CatalogStatusHandlerImpl implements ICatalogStatusHandler {
         this.runtimeInfo.add("Connection id: " + identifier + "\t>>>\t" + statusMessage);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.catalog.ICatalogStatusHandler#setStatus(java.lang.String, java.lang.String)
-     */
     @Override
     public void setStatus(String identifier, String statusMessage) {
         if (identifier.equals(ICatalogConnection.UNSAVED_CONNECTION_ID)) {

@@ -67,7 +67,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
     private URI serviceUri;
 
     public SirGetCapabilitiesResponse(SirConfigurator config, URI uri) {
-        this.config = config.getInstance();
+        this.config = config;
         this.serviceUri = uri;
 
         log.info("NEW {}", this);

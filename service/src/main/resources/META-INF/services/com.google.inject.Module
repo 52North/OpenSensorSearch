@@ -6,7 +6,7 @@ org.n52.sir.decode.impl.DecoderModule
 org.n52.sir.listener.ListenerModule
 org.n52.sir.ds.pgsql.PGSQLModule
 org.n52.sir.ds.solr.SolrModule
-org.n52.sir.catalog.csw.CatalogModule
+org.n52.sir.catalog.CatalogModule
 org.n52.oss.guice.ServletModule
 org.n52.oss.guice.OpenSensorSearchModule
 org.n52.oss.opensearch.listeners.ListenerModule

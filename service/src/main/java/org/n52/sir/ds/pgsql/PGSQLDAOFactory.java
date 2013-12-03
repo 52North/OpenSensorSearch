@@ -16,22 +16,9 @@
 
 package org.n52.sir.ds.pgsql;
 
-import java.util.Properties;
-
-import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.ds.ICatalogStatusHandlerDAO;
-import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
-import org.n52.sir.ds.IDescribeSensorDAO;
-import org.n52.sir.ds.IDisconnectFromCatalogDAO;
-import org.n52.sir.ds.IGetAllServicesDAO;
-import org.n52.sir.ds.IGetSensorStatusDAO;
-import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertHarvestScriptDAO;
 import org.n52.sir.ds.IInsertRemoteHarvestServer;
-import org.n52.sir.ds.IInsertSensorInfoDAO;
-import org.n52.sir.ds.IInsertSensorStatusDAO;
-import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.IUserAccountDAO;
 
 /**
@@ -44,80 +31,8 @@ public class PGSQLDAOFactory implements IDAOFactory {
 
     protected PGConnectionPool cpool;
 
-    @Deprecated
-    public PGSQLDAOFactory(Properties daoProps) {
-
-        // initializeDAOConstants;
-        PGDAOConstants.getInstance(daoProps);
-
-        String connection = PGDAOConstants.connectionString;
-        String user = PGDAOConstants.user;
-        String password = PGDAOConstants.password;
-        String driver = PGDAOConstants.driver;
-        int initcon = PGDAOConstants.initcon;
-        int maxcon = PGDAOConstants.maxcon;
-        // initialize PGConnectionPool
-        this.cpool = new PGConnectionPool(connection, user, password, driver, initcon, maxcon);
-    }
-
     public PGSQLDAOFactory(String connectionString, String user, String password, String driver, int initcon, int maxcon) {
         this.cpool = new PGConnectionPool(connectionString, user, password, driver, initcon, maxcon);
-    }
-
-    @Override
-    public ICatalogStatusHandlerDAO catalogStatusHandlerDAO() {
-        return new PGSQLCatalogStatusHandlerDAO(this.cpool);
-    }
-
-    @Override
-    public IConnectToCatalogDAO connectToCatalogDAO() throws OwsExceptionReport {
-        return new PGSQLConnectToCatalogDAO(this.cpool);
-    }
-
-    @Override
-    public IDescribeSensorDAO describeSensorDAO() throws OwsExceptionReport {
-        return new PGSQLDescribeSensorDAO(this.cpool);
-    }
-
-    @Override
-    public IDisconnectFromCatalogDAO disconnectFromCatalogDAO() throws OwsExceptionReport {
-        return new PGSQLDisconnetFromCatalogDAO(this.cpool);
-    }
-
-    @Override
-    public IGetAllServicesDAO getAllServicesDAO() throws OwsExceptionReport {
-        return new PGSQLGetAllServicesDAO(this.cpool);
-    }
-
-    @Override
-    public PGSQLGetCapabilitiesDAO getCapabilitiesDAO() {
-        return new PGSQLGetCapabilitiesDAO(this.cpool);
-    }
-
-    @Override
-    public IGetSensorStatusDAO getSensorStatusDAO() throws OwsExceptionReport {
-        return new PGSQLGetSensorStatusDAO(this.cpool);
-    }
-
-    @Override
-    public IHarvestServiceDAO harvestServiceDAO() throws OwsExceptionReport {
-        return new PGSQLHarvestServiceDAO(this.cpool);
-    }
-
-    @Override
-    public IInsertSensorInfoDAO insertSensorInfoDAO() throws OwsExceptionReport {
-        return new PGSQLInsertSensorInfoDAO(this.cpool);
-    }
-
-    @Override
-    public IInsertSensorStatusDAO insertSensorStatusDAO() throws OwsExceptionReport {
-        return new PGSQLInsertSensorStatusDAO(this.cpool);
-    }
-
-    @Override
-    @Deprecated
-    public ISearchSensorDAO searchSensorDAO() throws OwsExceptionReport {
-        return new PGSQLSearchSensorDAO(this.cpool);
     }
 
     @Override

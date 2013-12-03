@@ -18,7 +18,9 @@ package org.n52.sir.listener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.SirConstants.CapabilitiesSection;
@@ -55,21 +57,28 @@ public class GetCapabilitiesListener implements ISirRequestListener {
 
     @Inject
     public GetCapabilitiesListener(SirConfigurator config, IGetCapabilitiesDAO dao) {
-        this.config = config.getInstance();
-
+        this.config = config;
         this.capDao = dao;
 
         log.info("NEW {}", this);
     }
 
     private void checkAcceptedVersions(String[] versions) throws OwsExceptionReport {
-        // String serviceVersion = SirConfigurator.getInstance().getServiceVersion();
-        for (String version : versions) {
-            ListenersTools.checkVersionParameter(version);
+        String serviceVersion = this.config.getServiceVersion();
+        String[] acceptedServiceVersions = this.config.getAcceptedServiceVersions();
 
-            // if (version.equals(serviceVersion)) {
-            // return;
-            // }
+        for (String version : versions) {
+            List<String> versionsList = Arrays.asList(acceptedServiceVersions);
+
+            if (version == null || !versionsList.contains(version)) {
+                OwsExceptionReport se = new OwsExceptionReport();
+                se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
+                                     "version",
+                                     "The Parameter 'version' does not contain the version of this SIR: '"
+                                             + serviceVersion + "'");
+                log.error("The accepted versions parameter is incorrect.", se);
+                throw se;
+            }
         }
     }
 

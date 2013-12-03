@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 import com.google.inject.name.Names;
 
 public class CatalogConnectionModule extends AbstractModule {
@@ -41,7 +40,7 @@ public class CatalogConnectionModule extends AbstractModule {
         try {
             // TODO move catalog connection properties to own file in own module
             Properties properties = new Properties();
-            properties.load(CatalogConnectionModule.class.getResourceAsStream("/prop/sir.properties"));
+            properties.load(getClass().getResourceAsStream("/prop/sir.properties"));
             Names.bindProperties(binder(), properties);
 
             log.debug("Loaded and bound properties:\n\t{}", properties);
@@ -55,16 +54,10 @@ public class CatalogConnectionModule extends AbstractModule {
         // having the exec here is not really nice... and does not work...
         // Provider<StartupThread> provider = getProvider(StartupThread.class);
         // this.exec.submit(provider.get());
-        // FIXME
+        // FIXME start startup thread somehow...
+        bind(StartupThread.class);
 
         log.debug("Configured {}", this);
     }
     
-    @Provides
-    public StartupThread provideStartupThread() {
-        StartupThread st = new StartupThread();
-        log.debug("Created new thread: {}", st);
-        return st;
-    }
-
 }

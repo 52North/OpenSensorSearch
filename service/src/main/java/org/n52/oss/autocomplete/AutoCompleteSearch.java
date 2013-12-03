@@ -65,7 +65,7 @@ public class AutoCompleteSearch {
     private ISearchSensorDAO searchSensorDao;
 
     @Inject
-    public AutoCompleteSearch(@Named("autocomplete")
+    public AutoCompleteSearch(@Named(ISearchSensorDAO.AUTOCOMPLETE)
     ISearchSensorDAO dao) {
         this.searchSensorDao = dao;
 

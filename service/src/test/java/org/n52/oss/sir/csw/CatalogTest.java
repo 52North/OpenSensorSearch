@@ -19,12 +19,15 @@ package org.n52.oss.sir.csw;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Set;
 
 import org.apache.xmlbeans.XmlException;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.csw.CswFactory;
+import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.xml.ITransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,8 +53,10 @@ public class CatalogTest {
         String slotInit = "/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/sirSlotInit.xml";
 
         ICatalogFactory factory;
+        ISearchSensorDAO dao = null;
+        Set<ITransformer> transformers = null;
         try {
-            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", null);
+            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", transformers, dao);
         }
         catch (XmlException e) {
             log.error("Could not parse classification scheme file!", e);

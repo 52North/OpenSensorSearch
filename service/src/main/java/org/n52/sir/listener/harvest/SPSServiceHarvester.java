@@ -28,11 +28,14 @@ import net.opengis.sps.x10.CapabilitiesDocument;
 import net.opengis.sps.x10.SensorOfferingType;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.request.SirHarvestServiceRequest;
+import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
@@ -41,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
@@ -50,14 +54,18 @@ public class SPSServiceHarvester extends Harvester {
 
     private static Logger log = LoggerFactory.getLogger(SPSServiceHarvester.class);
 
-    private SirHarvestServiceRequest request;
-
-    @Inject
     private SirClient client;
 
-    public SPSServiceHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
-        super(harvServDao);
-        this.request = request;
+    @Inject
+    public SPSServiceHarvester(IHarvestServiceDAO harvServDao,
+                               IInsertSensorInfoDAO insertDao,
+                               @Named(ISearchSensorDAO.FULL)
+                               ISearchSensorDAO searchDao,
+                               Client client,
+                               SirConfigurator config) {
+        super(harvServDao, insertDao, searchDao, client, config);
+
+        log.info("NEW {}", this);
     }
 
     @Override
@@ -110,8 +118,7 @@ public class SPSServiceHarvester extends Harvester {
 
             // request and process sensor descriptions
             for (Pair<String, URI> current : sensorDefinitions) {
-                processURI(this.request,
-                           this.insertedSensors,
+                processURI(this.insertedSensors,
                            this.failedSensors,
                            this.updatedSensors,
                            current.getFirst(),

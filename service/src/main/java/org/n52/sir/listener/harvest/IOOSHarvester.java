@@ -65,18 +65,24 @@ import net.opengis.swe.x101.VectorType;
 import net.opengis.swe.x101.VectorType.Coordinate;
 
 import org.apache.xmlbeans.XmlException;
+import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SMLConstants;
 import org.n52.oss.sir.api.SirBoundingBox;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.util.XmlTools;
+import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.request.SirHarvestServiceRequest;
+import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.ISearchSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
@@ -770,8 +776,12 @@ public class IOOSHarvester extends FileHarvester {
 
     static final Logger log = LoggerFactory.getLogger(IOOSHarvester.class);
 
-    public IOOSHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
-        super(request, harvServDao);
+    @Inject
+    public IOOSHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
+    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
+        super(harvServDao, insertDao, searchDao, client, config);
+
+        log.info("NEW {}", this);
     }
 
     @Override

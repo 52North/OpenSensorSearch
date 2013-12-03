@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.sir.catalog.csw;
+package org.n52.sir.catalog;
 
 import java.net.URL;
 
-import org.n52.sir.catalog.ICatalogConnection;
 
 /**
  * 
@@ -41,41 +40,21 @@ public class CatalogConnectionImpl implements ICatalogConnection {
         this.status = connectionStatus;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.catalog.ICatalogConnection#getCatalogURL()
-     */
     @Override
     public URL getCatalogURL() {
         return this.catalogURL;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.catalog.ICatalogConnection#getConnectionID()
-     */
     @Override
     public String getConnectionID() {
         return this.connectionID;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.catalog.ICatalogConnection#getPushIntervalSeconds()
-     */
     @Override
     public int getPushIntervalSeconds() {
         return this.pushIntervalSeconds;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.catalog.ICatalogConnection#getStatus()
-     */
     @Override
     public String getStatus() {
         return this.status;

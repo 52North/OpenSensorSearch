@@ -32,13 +32,18 @@ import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
+import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
-import org.n52.sir.request.SirHarvestServiceRequest;
+import org.n52.sir.ds.IInsertSensorInfoDAO;
+import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * 
@@ -55,14 +60,19 @@ public class SOSServiceHarvester extends Harvester {
 
     private static final String PROCEDURE_PARAMETER_NAME = "procedure";
 
-    private SirHarvestServiceRequest request;
-
     private Client client;
 
-    public SOSServiceHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao, Client client) throws OwsExceptionReport {
-        super(harvServDao);
-        this.request = request;
+    @Inject
+    public SOSServiceHarvester(IHarvestServiceDAO harvServDao,
+                               IInsertSensorInfoDAO insertDao,
+                               @Named(ISearchSensorDAO.FULL)
+                               ISearchSensorDAO searchDao,
+                               Client client,
+                               SirConfigurator config) {
+        super(harvServDao, insertDao, searchDao, client, config);
         this.client = client;
+
+        log.info("NEW {}", this);
     }
 
     @Override
@@ -153,8 +163,7 @@ public class SOSServiceHarvester extends Harvester {
 
             // check every found sensor (procedure)
             for (ValueType procedureType : procedureTypes) {
-                processProcedure(this.request,
-                                 response,
+                processProcedure(response,
                                  this.insertedSensors,
                                  this.updatedSensors,
                                  this.failedSensors,

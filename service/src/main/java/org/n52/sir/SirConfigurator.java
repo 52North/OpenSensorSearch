@@ -152,14 +152,6 @@ public class SirConfigurator {
         return this.capabilitiesSkeleton;
     }
 
-    /**
-     * 
-     * @return the status handler for external access (not from within this SIR instance)
-     */
-    public ICatalogStatusHandler getCatalogStatusHandler() {
-        return this.catalogStatusHandler;
-    }
-
     @Deprecated
     public IDAOFactory getFactory() {
         return this.factory;
@@ -229,8 +221,6 @@ public class SirConfigurator {
         newUpdateSequence();
         loadCapabilitiesSkeleton(this.props);
 
-        initializeStatusHandler(this.props);
-
         initializeValidatorFactory(this.props);
 
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
@@ -254,33 +244,6 @@ public class SirConfigurator {
         catch (IOException e) {
             log.error("Cannot load licesnes", e);
             return null;
-        }
-    }
-
-    private void initializeStatusHandler(Properties sirProps) throws OwsExceptionReport {
-        String className = sirProps.getProperty(STATUS_HANDLER);
-        try {
-            if (className == null) {
-                log.error("No status handler implementation is set in the config file!");
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "SirConfigurator.initializeStatusHandler()",
-                                     "No status handler implementation is set in the config file!");
-                throw se;
-            }
-            // get Class of the httpGetRequestDecoderClass Implementation
-            Class<ICatalogStatusHandler> CatalogStatusHandlerClass = (Class<ICatalogStatusHandler>) Class.forName(className);
-
-            // get Constructor of this class with matching parameter types
-            Constructor<ICatalogStatusHandler> constructor = CatalogStatusHandlerClass.getConstructor();
-
-            this.catalogStatusHandler = constructor.newInstance();
-
-            log.info(" ***** " + className + " loaded successfully! ***** ");
-        }
-        catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException
-                | ClassNotFoundException e) {
-            log.error("Error while loading catalogStatusHandler.", e);
         }
     }
 

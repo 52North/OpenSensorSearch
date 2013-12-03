@@ -33,7 +33,7 @@ public class SolrModule extends AbstractModule {
 
         // FIXME change .named to recommended explicit binding annotation:
         // http://code.google.com/p/google-guice/wiki/BindingAnnotations
-        bind(ISearchSensorDAO.class).annotatedWith(Names.named("autocomplete")).to(SOLRSearchSensorDAO.class);
+        bind(ISearchSensorDAO.class).annotatedWith(Names.named(ISearchSensorDAO.AUTOCOMPLETE)).to(SOLRSearchSensorDAO.class);
 
         log.debug("Configured {}", this);
     }

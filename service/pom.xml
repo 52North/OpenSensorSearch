@@ -253,56 +253,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<groupId>com.code54.mojo</groupId>
-				<artifactId>buildversion-plugin</artifactId>
-				<version>1.0.3</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>set-properties</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											com.code54.mojo
-										</groupId>
-										<artifactId>
-											buildversion-plugin
-										</artifactId>
-										<versionRange>
-											[1.0.3,)
-										</versionRange>
-										<goals>
-											<goal>set-properties</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<pluginRepositories>
@@ -316,27 +267,6 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>Codehaus Snapshots</id>
-			<url>http://nexus.codehaus.org/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>  <!-- Workaround for MNG-2974, see note below -->
-			</releases>
-		</pluginRepository>
-
-		<!-- for buildversion plugin: https://github.com/code54/buildversion-plugin -->
-		<pluginRepository>
-			<id>sonatype-releases</id>
-			<url>http://oss.sonatype.org/content/repositories/releases</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>clojars.org</id>
-			<url>http://clojars.org/repo</url>
 		</pluginRepository>
 	</pluginRepositories>
 

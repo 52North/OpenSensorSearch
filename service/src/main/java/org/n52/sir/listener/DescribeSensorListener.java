@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * @author Jan Schulte
@@ -42,9 +43,13 @@ public class DescribeSensorListener implements ISirRequestListener {
 
     private IDescribeSensorDAO descSensDao;
 
+    private boolean validateResponses;
+
     @Inject
-    public DescribeSensorListener(IDescribeSensorDAO dao) {
+    public DescribeSensorListener(IDescribeSensorDAO dao, @Named("oss.sir.responses.validate")
+    boolean validateResponses) {
         this.descSensDao = dao;
+        this.validateResponses = validateResponses;
     }
 
     @Override
@@ -56,7 +61,7 @@ public class DescribeSensorListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirDescribeSensorRequest descSensReq = (SirDescribeSensorRequest) request;
 
-        SirDescribeSensorResponse response = new SirDescribeSensorResponse();
+        SirDescribeSensorResponse response = new SirDescribeSensorResponse(this.validateResponses);
 
         try {
             XmlObject sensorML = this.descSensDao.getSensorDescription(descSensReq.getSensorId());

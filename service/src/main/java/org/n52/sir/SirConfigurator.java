@@ -71,11 +71,9 @@ public class SirConfigurator {
 
     private static final String SERVICEVERSION = "oss.sir.version";
 
-    private static final String STATUS_HANDLER = "STATUS_HANDLER";
+    private static final String VALIDATE_XML_REQUESTS = "oss.sir.requests.validate";
 
-    private static final String VALIDATE_XML_REQUESTS = "VALIDATE_XML_REQUESTS";
-
-    private static final String VALIDATE_XML_RESPONSES = "VALIDATE_XML_RESPONSES";
+    private static final String VALIDATE_XML_RESPONSES = "oss.sir.responses.validate";
 
     private static final String VALIDATORFACTORY = "VALIDATORFACTORY";
 

@@ -25,9 +25,9 @@ import java.util.Map.Entry;
 
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.request.SirHarvestServiceRequest;
+import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
 import org.slf4j.Logger;
@@ -50,64 +50,63 @@ public abstract class FileHarvester extends Harvester {
 
     protected SirHarvestServiceRequest request;
 
-    /**
-     * 
-     * @param request
-     * @param harvServDao
-     * @throws OwsExceptionReport
-     */
     public FileHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
         super(harvServDao);
         this.request = request;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.concurrent.Callable#call()
-     */
     @Override
     public ISirResponse call() throws Exception {
-        log.info("Starting Harvesting of File " + this.request.getServiceUrl());
+        ISirResponse r = null;
 
-        SirHarvestServiceResponse response = new SirHarvestServiceResponse();
-        // set service type in response
-        response.setServiceType(this.request.getServiceType());
-        // set service URL in response
-        response.setServiceUrl(this.request.getServiceUrl());
+        try {
+            log.info("Starting Harvesting of File " + this.request.getServiceUrl());
 
-        // this.reader = XMLInputFactory.newFactory().createXMLEventReader(new
-        // FileReader(catalogFile));
+            SirHarvestServiceResponse response = new SirHarvestServiceResponse();
+            // set service type in response
+            response.setServiceType(this.request.getServiceType());
+            // set service URL in response
+            response.setServiceUrl(this.request.getServiceUrl());
 
-        URL fileURL = new URL(this.request.getServiceUrl());
-        // this.catalogXml = XmlObject.Factory.parse(fileURL);
+            // this.reader = XMLInputFactory.newFactory().createXMLEventReader(new
+            // FileReader(catalogFile));
 
-        // event based parsing:
-        XMLReader myReader = XMLReaderFactory.createXMLReader();
+            URL fileURL = new URL(this.request.getServiceUrl());
+            // this.catalogXml = XmlObject.Factory.parse(fileURL);
 
-        // get the handler from implementing classes
-        ContentHandler handler = getHandler();
+            // event based parsing:
+            XMLReader myReader = XMLReaderFactory.createXMLReader();
 
-        myReader.setContentHandler(handler);
-        myReader.parse(new InputSource(fileURL.openStream()));
+            // get the handler from implementing classes
+            ContentHandler handler = getHandler();
 
-        // TODO add harvested catalog to database (with harvesting intervall) >> harvesting history in DB
+            myReader.setContentHandler(handler);
+            myReader.parse(new InputSource(fileURL.openStream()));
 
-        // change update sequence
-        SirConfigurator.getInstance().newUpdateSequence();
+            // TODO add harvested catalog to database (with harvesting intervall) >> harvesting history in DB
 
-        response.setUpdatedSensors(this.updatedSensors);
-        response.setNumberOfUpdatedSensors(this.updatedSensors.size());
-        response.setDeletedSensors(new ArrayList<SirSensor>());
-        response.setFailedSensors(this.failedSensors.keySet());
-        for (Entry<String, String> failedSensor : this.failedSensors.entrySet()) {
-            response.addFailureDescription(failedSensor.getKey(), failedSensor.getValue());
+            // change update sequence
+            // SirConfigurator.getInstance().newUpdateSequence();
+
+            response.setUpdatedSensors(this.updatedSensors);
+            response.setNumberOfUpdatedSensors(this.updatedSensors.size());
+            response.setDeletedSensors(new ArrayList<SirSensor>());
+            response.setFailedSensors(this.failedSensors.keySet());
+            for (Entry<String, String> failedSensor : this.failedSensors.entrySet()) {
+                response.addFailureDescription(failedSensor.getKey(), failedSensor.getValue());
+            }
+            response.setNumberOfFailedSensors(this.failedSensors.size());
+            response.setInsertedSensors(this.insertedSensors);
+            response.setNumberOfInsertedSensors(this.insertedSensors.size());
+
+            r = response;
         }
-        response.setNumberOfFailedSensors(this.failedSensors.size());
-        response.setInsertedSensors(this.insertedSensors);
-        response.setNumberOfInsertedSensors(this.insertedSensors.size());
+        catch (Exception e) {
+            log.error("Error harvesting file at {}", this.request.getServiceUrl(), e);
+            r = new ExceptionResponse(e);
+        }
 
-        return response;
+        return r;
     }
 
     /**

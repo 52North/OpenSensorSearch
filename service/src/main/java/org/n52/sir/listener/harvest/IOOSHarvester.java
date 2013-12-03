@@ -84,18 +84,8 @@ import org.xml.sax.SAXException;
  */
 public class IOOSHarvester extends FileHarvester {
 
-    /**
-     * 
-     * @author Daniel Nüst (d.nuest@52north.org)
-     * 
-     */
     private class IOOSCatalogHandler implements ContentHandler {
 
-        /**
-         * 
-         * @author Daniel Nüst (d.nuest@52north.org)
-         * 
-         */
         private class IOOSObservation {
 
             public String dataType;
@@ -110,11 +100,6 @@ public class IOOSHarvester extends FileHarvester {
                 this.lastTime = lastTime;
             }
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see java.lang.Object#toString()
-             */
             @Override
             public String toString() {
                 StringBuilder sb = new StringBuilder();
@@ -132,11 +117,6 @@ public class IOOSHarvester extends FileHarvester {
 
         }
 
-        /**
-         * 
-         * @author Daniel Nüst (d.nuest@52north.org)
-         * 
-         */
         private class IOOSPlatform {
 
             public SirBoundingBox bbox;
@@ -160,27 +140,6 @@ public class IOOSHarvester extends FileHarvester {
             public String title;
             public String wmoId;
 
-            /**
-             * 
-             * @param name
-             * @param program
-             * @param serviceType
-             * @param wmoId
-             * @param lat
-             * @param lon
-             * @param sirBoundingBox
-             * @param title
-             * @param description
-             * @param organisationName
-             * @param organisationUrl
-             * @param dataProvider
-             * @param startTime
-             * @param endTime
-             * @param latestTime
-             * @param descriptionUrl
-             * @param datatypes
-             * @param hasRecentValues
-             */
             public IOOSPlatform(String name,
                                 String program,
                                 String serviceType,
@@ -271,10 +230,8 @@ public class IOOSHarvester extends FileHarvester {
 
         private int platformCounter;
 
-        /**
-         * 
-         */
         protected IOOSCatalogHandler() {
+            //
         }
 
         private void buildCapabilities(IOOSPlatform platform, SystemType systemType) {
@@ -334,10 +291,6 @@ public class IOOSHarvester extends FileHarvester {
             env.set(envelope);
         }
 
-        /**
-         * @param station
-         * @param systemType
-         */
         private void buildClassification(IOOSPlatform platform, SystemType systemType) {
             Classification classification = systemType.addNewClassification();
             ClassifierList classifierList = classification.addNewClassifierList();
@@ -359,10 +312,6 @@ public class IOOSHarvester extends FileHarvester {
             }
         }
 
-        /**
-         * @param station
-         * @param systemType
-         */
         private void buildContact(IOOSPlatform platform, SystemType systemType) {
             Contact contact = systemType.addNewContact();
 
@@ -510,11 +459,6 @@ public class IOOSHarvester extends FileHarvester {
         // resultCursor.dispose();
         // }
 
-        /**
-         * 
-         * @param invalidDescription
-         * @param currentPlatform2
-         */
         private SensorMLDocument buildValidSensorDescription(IOOSPlatform platform, SensorMLDocument invalidDescription) {
             SensorMLDocument smlDocument = SensorMLDocument.Factory.newInstance();
             XmlTools.sensorMLNameSpaceOptions(smlDocument);
@@ -545,10 +489,6 @@ public class IOOSHarvester extends FileHarvester {
             return smlDocument;
         }
 
-        /**
-         * @param station
-         * @param systemType
-         */
         private void buildValidTime(IOOSPlatform platform, SystemType systemType) {
             Date startDate = new Date(platform.startTime);
             String start = this.dateFormat.format(startDate);
@@ -569,31 +509,16 @@ public class IOOSHarvester extends FileHarvester {
             validTime.addNewEndPosition().setStringValue(end);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#characters(char[], int, int)
-         */
         @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             //
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#endDocument()
-         */
         @Override
         public void endDocument() throws SAXException {
-            log.info("Done parsing document, contained " + this.platformCounter + " platforms.");
+            log.info("Done parsing document, contained {} platforms.", this.platformCounter);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-         */
         @Override
         public void endElement(String uri, String localName, String qName) throws SAXException {
             if (localName.equals(OBS_ELEMENTNAME)) {
@@ -682,20 +607,11 @@ public class IOOSHarvester extends FileHarvester {
                 log.debug("Unhandled element end: " + localName);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#endPrefixMapping(java.lang.String)
-         */
         @Override
         public void endPrefixMapping(String prefix) throws SAXException {
             //
         }
 
-        /**
-         * @param s
-         * @return
-         */
         private String escapeCharacters(String s) {
             String encoded = s.replace("<", "&lt;");
             encoded = encoded.replace(">", "&gt;");
@@ -703,62 +619,31 @@ public class IOOSHarvester extends FileHarvester {
             return encoded;
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
-         */
         @Override
         public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
             //
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#processingInstruction(java.lang.String, java.lang.String)
-         */
         @Override
         public void processingInstruction(String target, String data) throws SAXException {
             //
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
-         */
         @Override
         public void setDocumentLocator(Locator locator) {
             //
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#skippedEntity(java.lang.String)
-         */
         @Override
         public void skippedEntity(String name) throws SAXException {
             //
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#startDocument()
-         */
         @Override
         public void startDocument() throws SAXException {
             log.debug("start document");
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String,
-         * org.xml.sax.Attributes)
-         */
         @Override
         public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
             // log.debug("start element " + localName);
@@ -877,11 +762,6 @@ public class IOOSHarvester extends FileHarvester {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String)
-         */
         @Override
         public void startPrefixMapping(String prefix, String uri) throws SAXException {
             //
@@ -890,21 +770,10 @@ public class IOOSHarvester extends FileHarvester {
 
     static final Logger log = LoggerFactory.getLogger(IOOSHarvester.class);
 
-    /**
-     * 
-     * @param request
-     * @param harvServDao
-     * @throws OwsExceptionReport
-     */
     public IOOSHarvester(SirHarvestServiceRequest request, IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
         super(request, harvServDao);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.harvest.FileHarvester#getHandler()
-     */
     @Override
     protected ContentHandler getHandler() {
         return new IOOSCatalogHandler();

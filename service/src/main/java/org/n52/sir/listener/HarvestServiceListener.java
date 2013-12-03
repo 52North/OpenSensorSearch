@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
@@ -52,9 +54,12 @@ public class HarvestServiceListener implements ISirRequestListener {
 
     private IHarvestServiceDAO harvServDao;
 
+    private Client client;
+
     @Inject
-    public HarvestServiceListener(SirConfigurator config) throws OwsExceptionReport {
+    public HarvestServiceListener(SirConfigurator config, Client client) throws OwsExceptionReport {
         this.exec = config.getInstance().getExecutor();
+        this.client = client;
 
         try {
             IDAOFactory factory = config.getInstance().getFactory();
@@ -66,25 +71,13 @@ public class HarvestServiceListener implements ISirRequestListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return HarvestServiceListener.OPERATION_NAME;
     }
 
-    /**
-     * 
-     * @param harvServReq
-     * @return
-     * @throws OwsExceptionReport
-     */
     private ISirResponse harvestIOOSCatalog(SirHarvestServiceRequest request) throws OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Start harvest IOOSCatalog: " + request.getServiceUrl());
+        log.debug("Start harvest IOOSCatalog: {}", request.getServiceUrl());
 
         FileHarvester harvester = new IOOSHarvester(request, this.harvServDao);
         Future<ISirResponse> future = this.exec.submit(harvester);
@@ -93,49 +86,28 @@ public class HarvestServiceListener implements ISirRequestListener {
             ISirResponse response = future.get();
             return response;
         }
-        catch (InterruptedException e) {
-            throw new OwsExceptionReport("Could not harvest service " + request.getServiceUrl(), e);
-        }
-        catch (ExecutionException e) {
-            throw new OwsExceptionReport("Could not harvest service " + request.getServiceUrl(), e);
+        catch (InterruptedException | ExecutionException e) {
+            throw new OwsExceptionReport(request.getServiceUrl(), e);
         }
     }
 
-    /**
-     * 
-     * @param request
-     * @return
-     * @throws OwsExceptionReport
-     */
     private ISirResponse harvestSOS(SirHarvestServiceRequest request) throws OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Start harvest SOS: " + request.getServiceUrl());
+        log.debug("Start harvest SOS: {}", request.getServiceUrl());
 
-        // TODO harvesting interval
-        SOSServiceHarvester harvester = new SOSServiceHarvester(request, this.harvServDao);
+        SOSServiceHarvester harvester = new SOSServiceHarvester(request, this.harvServDao, this.client);
         Future<ISirResponse> future = this.exec.submit(harvester);
 
         try {
             ISirResponse response = future.get();
             return response;
         }
-        catch (InterruptedException e) {
-            throw new OwsExceptionReport("Could not harvest service " + request.getServiceUrl(), e);
-        }
-        catch (ExecutionException e) {
-            throw new OwsExceptionReport("Could not harvest service " + request.getServiceUrl(), e);
+        catch (InterruptedException | ExecutionException e) {
+            throw new OwsExceptionReport(request.getServiceUrl(), e);
         }
     }
 
-    /**
-     * 
-     * @param request
-     * @return
-     * @throws OwsExceptionReport
-     */
     private ISirResponse harvestSPS(SirHarvestServiceRequest request) throws OwsExceptionReport {
-        if (log.isDebugEnabled())
-            log.debug("Start harvest SPS: " + request.getServiceUrl());
+        log.debug("Start harvest SPS: {}", request.getServiceUrl());
 
         SPSServiceHarvester harvester = new SPSServiceHarvester(request, this.harvServDao);
         Future<ISirResponse> future = this.exec.submit(harvester);
@@ -144,58 +116,40 @@ public class HarvestServiceListener implements ISirRequestListener {
             ISirResponse response = future.get();
             return response;
         }
-        catch (InterruptedException e) {
-            throw new OwsExceptionReport("Could not harvest service " + request.getServiceUrl(), e);
-        }
-        catch (ExecutionException e) {
-            throw new OwsExceptionReport("Could not harvest service " + request.getServiceUrl(), e);
+        catch (InterruptedException | ExecutionException e) {
+            throw new OwsExceptionReport(request.getServiceUrl(), e);
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirHarvestServiceRequest harvServReq = (SirHarvestServiceRequest) request;
         ISirResponse response = null;
 
-        // harvest a SOS
-        if (harvServReq.getServiceType().equalsIgnoreCase(SirConstants.SOS_SERVICE_TYPE)) {
-            try {
+        String serviceType = harvServReq.getServiceType().toUpperCase();
+        try {
+            switch (serviceType) {
+            case SirConstants.SOS_SERVICE_TYPE:
                 response = harvestSOS(harvServReq);
-            }
-            catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e);
-            }
-        }
-        // harvest a SPS
-        else if (harvServReq.getServiceType().equalsIgnoreCase(SirConstants.SPS_SERVICE_TYPE)) {
-            try {
+                break;
+            case SirConstants.SPS_SERVICE_TYPE:
                 response = harvestSPS(harvServReq);
-            }
-            catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e);
-            }
-        }
-        // harvest the IOOSCatalog (xml file)
-        else if (harvServReq.getServiceType().equalsIgnoreCase(SirConstants.IOOSCATAL0G_SERVICE_TYPE)) {
-            try {
+                break;
+            case SirConstants.IOOSCATAL0G_SERVICE_TYPE:
                 response = harvestIOOSCatalog(harvServReq);
+                break;
+            default:
+                OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
+                                                                   "serviceType",
+                                                                   "Harvesting for the given service type '"
+                                                                           + harvServReq.getServiceType()
+                                                                           + "' not supported!");
+                return new ExceptionResponse(report);
             }
-            catch (OwsExceptionReport e) {
-                return new ExceptionResponse(e);
-            }
+
         }
-        else {
-            OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
-                                                               "serviceType",
-                                                               "Harvesting for the given service type '"
-                                                                       + harvServReq.getServiceType()
-                                                                       + "' not supported!");
-            return new ExceptionResponse(report);
+        catch (OwsExceptionReport e) {
+            return new ExceptionResponse(e);
         }
 
         return response;

@@ -38,7 +38,7 @@ public class SirClient extends Client {
     private String sirVersion;
 
     @Inject
-    public SirClient(@Named("oss.sir.serviceurl")
+    public SirClient(@Named("oss.sir.sirClient.url")
     String sirUrl, @Named("oss.sir.version")
     String sirVersion) {
         super(sirUrl);

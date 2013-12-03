@@ -25,7 +25,6 @@ import org.n52.oss.sir.SirConstants.CapabilitiesSection;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirGetCapabilitiesRequest;
@@ -57,7 +56,6 @@ public class GetCapabilitiesListener implements ISirRequestListener {
     @Inject
     public GetCapabilitiesListener(SirConfigurator config, IGetCapabilitiesDAO dao) {
         this.config = config.getInstance();
-        IDAOFactory factory = this.config.getFactory();
 
         this.capDao = dao;
 

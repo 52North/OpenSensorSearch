@@ -40,7 +40,7 @@ public class GuiceUtil {
 
             @Override
             protected void configure() {
-                bindConstant().annotatedWith(Names.named("oss.sir.serviceurl")).to("http://localhost:8080/OpenSensorSearch/sir");
+                bindConstant().annotatedWith(Names.named("oss.sir.sirClient.url")).to("http://localhost:8080/OpenSensorSearch/sir");
                 bind(Client.class);
                 log.info("Configured client for tests.");
             }

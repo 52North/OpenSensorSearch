@@ -19,7 +19,6 @@ package org.n52.oss.config;
 import java.net.URL;
 import java.util.Properties;
 
-import org.n52.sir.SirConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,17 +45,6 @@ public class ConfigModule extends AbstractModule {
 
         // constants
         bind(ApplicationConstants.class).to(PropertyApplicationConstants.class);
-
-        // sir configurator
-        try {
-            Properties sirProps = loadProperties("/prop/sir.properties");
-            bind(Properties.class).annotatedWith(Names.named("sir_properties")).toInstance(sirProps);
-        }
-        catch (Exception e) {
-            log.error("Could not load properties file.", e);
-        }
-
-        bind(SirConfigurator.class);
 
         log.debug("Configured {}", this);
     }

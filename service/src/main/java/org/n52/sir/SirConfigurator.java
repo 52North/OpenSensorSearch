@@ -29,7 +29,6 @@ import java.util.Properties;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.licenses.License;
 import org.n52.sir.licenses.Licenses;
@@ -57,17 +56,11 @@ public class SirConfigurator {
 
     private static final String CAPABILITIESSKELETON_FILENAME = "oss.sir.capabilities.skeleton";
 
-    private static final String EXTENDED_DEBUG_TO_CONSOLE = "EXTENDED_DEBUG_TO_CONSOLE";
-
-    private static final String GMLDATEFORMAT = "GMLDATEFORMAT";
+    private static final String GMLDATEFORMAT = "oss.sir.gml.dateformat";
 
     private static SirConfigurator instance = null;
 
     protected static Logger log = LoggerFactory.getLogger(SirConfigurator.class);
-
-    private static final String NAMESPACE_PREFIX = "NAMESPACE_PREFIX";
-
-    private static final String NAMESPACE_URI = "NAMESPACE_URI";
 
     private static final String SERVICEVERSION = "oss.sir.version";
 
@@ -79,7 +72,7 @@ public class SirConfigurator {
 
     private static final String VERSION_SPLIT_CHARACTER = ",";
 
-    private static final String SCRIPTS_PATH = "SCRIPTS_PATH";
+    private static final String SCRIPTS_PATH = "oss.scripts.storagePath";
 
     /**
      * @deprecated use injection instead
@@ -95,17 +88,9 @@ public class SirConfigurator {
 
     private CapabilitiesDocument capabilitiesSkeleton;
 
-    private ICatalogStatusHandler catalogStatusHandler;
-
-    private boolean extendedDebugToConsole;
-
     private IDAOFactory factory;
 
     private String gmlDateFormat;
-
-    private String namespacePrefix;
-
-    private String namespaceUri;
 
     private Properties props;
 
@@ -159,14 +144,6 @@ public class SirConfigurator {
         return this.gmlDateFormat;
     }
 
-    public String getNamespacePrefix() {
-        return this.namespacePrefix;
-    }
-
-    public String getNamespaceUri() {
-        return this.namespaceUri;
-    }
-
     public String getServiceVersion() {
         return this.serviceVersion;
     }
@@ -205,10 +182,7 @@ public class SirConfigurator {
 
         this.serviceVersion = this.props.getProperty(SERVICEVERSION);
         this.gmlDateFormat = this.props.getProperty(GMLDATEFORMAT);
-        this.namespaceUri = this.props.getProperty(NAMESPACE_URI);
-        this.namespacePrefix = this.props.getProperty(NAMESPACE_PREFIX);
 
-        this.extendedDebugToConsole = Boolean.parseBoolean(this.props.getProperty(EXTENDED_DEBUG_TO_CONSOLE));
         this.acceptedVersions = this.props.getProperty(ACCEPTED_SERVICE_VERSIONS).split(VERSION_SPLIT_CHARACTER);
         this.validateRequests = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_REQUESTS));
         this.validateResponses = Boolean.parseBoolean(this.props.getProperty(VALIDATE_XML_RESPONSES));
@@ -270,10 +244,6 @@ public class SirConfigurator {
                 | ClassNotFoundException e) {
             log.error("Error while loading validator factory.", e);
         }
-    }
-
-    public boolean isExtendedDebugToConsole() {
-        return this.extendedDebugToConsole;
     }
 
     public String getScriptsPath() {

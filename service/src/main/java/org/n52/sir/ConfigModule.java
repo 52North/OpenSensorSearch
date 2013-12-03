@@ -32,10 +32,20 @@ public class ConfigModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        Properties sirProps = loadProperties("/prop/sir.properties");
-        Names.bindProperties(binder(), sirProps);
+        try {
+            Properties sirProps = loadProperties("/prop/sir.properties");
+            bind(Properties.class).annotatedWith(Names.named("sir_properties")).toInstance(sirProps);
+            Names.bindProperties(binder(), sirProps);
 
-        log.debug("Loaded and bound properties:\n\t{}", sirProps);
+            log.debug("Loaded and bound properties:\n\t{}", sirProps);
+        }
+        catch (Exception e) {
+            log.error("Could not load properties file.", e);
+        }
+
+        bind(SirConfigurator.class);
+
+        // overwrite with properties from home folder
 
         // these don't work yet - use workaround with org.w3c.dom.Document
         // bind(OwsExMessageBodyWriter.class);

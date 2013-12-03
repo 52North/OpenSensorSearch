@@ -39,7 +39,6 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.util.SoapTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +82,6 @@ public class SimpleSoapCswClient {
             throw new OwsExceptionReport("Could not instantiate a TransformerFactory!", e);
         }
 
-        this.extendedDebugToConsole = SirConfigurator.getInstance().isExtendedDebugToConsole();
         if (this.extendedDebugToConsole)
             log.warn("*** Extended logging of all outgoing and incoming message is ENABLED. Be aware of large logfiles! ***");
 

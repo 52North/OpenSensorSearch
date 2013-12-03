@@ -1,15 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>org.n52.oss</groupId>
+	<parent>
+		<groupId>org.n52.oss</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0</version>
+	</parent>
 	<artifactId>service</artifactId>
 
 	<name>Open Sensor Search Service</name>
-	<description>52North Open Sensor Search</description>
+	<description>Platform for discovery and metadata management for sensors</description>
 	<packaging>war</packaging>
-
-	<!-- http://semver.org/ -->
 	<version>0.6</version>
 
 	<url>http://52north.org/communities/sensorweb/discovery/</url>
@@ -178,16 +179,6 @@
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 					</archive>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
 				</configuration>
 			</plugin>
 
@@ -507,50 +498,6 @@
 			</exclusions>
 		</dependency>
 
-		<!-- <dependency> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-wrs-v101</artifactId> -->
-		<!-- <version>${sensorweb.schemas.version}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-sir-v032</artifactId> -->
-		<!-- <version>${sensorweb.schemas.version}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-sor-v031</artifactId> -->
-		<!-- <version>${sensorweb.schemas.version}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-sps-v100</artifactId> -->
-		<!-- <version>${sensorweb.schemas.version}</version> -->
-		<!-- <exclusions> -->
-		<!-- <exclusion> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-gml-v311</artifactId> -->
-		<!-- </exclusion> -->
-		<!-- </exclusions> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-sos-v100</artifactId> -->
-		<!-- <version>${sensorweb.schemas.version}</version> -->
-		<!-- <exclusions> -->
-		<!-- <exclusion> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-gml-v311</artifactId> -->
-		<!-- </exclusion> -->
-		<!-- </exclusions> -->
-		<!-- </dependency> -->
-
-		<!-- <dependency> -->
-		<!-- <groupId>org.n52.sensorweb</groupId> -->
-		<!-- <artifactId>52n-xml-kml-v220</artifactId> -->
-		<!-- <version>${sensorweb.schemas.version}</version> -->
-		<!-- </dependency> -->
-
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>dbcp</artifactId>
@@ -602,7 +549,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
+			<groupId>org.n52.oss</groupId>
 			<artifactId>sir-json</artifactId>
 			<version>0.3</version>
 		</dependency>

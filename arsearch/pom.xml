@@ -1,8 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>org.n52.oss</groupId>
+	<parent>
+		<groupId>org.n52.oss</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0</version>
+	</parent>
 	<artifactId>arsearch</artifactId>
 	<name>AR Open Sensor Search Service</name>
 	<description>52North Augmented Reality Sensor Search Service</description>
@@ -133,40 +136,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>buildnumber-maven-plugin</artifactId>
-				<version>1.2</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>create</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<doCheck>true</doCheck>
-					<doUpdate>true</doUpdate>
-					<format>{0,number}</format>
-					<items>
-						<item>buildNumber</item>
-					</items>
-					<buildNumberPropertiesFileLocation>${basedir}/src/main/config/buildNumber.properties</buildNumberPropertiesFileLocation>
-					<revisionOnScmFailure>svm-NA</revisionOnScmFailure>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
 				<!-- run "mvn license:check" to check -->
 				<!-- run "mvn license:format" to add to the files -->
@@ -196,7 +165,7 @@
 				<executions>
 					<execution>
 						<phase>test</phase>
-						<!-- test will fail if license headers are not correct, run license:format 
+						<!-- test will fail if license headers are not correct, run license:format
 							to add the headers. -->
 						<goals>
 							<goal>check</goal>
@@ -211,7 +180,7 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.0</version>
 				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir> 
+				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir>
 					</systemProperties> </configuration> -->
 				<configuration>
 					<path>/${project.build.finalName}</path>
@@ -231,19 +200,19 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.2</version>
+			<version>1.7.5</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.2</version>
+			<version>1.7.5</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.1.1</version>
+			<version>2.2.2</version>
 		</dependency>
 
 		<dependency>
@@ -256,15 +225,15 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-			<!-- it’s just the api and the implementation should be provided by the 
+			<!-- it’s just the api and the implementation should be provided by the
 				application server/web container -->
 			<scope>provided</scope> <!-- for running with tomcat-maven-plugin, see http://singztechmusings.wordpress.com/2011/06/17/java-lang-classcastexception-cannot-be-cast-to-javax-servlet-servlet-how-to-resolve/ -->
 		</dependency>
 
 		<dependency>
-			<groupId>org.n52.sensorweb</groupId>
-			<artifactId>52n-json-sir</artifactId>
-			<version>0.1</version>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>sir-json</artifactId>
+			<version>0.3</version>
 		</dependency>
 
 		<dependency>
@@ -273,19 +242,5 @@
 			<version>3.1.1</version>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<!-- for buildnumber-maven-plugin -->
-		<repository>
-			<id>Codehaus Snapshots</id>
-			<url>http://nexus.codehaus.org/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
 
 </project>

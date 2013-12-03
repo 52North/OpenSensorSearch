@@ -36,6 +36,13 @@
 <link rel="shortcut icon"
 	href="http://52north.org/templates/52n-2012/favicon.ico" />
 
+<jsp:useBean id="configBean" scope="application"
+	class="org.n52.oss.ui.WebsiteConfig" />
+<script type="text/javascript">
+	var sirEndpoint = "<%=configBean.getSirEndpoint()%>";
+	console.log("sirEndpoint = " + sirEndpoint);
+</script>
+
 </head>
 <body>
 	<div id="content">

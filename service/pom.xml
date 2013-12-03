@@ -209,7 +209,7 @@
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>
 						<include>**/*.css</include>
-						<include>**/*.html</include>
+						<!-- <include>**/*.html</include> -->
 					</includes>
 					<strictCheck>true</strictCheck>
 					<properties>

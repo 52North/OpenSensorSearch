@@ -40,8 +40,6 @@ public class WebsiteConfig {
 
     protected static Logger log = LoggerFactory.getLogger(WebsiteConfig.class);
 
-    public static final String BASE_URL = "http://gsoc.dev.52north.org:8093";
-
     private static final String CONFIG_FILE = "org.n52.oss.ui.properties";
 
     private static final String SIR_ENDPOINT = "oss.ui.sir.endpoint";

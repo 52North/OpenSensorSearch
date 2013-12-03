@@ -31,7 +31,6 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.n52.oss.ui.WebsiteConfig;
 import org.n52.oss.ui.UploadForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,13 +49,17 @@ import com.google.gson.Gson;
 @RequestMapping("/script")
 public class ScriptController {
 
+    private static Logger log = LoggerFactory.getLogger(ScriptController.class);
+
     public class ScriptContent {
         public String content;
     }
 
-    public static LinkedHashMap<String, String> licenses = new LinkedHashMap<String, String>();
+    public static LinkedHashMap<String, String> licenses = new LinkedHashMap<>();
 
-    private static Logger log = LoggerFactory.getLogger(ScriptController.class);
+    public ScriptController() {
+        log.info("NEW {}", this);
+    }
 
     @RequestMapping("/schedule")
     public String harvest(ModelMap map) {
@@ -89,7 +92,7 @@ public class ScriptController {
             multipartEntity.addPart("user", new StringBody(details.getUsername()));
             multipartEntity.addPart("licenseCode", new StringBody(form.getLicense()));
             multipartEntity.addPart("auth_token", new StringBody(token));
-            HttpPost post = new HttpPost(WebsiteConfig.BASE_URL + "/OpenSensorSearch/script/submit");
+            HttpPost post = new HttpPost("script/submit");
             post.setEntity(multipartEntity);
             org.apache.http.client.HttpClient client = new DefaultHttpClient();
             HttpResponse resp;
@@ -128,7 +131,7 @@ public class ScriptController {
     public String show(@PathVariable
     String scriptId, ModelMap map) {
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(WebsiteConfig.BASE_URL + "/OpenSensorSearch/script/" + scriptId);
+        HttpGet get = new HttpGet("script/" + scriptId);
         try {
             HttpResponse resp = client.execute(get);
             StringBuilder builder = new StringBuilder();

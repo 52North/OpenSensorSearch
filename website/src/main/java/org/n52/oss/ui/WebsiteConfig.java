@@ -101,9 +101,7 @@ public class WebsiteConfig {
     }
 
     private Reader openFileWithFallback(File f, String fallbackResource) throws IOException {
-
         log.info("File {} is not available. Try to use fallback at {}", (f != null ? f : "null"), fallbackResource);
-
         return new InputStreamReader(openStreamForResource(fallbackResource));
     }
 

@@ -16,27 +16,26 @@
 
 package org.n52.oss.config;
 
-import java.net.URL;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
-public class ConfigModule extends AbstractModule {
+public class ConfigModule extends AbstractConfigModule {
 
     private static Logger log = LoggerFactory.getLogger(ConfigModule.class);
 
     @Override
     protected void configure() {
-        String home = System.getProperty("user.home");
-        log.info("Used home directory: {}", home);
-
         // app properties
         try {
             Properties props = loadProperties("app.properties");
+
+            // update properties from home folder file
+            props = updateFromUserHome(props, HOME_CONFIG_FILE);
+
             Names.bindProperties(binder(), props);
         }
         catch (Exception e) {
@@ -49,15 +48,4 @@ public class ConfigModule extends AbstractModule {
         log.debug("Configured {}", this);
     }
 
-    private Properties loadProperties(String name) throws Exception {
-        log.trace("Loading properties for {}", name);
-
-        Properties properties = new Properties();
-        ClassLoader loader = getClass().getClassLoader();
-        URL url = loader.getResource(name);
-        properties.load(url.openStream());
-
-        log.trace("Loaded properties: {}", properties);
-        return properties;
-    }
 }

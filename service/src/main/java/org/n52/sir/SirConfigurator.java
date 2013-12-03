@@ -46,7 +46,7 @@ import com.google.inject.name.Named;
 /**
  * Singleton class reads the config file and builds the RequestOperator and DAO
  * 
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 @Singleton
@@ -278,16 +278,10 @@ public class SirConfigurator {
         }
     }
 
-    private Properties loadProperties(InputStream is) throws IOException {
-        Properties properties = new Properties();
-        properties.load(is);
-
-        return properties;
-    }
-
-    public void newUpdateSequence() {
+    public String newUpdateSequence() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(this.gmlDateFormat);
         this.updateSequence = dateFormat.format(new Date());
+        return this.updateSequence;
     }
 
 }

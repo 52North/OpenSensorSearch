@@ -111,5 +111,10 @@
 	<script src="scripts/autocomplete.js"></script>
 	<script src="scripts/oss.js"></script>
 
+	<script type="text/javascript">
+		var queryEndpoint = ossApiEndpoint + "/search";
+		$("form[name='requestform']").attr("action", queryEndpoint);
+	</script>
+
 </body>
 </html>

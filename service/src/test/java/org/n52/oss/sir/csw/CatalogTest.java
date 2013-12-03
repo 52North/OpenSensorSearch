@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.sir.csw;
 
 import java.io.IOException;
@@ -35,9 +36,6 @@ public class CatalogTest {
 
     private static Logger log = LoggerFactory.getLogger(CatalogTest.class);
 
-    /**
-     * 
-     */
     private static void getCap() {
         URL url;
         try {
@@ -48,13 +46,12 @@ public class CatalogTest {
             return;
         }
 
-        String[] classInit = new String[] {"/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/sirClassificationInit.xml",
-                                           "/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/ISO19119-Services-Scheme.xml"};
+        String classInit = "/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/sirClassificationInit.xml, /home/daniel/workspace/SIR/WebContent/WEB-INF/conf/ISO19119-Services-Scheme.xml";
         String slotInit = "/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/sirSlotInit.xml";
 
         ICatalogFactory factory;
         try {
-            factory = new CswFactory(url, classInit, slotInit, Boolean.FALSE, null);
+            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", null);
         }
         catch (XmlException e) {
             log.error("Could not parse classification scheme file!", e);
@@ -67,7 +64,7 @@ public class CatalogTest {
 
         ICatalog client;
         try {
-            client = factory.getCatalog();
+            client = factory.getCatalog(url);
         }
         catch (OwsExceptionReport e1) {
             e1.printStackTrace();

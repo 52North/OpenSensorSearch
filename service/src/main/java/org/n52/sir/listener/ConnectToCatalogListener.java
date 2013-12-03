@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.net.URL;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
 import org.n52.sir.ds.IConnectToCatalogDAO;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirConnectToCatalogRequest;
 import org.n52.sir.response.ExceptionResponse;
@@ -37,7 +36,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 /**
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * 
  */
 public class ConnectToCatalogListener implements ISirRequestListener {
@@ -51,34 +50,22 @@ public class ConnectToCatalogListener implements ISirRequestListener {
     @Inject
     private CatalogConnectionScheduler scheduler;
 
-    @Inject
-    public ConnectToCatalogListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
+    private ICatalogFactory catalogFactory;
 
-        try {
-            this.conToCatDao = factory.connectToCatalogDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the connectToCatalogDao", se);
-            throw se;
-        }
+    @Inject
+    public ConnectToCatalogListener(IConnectToCatalogDAO dao, ICatalogFactory catalogFactory) {
+        this.catalogFactory = catalogFactory;
+
+        this.conToCatDao = dao;
+
+        log.info("NEW {}", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return ConnectToCatalogListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request .AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         if (log.isDebugEnabled())
@@ -92,8 +79,7 @@ public class ConnectToCatalogListener implements ISirRequestListener {
         URL url = conToCatReq.getCswUrl();
 
         try {
-            ICatalogFactory catFact = SirConfigurator.getInstance().getCatalogFactory(url);
-            ICatalog catalog = catFact.getCatalog();
+            ICatalog catalog = this.catalogFactory.getCatalog(url);
 
             // check if csw is capable (with getCapabilities and more...)
             boolean b = catalog.ensureSufficientCapabilities();
@@ -114,10 +100,10 @@ public class ConnectToCatalogListener implements ISirRequestListener {
             // only single push
             if (pushInterval == ICatalogConnection.NO_PUSH_INTERVAL) {
                 // start connection with the same connectionID
-                ICatalogConnection conn = catFact.getCatalogConnection(ICatalogConnection.UNSAVED_CONNECTION_ID,
-                                                                       url,
-                                                                       ICatalogConnection.NO_PUSH_INTERVAL,
-                                                                       ICatalogConnection.NEW_CONNECTION_STATUS);
+                ICatalogConnection conn = this.catalogFactory.getCatalogConnection(ICatalogConnection.UNSAVED_CONNECTION_ID,
+                                                                                   url,
+                                                                                   ICatalogConnection.NO_PUSH_INTERVAL,
+                                                                                   ICatalogConnection.NEW_CONNECTION_STATUS);
                 this.scheduler.submit(conn);
                 log.info("Submitted single connection:" + conn);
             }
@@ -132,13 +118,13 @@ public class ConnectToCatalogListener implements ISirRequestListener {
                                                                      conToCatReq.getPushInterval());
 
                     // change update sequence
-                    SirConfigurator.getInstance().newUpdateSequence();
+                    // SirConfigurator.getInstance().newUpdateSequence();
 
                     // start connection with the same connectionID
-                    ICatalogConnection conn = catFact.getCatalogConnection(connectionID,
-                                                                           url,
-                                                                           pushInterval,
-                                                                           ICatalogConnection.NEW_CONNECTION_STATUS);
+                    ICatalogConnection conn = this.catalogFactory.getCatalogConnection(connectionID,
+                                                                                       url,
+                                                                                       pushInterval,
+                                                                                       ICatalogConnection.NEW_CONNECTION_STATUS);
                     this.scheduler.submit(conn);
 
                     log.info("Inserted new connection into database, connection identifier: " + connectionID);
@@ -148,10 +134,10 @@ public class ConnectToCatalogListener implements ISirRequestListener {
                     this.scheduler.cancel(connectionID);
 
                     // start connection with the same connectionID
-                    ICatalogConnection conn = catFact.getCatalogConnection(connectionID,
-                                                                           url,
-                                                                           pushInterval,
-                                                                           ICatalogConnection.NEW_CONNECTION_STATUS);
+                    ICatalogConnection conn = this.catalogFactory.getCatalogConnection(connectionID,
+                                                                                       url,
+                                                                                       pushInterval,
+                                                                                       ICatalogConnection.NEW_CONNECTION_STATUS);
                     this.scheduler.submit(conn);
 
                     // update connection and start timertaks with same ID
@@ -159,10 +145,9 @@ public class ConnectToCatalogListener implements ISirRequestListener {
                     log.info("Updated connection with identifier: " + connectionID);
                 }
             }
+
             // return url in response to show successful completition
             response.setCatalogUrl(url);
-
-            catFact = null;
         }
         catch (OwsExceptionReport se) {
             return new ExceptionResponse(se.getDocument());

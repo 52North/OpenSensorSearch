@@ -35,10 +35,12 @@ public interface ICatalogFactory {
 
     /**
      * 
+     * @param url
+     *        the endpoint the catalog must use
      * @return a new instance of an ICatalog
      * @throws OwsExceptionReport
      */
-    public abstract ICatalog getCatalog() throws OwsExceptionReport;
+    public abstract ICatalog getCatalog(URL url) throws OwsExceptionReport;
 
     /**
      * 
@@ -55,11 +57,5 @@ public interface ICatalogFactory {
                                                             URL url,
                                                             int pushInterval,
                                                             String newConnectionStatus);
-
-    /**
-     * 
-     * @return the URL used by the instatiated catalogs
-     */
-    public abstract URL getCatalogUrl();
 
 }

@@ -39,8 +39,7 @@
 <jsp:useBean id="configBean" scope="application"
 	class="org.n52.oss.ui.WebsiteConfig" />
 <script type="text/javascript">
-	var sirEndpoint = "<%=configBean.getSirEndpoint()%>
-	";
+	var sirEndpoint = "<%=configBean.getSirEndpoint()%>";
 	console.log("sirEndpoint = " + sirEndpoint);
 </script>
 
@@ -74,6 +73,9 @@
 			<p>
 				You can change the examples in the folder <span class="path">[project-directory]/WEB-INF/sir/form/requests/</span>.
 			</p>
+			<p>
+				The service endpoint for your own testing is at <span class="path" id="sirEndpointLabel"></span>
+			</p>
 		</div>
 
 		<div class="request-form">
@@ -94,16 +96,14 @@
 		</div>
 	</div>
 
-	<script src="http://code.jquery.com/jquery-1.9.1.js"
-		type="text/javascript"></script>
 	<%
 	    /* compressed version from : codemirror, xml, active-line, foldcode, foldgutter, xml-fold, */
 	%>
+	<script src="../lib/jquery.js" type="text/javascript"></script>
 	<script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
 	<script src="../lib/codemirror/xml.js" type="text/javascript"></script>
 
 	<script type="text/javascript" src="form/formClient.js"></script>
-
 
 </body>
 </html>

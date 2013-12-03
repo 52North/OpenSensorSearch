@@ -152,7 +152,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         try {
             SirGetCapabilitiesRequest sirRequest = (SirGetCapabilitiesRequest) request;
-            SirGetCapabilitiesResponse response = new SirGetCapabilitiesResponse(this.config);
+            SirGetCapabilitiesResponse response = new SirGetCapabilitiesResponse(this.config, request.getRequestUri());
 
             // check service
             ListenersTools.checkServiceParameter(sirRequest.getService());
@@ -174,7 +174,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
             // check updateSequence
             if (sirRequest.getUpdateSequence() != null) {
                 if (checkUpdateSequenceEquals(sirRequest.getUpdateSequence())) {
-                    return new SirGetCapabilitiesResponse(this.config);
+                    return new SirGetCapabilitiesResponse(this.config, request.getRequestUri());
                 }
             }
 

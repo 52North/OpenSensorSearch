@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.n52.oss.config.ConfigModule;
+import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
@@ -54,6 +55,7 @@ public class PGSQLModule extends AbstractModule {
 
         bind(ISearchSensorDAO.class).annotatedWith(Names.named("full")).to(PGSQLSearchSensorDAO.class);
         bind(IGetCapabilitiesDAO.class).to(PGSQLGetCapabilitiesDAO.class);
+        bind(IConnectToCatalogDAO.class).to(PGSQLConnectToCatalogDAO.class);
         // TODO bind more DAO implementations
 
         log.debug("Configured {}", this);

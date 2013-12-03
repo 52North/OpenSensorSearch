@@ -16,6 +16,7 @@
 
 package org.n52.sir.response;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -63,8 +64,11 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
     private SirConfigurator config;
 
-    public SirGetCapabilitiesResponse(SirConfigurator config) {
+    private URI serviceUri;
+
+    public SirGetCapabilitiesResponse(SirConfigurator config, URI uri) {
         this.config = config.getInstance();
+        this.serviceUri = uri;
 
         log.info("NEW {}", this);
     }
@@ -98,10 +102,10 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
             for (DCP dcp : operation.getDCPArray()) {
                 HTTP http = dcp.getHTTP();
                 for (RequestMethodType get : http.getGetArray()) {
-                    get.setHref(this.config.getServiceUrl().toString());
+                    get.setHref(this.serviceUri.toString());
                 }
                 for (RequestMethodType post : http.getPostArray()) {
-                    post.setHref(this.config.getServiceUrl().toString());
+                    post.setHref(this.serviceUri.toString());
                 }
             }
             // parameter acceptVersion in operation GetCapabilities
@@ -132,14 +136,14 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
     private ServiceIdentification createServiceIdentification() {
         ServiceIdentification servIdent = this.config.getCapabilitiesSkeleton().getCapabilities().getServiceIdentification();
-        servIdent.getServiceType().setCodeSpace(this.config.getServiceUrl().toString());
+        servIdent.getServiceType().setCodeSpace(this.serviceUri.toString());
         servIdent.setServiceTypeVersionArray(new String[] {this.config.getServiceVersion()});
         return servIdent;
     }
 
     private ServiceProvider createServiceProvider() {
         ServiceProvider servProv = this.config.getCapabilitiesSkeleton().getCapabilities().getServiceProvider();
-        servProv.getProviderSite().setHref(this.config.getServiceUrl().toString());
+        servProv.getProviderSite().setHref(this.serviceUri.toString());
         return servProv;
     }
 
@@ -235,6 +239,11 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
         if (this.harvestedServices != null) {
             builder.append("harvestedServices=");
             builder.append(this.harvestedServices);
+            builder.append(", ");
+        }
+        if (this.serviceUri != null) {
+            builder.append("serviceUri=");
+            builder.append(this.serviceUri);
         }
         builder.append("]");
         return builder.toString();

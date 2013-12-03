@@ -32,7 +32,6 @@ import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.oss.util.Tools;
 import org.n52.oss.util.XmlTools;
-import org.n52.sir.SirConfigurator;
 
 /**
  * Implementation of the <code>ISirResponse</code> interface for OGC service exceptions.
@@ -99,7 +98,7 @@ public class ExceptionResponse implements ISirResponse {
         options.setSaveNamespacesFirst();
         options.setSaveAggressiveNamespaces();
         options.setSavePrettyPrint();
-        options.setCharacterEncoding(SirConfigurator.getInstance().getCharacterEncoding());
+        options.setCharacterEncoding("UTF-8");
 
         HashMap<String, String> suggestedPrefixes = new HashMap<>();
         suggestedPrefixes.put(OWSConstants.NAMESPACE, OWSConstants.NAMESPACE_PREFIX);

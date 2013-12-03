@@ -38,6 +38,7 @@ $(document).ready(
 			// }
 			
 			$("form[name='requestform']").attr("action", sirEndpoint);
+			$("#sirEndpointLabel").text(sirEndpoint);
 		});
 
 function initExamples(datafolder) {

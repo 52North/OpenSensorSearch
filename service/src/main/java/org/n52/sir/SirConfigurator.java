@@ -16,19 +16,12 @@
 
 package org.n52.sir;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,8 +33,6 @@ import javax.servlet.UnavailableException;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.licenses.License;
@@ -69,14 +60,6 @@ public class SirConfigurator {
 
     private static final String CAPABILITIESSKELETON_FILENAME = "oss.sir.capabilities.skeleton";
 
-    private static final String CATALOGFACTORY = "oss.sir.catalog.csw.factoryImpl";
-
-    private static final String CLASSIFICATION_INIT_FILENAMES = "oss.catalogconnection.csw-ebrim.classificationInitFilenanes";
-
-    private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
-
-    private static final String DO_NOT_CHECK_CATALOGS = "oss.catalogconnection.doNotCheckCatalogs";
-
     private static final String EXTENDED_DEBUG_TO_CONSOLE = "EXTENDED_DEBUG_TO_CONSOLE";
 
     private static final String GMLDATEFORMAT = "GMLDATEFORMAT";
@@ -90,15 +73,9 @@ public class SirConfigurator {
 
     private static final String NAMESPACE_URI = "NAMESPACE_URI";
 
-    private static final String PROFILE4DISCOVERY = "PROFILE4DISCOVERY";
-
     private static final String SERVICEVERSION = "oss.sir.version";
 
-    private static final String SLOT_INIT_FILENAME = "oss.catalogconnection.csw-ebrim.slotInitFilename";
-
     private static final String STATUS_HANDLER = "STATUS_HANDLER";
-
-    private static final String SVRL_SCHEMA = "SVRL_SCHEMA";
 
     private static final int THREAD_POOL_SIZE = 10;
 
@@ -126,24 +103,7 @@ public class SirConfigurator {
 
     private CapabilitiesDocument capabilitiesSkeleton;
 
-    private Constructor<ICatalogFactory> catalogFactoryConstructor;
-
-    private String[] catalogInitClassificationFiles;
-
-    private String catalogInitSlotFile;
-
-    /**
-     * Implementation of ICatalogStatusHandler to allow other servlets to change stati of catalogs in the
-     * database
-     */
     private ICatalogStatusHandler catalogStatusHandler;
-
-    private String characterEncoding;
-
-    /**
-     * a list of catalogue-URLs that are not checked when data is pushed into them
-     */
-    private ArrayList<URL> doNotCheckCatalogsList;
 
     private ExecutorService exec;
 
@@ -157,15 +117,9 @@ public class SirConfigurator {
 
     private String namespaceUri;
 
-    private String profile4Discovery;
-
     private Properties props;
 
-    private URL serviceUrl;
-
     private String serviceVersion;
-
-    private String svrlSchema;
 
     private String ScriptsPath;
 
@@ -236,14 +190,6 @@ public class SirConfigurator {
         log.debug("DEPRECATED CONSTRUCTION of {}", this);
     }
 
-    private void checkFile(String path) {
-        File f = new File(path);
-        if ( !f.exists())
-            log.error("Cannot find file " + path);
-
-        f = null;
-    }
-
     public String[] getAcceptedServiceVersions() {
         return this.acceptedVersions;
     }
@@ -254,91 +200,33 @@ public class SirConfigurator {
 
     /**
      * 
-     * Creates an CatalogFactory (an instance of the class provided in the sir.config file) for the service
-     * located at the given URL.
-     * 
-     * @param url
-     * @return
-     * @throws OwsExceptionReport
-     */
-    public ICatalogFactory getCatalogFactory(URL url) throws OwsExceptionReport {
-        try {
-            return this.catalogFactoryConstructor.newInstance(url,
-                                                              this.catalogInitClassificationFiles,
-                                                              this.catalogInitSlotFile,
-                                                              Boolean.valueOf(this.doNotCheckCatalogsList.contains(url)));
-        }
-        catch (Exception e) {
-            log.error("The instatiation of a catalog factory failed.", e);
-            throw new OwsExceptionReport("The instatiation of a catalog factory failed: " + e.getMessage(),
-                                         e.getCause());
-        }
-    }
-
-    /**
-     * 
      * @return the status handler for external access (not from within this SIR instance)
      */
     public ICatalogStatusHandler getCatalogStatusHandler() {
         return this.catalogStatusHandler;
     }
 
-    /**
-     * @deprecated the character encoding should be only UTF-8, which is Jersey's default and must not be set
-     * @return the characterEncoding
-     */
-    @Deprecated
-    public String getCharacterEncoding() {
-        return this.characterEncoding;
-    }
-
-    /**
-     * 
-     * @return
-     */
     public ExecutorService getExecutor() {
         return this.exec;
     }
 
-    /**
-     * @return the DaoFactory
-     */
     @Deprecated
     public IDAOFactory getFactory() {
         return this.factory;
     }
 
-    /**
-     * @return the gmlDateFormat
-     */
     public String getGmlDateFormat() {
         return this.gmlDateFormat;
     }
 
-    /**
-     * @return the namespacePrefix
-     */
     public String getNamespacePrefix() {
         return this.namespacePrefix;
     }
 
-    /**
-     * @return the namespaceUri
-     */
     public String getNamespaceUri() {
         return this.namespaceUri;
     }
 
-    /**
-     * @return the serviceUrl of the sir.config in the form "host:port/path"
-     */
-    public URL getServiceUrl() {
-        return this.serviceUrl;
-    }
-
-    /**
-     * @return the serviceVersion
-     */
     public String getServiceVersion() {
         return this.serviceVersion;
     }
@@ -390,39 +278,8 @@ public class SirConfigurator {
 
         this.ScriptsPath = this.props.getProperty(SCRIPTS_PATH);
         this.licenses = this.initializeLicenses();
-        String resourceName = this.props.getProperty(PROFILE4DISCOVERY);
-        URL location = this.getClass().getResource(resourceName);
-        if (location == null) {
-            log.error("Could not get resource using class loader!");
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "root",
-                                         "Could not get resource using class loader: " + resourceName);
-        }
 
-        this.profile4Discovery = location.getPath();
-        checkFile(this.profile4Discovery);
-
-        resourceName = this.props.getProperty(SVRL_SCHEMA);
-        location = this.getClass().getResource(resourceName);
-        if (location == null) {
-            log.error("Could not get resource using class loader!");
-            throw new OwsExceptionReport(ExceptionCode.NoApplicableCode,
-                                         "root",
-                                         "Could not get resource using class loader: " + resourceName);
-        }
-
-        this.svrlSchema = location.getPath();
-        checkFile(this.svrlSchema);
-
-        // set updateSequence
         newUpdateSequence();
-
-        // initialize DAO Factory
-        // initializeDAOFactory(this.daoProps);
-
-        // initialize CatalogFactory
-        initializeCatalogFactory(this.props);
-
         loadCapabilitiesSkeleton(this.props);
 
         // initialize status handler
@@ -453,79 +310,6 @@ public class SirConfigurator {
             log.error("Cannot load licesnes", e);
             return null;
         }
-    }
-
-    private void initializeCatalogFactory(Properties sirProps) throws OwsExceptionReport {
-        String className = sirProps.getProperty(CATALOGFACTORY);
-
-        String slotInitFile = sirProps.getProperty(SLOT_INIT_FILENAME);
-        this.catalogInitSlotFile = getAbsolutePath(slotInitFile);
-
-        // add classification init files
-        String[] splitted = sirProps.getProperty(CLASSIFICATION_INIT_FILENAMES).split(CONFIG_FILE_LIST_SEPARATOR);
-        this.catalogInitClassificationFiles = new String[splitted.length];
-        for (int i = 0; i < splitted.length; i++) {
-            this.catalogInitClassificationFiles[i] = getAbsolutePath(splitted[i].trim());
-        }
-
-        // check if given url does not need to be checked
-        this.doNotCheckCatalogsList = new ArrayList<>();
-        splitted = sirProps.getProperty(DO_NOT_CHECK_CATALOGS).split(CONFIG_FILE_LIST_SEPARATOR);
-        if (splitted.length > 0) {
-            for (String s : splitted) {
-                try {
-                    if ( !s.isEmpty())
-                        this.doNotCheckCatalogsList.add(new URL(s.trim()));
-                }
-                catch (MalformedURLException e) {
-                    log.error("Could not parse catalog url to 'do not check' list. Catalog will be checked during runtime!");
-                }
-            }
-        }
-        else {
-            if (log.isDebugEnabled())
-                log.debug("Property " + DO_NOT_CHECK_CATALOGS + " returned no string list.");
-        }
-
-        try {
-
-            if (className == null) {
-                log.error("No catalog factory implementation is set in the config file! Use " + CATALOGFACTORY);
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "SirConfigurator.initializeCatalogFactory()",
-                                     "No catalog factory Implementation is set in the config file!");
-                throw se;
-            }
-            // get Class of the catalog factory implementation
-            Class<ICatalogFactory> catalogFactoryClass = (Class<ICatalogFactory>) Class.forName(className);
-
-            // get constructor of this class with matching parameter types
-            this.catalogFactoryConstructor = catalogFactoryClass.getConstructor(URL.class,
-                                                                                String[].class,
-                                                                                String.class,
-                                                                                boolean.class);
-
-            log.info(" ***** " + className + " loaded successfully! ***** ");
-        }
-        catch (ClassNotFoundException | NoSuchMethodException e) {
-            log.error("Error while loading catalog factory, required class could not be loaded.", e);
-            throw new OwsExceptionReport(e.getMessage(), e.getCause());
-        }
-    }
-
-    private String getAbsolutePath(String file) {
-        try {
-            URL r = SirConfigurator.class.getResource(file);
-            Path p = Paths.get(r.toURI());
-            String s = p.toAbsolutePath().toString();
-            return s;
-        }
-        catch (URISyntaxException e) {
-            log.error("Could not load resource " + file, e);
-        }
-
-        return file;
     }
 
     private void initializeStatusHandler(Properties sirProps) throws OwsExceptionReport {

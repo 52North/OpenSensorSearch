@@ -36,12 +36,9 @@
 			Geospatial Software GmbH</a>
 	</p>
 	<p class="infotext">
-		For harvesting your sensor <a href="/scriptUpload.jsp">Upload
-			here</a>.
+		For harvesting your sensor <a href="/scriptUpload.jsp">Upload here</a>.
 	</p>
 
-	<p class="infotext">
-		<br />${project.name}
-		${project.version}-${build-commit} build at ${build-tstamp}></p>
+	<p class="infotext">${project.build.finalName} ${version}</p>
 
 </div>

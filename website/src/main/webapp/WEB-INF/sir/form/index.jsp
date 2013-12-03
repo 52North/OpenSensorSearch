@@ -17,7 +17,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-	
+
 <%@page import="org.n52.oss.ui.WebsiteConfig"%>
 
 <!DOCTYPE html>
@@ -39,7 +39,8 @@
 <jsp:useBean id="configBean" scope="application"
 	class="org.n52.oss.ui.WebsiteConfig" />
 <script type="text/javascript">
-	var sirEndpoint = "<%=configBean.getSirEndpoint()%>";
+	var sirEndpoint = "<%=configBean.getSirEndpoint()%>
+	";
 	console.log("sirEndpoint = " + sirEndpoint);
 </script>
 
@@ -83,33 +84,23 @@
 						rows="10" cols="10"></textarea>
 				</div>
 				<div class="request-form-buttons">
-					<input value="Send" type="submit" />
-					<input value="Clear" name="reset" type="reset"
+					<input value="Send" type="submit" /> <input value="Clear"
+						name="reset" type="reset"
 						onclick="document.getElementById('selRequest').selectedIndex = 0; insertSelected();" />
 				</div>
 			</form>
-			<p class="infotext">${project.build.finalName}
-				${version} as of ${buildTimestamp}</p>
-			<p class="infotext">The editor is based on CodeMirror
+			<p class="infotext">${project.build.finalName} ${version} | The editor is based on CodeMirror
 				(http://marijn.haverbeke.nl/codemirror/).</p>
 		</div>
-
-		<div class="center">
-			<a href="http://validator.w3.org/check?uri=referer"><img
-				src="http://www.w3.org/Icons/valid-xhtml11" alt="Valid XHTML 1.1" />
-			</a> <a href="http://jigsaw.w3.org/css-validator/check/referer"><img
-				src="http://jigsaw.w3.org/css-validator/images/vcss"
-				alt="CSS is valid!" /> </a>
-		</div>
-
 	</div>
 
-	<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"
+		type="text/javascript"></script>
 	<%
-    /* compressed version from : codemirror, xml, active-line, foldcode, foldgutter, xml-fold, */
-%>
+	    /* compressed version from : codemirror, xml, active-line, foldcode, foldgutter, xml-fold, */
+	%>
 	<script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
-	<script src="../lib/codemirror/xml.js"  type="text/javascript"></script>
+	<script src="../lib/codemirror/xml.js" type="text/javascript"></script>
 
 	<script type="text/javascript" src="form/formClient.js"></script>
 

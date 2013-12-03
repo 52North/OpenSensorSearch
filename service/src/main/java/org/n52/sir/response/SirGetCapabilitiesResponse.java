@@ -61,6 +61,14 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
     private Collection<SirService> harvestedServices;
 
+    private SirConfigurator config;
+
+    public SirGetCapabilitiesResponse(SirConfigurator config) {
+        this.config = config.getInstance();
+
+        log.info("NEW {}", this);
+    }
+
     private Contents createContents() {
         Contents contents = Contents.Factory.newInstance();
 
@@ -83,23 +91,24 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
     }
 
     private OperationsMetadata createOperationsMetadata() {
-        OperationsMetadata opMeData = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getOperationsMetadata();
+        CapabilitiesDocument skeleton = this.config.getCapabilitiesSkeleton();
+        OperationsMetadata opMeData = skeleton.getCapabilities().getOperationsMetadata();
         // Operations
         for (Operation operation : opMeData.getOperationArray()) {
             for (DCP dcp : operation.getDCPArray()) {
                 HTTP http = dcp.getHTTP();
                 for (RequestMethodType get : http.getGetArray()) {
-                    get.setHref(SirConfigurator.getInstance().getServiceUrl().toString());
+                    get.setHref(this.config.getServiceUrl().toString());
                 }
                 for (RequestMethodType post : http.getPostArray()) {
-                    post.setHref(SirConfigurator.getInstance().getServiceUrl().toString());
+                    post.setHref(this.config.getServiceUrl().toString());
                 }
             }
             // parameter acceptVersion in operation GetCapabilities
             for (DomainType parameter : operation.getParameterArray()) {
                 if (parameter.getName().equals(ACCEPT_VERSIONS_PARAMETER_NAME)) {
                     AllowedValues newAllowedValues = AllowedValues.Factory.newInstance();
-                    for (String s : SirConfigurator.getInstance().getAcceptedServiceVersions()) {
+                    for (String s : this.config.getAcceptedServiceVersions()) {
                         newAllowedValues.addNewValue().setStringValue(s);
                     }
                     // replace the old values
@@ -114,7 +123,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
             if (parameter.getName().equals(VERSION_PARAMETER_NAME)) {
                 AllowedValues newAllowedValues = AllowedValues.Factory.newInstance();
                 ValueType value = newAllowedValues.addNewValue();
-                value.setStringValue(SirConfigurator.getInstance().getServiceVersion());
+                value.setStringValue(this.config.getServiceVersion());
                 parameter.setAllowedValues(newAllowedValues);
             }
         }
@@ -122,15 +131,15 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
     }
 
     private ServiceIdentification createServiceIdentification() {
-        ServiceIdentification servIdent = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getServiceIdentification();
-        servIdent.getServiceType().setCodeSpace(SirConfigurator.getInstance().getServiceUrl().toString());
-        servIdent.setServiceTypeVersionArray(new String[] {SirConfigurator.getInstance().getServiceVersion()});
+        ServiceIdentification servIdent = this.config.getCapabilitiesSkeleton().getCapabilities().getServiceIdentification();
+        servIdent.getServiceType().setCodeSpace(this.config.getServiceUrl().toString());
+        servIdent.setServiceTypeVersionArray(new String[] {this.config.getServiceVersion()});
         return servIdent;
     }
 
     private ServiceProvider createServiceProvider() {
-        ServiceProvider servProv = SirConfigurator.getInstance().getCapabilitiesSkeleton().getCapabilities().getServiceProvider();
-        servProv.getProviderSite().setHref(SirConfigurator.getInstance().getServiceUrl().toString());
+        ServiceProvider servProv = this.config.getCapabilitiesSkeleton().getCapabilities().getServiceProvider();
+        servProv.getProviderSite().setHref(this.config.getServiceUrl().toString());
         return servProv;
     }
 
@@ -141,10 +150,10 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
         Capabilities caps = capDoc.addNewCapabilities();
 
         // set version
-        caps.setVersion(SirConfigurator.getInstance().getServiceVersion());
+        caps.setVersion(this.config.getServiceVersion());
 
         // set updateSequence
-        caps.setUpdateSequence(SirConfigurator.getInstance().getUpdateSequence());
+        caps.setUpdateSequence(this.config.getUpdateSequence());
 
         if (this.sections != null) {
             // set all
@@ -177,7 +186,7 @@ public class SirGetCapabilitiesResponse extends AbstractXmlResponse {
 
         XmlTools.addSirAndSensorMLSchemaLocation(caps);
 
-        if (SirConfigurator.getInstance().isValidateResponses()) {
+        if (this.config.isValidateResponses()) {
             if ( !capDoc.validate())
                 log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(capDoc));
         }

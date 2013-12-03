@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.text.ParseException;
@@ -41,7 +42,7 @@ import com.google.inject.Inject;
 /**
  * 
  * @author Daniel
- *
+ * 
  */
 public class GetCapabilitiesListener implements ISirRequestListener {
 
@@ -51,17 +52,16 @@ public class GetCapabilitiesListener implements ISirRequestListener {
 
     private IGetCapabilitiesDAO capDao;
 
-    @Inject
-    public GetCapabilitiesListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
+    private SirConfigurator config;
 
-        try {
-            this.capDao = factory.getCapabilitiesDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the getCapabilitiesDAO", se);
-            throw se;
-        }
+    @Inject
+    public GetCapabilitiesListener(SirConfigurator config, IGetCapabilitiesDAO dao) {
+        this.config = config.getInstance();
+        IDAOFactory factory = this.config.getFactory();
+
+        this.capDao = dao;
+
+        log.info("NEW {}", this);
     }
 
     private void checkAcceptedVersions(String[] versions) throws OwsExceptionReport {
@@ -76,7 +76,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
     }
 
     private ArrayList<CapabilitiesSection> checkSections(String[] sections) throws OwsExceptionReport {
-        ArrayList<CapabilitiesSection> responseSection = new ArrayList<CapabilitiesSection>();
+        ArrayList<CapabilitiesSection> responseSection = new ArrayList<>();
         for (String section : sections) {
             if (section.equalsIgnoreCase(CapabilitiesSection.Contents.name())) {
                 responseSection.add(CapabilitiesSection.Contents);
@@ -101,8 +101,9 @@ public class GetCapabilitiesListener implements ISirRequestListener {
                                              + "'. Please use only this values: "
                                              + CapabilitiesSection.ServiceIdentification.name() + ", "
                                              + CapabilitiesSection.ServiceProvider.name() + ", "
-                                             + CapabilitiesSection.OperationsMetadata.name() + ", " + CapabilitiesSection.Contents.name()
-                                             + ", " + CapabilitiesSection.All.name());
+                                             + CapabilitiesSection.OperationsMetadata.name() + ", "
+                                             + CapabilitiesSection.Contents.name() + ", "
+                                             + CapabilitiesSection.All.name());
                 log.error("The sections parameter is incorrect.", se);
                 throw se;
             }
@@ -115,7 +116,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
 
             try {
                 Calendar usDate = GMLDateParser.getInstance().parseString(updateSequence);
-                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(SirConfigurator.getInstance().getUpdateSequence());
+                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(this.config.getUpdateSequence());
                 if (usDate.equals(sorUpdateSequence)) {
                     return true;
                 }
@@ -151,7 +152,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         try {
             SirGetCapabilitiesRequest sirRequest = (SirGetCapabilitiesRequest) request;
-            SirGetCapabilitiesResponse response = new SirGetCapabilitiesResponse();
+            SirGetCapabilitiesResponse response = new SirGetCapabilitiesResponse(this.config);
 
             // check service
             ListenersTools.checkServiceParameter(sirRequest.getService());
@@ -165,7 +166,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
                 response.setSections(checkSections(sirRequest.getSections()));
             }
             else {
-                ArrayList<CapabilitiesSection> temp = new ArrayList<CapabilitiesSection>();
+                ArrayList<CapabilitiesSection> temp = new ArrayList<>();
                 temp.add(CapabilitiesSection.All);
                 response.setSections(temp);
             }
@@ -173,7 +174,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
             // check updateSequence
             if (sirRequest.getUpdateSequence() != null) {
                 if (checkUpdateSequenceEquals(sirRequest.getUpdateSequence())) {
-                    return new SirGetCapabilitiesResponse();
+                    return new SirGetCapabilitiesResponse(this.config);
                 }
             }
 

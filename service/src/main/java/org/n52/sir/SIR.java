@@ -149,13 +149,19 @@ public class SIR {
                 try (BufferedOutputStream bus = new BufferedOutputStream(os);) {
                     log.debug("Writing streamed response of: {}", sirResp);
 
-                    byte[] bytes = sirResp.getByteArray();
+                    byte[] bytes;
+                    try {
+                        bytes = sirResp.getByteArray();
+                    }
+                    catch (Exception e) {
+                        log.error("Could not serialize response.", e);
+                        throw new WebApplicationException(e);
+                    }
                     bus.write(bytes);
                 }
                 catch (Exception e) {
                     log.error("Could not write to response stream.", e);
                 }
-
             }
         };
 

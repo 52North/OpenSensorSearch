@@ -46,7 +46,7 @@
 		</div>
 		<p class="text-center" style="margin-top: 10px;">Copyright © 2013
 			52°North Initiative for Geospatial Open Source Software GmbH. All
-			Rights Reserved.</p>
+			Rights Reserved. | ${project.build.finalName} version ${version}</p>
 	</div>
 </div>
 

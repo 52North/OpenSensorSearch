@@ -3,12 +3,12 @@
 	<property name="logFile"
 		value="${oss.logger.filepath}/${pom.artifactId}-${project.version}" />
 
-	<appender name="ossfile"
+	<appender name="ossservicefile"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${logFile}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${logFile}/%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>14</maxHistory>
+			<fileNamePattern>${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory>
 		</rollingPolicy>
 		<encoder>
 			<pattern> %date %level [%thread] [%file:%line] %msg%n </pattern>
@@ -27,7 +27,7 @@
 	<logger name="org.apache.http" level="WARN" />
 	
 	<root level="INFO">
-		<appender-ref ref="ossfile" />
+		<appender-ref ref="ossservicefile" />
 		<appender-ref ref="ossconsole" />
 	</root>
 </configuration>

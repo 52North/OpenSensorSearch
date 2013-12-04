@@ -7,8 +7,8 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${logFile}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${logFile}/%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>14</maxHistory>
+			<fileNamePattern>${logFile}.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory>
 		</rollingPolicy>
 		<encoder>
 			<pattern> %date %level [%thread] [%file:%line] %msg%n </pattern>

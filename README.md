@@ -17,6 +17,7 @@ The basic installation steps are:
 * Create an new database for a user with the required rights to create new tables.
   * If you use PostGIS < 9.1, make sure to use a postgis_template.
   * If you use PostGIS > 9.1, the commands to install the extension are included in the database creation script. If you added the exentions manually please remove the respetive lines from the script.
+  * Make sure that the database user has sufficient rights on the database. If you create the db with the superuser ``postgres`` this might require an extra configuration step.
 * Run the database creation script from the directory ``service/src/main/resource/db``
 * Edit your settings based on the file ``service/src/main/resource/prop/org.n52.oss.service.db-sample.properties`` and save that file in the home folder of the machine running OSS.
 * Restart the service application

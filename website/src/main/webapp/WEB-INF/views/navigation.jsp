@@ -45,6 +45,7 @@
 						<li><a
 							href="api/scriptDevelopers">Script Developers</a></li>
 						<li><a href="api">API</a></li>
+						<li><a href="#" id="apiEndpointMenuLink">API endpoint</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Meta</li>
 						<li><a

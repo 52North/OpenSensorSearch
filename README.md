@@ -31,6 +31,15 @@ For details please check the PostgreSQL (http://www.postgresql.org/docs/) and Po
   * See http://wiki.apache.org/solr/CoreAdmin for a detailed description.
   * Create a new core with the following call to the admin API: ``.../admin/cores?action=CREATE&name=opensensorsearch&instanceDir=opensensorsearch&config=/tmp/solrconfig.xml&schema=/tmp/solrschema.xml&persist=true&loadOnStartup=true``
 
+### Test Data Generation
+The current implementation supports performance tests using both [Apache JMeter](http://jmeter.apache.org) and a dummy sensor generation which can be used to insert test data as well.
+
+There are two classes in the test package that can fill your backend with the dummy sensors , namely
+* ``org.org.n52.sir.ds.solr.data.TempelateSensorTest``
+* ``org.org.n52.sir.ds.solr.data.JSONSensorParserTest``
+
+Alternatively you can harvest sensors from remote platforms to fill you database.
+
 
 ## Configuration
 
@@ -41,17 +50,13 @@ The service is mostly configured with Guice-loaded named bindings based on a cou
 Several files have to be used so that Guice does not try to bind the same property twice, which results in creation errors. So if you configure a property from one base file in a different overwriting file you will have errors.
 
 * server module
-  * org.n52.oss.service.properties are added to (and potentially overwrite) the base file src/main/resources/app.properties
-  * org.n52.oss.service.db.properties are added to (and potentially overwrite) the base file src/main/resources/prop/db.properties
-  * org.n52.oss.service.sir.properties are added to (and potentially overwrite) the base file src/main/resources/prop/sir.properties
+  * ``org.n52.oss.service.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/app.properties``
+  * ``org.n52.oss.service.db.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/prop/db.properties``
+  * ``org.n52.oss.service.sir.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/prop/sir.properties``
 * website module
-  * org.n52.oss.website.properties overwrite the values in website module src/main/resources/org.n52.oss.website.properties
+  * ``org.n52.oss.website.properties`` overwrites the values in website module src/main/resources/org.n52.oss.website.properties
 
-### Test set Generation
-The current implementation supports test performance using both [Apache JMeter](http://jmeter.apache.org) and a dummy sensor generation as well as harvest sensor for harvesting remote sensors.
-<p>There are two classes in the test package that can fill your backend with the dummy sensors , namely
-<p>1. <code>org.org.n52.sir.ds.solr.data.TempelateSensorTest</code>
-<p>2. <code>org.org.n52.sir.ds.solr.data.JSONSensorParserTest</code>
+There are sample files in the same directories of the base file to get you started.
 
 ### Wiki
 

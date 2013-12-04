@@ -66,6 +66,8 @@ public class PGSQLModule extends AbstractConfigModule {
         bind(PGConnectionPool.class).toProvider(DAOFactory.class);
 
         bind(ISearchSensorDAO.class).annotatedWith(Names.named(ISearchSensorDAO.FULL)).to(PGSQLSearchSensorDAO.class);
+        bind(ISearchSensorDAO.class).annotatedWith(Names.named(ISearchSensorDAO.AUTOCOMPLETE)).to(PGSQLSearchSensorDAO.class);
+
         bind(IGetCapabilitiesDAO.class).to(PGSQLGetCapabilitiesDAO.class);
         bind(IConnectToCatalogDAO.class).to(PGSQLConnectToCatalogDAO.class);
         bind(IInsertSensorInfoDAO.class).to(PGSQLInsertSensorInfoDAO.class);

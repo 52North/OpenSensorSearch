@@ -21,6 +21,6 @@ package org.n52.oss.sir.api;
  */
 public abstract class SirSensorDescription {
 
-    // TODO make this an interface and add common methods from subclasses.
+    // TODO make this an interface or add common methods from subclasses.
 
 }

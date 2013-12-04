@@ -44,4 +44,6 @@ public abstract class ApiPaths {
 
     public static final String OPENSEARCH_PATH = API_PATH + "/search";
 
+    public static final String AUTOSUGGEST_PATH = API_PATH + "/suggest";
+
 }

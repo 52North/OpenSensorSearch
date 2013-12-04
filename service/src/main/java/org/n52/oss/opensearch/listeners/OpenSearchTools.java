@@ -95,9 +95,15 @@ public class OpenSearchTools {
         if (ds.contains("\n"))
             ds = ds.replaceAll("\\n", System.getProperty("line.separator"));
 
+        // replace tabs
+        if (ds.contains("\t"))
+            ds = ds.replaceAll("\\t", " ");
+
         // encode possibly problematic characters
         if (ds.contains("&"))
             ds = encode(ds);
+
+        ds = ds.trim();
 
         return ds;
     }

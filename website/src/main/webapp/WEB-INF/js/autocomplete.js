@@ -13,32 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function() {
-	$("#inputSearch").keyup(function() {
-		var p = $("#inputSearch");
-		var written = (p.val());
-		if (written.toString().length > 1) {
-			var tokens = written.toString().split(" ");
-			var first = tokens.slice(0, tokens.length - 1).join(" ");
-			var value = "/OpenSensorSearch/suggest?q=" + tokens[tokens.length - 1];
-			$.ajax({
-				type:"GET",
-				url:value,
-				success:function(data){
-					
-				},
-				error:function(err){
-					var d = err.responseText.toString();
-					d = d.substring(1,d.length);
-					d = d.substring(0,d.length-1);
-					var available = d.split(",");
-					for ( var i = 0; i < available.length; i++)
-						available[i] = first + " " + available[i];
-					$("#inputSearch").autocomplete({
-						source : available
-					});
-				}
+
+var autocompleteEndpoint = ossApiEndpoint + "/suggest";
+
+// http://api.jqueryui.com/autocomplete/
+function ossAutocomplete(request, response) {
+	var tokens = request.term.split(" ");
+	var first = tokens.slice(0, tokens.length - 1).join(" ");
+	var value = autocompleteEndpoint + "?q=" + tokens[tokens.length - 1];
+	console.log("autocomplete: " + value);
+
+	$.ajax({
+		type : "GET",
+		dataType: "json",
+		url : value,
+		success : function(data) {
+			console.log("results: " + data.results);
+			response(data.results);
+		},
+		error : function(err) {
+			console.log(err);
+
+			var d = err.responseText.toString();
+			d = d.substring(1, d.length);
+			d = d.substring(0, d.length - 1);
+			var availableWords = d.split(",");
+			for ( var i = 0; i < availableWords.length; i++)
+				availableWords[i] = first + " " + availableWords[i];
+
+			$("#inputSearch").autocomplete({
+				source : availableWords
 			});
+			response({});
 		}
+	});
+}
+
+$(document).ready(function() {
+
+	// http://jqueryui.com/autocomplete/
+	$("#inputSearch").autocomplete({
+		delay : 500,
+		minLength : 3,
+		source : ossAutocomplete
 	});
 });

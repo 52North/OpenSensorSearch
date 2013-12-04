@@ -16,12 +16,10 @@
 
 package org.n52.sir.ds.solr;
 
-import org.n52.sir.ds.ISearchSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.name.Names;
 
 public class SolrModule extends AbstractModule {
 
@@ -33,7 +31,8 @@ public class SolrModule extends AbstractModule {
 
         // FIXME change .named to recommended explicit binding annotation:
         // http://code.google.com/p/google-guice/wiki/BindingAnnotations
-        bind(ISearchSensorDAO.class).annotatedWith(Names.named(ISearchSensorDAO.AUTOCOMPLETE)).to(SOLRSearchSensorDAO.class);
+
+        // bind(ISearchSensorDAO.class).annotatedWith(Names.named(ISearchSensorDAO.AUTOCOMPLETE)).to(SOLRSearchSensorDAO.class);
 
         log.debug("Configured {}", this);
     }

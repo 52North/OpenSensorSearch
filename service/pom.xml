@@ -90,37 +90,6 @@
 		<oss.logger.level>DEBUG</oss.logger.level>
 	</properties>
 
-	<profiles>
-		<profile>
-			<id>oss.dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<service.url>http://localhost:8080</service.url>
-				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
-				<db.driver>org.postgresql.Driver</db.driver>
-				<db.user>postgres</db.user>
-				<db.password>postgres</db.password>
-			</properties>
-		</profile>
-		<profile>
-			<id>oss.deploy</id>
-			<properties>
-				<!-- add these to your settings.xml file to ensure passwords are not
-					uploaded to SCM: <profile> <id>sir.deploy</id> <properties> <sir.deploy.server>http://MY_SERVER.TLD</sir.deploy.server>
-					<sir.deploy.database.user>MY_USERNAME</sir.deploy.database.user> <sir.deploy.database.password>MY_PASSWORD</sir.deploy.database.password>
-					</properties> </profile> -->
-				<service.url>${oss.deploy.server}</service.url>
-				<service.contact>${oss.deploy.contact}</service.contact>
-				<db.connectionstring>jdbc:postgresql://localhost:5432/SIR_DATABASE</db.connectionstring>
-				<db.driver>org.postgresql.Driver</db.driver>
-				<db.user>${oss.deploy.database.user}</db.user>
-				<db.password>${oss.deploy.database.password}</db.password>
-			</properties>
-		</profile>
-	</profiles>
-
 	<build>
 		<finalName>oss-service</finalName>
 

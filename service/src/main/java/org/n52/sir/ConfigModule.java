@@ -28,6 +28,8 @@ public class ConfigModule extends AbstractConfigModule {
 
     private static Logger log = LoggerFactory.getLogger(ConfigModule.class);
 
+    private static final String HOME_CONFIG_FILE = "org.n52.oss.service.sir.properties";
+
     @Override
     protected void configure() {
         try {
@@ -36,7 +38,10 @@ public class ConfigModule extends AbstractConfigModule {
             // update properties from home folder file
             sirProps = updateFromUserHome(sirProps, HOME_CONFIG_FILE);
 
+            // bind properties class
             bind(Properties.class).annotatedWith(Names.named("sir_properties")).toInstance(sirProps);
+
+            // bind alle properties as named properties
             Names.bindProperties(binder(), sirProps);
 
             log.debug("Loaded and bound properties:\n\t{}", sirProps);

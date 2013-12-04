@@ -27,6 +27,8 @@ public class ConfigModule extends AbstractConfigModule {
 
     private static Logger log = LoggerFactory.getLogger(ConfigModule.class);
 
+    private static final String HOME_CONFIG_FILE = "org.n52.oss.service.properties";
+
     @Override
     protected void configure() {
         // app properties

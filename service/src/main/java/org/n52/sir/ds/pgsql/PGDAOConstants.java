@@ -52,14 +52,10 @@ public class PGDAOConstants {
 
     private static final String INITCON = "oss.db.INITCON";
 
-    /**
-     * instance attribute due to singleton pattern
-     */
     private static PGDAOConstants instance = null;
 
     public static String lastUpdate;
-    /** logger, used for logging while initializing the constants from config file
-     */
+
     private static Logger log = LoggerFactory.getLogger(PGDAOConstants.class);
 
     public static int maxcon = 0;
@@ -92,6 +88,7 @@ public class PGDAOConstants {
 
     // column names of sensor
     public static String sensorIdSir;
+
     public static String sensorId;
 
     // column names of sensor_phenomenon
@@ -115,7 +112,6 @@ public class PGDAOConstants {
 
     public static String service;
 
-    // column names of service
     public static String serviceId;
 
     // column names of sensor_service
@@ -175,21 +171,15 @@ public class PGDAOConstants {
     public static String USER_IS_VALID;
 
     private static final String SENSORID = "oss.db.SENSORID";
-/*
-    * getInstance method due to singleton pattern
-    * 
-    * @param daoProps
-    *        the Properties for the DAO
-    * @return The only PGDAOConstants instance
-    */
-   @Deprecated
-   public static synchronized PGDAOConstants getInstance(Properties daoProps) {
-       if (instance == null) {
-           instance = new PGDAOConstants(daoProps);
-           return instance;
-       }
-       return instance;
-   }
+
+    public static synchronized PGDAOConstants loadAndInstantiate(Properties daoProps) {
+        if (instance == null) {
+            instance = new PGDAOConstants(daoProps);
+            return instance;
+        }
+        return instance;
+    }
+
     private final String CATALOGIDSIR = "oss.db.CATALOGIDSIR";
 
     private final String CATALOGSTATUS = "oss.db.CATALOGSTATUS";
@@ -272,20 +262,11 @@ public class PGDAOConstants {
 
     public static String REMOTE_LAST_UPDATE;
 
-    /**
-     * constructor
-     * 
-     * @param props
-     *            the Properties for the DAO
-     */
-
     private static final String DATABASE_SENSOR_ID = "oss.db.SENSORIDSIR";
-
-
 
     public static String databaseSensorId;
 
-    public PGDAOConstants(Properties props) {
+    private PGDAOConstants(Properties props) {
         phenomenon = props.getProperty(this.TNPHENOMENON);
         sensor = props.getProperty(this.TNSENSOR);
         sensorPhen = props.getProperty(this.TNSENSOR_PHEN);

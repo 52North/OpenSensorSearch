@@ -19,6 +19,7 @@ package org.n52.sir.ds.pgsql;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.n52.oss.config.AbstractConfigModule;
 import org.n52.oss.config.ConfigModule;
 import org.n52.sir.ds.ICatalogStatusHandlerDAO;
 import org.n52.sir.ds.IConnectToCatalogDAO;
@@ -34,24 +35,28 @@ import org.n52.sir.ds.ISearchSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
-public class PGSQLModule extends AbstractModule {
+public class PGSQLModule extends AbstractConfigModule {
 
     private static Logger log = LoggerFactory.getLogger(PGSQLModule.class);
+
+    private static final String HOME_CONFIG_FILE = "org.n52.oss.service.db.properties";
 
     @Override
     protected void configure() {
         try {
             Properties properties = new Properties();
             properties.load(ConfigModule.class.getResourceAsStream("/prop/db.properties"));
-            Names.bindProperties(binder(), properties);
 
+            // update properties from home folder file
+            properties = updateFromUserHome(properties, HOME_CONFIG_FILE);
+
+            Names.bindProperties(binder(), properties);
             log.debug("Loaded and bound properties:\n\t{}", properties);
 
             // leftover of old configuration: constants must be initialized
-            PGDAOConstants.getInstance(properties);
+            PGDAOConstants.loadAndInstantiate(properties);
         }
         catch (IOException e) {
             log.error("Could not load properties.", e);

@@ -19,10 +19,8 @@ package org.n52.oss.config;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -34,9 +32,9 @@ public abstract class AbstractConfigModule extends AbstractModule {
 
     private static Logger log = LoggerFactory.getLogger(AbstractConfigModule.class);
 
-    public static final String HOME_CONFIG_FILE = "org.n52.oss.service.properties";
-
     protected Properties updateFromUserHome(Properties props, String homeConfigFile) {
+        log.debug("Updating properties {} from {}", props, homeConfigFile);
+
         String home = System.getProperty("user.home");
         log.debug("Used home directory: {}", home);
 
@@ -63,13 +61,6 @@ public abstract class AbstractConfigModule extends AbstractModule {
             log.warn("user.home is not specified. Will try to use fallback resources.");
 
         return props;
-    }
-
-    private InputStream openStreamForResource(String string) throws IOException {
-        URL resource = getClass().getResource(string);
-        URLConnection conn = resource.openConnection();
-        conn.setUseCaches(false);
-        return conn.getInputStream();
     }
 
     protected Properties loadProperties(String name) throws Exception {

@@ -27,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.n52.oss.config.ApplicationConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,10 +44,13 @@ public class ApiResource {
 
     private URI baseUri;
 
+    private ApplicationConstants appConstants;
+
     @Inject
     public ApiResource(@Context
-    UriInfo uri) {
+    UriInfo uri, ApplicationConstants appConstants) {
         this.baseUri = uri.getBaseUri();
+        this.appConstants = appConstants;
 
         log.info("NEW {} @ {}", this, this.baseUri);
     }
@@ -57,15 +61,31 @@ public class ApiResource {
     public Response getApiRoot() {
         StringBuilder sb = new StringBuilder();
         sb.append(" { ");
+
         sb.append("\"currentVersion\" : \"");
         sb.append(this.baseUri);
         sb.append(ApiPaths.API_PATH);
         sb.append("\"");
         sb.append(" , ");
+
         sb.append("\"v1\" : \"");
         sb.append(this.baseUri);
         sb.append(ApiPaths.API_PATH);
         sb.append("\"");
+        sb.append(" , ");
+
+        sb.append("\"appVersion\" : \"");
+        sb.append(this.appConstants.getApplicationVersion());
+        sb.append("\"");
+        sb.append(" , ");
+        sb.append("\"appCommit\" : \"");
+        sb.append(this.appConstants.getApplicationCommit());
+        sb.append("\"");
+        sb.append(" , ");
+        sb.append("\"appTimestamp\" : \"");
+        sb.append(this.appConstants.getApplicationTimestamp());
+        sb.append("\"");
+
         sb.append(" } ");
 
         return Response.ok(sb.toString()).build();

@@ -40,7 +40,7 @@ public class WebsiteConfig {
 
     protected static Logger log = LoggerFactory.getLogger(WebsiteConfig.class);
 
-    private static final String CONFIG_FILE = "org.n52.oss.ui.properties";
+    private static final String CONFIG_FILE = "org.n52.oss.website.properties";
 
     private static final String SIR_ENDPOINT = "oss.ui.sir.endpoint";
 

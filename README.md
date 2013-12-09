@@ -50,11 +50,11 @@ The service is mostly configured with Guice-loaded named bindings based on a cou
 
 Several files have to be used so that Guice does not try to bind the same property twice, which results in creation errors. So if you configure a property from one base file in a different overwriting file you will have errors.
 
-* server module
+* **server module**
   * ``org.n52.oss.service.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/app.properties``
   * ``org.n52.oss.service.db.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/prop/db.properties``
   * ``org.n52.oss.service.sir.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/prop/sir.properties``
-* website module
+* **website module**
   * ``org.n52.oss.website.properties`` overwrites the values in website module src/main/resources/org.n52.oss.website.properties
 
 There are sample files in the same directories of the base file to get you started.

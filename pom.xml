@@ -3,6 +3,12 @@
 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.n52</groupId>
+		<artifactId>52-North</artifactId>
+		<version>5.6.10</version>
+	</parent>
+		
 	<groupId>org.n52.oss</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
@@ -37,11 +43,36 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
 					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 
-
+	<repositories>
+		<repository>
+			<id>n52-releases</id>
+			<name>52n Releases</name>
+			<url>http://52north.org/maven/repo/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>n52-snapshots</id>
+			<name>52n Snapshots</name>
+			<url>http://52north.org/maven/repo/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>

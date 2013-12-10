@@ -13,29 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.n52.sir.data;
+
 /**
  * @author Yakoub
  */
-
-package org.n52.oss.IT.testdata;
-
 import java.util.List;
 
-/**
- * A utility class that's used to parse random generated sensor data encoded as json.
- * 
- * @author Daniel
- * 
- */
-public class JSONSensor {
+public class JSONSensorsCollection {
 
-    public int uniqueId;
-    public String beginPosition;
-    public String endPosition;
-    public List<String> keywords;
-    public String contacts;
-    public List<Object> Identifiers;
-    public String lat;
-    public String lng;
+    public List<JSONSensor> sensors;
 
 }

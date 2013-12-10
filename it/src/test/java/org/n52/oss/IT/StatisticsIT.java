@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.oss.stats;
+package org.n52.oss.IT;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

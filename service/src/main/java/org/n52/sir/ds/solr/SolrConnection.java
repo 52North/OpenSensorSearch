@@ -48,6 +48,8 @@ public class SolrConnection {
         this.server = new HttpSolrServer(url);
         this.server.setConnectionTimeout(this.timeoutMillis);
 
+        System.out.println(this.server);
+
         log.info("NEW {} for URL {} with timeout {}", this, url, timeout);
     }
 

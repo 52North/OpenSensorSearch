@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.oss.sir.csw;
+package org.n52.oss.IT;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -35,9 +35,9 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class CatalogTest {
+public class CatalogIT {
 
-    private static Logger log = LoggerFactory.getLogger(CatalogTest.class);
+    private static Logger log = LoggerFactory.getLogger(CatalogIT.class);
 
     private static void getCap() {
         URL url;

@@ -197,82 +197,46 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<groupId>org.jasig.maven</groupId>
-				<artifactId>maven-notice-plugin</artifactId>
-				<version>1.0.5</version>
-				<configuration>
-					<noticeTemplate>src/main/resources/NOTICE.template</noticeTemplate>
-					<licenseMapping>
-						<param>src/main/resources/license-mappings.xml</param>
-					</licenseMapping>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>com.github.danielflower.mavenplugins</groupId>
-				<artifactId>maven-gitlog-plugin</artifactId>
-				<version>1.5.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>apache-snapshots</id>
-			<name>Apache Snapshots</name>
-			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
+	<profiles>
+		<profile>
+			<id>generate-documentation</id>
 
-	<repositories>
-		<repository>
-			<id>maven-restlet</id>
-			<name>Public online Restlet repository</name>
-			<url>http://maven.restlet.org</url>
-		</repository>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jasig.maven</groupId>
+						<artifactId>maven-notice-plugin</artifactId>
+						<version>1.0.5</version>
+						<configuration>
+							<noticeTemplate>src/main/resources/NOTICE.template</noticeTemplate>
+							<licenseMapping>
+								<param>src/main/resources/license-mappings.xml</param>
+							</licenseMapping>
+						</configuration>
+					</plugin>
 
-		<!-- for postgis -->
-		<repository>
-			<id>sonatype-postgis-releases</id>
-			<name>Sonatype Postgis Releases Repo</name>
-			<url>http://oss.sonatype.org/content/repositories/postgis-releases</url>
-		</repository>
+					<!-- TODO: add swagger generation plugin here -->
+					<plugin>
+						<groupId>com.github.danielflower.mavenplugins</groupId>
+						<artifactId>maven-gitlog-plugin</artifactId>
+						<version>1.5.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
-		<repository>
-			<id>n52-releases</id>
-			<name>52n Releases</name>
-			<url>http://52north.org/maven/repo/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>n52-snapshots</id>
-			<name>52n Snapshots</name>
-			<url>http://52north.org/maven/repo/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+
 
 	<dependencies>
 		<dependency>
@@ -561,4 +525,53 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+
+		<!-- for postgis -->
+		<repository>
+			<id>sonatype-postgis-releases</id>
+			<name>Sonatype Postgis Releases Repo</name>
+			<url>http://oss.sonatype.org/content/repositories/postgis-releases</url>
+		</repository>
+
+		<repository>
+			<id>n52-releases</id>
+			<name>52n Releases</name>
+			<url>http://52north.org/maven/repo/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>n52-snapshots</id>
+			<name>52n Snapshots</name>
+			<url>http://52north.org/maven/repo/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>apache-snapshots</id>
+			<name>Apache Snapshots</name>
+			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>

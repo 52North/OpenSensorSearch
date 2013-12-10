@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package org.n52.oss.sir.harvest;
+package org.n52.oss.IT.harvest;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.junit.Test;
 import org.n52.oss.sir.api.SirDetailedSensorDescription;
 import org.n52.oss.sir.api.SirSearchResultElement;
@@ -31,16 +33,16 @@ import org.n52.sir.ds.solr.SolrConnection;
 import org.n52.sir.harvest.exec.IJSExecute;
 import org.n52.sir.harvest.exec.impl.RhinoJSExecute;
 
-public class ThingSpeak {
-    
+public class JSHarvest {
     @Test
-    public void harvestJSFile() {
-        File harvestScript = new File(ClassLoader.getSystemResource("Requests/harvestThingSpeak.js").getFile());
+    public void harvestJSFile() throws SolrServerException, IOException {
+        File harvestScript = new File(ClassLoader.getSystemResource("harvest/harvestScript.js").getFile());
+
         IJSExecute execEngine = new RhinoJSExecute();
         String id = execEngine.execute(harvestScript);
-        assertFalse(id.equals("-1"));
 
-        // TODO use mockup DB
+        assertNotNull(id);
+
         SolrConnection c = new SolrConnection("http://localhost:8983/solr", 2000);
         SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(c);
         Collection<SirSearchResultElement> elements = dao.searchByID(id);
@@ -48,11 +50,19 @@ public class ThingSpeak {
 
         SirSearchResultElement element = elements.iterator().next();
         SirDetailedSensorDescription description = (SirDetailedSensorDescription) element.getSensorDescription();
+        Collection<String> keywords = description.getKeywords();
 
-        assertTrue(description.getDescription().equals("Data logger for a light sensor"));
+        assertTrue(keywords.contains("javascript"));
+        assertTrue(keywords.contains("harvest"));
 
-        assertTrue(description.getLocation().equals("40.4126,-79.6493"));
+        assertTrue(description.getLocation().equals("3,1.5"));
 
+        Collection<String> contacts = description.getContacts();
+
+        assertTrue(contacts.contains("52north"));
+        assertTrue(contacts.contains("rhino"));
+
+        new SolrConnection("http://localhost:8983/solr", 2000).deleteSensor("id:" + id);
     }
 
 }

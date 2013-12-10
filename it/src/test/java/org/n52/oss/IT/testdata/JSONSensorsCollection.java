@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.oss.testdata.json;
+package org.n52.oss.IT.testdata;
 
 /**
  * @author Yakoub

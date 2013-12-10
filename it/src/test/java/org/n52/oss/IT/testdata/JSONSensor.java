@@ -17,7 +17,7 @@
  * @author Yakoub
  */
 
-package org.n52.oss.testdata.json;
+package org.n52.oss.IT.testdata;
 
 import java.util.List;
 

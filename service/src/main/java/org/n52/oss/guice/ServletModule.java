@@ -68,6 +68,8 @@ public class ServletModule extends JerseyServletModule {
         if (log.isDebugEnabled())
             filter("*").through(DebugFilter.class);
 
+        filter("*").through(CorsFilter.class);
+
         Map<String, String> params = new HashMap<>();
         params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF");
 

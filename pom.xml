@@ -8,7 +8,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 		<artifactId>52-North</artifactId>
 		<version>5.6.10</version>
 	</parent>
-		
+
 	<groupId>org.n52.oss</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
@@ -21,8 +21,6 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 		<module>service</module>
 		<module>website</module>
 		<module>arsearch</module>
-		<!-- <module>sir-it</module> -->
-		<!-- <module>it</module> -->
 	</modules>
 
 	<properties>
@@ -34,6 +32,16 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>integration-test</id>
+			<modules>
+				<module>sir-it</module>
+				<module>it</module>
+			</modules>
+		</profile>
+	</profiles>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -43,8 +51,8 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
-					<showDeprecation>true</showDeprecation>
-					<showWarnings>true</showWarnings>
+						<showDeprecation>true</showDeprecation>
+						<showWarnings>true</showWarnings>
 					</configuration>
 				</plugin>
 			</plugins>

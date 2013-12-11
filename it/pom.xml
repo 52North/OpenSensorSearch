@@ -120,6 +120,9 @@
 						<include>**/*.properties</include>
 						<include>**/*.xml</include>
 					</includes>
+					<excludes>
+						<exclude>**/logback*</exclude>
+					</excludes>
 					<strictCheck>true</strictCheck>
 					<properties>
 						<year>${project.inceptionYear}</year>

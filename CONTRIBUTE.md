@@ -47,7 +47,7 @@ You can help report bugs by filing them here: <https://github.com/52North/OpenSe
 
 # Documentation
 
-All documentation is [in the 52°North wiki](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch), and a critical read as well as feedback are always welcome.
+All documentation is either in README.md files in each module or [in the 52°North wiki](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch), and a critical read as well as feedback and documentation extensions are always welcome.
 
 ## Maintainer Documentation
 

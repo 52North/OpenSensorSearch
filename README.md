@@ -4,7 +4,7 @@ Open Sensor Search (OSS) is a platform for discovery of in-situ sensor data. acr
 
 ## Development
 
-[![Build Status](https://travis-ci.org/52North/OpenSensorSearch.png?branch=master)](https://travis-ci.org/52North/OpenSensorSearc)
+[![Build Status](https://travis-ci.org/52North/OpenSensorSearch.png?branch=master)](https://travis-ci.org/52North/OpenSensorSearch)
 
 If you want to join the Open Sensor Search developer team, take a look at the CONTRIBUTE.md file.
 

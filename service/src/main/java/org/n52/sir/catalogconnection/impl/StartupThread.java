@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalogconnection.impl;
 
 import java.util.List;
@@ -22,7 +23,6 @@ import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
 import org.n52.sir.ds.IConnectToCatalogDAO;
-import org.n52.sir.ds.pgsql.DAOFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,35 +42,19 @@ public class StartupThread extends Thread {
 
     private static Logger log = LoggerFactory.getLogger(StartupThread.class);
 
-    @Inject
-    private DAOFactory daoFactory;
-
-    @Inject
     private CatalogConnectionScheduler scheduler;
 
-    @Inject
-    @Named("oss.catalogconnection.scheduleJobsOnStartup")
     private boolean scheduleOnStartup = false;
 
     private IConnectToCatalogDAO catalogDao;
 
-    // @Inject
-    // public StartupThread(IConnectToCatalogDAO catalogDao,
-    // CatalogConnectionScheduler scheduler,
-    // @Named("oss.catalogconnection.scheduleJobsOnStartup")
-    // boolean startup) {
-    // this.catalogDao = catalogDao;
-    // this.scheduler = scheduler;
-    // this.scheduleOnStartup = startup;
-    // }
+    @Inject
+    public StartupThread(@Named("oss.catalogconnection.scheduleJobsOnStartup")
+    boolean scheduleOnStart, CatalogConnectionScheduler scheduler, IConnectToCatalogDAO dao) {
+        this.scheduleOnStartup = scheduleOnStart;
+        this.scheduler = scheduler;
+        this.catalogDao = dao;
 
-    public StartupThread() {
-        try {
-            this.catalogDao = this.daoFactory.connectToCatalogDAO();
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Could not get dao from factory.", e);
-        }
         log.debug("NEW {}", this);
     }
 

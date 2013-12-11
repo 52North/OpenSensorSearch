@@ -64,16 +64,10 @@ public class SearchSensorListener implements ISirRequestListener {
 
     private SirClient client;
 
-    /**
-     * TODO implement injection mechanism for search DAO so that only that what needed is injected, not the
-     * complete configurator
-     * 
-     * @throws OwsExceptionReport
-     */
     @Inject
-    public SearchSensorListener(@Named("full")
-    ISearchSensorDAO dao, @Named("autocomplete")
-    ISearchSensorDAO autocompleteDao, SirClient client) throws OwsExceptionReport {
+    public SearchSensorListener(@Named(ISearchSensorDAO.FULL)
+    ISearchSensorDAO dao, @Named(ISearchSensorDAO.AUTOCOMPLETE)
+    ISearchSensorDAO autocompleteDao, SirClient client) {
         this.client = client;
         this.searchSensDao = dao;
         this.autocompleteDao = autocompleteDao;

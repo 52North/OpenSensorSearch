@@ -26,6 +26,8 @@ import org.n52.sir.ds.IDisconnectFromCatalogDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte
  * 
@@ -36,6 +38,7 @@ public class PGSQLDisconnetFromCatalogDAO implements IDisconnectFromCatalogDAO {
 
     private PGConnectionPool cpool;
 
+    @Inject
     public PGSQLDisconnetFromCatalogDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }
@@ -45,9 +48,11 @@ public class PGSQLDisconnetFromCatalogDAO implements IDisconnectFromCatalogDAO {
         String connectionID = null;
         String deleteConnectionQuery = deleteConnectionQuery(cswURL);
 
-        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+        try (Connection con = this.cpool.getConnection();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(deleteConnectionQuery);) {
             log.debug(">>>Database Query: {}", deleteConnectionQuery);
-            ResultSet rs = stmt.executeQuery(deleteConnectionQuery);
+
             while (rs.next()) {
                 connectionID = rs.getString(PGDAOConstants.catalogIdSir);
             }

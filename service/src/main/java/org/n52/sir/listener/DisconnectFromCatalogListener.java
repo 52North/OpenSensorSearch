@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.catalog.ICatalogStatusHandler;
 import org.n52.sir.catalogconnection.CatalogConnectionScheduler;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDisconnectFromCatalogDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirDisconnectFromCatalogRequest;
@@ -44,36 +43,26 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
 
     private IDisconnectFromCatalogDAO disconFromCatDao;
 
-    @Inject
     CatalogConnectionScheduler scheduler;
 
+    private ICatalogStatusHandler handler;
+
     @Inject
-    public DisconnectFromCatalogListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
-        try {
-            this.disconFromCatDao = factory.disconnectFromCatalogDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the disconnectFromCatalogDao", se);
-            throw se;
-        }
+    public DisconnectFromCatalogListener(IDisconnectFromCatalogDAO dao,
+                                         CatalogConnectionScheduler scheduler,
+                                         ICatalogStatusHandler handler) {
+        this.disconFromCatDao = dao;
+        this.scheduler = scheduler;
+        this.handler = handler;
+
+        log.info("NEW {}", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return DisconnectFromCatalogListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request .AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirDisconnectFromCatalogRequest disconFromCatReq = (SirDisconnectFromCatalogRequest) request;
@@ -98,8 +87,7 @@ public class DisconnectFromCatalogListener implements ISirRequestListener {
             response.setCatalogUrl(disconFromCatReq.getCswURL());
 
             // set runtime status info
-            ICatalogStatusHandler runtimeHandler = SirConfigurator.getInstance().getCatalogStatusHandler();
-            runtimeHandler.setStatus(connectionID, "Disconnected from catalog " + disconFromCatReq.getCswURL());
+            this.handler.setStatus(connectionID, "Disconnected from catalog " + disconFromCatReq.getCswURL());
 
             return response;
         }

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorStatusDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirInsertSensorStatusRequest;
@@ -44,16 +43,10 @@ public class InsertSensorStatusListener implements ISirRequestListener {
     private IInsertSensorStatusDAO insSensStatDao;
 
     @Inject
-    public InsertSensorStatusListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
+    public InsertSensorStatusListener(IInsertSensorStatusDAO dao) {
+        this.insSensStatDao = dao;
 
-        try {
-            this.insSensStatDao = factory.insertSensorStatusDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the insertSensorStatusDAO", se);
-            throw se;
-        }
+        log.info("NEW {}", this);
     }
 
     @Override
@@ -69,7 +62,7 @@ public class InsertSensorStatusListener implements ISirRequestListener {
 
         try {
             String sensorId = this.insSensStatDao.insertSensorStatus(insSensStatReq.getSensIdent(),
-                                                                          insSensStatReq.getStatus());
+                                                                     insSensStatReq.getStatus());
             if (sensorId != null) {
                 response.setSensorId(sensorId);
             }

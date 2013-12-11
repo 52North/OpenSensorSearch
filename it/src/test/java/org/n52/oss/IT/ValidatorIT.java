@@ -41,7 +41,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-public class Validator {
+public class ValidatorIT {
 
     private static String smlCheckEndpoint = "http://localhost:8080/oss-service/api/v1/check/sml";
 

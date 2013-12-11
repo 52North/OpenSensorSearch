@@ -16,36 +16,26 @@
 
 package org.n52.sir.catalogconnection.impl;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import java.util.TimerTask;
 
-import org.apache.xmlbeans.XmlException;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
-import org.n52.sir.catalog.csw.CswFactory;
-import org.n52.sir.xml.ITransformer;
-import org.n52.sir.xml.ITransformer.TransformableFormat;
-import org.n52.sir.xml.TransformerModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 
 /**
  * 
@@ -101,15 +91,7 @@ public class Timer {
         }
     }
 
-    private static final String CLASSIFICATION_INIT_FILENAMES = "oss.catalogconnection.csw-ebrim.classificationInitFilenames";
-
-    private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
-
-    private static final String DO_NOT_CHECK_CATALOGS = "oss.catalogconnection.doNotCheckCatalogs";
-
     private static Logger log = LoggerFactory.getLogger(Timer.class);
-
-    private static final String SLOT_INIT_FILENAME = "oss.catalogconnection.csw-ebrim.slotInitFilename";
 
     private Map<URI, ICatalog> catalogCache = new HashMap<>();
 
@@ -121,52 +103,18 @@ public class Timer {
 
     private Properties props;
 
-    /**
-     * list from config file, NOT changed during runtime
-     */
-    private static ArrayList<URL> staticDoNotCheckCatalogsList = new ArrayList<>();
-
     private ArrayList<TaskElement> tasks = new ArrayList<>();
 
-    private ITransformer transformer;
+    private ICatalogFactory catalogFactory;
 
     @Inject
-    public Timer(ICatalogStatusHandler handler, @Named(CLASSIFICATION_INIT_FILENAMES)
-    String classificationFilenames, @Named(SLOT_INIT_FILENAME)
-    String slotInitFile, @Named(DO_NOT_CHECK_CATALOGS)
-    String doNotCheckCatalogs, Set<ITransformer> transformers) {
+    public Timer(ICatalogStatusHandler handler, ICatalogFactory catalogFactory) {
         this.catalogStatusHandler = handler;
-
-        this.transformer = TransformerModule.getFirstMatchFor(transformers,
-                                                              TransformableFormat.SML,
-                                                              TransformableFormat.EBRIM);
+        this.catalogFactory = catalogFactory;
 
         // TODO create inner quartz timer
         // timer = new Timer(getServletName(),
         // Boolean.parseBoolean(getInitParameter(IS_DAEMON_INIT_PARAM_NAME)));
-
-        // add classification init files
-        String[] splitted = classificationFilenames.split(CONFIG_FILE_LIST_SEPARATOR);
-        this.catalogInitClassificationFiles = new String[splitted.length];
-        for (int i = 0; i < splitted.length; i++) {
-            this.catalogInitClassificationFiles[i] = splitted[i].trim();
-        }
-
-        this.catalogSlotInitFile = slotInitFile;
-
-        // check if given url does not need to be checked
-        splitted = doNotCheckCatalogs.split(CONFIG_FILE_LIST_SEPARATOR);
-        for (String s : splitted) {
-            if ( !s.isEmpty()) {
-                try {
-                    staticDoNotCheckCatalogsList.add(new URL(s.trim()));
-                }
-                catch (MalformedURLException e) {
-                    log.warn("Could not parse catalog url from 'do not check' list, was '{}'. Catalog will be checked during runtime!",
-                             s.trim());
-                }
-            }
-        }
 
         log.info("NEW {}", this);
     }
@@ -188,8 +136,7 @@ public class Timer {
     public ICatalog getCatalog(ICatalogConnection conn) throws OwsExceptionReport {
         try {
             if ( !this.catalogCache.containsKey(conn.getCatalogURL().toURI())) {
-                ICatalogFactory catFact = getCatalogFactory(conn.getCatalogURL());
-                ICatalog catalog = catFact.getCatalog();
+                ICatalog catalog = this.catalogFactory.getCatalog(conn.getCatalogURL());
                 this.catalogCache.put(conn.getCatalogURL().toURI(), catalog);
             }
 
@@ -200,26 +147,6 @@ public class Timer {
         }
 
         return null;
-    }
-
-    /**
-     * 
-     * @param catalogUrl
-     * @return A new instance of the appropriate catalog factory for the given URL.
-     */
-    private ICatalogFactory getCatalogFactory(URL catalogUrl) throws OwsExceptionReport {
-        try {
-            ICatalogFactory newFactory = new CswFactory(catalogUrl,
-                                                        this.catalogInitClassificationFiles,
-                                                        this.catalogSlotInitFile,
-                                                        staticDoNotCheckCatalogsList.contains(catalogUrl),
-                                                        this.transformer);
-            return newFactory;
-        }
-        catch (XmlException | IOException e) {
-            log.error("Could not create CswFactory.", e);
-            throw new OwsExceptionReport("Error parsing document(s) to initialize a catalog factory.", e);
-        }
     }
 
     /**
@@ -239,11 +166,6 @@ public class Timer {
         this.tasks.add(new TaskElement(identifier, task, delay, period));
     }
 
-    /**
-     * 
-     * @param task
-     * @param date
-     */
     public void submit(TimerTask task, Date date) {
         // timer.schedule(task, date);
         log.debug("Submitted: {} to run at {}", task, date);

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.n52.oss.testdata.json;
+package org.n52.sir.data;
 
 /**
  * @author Yakoub
  */
-import static org.junit.Assert.assertNotEquals;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -53,7 +52,7 @@ public class DummySensorGenerator {
 
     @Inject
     private Client client;
-    
+
     @BeforeClass
     public static void setUp() {
         GuiceUtil.configureSirClient();
@@ -109,9 +108,9 @@ public class DummySensorGenerator {
             XmlObject res = this.client.xSendPostRequest(req);
 
             InsertSensorInfoResponseDocument resp = InsertSensorInfoResponseDocument.Factory.parse(res.getDomNode());
-            assertNotEquals("Failed to insert sensor",
-                            resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors(),
-                            0);
+            if (resp.getInsertSensorInfoResponse().getNumberOfInsertedSensors() < 1)
+                System.out.println("Failed to insert sensor");
+
             /*
              * Insert into apache solr
              */

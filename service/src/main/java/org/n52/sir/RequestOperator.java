@@ -177,6 +177,8 @@ public class RequestOperator {
             return new ExceptionResponse(owser.getDocument());
         }
 
+        request.setRequestUri(requestUri);
+
         // getCapabilities request
         if (request instanceof SirGetCapabilitiesRequest) {
             GetCapabilitiesListener capListener = (GetCapabilitiesListener) this.reqListener.get(SirConstants.Operations.GetCapabilities.name());
@@ -275,15 +277,6 @@ public class RequestOperator {
             response = subscriptionListener.receiveRequest(request);
             if ( ! (response instanceof ExceptionResponse))
                 log.debug("Subscription operation operation executed, not implemented though!");
-        }
-
-        if (request == null) {
-            OwsExceptionReport se = new OwsExceptionReport();
-            se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest,
-                                 null,
-                                 "The request was sent in an unknown format or is invalid!");
-            log.error("Request is unknown!", se);
-            return new ExceptionResponse(se.getDocument());
         }
 
         return response;

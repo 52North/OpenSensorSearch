@@ -16,26 +16,43 @@
 
 package org.n52.sir;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 
+import org.n52.oss.config.AbstractConfigModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
-public class ConfigModule extends AbstractModule {
+public class ConfigModule extends AbstractConfigModule {
 
     private static Logger log = LoggerFactory.getLogger(ConfigModule.class);
 
+    private static final String HOME_CONFIG_FILE = "org.n52.oss.service.sir.properties";
+
     @Override
     protected void configure() {
-        Properties sirProps = loadProperties("/prop/sir.properties");
-        Names.bindProperties(binder(), sirProps);
+        try {
+            Properties sirProps = loadProperties("/prop/sir.properties");
 
-        log.debug("Loaded and bound properties:\n\t{}", sirProps);
+            // update properties from home folder file
+            sirProps = updateFromUserHome(sirProps, HOME_CONFIG_FILE);
+
+            // bind properties class
+            bind(Properties.class).annotatedWith(Names.named("sir_properties")).toInstance(sirProps);
+
+            // bind alle properties as named properties
+            Names.bindProperties(binder(), sirProps);
+
+            log.debug("Loaded and bound properties:\n\t{}", sirProps);
+        }
+        catch (Exception e) {
+            log.error("Could not load properties file.", e);
+        }
+
+        bind(SirConfigurator.class);
+
+        // overwrite with properties from home folder
 
         // these don't work yet - use workaround with org.w3c.dom.Document
         // bind(OwsExMessageBodyWriter.class);
@@ -44,20 +61,4 @@ public class ConfigModule extends AbstractModule {
         log.info("Configured {}", this);
     }
 
-    // FIXME use this method everywhere for file loading with try-with
-    public static Properties loadProperties(String name) {
-        URL url = ConfigModule.class.getResource(name);
-        log.trace("Loading properties for {} from {}", name, url);
-
-        Properties properties = new Properties();
-        try (InputStream s = url.openStream();) {
-            properties.load(s);
-            log.trace("Loaded properties: {}", properties);
-        }
-        catch (Exception e) {
-            log.error("Could not load properties file.", e);
-        }
-
-        return properties;
-    }
 }

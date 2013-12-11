@@ -33,6 +33,8 @@ import org.n52.sir.util.GMLDateParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
@@ -43,6 +45,7 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
 
     private PGConnectionPool cpool;
 
+    @Inject
     public PGSQLInsertSensorStatusDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }

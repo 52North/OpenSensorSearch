@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.n52.sir.catalog;
+
+import org.n52.sir.catalog.csw.CswFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+
 /**
- * @author Yakoub
- */
-
-package org.n52.oss.testdata.json;
-
-import java.util.List;
-
-/**
- * A utility class that's used to parse random generated sensor data encoded as json.
  * 
  * @author Daniel
  * 
  */
-public class JSONSensor {
+public class CatalogModule extends AbstractModule {
 
-    public int uniqueId;
-    public String beginPosition;
-    public String endPosition;
-    public List<String> keywords;
-    public String contacts;
-    public List<Object> Identifiers;
-    public String lat;
-    public String lng;
+    private static Logger log = LoggerFactory.getLogger(CatalogModule.class);
+
+    @Override
+    protected void configure() {
+        bind(ICatalogStatusHandler.class).to(CatalogStatusHandlerImpl.class);
+        bind(ICatalogFactory.class).to(CswFactory.class);
+
+        log.debug("Configured {}", this);
+    }
 
 }

@@ -23,7 +23,6 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.impl.values.XmlAnyTypeImpl;
 import org.n52.oss.util.XmlTools;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.sml.SmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +35,13 @@ public class SirDescribeSensorResponse extends AbstractXmlResponse {
 
     private static Logger log = LoggerFactory.getLogger(SirDescribeSensorResponse.class);
 
-    /**
-     * String of the requested sensorMLDocument
-     */
     private XmlObject sensorML;
+
+    private boolean validateResponse;
+
+    public SirDescribeSensorResponse(boolean validateResponse) {
+        this.validateResponse = validateResponse;
+    }
 
     @Override
     public SensorMLDocument createXml() {
@@ -75,7 +77,7 @@ public class SirDescribeSensorResponse extends AbstractXmlResponse {
         cursor.setAttributeText(XmlTools.SCHEMA_LOCATION_ATTRIBUTE_QNAME, XmlTools.getSensorMLSchemaLocation());
         cursor.dispose();
 
-        if (SirConfigurator.getInstance().isValidateResponses()) {
+        if (this.validateResponse) {
             if ( !document.validate())
                 log.warn("Service created invalid document!\n" + XmlTools.validateAndIterateErrors(document));
         }

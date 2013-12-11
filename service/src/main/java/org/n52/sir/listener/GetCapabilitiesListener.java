@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.SirConstants.CapabilitiesSection;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IGetCapabilitiesDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirGetCapabilitiesRequest;
@@ -41,7 +43,7 @@ import com.google.inject.Inject;
 /**
  * 
  * @author Daniel
- *
+ * 
  */
 public class GetCapabilitiesListener implements ISirRequestListener {
 
@@ -51,32 +53,37 @@ public class GetCapabilitiesListener implements ISirRequestListener {
 
     private IGetCapabilitiesDAO capDao;
 
-    @Inject
-    public GetCapabilitiesListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
+    private SirConfigurator config;
 
-        try {
-            this.capDao = factory.getCapabilitiesDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the getCapabilitiesDAO", se);
-            throw se;
-        }
+    @Inject
+    public GetCapabilitiesListener(SirConfigurator config, IGetCapabilitiesDAO dao) {
+        this.config = config;
+        this.capDao = dao;
+
+        log.info("NEW {}", this);
     }
 
     private void checkAcceptedVersions(String[] versions) throws OwsExceptionReport {
-        // String serviceVersion = SirConfigurator.getInstance().getServiceVersion();
-        for (String version : versions) {
-            ListenersTools.checkVersionParameter(version);
+        String serviceVersion = this.config.getServiceVersion();
+        String[] acceptedServiceVersions = this.config.getAcceptedServiceVersions();
 
-            // if (version.equals(serviceVersion)) {
-            // return;
-            // }
+        for (String version : versions) {
+            List<String> versionsList = Arrays.asList(acceptedServiceVersions);
+
+            if (version == null || !versionsList.contains(version)) {
+                OwsExceptionReport se = new OwsExceptionReport();
+                se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
+                                     "version",
+                                     "The Parameter 'version' does not contain the version of this SIR: '"
+                                             + serviceVersion + "'");
+                log.error("The accepted versions parameter is incorrect.", se);
+                throw se;
+            }
         }
     }
 
     private ArrayList<CapabilitiesSection> checkSections(String[] sections) throws OwsExceptionReport {
-        ArrayList<CapabilitiesSection> responseSection = new ArrayList<CapabilitiesSection>();
+        ArrayList<CapabilitiesSection> responseSection = new ArrayList<>();
         for (String section : sections) {
             if (section.equalsIgnoreCase(CapabilitiesSection.Contents.name())) {
                 responseSection.add(CapabilitiesSection.Contents);
@@ -101,8 +108,9 @@ public class GetCapabilitiesListener implements ISirRequestListener {
                                              + "'. Please use only this values: "
                                              + CapabilitiesSection.ServiceIdentification.name() + ", "
                                              + CapabilitiesSection.ServiceProvider.name() + ", "
-                                             + CapabilitiesSection.OperationsMetadata.name() + ", " + CapabilitiesSection.Contents.name()
-                                             + ", " + CapabilitiesSection.All.name());
+                                             + CapabilitiesSection.OperationsMetadata.name() + ", "
+                                             + CapabilitiesSection.Contents.name() + ", "
+                                             + CapabilitiesSection.All.name());
                 log.error("The sections parameter is incorrect.", se);
                 throw se;
             }
@@ -115,7 +123,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
 
             try {
                 Calendar usDate = GMLDateParser.getInstance().parseString(updateSequence);
-                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(SirConfigurator.getInstance().getUpdateSequence());
+                Calendar sorUpdateSequence = GMLDateParser.getInstance().parseString(this.config.getUpdateSequence());
                 if (usDate.equals(sorUpdateSequence)) {
                     return true;
                 }
@@ -151,7 +159,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         try {
             SirGetCapabilitiesRequest sirRequest = (SirGetCapabilitiesRequest) request;
-            SirGetCapabilitiesResponse response = new SirGetCapabilitiesResponse();
+            SirGetCapabilitiesResponse response = new SirGetCapabilitiesResponse(this.config, request.getRequestUri());
 
             // check service
             ListenersTools.checkServiceParameter(sirRequest.getService());
@@ -165,7 +173,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
                 response.setSections(checkSections(sirRequest.getSections()));
             }
             else {
-                ArrayList<CapabilitiesSection> temp = new ArrayList<CapabilitiesSection>();
+                ArrayList<CapabilitiesSection> temp = new ArrayList<>();
                 temp.add(CapabilitiesSection.All);
                 response.setSections(temp);
             }
@@ -173,7 +181,7 @@ public class GetCapabilitiesListener implements ISirRequestListener {
             // check updateSequence
             if (sirRequest.getUpdateSequence() != null) {
                 if (checkUpdateSequenceEquals(sirRequest.getUpdateSequence())) {
-                    return new SirGetCapabilitiesResponse();
+                    return new SirGetCapabilitiesResponse(this.config, request.getRequestUri());
                 }
             }
 

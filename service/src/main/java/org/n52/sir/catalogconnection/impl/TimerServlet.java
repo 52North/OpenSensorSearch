@@ -16,18 +16,8 @@
 
 package org.n52.sir.catalogconnection.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,18 +26,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.UnavailableException;
 
-import org.apache.xmlbeans.XmlException;
-import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.catalog.ICatalog;
-import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.ICatalogStatusHandler;
-import org.n52.sir.catalog.csw.CswFactory;
-import org.n52.sir.xml.ITransformer;
-import org.n52.sir.xml.ITransformer.TransformableFormat;
-import org.n52.sir.xml.TransformerModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,14 +81,6 @@ public class TimerServlet extends GenericServlet {
         }
     }
 
-    private static final String CLASSIFICATION_INIT_FILENAMES = "CLASSIFICATION_INIT_FILENAMES";
-
-    private static final String CONFIG_FILE_LIST_SEPARATOR = ",";
-
-    private static final String DO_NOT_CHECK_CATALOGS = "DO_NOT_CHECK_CATALOGS";
-
-    private static final String INIT_PARAM_CONFIG_FILE = "configFile";
-
     private static final String IS_DAEMON_INIT_PARAM_NAME = "isDaemon";
 
     private static Logger log = LoggerFactory.getLogger(TimerServlet.class);
@@ -120,46 +93,17 @@ public class TimerServlet extends GenericServlet {
     private static final long serialVersionUID = 4704774153636727580L;
 
     /**
-     * propertyname of SLOT_INIT_FILENAME property
-     */
-    private static final String SLOT_INIT_FILENAME = "SLOT_INIT_FILENAME";
-
-    /**
      * Inner {@link Timer} that might run as a daemon according to the init parameter
      * {@link TimerServlet#IS_DAEMON_INIT_PARAM_NAME} in the servlet defintion (web.xml).
      */
     private static Timer timer;
 
-    private Map<URI, ICatalog> catalogCache = new HashMap<>();
-
-    private String[] catalogInitClassificationFiles;
-
-    private String catalogSlotInitFile;
-
     private ICatalogStatusHandler catalogStatusHandler;
 
-    private final String CONFIG_DIRECTORY = "CONFIG_DIRECTORY";
-
-    private Properties props;
-
-    /**
-     * list from config file, NOT changed during runtime
-     */
-    private ArrayList<URL> staticDoNotCheckCatalogsList;
-
-    /**
-     * List that holds all repeated task during run-time.
-     */
-    private ArrayList<TaskElement> tasks;
-
-    private ITransformer transformer;
+    private ArrayList<TaskElement> tasks = new ArrayList<>();
 
     @Inject
-    public TimerServlet(Set<ITransformer> transformers) {
-        this.transformer = TransformerModule.getFirstMatchFor(transformers,
-                                                              TransformableFormat.SML,
-                                                              TransformableFormat.EBRIM);
-
+    public TimerServlet() {
         log.info("NEW {}", this);
     }
 
@@ -181,49 +125,6 @@ public class TimerServlet extends GenericServlet {
         timer = null;
 
         log.info("destroyed.");
-    }
-
-    public ICatalog getCatalog(ICatalogConnection conn) throws OwsExceptionReport {
-        try {
-            if ( !this.catalogCache.containsKey(conn.getCatalogURL().toURI())) {
-                ICatalogFactory catFact = getCatalogFactory(conn.getCatalogURL());
-                ICatalog catalog = catFact.getCatalog();
-                this.catalogCache.put(conn.getCatalogURL().toURI(), catalog);
-            }
-
-            return this.catalogCache.get(conn.getCatalogURL().toURI());
-        }
-        catch (URISyntaxException e) {
-            log.error("URI", e);
-        }
-
-        return null;
-    }
-
-    /**
-     * 
-     * returns new catalog factory
-     * 
-     * @param catalogUrl
-     * @return A new instance of the appropriate catalog factory for the given URL.
-     * @throws OwsExceptionReport
-     *         If there is a problem reading or parsing the init files for the catalog factory.
-     */
-    private ICatalogFactory getCatalogFactory(URL catalogUrl) throws OwsExceptionReport {
-        try {
-            ICatalogFactory newFactory = new CswFactory(catalogUrl,
-                                                        this.catalogInitClassificationFiles,
-                                                        this.catalogSlotInitFile,
-                                                        Boolean.valueOf(this.staticDoNotCheckCatalogsList.contains(catalogUrl)),
-                                                        this.transformer);
-            return newFactory;
-        }
-        catch (XmlException xe) {
-            throw new OwsExceptionReport("Error parsing document(s) to initialize a catalog factory.", xe);
-        }
-        catch (IOException ioe) {
-            throw new OwsExceptionReport("Error reading document(s) to initialize a catalog factory.", ioe);
-        }
     }
 
     /**
@@ -254,79 +155,12 @@ public class TimerServlet extends GenericServlet {
         super.init();
         log.info(" * Initializing Timer ... ");
 
-        ServletContext context = getServletContext();
-
-        this.tasks = new ArrayList<>();
-
         // create inner Timer
         timer = new Timer(getServletName(), Boolean.parseBoolean(getInitParameter(IS_DAEMON_INIT_PARAM_NAME)));
-
-        // get configFile as Inputstream
-        InputStream configStream = context.getResourceAsStream(getInitParameter(INIT_PARAM_CONFIG_FILE));
-        if (configStream == null) {
-            log.error("Could not opoen the config file!");
-            throw new UnavailableException("Could not open the config file.");
-        }
-
-        // load properties file
-        try {
-            this.props = loadProperties(configStream);
-        }
-        catch (IOException e) {
-            log.error("Could not load properties file!");
-            throw new UnavailableException("Could not load properties file!");
-        }
-
-        String basepath = context.getRealPath("/");
-        String configDirectory = this.props.getProperty(this.CONFIG_DIRECTORY);
-
-        // add classification init files
-        String[] splitted = this.props.getProperty(CLASSIFICATION_INIT_FILENAMES).split(CONFIG_FILE_LIST_SEPARATOR);
-        this.catalogInitClassificationFiles = new String[splitted.length];
-        for (int i = 0; i < splitted.length; i++) {
-            this.catalogInitClassificationFiles[i] = basepath + configDirectory + splitted[i].trim();
-        }
-
-        this.catalogSlotInitFile = basepath + configDirectory + this.props.getProperty(SLOT_INIT_FILENAME);
-
-        // check if given url does not need to be checked
-        this.staticDoNotCheckCatalogsList = new ArrayList<>();
-        splitted = this.props.getProperty(DO_NOT_CHECK_CATALOGS).split(",");
-        for (String s : splitted) {
-            if ( !s.isEmpty()) {
-                try {
-                    this.staticDoNotCheckCatalogsList.add(new URL(s.trim()));
-                }
-                catch (MalformedURLException e) {
-                    log.warn("Could not parse catalog url from 'do not check' list, was '" + s
-                            + "'. Catalog will be checked during runtime!");
-                }
-            }
-        }
 
         log.info(" ***** Timer initiated successfully! ***** ");
     }
 
-    /**
-     * method loads the config file
-     * 
-     * @param is
-     *        InputStream containing the config file
-     * @return Returns properties of the given config file
-     * @throws IOException
-     */
-    private Properties loadProperties(InputStream is) throws IOException {
-        Properties properties = new Properties();
-        properties.load(is);
-
-        return properties;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
-     */
     @Override
     public void service(ServletRequest req, ServletResponse res) {
         throw new UnsupportedOperationException("Not supperted by TimerServlet!");
@@ -351,11 +185,6 @@ public class TimerServlet extends GenericServlet {
         this.tasks.add(new TaskElement(identifier, task, delay, period));
     }
 
-    /**
-     * 
-     * @param task
-     * @param date
-     */
     public void submit(TimerTask task, Date date) {
         timer.schedule(task, date);
         if (log.isDebugEnabled()) {
@@ -363,11 +192,6 @@ public class TimerServlet extends GenericServlet {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

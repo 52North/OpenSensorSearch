@@ -123,13 +123,17 @@ public class CswCatalog implements ICatalog {
 
     private ITransformer transformer;
 
-    public CswCatalog(SimpleSoapCswClient c,
+    private ISearchSensorDAO searchDao;
+
+    public CswCatalog(ISearchSensorDAO searchDao,
+                      SimpleSoapCswClient c,
                       List<XmlObject> classificationInitDocs,
                       XmlObject slotInitDoc,
                       ITransformer transformer) {
         initialize(c, classificationInitDocs, slotInitDoc);
         this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
         this.transformer = transformer;
+        this.searchDao = searchDao;
     }
 
     @Override
@@ -200,8 +204,7 @@ public class CswCatalog implements ICatalog {
         // get all sensor descriptions
         Collection<SirSearchResultElement> sensors;
         try {
-            ISearchSensorDAO searchDAO = SirConfigurator.getInstance().getFactory().searchSensorDAO();
-            sensors = searchDAO.getAllSensors(false);
+            sensors = this.searchDao.getAllSensors(false);
         }
         catch (OwsExceptionReport e) {
             log.error("Error searching for sensor descriptions.", e);
@@ -541,12 +544,6 @@ public class CswCatalog implements ICatalog {
         return this.checker.checkClient(this.client);
     }
 
-    /**
-     * @param c
-     * @param docs
-     * @param slotInitDoc
-     * 
-     */
     private void initialize(SimpleSoapCswClient c, List<XmlObject> classificationInitDocs, XmlObject slotInitDoc) {
         this.client = c;
         this.identifiableCache = new CswCatalogCache();

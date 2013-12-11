@@ -30,6 +30,8 @@ import org.n52.sir.ds.IDescribeSensorDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
@@ -40,6 +42,7 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
 
     private PGConnectionPool cpool;
 
+    @Inject
     public PGSQLDescribeSensorDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }

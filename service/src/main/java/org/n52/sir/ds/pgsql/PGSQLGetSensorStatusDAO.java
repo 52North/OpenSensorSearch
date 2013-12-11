@@ -41,6 +41,8 @@ import org.n52.sir.ds.IGetSensorStatusDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
@@ -51,6 +53,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
 
     private PGConnectionPool cpool;
 
+    @Inject
     public PGSQLGetSensorStatusDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }
@@ -431,10 +434,10 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
     private Collection<SirStatusDescription> doQuery(String query) throws OwsExceptionReport {
         ArrayList<SirStatusDescription> result = new ArrayList<>();
 
-        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+        try (Connection con = this.cpool.getConnection();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query);) {
             log.debug(">>>Database Query: {}", query);
-
-            ResultSet rs = stmt.executeQuery(query);
 
             while (rs.next()) {
                 SirStatusDescription statusDesc = new SirStatusDescription();

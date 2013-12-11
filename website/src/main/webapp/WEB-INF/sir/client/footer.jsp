@@ -27,9 +27,7 @@
 	</p>
 	<p class="infotext">
 		<a href="./">Home</a> | <a href="client.jsp">Extended Client</a> | <a
-			href="formClient.html">Form Client</a> | <a href="javascript:void(0)"
-			onclick="window.external.AddSearchProvider('${service.url}${service.path}/OpenSearchDoc.xml');">Add
-			search to browser</a> | <a href="mailto:${sir.deploy.contact}">Contact</a>
+			href="formClient.html">Form Client</a>
 	</p>
 	<p class="infotext">
 		&copy;
@@ -38,12 +36,9 @@
 			Geospatial Software GmbH</a>
 	</p>
 	<p class="infotext">
-		For harvesting your sensor <a href="/scriptUpload.jsp">Upload
-			here</a>.
+		For harvesting your sensor <a href="/scriptUpload.jsp">Upload here</a>.
 	</p>
 
-	<p class="infotext">
-		<br />${project.name}
-		${project.version}-${build-commit} build at ${build-tstamp}></p>
+	<p class="infotext">${project.build.finalName} ${version}</p>
 
 </div>

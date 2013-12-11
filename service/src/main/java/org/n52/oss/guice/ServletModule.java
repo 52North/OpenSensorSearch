@@ -19,10 +19,10 @@ package org.n52.oss.guice;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.n52.oss.api.AutoCompleteResource;
 import org.n52.oss.api.TransformationResource;
 import org.n52.oss.api.UserAccessResource;
 import org.n52.oss.api.ValidatorResource;
-import org.n52.oss.autocomplete.AutoCompleteSearch;
 import org.n52.oss.opensearch.OpenSearch;
 import org.n52.sir.SIR;
 import org.n52.sir.harvest.exec.IJSExecute;
@@ -56,7 +56,7 @@ public class ServletModule extends JerseyServletModule {
         // bind(HelloGuice.class);
         // TODO move the binding to the respective modules
         bind(HarvestResource.class);
-        bind(AutoCompleteSearch.class);
+        bind(AutoCompleteResource.class);
         bind(OpenSearch.class);
         bind(SIR.class);
         bind(TransformationResource.class);
@@ -67,6 +67,8 @@ public class ServletModule extends JerseyServletModule {
 
         if (log.isDebugEnabled())
             filter("*").through(DebugFilter.class);
+
+        filter("*").through(CorsFilter.class);
 
         Map<String, String> params = new HashMap<>();
         params.put("com.sun.jersey.config.property.JSPTemplatesBasePath", "/WEB-INF");

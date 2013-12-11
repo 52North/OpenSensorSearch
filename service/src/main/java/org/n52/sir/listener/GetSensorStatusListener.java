@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.util.ArrayList;
@@ -26,8 +27,6 @@ import org.n52.oss.sir.api.SirSensorIdentification;
 import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.api.SirStatusDescription;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IGetSensorStatusDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirGetSensorStatusRequest;
@@ -53,16 +52,10 @@ public class GetSensorStatusListener implements ISirRequestListener {
     private IGetSensorStatusDAO getSensStatDao;
 
     @Inject
-    public GetSensorStatusListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
+    public GetSensorStatusListener(IGetSensorStatusDAO dao) {
+        this.getSensStatDao = dao;
 
-        try {
-            this.getSensStatDao = factory.getSensorStatusDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the getSensorStatusDAO", se);
-            throw se;
-        }
+        log.info("NEW {}", this);
     }
 
     @Override

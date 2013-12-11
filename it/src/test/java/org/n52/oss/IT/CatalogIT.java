@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.n52.oss.sir.csw;
+
+package org.n52.oss.IT;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Set;
 
 import org.apache.xmlbeans.XmlException;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.csw.CswFactory;
+import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.xml.ITransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +35,10 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
-public class CatalogTest {
+public class CatalogIT {
 
-    private static Logger log = LoggerFactory.getLogger(CatalogTest.class);
+    private static Logger log = LoggerFactory.getLogger(CatalogIT.class);
 
-    /**
-     * 
-     */
     private static void getCap() {
         URL url;
         try {
@@ -48,13 +49,14 @@ public class CatalogTest {
             return;
         }
 
-        String[] classInit = new String[] {"/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/sirClassificationInit.xml",
-                                           "/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/ISO19119-Services-Scheme.xml"};
+        String classInit = "/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/sirClassificationInit.xml, /home/daniel/workspace/SIR/WebContent/WEB-INF/conf/ISO19119-Services-Scheme.xml";
         String slotInit = "/home/daniel/workspace/SIR/WebContent/WEB-INF/conf/sirSlotInit.xml";
 
         ICatalogFactory factory;
+        ISearchSensorDAO dao = null;
+        Set<ITransformer> transformers = null;
         try {
-            factory = new CswFactory(url, classInit, slotInit, Boolean.FALSE, null);
+            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", transformers, dao);
         }
         catch (XmlException e) {
             log.error("Could not parse classification scheme file!", e);
@@ -67,7 +69,7 @@ public class CatalogTest {
 
         ICatalog client;
         try {
-            client = factory.getCatalog();
+            client = factory.getCatalog(url);
         }
         catch (OwsExceptionReport e1) {
             e1.printStackTrace();

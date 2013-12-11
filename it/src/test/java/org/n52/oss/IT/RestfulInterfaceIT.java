@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.n52.oss.rest;
+package org.n52.oss.IT;
 
 import java.net.URI;
 

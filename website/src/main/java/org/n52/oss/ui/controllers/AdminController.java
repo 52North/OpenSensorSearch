@@ -29,6 +29,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.n52.oss.ui.WebsiteConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -41,14 +43,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/admin")
 public class AdminController {
 
+    private static Logger log = LoggerFactory.getLogger(AdminController.class);
+
+    private static WebsiteConfig config = new WebsiteConfig();
+
+    public AdminController() {
+        log.info("NEW {}", this);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/validate")
     public String validateUser(@ModelAttribute(value = "username")
     String username, ModelMap map) {
+
         try {
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String token = userDetails.getPassword();
-            HttpPost post = new HttpPost(WebsiteConfig.BASE_URL + "/OpenSensorSearch/api/v1/user/validate");
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            HttpPost post = new HttpPost(config.getApiEndpoint() + "/user/validate");
+            List<NameValuePair> pairs = new ArrayList<>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("auth_token", token));
 

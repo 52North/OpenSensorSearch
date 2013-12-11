@@ -31,6 +31,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.n52.oss.ui.WebsiteConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -43,9 +45,17 @@ import com.google.gson.Gson;
 @RequestMapping(value = "/register")
 public class RegisterController {
 
-    public class status {
+    public class Status {
         public boolean success;
         public String reason;
+    }
+    
+    private static Logger log = LoggerFactory.getLogger(RegisterController.class);
+
+    private static WebsiteConfig config = new WebsiteConfig();
+
+    public RegisterController() {
+        log.info("NEW {}", this);
     }
 
     @RequestMapping(value = "/")
@@ -58,8 +68,8 @@ public class RegisterController {
     String username, @ModelAttribute(value = "password")
     String password, ModelMap map, RedirectAttributes rs) {
         try {
-            HttpPost post = new HttpPost(WebsiteConfig.BASE_URL + "/OpenSensorSearch/api/v1/user/register");
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            HttpPost post = new HttpPost(config.getApiEndpoint() + "/user/register");
+            List<NameValuePair> pairs = new ArrayList<>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));
             post.setEntity(new UrlEncodedFormEntity(pairs));
@@ -72,7 +82,7 @@ public class RegisterController {
             while ( (s = reader.readLine()) != null)
                 result.append(s);
 
-            status reg_result = new Gson().fromJson(result.toString(), status.class);
+            Status reg_result = new Gson().fromJson(result.toString(), Status.class);
             if (reg_result.success) {
                 map.put("RegisterSucceded", true);
                 return "redirect:/";

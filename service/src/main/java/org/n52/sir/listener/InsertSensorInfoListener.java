@@ -30,7 +30,6 @@ import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.request.AbstractSirRequest;
@@ -67,40 +66,22 @@ public class InsertSensorInfoListener implements ISirRequestListener {
     @Inject
     public InsertSensorInfoListener(IdentifierGenerator idGen,
                                     SirConfigurator configurator,
+                                    IInsertSensorInfoDAO dao,
                                     SOLRInsertSensorInfoDAO anotherInsSensorInfoDao) {
-        IDAOFactory factory = configurator.getInstance().getFactory();
-        this.validatorFactory = configurator.getInstance().getValidatorFactory();
+        this.validatorFactory = configurator.getValidatorFactory();
         this.identifierGenerator = idGen;
         this.anotherInsSensInfoDao = anotherInsSensorInfoDao;
 
-        try {
-            this.insSensInfoDao = factory.insertSensorInfoDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the insertSensorInfoDAO", se);
-        }
+        this.insSensInfoDao = dao;
+
+        log.info("NEW {}", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return InsertSensorInfoListener.OPERATION_NAME;
     }
 
-    /**
-     * @param response
-     * @param insertedSensors
-     * @param sensorInfo
-     * @param serviceInfos
-     * @param sensor
-     * @return
-     * @throws OwsExceptionReport
-     * @throws IOException
-     */
     private void insertSensor(SirInsertSensorInfoResponse response,
                               Collection<SirServiceReference> serviceRefs,
                               SirSensor sensor) throws OwsExceptionReport, IOException {
@@ -174,12 +155,6 @@ public class InsertSensorInfoListener implements ISirRequestListener {
         }
     }
 
-    /**
-     * 
-     * @param response
-     * @param newReference
-     * @throws OwsExceptionReport
-     */
     private void insertServiceReferences(SirInsertSensorInfoResponse response,
                                          SirInfoToBeInserted_ServiceReference newReference) throws OwsExceptionReport {
         Collection<SirServiceReference> referenceArray = newReference.getServiceReferences();
@@ -191,11 +166,6 @@ public class InsertSensorInfoListener implements ISirRequestListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.n52.sir.ISirRequestListener#receiveRequest(org.n52.sir.request. AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         log.debug("** Receiving request: {}", request);

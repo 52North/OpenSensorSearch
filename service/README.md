@@ -1,7 +1,7 @@
-OpenSensorSearch Webapp
-=======================
+Open Sensor Search Service Module
+=================================
 
+Configuration
+-------------
 
-Documentation tasks:
-* how to use oss.dev and oss.deploy profiles with Eclipse/Maven
-* ...
+See the main README.md for how to use the configuration files.

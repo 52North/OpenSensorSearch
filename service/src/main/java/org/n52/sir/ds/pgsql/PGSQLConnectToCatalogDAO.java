@@ -27,11 +27,13 @@ import java.util.List;
 
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.sir.catalog.CatalogConnectionImpl;
 import org.n52.sir.catalog.ICatalogConnection;
-import org.n52.sir.catalog.csw.CatalogConnectionImpl;
 import org.n52.sir.ds.IConnectToCatalogDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
 
 /**
  * @author Jan Schulte
@@ -43,6 +45,7 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
 
     private PGConnectionPool cpool;
 
+    @Inject
     public PGSQLConnectToCatalogDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }
@@ -64,17 +67,17 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
 
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             log.debug(">>>Database Query: {}", catalogConnectionList);
-            ResultSet rs = stmt.executeQuery(catalogConnectionList);
+            try (ResultSet rs = stmt.executeQuery(catalogConnectionList);) {
+                if (rs == null)
+                    return connections;
 
-            if (rs == null)
-                return connections;
-
-            while (rs.next()) {
-                String connectionID = rs.getString(PGDAOConstants.catalogIdSir);
-                URL url = new URL(rs.getString(PGDAOConstants.catalogUrl));
-                int pushInterval = rs.getInt(PGDAOConstants.pushInterval);
-                String status = rs.getString(PGDAOConstants.catalogStatus);
-                connections.add(new CatalogConnectionImpl(connectionID, url, pushInterval, status));
+                while (rs.next()) {
+                    String connectionID = rs.getString(PGDAOConstants.catalogIdSir);
+                    URL url = new URL(rs.getString(PGDAOConstants.catalogUrl));
+                    int pushInterval = rs.getInt(PGDAOConstants.pushInterval);
+                    String status = rs.getString(PGDAOConstants.catalogStatus);
+                    connections.add(new CatalogConnectionImpl(connectionID, url, pushInterval, status));
+                }
             }
         }
         catch (SQLException sqle) {
@@ -103,9 +106,10 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
 
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             log.debug(">>>Database Query: {}", getConnectionQuery);
-            ResultSet rs = stmt.executeQuery(getConnectionQuery);
-            while (rs.next()) {
-                connectionID = rs.getString(PGDAOConstants.catalogIdSir);
+            try (ResultSet rs = stmt.executeQuery(getConnectionQuery);) {
+                while (rs.next()) {
+                    connectionID = rs.getString(PGDAOConstants.catalogIdSir);
+                }
             }
         }
         catch (SQLException sqle) {
@@ -167,9 +171,10 @@ public class PGSQLConnectToCatalogDAO implements IConnectToCatalogDAO {
 
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             PGSQLConnectToCatalogDAO.log.debug(">>>Database Query: {}", insertCatalogQuery);
-            ResultSet rs = stmt.executeQuery(insertCatalogQuery);
-            while (rs.next()) {
-                connectionID = rs.getString(PGDAOConstants.catalogIdSir);
+            try (ResultSet rs = stmt.executeQuery(insertCatalogQuery);) {
+                while (rs.next()) {
+                    connectionID = rs.getString(PGDAOConstants.catalogIdSir);
+                }
             }
         }
         catch (SQLException sqle) {

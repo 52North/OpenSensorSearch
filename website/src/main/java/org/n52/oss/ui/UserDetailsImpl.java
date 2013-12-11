@@ -35,7 +35,7 @@ public class UserDetailsImpl implements UserDetails {
         this.username = user;
         this.password = password;
         if (authorities == null) {
-            this.authorities = new ArrayList<GrantedAuthorityImpl>();
+            this.authorities = new ArrayList<>();
             this.authorities.add(new GrantedAuthorityImpl("ROLE_USER"));
         }
         else

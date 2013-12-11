@@ -15,6 +15,8 @@
  */
 package org.n52.sir.request;
 
+import java.net.URI;
+
 /**
  * abstract super class for all sir request classes
  * 
@@ -23,44 +25,34 @@ package org.n52.sir.request;
  */
 public abstract class AbstractSirRequest {
 
-    /**
-     * service parameter
-     */
     private String service;
 
-    /**
-     * version parameter
-     */
     private String version;
 
-    /**
-     * @return the service
-     */
+    private URI requestUri;
+
     public String getService() {
         return this.service;
     }
 
-    /**
-     * @return the version
-     */
     public String getVersion() {
         return this.version;
     }
 
-    /**
-     * @param service
-     *        the service to set
-     */
     public void setService(String service) {
         this.service = service;
     }
 
-    /**
-     * @param version
-     *        the version to set
-     */
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public void setRequestUri(URI requestUri) {
+        this.requestUri = requestUri;
+    }
+
+    public URI getRequestUri() {
+        return this.requestUri;
     }
 
 }

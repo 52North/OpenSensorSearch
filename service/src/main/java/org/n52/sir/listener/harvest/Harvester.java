@@ -43,7 +43,6 @@ import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
@@ -56,7 +55,7 @@ import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
@@ -65,54 +64,47 @@ import com.google.inject.Inject;
 public abstract class Harvester implements Callable<ISirResponse> {
 
     private static Logger log = LoggerFactory.getLogger(Harvester.class);
+
     protected HashMap<String, String> failedSensors;
+
     protected IHarvestServiceDAO harvServDao;
+
     protected ArrayList<SirSensor> insertedSensors;
 
     private IInsertSensorInfoDAO insertSensorDao;
+
     private ISearchSensorDAO searchSensorDao;
+
     protected ArrayList<SirSensor> updatedSensors;
+
     protected IValidatorFactory validatorFactory;
 
-    @Inject
     private Client client;
 
-    public Harvester(IHarvestServiceDAO harvServDao) throws OwsExceptionReport {
+    protected SirHarvestServiceRequest request;
+
+    public Harvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
+    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
         this.harvServDao = harvServDao;
+        this.client = client;
 
         this.insertedSensors = new ArrayList<>();
         this.updatedSensors = new ArrayList<>();
         this.failedSensors = new HashMap<>();
 
-        SirConfigurator configurator = SirConfigurator.getInstance();
-        this.validatorFactory = configurator.getValidatorFactory();
+        this.validatorFactory = config.getValidatorFactory();
 
-        try {
-            IDAOFactory factory = configurator.getFactory();
-            this.insertSensorDao = factory.insertSensorInfoDAO();
-            this.searchSensorDao = factory.searchSensorDAO();
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Error while creating the harvestServiceDAO", e);
-            throw e;
-        }
+        this.insertSensorDao = insertDao;
+        this.searchSensorDao = searchDao;
+
+        log.info("NEW {}", this);
     }
 
-    /**
-     * @param request
-     * @param response
-     * @param insertedSensors
-     * @param failedSensors
-     * @param updatedSensors
-     * @param uri
-     * @param versionType
-     * @param serviceType
-     * @param outputFormatType
-     * @param procedureType
-     * @throws OwsExceptionReport
-     */
-    protected void processProcedure(SirHarvestServiceRequest request,
-                                    SirHarvestServiceResponse response,
+    public void setRequest(SirHarvestServiceRequest request) {
+        this.request = request;
+    }
+
+    protected void processProcedure(SirHarvestServiceResponse response,
                                     Collection<SirSensor> insertedSensorsP,
                                     Collection<SirSensor> updatedSensorsP,
                                     Map<String, String> failedSensorsP,
@@ -121,8 +113,8 @@ public abstract class Harvester implements Callable<ISirResponse> {
                                     String serviceType,
                                     ValueType outputFormatType,
                                     ValueType procedureType) {
-        log.info("Processing procedure: " + procedureType.getStringValue() + " for " + request.getServiceType() + " @ "
-                + request.getServiceUrl());
+        log.info("Processing procedure: " + procedureType.getStringValue() + " for " + this.request.getServiceType()
+                + " @ " + this.request.getServiceUrl());
 
         // increase number of found sensors in response
         response.setNumberOfFoundSensors(response.getNumberOfFoundSensors() + 1);
@@ -142,8 +134,8 @@ public abstract class Harvester implements Callable<ISirResponse> {
             XmlObject xmlResponse = this.client.xSendPostRequest(descSensorDoc, uri);
             sensorMLDocument = SensorMLDocument.Factory.parse(xmlResponse.getDomNode());
 
-            processSensorMLDocument(request.getServiceUrl(),
-                                    request.getServiceType(),
+            processSensorMLDocument(this.request.getServiceUrl(),
+                                    this.request.getServiceType(),
                                     insertedSensorsP,
                                     updatedSensorsP,
                                     sensorMLDocument,
@@ -160,7 +152,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
             response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
         }
         catch (IOException ioe) {
-            String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
+            String errMsg = "Error requesting SensorML document from " + this.request.getServiceType() + " @ "
                     + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + ioe.getMessage();
             log.error(errMsg);
             OwsExceptionReport se = new OwsExceptionReport();
@@ -170,7 +162,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
             response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
         }
         catch (OwsExceptionReport e) {
-            String errMsg = "Error requesting SensorML document from " + request.getServiceType() + " @ "
+            String errMsg = "Error requesting SensorML document from " + this.request.getServiceType() + " @ "
                     + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
             log.error(errMsg);
 
@@ -179,18 +171,6 @@ public abstract class Harvester implements Callable<ISirResponse> {
         }
     }
 
-    /**
-     * 
-     * @param serviceURL
-     * @param serviceType
-     * @param insertedSensors
-     * @param updatedSensors
-     * @param failedSensors
-     * @param sensorMLDocument
-     * @param serviceSpecificSensorId
-     * @throws OwsExceptionReport
-     * @throws IOException
-     */
     protected void processSensorMLDocument(String serviceURL,
                                            String serviceType,
                                            Collection<SirSensor> insertedSensorsP,
@@ -274,8 +254,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
      * @param currentUri
      * @throws OwsExceptionReport
      */
-    protected void processURI(SirHarvestServiceRequest request,
-                              Collection<SirSensor> insertedSensorsP,
+    protected void processURI(Collection<SirSensor> insertedSensorsP,
                               Map<String, String> failedSensorsP,
                               Collection<SirSensor> updatedSensorsP,
                               String sensorID,
@@ -291,15 +270,15 @@ public abstract class Harvester implements Callable<ISirResponse> {
             if (xmlResponse instanceof SensorMLDocument) {
                 sensorMLDocument = (SensorMLDocument) xmlResponse;
 
-                processSensorMLDocument(request.getServiceUrl(),
-                                        request.getServiceType(),
+                processSensorMLDocument(this.request.getServiceUrl(),
+                                        this.request.getServiceType(),
                                         insertedSensorsP,
                                         updatedSensorsP,
                                         sensorMLDocument,
                                         sensorID);
             }
             else {
-                String errMsg = "Did not get SensorML document from " + request.getServiceType() + " @ "
+                String errMsg = "Did not get SensorML document from " + this.request.getServiceType() + " @ "
                         + sensorDefinition.toString() + ": " + xmlResponse.xmlText();
                 OwsExceptionReport e = new OwsExceptionReport(OwsExceptionReport.ExceptionCode.InvalidRequest,
                                                               null,

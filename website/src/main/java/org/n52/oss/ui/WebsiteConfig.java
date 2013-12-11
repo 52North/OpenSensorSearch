@@ -17,6 +17,7 @@
 package org.n52.oss.ui;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,9 +41,7 @@ public class WebsiteConfig {
 
     protected static Logger log = LoggerFactory.getLogger(WebsiteConfig.class);
 
-    public static final String BASE_URL = "http://gsoc.dev.52north.org:8093";
-
-    private static final String CONFIG_FILE = "org.n52.oss.ui.properties";
+    private static final String CONFIG_FILE = "org.n52.oss.website.properties";
 
     private static final String SIR_ENDPOINT = "oss.ui.sir.endpoint";
 
@@ -68,6 +67,8 @@ public class WebsiteConfig {
         }
 
         String home = System.getProperty("user.home");
+        log.debug("Used home directory: {}", home);
+
         if (home != null) {
             File homeDirectory = new File(home);
 
@@ -75,7 +76,7 @@ public class WebsiteConfig {
                 if (homeDirectory != null && homeDirectory.isDirectory()) {
                     File configFile = new File(homeDirectory, CONFIG_FILE);
                     if (configFile != null && configFile.exists())
-                        try (Reader r = openFileWithFallback(configFile, CONFIG_FILE);) {
+                        try (FileReader r = new FileReader(configFile);) {
                             props.load(r);
                             log.debug("Loaded properties (overwriting defaults) from {}", configFile);
                         }
@@ -88,7 +89,7 @@ public class WebsiteConfig {
             }
         }
         else
-            log.warn("user.home is not specified. Will try to use fallback resources.");
+            log.warn("user.home is not specified. Will use default configuration.");
 
         load(props);
 
@@ -98,13 +99,6 @@ public class WebsiteConfig {
     private void load(Properties props) {
         this.sirEndpoint = props.getProperty(SIR_ENDPOINT);
         this.apiEndpoint = props.getProperty(API_ENDPOINT);
-    }
-
-    private Reader openFileWithFallback(File f, String fallbackResource) throws IOException {
-
-        log.info("File {} is not available. Try to use fallback at {}", (f != null ? f : "null"), fallbackResource);
-
-        return new InputStreamReader(openStreamForResource(fallbackResource));
     }
 
     private InputStream openStreamForResource(String string) throws IOException {

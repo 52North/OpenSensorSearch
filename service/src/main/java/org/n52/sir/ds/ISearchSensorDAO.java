@@ -31,6 +31,10 @@ import org.n52.oss.sir.ows.OwsExceptionReport;
  */
 public interface ISearchSensorDAO {
 
+    public String FULL = "full";
+
+    public String AUTOCOMPLETE = "autocomplete";
+
     /**
      * Get all available sensors.
      * 

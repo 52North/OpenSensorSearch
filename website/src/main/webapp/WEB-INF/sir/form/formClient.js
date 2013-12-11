@@ -36,6 +36,9 @@ $(document).ready(
 			// content : "test"
 			// });
 			// }
+			
+			$("form[name='requestform']").attr("action", sirEndpoint);
+			$("#sirEndpointLabel").text(sirEndpoint);
 		});
 
 function initExamples(datafolder) {

@@ -19,8 +19,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.SirConfigurator;
-import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.ds.IDescribeSensorDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirDescribeSensorRequest;
@@ -31,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 /**
  * @author Jan Schulte
@@ -44,41 +43,25 @@ public class DescribeSensorListener implements ISirRequestListener {
 
     private IDescribeSensorDAO descSensDao;
 
-    @Inject
-    public DescribeSensorListener(SirConfigurator config) throws OwsExceptionReport {
-        IDAOFactory factory = config.getInstance().getFactory();
+    private boolean validateResponses;
 
-        IDescribeSensorDAO descSensDAO = null;
-        try {
-            descSensDAO = factory.describeSensorDAO();
-        }
-        catch (OwsExceptionReport se) {
-            log.error("Error while creating the describeSensorDAO", se);
-            throw se;
-        }
-        this.descSensDao = descSensDAO;
+    @Inject
+    public DescribeSensorListener(IDescribeSensorDAO dao, @Named("oss.sir.responses.validate")
+    boolean validateResponses) {
+        this.descSensDao = dao;
+        this.validateResponses = validateResponses;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#getOperationName()
-     */
     @Override
     public String getOperationName() {
         return DescribeSensorListener.OPERATION_NAME;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request.AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         SirDescribeSensorRequest descSensReq = (SirDescribeSensorRequest) request;
 
-        SirDescribeSensorResponse response = new SirDescribeSensorResponse();
+        SirDescribeSensorResponse response = new SirDescribeSensorResponse(this.validateResponses);
 
         try {
             XmlObject sensorML = this.descSensDao.getSensorDescription(descSensReq.getSensorId());

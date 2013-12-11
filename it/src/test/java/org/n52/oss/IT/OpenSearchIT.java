@@ -17,7 +17,7 @@
  * @author Yakoub
  */
 
-package org.n52.oss.opensearch;
+package org.n52.oss.IT;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 import static org.hamcrest.MatcherAssert.assertThat;

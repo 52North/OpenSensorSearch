@@ -29,6 +29,8 @@ import org.n52.sir.ds.IHarvestServiceDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Inject;
+
 /**
  * @author Jan Schulte, Daniel Nüst
  * 
@@ -39,6 +41,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
 
     private PGConnectionPool cpool;
 
+    @Inject
     public PGSQLHarvestServiceDAO(PGConnectionPool cpool) {
         this.cpool = cpool;
     }

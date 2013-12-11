@@ -31,6 +31,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.n52.oss.ui.WebsiteConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -47,10 +49,18 @@ import com.google.gson.Gson;
 @Service("userAuthService")
 public class OSSAuthenticationProvider implements AuthenticationProvider {
 
+    private static Logger log = LoggerFactory.getLogger(OSSAuthenticationProvider.class);
+
     public class AuthToken {
         String auth_token;
         boolean isValid;
         boolean isAdmin;
+    }
+
+    private static WebsiteConfig config = new WebsiteConfig();
+
+    public OSSAuthenticationProvider() {
+        log.info("NEW {}", this);
     }
 
     @Override
@@ -64,7 +74,7 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
             if ( !token.isValid)
                 throw new UsernameNotFoundException("Username is not validated please contact site administration!");
 
-            final List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
+            final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_SCRIPT_AUTHOR"));
 
@@ -83,8 +93,8 @@ public class OSSAuthenticationProvider implements AuthenticationProvider {
 
     private AuthToken authenticateOSS(String username, String password) {
         try {
-            HttpPost post = new HttpPost(WebsiteConfig.BASE_URL + "/OpenSensorSearch/api/v1/user/login");
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            HttpPost post = new HttpPost(config.getApiEndpoint() + "/user/login");
+            List<NameValuePair> pairs = new ArrayList<>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));
             post.setEntity(new UrlEncodedFormEntity(pairs));

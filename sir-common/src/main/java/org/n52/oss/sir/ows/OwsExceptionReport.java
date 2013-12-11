@@ -93,6 +93,7 @@ public class OwsExceptionReport extends Exception {
     public OwsExceptionReport(String message, Throwable cause) {
         super(message, cause);
         this.excLevel = ExceptionLevel.DetailedExceptions;
+        addCodedException(ExceptionCode.NoApplicableCode, message, cause);
     }
 
     /**
@@ -113,10 +114,10 @@ public class OwsExceptionReport extends Exception {
      *        ExceptionCode of the added exception
      * @param locator
      *        String locator of the added exception
-     * @param e
+     * @param cause
      *        Exception which should be added
      */
-    public void addCodedException(ExceptionCode code, String locator, Exception e) {
+    public void addCodedException(ExceptionCode code, String locator, Throwable cause) {
 
         ExceptionType et = ExceptionType.Factory.newInstance();
         et.setExceptionCode(code.toString());
@@ -124,9 +125,9 @@ public class OwsExceptionReport extends Exception {
             et.setLocator(locator);
         }
 
-        String name = e.getClass().getName();
-        String message = e.getMessage();
-        StackTraceElement[] stackTraces = e.getStackTrace();
+        String name = cause.getClass().getName();
+        String message = cause.getMessage();
+        StackTraceElement[] stackTraces = cause.getStackTrace();
 
         StringBuffer sb = new StringBuffer();
         sb.append("[EXC] internal service exception");

@@ -18,9 +18,14 @@
 
 package org.n52.oss.ui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 public class UploadForm {
+
+    private static Logger log = LoggerFactory.getLogger(UploadForm.class);
+
     private String name;
 
     private CommonsMultipartFile file;
@@ -29,6 +34,7 @@ public class UploadForm {
 
     public UploadForm() {
         // added to allow spring to instantiate
+        log.info("NEW {}", this);
     }
 
     public CommonsMultipartFile getFile() {

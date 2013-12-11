@@ -45,7 +45,7 @@
 
 <script type="text/javascript">
 	var ossApiEndpoint = "<%=configBean.getApiEndpoint()%>";
-	console.log("OSS API endpoint: " + ossApiEndpoint);
+	console.log("ossApiEndpoint = " + ossApiEndpoint);
 	var sirEndpoint = "<%=configBean.getSirEndpoint()%>";
-	console.log("SIR endpoint: " + sirEndpoint);
+	console.log("sirEndpoint = " + sirEndpoint);
 </script>

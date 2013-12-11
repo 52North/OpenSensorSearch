@@ -68,7 +68,7 @@ public class SensorResource {
     protected URI baseUri;
 
     @Inject
-    public SensorResource(@Named("full")
+    public SensorResource(@Named(ISearchSensorDAO.FULL)
     ISearchSensorDAO searchDao, @Context
     UriInfo uri) {
         this.baseUri = uri.getBaseUriBuilder().path(ApiPaths.SENSORS_PATH).build();

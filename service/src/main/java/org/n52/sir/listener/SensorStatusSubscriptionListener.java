@@ -32,14 +32,9 @@ public abstract class SensorStatusSubscriptionListener implements ISirRequestLis
     private static Logger log = LoggerFactory.getLogger(SensorStatusSubscriptionListener.class);
 
     public SensorStatusSubscriptionListener() {
-        //
+        log.info("NEW {}", this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sir.listener.ISirRequestListener#receiveRequest(org.n52.sir.request.AbstractSirRequest)
-     */
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
         log.warn("Unsupported operation called!" + request);

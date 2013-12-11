@@ -54,7 +54,6 @@ public class ListenerModule extends AbstractModule {
         uriBinder.addBinding().to(SubscribeSensorStatusListener.class);
         uriBinder.addBinding().to(UpdateSensorDescriptionListener.class);
 
-        // bind plugin dependencies...
         log.debug("Configured {}", this);
     }
 

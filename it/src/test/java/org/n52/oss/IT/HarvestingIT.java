@@ -27,7 +27,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 
-import org.apache.http.HttpException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Before;
@@ -35,7 +34,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSearchResultElement;
-import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.util.GuiceUtil;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
 import org.n52.sir.ds.solr.SolrConnection;
@@ -43,7 +41,7 @@ import org.x52North.sir.x032.HarvestServiceRequestDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument.HarvestServiceResponse.InsertedSensor;
 
-public class Harvesting {
+public class HarvestingIT {
 
     private static Client client;
 
@@ -66,8 +64,6 @@ public class Harvesting {
 
     @Test
     public void harvestService() throws IOException,
-            OwsExceptionReport,
-            HttpException,
             XmlException,
             URISyntaxException {
         File f = new File(ClassLoader.getSystemResource("Requests/HarvestService_WeatherSOS.xml").getFile());

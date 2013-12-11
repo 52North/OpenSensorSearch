@@ -44,14 +44,18 @@
 				</dd>
 			</dl>
 		</div>
-		<p class="text-center" style="margin-top: 10px;">Copyright © 2013
-			52°North Initiative for Geospatial Open Source Software GmbH. All
-			Rights Reserved.</p>
+		<p class="text-center" style="margin-top: 10px;">Copyright &copy; 2013
+			52&deg;North Initiative for Geospatial Open Source Software GmbH. All
+			Rights Reserved. | ${project.build.finalName} version ${version}</p>
 	</div>
 </div>
 
 <!-- load scripts -->
-<script src="lib/jquery.js"></script>
-<script src="lib/jquery-ui.min.js"></script>
-<script src="lib/bootstrap.js"></script>
-<script src="lib/jquery.bsAlerts.min.js"></script>
+<script src="lib/jquery.js" type="text/javascript"></script>
+<script src="lib/jquery-ui.min.js" type="text/javascript"></script>
+<script src="lib/bootstrap.js" type="text/javascript"></script>
+<script src="lib/jquery.bsAlerts.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$("#apiEndpointMenuLink").attr("href", ossApiEndpoint);
+</script>

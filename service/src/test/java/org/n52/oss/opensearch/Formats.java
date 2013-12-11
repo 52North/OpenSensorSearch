@@ -98,7 +98,7 @@ public class Formats {
     private static String sensorIdentifier = "my:mockup:id:42";
 
     @BeforeClass
-    public static void setUp() throws OwsExceptionReport {
+    public static void setUp() throws OwsExceptionReport, URISyntaxException {
         osConfig = new OpenSearchConfigurator();
 
         mockupDao = mock(ISearchSensorDAO.class);
@@ -109,7 +109,8 @@ public class Formats {
         SirSearchResultElement elem = new SirSearchResultElement();
         elem.setLastUpdate(new Date(0l));
         elem.setSensorId(sensorIdentifier);
-        elem.setSensorDescription(new SirSimpleSensorDescription(null, "description", "url"));
+        SirSimpleSensorDescription sd = new SirSimpleSensorDescription(null, "description", "url");
+        elem.setSensorDescription(sd);
         resultElements.add(elem);
 
         when(mockupDao.searchSensor(any(SirSearchCriteria.class), eq(true))).thenReturn(resultElements);
@@ -119,18 +120,20 @@ public class Formats {
         when(queryMap.getFirst("q")).thenReturn(query);
         when(queryUriInfo.getQueryParameters()).thenReturn(queryMap);
 
-        ssl = new SearchSensorListener(mockupDao, mockupDao, new SirClient("test", "beta"));
+        ssl = new SearchSensorListener(mockupDao, mockupDao, new SirClient("http://sir.url/endpoint", "develop"));
         Injector i = GuiceUtil.configurePropertiesFiles();
         i.injectMembers(ssl);
 
         listeners = new HashSet<>();
-        listeners.add(new JsonListener(osConfig));
+        JsonListener l = new JsonListener(osConfig);
+        listeners.add(l);
     }
 
     @Before
-    public void createListener() throws URISyntaxException {
+    public void createResource() throws URISyntaxException {
         UriInfo uri = mock(UriInfo.class);
-        when(uri.getBaseUri()).thenReturn(new URI("http://localhost:8080/test12"));
+        when(uri.getAbsolutePath()).thenReturn(new URI("http://localhost:8080/test/homepage/search"));
+        when(uri.getBaseUri()).thenReturn(new URI("http://localhost:8080/test/homepage"));
         this.opensearch = new OpenSearch(appConstants, ssl, osConfig, listeners, uri);
     }
 

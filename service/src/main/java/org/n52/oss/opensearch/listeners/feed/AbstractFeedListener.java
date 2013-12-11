@@ -152,6 +152,10 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
     @Override
     public Response createResponse(final Collection<SirSearchResultElement> searchResult,
                                    final MultivaluedMap<String, String> params) throws OwsExceptionReport {
+        if (this.openSearchEndpoint == null || this.homeUri == null) {
+            log.error("Could not create response because OpenSearch endpoint or home URI are not set: {}", this);
+            return Response.serverError().build();
+        }
 
         StreamingOutput stream = new StreamingOutput() {
             @Override
@@ -192,5 +196,27 @@ public abstract class AbstractFeedListener implements OpenSearchListener {
     }
 
     protected abstract String getFeedType();
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("AbstractFeedListener [");
+        if (this.conf != null) {
+            builder.append("conf=");
+            builder.append(this.conf);
+            builder.append(", ");
+        }
+        if (this.openSearchEndpoint != null) {
+            builder.append("openSearchEndpoint=");
+            builder.append(this.openSearchEndpoint);
+            builder.append(", ");
+        }
+        if (this.homeUri != null) {
+            builder.append("homeUri=");
+            builder.append(this.homeUri);
+        }
+        builder.append("]");
+        return builder.toString();
+    }
 
 }

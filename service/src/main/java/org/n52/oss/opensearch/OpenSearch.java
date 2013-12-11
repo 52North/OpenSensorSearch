@@ -94,6 +94,8 @@ public class OpenSearch {
 
         this.listeners = new HashMap<>();
         for (OpenSearchListener l : listeners) {
+            // setting the endpoint and home URL at runtime based on UriInfo - not nice for object
+            // instantiation, but less fixed configuration
             l.setOpenSearchEndpoint(this.uri);
             URI homeUri = uri.getBaseUri();
             l.setHomeURI(homeUri);
@@ -362,48 +364,35 @@ public class OpenSearch {
         return searchCriteria;
     }
 
-    // private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws
-    // IOException {
-    // log.debug("Redirecting... {}", req);
-    //
-    // StringBuilder sb = new StringBuilder();
-    //
-    // sb.append(this.configurator.getFullOpenSearchPath());
-    // sb.append("?");
-    //
-    // Enumeration< ? > params = req.getParameterNames();
-    // while (params.hasMoreElements()) {
-    // String s = (String) params.nextElement();
-    // sb.append(s);
-    // sb.append("=");
-    // String[] parameterValues = req.getParameterValues(s);
-    // for (String sVal : parameterValues) {
-    // sb.append(sVal);
-    // sb.append(",");
-    // }
-    //
-    // sb.replace(sb.length() - 1, sb.length(), "&");
-    // }
-    //
-    // sb.append(OpenSearchConstants.FORMAT_PARAM);
-    // sb.append("=");
-    // sb.append(OpenSearchConstants.X_DEFAULT_MIME_TYPE);
-    // log.debug("Redirecting to {}", sb.toString());
-    // resp.sendRedirect(sb.toString());
-    // }
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("OpenSearch [");
+        StringBuilder builder = new StringBuilder();
+        builder.append("OpenSearch [");
         if (this.configurator != null) {
-            sb.append("config = ");
-            sb.append(this.configurator);
-            sb.append(", ");
+            builder.append("configurator=");
+            builder.append(this.configurator);
+            builder.append(", ");
         }
-        sb.append("URI = ");
-        sb.append(this.uri);
-        sb.append("]");
-        return sb.toString();
+        if (this.dismantler != null) {
+            builder.append("dismantler=");
+            builder.append(this.dismantler);
+            builder.append(", ");
+        }
+        if (this.listeners != null) {
+            builder.append("listeners=");
+            builder.append(this.listeners);
+            builder.append(", ");
+        }
+        if (this.sensorSearcher != null) {
+            builder.append("sensorSearcher=");
+            builder.append(this.sensorSearcher);
+            builder.append(", ");
+        }
+        if (this.uri != null) {
+            builder.append("uri=");
+            builder.append(this.uri);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 }

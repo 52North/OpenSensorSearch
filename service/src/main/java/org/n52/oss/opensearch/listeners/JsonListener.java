@@ -66,6 +66,10 @@ public class JsonListener implements OpenSearchListener {
     public Response createResponse(Collection<SirSearchResultElement> searchResult,
                                    MultivaluedMap<String, String> params) throws OwsExceptionReport {
         log.debug("Creating response for {} search results with params {}", searchResult.size(), params);
+        if (this.openSearchEndpoint == null)
+            return Response.serverError().entity(" {\"error\" : \"no OpenSearch endpoint defined, cannot create response.\" } ").build();
+        if (this.homeUri == null)
+            return Response.serverError().entity(" {\"error\" : \"no home URI defined, cannot create response.\" } ").build();
 
         String website = this.homeUri.toString();
         String searchUri = this.openSearchEndpoint.toString();
@@ -111,6 +115,33 @@ public class JsonListener implements OpenSearchListener {
     @Override
     public void setHomeURI(URI uri) {
         this.homeUri = uri;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("JsonListener [");
+        if (this.conf != null) {
+            builder.append("conf=");
+            builder.append(this.conf);
+            builder.append(", ");
+        }
+        if (this.converter != null) {
+            builder.append("converter=");
+            builder.append(this.converter);
+            builder.append(", ");
+        }
+        if (this.openSearchEndpoint != null) {
+            builder.append("openSearchEndpoint=");
+            builder.append(this.openSearchEndpoint);
+            builder.append(", ");
+        }
+        if (this.homeUri != null) {
+            builder.append("homeUri=");
+            builder.append(this.homeUri);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

@@ -16,8 +16,6 @@
 
 package org.n52.oss;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.n52.oss.guice.log.InjectLogger;
 import org.n52.oss.guice.log.Slf4jTypeListener;
 import org.slf4j.Logger;
@@ -28,7 +26,7 @@ import com.google.inject.matcher.Matchers;
 
 public class InjectionLogger {
 
-    @BeforeClass
+    // @BeforeClass
     public static void configure() {
         Guice.createInjector(new AbstractModule() {
 
@@ -39,7 +37,7 @@ public class InjectionLogger {
         });
     }
 
-    @Test
+    // @Test
     public void loggerIsInjected() {
         ClassWithLogger cwl = new ClassWithLogger();
         cwl.doSomething();

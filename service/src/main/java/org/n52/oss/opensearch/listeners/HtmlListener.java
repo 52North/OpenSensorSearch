@@ -388,6 +388,11 @@ public class HtmlListener implements OpenSearchListener {
     @Override
     public Response createResponse(final Collection<SirSearchResultElement> searchResult,
                                    final MultivaluedMap<String, String> params) throws OwsExceptionReport {
+        if (this.openSearchEndpoint == null || this.homeUri == null) {
+            log.error("Could not create response because OpenSearch endpoint or home URI are not set: {}", this);
+            return Response.serverError().build();
+        }
+
         StreamingOutput stream = new StreamingOutput() {
             @Override
             public void write(OutputStream os) throws IOException, WebApplicationException {
@@ -694,6 +699,126 @@ public class HtmlListener implements OpenSearchListener {
     @Override
     public void setHomeURI(URI uri) {
         this.homeUri = uri;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("HtmlListener [");
+        if (this.capabilitiesCache != null) {
+            builder.append("capabilitiesCache=");
+            builder.append(this.capabilitiesCache);
+            builder.append(", ");
+        }
+        if (this.capabilitiesCacheAge != null) {
+            builder.append("capabilitiesCacheAge=");
+            builder.append(this.capabilitiesCacheAge);
+            builder.append(", ");
+        }
+        if (this.capabilitiesErrorCache != null) {
+            builder.append("capabilitiesErrorCache=");
+            builder.append(this.capabilitiesErrorCache);
+            builder.append(", ");
+        }
+        if (this.conf != null) {
+            builder.append("conf=");
+            builder.append(this.conf);
+            builder.append(", ");
+        }
+        if (this.foundResults_post != null) {
+            builder.append("foundResults_post=");
+            builder.append(this.foundResults_post);
+            builder.append(", ");
+        }
+        if (this.foundResults_pre != null) {
+            builder.append("foundResults_pre=");
+            builder.append(this.foundResults_pre);
+            builder.append(", ");
+        }
+        builder.append("highlightSearchText=");
+        builder.append(this.highlightSearchText);
+        builder.append(", linksInSearchText=");
+        builder.append(this.linksInSearchText);
+        builder.append(", ");
+        if (this.mapImage != null) {
+            builder.append("mapImage=");
+            builder.append(this.mapImage);
+            builder.append(", ");
+        }
+        if (this.openMap != null) {
+            builder.append("openMap=");
+            builder.append(this.openMap);
+            builder.append(", ");
+        }
+        if (this.openTimeSeries != null) {
+            builder.append("openTimeSeries=");
+            builder.append(this.openTimeSeries);
+            builder.append(", ");
+        }
+        if (this.searchButtonText != null) {
+            builder.append("searchButtonText=");
+            builder.append(this.searchButtonText);
+            builder.append(", ");
+        }
+        if (this.searchResultHeadline != null) {
+            builder.append("searchResultHeadline=");
+            builder.append(this.searchResultHeadline);
+            builder.append(", ");
+        }
+        if (this.searchResultTitle != null) {
+            builder.append("searchResultTitle=");
+            builder.append(this.searchResultTitle);
+            builder.append(", ");
+        }
+        if (this.sensorInfo_BoundingBox != null) {
+            builder.append("sensorInfo_BoundingBox=");
+            builder.append(this.sensorInfo_BoundingBox);
+            builder.append(", ");
+        }
+        if (this.sensorInfo_CatalogID != null) {
+            builder.append("sensorInfo_CatalogID=");
+            builder.append(this.sensorInfo_CatalogID);
+            builder.append(", ");
+        }
+        if (this.sensorInfo_LastUpdate != null) {
+            builder.append("sensorInfo_LastUpdate=");
+            builder.append(this.sensorInfo_LastUpdate);
+            builder.append(", ");
+        }
+        if (this.sensorInfo_Title != null) {
+            builder.append("sensorInfo_Title=");
+            builder.append(this.sensorInfo_Title);
+            builder.append(", ");
+        }
+        if (this.timeseriesImage != null) {
+            builder.append("timeseriesImage=");
+            builder.append(this.timeseriesImage);
+            builder.append(", ");
+        }
+        if (this.mappers != null) {
+            builder.append("mappers=");
+            builder.append(this.mappers);
+            builder.append(", ");
+        }
+        builder.append("createTimeSeriesLinks=");
+        builder.append(this.createTimeSeriesLinks);
+        builder.append(", ");
+        if (this.sirClient != null) {
+            builder.append("sirClient=");
+            builder.append(this.sirClient);
+            builder.append(", ");
+        }
+        if (this.openSearchEndpoint != null) {
+            builder.append("openSearchEndpoint=");
+            builder.append(this.openSearchEndpoint);
+            builder.append(", ");
+        }
+        if (this.homeUri != null) {
+            builder.append("homeUri=");
+            builder.append(this.homeUri);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

@@ -68,6 +68,10 @@ public class KmlListener implements OpenSearchListener {
     @Override
     public Response createResponse(final Collection<SirSearchResultElement> searchResult,
                                    final MultivaluedMap<String, String> params) throws OwsExceptionReport {
+        if (this.homeUri == null) {
+            log.error("Could not create response because OpenSearch endpoint or home URI are not set: {}", this);
+            return Response.serverError().build();
+        }
 
         log.debug("Creating streamed response...");
         final String query = params.getFirst(OpenSearchConstants.QUERY_PARAM);
@@ -114,6 +118,23 @@ public class KmlListener implements OpenSearchListener {
     @Override
     public void setHomeURI(URI uri) {
         this.homeUri = uri;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("KmlListener [");
+        if (this.conf != null) {
+            builder.append("conf=");
+            builder.append(this.conf);
+            builder.append(", ");
+        }
+        if (this.homeUri != null) {
+            builder.append("homeUri=");
+            builder.append(this.homeUri);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

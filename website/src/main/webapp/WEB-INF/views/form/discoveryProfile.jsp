@@ -72,7 +72,6 @@
 					</div>
 				</div>
 
-
 				<div id="resultGroup" class="form-group" style="margin-top: 42px;">
 					<label for="input" class="control-label">Check output</label>
 					<textarea id="output" name="output" class="form-control" rows="3"></textarea>

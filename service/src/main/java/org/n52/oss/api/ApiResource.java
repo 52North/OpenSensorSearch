@@ -113,6 +113,12 @@ public class ApiResource {
         sb.append("\"");
         sb.append(" , ");
 
+        sb.append("\"services\" : \"");
+        sb.append(this.baseUri);
+        sb.append(ApiPaths.SERVICES_PATH);
+        sb.append("\"");
+        sb.append(" , ");
+
         sb.append("\"conversion\" : \"");
         sb.append(this.baseUri);
         sb.append(ApiPaths.TRANSFORMATION_PATH);

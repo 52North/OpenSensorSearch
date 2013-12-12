@@ -27,6 +27,7 @@ public class RestModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(SensorResource.class);
+        bind(ServicesResource.class);
 
         log.debug("Configured {}", this);
     }

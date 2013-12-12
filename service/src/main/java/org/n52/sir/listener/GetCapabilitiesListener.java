@@ -188,10 +188,10 @@ public class GetCapabilitiesListener implements ISirRequestListener {
             // TODO check AcceptFormats (Not supported now)
 
             // set harvested Services
-            response.setServices(this.capDao.getServices());
+            response.setServices(this.capDao.getAllServices());
 
             // set catalog connections
-            response.setCatalogConnection(this.capDao.getCatalogConnections());
+            response.setCatalogConnection(this.capDao.getAllCatalogConnections());
 
             return response;
         }

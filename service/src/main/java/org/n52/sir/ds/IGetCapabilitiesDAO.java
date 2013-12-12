@@ -30,42 +30,17 @@ import org.n52.sir.catalog.ICatalogConnection;
  */
 public interface IGetCapabilitiesDAO {
 
-    /**
-     * @return Returns all connections from SIR to catalogs
-     * @throws OwsExceptionReport
-     */
-    public Collection<ICatalogConnection> getCatalogConnections() throws OwsExceptionReport;
+    public Collection<ICatalogConnection> getAllCatalogConnections() throws OwsExceptionReport;
 
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
     public long getPhenomenonCount() throws OwsExceptionReport;
 
-    /**
-     * @return Returns all phenomenon URNs in the SIR
-     * @throws OwsExceptionReport
-     */
-    public Collection<String> getPhenomenonURNs() throws OwsExceptionReport;
+    public Collection<String> getAllPhenomenonAllURNs() throws OwsExceptionReport;
 
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
     public long getSensorCount() throws OwsExceptionReport;
 
-    /**
-     * 
-     * @return
-     * @throws OwsExceptionReport
-     */
     public long getServiceCount() throws OwsExceptionReport;
 
-    /**
-     * @return Returns all services in the SIR
-     * @throws OwsExceptionReport
-     */
-    public Collection<SirService> getServices() throws OwsExceptionReport;
+    public Collection<SirService> getAllServices() throws OwsExceptionReport;
+
+    public SirService getService(String id) throws OwsExceptionReport;
 }

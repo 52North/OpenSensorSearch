@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -70,10 +71,10 @@ import org.n52.oss.sir.SMLConstants;
 import org.n52.oss.sir.api.SirBoundingBox;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.util.XmlTools;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.xml.IProfileValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -778,8 +779,8 @@ public class IOOSHarvester extends FileHarvester {
 
     @Inject
     public IOOSHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
-        super(harvServDao, insertDao, searchDao, client, config);
+    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators) {
+        super(harvServDao, insertDao, searchDao, client, validators);
 
         log.info("NEW {}", this);
     }

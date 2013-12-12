@@ -19,8 +19,6 @@ package org.n52.sir;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -32,7 +30,6 @@ import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.IDAOFactory;
 import org.n52.sir.licenses.License;
 import org.n52.sir.licenses.Licenses;
-import org.n52.sir.xml.IValidatorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.x52North.sir.x032.CapabilitiesDocument;
@@ -67,8 +64,6 @@ public class SirConfigurator {
     private static final String VALIDATE_XML_REQUESTS = "oss.sir.requests.validate";
 
     private static final String VALIDATE_XML_RESPONSES = "oss.sir.responses.validate";
-
-    private static final String VALIDATORFACTORY = "VALIDATORFACTORY";
 
     private static final String VERSION_SPLIT_CHARACTER = ",";
 
@@ -113,8 +108,6 @@ public class SirConfigurator {
     private boolean validateRequests;
 
     private boolean validateResponses;
-
-    private IValidatorFactory validatorFactory;
 
     @Inject
     public SirConfigurator(IDAOFactory daoFactory, @Named("sir_properties")
@@ -173,10 +166,6 @@ public class SirConfigurator {
         return this.updateSequence;
     }
 
-    public IValidatorFactory getValidatorFactory() {
-        return this.validatorFactory;
-    }
-
     private void initialize() throws OwsExceptionReport {
         log.info(" * Initializing SirConfigurator ... ");
 
@@ -192,8 +181,6 @@ public class SirConfigurator {
 
         newUpdateSequence();
         loadCapabilitiesSkeleton(this.props);
-
-        initializeValidatorFactory(this.props);
 
         log.info(" ***** Initialized SirConfigurator successfully! ***** ");
     }
@@ -216,33 +203,6 @@ public class SirConfigurator {
         catch (IOException e) {
             log.error("Cannot load licesnes", e);
             return null;
-        }
-    }
-
-    private void initializeValidatorFactory(Properties p) throws OwsExceptionReport {
-        String className = p.getProperty(VALIDATORFACTORY);
-        try {
-            if (className == null) {
-                log.error("No validator factory implementation is set in the config file!");
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(OwsExceptionReport.ExceptionCode.NoApplicableCode,
-                                     "SirConfigurator.initializeHttpPostRequestDecoder()",
-                                     "No postRequestDecoder Implementation is set in the config file!");
-                throw se;
-            }
-            // get Class of the httpGetRequestDecoderClass Implementation
-            Class<IValidatorFactory> validatorFactoryClass = (Class<IValidatorFactory>) Class.forName(className);
-
-            // get Constructor of this class with matching parameter types
-            Constructor<IValidatorFactory> constructor = validatorFactoryClass.getConstructor();
-
-            this.validatorFactory = constructor.newInstance();
-
-            log.info(" ***** " + className + " loaded successfully! ***** ");
-        }
-        catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException
-                | ClassNotFoundException e) {
-            log.error("Error while loading validator factory.", e);
         }
     }
 

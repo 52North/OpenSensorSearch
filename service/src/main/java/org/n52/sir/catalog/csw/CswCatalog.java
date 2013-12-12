@@ -65,7 +65,7 @@ import org.n52.sir.util.Pair;
 import org.n52.sir.util.SoapTools;
 import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.ITransformer;
-import org.n52.sir.xml.IValidatorFactory;
+import org.n52.sir.xml.ValidationResult;
 import org.n52.sir.xml.impl.SMLtoEbRIMTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,41 +119,39 @@ public class CswCatalog implements ICatalog {
 
     private int[] lastPushSummary;
 
-    private IValidatorFactory validatorFactory;
-
     private ITransformer transformer;
 
     private ISearchSensorDAO searchDao;
+
+    private IProfileValidator validator;
 
     public CswCatalog(ISearchSensorDAO searchDao,
                       SimpleSoapCswClient c,
                       List<XmlObject> classificationInitDocs,
                       XmlObject slotInitDoc,
-                      ITransformer transformer) {
-        initialize(c, classificationInitDocs, slotInitDoc);
+                      ITransformer transformer,
+                      IProfileValidator validator) {
+        this.client = c;
+        this.identifiableCache = new CswCatalogCache();
         this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
         this.transformer = transformer;
         this.searchDao = searchDao;
+        this.validator = validator;
+
+        log.info("NEW {}", this);
     }
 
     @Override
     public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport, IOException {
-        IProfileValidator validator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
+        ValidationResult result = this.validator.validate(doc);
 
-        boolean b = Boolean.valueOf(validator.validate(doc)).booleanValue();
+        if (result.isValidated())
+            log.debug("Given document is profile conform!");
+        else
+            log.debug("Given document is NOT profile conform! {}", result);
 
-        if (log.isDebugEnabled()) {
-            if (b) {
-                log.debug("Given document is profile conform!");
-            }
-            else {
-                log.debug("Given document is NOT profile conform!");
-                log.debug(String.valueOf(validator.getValidationFailuresAsString()));
-            }
-        }
-
-        validator = null;
-        return b;
+        this.validator = null;
+        return result.isValidated();
     }
 
     /**
@@ -280,7 +278,7 @@ public class CswCatalog implements ICatalog {
 
                     // add transaction to list as document and number of expected inserts
                     Pair<Document, Integer> p = new Pair<>((Document) transactionDoc.getDomNode(),
-                                                                            Integer.valueOf(transformedDocs.size()));
+                                                           Integer.valueOf(transformedDocs.size()));
                     documents.add(p);
                     if (log.isDebugEnabled())
                         log.debug("Added insert transaction document: " + p);
@@ -542,17 +540,6 @@ public class CswCatalog implements ICatalog {
     @Override
     public boolean hasSufficientCapabilities() throws OwsExceptionReport {
         return this.checker.checkClient(this.client);
-    }
-
-    private void initialize(SimpleSoapCswClient c, List<XmlObject> classificationInitDocs, XmlObject slotInitDoc) {
-        this.client = c;
-        this.identifiableCache = new CswCatalogCache();
-
-        this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
-        this.validatorFactory = SirConfigurator.getInstance().getValidatorFactory();
-
-        if (log.isDebugEnabled())
-            log.debug("Initialized " + this.toString());
     }
 
     /**

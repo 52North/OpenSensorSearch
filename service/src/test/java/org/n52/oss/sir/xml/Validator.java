@@ -26,12 +26,13 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.util.GuiceUtil;
+import org.n52.sir.xml.ValidationResult;
 import org.n52.sir.xml.impl.SensorML4DiscoveryValidatorImpl;
 
 import com.google.inject.Injector;
@@ -57,8 +58,8 @@ public class Validator {
 
         SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
 
-        boolean v = validator.validate(f);
-        assertThat("tested file is valid", v, is(true));
+        ValidationResult vr = validator.validate(f);
+        assertThat("tested file is valid", vr.isValidated(), is(true));
     }
 
     @Test
@@ -67,9 +68,9 @@ public class Validator {
 
         SensorML4DiscoveryValidatorImpl validator = new SensorML4DiscoveryValidatorImpl(schematronFile, svrlFile);
 
-        boolean v = validator.validate(f);
-        assertThat("tested file is INvalid", v, is(false));
-        List<String> validationFailures = validator.getValidationFailures();
+        ValidationResult vr = validator.validate(f);
+        assertThat("tested file is INvalid", vr.isValidated(), is(false));
+        Collection<String> validationFailures = vr.getValidationFailures();
         assertThat(validationFailures.size(), is(2));
         assertThat(Arrays.toString(validationFailures.toArray()), containsString("gml:description"));
         assertThat(Arrays.toString(validationFailures.toArray()), containsString("sml:validTime"));

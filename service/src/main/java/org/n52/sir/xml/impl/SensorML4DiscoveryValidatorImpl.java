@@ -48,6 +48,7 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.xml.IProfileValidator;
+import org.n52.sir.xml.ValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -167,8 +168,9 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         log.debug("NEW {}", this);
     }
 
-    private boolean actualValidate(SensorMLDocument smlDoc) throws IOException {
+    private synchronized ValidationResult actualValidate(SensorMLDocument smlDoc) throws IOException {
         log.debug("Validating SensorMLDocument against Discovery Profile...");
+        reset();
 
         // encapsulate input document in a Source
         Source input = new DOMSource(smlDoc.getDomNode());
@@ -189,24 +191,36 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             }
             catch (TransformerException | SAXException | IOException e) {
                 log.error("Error transforming SensorML for validation against profile for discovery!", e);
-                return false;
+                return new ValidationResult(false, e);
             }
             catch (ParserConfigurationException e) {
                 log.error("Error processing SVRL output!", e);
-                return false;
+                return new ValidationResult(false, e);
             }
             catch (InterruptedException | ExecutionException e) {
                 log.error("Error with getting transformer from Future.", e);
-                return false;
+                return new ValidationResult(false, e);
             }
         }
 
         log.debug("Validation result: {} failures, {} activated patterns, and {} fired rules.",
-                  this.getAssertionFailures().size(),
+                  this.assertionFailures.size(),
                   this.activatedPatterns.size(),
                   this.firedRules.size());
 
-        return (this.getAssertionFailures().size() == 0) ? true : false;
+        boolean validated = (this.getAssertionFailures().size() == 0) ? true : false;
+        ValidationResult result = new ValidationResult(validated, this.assertionFailures);
+
+        log.debug("Validation finished: {}", result);
+        return result;
+    }
+
+    protected synchronized void reset() {
+        log.debug("Reset!");
+
+        this.activatedPatterns = new ArrayList<>();
+        this.assertionFailures = new ArrayList<>();
+        this.firedRules = new ArrayList<>();
     }
 
     public List<String> getActivatedPatterns() {
@@ -219,23 +233,6 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     public List<String> getFiredRules() {
         return this.firedRules;
-    }
-
-    @Override
-    public List<String> getValidationFailures() {
-        return this.getAssertionFailures();
-    }
-
-    @Override
-    public String getValidationFailuresAsString() {
-        List<String> failures = getValidationFailures();
-        StringBuilder sb = new StringBuilder();
-        sb.append("The document is NOT valid:\n");
-        for (String string : failures) {
-            sb.append(string);
-            sb.append("\n");
-        }
-        return sb.toString();
     }
 
     private synchronized void initialize(final String profilePath, final String svrlSchemaPath) throws URISyntaxException {
@@ -319,7 +316,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
     }
 
     @Override
-    public boolean validate(File file) throws OwsExceptionReport {
+    public ValidationResult validate(File file) throws OwsExceptionReport {
         try {
             SensorMLDocument smlDoc = SensorMLDocument.Factory.parse(file);
             return validate(smlDoc);
@@ -335,19 +332,19 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
     }
 
     @Override
-    public boolean validate(SensorMLDocument smlDoc) throws IOException {
+    public ValidationResult validate(SensorMLDocument smlDoc) throws IOException {
         return this.actualValidate(smlDoc);
     }
 
     @Override
-    public boolean validate(XmlObject xml) throws IOException {
+    public ValidationResult validate(XmlObject xml) throws IOException {
         if (xml instanceof SensorMLDocument) {
             SensorMLDocument smlDoc = (SensorMLDocument) xml;
             return validate(smlDoc);
         }
         log.error("The given XmlObject could was not a SensorMLDocument!");
 
-        return false;
+        return new ValidationResult(false);
     }
 
     @Override

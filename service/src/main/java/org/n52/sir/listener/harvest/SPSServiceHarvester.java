@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.opengis.sps.x10.CapabilitiesDocument;
 import net.opengis.sps.x10.SensorOfferingType;
@@ -32,7 +33,6 @@ import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
@@ -40,6 +40,9 @@ import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
 import org.n52.sir.util.Pair;
+import org.n52.sir.xml.IProfileValidator;
+import org.n52.sir.xml.IProfileValidator.ValidatableFormatAndProfile;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,8 +65,12 @@ public class SPSServiceHarvester extends Harvester {
                                @Named(ISearchSensorDAO.FULL)
                                ISearchSensorDAO searchDao,
                                Client client,
-                               SirConfigurator config) {
-        super(harvServDao, insertDao, searchDao, client, config);
+                               Set<IProfileValidator> validators) {
+        super(harvServDao,
+              insertDao,
+              searchDao,
+              client,
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY));
 
         log.info("NEW {}", this);
     }

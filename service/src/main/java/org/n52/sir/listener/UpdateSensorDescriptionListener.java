@@ -19,6 +19,7 @@ package org.n52.sir.listener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.SirConstants;
@@ -27,7 +28,6 @@ import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirSensorIdentification;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirUpdateSensorDescriptionRequest;
@@ -36,7 +36,8 @@ import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirUpdateSensorDescriptionResponse;
 import org.n52.sir.sml.SensorMLDecoder;
 import org.n52.sir.xml.IProfileValidator;
-import org.n52.sir.xml.IValidatorFactory;
+import org.n52.sir.xml.ValidationResult;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,12 +55,14 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
 
     private IInsertSensorInfoDAO insertSensorInfoDAO;
 
-    private IValidatorFactory validatorFactory;
+    private IProfileValidator validator;
 
     @Inject
-    public UpdateSensorDescriptionListener(SirConfigurator config, IInsertSensorInfoDAO dao) {
+    public UpdateSensorDescriptionListener(IInsertSensorInfoDAO dao,
+                                           Set<IProfileValidator> validators) {
         this.insertSensorInfoDAO = dao;
-        this.validatorFactory = config.getValidatorFactory();
+        this.validator = ValidatorModule.getFirstMatchFor(validators,
+                                                          IProfileValidator.ValidatableFormatAndProfile.SML_DISCOVERY);
         
         log.info("NEW {}", this);
     }
@@ -106,8 +109,8 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
                               SirSensorIdentification sensorIdent,
                               SirSensor sensor) throws OwsExceptionReport, IOException {
         // check SensorML for conformity with profile
-        IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
-        boolean isValid = Boolean.valueOf(profileValidator.validate(sensor.getSensorMLDocument())).booleanValue();
+        ValidationResult validationResult = this.validator.validate(sensor.getSensorMLDocument());
+        boolean isValid = validationResult.isValidated();
         if ( !isValid) {
             String errMsg = "Sensor metadata document of sensor " + sensorIdent
                     + "is not conform with the required profile and cannot be updated!";
@@ -116,9 +119,8 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
             throw new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
                                          "SensorDescription",
                                          "The given sensor description is not conform to the required profile of this service: "
-                                                 + String.valueOf(profileValidator.getValidationFailuresAsString()));
+                                                 + String.valueOf(validationResult.getValidationFailuresAsString()));
         }
-        profileValidator = null;
 
         String sensorId = this.insertSensorInfoDAO.updateSensor(sensorIdent, sensor);
         if (sensorId != null) {

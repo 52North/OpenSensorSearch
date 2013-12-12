@@ -92,7 +92,7 @@ public class Sml2EbrimTransformation {
         URI uri = Sml2EbrimTransformation.class.getResource(xsltDir).toURI();
         Path path = Paths.get(uri);
 
-        this.transformer = new SMLtoEbRIMTransformer(path.toString(), false);
+        this.transformer = new SMLtoEbRIMTransformer(path.toString() + "\\", false);
         this.transformer.setValidatingInputAndOutput(false);
     }
 

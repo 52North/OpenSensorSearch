@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import net.opengis.sensorML.x101.SensorMLDocument;
 
@@ -34,15 +34,11 @@ public interface IProfileValidator {
         SML_DISCOVERY
     }
 
-    public abstract List<String> getValidationFailures();
+    public abstract ValidationResult validate(File file) throws OwsExceptionReport;
 
-    public abstract String getValidationFailuresAsString();
+    public abstract ValidationResult validate(SensorMLDocument smlDoc) throws IOException;
 
-    boolean validate(File file) throws OwsExceptionReport;
-
-    public abstract boolean validate(SensorMLDocument smlDoc) throws IOException;
-
-    public abstract boolean validate(XmlObject xml) throws IOException;
+    public abstract ValidationResult validate(XmlObject xml) throws IOException;
 
     public abstract boolean validates(ValidatableFormatAndProfile profile);
 

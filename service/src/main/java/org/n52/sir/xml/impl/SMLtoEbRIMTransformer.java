@@ -131,6 +131,11 @@ public class SMLtoEbRIMTransformer implements ITransformer {
 
         // http://stackoverflow.com/questions/3699860/resolving-relative-paths-when-loading-xslt-files
         try (InputStream is = SMLtoEbRIMTransformer.class.getResourceAsStream(path);) {
+            if (is == null) {
+                log.error("Could not load resource stream from path {}", path);
+                return;
+            }
+
             tFactory.setErrorListener(new LogErrorListener());
             // URIResolver uriResolver = tFactory.getURIResolver();
             ClasspathResourceURIResolver ur = new ClasspathResourceURIResolver(xsltDir);

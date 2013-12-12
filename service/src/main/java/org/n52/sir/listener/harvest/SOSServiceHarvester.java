@@ -19,6 +19,7 @@ package org.n52.sir.listener.harvest;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.opengis.ows.x11.DomainType;
 import net.opengis.ows.x11.OperationDocument.Operation;
@@ -32,13 +33,15 @@ import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
+import org.n52.sir.xml.IProfileValidator;
+import org.n52.sir.xml.IProfileValidator.ValidatableFormatAndProfile;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,8 +71,12 @@ public class SOSServiceHarvester extends Harvester {
                                @Named(ISearchSensorDAO.FULL)
                                ISearchSensorDAO searchDao,
                                Client client,
-                               SirConfigurator config) {
-        super(harvServDao, insertDao, searchDao, client, config);
+                               Set<IProfileValidator> validators) {
+        super(harvServDao,
+              insertDao,
+              searchDao,
+              client,
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY));
         this.client = client;
 
         log.info("NEW {}", this);

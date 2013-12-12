@@ -22,16 +22,19 @@ package org.n52.sir.listener.harvest;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSensor;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
+import org.n52.sir.xml.IProfileValidator;
+import org.n52.sir.xml.IProfileValidator.ValidatableFormatAndProfile;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
@@ -55,8 +58,12 @@ public abstract class FileHarvester extends Harvester {
 
     @Inject
     public FileHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
-        super(harvServDao, insertDao, searchDao, client, config);
+    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators) {
+        super(harvServDao,
+              insertDao,
+              searchDao,
+              client,
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY));
 
         log.info("NEW {}", this);
     }

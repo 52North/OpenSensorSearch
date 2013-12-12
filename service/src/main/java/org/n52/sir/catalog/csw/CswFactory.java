@@ -36,9 +36,11 @@ import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.ITransformer;
 import org.n52.sir.xml.ITransformer.TransformableFormat;
 import org.n52.sir.xml.TransformerModule;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,12 +71,14 @@ public class CswFactory implements ICatalogFactory {
 
     private ISearchSensorDAO searchDao;
 
+    private IProfileValidator validator;
+
     @Inject
     public CswFactory(@Named("oss.catalogconnection.csw-ebrim.classificationInitFilenames")
     String classificationInitFilenames, @Named("oss.catalogconnection.csw-ebrim.slotInitFilename")
     String slotInitFile, @Named("oss.catalogconnection.doNotCheckCatalogs")
     String doNotCheckCatalogs, Set<ITransformer> transformers, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao) throws XmlException, IOException {
+    ISearchSensorDAO searchDao, Set<IProfileValidator> validators) throws XmlException, IOException {
         this.slotInitFile = getAbsolutePath(slotInitFile);
         this.searchDao = searchDao;
 
@@ -117,6 +121,9 @@ public class CswFactory implements ICatalogFactory {
         }
         log.debug("Loaded do-not-check-catalogs: {}", Arrays.toString(this.doNotCheckCatalogsList.toArray()));
 
+        this.validator = ValidatorModule.getFirstMatchFor(validators,
+                                                          IProfileValidator.ValidatableFormatAndProfile.SML_DISCOVERY);
+
         log.info("NEW {}", this);
     }
 
@@ -140,7 +147,8 @@ public class CswFactory implements ICatalogFactory {
                                             client,
                                             this.classificationInitDocs,
                                             this.slotInitDoc,
-                                            this.transformer);
+                                            this.transformer,
+                                            this.validator);
         return catalog;
     }
 

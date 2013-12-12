@@ -23,51 +23,26 @@ package org.n52.sir.request;
  */
 public class SirHarvestServiceRequest extends AbstractSirRequest {
 
-    /**
-     * type of the service
-     */
     private String serviceType;
 
-    /**
-     * url of the service
-     */
     private String serviceUrl;
 
-    /**
-     * @return the serviceType
-     */
     public String getServiceType() {
         return this.serviceType;
     }
 
-    /**
-     * @return the serviceUrl
-     */
     public String getServiceUrl() {
         return this.serviceUrl;
     }
 
-    /**
-     * @param serviceType
-     *        the serviceType to set
-     */
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
-    /**
-     * @param serviceUrl
-     *        the serviceUrl to set
-     */
     public void setServiceUrl(String serviceUrl) {
         this.serviceUrl = serviceUrl;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();

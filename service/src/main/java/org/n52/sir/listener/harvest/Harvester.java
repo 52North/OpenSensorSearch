@@ -82,11 +82,14 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
     private IProfileValidator validator;
 
+    protected boolean validateResponses;
+
     public Harvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, IProfileValidator validator) {
+    ISearchSensorDAO searchDao, Client client, IProfileValidator validator, boolean validateResponses) {
         this.harvServDao = harvServDao;
         this.client = client;
         this.validator = validator;
+        this.validateResponses = validateResponses;
 
         this.insertedSensors = new ArrayList<>();
         this.updatedSensors = new ArrayList<>();

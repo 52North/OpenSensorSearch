@@ -70,8 +70,7 @@ public class Client {
     public XmlObject requestCapabilities(String serviceType, URI requestUri) throws OwsExceptionReport {
         String gcDoc = createGetCapabilities(serviceType);
 
-        if (log.isDebugEnabled())
-            log.debug("GetCapabilities to be send to " + serviceType + " @ " + requestUri.toString() + ": " + gcDoc);
+        log.debug("GetCapabilities to be send to {} @ {} : {}", serviceType, requestUri.toString(), gcDoc);
 
         // send getCapabilities request
         XmlObject caps = null;

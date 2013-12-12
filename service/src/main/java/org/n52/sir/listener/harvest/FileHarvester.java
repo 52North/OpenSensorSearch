@@ -58,12 +58,14 @@ public abstract class FileHarvester extends Harvester {
 
     @Inject
     public FileHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators) {
+    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators, @Named("oss.sir.responses.validate")
+    boolean validateResponses) {
         super(harvServDao,
               insertDao,
               searchDao,
               client,
-              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY));
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
+              validateResponses);
 
         log.info("NEW {}", this);
     }
@@ -75,7 +77,7 @@ public abstract class FileHarvester extends Harvester {
         try {
             log.info("Starting Harvesting of File " + this.request.getServiceUrl());
 
-            SirHarvestServiceResponse response = new SirHarvestServiceResponse();
+            SirHarvestServiceResponse response = new SirHarvestServiceResponse(this.validateResponses);
             // set service type in response
             response.setServiceType(this.request.getServiceType());
             // set service URL in response

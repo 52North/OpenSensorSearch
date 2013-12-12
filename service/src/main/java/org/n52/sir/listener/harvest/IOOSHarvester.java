@@ -779,8 +779,9 @@ public class IOOSHarvester extends FileHarvester {
 
     @Inject
     public IOOSHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators) {
-        super(harvServDao, insertDao, searchDao, client, validators);
+    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators, @Named("oss.sir.responses.validate")
+    boolean validateResponses) {
+        super(harvServDao, insertDao, searchDao, client, validators, validateResponses);
 
         log.info("NEW {}", this);
     }

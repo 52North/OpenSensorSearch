@@ -65,12 +65,15 @@ public class SPSServiceHarvester extends Harvester {
                                @Named(ISearchSensorDAO.FULL)
                                ISearchSensorDAO searchDao,
                                Client client,
-                               Set<IProfileValidator> validators) {
+                               Set<IProfileValidator> validators,
+                               @Named("oss.sir.responses.validate")
+                               boolean validateResponses) {
         super(harvServDao,
               insertDao,
               searchDao,
               client,
-              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY));
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
+              validateResponses);
 
         log.info("NEW {}", this);
     }
@@ -119,7 +122,7 @@ public class SPSServiceHarvester extends Harvester {
                     log.debug("Found sensor with ID " + tempID + " and description " + tempUri.toString());
             }
 
-            SirHarvestServiceResponse response = new SirHarvestServiceResponse();
+            SirHarvestServiceResponse response = new SirHarvestServiceResponse(this.validateResponses);
             response.setServiceType(this.request.getServiceType());
             response.setServiceUrl(this.request.getServiceUrl());
 

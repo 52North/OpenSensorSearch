@@ -71,12 +71,15 @@ public class SOSServiceHarvester extends Harvester {
                                @Named(ISearchSensorDAO.FULL)
                                ISearchSensorDAO searchDao,
                                Client client,
-                               Set<IProfileValidator> validators) {
+                               Set<IProfileValidator> validators,
+                               @Named("oss.sir.responses.validate")
+                               boolean validateResponses) {
         super(harvServDao,
               insertDao,
               searchDao,
               client,
-              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY));
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
+              validateResponses);
         this.client = client;
 
         log.info("NEW {}", this);
@@ -84,10 +87,11 @@ public class SOSServiceHarvester extends Harvester {
 
     @Override
     public ISirResponse call() throws Exception {
+        log.debug("Call()!");
         ISirResponse r = null;
 
         try {
-            SirHarvestServiceResponse response = new SirHarvestServiceResponse();
+            SirHarvestServiceResponse response = new SirHarvestServiceResponse(this.validateResponses);
             response.setServiceType(this.request.getServiceType());
             response.setServiceUrl(this.request.getServiceUrl());
 
@@ -180,8 +184,7 @@ public class SOSServiceHarvester extends Harvester {
                                  outputFormatType,
                                  procedureType);
 
-                if (log.isDebugEnabled())
-                    log.debug("Taking a " + HARVEST_SLEEP_MILLIS + " millis break from harvesting.");
+                log.debug("Taking a {} millis break from harvesting.", HARVEST_SLEEP_MILLIS);
                 Thread.sleep(HARVEST_SLEEP_MILLIS);
             }
 

@@ -21,6 +21,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 		<module>service</module>
 		<module>website</module>
 		<module>arsearch</module>
+		<module>sor</module>
 	</modules>
 
 	<properties>
@@ -30,6 +31,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 
 		<guice.version>3.0</guice.version>
 		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
+		<logback.version>1.0.13</logback.version>
 	</properties>
 
 	<profiles>
@@ -48,12 +50,23 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
 						<showDeprecation>true</showDeprecation>
 						<showWarnings>true</showWarnings>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>com.mycila.maven-license-plugin</groupId>
+					<artifactId>maven-license-plugin</artifactId>
+					<version>1.9.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -83,4 +96,44 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 			</snapshots>
 		</repository>
 	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.5</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.3.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>3.0.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 </project>

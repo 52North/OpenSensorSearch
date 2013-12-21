@@ -910,65 +910,52 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
             throw se;
         }
 
+        log.debug("Parsed request: {}", doc.xmlText().substring(0, Math.min(doc.xmlText().length(), 500)));
+
         // getCapabilitiesRequest
         if (doc instanceof GetCapabilitiesDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post getCapabilities request");
             GetCapabilitiesDocument getCapDoc = (GetCapabilitiesDocument) doc;
             request = decodeGetCapabilities(getCapDoc);
         }
 
         // harvestServiceRequest
         else if (doc instanceof HarvestServiceRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post harvestService request");
             HarvestServiceRequestDocument harvServDoc = (HarvestServiceRequestDocument) doc;
             request = decodeHarvestServiceRequest(harvServDoc);
         }
 
         // describeSensorRequest
         else if (doc instanceof DescribeSensorRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post describeSensor request");
             DescribeSensorRequestDocument descSensDoc = (DescribeSensorRequestDocument) doc;
             request = decodeDescribeSensorRequest(descSensDoc);
         }
 
         // insertSensorStatusRequest
         else if (doc instanceof InsertSensorStatusRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post insertSensorStatus request");
             InsertSensorStatusRequestDocument insSensStatDoc = (InsertSensorStatusRequestDocument) doc;
             request = decodeInsertSensorStatusRequest(insSensStatDoc);
         }
 
         // insertSensorInfoRequest
         else if (doc instanceof InsertSensorInfoRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post insertSensorInfo request");
             InsertSensorInfoRequestDocument insSensInfoDoc = (InsertSensorInfoRequestDocument) doc;
             request = decodeInsertSensorInfoRequest(insSensInfoDoc);
         }
 
         // deleteSensorInfoRequest
         else if (doc instanceof DeleteSensorInfoRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post deleteSensorInfo request");
             DeleteSensorInfoRequestDocument delSensInfoDoc = (DeleteSensorInfoRequestDocument) doc;
             request = decodeDeleteSensorInfoRequest(delSensInfoDoc);
         }
 
         // updateSensorDescriptionRequest
         else if (doc instanceof UpdateSensorDescriptionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post updateSensorDescription request");
             UpdateSensorDescriptionRequestDocument updSensDescrDoc = (UpdateSensorDescriptionRequestDocument) doc;
             request = decodeUpdateSensorDescriptionRequest(updSensDescrDoc);
         }
 
         // searchSensorRequest
         else if (doc instanceof SearchSensorRequestDocument) {
-            if (log.isDebugEnabled())
                 log.debug("Post searchSensor request");
             SearchSensorRequestDocument searchSensDoc = (SearchSensorRequestDocument) doc;
             request = decodeSearchSensorRequest(searchSensDoc);
@@ -976,42 +963,30 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
         // getSensorStatusRequest
         else if (doc instanceof GetSensorStatusRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post getSensorStatus request");
             GetSensorStatusRequestDocument getSensStatDoc = (GetSensorStatusRequestDocument) doc;
             request = decodeGetSensorStatusRequest(getSensStatDoc);
         }
 
         // connectToCatalogRequest
         else if (doc instanceof ConnectToCatalogRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post connectToCatalog request");
             ConnectToCatalogRequestDocument conToCatDoc = (ConnectToCatalogRequestDocument) doc;
             request = decodeConnectToCatalogRequest(conToCatDoc);
         }
 
         // disconnectFromCatalogRequest
         else if (doc instanceof DisconnectFromCatalogRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post disconnectFromCatalog request");
             DisconnectFromCatalogRequestDocument disconFromCatDoc = (DisconnectFromCatalogRequestDocument) doc;
             request = decodeDisconnectFromCatalogRequest(disconFromCatDoc);
         }
 
         // not implemented: status subscription handling:
         else if (doc instanceof SubscribeSensorStatusRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post subscribeSensorStatus request");
             request = new SirSubscriptionRequest(SirConstants.Operations.SubscribeSensorStatus.name());
         }
         else if (doc instanceof RenewSensorStatusSubscriptionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post renewSensorStatusSubscription request");
             request = new SirSubscriptionRequest(SirConstants.Operations.RenewSensorStatusSubscription.name());
         }
         else if (doc instanceof CancelSensorStatusSubscriptionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("Post cancelSensorStatusSubscription request");
             request = new SirSubscriptionRequest(SirConstants.Operations.CancelSensorStatusSubscription.name());
         }
 
@@ -1021,6 +996,8 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, "The request is invalid! ");
             throw se;
         }
+
+        log.debug("Decoded request: {}", request);
         return request;
     }
 }

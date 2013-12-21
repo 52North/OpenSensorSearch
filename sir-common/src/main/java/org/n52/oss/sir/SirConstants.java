@@ -60,7 +60,7 @@ public class SirConstants {
 
     public static final String GETVERSIONPARAM = "version";
 
-    public static final String IOOSCATAL0G_SERVICE_TYPE = "IOOSCatalog";
+    public static final String IOOSCATAL0G_SERVICE_TYPE = "IOOSCATALOG";
 
     public static final String REQUEST_CONTENT_CHARSET = CHARSET_NAME;
 

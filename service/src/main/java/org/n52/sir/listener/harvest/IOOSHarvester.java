@@ -86,6 +86,9 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 /**
+ * 
+ * Catalog: http://p5.neracoos.org/IOOSCatalog/sos_platforms.xml
+ * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */

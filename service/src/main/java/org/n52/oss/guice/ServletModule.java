@@ -78,6 +78,7 @@ public class ServletModule extends JerseyServletModule {
         // params.put("api.version","1.0.0");
         // filter("/doc/api/*").through(GuiceContainer.class,params);
         // filter("/api-docs/*").through(GuiceContainer.class,params);
+        
         filter("/*").through(GuiceContainer.class, params);
         log.debug("configured {} with context {}", this, getServletContext());
     }

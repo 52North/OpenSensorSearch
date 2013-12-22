@@ -1,27 +1,18 @@
 /**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
+ * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package org.n52.ar.wikitude;
 
 import java.io.IOException;
@@ -54,9 +45,9 @@ public class WikitudeServlet extends SirCallbackServlet {
      * 
      */
     private static final long serialVersionUID = 7433725421346384867L;
-    
+
     private String layerName = "fumxorm";
-    
+
     private static Logger log = LoggerFactory.getLogger(WikitudeServlet.class);
 
     public WikitudeServlet() {
@@ -66,79 +57,78 @@ public class WikitudeServlet extends SirCallbackServlet {
     @Override
     protected SirPOI createPOI(SearchResultElement sre) {
         WikitudePOI p = new WikitudePOI();
-		ArrayList<ServiceReference> references = (ArrayList<ServiceReference>) sre
-				.getServiceReferences();
-		p.title = references.get(0).getServiceSpecificSensorId(); 
+        ArrayList<ServiceReference> references = (ArrayList<ServiceReference>) sre.getServiceReferences();
+        p.title = references.get(0).getServiceSpecificSensorId();
         p.id = sre.getSensorId();
-        
+
         // location paramters
         double[] latLon = sre.getSensorDescription().getBoundingBox().getCenter();
         p.lat = latLon[0];
         p.lon = latLon[1];
         p.alt = 0;
-        
+
         String description = sre.getSensorDescription().getText();
         Scanner scanner = new Scanner(description);
-        while(scanner.hasNext()){
-        	
+        while (scanner.hasNext()) {
+            // do something with scanned description
         }
-        
-        // Description 
+
+        // Description
         p.description = sre.getSensorDescription().getText();
-        
+
         return p;
     }
 
     /**
-     * http://www.wikitude.com/developer/publish-details
-     * www.openarml.org/wikitude4.html
-     * Just need a ARML transformer??
+     * http://www.wikitude.com/developer/publish-details www.openarml.org/wikitude4.html Just need a ARML
+     * transformer??
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userAgent = request.getHeader("User-agent");
         log.debug("User-agent={}", userAgent);
-        
+
         // TODO implement callback URL
         double latitude = 51.965344, longitude = 7.600003;
         int maxPois = 20;
-        float radius = 10000; 
-        
+        float radius = 10000;
+
         // get parameters
         // Wikitude does not work at the moment. Input parameter by wikitude
         // does not match with real parameter in any case.
         // lat-input 52.25, lon-input -8.25
         String latParameter = request.getParameter("latitude");
         String lonParameter = request.getParameter("longitude");
-        if(latParameter != null || lonParameter != null){
-        	latitude = Double.parseDouble(latParameter);
-        	longitude = Double.parseDouble(lonParameter);
+        if (latParameter != null || lonParameter != null) {
+            latitude = Double.parseDouble(latParameter);
+            longitude = Double.parseDouble(lonParameter);
         }
         double[] center = new double[] {latitude, longitude};
-        
+
         String maxParameter = request.getParameter("maxNumberOfPois");
-        if(maxParameter != null){
-        	maxPois = Integer.parseInt(maxParameter);
+        if (maxParameter != null) {
+            maxPois = Integer.parseInt(maxParameter);
         }
-        
+
         response.setContentType("application/xml; charset=utf-8");
         WikitudeResponse wikiRes = null;
         // query SIR
-        try{
-        	Collection<SirPOI> queryResult = querySIR(center, radius, CONTENT_TYPE);
-        	wikiRes = new WikitudeResponse(queryResult);
-        } catch (Exception e){
-        	log.error("Error querying SIR.", e);
+        try {
+            Collection<SirPOI> queryResult = querySIR(center, radius, CONTENT_TYPE);
+            wikiRes = new WikitudeResponse(queryResult);
         }
-        
+        catch (Exception e) {
+            log.error("Error querying SIR.", e);
+        }
+
         // write response
         StringBuilder sb = new StringBuilder();
-        	wikiRes.toARML(sb);
-        
+        wikiRes.toARML(sb);
+
         Writer out = response.getWriter();
         response.setContentType(CONTENT_TYPE_XML);
         out.write(sb.toString());
-        
+
         // clean up
         response.flushBuffer();
     }
@@ -149,8 +139,8 @@ public class WikitudeServlet extends SirCallbackServlet {
 
         log.info("Initialized " + this);
     }
-    
-    public String getLayerName(){
-    	return layerName;
+
+    public String getLayerName() {
+        return layerName;
     }
 }

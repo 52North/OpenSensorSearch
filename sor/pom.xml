@@ -144,13 +144,7 @@
 					<includes>
 						<include>**/*.java</include>
 						<include>**/*.properties</include>
-						<include>**/*.jsp</include>
-						<include>**/*.js</include>
-						<include>**/*.xml</include>
 						<include>**/*.xsl</include>
-						<include>**/*.sch</include>
-						<include>**/*.sql</include>
-						<include>**/*.html</include>
 					</includes>
 					<strictCheck>true</strictCheck>
 					<properties>

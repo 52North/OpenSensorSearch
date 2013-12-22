@@ -12,4 +12,4 @@ Supported applications are:
 Configuration
 -------------
 
-See the main README.md for how to use the configuration files.
+See the main README.md for how to use the overall configuration files.

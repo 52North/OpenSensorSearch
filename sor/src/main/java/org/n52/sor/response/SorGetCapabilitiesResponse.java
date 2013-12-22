@@ -76,10 +76,6 @@ public class SorGetCapabilitiesResponse implements ISorResponse {
         return contents;
     }
 
-    /**
-     * 
-     * @return
-     */
     private OperationsMetadata createOperationsMetadata() {
         OperationsMetadata opMeta = this.capabilitiesSkeleton.getCapabilities().getOperationsMetadata();
         Operation[] operations = opMeta.getOperationArray();
@@ -122,13 +118,6 @@ public class SorGetCapabilitiesResponse implements ISorResponse {
         return servProv;
     }
 
-    /**
-     * @return Returns the response as byte[]
-     * @throws IOException
-     *         if getting the byte[] failed
-     * @throws OwsExceptionReport
-     * 
-     */
     @Override
     public byte[] getByteArray() throws IOException, OwsExceptionReport {
         // load skeleton

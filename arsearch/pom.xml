@@ -7,11 +7,10 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>arsearch</artifactId>
+	<version>0.2</version>
+
 	<name>AR Open Sensor Search Service</name>
 	<description>52North Augmented Reality Sensor Search Service</description>
-
-	<packaging>war</packaging>
-	<version>0.1</version>
 
 	<url>http://52north.org/communities/sensorweb/incubation/discovery/</url>
 	<inceptionYear>2012</inceptionYear>
@@ -45,11 +44,6 @@
 		</mailingList>
 	</mailingLists>
 
-	<issueManagement>
-		<system>Bugzilla</system>
-		<url>https://52north.org/bugzilla/</url>
-	</issueManagement>
-
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -58,91 +52,14 @@
 		</license>
 	</licenses>
 
-	<scm>
-		<connection>scm:svn:https://svn.52north.org/svn/sensorweb/incubation/SIR/trunk/52n-arsearch</connection>
-		<url>https://svn.52north.org/cgi-bin/viewvc.cgi/incubation/SIR/trunk/52n-arsearch/?root=sensorweb</url>
-	</scm>
-
-	<properties>
-		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-	</properties>
-
 	<build>
-		<finalName>ar</finalName>
-
 		<plugins>
 			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.1.8.v20121106</version>
-				<configuration>
-					<!-- http://docs.codehaus.org/display/JETTY/Save+could+not+be+completed -->
-					<webDefaultXml>src/test/resources/webdefault.xml</webDefaultXml>
-					<scanIntervalSeconds>5</scanIntervalSeconds>
-					<webApp>
-						<contextPath>/${project.build.finalName}</contextPath>
-						<overrideDescriptor>src/test/resources/localtesting-web.xml</overrideDescriptor>
-					</webApp>
-					<connectors>
-						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-							<port>9090</port>
-							<maxIdleTime>60000</maxIdleTime>
-						</connector>
-					</connectors>
-					<!-- <contextHandlers> -->
-					<!-- <contextHandler implementation="org.mortbay.jetty.webapp.WebAppContext"> -->
-					<!-- <war>${basedir}../../workspace/52n-sir/target/SIR.war</war> -->
-					<!-- <contextPath>/SIR</contextPath> -->
-					<!-- </contextHandler> -->
-					<!-- </contextHandlers> -->
-
-					<systemProperties>
-						<systemProperty>
-							<!-- http://stackoverflow.com/questions/2372670/enable-debug-logging-in-maven-jetty-7-plugin -->
-							<name>log4j.configurationFile</name>
-							<value>file:${project.basedir}/src/test/resources/log4j.xml</value>
-						</systemProperty>
-					</systemProperties>
-
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<webappDirectory>${webappDirectory}</webappDirectory>
-					<webResources>
-						<resource>
-							<directory>src/main/webapp</directory>
-							<filtering>true</filtering>
-						</resource>
-					</webResources>
-					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
-					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<Implementation-Build>${buildNumber}</Implementation-Build>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
-				<!-- run "mvn license:check" to check -->
-				<!-- run "mvn license:format" to add to the files -->
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
-				<version>1.9.0</version>
 				<configuration>
-					<header>src/main/resources/52N_license.txt</header>
+					<header>src/main/resources/license_header.txt</header>
 					<excludes>
-						<exclude>**/buildNumber.properties</exclude>
 						<exclude>**/*qrcode.js</exclude>
 					</excludes>
 					<includes>
@@ -151,7 +68,6 @@
 						<include>**/*.jsp</include>
 						<include>**/*.xml</include>
 						<include>**/*.js</include>
-						<!-- <include>**/*.css</include> -->
 						<include>**/*.html</include>
 					</includes>
 					<strictCheck>true</strictCheck>
@@ -162,33 +78,11 @@
 				<executions>
 					<execution>
 						<phase>test</phase>
-						<!-- test will fail if license headers are not correct, run license:format
-							to add the headers. -->
 						<goals>
 							<goal>check</goal>
-							<!-- <goal>format</goal> -->
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>2.0</version>
-				<!-- advanced configuration: http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/run-mojo-features.html -->
-				<!-- <configuration> <systemProperties> <java.io.tmpdir>target</java.io.tmpdir>
-					</systemProperties> </configuration> -->
-				<configuration>
-					<path>/${project.build.finalName}</path>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>commons-io</groupId>
-						<artifactId>commons-io</artifactId>
-						<version>2.1</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
@@ -197,7 +91,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
 		</dependency>
 
 		<dependency>
@@ -215,18 +108,20 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<!-- it’s just the api and the implementation should be provided by the
-				application server/web container -->
-			<scope>provided</scope> <!-- for running with tomcat-maven-plugin, see http://singztechmusings.wordpress.com/2011/06/17/java-lang-classcastexception-cannot-be-cast-to-javax-servlet-servlet-how-to-resolve/ -->
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>common</artifactId>
+			<version>0.6</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.n52.oss</groupId>
 			<artifactId>sir-json</artifactId>

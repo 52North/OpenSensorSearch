@@ -190,11 +190,7 @@ public class SensorMLDecoder {
     public static SirSensor decode(SystemType system) throws OwsExceptionReport {
         SirSensor sensor = new SirSensor();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Decoding SystemType:");
-            String errors = XmlTools.validateAndIterateErrors(system);
-            log.debug(errors);
-        }
+        log.debug("Decoding SystemType: \n{}", XmlTools.validateAndIterateErrors(system));
 
         sensor.setSensorMLDocument(SmlTools.wrapSystemTypeInSensorMLDocument(system));
         sensor.setbBox(getBoundingBox(system));
@@ -292,15 +288,13 @@ public class SensorMLDecoder {
                 for (DataComponentPropertyType dataComponent : fieldArray) {
                     AbstractDataRecordType dataRec = dataComponent.getAbstractDataRecord();
                     if (dataRec != null) {
-                        if (log.isDebugEnabled())
-                            log.debug("A data record, check if bbox!");
+                        log.debug("A data record, check if bbox!");
 
                         String currentDefinition = dataRec.getDefinition();
                         if (currentDefinition.equals(BOUNDING_BOX_FIELD_DEFINITION)) {
                             if (dataRec instanceof EnvelopeType) {
 
-                                if (log.isDebugEnabled())
-                                    log.debug("Found bbox!");
+                                log.debug("Found bbox!");
                                 EnvelopeType envelope = (EnvelopeType) dataRec;
                                 Coordinate[] lowerCornerCoords = envelope.getLowerCorner().getVector().getCoordinateArray();
                                 Coordinate[] upperCornerCoords = envelope.getUpperCorner().getVector().getCoordinateArray();

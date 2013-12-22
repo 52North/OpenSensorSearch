@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalogconnection.impl;
 
 import java.util.Arrays;
@@ -57,46 +58,24 @@ public class PushCatalogTask extends TimerTask {
 
     private boolean repeated;
 
-    /**
-     * 
-     * @param connectionID
-     * @param catalogStatusHandler
-     * @param catalogP
-     */
     public PushCatalogTask(String connectionID, ICatalogStatusHandler catalogStatusHandler, ICatalog catalogP) {
         this.connectionID = connectionID;
         this.catalogStatusHandler = catalogStatusHandler;
         this.catalog = catalogP;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.TimerTask#cancel()
-     */
     @Override
     public boolean cancel() {
         log.info("Cancelling " + this);
         return super.cancel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#finalize()
-     */
     @Override
     protected void finalize() throws Throwable {
-        if (log.isDebugEnabled())
-            log.debug("Finalizing " + this);
+        log.debug("Finalizing {} ", this);
         super.finalize();
     }
 
-    /**
-     * 
-     * @param reports
-     * @return
-     */
     private String getReportString(List<OwsExceptionReport> reports) {
         StringBuilder sb = new StringBuilder();
         for (OwsExceptionReport owsExceptionReport : reports) {
@@ -106,18 +85,10 @@ public class PushCatalogTask extends TimerTask {
         return sb.toString();
     }
 
-    /**
-     * 
-     * @return
-     */
     private String getStatusSignature() {
         return " AT " + new Date(System.currentTimeMillis()).toString() + " WITH CATALOG " + this.catalog;
     }
 
-    /**
-     * 
-     * @param reports
-     */
     private void logReports(List<OwsExceptionReport> reports) {
         int i = 0;
         for (OwsExceptionReport owsExceptionReport : reports) {
@@ -127,11 +98,6 @@ public class PushCatalogTask extends TimerTask {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.util.TimerTask#run()
-     */
     @Override
     public void run() {
         log.info("*** Run PushCatalogTask to " + this.catalog);
@@ -170,11 +136,6 @@ public class PushCatalogTask extends TimerTask {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

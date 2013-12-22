@@ -58,9 +58,7 @@ public class Client {
      */
     private static XmlObject doSend(String request, String requestMethod) throws UnsupportedEncodingException,
             IOException {
-        if (log.isDebugEnabled())
-            log.debug("Sending request (first 100 characters): "
-                    + request.substring(0, Math.min(request.length(), 100)));
+            log.debug("Sending request (first 100 characters): {}", request.substring(0, Math.min(request.length(), 100)));
 
         PropertiesManager pm = PropertiesManager.getInstance();
 
@@ -70,16 +68,14 @@ public class Client {
             HttpRequestBase method = null;
             if (requestMethod.equals(GET_METHOD)) {
                 String sorURL = pm.getServiceEndpointGet();
-                if (log.isDebugEnabled())
-                    log.debug("Client connecting via GET to " + sorURL);
+                    log.debug("Client connecting via GET to {}", sorURL);
 
                 HttpGet get = new HttpGet(request);
                 method = get;
             }
             else if (requestMethod.equals(POST_METHOD)) {
                 String sorURL = pm.getServiceEndpointPost();
-                if (log.isDebugEnabled())
-                    log.debug("Client connecting via POST to " + sorURL);
+                    log.debug("Client connecting via POST to {}", sorURL);
                 HttpPost postMethod = new HttpPost(sorURL.toString());
 
                 postMethod.setEntity(new StringEntity(request,
@@ -139,15 +135,13 @@ public class Client {
     public static XmlObject xSendGetRequest(String request) throws UnsupportedEncodingException,
             HttpException,
             IOException {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + request);
+        log.debug("Sending request: {}", request);
         XmlObject response = doSend(request, GET_METHOD);
         return response;
     }
 
     public static XmlObject xSendPostRequest(XmlObject request) throws IOException {
-        if (log.isDebugEnabled())
-            log.debug("Sending request: " + request);
+        log.debug("Sending request: {}", request);
         XmlObject response = doSend(request.xmlText(), POST_METHOD);
         return response;
     }

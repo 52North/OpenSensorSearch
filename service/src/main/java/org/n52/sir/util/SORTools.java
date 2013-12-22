@@ -47,8 +47,7 @@ public class SORTools {
 
         for (SirSearchCriteria_Phenomenon p : phenomena) {
             if (p.usesSOR()) {
-                if (log.isDebugEnabled())
-                    log.debug("Try to resolve matching phenomena based on " + p);
+                log.debug("Try to resolve matching phenomena based on {}", p);
 
                 Collection<SirSearchCriteria_Phenomenon> currentNewPhenomena = null;
                 try {
@@ -59,8 +58,7 @@ public class SORTools {
                     log.error("Could not get matching phenomena for " + p);
                 }
                 if (currentNewPhenomena != null) {
-                    if (log.isDebugEnabled())
-                        log.debug("Matched " + currentNewPhenomena.size() + " phenomena based on " + p);
+                    log.debug("Matched {} phenomena based on {}", currentNewPhenomena.size(), p);
                     newPhenomena.addAll(currentNewPhenomena);
                 }
             }

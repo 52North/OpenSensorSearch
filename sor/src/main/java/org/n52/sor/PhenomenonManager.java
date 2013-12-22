@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor;
 
 import java.io.File;
@@ -91,7 +92,7 @@ public class PhenomenonManager {
     public synchronized static PhenomenonManager getInstance() throws OwsExceptionReport {
         if (instance == null)
             instance = new PhenomenonManager();
-        
+
         return instance;
     }
 
@@ -193,9 +194,7 @@ public class PhenomenonManager {
                 PhenomenonType pT = (PhenomenonType) definitionType;
                 IDictionaryEntry entry = new DictionaryEntryImpl(pT);
 
-                if (log.isDebugEnabled()) {
-                    log.debug("Created entry from definition: " + entry);
-                }
+                log.debug("Created entry from definition: {}", entry);
 
                 return entry;
             }

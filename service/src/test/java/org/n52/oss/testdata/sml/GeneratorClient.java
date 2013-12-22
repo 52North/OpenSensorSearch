@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.testdata.sml;
 
 import java.io.IOException;
@@ -138,8 +139,7 @@ public class GeneratorClient {
 
             if (sending) {
                 try {
-                    if (log.isDebugEnabled())
-                        log.debug("Sleeping for " + SLEEP_BETWEEN_REQUESTS + " msecs.");
+                    log.debug("Sleeping for {} msecs.", SLEEP_BETWEEN_REQUESTS);
                     Thread.sleep(SLEEP_BETWEEN_REQUESTS);
                 }
                 catch (InterruptedException e) {
@@ -182,10 +182,8 @@ public class GeneratorClient {
             system.set(member.getProcess());
 
             if (printSensorMLDocuments) {
-                if (log.isDebugEnabled())
-                    log.debug("\n\n"
-                            + currentSensor.getSensorMLDocument().xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces())
-                            + "\n\n");
+                log.debug("\n {} \n",
+                          currentSensor.getSensorMLDocument().xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
             }
 
             /* ServiceReferences */
@@ -200,13 +198,11 @@ public class GeneratorClient {
         /* SEND REQUEST */
         if (sending) {
             // log.debug("Sending:\n" + requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
-            if (log.isDebugEnabled())
-                log.debug("Sending sensors " + Arrays.toString(insertingIds.toArray()));
+            log.debug("Sending sensors {}", Arrays.toString(insertingIds.toArray()));
 
             if ( !requestDoc.validate()) {
                 String errors = XmlTools.validateAndIterateErrors(requestDoc);
-                if (log.isDebugEnabled())
-                    log.debug(errors);
+                log.debug(errors);
                 return errors.split("\n");
             }
 
@@ -228,18 +224,14 @@ public class GeneratorClient {
                     return insertResponse.getInsertedSensors().getSensorIDInSIRArray();
                 }
             }
-            else {
-                if (log.isDebugEnabled())
-                    log.debug("Response for insertion:\n" + response.xmlText());
-            }
+            else
+                log.debug("Response for insertion:\n {}", response.xmlText());
 
             return null;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("NOT sending:\n" + requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
-            log.debug(XmlTools.validateAndIterateErrors(requestDoc));
-        }
+        log.debug("NOT sending: {}", requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
+        log.debug(XmlTools.validateAndIterateErrors(requestDoc));
         return null;
     }
 

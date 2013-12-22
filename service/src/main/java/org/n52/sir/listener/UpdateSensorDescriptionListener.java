@@ -58,12 +58,11 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
     private IProfileValidator validator;
 
     @Inject
-    public UpdateSensorDescriptionListener(IInsertSensorInfoDAO dao,
-                                           Set<IProfileValidator> validators) {
+    public UpdateSensorDescriptionListener(IInsertSensorInfoDAO dao, Set<IProfileValidator> validators) {
         this.insertSensorInfoDAO = dao;
         this.validator = ValidatorModule.getFirstMatchFor(validators,
                                                           IProfileValidator.ValidatableFormatAndProfile.SML_DISCOVERY);
-        
+
         log.info("NEW {}", this);
     }
 
@@ -127,8 +126,7 @@ public class UpdateSensorDescriptionListener implements ISirRequestListener {
             updatedSensors.add(sensorId);
             response.setNumberOfUpdatedSensorDescriptions(response.getNumberOfUpdatedSensorDescriptions() + 1);
 
-            if (log.isDebugEnabled())
-                log.debug("Updated sensor description for sensor " + sensorId);
+            log.debug("Updated sensor description for sensor {}", sensorId);
         }
     }
 }

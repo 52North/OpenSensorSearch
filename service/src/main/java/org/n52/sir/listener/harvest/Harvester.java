@@ -203,8 +203,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         sensor.setServDescs(servDescs);
 
         // add sensor do database
-        if (log.isDebugEnabled())
-            log.debug("Saving harvested sensor " + serviceSpecificSensorId + " to DB.");
+        log.debug("Saving harvested sensor {} to DB.", serviceSpecificSensorId);
 
         SirSensor temporarySensor = this.harvServDao.insertSensor(sensor);
 

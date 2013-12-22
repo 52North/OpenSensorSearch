@@ -108,8 +108,7 @@ public class GetSensorStatusListener implements ISirRequestListener {
                     Collection<SirSearchCriteria_Phenomenon> newPhenomena = sor.getMatchingPhenomena(phenomena);
 
                     // add all found phenomena to search criteria
-                    if (log.isDebugEnabled())
-                        log.debug("Adding phenomena to search criteria: " + Arrays.toString(newPhenomena.toArray()));
+                    log.debug("Adding phenomena to search criteria: {}", Arrays.toString(newPhenomena.toArray()));
                     phenomena.addAll(newPhenomena);
                 }
 

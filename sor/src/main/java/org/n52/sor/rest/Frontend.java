@@ -367,9 +367,7 @@ public class Frontend extends RestWebService {
      * @throws ServletException
      */
     private XmlObject requestDefinition(String inputURI, String sURL) throws IOException, ServletException {
-        if (log.isDebugEnabled()) {
-            log.debug("Requesting definition for " + inputURI + " from " + sURL);
-        }
+        log.debug("Requesting definition for {} from {}", inputURI, sURL);
 
         GetDefinitionRequestDocument getDefReqDoc = GetDefinitionRequestDocument.Factory.newInstance();
         GetDefinitionRequest getDefReq = getDefReqDoc.addNewGetDefinitionRequest();
@@ -508,9 +506,7 @@ public class Frontend extends RestWebService {
      * @throws IOException
      */
     private void writeXmlResponse(HttpServletResponse resp, XmlObject def) throws IOException {
-        if (log.isDebugEnabled()) {
-            log.debug("Writing XML response:\n" + def);
-        }
+        log.debug("Writing XML response:\n{}", def);
 
         try (OutputStream out = resp.getOutputStream();) {
             resp.setContentType(PropertiesManager.getInstance().getResponseContentTypeXml());

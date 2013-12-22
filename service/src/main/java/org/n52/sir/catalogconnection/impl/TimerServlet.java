@@ -141,11 +141,8 @@ public class TimerServlet extends GenericServlet {
             if (this.catalogStatusHandler == null) {
                 log.warn("Could not get catalog status handler from servlet context!");
             }
-            else {
-                if (log.isDebugEnabled())
-                    log.debug("Got catalog status handler from servlet context: " + this.catalogStatusHandler);
-            }
-
+            else
+                log.debug("Got catalog status handler from servlet context: {}", this.catalogStatusHandler);
         }
         return this.catalogStatusHandler;
     }

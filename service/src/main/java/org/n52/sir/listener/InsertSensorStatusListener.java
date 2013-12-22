@@ -69,8 +69,7 @@ public class InsertSensorStatusListener implements ISirRequestListener {
             else {
                 OwsExceptionReport se = new OwsExceptionReport();
                 se.addCodedException(ExceptionCode.InvalidParameterValue, null, "Unknown identification!");
-                if (log.isDebugEnabled())
-                    log.debug("Unknown identification: " + insSensStatReq.getSensIdent());
+                log.debug("Unknown identification: {}", insSensStatReq.getSensIdent());
                 throw se;
             }
         }

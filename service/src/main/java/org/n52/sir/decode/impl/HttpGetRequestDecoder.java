@@ -128,15 +128,13 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
 
                 // check request = GetCapabilities
                 if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.GetCapabilities.name())) {
-                    if (log.isDebugEnabled())
-                        log.debug("**** GetCapabilities");
+                    log.debug("**** GetCapabilities");
                     return decodeGetCapabilities(params);
                 }
 
                 // check request = DescribeSensor
                 if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.DescribeSensor.name())) {
-                    if (log.isDebugEnabled())
-                        log.debug("**** DescribeSensor");
+                    log.debug("**** DescribeSensor");
                     return decodeDescribeSensor(params);
                 }
             }

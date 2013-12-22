@@ -48,9 +48,7 @@ public class GetDefinitionURIsListener implements IRequestListener {
             // search string is given, check all elements and add them to ouput list if they match
 
             String search = sorRequest.getSearchString();
-            if (log.isDebugEnabled()) {
-                log.debug("Searching for String '" + search + "'");
-            }
+            log.debug("Searching for String '{}'", search);
 
             for (IDictionaryEntry de : phenomList) {
                 if (de.getIdentifier().contains(search)) {
@@ -58,9 +56,7 @@ public class GetDefinitionURIsListener implements IRequestListener {
                 }
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("Found search string in " + defs.size() + " of " + phenomList.size() + " dictionary entries.");
-            }
+            log.debug("Found search string in {} of {} dictionary entries.", defs.size(), phenomList.size());
         }
         else {
             // no search string, add all elements to output list

@@ -69,8 +69,7 @@ public class ConnectToCatalogListener implements ISirRequestListener {
 
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
-        if (log.isDebugEnabled())
-            log.debug("Receiving ConnectoToCatalogRequest");
+        log.debug("Receiving ConnectoToCatalogRequest");
 
         SirConnectToCatalogRequest conToCatReq = (SirConnectToCatalogRequest) request;
         SirConnectToCatalogResponse response = new SirConnectToCatalogResponse();

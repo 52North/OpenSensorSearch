@@ -128,14 +128,8 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
             // insert in sensor table
             String insertSensor = insertSensorCommand(sensor);
 
-            if (log.isDebugEnabled()) {
-                String debugString = insertSensor.toString();
-                if (debugString.length() > 500) {
-                    debugString = debugString.substring(0, 500) + " [...]";
-                }
-
-                log.debug(">>>Database Query (partial): {}", debugString);
-            }
+            log.debug(">>>Database Query (partial): {}",
+                      insertSensor.toString().substring(0, Math.min(500, insertSensor.toString().length())));
 
             ResultSet rs = stmt.executeQuery(insertSensor);
             if (rs.next())

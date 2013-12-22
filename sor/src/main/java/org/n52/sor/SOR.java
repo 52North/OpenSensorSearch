@@ -26,6 +26,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Path;
 
 import org.n52.sor.OwsExceptionReport.ExceptionCode;
 import org.n52.sor.response.ISorResponse;
@@ -34,13 +35,17 @@ import org.n52.sor.util.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.servlet.RequestScoped;
+
 /**
  * The Servlet of the SOR, which receives requests and send back the response.
  * 
  * @created 15-Okt-2008 16:25:09
- * @author Jan Schulte
+ * @author Jan Schulte, Daniel Nüst
  * @version 1.0
  */
+@Path("/sor")
+@RequestScoped
 public class SOR extends HttpServlet {
 
     private static final long serialVersionUID = -2606497510984790264L;
@@ -49,9 +54,6 @@ public class SOR extends HttpServlet {
 
     private static Logger log = LoggerFactory.getLogger(SOR.class);
 
-    /**
-     * The RequestOperator which handles the request
-     */
     private RequestOperator requestOperator = new RequestOperator();
 
     /**
@@ -154,9 +156,6 @@ public class SOR extends HttpServlet {
         }
     }
 
-    /**
-     * Init-Method to initialise the PropertiesManager and the SORManager
-     */
     @Override
     public void init() {
         // get ServletContext

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor.decoder;
 
 import java.io.Serializable;
@@ -110,9 +111,7 @@ public class HttpPostRequestDecoder implements Serializable {
     private ISorRequest decodeGetDefinitionRequest(GetDefinitionRequestDocument getDefReqDoc) throws OwsExceptionReport {
         GetDefinitionRequest request = getDefReqDoc.getGetDefinitionRequest();
 
-        // service
-        if (log.isDebugEnabled())
-            log.debug("Service: " + request.getService());
+        log.debug("Service: {}", request.getService());
         if ( !request.getService().equalsIgnoreCase(PropertiesManager.getInstance().getService())) {
             log.error("Invalid request: service parameter is wrong!");
             throw new OwsExceptionReport(OwsExceptionReport.ExceptionCode.InvalidRequest,
@@ -120,16 +119,13 @@ public class HttpPostRequestDecoder implements Serializable {
                                          "Request is invalid: service parameter is wrong!");
         }
 
-        // version
-        if (log.isDebugEnabled())
-            log.debug("Version: " + request.getVersion());
+        log.debug("Version: {}", request.getVersion());
         if ( !request.getVersion().equalsIgnoreCase(PropertiesManager.getInstance().getServiceVersion())) {
             log.error("Invalid request: version parameter is wrong!");
             throw new OwsExceptionReport(OwsExceptionReport.ExceptionCode.InvalidRequest,
                                          null,
                                          "Request is invalid: version parameter is wrong!");
         }
-        // inputURI
         if (request.getInputURI() == null || request.getInputURI().isEmpty()) {
             log.error("Invalid request: InputURI parameter is missing or wrong!");
             throw new OwsExceptionReport(OwsExceptionReport.ExceptionCode.InvalidRequest,
@@ -251,50 +247,38 @@ public class HttpPostRequestDecoder implements Serializable {
             log.info("Request type: " + doc.getClass());
         }
 
-        // GetCapabilitiesRequest
         if (doc instanceof GetCapabilitiesDocument) {
-            if (log.isDebugEnabled())
-                log.debug("GetCapabilities starts!");
+            log.debug("GetCapabilities starts!");
             GetCapabilitiesDocument getCaps = (GetCapabilitiesDocument) doc;
             return decodeGetCapabilitiesRequest(getCaps);
         }
 
-        // GetDefinitionURIsRequest
         if (doc instanceof GetDefinitionURIsRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("GetDefinitionURIsRequest starts!");
+            log.debug("GetDefinitionURIsRequest starts!");
             GetDefinitionURIsRequestDocument getDefURIsReqDoc = (GetDefinitionURIsRequestDocument) doc;
             return decodeGetDefinitionURIsRequest(getDefURIsReqDoc);
         }
 
-        // GetDefinitionRequest
         if (doc instanceof GetDefinitionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("GetDefinitionRequest starts!");
+            log.debug("GetDefinitionRequest starts!");
             GetDefinitionRequestDocument getDefReqDoc = (GetDefinitionRequestDocument) doc;
             return decodeGetDefinitionRequest(getDefReqDoc);
         }
 
-        // GetMatchingDefinitions
         if (doc instanceof GetMatchingDefinitionsRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("GetMatchingDefinitionsRequest starts!");
+            log.debug("GetMatchingDefinitionsRequest starts!");
             GetMatchingDefinitionsRequestDocument getMatchDefReqDoc = (GetMatchingDefinitionsRequestDocument) doc;
             return decodeGetMatchingDefinitionsRequest(getMatchDefReqDoc);
         }
 
-        // InsertDefinition
         if (doc instanceof InsertDefinitionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("InsertDefinitionRequest starts!");
+            log.debug("InsertDefinitionRequest starts!");
             InsertDefinitionRequestDocument insDefReqDoc = (InsertDefinitionRequestDocument) doc;
             return decodeInsertDefinitionRequest(insDefReqDoc);
         }
 
-        // DeleteDefinition
         if (doc instanceof DeleteDefinitionRequestDocument) {
-            if (log.isDebugEnabled())
-                log.debug("DeleteDefinitionRequest starts!");
+            log.debug("DeleteDefinitionRequest starts!");
             DeleteDefinitionRequestDocument delDefReqDoc = (DeleteDefinitionRequestDocument) doc;
             return decodeDeleteDefinitionRequest(delDefReqDoc);
         }

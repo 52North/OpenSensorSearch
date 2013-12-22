@@ -118,8 +118,7 @@ public class SPSServiceHarvester extends Harvester {
                 URI tempUri = URI.create(currentOffering.getSensorDefinition());
                 String tempID = currentOffering.getSensorID();
                 sensorDefinitions.add(new Pair<>(tempID, tempUri));
-                if (log.isDebugEnabled())
-                    log.debug("Found sensor with ID " + tempID + " and description " + tempUri.toString());
+                log.debug("Found sensor with ID {} and description {}", tempID, tempUri.toString());
             }
 
             SirHarvestServiceResponse response = new SirHarvestServiceResponse(this.validateResponses);

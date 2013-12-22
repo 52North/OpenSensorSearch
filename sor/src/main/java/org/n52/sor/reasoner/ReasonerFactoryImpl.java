@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor.reasoner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 
 /**
  * 
@@ -32,21 +31,12 @@ public class ReasonerFactoryImpl implements IReasonerFactory {
 
     private static Logger log = LoggerFactory.getLogger(ReasonerFactoryImpl.class);
 
-    /**
-     * instance to be a singleton
-     */
     private static IReasoner instance;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.n52.sor.reasoner.IReasonerFactory#getReasoner()
-     */
     @Override
     public IReasoner getReasoner() {
         if (instance == null) {
-            if (log.isDebugEnabled())
-                log.debug("No instance of reasoner given yet, creating new one...");
+            log.debug("No instance of reasoner given yet, creating new one...");
             instance = new JenaReasoner();
         }
         return instance;

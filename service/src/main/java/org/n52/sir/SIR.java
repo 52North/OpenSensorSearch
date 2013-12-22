@@ -58,12 +58,12 @@ public class SIR {
 
     private ApplicationConstants appConstants;
 
-    @Inject
     RequestOperator requestOperator;
 
     @Inject
-    public SIR(ApplicationConstants constants) {
+    public SIR(ApplicationConstants constants, RequestOperator requestOperator) {
         this.appConstants = constants;
+        this.requestOperator = requestOperator;
 
         log.info("{} | Version: {} | Build: {} | From: {}",
                  this,

@@ -15,6 +15,8 @@
  */
 package org.n52.sor;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -40,10 +42,6 @@ public class GetMatchingDefinitions extends SorTestCase {
 
     private int searchDepth = 3;
 
-    /**
-     * @param response
-     * @throws XmlException
-     */
     private void doAssert(String response) throws XmlException {
         // parse and validate response
         GetMatchingDefinitionsResponseDocument gmdrd = GetMatchingDefinitionsResponseDocument.Factory.parse(response);

@@ -16,3 +16,4 @@ org.n52.sir.catalogconnection.CatalogConnectionModule
 org.n52.sir.xml.TransformerModule
 org.n52.sir.xml.ValidatorModule
 org.n52.oss.rest.RestModule
+org.n52.sor.SorModule

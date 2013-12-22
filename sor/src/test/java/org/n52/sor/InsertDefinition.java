@@ -15,6 +15,8 @@
  */
 package org.n52.sor;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -36,14 +38,6 @@ public class InsertDefinition extends SorTestCase {
     private String phenomenon = "<swe:Phenomenon gml:id=\"test_Phenonemon\" xsi:schemaLocation=\"http://www.opengis.net/swe/1.0/gml32 http://giv-genesis.uni-muenster.de/schemas/sweCommon/1.0.1_gml32/phenomenon.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:swe=\"http://www.opengis.net/swe/1.0/gml32\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><gml:description>Phenomenon inserted for testing</gml:description><gml:identifier codeSpace=\"urn:x-ogc:tc:arch:doc-rp(05-010)\">urn:test: "
             + ID_PLACEHOLDER + "</gml:identifier><gml:name>Test 123</gml:name></swe:Phenomenon>";
 
-    /*
-     * No GET for DeleteDefinition!
-     */
-
-    /**
-     * @param response
-     * @throws XmlException
-     */
     private void doAssert(String response) throws XmlException {
         // parse and validate response
         InsertDefinitionResponseDocument idrd = InsertDefinitionResponseDocument.Factory.parse(response);

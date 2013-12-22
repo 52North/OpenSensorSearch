@@ -15,6 +15,8 @@
  */
 package org.n52.sor;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 

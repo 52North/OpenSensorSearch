@@ -35,9 +35,6 @@ public class PropertiesManager {
 
     private static Logger log = LoggerFactory.getLogger(PropertiesManager.class);
 
-    /**
-     * Path of the phenomenon xml list
-     */
     private String phenomenonXML;
 
     private String capabilitieSkeleton;
@@ -103,34 +100,16 @@ public class PropertiesManager {
 
     private String ontologyFile;
 
-    /**
-     * the url to which HTML POST requests need to be send to
-     */
     private String serviceEndpointPost;
 
-    /**
-     * 
-     */
     private int phenomenonXmlBackupCount;
 
-    /**
-     * including the URL
-     */
     private String testRequestPath;
 
-    /**
-     * including the URL
-     */
     private String serviceEndpointGet;
 
-    /**
-     * 
-     */
     private int defaultMaximumNumberOfResults;
 
-    /**
-     * 
-     */
     private String urlDecoderEncoding;
 
     private String responseContentTypeXml;
@@ -141,16 +120,8 @@ public class PropertiesManager {
 
     private IReasonerFactory reasonerFactory;
 
-    /**
-     * PropertiesManager instance to be a singleton
-     */
     private static PropertiesManager instance;
 
-    /**
-     * This methode provides the only instance of PropertiesManager
-     * 
-     * @return The instance of the PropertiesManager
-     */
     public static PropertiesManager getInstance() {
         if (instance == null) {
             log.error("PropertiesManager is not instantiated!");
@@ -159,33 +130,15 @@ public class PropertiesManager {
         return instance;
     }
 
-    /**
-     * This methode provides the only instance of PropertiesManager
-     * 
-     * @param configStream
-     *        The servletcontext stream to get the path for the phenomenonXML file of the web.xml
-     * @param basepath
-     * @return The instance of the PropertiesManager
-     */
-    public static PropertiesManager getInstance(InputStream configStream, String basepath) {
-        if (instance == null) {
-            instance = new PropertiesManager(configStream, basepath);
-        }
+    public static PropertiesManager getInstance(InputStream configStream) {
+        if (instance == null)
+            instance = new PropertiesManager(configStream);
+
         return instance;
     }
 
-    /**
-     * Constructor to create an instance of the PropertiesManager
-     * 
-     * @param configStream
-     *        The servletcontext stream to get the path for the phenomenonXML file of the web.xml
-     * @param basepath
-     */
-    public PropertiesManager(InputStream configStream, String basepath) {
-        this.basepath = basepath;
-
+    public PropertiesManager(InputStream configStream) {
         Properties props = new Properties();
-        // load properties
         try {
             props.load(configStream);
         }
@@ -236,151 +189,82 @@ public class PropertiesManager {
         return this.capabilitieSkeleton;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String getClientRequestContentType() {
         return getResponseContentTypeXml();
     }
 
-    /**
-     * 
-     * Use the same encoding for the client requests that is used for decoding them.
-     * 
-     * @return
-     */
     public String getClientRequestEncoding() {
         return getUrlDecoderEncoding();
     }
 
-    /**
-     * @return the defaultMaximumNumberOfResults
-     */
     public int getDefaultMaximumNumberOfResults() {
         return this.defaultMaximumNumberOfResults;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String getGmlDateFormat() {
         return this.gmlDateFormat;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String[] getKeywords() {
         return this.keywords;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String getOntologyFile() {
         return this.ontologyFile;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String[] getOntologyRepositoryURLs() {
         return this.ontologyRepositoryURLs;
     }
 
-    /**
-     * @return the phenomenonXmlBackupCount
-     */
     public int getPhenomenonXmlBackupCount() {
         return this.phenomenonXmlBackupCount;
     }
 
-    /**
-     * @return The path to the phenonmenonXML file
-     */
     public String getPhenomenonXMLPath() {
         return this.phenomenonXML;
     }
 
-    /**
-     * @return the reasonerFactory
-     */
     public IReasonerFactory getReasonerFactory() {
         return this.reasonerFactory;
     }
 
-    /**
-     * @return the responseContentTypeHtml
-     */
     public String getResponseContentTypeHtml() {
         return this.responseContentTypeHtml;
     }
 
-    /**
-     * @return the responseContentType
-     */
     public String getResponseContentTypeXml() {
         return this.responseContentTypeXml;
     }
 
-    /**
-     * @return the service
-     */
     public String getService() {
         return this.service;
     }
 
-    /**
-     * @return the serviceEndpointGet
-     */
     public String getServiceEndpointGet() {
         return this.serviceEndpointGet;
     }
 
-    /**
-     * @return the serviceEndpointPost
-     */
     public String getServiceEndpointPost() {
         return this.serviceEndpointPost;
     }
 
-    /**
-     * @return the serviceURL
-     */
     public String getServiceURL() {
         return this.serviceURL;
     }
 
-    /**
-     * @return the serviceVersion
-     */
     public String getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /**
-     * @return the testRequestPath
-     */
     public String getTestRequestPath() {
         return this.testRequestPath;
     }
 
-    /**
-     * 
-     * @return
-     */
     public String getUpdateSequence() {
         return this.updateSequence;
     }
 
-    /**
-     * @return the urlDecoderEncoding
-     */
     public String getUrlDecoderEncoding() {
         return this.urlDecoderEncoding;
     }

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor;
 
 import java.io.FileInputStream;
@@ -20,8 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import junit.framework.TestCase;
-
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,42 +30,31 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst
  * 
  */
-public abstract class SorTestCase extends TestCase {
+public abstract class SorTestCase {
 
     public static final String REQUEST_EXAMPLES_GET_FILE = "RequestExamples_GET.txt";
 
     private static Logger log = LoggerFactory.getLogger(SorTestCase.class);
 
-    /**
-     * 
-     */
     private static Properties examples;
 
-    /**
-     * 
-     * @param name
-     * @return
-     */
+    @Test
     protected static String loadGetRequestExample(String name) {
         return examples.getProperty(name);
     }
 
-    /**
-     * 
-     * @throws IOException
-     */
-    @Override
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         if (PropertiesManager.getInstance() == null) {
-            String basepath = "/home/daniel/workspace/SOR/WebContent";
-            try (InputStream configStream = new FileInputStream(basepath + "/WEB-INF/conf/sor.properties");
-                    InputStream exampleStream = new FileInputStream(PropertiesManager.getInstance().getTestRequestPath()
-                            + REQUEST_EXAMPLES_GET_FILE);) {
-                PropertiesManager.getInstance(configStream, basepath);
+            try (InputStream configStream = getClass().getResourceAsStream("/conf/sor.properties");) {
+                PropertiesManager.getInstance(configStream);
 
                 examples = new Properties();
-                // load properties
-                examples.load(exampleStream);
+
+                try (InputStream exampleStream = new FileInputStream(PropertiesManager.getInstance().getTestRequestPath()
+                        + REQUEST_EXAMPLES_GET_FILE);) {
+                    examples.load(exampleStream);
+                }
             }
             catch (IOException e) {
                 log.error("Loading examples properties failed");

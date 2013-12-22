@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor;
 
 import java.io.BufferedReader;
@@ -22,11 +23,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.n52.sor.OwsExceptionReport.ExceptionCode;
 import org.n52.sor.response.ISorResponse;
@@ -46,28 +50,21 @@ import com.google.inject.servlet.RequestScoped;
  */
 @Path("/sor")
 @RequestScoped
-public class SOR extends HttpServlet {
-
-    private static final long serialVersionUID = -2606497510984790264L;
-
-    private static final String CONFIG_FILE_INIT_PARAMETER = "configFile";
+public class SOR {
 
     private static Logger log = LoggerFactory.getLogger(SOR.class);
 
     private RequestOperator requestOperator = new RequestOperator();
 
-    /**
-     * This Methode handles all incoming GET-requests and send them to the RequestDecoder, where the request
-     * is decoded to an intern SOR request.
-     * 
-     * @param request
-     *        The incoming request
-     * @param response
-     *        The outgoing reponse to the request response
-     */
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public SOR() {
+        log.info("NEW {}", this);
+    }
 
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public void doGet(@Context
+    HttpServletRequest request, @Context
+    HttpServletResponse response) {
         String queryString = request.getQueryString();
         log.info("(GET) Connected from: " + request.getRemoteAddr() + " " + request.getRemoteHost() + " Request: "
                 + queryString);
@@ -75,21 +72,14 @@ public class SOR extends HttpServlet {
         ISorResponse sorResponse = this.requestOperator.doGetOperation(queryString);
         log.info("Response: " + sorResponse);
 
-        // prepare response
         doResponse(response, sorResponse);
     }
 
-    /**
-     * This methode handles all incoming POST-request and send them to the RequestDecoder, where the request
-     * is decoded to an intern SOR request.
-     * 
-     * @param request
-     *        The incoming request
-     * @param response
-     *        The outgoing response to the request
-     */
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    @POST
+    @Produces(MediaType.APPLICATION_XML)
+    public void doPost(@Context
+    HttpServletRequest request, @Context
+    HttpServletResponse response) {
         try (InputStream in = request.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));) {
 
@@ -112,13 +102,12 @@ public class SOR extends HttpServlet {
             // decode the query string
             decodedString = URLDecoder.decode(inputString, PropertiesManager.getInstance().getUrlDecoderEncoding());
 
-            log.info("(POST) Connected from: " + request.getRemoteAddr() + " " + request.getRemoteHost());
+            log.info("(POST) Connected from: {} {}", request.getRemoteAddr(), request.getRemoteHost());
 
             ISorResponse sorResponse = this.requestOperator.doPostOperation(decodedString);
 
             log.info("Returning response: " + sorResponse);
 
-            // prepare response
             doResponse(response, sorResponse);
         }
         catch (IOException e) {
@@ -135,14 +124,6 @@ public class SOR extends HttpServlet {
         }
     }
 
-    /**
-     * Sends the SorResponse to the Outputstream of the HttpServletResponse
-     * 
-     * @param response
-     *        HttpServletResponse which gets the SorResponse
-     * @param sorResponse
-     *        SorResponse which is send back to the client
-     */
     private void doResponse(HttpServletResponse response, ISorResponse sorResponse) {
         try (OutputStream out = response.getOutputStream();) {
             response.setContentType(PropertiesManager.getInstance().getResponseContentTypeXml());
@@ -156,16 +137,11 @@ public class SOR extends HttpServlet {
         }
     }
 
-    @Override
     public void init() {
-        // get ServletContext
-        ServletContext context = getServletContext();
-
-        String basepath = context.getRealPath("/");
-        try (InputStream configStream = context.getResourceAsStream(getInitParameter(CONFIG_FILE_INIT_PARAMETER));) {
+        try (InputStream configStream = getClass().getResourceAsStream("/conf/sor.properties");) {
 
             // initialize property manager
-            PropertiesManager.getInstance(configStream, basepath);
+            PropertiesManager.getInstance(configStream);
 
             // initialize phenomenon manager
             PhenomenonManager.getInstance();

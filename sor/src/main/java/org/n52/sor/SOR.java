@@ -33,7 +33,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.n52.sor.OwsExceptionReport.ExceptionCode;
-import org.n52.sor.response.ISorResponse;
 import org.n52.sor.response.SorExceptionReportResponse;
 import org.n52.sor.util.Tools;
 import org.slf4j.Logger;

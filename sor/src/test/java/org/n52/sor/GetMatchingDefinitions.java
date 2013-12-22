@@ -23,9 +23,9 @@ import java.io.IOException;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
+import org.n52.sor.ISorRequest.SorMatchingType;
 import org.n52.sor.client.Client;
 import org.n52.sor.client.GetMatchingDefinitionsBean;
-import org.n52.sor.request.ISorRequest.SorMatchingType;
 import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument;
 import org.x52North.sor.x031.GetMatchingDefinitionsResponseDocument;
 

@@ -17,15 +17,15 @@ package org.n52.sor.listener;
 
 import java.util.Collection;
 
+import org.n52.sor.ISorRequest;
+import org.n52.sor.ISorRequest.SorMatchingType;
+import org.n52.sor.ISorResponse;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.PhenomenonManager;
 import org.n52.sor.PropertiesManager;
 import org.n52.sor.reasoner.IReasoner;
-import org.n52.sor.reasoner.JenaReasoner.MatchingCode;
-import org.n52.sor.request.ISorRequest;
-import org.n52.sor.request.ISorRequest.SorMatchingType;
+import org.n52.sor.reasoner.IReasoner.MatchingCode;
 import org.n52.sor.request.SorGetMatchingDefinitionsRequest;
-import org.n52.sor.response.ISorResponse;
 import org.n52.sor.response.SorGetMatchingDefinitionsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +72,7 @@ public class GetMatchingDefinitionsListener implements IRequestListener {
 
         // get matching urls
         IReasoner rsnr = PropertiesManager.getInstance().getReasonerFactory().getReasoner();
-        MatchingCode matchCode = code.getJenaMatchingCode();
+        MatchingCode matchCode = code.getMatchingCode();
 
         Collection<String> list = rsnr.getMatchingURLs(ontologyURL, matchCode, searchDepth);
         log.debug("Got " + list.size() + " possible matche(s): " + list);

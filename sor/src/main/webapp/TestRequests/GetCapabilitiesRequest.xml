@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<GetCapabilities service="SOR"
-	xmlns="http://52north.org/sor" xmlns:ows="http://www.opengis.net/ows/1.1"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<ows:AcceptVersions>
-		<ows:Version>0.3.0</ows:Version>
-	</ows:AcceptVersions>
-</GetCapabilities>

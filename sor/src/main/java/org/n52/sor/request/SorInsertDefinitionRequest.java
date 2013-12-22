@@ -17,6 +17,8 @@ package org.n52.sor.request;
 
 import net.opengis.swe.x101.PhenomenonType;
 
+import org.n52.sor.ISorRequest;
+
 
 /**
  * @author Jan Schulte

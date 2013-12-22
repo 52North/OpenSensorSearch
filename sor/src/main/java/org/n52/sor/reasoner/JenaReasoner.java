@@ -46,10 +46,6 @@ import com.hp.hpl.jena.util.iterator.ExtendedIterator;
  */
 public class JenaReasoner implements IReasoner {
 
-    public enum MatchingCode {
-        SUPER_CLASS, EQUIVALENT_CLASS, SUB_CLASS
-    }
-
     /**
      * Includes an OntClass and a number of steps.
      * 

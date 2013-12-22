@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.n52.sor.ISorResponse;
 import org.n52.sor.util.XmlTools;
 import org.x52North.sor.x031.GetDefinitionURIsResponseDocument;
 import org.x52North.sor.x031.GetDefinitionURIsResponseDocument.GetDefinitionURIsResponse;

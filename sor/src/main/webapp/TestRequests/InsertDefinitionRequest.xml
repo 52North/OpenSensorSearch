@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<InsertDefinitionRequest service="SOR" version="0.3.0" xmlns="http://swsl.uni-muenster.de/sor" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swsl.uni-muenster.de/sor http://giv-genesis.uni-muenster.de/schemas/sor/sorAll.xsd">
-	<swe:Phenomenon gml:id="test_Phen123" xsi:schemaLocation="http://www.opengis.net/swe/1.0/gml32 http://giv-genesis.uni-muenster.de/schemas/sweCommon/1.0.1_gml32/phenomenon.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/1.0/gml32" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<gml:description>Phenomenon inserted for testing</gml:description>
-		<gml:identifier codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:test:123</gml:identifier>
-		<gml:name>Test 123</gml:name>
-	</swe:Phenomenon>
-</InsertDefinitionRequest>

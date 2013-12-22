@@ -12,7 +12,6 @@
 	<version>0.5</version>
 	<name>Sensor Observable Registry</name>
 	<description>52°North Sensor Observable Registry</description>
-	<packaging>war</packaging>
 
 	<url>http://52north.org/communities/sensorweb/discovery/</url>
 	<inceptionYear>2012</inceptionYear>
@@ -68,14 +67,19 @@
 		</license>
 	</licenses>
 
-	<properties>
-		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
-	</properties>
-
 	<dependencies>
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>common</artifactId>
+			<version>0.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>sor-common</artifactId>
+			<version>0.5</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -97,7 +101,7 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -112,16 +116,12 @@
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-sor-v031</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-servlet</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.hp.hpl.jena</groupId>
 			<artifactId>jena</artifactId>
@@ -130,40 +130,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>oss-sor</finalName>
-
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-
-				<configuration>
-					<!-- have to explicitly add resources and target paths if I want to 
-						do filtering on different resources -->
-					<!-- http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
-					<webResources>
-						<resource>
-							<directory>src/main/webapp</directory>
-							<filtering>true</filtering>
-						</resource>
-						<resource>
-							<directory>src/main/resources</directory>
-							<filtering>true</filtering>
-							<targetPath>WEB-INF/classes</targetPath>
-						</resource>
-					</webResources>
-
-					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
-					<filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>

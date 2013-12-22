@@ -16,6 +16,8 @@
 
 package org.n52.oss.guice;
 
+import org.n52.sor.SorModule;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
@@ -28,7 +30,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
     @Override
     protected Injector getInjector() {
         ServiceLoaderConfigurationModule m = new ServiceLoaderConfigurationModule();
-        Injector injector = Guice.createInjector(m);
+        Injector injector = Guice.createInjector(m, new SorModule());
         return injector;
     }
 }

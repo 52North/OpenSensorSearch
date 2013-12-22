@@ -15,6 +15,8 @@
  */
 package org.n52.sor.request;
 
+import org.n52.sor.ISorRequest;
+
 /**
  * @created 15-Okt-2008 16:25:09
  * @author Jan Schulte

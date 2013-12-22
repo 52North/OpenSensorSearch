@@ -18,13 +18,13 @@ package org.n52.sor.listener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.n52.sor.ISorRequest;
+import org.n52.sor.ISorResponse;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.OwsExceptionReport.ExceptionCode;
 import org.n52.sor.PhenomenonManager;
 import org.n52.sor.datastructures.IDictionaryEntry;
-import org.n52.sor.request.ISorRequest;
 import org.n52.sor.request.SorGetDefinitionURIsRequest;
-import org.n52.sor.response.ISorResponse;
 import org.n52.sor.response.SorGetDefinitionURIsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

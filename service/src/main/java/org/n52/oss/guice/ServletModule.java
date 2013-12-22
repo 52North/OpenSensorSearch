@@ -51,10 +51,8 @@ public class ServletModule extends JerseyServletModule {
         // bind(IValidatorFactory.class).to(ValidatorFactoryImpl.class);
         // bind(SchedulerFactory.class).to(StdSchedulerFactory.class).in(Singleton.class);
 
-        // bind the JAX-RS resources
-        // http://code.google.com/p/google-guice/wiki/ServletModule
-        // bind(HelloGuice.class);
-        // TODO move the binding to the respective modules
+        // bind the JAX-RS resources: http://code.google.com/p/google-guice/wiki/ServletModule
+        // TODO split up service into modules, move the binding to the respective modules
         bind(HarvestResource.class);
         bind(AutoCompleteResource.class);
         bind(OpenSearch.class);

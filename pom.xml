@@ -16,11 +16,13 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 	<name>Open Sensor Search Parent Project</name>
 
 	<modules>
+		<module>common</module>
 		<module>sir-json</module>
 		<module>sir-common</module>
 		<module>service</module>
 		<module>website</module>
 		<module>arsearch</module>
+		<module>sor-common</module>
 		<module>sor</module>
 	</modules>
 
@@ -125,6 +127,12 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 				<artifactId>httpclient</artifactId>
 				<version>4.3.1</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>4.3.1</version>
+			</dependency>
+
 
 			<dependency>
 				<groupId>junit</groupId>

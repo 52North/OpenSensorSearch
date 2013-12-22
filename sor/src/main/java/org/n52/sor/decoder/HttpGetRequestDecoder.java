@@ -19,11 +19,11 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import org.n52.sor.ISorRequest;
+import org.n52.sor.ISorRequest.SorMatchingType;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.PropertiesManager;
 import org.n52.sor.SorConstants;
-import org.n52.sor.request.ISorRequest;
-import org.n52.sor.request.ISorRequest.SorMatchingType;
 import org.n52.sor.request.SorGetCapabilitiesRequest;
 import org.n52.sor.request.SorGetDefinitionRequest;
 import org.n52.sor.request.SorGetDefinitionURIsRequest;

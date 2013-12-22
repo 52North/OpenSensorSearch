@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import net.opengis.ows.x11.ExceptionReportDocument;
 
+import org.n52.sor.ISorResponse;
 import org.n52.sor.util.XmlTools;
 
 /**

@@ -20,10 +20,10 @@ import java.io.Serializable;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.sor.ISorRequest;
+import org.n52.sor.ISorRequest.SorMatchingType;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.PropertiesManager;
-import org.n52.sor.request.ISorRequest;
-import org.n52.sor.request.ISorRequest.SorMatchingType;
 import org.n52.sor.request.SorDeleteDefinitionRequest;
 import org.n52.sor.request.SorGetCapabilitiesRequest;
 import org.n52.sor.request.SorGetDefinitionRequest;

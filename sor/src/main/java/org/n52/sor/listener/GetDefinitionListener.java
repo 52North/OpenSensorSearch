@@ -15,13 +15,13 @@
  */
 package org.n52.sor.listener;
 
+import org.n52.sor.ISorRequest;
+import org.n52.sor.ISorResponse;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.OwsExceptionReport.ExceptionCode;
 import org.n52.sor.PhenomenonManager;
 import org.n52.sor.datastructures.IDictionaryEntry;
-import org.n52.sor.request.ISorRequest;
 import org.n52.sor.request.SorGetDefinitionRequest;
-import org.n52.sor.response.ISorResponse;
 import org.n52.sor.response.SorGetDefinitionResponse;
 
 public class GetDefinitionListener implements IRequestListener {

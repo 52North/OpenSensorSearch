@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<GetDefinitionURIsRequest xmlns="http://swsl.uni-muenster.de/sor" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swsl.uni-muenster.de/sor http://giv-genesis.uni-muenster.de/schemas/sor/sorAll.xsd" service="SOR" version="0.3.0">
-	<MaxNumberOfResults>17</MaxNumberOfResults>
-	<StartResultElement>3</StartResultElement>
-	<SearchString>Temp</SearchString>
-</GetDefinitionURIsRequest>

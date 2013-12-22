@@ -18,6 +18,7 @@ package org.n52.sor.response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.n52.sor.ISorResponse;
 import org.n52.sor.util.XmlTools;
 import org.x52North.sor.x031.InsertDefinitionResponseDocument;
 import org.x52North.sor.x031.InsertDefinitionResponseDocument.InsertDefinitionResponse;

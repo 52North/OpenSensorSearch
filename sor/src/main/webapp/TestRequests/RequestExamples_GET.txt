@@ -1,4 +1,0 @@
-GetCapabilities = request=GetCapabilities&service=SOR&acceptversions=0.3.0&sections=all
-GetDefinition = request=GetDefinition&service=SOR&version=0.3.0&inputURI=urn:ogc:def:phenomenon:OGC::Speed
-GetDefinitionURIs = request=GetDefinitionURIs&service=SOR&version=0.3.0&startResultElement=42
-GetMatchingDefinitions = request=GetMatchingDefinitions&service=SOR&version=0.3.0&inputURI=urn:ogc:def:phenomenon:OGC::Temperature&matchingType=SUB_TYPE&searchDepth=10

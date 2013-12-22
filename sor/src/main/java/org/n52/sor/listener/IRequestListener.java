@@ -15,9 +15,9 @@
  */
 package org.n52.sor.listener;
 
+import org.n52.sor.ISorRequest;
+import org.n52.sor.ISorResponse;
 import org.n52.sor.OwsExceptionReport;
-import org.n52.sor.request.ISorRequest;
-import org.n52.sor.response.ISorResponse;
 
 /**
  * 

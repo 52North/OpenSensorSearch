@@ -21,6 +21,7 @@ import java.io.IOException;
 import net.opengis.swe.x101.PhenomenonType;
 
 import org.apache.xmlbeans.XmlOptions;
+import org.n52.sor.ISorResponse;
 import org.n52.sor.datastructures.IDictionaryEntry;
 import org.n52.sor.util.XmlTools;
 

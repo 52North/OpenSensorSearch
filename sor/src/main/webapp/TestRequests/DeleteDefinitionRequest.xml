@@ -1,3 +1,0 @@
-<DeleteDefinitionRequest xmlns="http://swsl.uni-muenster.de/sor" service="SOR" version="0.3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swsl.uni-muenster.de/sor http://giv-genesis.uni-muenster.de/schemas/sor/sorAll.xsd">
-  <DefinitionURI>urn:ogc:def:phenomenon:OGC::SunshineDuration2</DefinitionURI>
-</DeleteDefinitionRequest>

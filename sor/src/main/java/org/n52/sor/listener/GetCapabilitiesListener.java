@@ -20,16 +20,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.n52.sor.ISorRequest;
+import org.n52.sor.ISorResponse;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.OwsExceptionReport.ExceptionCode;
 import org.n52.sor.PhenomenonManager;
 import org.n52.sor.PropertiesManager;
-import org.n52.sor.request.ISorRequest;
 import org.n52.sor.request.SorGetCapabilitiesRequest;
-import org.n52.sor.response.ISorResponse;
+import org.n52.sor.response.CapabilitiesSection;
 import org.n52.sor.response.SorExceptionReportResponse;
 import org.n52.sor.response.SorGetCapabilitiesResponse;
-import org.n52.sor.response.SorGetCapabilitiesResponse.Section;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,23 +53,23 @@ public class GetCapabilitiesListener implements IRequestListener {
         throw se;
     }
 
-    private ArrayList<Section> checkSections(String[] sections) throws OwsExceptionReport {
-        ArrayList<Section> responseSection = new ArrayList<>();
+    private ArrayList<CapabilitiesSection> checkSections(String[] sections) throws OwsExceptionReport {
+        ArrayList<CapabilitiesSection> responseSection = new ArrayList<>();
         for (String section : sections) {
-            if (section.equalsIgnoreCase(Section.CONTENTS.name())) {
-                responseSection.add(Section.CONTENTS);
+            if (section.equalsIgnoreCase(CapabilitiesSection.CONTENTS.name())) {
+                responseSection.add(CapabilitiesSection.CONTENTS);
             }
-            else if (section.equalsIgnoreCase(Section.OPERATIONSMETADATA.name())) {
-                responseSection.add(Section.OPERATIONSMETADATA);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.OPERATIONSMETADATA.name())) {
+                responseSection.add(CapabilitiesSection.OPERATIONSMETADATA);
             }
-            else if (section.equalsIgnoreCase(Section.SERVICEIDENTIFICATION.name())) {
-                responseSection.add(Section.SERVICEIDENTIFICATION);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.SERVICEIDENTIFICATION.name())) {
+                responseSection.add(CapabilitiesSection.SERVICEIDENTIFICATION);
             }
-            else if (section.equalsIgnoreCase(Section.SERVICEPROVIDER.name())) {
-                responseSection.add(Section.SERVICEPROVIDER);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.SERVICEPROVIDER.name())) {
+                responseSection.add(CapabilitiesSection.SERVICEPROVIDER);
             }
-            else if (section.equalsIgnoreCase(Section.ALL.name())) {
-                responseSection.add(Section.ALL);
+            else if (section.equalsIgnoreCase(CapabilitiesSection.ALL.name())) {
+                responseSection.add(CapabilitiesSection.ALL);
             }
             else {
                 OwsExceptionReport se = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
@@ -77,11 +77,11 @@ public class GetCapabilitiesListener implements IRequestListener {
                                                                "The parameter 'Sections' has a wrong value: '"
                                                                        + section
                                                                        + "'. Please use only (one of, or a combination of) these values: "
-                                                                       + Section.SERVICEIDENTIFICATION.name() + ", "
-                                                                       + Section.SERVICEPROVIDER.name() + ", "
-                                                                       + Section.OPERATIONSMETADATA.name() + ", "
-                                                                       + Section.CONTENTS.name() + ", "
-                                                                       + Section.ALL.name());
+                                                                       + CapabilitiesSection.SERVICEIDENTIFICATION.name() + ", "
+                                                                       + CapabilitiesSection.SERVICEPROVIDER.name() + ", "
+                                                                       + CapabilitiesSection.OPERATIONSMETADATA.name() + ", "
+                                                                       + CapabilitiesSection.CONTENTS.name() + ", "
+                                                                       + CapabilitiesSection.ALL.name());
                 log.error("The sections parameter is incorrect.", se);
                 throw se;
             }
@@ -149,8 +149,8 @@ public class GetCapabilitiesListener implements IRequestListener {
                 response.setSections(checkSections(sorRequest.getSections()));
             }
             else {
-                ArrayList<Section> temp = new ArrayList<>();
-                temp.add(Section.ALL);
+                ArrayList<CapabilitiesSection> temp = new ArrayList<>();
+                temp.add(CapabilitiesSection.ALL);
                 response.setSections(temp);
             }
 

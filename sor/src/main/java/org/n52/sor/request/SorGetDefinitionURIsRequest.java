@@ -15,6 +15,7 @@
  */
 package org.n52.sor.request;
 
+import org.n52.sor.ISorRequest;
 import org.n52.sor.PropertiesManager;
 
 /**

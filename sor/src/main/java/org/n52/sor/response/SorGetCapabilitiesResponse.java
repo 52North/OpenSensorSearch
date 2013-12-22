@@ -26,6 +26,7 @@ import net.opengis.ows.x11.ServiceIdentificationDocument.ServiceIdentification;
 import net.opengis.ows.x11.ServiceProviderDocument.ServiceProvider;
 
 import org.apache.xmlbeans.XmlException;
+import org.n52.sor.ISorResponse;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.PhenomenonManager;
 import org.n52.sor.PropertiesManager;
@@ -40,13 +41,7 @@ import org.x52North.sor.x031.CapabilitiesDocument.Capabilities.Contents;
  */
 public class SorGetCapabilitiesResponse implements ISorResponse {
 
-    /** Sections */
-    public enum Section {
-        SERVICEIDENTIFICATION, SERVICEPROVIDER, OPERATIONSMETADATA, CONTENTS, ALL
-    }
-
-    /** Sections in response */
-    private ArrayList<Section> sections;
+    private ArrayList<CapabilitiesSection> sections;
 
     private CapabilitiesDocument capabilitiesSkeleton;
 
@@ -147,26 +142,26 @@ public class SorGetCapabilitiesResponse implements ISorResponse {
         caps.setUpdateSequence(PropertiesManager.getInstance().getUpdateSequence());
         if (this.sections != null) {
             // set all
-            if (this.sections.contains(Section.ALL)) {
+            if (this.sections.contains(CapabilitiesSection.ALL)) {
                 caps.setServiceIdentification(createServiceIdentification());
                 caps.setServiceProvider(createServiceProvider());
                 caps.setOperationsMetadata(createOperationsMetadata());
                 caps.setContents(createContents());
             }
             // set ServiceIdentification
-            if (this.sections.contains(Section.SERVICEIDENTIFICATION)) {
+            if (this.sections.contains(CapabilitiesSection.SERVICEIDENTIFICATION)) {
                 caps.setServiceIdentification(createServiceIdentification());
             }
             // set ServiceProcider
-            if (this.sections.contains(Section.SERVICEPROVIDER)) {
+            if (this.sections.contains(CapabilitiesSection.SERVICEPROVIDER)) {
                 caps.setServiceProvider(createServiceProvider());
             }
             // set OperationsMetadata
-            if (this.sections.contains(Section.OPERATIONSMETADATA)) {
+            if (this.sections.contains(CapabilitiesSection.OPERATIONSMETADATA)) {
                 caps.setOperationsMetadata(createOperationsMetadata());
             }
             // set Contents
-            if (this.sections.contains(Section.CONTENTS)) {
+            if (this.sections.contains(CapabilitiesSection.CONTENTS)) {
                 caps.setContents(createContents());
             }
         }
@@ -192,7 +187,7 @@ public class SorGetCapabilitiesResponse implements ISorResponse {
     /**
      * @return the sections
      */
-    public ArrayList<Section> getSections() {
+    public ArrayList<CapabilitiesSection> getSections() {
         return this.sections;
     }
 
@@ -200,7 +195,7 @@ public class SorGetCapabilitiesResponse implements ISorResponse {
      * @param sections
      *        the sections to set
      */
-    public void setSections(ArrayList<Section> sections) {
+    public void setSections(ArrayList<CapabilitiesSection> sections) {
         this.sections = sections;
     }
 

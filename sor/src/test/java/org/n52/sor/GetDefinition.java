@@ -72,7 +72,7 @@ public class GetDefinition extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "GetDefinitionRequest.xml";
+        String path = "requests/GetDefinitionRequest.xml";
         GetDefinitionRequestDocument gcd = GetDefinitionRequestDocument.Factory.parse(new File(path));
 
         XmlObject response = Client.xSendPostRequest(gcd);

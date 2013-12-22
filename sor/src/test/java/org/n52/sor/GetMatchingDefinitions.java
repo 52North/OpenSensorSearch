@@ -76,7 +76,7 @@ public class GetMatchingDefinitions extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "GetMatchingDefinitionsRequest.xml";
+        String path = "requests/GetMatchingDefinitionsRequest.xml";
         GetMatchingDefinitionsRequestDocument gcd = GetMatchingDefinitionsRequestDocument.Factory.parse(new File(path));
 
         XmlObject response = Client.xSendPostRequest(gcd);

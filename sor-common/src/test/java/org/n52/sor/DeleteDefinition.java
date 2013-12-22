@@ -17,7 +17,6 @@ package org.n52.sor;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.xmlbeans.XmlException;
@@ -67,8 +66,8 @@ public class DeleteDefinition extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "DeleteDefinitionRequest.xml";
-        DeleteDefinitionRequestDocument ddrd = DeleteDefinitionRequestDocument.Factory.parse(new File(path));
+        String path = "requests/DeleteDefinitionRequest.xml";
+        DeleteDefinitionRequestDocument ddrd = DeleteDefinitionRequestDocument.Factory.parse(getClass().getResourceAsStream(path));
 
         XmlObject response = Client.xSendPostRequest(ddrd);
 

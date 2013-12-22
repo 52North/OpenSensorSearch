@@ -16,7 +16,6 @@
 
 package org.n52.sor;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class SorTestCase {
 
-    public static final String REQUEST_EXAMPLES_GET_FILE = "RequestExamples_GET.txt";
+    public static final String REQUEST_EXAMPLES_GET_FILE = "requests/RequestExamples_GET.txt";
 
     private static Logger log = LoggerFactory.getLogger(SorTestCase.class);
 
@@ -51,8 +50,7 @@ public abstract class SorTestCase {
 
                 examples = new Properties();
 
-                try (InputStream exampleStream = new FileInputStream(PropertiesManager.getInstance().getTestRequestPath()
-                        + REQUEST_EXAMPLES_GET_FILE);) {
+                try (InputStream exampleStream = getClass().getResourceAsStream(REQUEST_EXAMPLES_GET_FILE);) {
                     examples.load(exampleStream);
                 }
             }

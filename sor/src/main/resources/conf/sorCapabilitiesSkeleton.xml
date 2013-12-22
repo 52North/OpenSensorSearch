@@ -17,20 +17,20 @@
 
 -->
 <sor:Capabilities xmlns:xlink="http://www.w3.org/1999/xlink"
-	xmlns:sor="http://swsl.uni-muenster.de/sor" xmlns:ows="http://www.opengis.net/ows/1.1"
+	xmlns:sor="http://52north.org/sor/0.3.1" xmlns:ows="http://www.opengis.net/ows/1.1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://swsl.uni-muenster.de/sor  ./sorGetCapabilities.xsd "
+	xsi:schemaLocation="http://52north.org/schema/sor/0.3.1/ ./sorGetCapabilities.xsd "
 	updateSequence="2010-01-08T14:57:17+0100" version="1.0.0">
 	<ows:ServiceIdentification>
-		<ows:Title>WWU SOR</ows:Title>
-		<ows:Abstract>SOR Server Operated by WWU</ows:Abstract>
-		<ows:ServiceType codeSpace="http://swsl.uni-muenster.de/sor">OGC:SOR</ows:ServiceType>
+		<ows:Title>52°North SOR</ows:Title>
+		<ows:Abstract>Sensor Observable Registry by 52°North</ows:Abstract>
+		<ows:ServiceType codeSpace="http://52north.org/sor">OGC:SOR</ows:ServiceType>
 		<ows:Fees>NONE</ows:Fees>
 		<ows:AccessConstraints>NONE</ows:AccessConstraints>
 	</ows:ServiceIdentification>
 	<ows:ServiceProvider>
-		<ows:ProviderName>SWSL - Sensor Web and Simlulation Lab</ows:ProviderName>
-		<ows:ProviderSite xlink:href="http://swsl.uni-muenster.de" />
+		<ows:ProviderName>52°North</ows:ProviderName>
+		<ows:ProviderSite xlink:href="http://52north.org" />
 		<ows:ServiceContact>
 			<ows:IndividualName>Simon Jirka</ows:IndividualName>
 			<ows:ContactInfo>
@@ -104,6 +104,7 @@
 		<ows:Parameter name="version">
 			<ows:AllowedValues>
 				<ows:Value>0.3.0</ows:Value>
+				<ows:Value>0.3.1</ows:Value>
 			</ows:AllowedValues>
 		</ows:Parameter>
 	</ows:OperationsMetadata>

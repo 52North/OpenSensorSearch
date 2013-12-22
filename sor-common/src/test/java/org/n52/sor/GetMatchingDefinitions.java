@@ -17,7 +17,6 @@ package org.n52.sor;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.xmlbeans.XmlException;
@@ -76,8 +75,8 @@ public class GetMatchingDefinitions extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "GetMatchingDefinitionsRequest.xml";
-        GetMatchingDefinitionsRequestDocument gcd = GetMatchingDefinitionsRequestDocument.Factory.parse(new File(path));
+        String path = "requests/GetMatchingDefinitionsRequest.xml";
+        GetMatchingDefinitionsRequestDocument gcd = GetMatchingDefinitionsRequestDocument.Factory.parse(getClass().getResourceAsStream(path));
 
         XmlObject response = Client.xSendPostRequest(gcd);
 

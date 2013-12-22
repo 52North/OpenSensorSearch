@@ -65,8 +65,10 @@ public class SOR {
     HttpServletRequest request, @Context
     HttpServletResponse response) {
         String queryString = request.getQueryString();
-        log.info("(GET) Connected from: " + request.getRemoteAddr() + " " + request.getRemoteHost() + " Request: "
-                + queryString);
+        log.info("(GET) Connected from: {} {}\nRequest: ",
+                 request.getRemoteAddr(),
+                 request.getRemoteHost(),
+                 queryString);
 
         ISorResponse sorResponse = this.requestOperator.doGetOperation(queryString);
         log.info("Response: " + sorResponse);
@@ -79,6 +81,7 @@ public class SOR {
     public void doPost(@Context
     HttpServletRequest request, @Context
     HttpServletResponse response) {
+        log.debug("(POST) request!");
         try (InputStream in = request.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));) {
 
@@ -125,7 +128,8 @@ public class SOR {
 
     private void doResponse(HttpServletResponse response, ISorResponse sorResponse) {
         try (OutputStream out = response.getOutputStream();) {
-            response.setContentType(PropertiesManager.getInstance().getResponseContentTypeXml());
+            String ct = PropertiesManager.getInstance().getResponseContentTypeXml();
+            response.setContentType(ct);
             byte[] responseByteArray = sorResponse.getByteArray();
             response.setContentLength(responseByteArray.length);
             out.write(responseByteArray);
@@ -134,23 +138,6 @@ public class SOR {
         catch (Exception e) {
             log.error("Error on sending the response! " + e.getMessage());
         }
-    }
-
-    public void init() {
-        try (InputStream configStream = getClass().getResourceAsStream("/conf/sor.properties");) {
-
-            // initialize property manager
-            PropertiesManager.getInstance(configStream);
-
-            // initialize phenomenon manager
-            PhenomenonManager.getInstance();
-        }
-        catch (OwsExceptionReport | IOException e) {
-            log.error("Could not initialize PhenomenonManager", e);
-            throw new RuntimeException("Could not initialize PhenomenonManager! Service is not ready for use.");
-        }
-
-        log.info("*** INITIALIZED SOR ***");
     }
 
 }

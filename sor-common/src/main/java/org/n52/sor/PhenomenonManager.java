@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,12 +84,6 @@ public class PhenomenonManager {
      */
     protected static final CharSequence BACKUP_INFIX = "_backup_";
 
-    /**
-     * This methode provides the only instance of SORManager.
-     * 
-     * @return instance of the SorManager
-     * @throws OwsExceptionReport
-     */
     public synchronized static PhenomenonManager getInstance() throws OwsExceptionReport {
         if (instance == null)
             instance = new PhenomenonManager();
@@ -96,21 +91,10 @@ public class PhenomenonManager {
         return instance;
     }
 
-    /**
-     * private constructor for singleton pattern
-     */
-    private PhenomenonManager() {
-        try {
-            loadDictionaryFile();
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Could not load dictionary file.", e);
-        }
+    private PhenomenonManager() throws OwsExceptionReport {
+        loadDictionaryFile();
     }
 
-    /**
-     * 
-     */
     private void backupDictionaryFile() {
         PropertiesManager pm = PropertiesManager.getInstance();
         if (pm.getPhenomenonXmlBackupCount() > 0) {
@@ -332,13 +316,18 @@ public class PhenomenonManager {
         String path = PropertiesManager.getInstance().getPhenomenonXMLPath();
         log.info("Create phenomena list of file: " + path);
 
-        try {
-            this.dictionary = DictionaryDocument.Factory.parse(new File(path));
+        try (InputStream in = getClass().getResourceAsStream(path)) {
+            if (in != null)
+                this.dictionary = DictionaryDocument.Factory.parse(in);
+            else
+                log.error("Did not find dictionary file at {}", path);
         }
         catch (Exception e) {
-            log.error("Error on parsing phenomena list!");
-            e.printStackTrace();
+            log.error("Error on parsing phenomena list!", e);
         }
+
+        if (this.dictionary == null)
+            return;
 
         DictionaryEntryType[] dictionaryEntryArray = this.dictionary.getDictionary().getDictionaryEntryArray();
 
@@ -355,9 +344,6 @@ public class PhenomenonManager {
         log.info("Dictionary loaded!" + path);
     }
 
-    /**
-     * 
-     */
     private void saveDictionaryFile() {
         try {
             if ( !this.dictionary.validate())
@@ -372,13 +358,6 @@ public class PhenomenonManager {
         }
     }
 
-    /**
-     * 
-     * @param definitionURI
-     * @param phenomenon
-     * @return
-     * @throws OwsExceptionReport
-     */
     public synchronized boolean updateInPhenomenonList(String definitionURI, PhenomenonType phenomenon) throws OwsExceptionReport {
         backupDictionaryFile();
 

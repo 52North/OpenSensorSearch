@@ -85,7 +85,7 @@ public class GetCapabilities extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "GetCapabilitiesRequest.xml";
+        String path = "requests/GetCapabilitiesRequest.xml";
         GetCapabilitiesDocument gcd = GetCapabilitiesDocument.Factory.parse(new File(path));
 
         XmlObject response = Client.xSendPostRequest(gcd);

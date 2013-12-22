@@ -17,7 +17,6 @@ package org.n52.sor;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.xmlbeans.XmlException;
@@ -85,8 +84,8 @@ public class GetCapabilities extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "GetCapabilitiesRequest.xml";
-        GetCapabilitiesDocument gcd = GetCapabilitiesDocument.Factory.parse(new File(path));
+        String path = "requests/GetCapabilitiesRequest.xml";
+        GetCapabilitiesDocument gcd = GetCapabilitiesDocument.Factory.parse(getClass().getResourceAsStream(path));
 
         XmlObject response = Client.xSendPostRequest(gcd);
 

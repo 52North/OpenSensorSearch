@@ -272,7 +272,7 @@ public class HttpGetRequestDecoder implements Serializable {
             log.error("Invalid request: no request parameters given!");
             throw new OwsExceptionReport(OwsExceptionReport.ExceptionCode.InvalidRequest,
                                          null,
-                                         "Parameter 'request' is missing!");
+                                         "Request parameters are missing!");
         }
 
         String[] params = inputString.split("&");

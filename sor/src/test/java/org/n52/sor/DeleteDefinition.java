@@ -67,7 +67,7 @@ public class DeleteDefinition extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "DeleteDefinitionRequest.xml";
+        String path = "requests/DeleteDefinitionRequest.xml";
         DeleteDefinitionRequestDocument ddrd = DeleteDefinitionRequestDocument.Factory.parse(new File(path));
 
         XmlObject response = Client.xSendPostRequest(ddrd);

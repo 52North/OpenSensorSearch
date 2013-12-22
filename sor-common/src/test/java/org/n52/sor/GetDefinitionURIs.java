@@ -17,7 +17,6 @@ package org.n52.sor;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.xmlbeans.XmlException;
@@ -74,8 +73,8 @@ public class GetDefinitionURIs extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "GetDefinitionURIsRequest.xml";
-        GetDefinitionURIsRequestDocument gcd = GetDefinitionURIsRequestDocument.Factory.parse(new File(path));
+        String path = "requests/GetDefinitionURIsRequest.xml";
+        GetDefinitionURIsRequestDocument gcd = GetDefinitionURIsRequestDocument.Factory.parse(getClass().getResourceAsStream(path));
 
         XmlObject response = Client.xSendPostRequest(gcd);
 

@@ -18,7 +18,7 @@ package org.n52.sir;
 
 import java.util.Properties;
 
-import org.n52.oss.config.AbstractConfigModule;
+import org.n52.oss.common.AbstractConfigModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

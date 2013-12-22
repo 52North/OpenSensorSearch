@@ -19,7 +19,7 @@ package org.n52.sir.ds.pgsql;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.n52.oss.config.AbstractConfigModule;
+import org.n52.oss.common.AbstractConfigModule;
 import org.n52.oss.config.ConfigModule;
 import org.n52.sir.ds.ICatalogStatusHandlerDAO;
 import org.n52.sir.ds.IConnectToCatalogDAO;

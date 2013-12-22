@@ -78,7 +78,8 @@ public class RequestOperator implements Serializable {
             request = this.getDecoder.receiveRequest(inputString);
         }
         catch (OwsExceptionReport e) {
-            return new SorExceptionReportResponse(e.getDocument());
+            SorExceptionReportResponse serd = new SorExceptionReportResponse(e.getDocument());
+            return serd;
         }
 
         log.info("Get request document: " + request.toString());

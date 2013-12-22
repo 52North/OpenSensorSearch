@@ -17,7 +17,6 @@ package org.n52.sor;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.xmlbeans.XmlException;
@@ -62,8 +61,8 @@ public class InsertDefinition extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "InsertDefinitionRequest.xml";
-        InsertDefinitionRequestDocument ddrd = InsertDefinitionRequestDocument.Factory.parse(new File(path));
+        String path = "requests/InsertDefinitionRequest.xml";
+        InsertDefinitionRequestDocument ddrd = InsertDefinitionRequestDocument.Factory.parse(getClass().getResource(path));
 
         XmlObject response = Client.xSendPostRequest(ddrd);
 

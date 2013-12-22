@@ -16,7 +16,6 @@
 package org.n52.sor.request;
 
 import org.n52.sor.ISorRequest;
-import org.n52.sor.ISorRequest.SorMatchingType;
 
 /**
  * @created 20-Okt-2008 16:44:48

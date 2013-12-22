@@ -62,7 +62,7 @@ public class InsertDefinition extends SorTestCase {
 
     @Test
     public void testPostExample() throws XmlException, IOException {
-        String path = PropertiesManager.getInstance().getTestRequestPath() + "InsertDefinitionRequest.xml";
+        String path = "requests/InsertDefinitionRequest.xml";
         InsertDefinitionRequestDocument ddrd = InsertDefinitionRequestDocument.Factory.parse(new File(path));
 
         XmlObject response = Client.xSendPostRequest(ddrd);

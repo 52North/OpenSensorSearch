@@ -18,6 +18,7 @@ package org.n52.oss.config;
 
 import java.util.Properties;
 
+import org.n52.oss.common.AbstractConfigModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class ConfigModule extends AbstractConfigModule {
     protected void configure() {
         // app properties
         try {
-            Properties props = loadProperties("app.properties");
+            Properties props = loadProperties("/app.properties");
 
             // update properties from home folder file
             props = updateFromUserHome(props, HOME_CONFIG_FILE);

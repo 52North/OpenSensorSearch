@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor.response;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import net.opengis.ows.x11.OperationDocument.Operation;
@@ -31,6 +32,8 @@ import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.PhenomenonManager;
 import org.n52.sor.PropertiesManager;
 import org.n52.sor.util.XmlTools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.x52North.sor.x031.CapabilitiesDocument;
 import org.x52North.sor.x031.CapabilitiesDocument.Capabilities;
 import org.x52North.sor.x031.CapabilitiesDocument.Capabilities.Contents;
@@ -40,6 +43,8 @@ import org.x52North.sor.x031.CapabilitiesDocument.Capabilities.Contents;
  * @version 1.0
  */
 public class SorGetCapabilitiesResponse implements ISorResponse {
+
+    private static Logger log = LoggerFactory.getLogger(SorGetCapabilitiesResponse.class);
 
     private ArrayList<CapabilitiesSection> sections;
 
@@ -127,8 +132,11 @@ public class SorGetCapabilitiesResponse implements ISorResponse {
     @Override
     public byte[] getByteArray() throws IOException, OwsExceptionReport {
         // load skeleton
-        try {
-            this.capabilitiesSkeleton = CapabilitiesDocument.Factory.parse(new File(PropertiesManager.getInstance().getCapabilitieSkeleton()));
+        try (InputStream is = getClass().getResourceAsStream(PropertiesManager.getInstance().getCapabilitieSkeleton())) {
+            if (is != null)
+                this.capabilitiesSkeleton = CapabilitiesDocument.Factory.parse(is);
+            else
+                log.error("Could not load skeleton");
         }
         catch (XmlException e) {
             e.printStackTrace();

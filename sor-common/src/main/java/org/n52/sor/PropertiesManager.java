@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor;
 
 import java.io.IOException;
@@ -84,8 +85,6 @@ public class PropertiesManager {
 
     private static final String PHENOMENONXML_BACKUPS = "PHENOMENONXML_BACKUPS";
 
-    private static final String TESTREQUESTS = "TESTREQUESTS";
-
     private static final String DEFAULT_MAX_NUMBER_RESULTS = "DEFAULT_MAX_NUMBER_RESULTS";
 
     private static final String DECODER_ENCODING = "DECODER_ENCODING";
@@ -96,15 +95,11 @@ public class PropertiesManager {
 
     private static final String REASONERFACTORY = "REASONERFACTORY";
 
-    private String basepath;
-
     private String ontologyFile;
 
     private String serviceEndpointPost;
 
     private int phenomenonXmlBackupCount;
-
-    private String testRequestPath;
 
     private String serviceEndpointGet;
 
@@ -131,25 +126,31 @@ public class PropertiesManager {
     }
 
     public static PropertiesManager getInstance(InputStream configStream) {
-        if (instance == null)
-            instance = new PropertiesManager(configStream);
+        if (instance == null) {
+            Properties props = new Properties();
+            try {
+                props.load(configStream);
+                getInstance(props);
+            }
+            catch (IOException e) {
+                log.error("Load properties failed");
+            }
+        }
 
         return instance;
     }
 
-    public PropertiesManager(InputStream configStream) {
-        Properties props = new Properties();
-        try {
-            props.load(configStream);
-        }
-        catch (IOException e) {
-            log.error("Load properties failed");
-        }
+    public static PropertiesManager getInstance(Properties properties) {
+        if (instance == null)
+            instance = new PropertiesManager(properties);
 
+        return instance;
+    }
+
+    public PropertiesManager(Properties props) {
         this.service = props.getProperty(SERVICE);
-        this.phenomenonXML = this.basepath + props.getProperty(PHENOMENON_XML);
-        this.capabilitieSkeleton = this.basepath + props.getProperty(CAPABILITIES_SKELETON);
-        this.testRequestPath = this.basepath + props.getProperty(TESTREQUESTS);
+        this.phenomenonXML = props.getProperty(PHENOMENON_XML);
+        this.capabilitieSkeleton = props.getProperty(CAPABILITIES_SKELETON);
         this.serviceURL = props.getProperty(SERVICE_URL);
         this.serviceVersion = props.getProperty(SERVICE_VERSION);
         this.keywords = props.getProperty(KEYWORDS).split(";");
@@ -174,17 +175,10 @@ public class PropertiesManager {
         }
     }
 
-    /**
-     * 
-     * @return
-     */
     public String[] getApplicationDomains() {
         return this.applicationDomains;
     }
 
-    /**
-     * @return the capabilitieSkeleton
-     */
     public String getCapabilitieSkeleton() {
         return this.capabilitieSkeleton;
     }
@@ -255,10 +249,6 @@ public class PropertiesManager {
 
     public String getServiceVersion() {
         return this.serviceVersion;
-    }
-
-    public String getTestRequestPath() {
-        return this.testRequestPath;
     }
 
     public String getUpdateSequence() {

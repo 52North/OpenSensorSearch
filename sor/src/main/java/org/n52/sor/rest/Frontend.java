@@ -28,12 +28,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.xml.namespace.QName;
 
 import net.opengis.ows.x11.ExceptionReportDocument;
@@ -45,18 +46,19 @@ import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.OwsExceptionReport.ExceptionCode;
+import org.n52.sor.PhenomenonManager;
 import org.n52.sor.PropertiesManager;
 import org.n52.sor.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.x031.CapabilitiesDocument;
-import org.x52North.sor.x031.GetCapabilitiesDocument;
 import org.x52North.sor.x031.GetDefinitionRequestDocument;
 import org.x52North.sor.x031.GetDefinitionRequestDocument.GetDefinitionRequest;
 import org.x52North.sor.x031.GetDefinitionURIsRequestDocument;
 import org.x52North.sor.x031.GetDefinitionURIsRequestDocument.GetDefinitionURIsRequest;
 import org.x52North.sor.x031.GetDefinitionURIsResponseDocument;
 import org.x52North.sor.x031.GetDefinitionURIsResponseDocument.GetDefinitionURIsResponse;
+
+import com.google.inject.servlet.RequestScoped;
 
 /**
  * 
@@ -65,17 +67,11 @@ import org.x52North.sor.x031.GetDefinitionURIsResponseDocument.GetDefinitionURIs
  * @author Jan Schulte, Daniel Nüst
  * 
  */
+@Path("/sor/rest")
+@RequestScoped
 public class Frontend extends RestWebService {
 
-    private static final long serialVersionUID = -5765027350633726066L;
-
     private final static Logger log = LoggerFactory.getLogger(Frontend.class);
-
-    private static final String CONFIG_FILE_INIT_PARAMETER = "configFile";
-
-    private static final String SERVICEURL = "SERVICEURL";
-
-    private static final String SERVICE_ENDPOINT_POST = "SERVICE_ENDPOINT_POST";
 
     private static final String POST_REQUEST_METHOD = "POST";
 
@@ -117,15 +113,14 @@ public class Frontend extends RestWebService {
 
     private static final String OGC_DEFINITION_BRANCH_PREFIX = "urn:ogc:def";
 
-    private static final String REST_CACHING_TIME = "REST_CACHING_TIME";
-
     private long cacheExprirationTimeSeconds = 0;
 
-    /**
-     * 
-     * @param requestURL
-     * @return
-     */
+    public Frontend() {
+        PropertiesManager props = PropertiesManager.getInstance();
+        this.cachingDate = new Date();
+        this.cacheExprirationTimeSeconds = Long.parseLong(props.getRestChachingTime());
+    }
+
     private boolean containsEncodedCharacters(String requestURL) {
         for (String s : CHARS_TO_DECODE) {
             if (requestURL.contains(s))
@@ -134,8 +129,10 @@ public class Frontend extends RestWebService {
         return false;
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @GET
+    public void doGet(@Context
+    HttpServletRequest req, @Context
+    HttpServletResponse resp) throws ServletException, IOException {
         String requestURL = req.getRequestURL().toString();
 
         if (containsEncodedCharacters(requestURL)) {
@@ -145,7 +142,7 @@ public class Frontend extends RestWebService {
         String servletPath = req.getServletPath();
         String[] resources = getResourcesStringArray(requestURL, servletPath);
 
-        log.info("Request URL: " + requestURL);
+        log.debug("Request URL: {}", requestURL);
 
         try {
             // check if base url or resources in URL are given, if no resources in URL, just render available
@@ -288,36 +285,9 @@ public class Frontend extends RestWebService {
         return "";
     }
 
-    @Override
-    public void init() throws ServletException {
-        ServletContext context = getServletContext();
-
-        try (InputStream configStream = context.getResourceAsStream(getInitParameter(CONFIG_FILE_INIT_PARAMETER));) {
-            Properties props = new Properties();
-            // load properties
-            props.load(configStream);
-
-            this.serviceURL = props.getProperty(SERVICEURL) + props.getProperty(SERVICE_ENDPOINT_POST);
-            this.cachingDate = new Date();
-            this.cacheExprirationTimeSeconds = Long.parseLong(props.getProperty(REST_CACHING_TIME));
-
-            log.info("INITIALIZED RESTful frontend for URL " + this.serviceURL);
-        }
-        catch (IOException e) {
-            log.error("Load properties failed");
-        }
-    }
-
-    /**
-     * @return
-     * @throws ServletException
-     * @throws IOException
-     */
-    private String[] requestAvailableResources() throws ServletException, IOException {
+    private String[] requestAvailableResources() throws ServletException, IOException, OwsExceptionReport {
         if (this.cachedAvailableResources == null || this.cachingDate.before(new Date())) {
-            // request capabilities from SOR to get number of dictionary entries
-            CapabilitiesDocument capabilitiesDocument = requestCapabilities(this.serviceURL);
-            int numberOfEntries = capabilitiesDocument.getCapabilities().getContents().getNumberOfEntries();
+            int numberOfEntries = PhenomenonManager.getInstance().getPhenomenaList().size();
 
             // request DefinitionURIs with correct number of entries
             GetDefinitionURIsResponse getDefResp = requestDefinitionURIs(numberOfEntries, this.serviceURL);
@@ -329,43 +299,6 @@ public class Frontend extends RestWebService {
         return this.cachedAvailableResources;
     }
 
-    /**
-     * 
-     * @param sURL
-     * @return
-     * @throws ServletException
-     * @throws IOException
-     */
-    private CapabilitiesDocument requestCapabilities(String sURL) throws ServletException, IOException {
-        GetCapabilitiesDocument getCapabilitiesDocument = GetCapabilitiesDocument.Factory.newInstance();
-        getCapabilitiesDocument.addNewGetCapabilities();
-
-        try (InputStream is = sendPostMessage(sURL, getCapabilitiesDocument);) {
-
-            try {
-                CapabilitiesDocument response = CapabilitiesDocument.Factory.parse(is);
-                return response;
-            }
-            catch (IOException e) {
-                log.error("Could not request capabilities document from SOR @ " + sURL);
-                throw new IOException("Could not request capabilities document from SOR @ " + sURL, e);
-            }
-            catch (XmlException e) {
-                log.error("Could not request capabilities document from SOR @ " + sURL + "\n" + inputStreamAsString(is));
-                throw new ServletException("Could not parse retrieved capabilities document from SOR @ " + sURL + "\n"
-                        + inputStreamAsString(is), e);
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param phenomenon
-     * @param sURL
-     * @return
-     * @throws IOException
-     * @throws ServletException
-     */
     private XmlObject requestDefinition(String inputURI, String sURL) throws IOException, ServletException {
         log.debug("Requesting definition for {} from {}", inputURI, sURL);
 
@@ -387,16 +320,6 @@ public class Frontend extends RestWebService {
         }
     }
 
-    /**
-     * 
-     * request the definition URIs
-     * 
-     * @param maxNumberOfResults
-     * @param sURL
-     * @return
-     * @throws IOException
-     * @throws ServletException
-     */
     private GetDefinitionURIsResponse requestDefinitionURIs(int maxNumberOfResults, String sURL) throws IOException,
             ServletException {
         GetDefinitionURIsRequestDocument getDefURIsReqDoc = GetDefinitionURIsRequestDocument.Factory.newInstance();
@@ -450,15 +373,6 @@ public class Frontend extends RestWebService {
         return is;
     }
 
-    /**
-     * @param resp
-     * @param requestURL
-     * @param servletPath
-     * @param resources2
-     * @throws ServletException
-     * @throws IOException
-     * @throws OwsExceptionReport
-     */
     private void writeHtmlResourceListing(HttpServletResponse resp,
                                           String requestURL,
                                           String servletPath,
@@ -500,11 +414,6 @@ public class Frontend extends RestWebService {
         }
     }
 
-    /**
-     * @param resp
-     * @param def
-     * @throws IOException
-     */
     private void writeXmlResponse(HttpServletResponse resp, XmlObject def) throws IOException {
         log.debug("Writing XML response:\n{}", def);
 

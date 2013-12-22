@@ -19,6 +19,7 @@ package org.n52.sor;
 import java.util.Properties;
 
 import org.n52.oss.common.AbstractConfigModule;
+import org.n52.sor.rest.Frontend;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +47,7 @@ public class SorModule extends AbstractConfigModule {
         }
 
         bind(SOR.class);
+        bind(Frontend.class);
 
         log.info("Configured {}", this);
     }

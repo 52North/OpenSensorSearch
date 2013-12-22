@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor.rest;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.core.Context;
 
 /**
  * 
@@ -29,16 +33,16 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="mailto:broering@52north.org">Arne Broering</a>, Daniel Nüst
  * 
  */
-public class RestWebService extends HttpServlet {
-
-    private static final long serialVersionUID = 1498881311814410535L;
+public class RestWebService {
 
     protected static final String RESPONSE_CONTENT_TYPE_PLAIN = "text/plain";
 
     protected static final String RESPONSE_CHARSET = "utf-8";
 
-    @Override
-    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @DELETE
+    public void doDelete(@Context
+    HttpServletRequest request, @Context
+    HttpServletResponse response) throws IOException {
         try (OutputStream out = response.getOutputStream();) {
             response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
             out.write("DELETE not yet supported!".getBytes());
@@ -47,8 +51,10 @@ public class RestWebService extends HttpServlet {
         }
     }
 
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @POST
+    public void doPost(@Context
+    HttpServletRequest request, @Context
+    HttpServletResponse response) throws IOException {
         try (OutputStream out = response.getOutputStream();) {
             response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
             out.write("POST not yet supported!".getBytes());
@@ -56,8 +62,10 @@ public class RestWebService extends HttpServlet {
         }
     }
 
-    @Override
-    public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PUT
+    public void doPut(@Context
+    HttpServletRequest request, @Context
+    HttpServletResponse response) throws IOException {
         try (OutputStream out = response.getOutputStream();) {
             response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
             out.write("PUT not yet supported!".getBytes());

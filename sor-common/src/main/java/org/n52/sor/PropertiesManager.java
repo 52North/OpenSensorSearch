@@ -79,11 +79,9 @@ public class PropertiesManager {
 
     private static final String GML_DATE_FORMAT = "GMLDATEFORMAT";
 
-    private static final String SERVICE_ENDPOINT_POST = "SERVICE_ENDPOINT_POST";
-
-    private static final String SERVICE_ENDPOINT_GET = "SERVICE_ENDPOINT_GET";
-
     private static final String PHENOMENONXML_BACKUPS = "PHENOMENONXML_BACKUPS";
+
+    private static final String REST_CACHING_TIME = "REST_CACHING_TIME";
 
     private static final String DEFAULT_MAX_NUMBER_RESULTS = "DEFAULT_MAX_NUMBER_RESULTS";
 
@@ -114,6 +112,8 @@ public class PropertiesManager {
     private String responseContentTypeHtml;
 
     private IReasonerFactory reasonerFactory;
+
+    private String restChachingTime;
 
     private static PropertiesManager instance;
 
@@ -159,8 +159,7 @@ public class PropertiesManager {
         this.ontologyFile = props.getProperty(ONTOLOGY_FILE);
         this.updateSequence = props.getProperty(UPDATE_SEQUENCE);
         this.gmlDateFormat = props.getProperty(GML_DATE_FORMAT);
-        this.serviceEndpointPost = props.getProperty(SERVICE_URL) + props.getProperty(SERVICE_ENDPOINT_POST);
-        this.serviceEndpointGet = props.getProperty(SERVICE_URL) + props.getProperty(SERVICE_ENDPOINT_GET);
+        this.restChachingTime = props.getProperty(REST_CACHING_TIME);
         this.phenomenonXmlBackupCount = Integer.parseInt(props.getProperty(PHENOMENONXML_BACKUPS));
         this.defaultMaximumNumberOfResults = Integer.parseInt(props.getProperty(DEFAULT_MAX_NUMBER_RESULTS));
         this.urlDecoderEncoding = props.getProperty(DECODER_ENCODING);
@@ -287,6 +286,10 @@ public class PropertiesManager {
                                          "PropertiesManager.initializeReasonerFactory()",
                                          "Could not instantiate IReasonerFactory!\n" + e.getMessage());
         }
+    }
+
+    public String getRestChachingTime() {
+        return this.restChachingTime;
     }
 
 }

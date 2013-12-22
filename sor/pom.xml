@@ -8,8 +8,8 @@
 		<version>1.0</version>
 	</parent>
 	<artifactId>sor</artifactId>
-
-	<version>0.5</version>
+	<version>0.5.1</version>
+	
 	<name>Sensor Observable Registry</name>
 	<description>52°North Sensor Observable Registry</description>
 

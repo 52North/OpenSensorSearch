@@ -486,8 +486,14 @@
 
 		<dependency>
 			<groupId>org.n52.oss</groupId>
+			<artifactId>sor-common</artifactId>
+			<version>0.5.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.n52.oss</groupId>
 			<artifactId>sor</artifactId>
-			<version>0.5</version>
+			<version>0.5.1</version>
 		</dependency>
 	</dependencies>
 

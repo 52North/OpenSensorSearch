@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.n52.oss</groupId>
 		<artifactId>parent</artifactId>
@@ -8,6 +9,7 @@
 	</parent>
 	<artifactId>sir-common</artifactId>
 	<version>0.3</version>
+	
 	<name>OSS common classes</name>
 	<description>...</description>
 
@@ -68,7 +70,6 @@
 				<!-- run "mvn license:format" to add to the files -->
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
-				<version>1.9.0</version>
 				<configuration>
 					<header>src/main/resources/license_header.txt</header>
 					<includes>
@@ -124,7 +125,6 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>${guice.version}</version>
 		</dependency>
 
 		<dependency>

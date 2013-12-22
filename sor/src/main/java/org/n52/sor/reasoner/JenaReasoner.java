@@ -28,13 +28,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.PropertiesManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import sun.misc.Queue;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -122,7 +122,7 @@ public class JenaReasoner implements IReasoner {
 
     @Override
     public List<String> getMatchingURLs(String ontologyURL, MatchingCode code, int searchDepth) throws OwsExceptionReport {
-        List<String> urls = new ArrayList<String>();
+        List<String> urls = new ArrayList<>();
         OntClass oc = this.om.getOntClass(ontologyURL);
         if (oc == null) {
             throw new OwsExceptionReport(OwsExceptionReport.ExceptionCode.InvalidParameterValue,
@@ -166,29 +166,23 @@ public class JenaReasoner implements IReasoner {
      */
     private List<String> lookFor(String ontologyURL, MatchingCode code, int searchDepth) {
         OntClass oc = this.om.getOntClass(ontologyURL);
-        Queue queueNodes = new Queue();
-        queueNodes.enqueue(new OntNode(oc, searchDepth));
-        Collection<OntNode> visited = new HashSet<OntNode>();
-        List<String> results = new ArrayList<String>();
+        Queue<OntNode> queueNodes = new LinkedBlockingQueue<>();
+        queueNodes.add(new OntNode(oc, searchDepth));
+        Collection<OntNode> visited = new HashSet<>();
+        List<String> results = new ArrayList<>();
         OntNode aux = null;
         OntNode on = null;
         OntClass auxOc = null;
         if (code.compareTo(MatchingCode.SUPER_CLASS) == 0) {
             while ( !queueNodes.isEmpty()) {
-                try {
-                    aux = (OntNode) queueNodes.dequeue();
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return results;
-                }
+                aux = queueNodes.poll();
                 visited.add(aux);
                 if (aux.getSteps() > 0) {
                     for (ExtendedIterator< ? > i = aux.getOntClass().listSuperClasses(true); i.hasNext();) {
                         auxOc = (OntClass) i.next();
                         on = new OntNode(auxOc, aux.getSteps() - 1);
                         if ( !visited.contains(on))
-                            queueNodes.enqueue(on);
+                            queueNodes.add(on);
                         if ( !results.contains(auxOc.toString()) && auxOc.isURIResource()) {
                             results.add(auxOc.toString());
                         }
@@ -198,20 +192,14 @@ public class JenaReasoner implements IReasoner {
         }
         else {
             while ( !queueNodes.isEmpty()) {
-                try {
-                    aux = (OntNode) queueNodes.dequeue();
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return results;
-                }
+                aux = queueNodes.poll();
                 visited.add(aux);
                 if (aux.getSteps() > 0) {
                     for (ExtendedIterator< ? > i = aux.getOntClass().listSubClasses(true); i.hasNext();) {
                         auxOc = (OntClass) i.next();
                         on = new OntNode(auxOc, aux.getSteps() - 1);
                         if ( !visited.contains(on))
-                            queueNodes.enqueue(on);
+                            queueNodes.add(on);
                         if ( !results.contains(auxOc.toString()) && auxOc.isURIResource()) {
                             results.add(auxOc.toString());
                         }

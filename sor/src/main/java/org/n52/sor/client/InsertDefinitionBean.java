@@ -57,8 +57,8 @@ import org.n52.sor.PropertiesManager;
 import org.n52.sor.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.InsertDefinitionRequestDocument;
-import org.x52North.sor.InsertDefinitionRequestDocument.InsertDefinitionRequest;
+import org.x52North.sor.x031.InsertDefinitionRequestDocument;
+import org.x52North.sor.x031.InsertDefinitionRequestDocument.InsertDefinitionRequest;
 
 /**
  * @author Jan Schulte, Daniel Nüst

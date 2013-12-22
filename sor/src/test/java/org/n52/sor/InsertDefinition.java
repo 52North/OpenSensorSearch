@@ -32,8 +32,8 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sor.client.Client;
 import org.n52.sor.client.InsertDefinitionBean;
-import org.x52North.sor.InsertDefinitionRequestDocument;
-import org.x52North.sor.InsertDefinitionResponseDocument;
+import org.x52North.sor.x031.InsertDefinitionRequestDocument;
+import org.x52North.sor.x031.InsertDefinitionResponseDocument;
 
 /**
  * @author Daniel Nüst

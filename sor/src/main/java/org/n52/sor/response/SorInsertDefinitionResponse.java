@@ -28,8 +28,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.n52.sor.util.XmlTools;
-import org.x52North.sor.InsertDefinitionResponseDocument;
-import org.x52North.sor.InsertDefinitionResponseDocument.InsertDefinitionResponse;
+import org.x52North.sor.x031.InsertDefinitionResponseDocument;
+import org.x52North.sor.x031.InsertDefinitionResponseDocument.InsertDefinitionResponse;
 
 /**
  * @author Jan Schulte

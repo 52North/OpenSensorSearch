@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>sor</artifactId>
 
-	<version>0.4</version>
+	<version>0.5</version>
 	<name>Sensor Observable Registry</name>
 	<description>52°North Sensor Observable Registry</description>
 	<packaging>war</packaging>
@@ -68,20 +68,6 @@
 		</license>
 	</licenses>
 
-	<issueManagement>
-		<url>https://github.com/52North/OpenSensorSearch/issues</url>
-		<system>GitHub Issues</system>
-	</issueManagement>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
-
 	<properties>
 		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
@@ -120,8 +106,8 @@
 		<dependency>
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-sor-v031</artifactId>
-			<version>1.0.1</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.hp.hpl.jena</groupId>
 			<artifactId>jena</artifactId>
@@ -168,7 +154,7 @@
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<configuration>
-					<header>src/main/resources/52N_license.txt</header>
+					<header>src/main/resources/license_header.txt</header>
 					<excludes>
 						<exclude>**/logback*</exclude>
 						<exclude>**/webapp/TestRequests/**</exclude>

@@ -58,14 +58,14 @@ import org.n52.sor.PropertiesManager;
 import org.n52.sor.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.CapabilitiesDocument;
-import org.x52North.sor.GetCapabilitiesDocument;
-import org.x52North.sor.GetDefinitionRequestDocument;
-import org.x52North.sor.GetDefinitionRequestDocument.GetDefinitionRequest;
-import org.x52North.sor.GetDefinitionURIsRequestDocument;
-import org.x52North.sor.GetDefinitionURIsRequestDocument.GetDefinitionURIsRequest;
-import org.x52North.sor.GetDefinitionURIsResponseDocument;
-import org.x52North.sor.GetDefinitionURIsResponseDocument.GetDefinitionURIsResponse;
+import org.x52North.sor.x031.CapabilitiesDocument;
+import org.x52North.sor.x031.GetCapabilitiesDocument;
+import org.x52North.sor.x031.GetDefinitionRequestDocument;
+import org.x52North.sor.x031.GetDefinitionRequestDocument.GetDefinitionRequest;
+import org.x52North.sor.x031.GetDefinitionURIsRequestDocument;
+import org.x52North.sor.x031.GetDefinitionURIsRequestDocument.GetDefinitionURIsRequest;
+import org.x52North.sor.x031.GetDefinitionURIsResponseDocument;
+import org.x52North.sor.x031.GetDefinitionURIsResponseDocument.GetDefinitionURIsResponse;
 
 /**
  * 
@@ -76,9 +76,6 @@ import org.x52North.sor.GetDefinitionURIsResponseDocument.GetDefinitionURIsRespo
  */
 public class Frontend extends RestWebService {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -5765027350633726066L;
 
     private final static Logger log = LoggerFactory.getLogger(Frontend.class);
@@ -100,21 +97,22 @@ public class Frontend extends RestWebService {
      * @throws IOException
      */
     public static String inputStreamAsString(InputStream stream) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-        StringBuilder sb = new StringBuilder();
-        String line = null;
+        try (InputStreamReader isr = new InputStreamReader(stream);) {
+            StringBuilder sb = new StringBuilder();
+            String line = null;
 
-        try {
-            while ( (line = br.readLine()) != null) {
-                sb.append(line).append("\n");
+            try (BufferedReader br = new BufferedReader(isr);) {
+                while ( (line = br.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
             }
-            br.close();
-        }
-        catch (IOException e) {
-            return "IOException reading InputStream " + stream.toString();
-        }
 
-        return sb.toString();
+            return sb.toString();
+        }
+        catch (IOException e1) {
+            return "IOException reading InputStream " + stream.toString();
+
+        }
     }
 
     private String serviceURL;
@@ -210,7 +208,7 @@ public class Frontend extends RestWebService {
     }
 
     private String[] extractAuthorities(String objectType, String[] uris) {
-        HashSet<String> authorities = new HashSet<String>();
+        HashSet<String> authorities = new HashSet<>();
 
         for (String uri : uris) {
             if (uri.contains(objectType)) {
@@ -224,7 +222,7 @@ public class Frontend extends RestWebService {
     }
 
     private String[] extractObjectTypes(String[] uris) {
-        HashSet<String> objectTypes = new HashSet<String>();
+        HashSet<String> objectTypes = new HashSet<>();
 
         for (String uri : uris) {
             String s = uri.substring(uri.indexOf(OGC_DEFINITION_BRANCH_PREFIX) + OGC_DEFINITION_BRANCH_PREFIX.length()
@@ -237,7 +235,7 @@ public class Frontend extends RestWebService {
     }
 
     private String[] extractObservableNames(String objectType, String authority, String[] uris) {
-        ArrayList<String> observables = new ArrayList<String>();
+        ArrayList<String> observables = new ArrayList<>();
 
         for (String uri : uris) {
             String typeAndAuth = objectType + ":" + authority;
@@ -303,21 +301,20 @@ public class Frontend extends RestWebService {
     public void init() throws ServletException {
         ServletContext context = getServletContext();
 
-        InputStream configStream = context.getResourceAsStream(getInitParameter(CONFIG_FILE_INIT_PARAMETER));
-        Properties props = new Properties();
-        // load properties
-        try {
+        try (InputStream configStream = context.getResourceAsStream(getInitParameter(CONFIG_FILE_INIT_PARAMETER));) {
+            Properties props = new Properties();
+            // load properties
             props.load(configStream);
+
+            this.serviceURL = props.getProperty(SERVICEURL) + props.getProperty(SERVICE_ENDPOINT_POST);
+            this.cachingDate = new Date();
+            this.cacheExprirationTimeSeconds = Long.parseLong(props.getProperty(REST_CACHING_TIME));
+
+            log.info("INITIALIZED RESTful frontend for URL " + this.serviceURL);
         }
         catch (IOException e) {
             log.error("Load properties failed");
         }
-
-        this.serviceURL = props.getProperty(SERVICEURL) + props.getProperty(SERVICE_ENDPOINT_POST);
-        this.cachingDate = new Date();
-        this.cacheExprirationTimeSeconds = Long.parseLong(props.getProperty(REST_CACHING_TIME));
-
-        log.info("INITIALIZED RESTful frontend for URL " + this.serviceURL);
     }
 
     /**
@@ -352,21 +349,21 @@ public class Frontend extends RestWebService {
         GetCapabilitiesDocument getCapabilitiesDocument = GetCapabilitiesDocument.Factory.newInstance();
         getCapabilitiesDocument.addNewGetCapabilities();
 
-        InputStream is = null;
+        try (InputStream is = sendPostMessage(sURL, getCapabilitiesDocument);) {
 
-        try {
-            is = sendPostMessage(sURL, getCapabilitiesDocument);
-            CapabilitiesDocument response = CapabilitiesDocument.Factory.parse(is);
-            return response;
-        }
-        catch (IOException e) {
-            log.error("Could not request capabilities document from SOR @ " + sURL);
-            throw new IOException("Could not request capabilities document from SOR @ " + sURL, e);
-        }
-        catch (XmlException e) {
-            log.error("Could not request capabilities document from SOR @ " + sURL + "\n" + inputStreamAsString(is));
-            throw new ServletException("Could not parse retrieved capabilities document from SOR @ " + sURL + "\n"
-                    + inputStreamAsString(is), e);
+            try {
+                CapabilitiesDocument response = CapabilitiesDocument.Factory.parse(is);
+                return response;
+            }
+            catch (IOException e) {
+                log.error("Could not request capabilities document from SOR @ " + sURL);
+                throw new IOException("Could not request capabilities document from SOR @ " + sURL, e);
+            }
+            catch (XmlException e) {
+                log.error("Could not request capabilities document from SOR @ " + sURL + "\n" + inputStreamAsString(is));
+                throw new ServletException("Could not parse retrieved capabilities document from SOR @ " + sURL + "\n"
+                        + inputStreamAsString(is), e);
+            }
         }
     }
 
@@ -386,12 +383,9 @@ public class Frontend extends RestWebService {
         GetDefinitionRequestDocument getDefReqDoc = GetDefinitionRequestDocument.Factory.newInstance();
         GetDefinitionRequest getDefReq = getDefReqDoc.addNewGetDefinitionRequest();
         getDefReq.setInputURI(inputURI);
-        InputStream is = null;
-        XmlObject obj = null;
 
-        try {
-            is = sendPostMessage(sURL, getDefReqDoc);
-            obj = XmlObject.Factory.parse(is);
+        try (InputStream is = sendPostMessage(sURL, getDefReqDoc);) {
+            XmlObject obj = XmlObject.Factory.parse(is);
             return obj;
         }
         catch (IOException e) {
@@ -400,8 +394,7 @@ public class Frontend extends RestWebService {
         }
         catch (XmlException e) {
             log.error("Could not parse response from SOR @ " + sURL);
-            throw new ServletException("Could not parse response from SOR @ " + sURL + "\n" + inputStreamAsString(is),
-                                       e);
+            throw new ServletException("Could not parse response from SOR @ " + sURL + "\n", e);
         }
     }
 
@@ -421,21 +414,23 @@ public class Frontend extends RestWebService {
         GetDefinitionURIsRequest getDefURIsReq = getDefURIsReqDoc.addNewGetDefinitionURIsRequest();
         getDefURIsReq.setMaxNumberOfResults(maxNumberOfResults);
         GetDefinitionURIsResponseDocument response;
-        InputStream is = null;
 
-        try {
-            is = sendPostMessage(sURL, getDefURIsReqDoc);
-            response = GetDefinitionURIsResponseDocument.Factory.parse(is);
-            return response.getGetDefinitionURIsResponse();
-        }
-        catch (IOException e) {
-            log.error("Could not request definition URIs from SOR @ " + sURL);
-            throw new IOException("Could not request definition URIs from SOR @ " + sURL, e);
-        }
-        catch (XmlException e) {
-            log.error("Could not parse response from SOR @ " + sURL + "\n" + inputStreamAsString(is));
-            throw new ServletException("Could not parse response from SOR @ " + sURL + "\n" + inputStreamAsString(is),
-                                       e);
+        try (InputStream is = sendPostMessage(sURL, getDefURIsReqDoc);) {
+
+            try {
+
+                response = GetDefinitionURIsResponseDocument.Factory.parse(is);
+                return response.getGetDefinitionURIsResponse();
+            }
+            catch (IOException e) {
+                log.error("Could not request definition URIs from SOR @ " + sURL);
+                throw new IOException("Could not request definition URIs from SOR @ " + sURL, e);
+            }
+            catch (XmlException e) {
+                log.error("Could not parse response from SOR @ " + sURL + "\n" + inputStreamAsString(is));
+                throw new ServletException("Could not parse response from SOR @ " + sURL + "\n"
+                        + inputStreamAsString(is), e);
+            }
         }
     }
 
@@ -458,10 +453,9 @@ public class Frontend extends RestWebService {
         options.setUseDefaultNamespace();
         options.setSaveAggressiveNamespaces();
 
-        OutputStream out = con.getOutputStream();
-        request.save(out, options);
-        out.flush();
-        out.close();
+        try (OutputStream out = con.getOutputStream();) {
+            request.save(out, options);
+        }
 
         InputStream is = con.getInputStream();
         return is;
@@ -510,12 +504,11 @@ public class Frontend extends RestWebService {
         // write the listing to a HTML string
         String htmlString = renderResourcesHtml(requestURL, servletPath, headline, availableResources);
 
-        OutputStream out = resp.getOutputStream();
-        resp.setContentType(PropertiesManager.getInstance().getResponseContentTypeHtml());
-        resp.setCharacterEncoding(RestWebService.RESPONSE_CHARSET);
-        out.write(htmlString.getBytes());
-        out.flush();
-        out.close();
+        try (OutputStream out = resp.getOutputStream();) {
+            resp.setContentType(PropertiesManager.getInstance().getResponseContentTypeHtml());
+            resp.setCharacterEncoding(RestWebService.RESPONSE_CHARSET);
+            out.write(htmlString.getBytes());
+        }
     }
 
     /**
@@ -528,11 +521,10 @@ public class Frontend extends RestWebService {
             log.debug("Writing XML response:\n" + def);
         }
 
-        OutputStream out = resp.getOutputStream();
-        resp.setContentType(PropertiesManager.getInstance().getResponseContentTypeXml());
-        out.write(def.xmlText(XmlTools.DEFAULT_OPTIONS).getBytes());
-        out.flush();
-        out.close();
+        try (OutputStream out = resp.getOutputStream();) {
+            resp.setContentType(PropertiesManager.getInstance().getResponseContentTypeXml());
+            out.write(def.xmlText(XmlTools.DEFAULT_OPTIONS).getBytes());
+        }
     }
 
 }

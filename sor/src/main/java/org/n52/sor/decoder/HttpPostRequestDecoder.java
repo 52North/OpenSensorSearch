@@ -40,18 +40,18 @@ import org.n52.sor.request.SorGetMatchingDefinitionsRequest;
 import org.n52.sor.request.SorInsertDefinitionRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.DeleteDefinitionRequestDocument;
-import org.x52North.sor.DeleteDefinitionRequestDocument.DeleteDefinitionRequest;
-import org.x52North.sor.GetCapabilitiesDocument;
-import org.x52North.sor.GetCapabilitiesDocument.GetCapabilities;
-import org.x52North.sor.GetDefinitionRequestDocument;
-import org.x52North.sor.GetDefinitionRequestDocument.GetDefinitionRequest;
-import org.x52North.sor.GetDefinitionURIsRequestDocument;
-import org.x52North.sor.GetDefinitionURIsRequestDocument.GetDefinitionURIsRequest;
-import org.x52North.sor.GetMatchingDefinitionsRequestDocument;
-import org.x52North.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
-import org.x52North.sor.InsertDefinitionRequestDocument;
-import org.x52North.sor.InsertDefinitionRequestDocument.InsertDefinitionRequest;
+import org.x52North.sor.x031.DeleteDefinitionRequestDocument;
+import org.x52North.sor.x031.DeleteDefinitionRequestDocument.DeleteDefinitionRequest;
+import org.x52North.sor.x031.GetCapabilitiesDocument;
+import org.x52North.sor.x031.GetCapabilitiesDocument.GetCapabilities;
+import org.x52North.sor.x031.GetDefinitionRequestDocument;
+import org.x52North.sor.x031.GetDefinitionRequestDocument.GetDefinitionRequest;
+import org.x52North.sor.x031.GetDefinitionURIsRequestDocument;
+import org.x52North.sor.x031.GetDefinitionURIsRequestDocument.GetDefinitionURIsRequest;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
+import org.x52North.sor.x031.InsertDefinitionRequestDocument;
+import org.x52North.sor.x031.InsertDefinitionRequestDocument.InsertDefinitionRequest;
 
 /**
  * @created 15-Okt-2008 16:25:09

@@ -28,8 +28,8 @@ import org.n52.sor.PropertiesManager;
 import org.n52.sor.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.DeleteDefinitionRequestDocument;
-import org.x52North.sor.DeleteDefinitionRequestDocument.DeleteDefinitionRequest;
+import org.x52North.sor.x031.DeleteDefinitionRequestDocument;
+import org.x52North.sor.x031.DeleteDefinitionRequestDocument.DeleteDefinitionRequest;
 
 /**
  * @author Jan Schulte

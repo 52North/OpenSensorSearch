@@ -73,7 +73,7 @@ public class XmlTools {
             + " http://giv-genesis.uni-muenster.de/schemas/sor/sorAll.xsd";
 
     static {
-        SUGGESTED_PREFIXES = new HashMap<String, String>();
+        SUGGESTED_PREFIXES = new HashMap<>();
         SUGGESTED_PREFIXES.put(SWE_1_0_1_NAMESPACE_URI, SWE_NAMESPACE_PREFIX);
         SUGGESTED_PREFIXES.put(GML_NAMESPACE_URI, GML_NAMESPACE_PREFIX);
         SUGGESTED_PREFIXES.put(SOR_NAMESPACE_URI, SOR_NAMESPACE_PREFIX);
@@ -120,7 +120,7 @@ public class XmlTools {
      * @return
      */
     public static String validateAndIterateErrors(XmlObject xml) {
-        ArrayList<XmlError> validationErrors = new ArrayList<XmlError>();
+        ArrayList<XmlError> validationErrors = new ArrayList<>();
         XmlOptions validationOptions = new XmlOptions();
         validationOptions.setErrorListener(validationErrors);
 

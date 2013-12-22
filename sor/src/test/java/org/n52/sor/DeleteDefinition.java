@@ -32,8 +32,8 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sor.client.Client;
 import org.n52.sor.client.DeleteDefinitionBean;
-import org.x52North.sor.DeleteDefinitionRequestDocument;
-import org.x52North.sor.DeleteDefinitionResponseDocument;
+import org.x52North.sor.x031.DeleteDefinitionRequestDocument;
+import org.x52North.sor.x031.DeleteDefinitionResponseDocument;
 
 /**
  * 

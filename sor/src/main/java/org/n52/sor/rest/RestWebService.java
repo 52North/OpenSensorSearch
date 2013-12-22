@@ -48,29 +48,30 @@ public class RestWebService extends HttpServlet {
 
     @Override
     public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        OutputStream out = response.getOutputStream();
-        response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
-        out.write("DELETE not yet supported!".getBytes());
-        out.flush();
-        out.close();
+        try (OutputStream out = response.getOutputStream();) {
+            response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
+            out.write("DELETE not yet supported!".getBytes());
+
+            out.flush();
+        }
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        OutputStream out = response.getOutputStream();
-        response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
-        out.write("POST not yet supported!".getBytes());
-        out.flush();
-        out.close();
+        try (OutputStream out = response.getOutputStream();) {
+            response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
+            out.write("POST not yet supported!".getBytes());
+            out.flush();
+        }
     }
 
     @Override
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        OutputStream out = response.getOutputStream();
-        response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
-        out.write("PUT not yet supported!".getBytes());
-        out.flush();
-        out.close();
+        try (OutputStream out = response.getOutputStream();) {
+            response.setContentType(RESPONSE_CONTENT_TYPE_PLAIN);
+            out.write("PUT not yet supported!".getBytes());
+            out.flush();
+        }
     }
 
     /**

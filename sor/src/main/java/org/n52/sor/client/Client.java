@@ -29,12 +29,12 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.sor.OwsExceptionReport;
@@ -74,43 +74,40 @@ public class Client {
         PropertiesManager pm = PropertiesManager.getInstance();
 
         // create and set up HttpClient
-        HttpClient client = new DefaultHttpClient();
+        try (CloseableHttpClient client = HttpClientBuilder.create().build();) {
 
-        HttpRequestBase method = null;
-        if (requestMethod.equals(GET_METHOD)) {
-            String sorURL = pm.getServiceEndpointGet();
-            if (log.isDebugEnabled())
-                log.debug("Client connecting via GET to " + sorURL);
+            HttpRequestBase method = null;
+            if (requestMethod.equals(GET_METHOD)) {
+                String sorURL = pm.getServiceEndpointGet();
+                if (log.isDebugEnabled())
+                    log.debug("Client connecting via GET to " + sorURL);
 
-            HttpGet get = new HttpGet(request);
-            method = get;
-        }
-        else if (requestMethod.equals(POST_METHOD)) {
-            String sorURL = pm.getServiceEndpointPost();
-            if (log.isDebugEnabled())
-                log.debug("Client connecting via POST to " + sorURL);
-            HttpPost postMethod = new HttpPost(sorURL.toString());
+                HttpGet get = new HttpGet(request);
+                method = get;
+            }
+            else if (requestMethod.equals(POST_METHOD)) {
+                String sorURL = pm.getServiceEndpointPost();
+                if (log.isDebugEnabled())
+                    log.debug("Client connecting via POST to " + sorURL);
+                HttpPost postMethod = new HttpPost(sorURL.toString());
 
-            postMethod.setEntity(new StringEntity(request,
-                                                  PropertiesManager.getInstance().getClientRequestContentType(),
-                                                  PropertiesManager.getInstance().getClientRequestEncoding()));
+                postMethod.setEntity(new StringEntity(request,
+                                                      PropertiesManager.getInstance().getClientRequestContentType()));
 
-            method = postMethod;
-        }
-        else {
-            throw new IllegalArgumentException("requestMethod not supported!");
-        }
+                method = postMethod;
+            }
+            else
+                throw new IllegalArgumentException("requestMethod not supported!");
 
-        HttpResponse httpResponse = client.execute(method);
+            HttpResponse httpResponse = client.execute(method);
+            XmlObject response = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
 
-        XmlObject response = null;
-        try {
-            response = XmlObject.Factory.parse(httpResponse.getEntity().getContent());
+            return response;
         }
         catch (XmlException e) {
             log.error("Error parsing response.", e);
         }
-        return response;
+        return null;
     }
 
     /**

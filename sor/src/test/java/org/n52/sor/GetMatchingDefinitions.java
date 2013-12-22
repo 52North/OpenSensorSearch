@@ -33,8 +33,8 @@ import org.junit.Test;
 import org.n52.sor.client.Client;
 import org.n52.sor.client.GetMatchingDefinitionsBean;
 import org.n52.sor.request.ISorRequest.SorMatchingType;
-import org.x52North.sor.GetMatchingDefinitionsRequestDocument;
-import org.x52North.sor.GetMatchingDefinitionsResponseDocument;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument;
+import org.x52North.sor.x031.GetMatchingDefinitionsResponseDocument;
 
 /**
  * 

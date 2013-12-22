@@ -28,7 +28,8 @@ import java.util.Arrays;
 
 import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.reasoner.JenaReasoner.MatchingCode;
-import org.x52North.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType.Enum;
 
 /**
  * @created 15-Okt-2008 16:25:09
@@ -110,7 +111,7 @@ public interface ISorRequest {
          * @return
          * @throws OwsExceptionReport
          */
-        public org.x52North.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest.MatchingType.Enum getSchemaMatchingType() throws OwsExceptionReport {
+        public Enum getSchemaMatchingType() throws OwsExceptionReport {
             if (this.equals(SorMatchingType.SUPER_TYPE)) {
                 return MatchingType.SUPER_TYPE;
             }

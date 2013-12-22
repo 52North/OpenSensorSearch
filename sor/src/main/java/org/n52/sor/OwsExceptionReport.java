@@ -46,7 +46,7 @@ public class OwsExceptionReport extends Exception {
 
     private static final long serialVersionUID = 8265500105420582340L;
 
-    private ArrayList<ExceptionType> excs = new ArrayList<ExceptionType>();
+    private ArrayList<ExceptionType> excs = new ArrayList<>();
 
     /**
      * 

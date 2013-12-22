@@ -30,8 +30,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.n52.sor.util.XmlTools;
-import org.x52North.sor.GetMatchingDefinitionsResponseDocument;
-import org.x52North.sor.GetMatchingDefinitionsResponseDocument.GetMatchingDefinitionsResponse;
+import org.x52North.sor.x031.GetMatchingDefinitionsResponseDocument;
+import org.x52North.sor.x031.GetMatchingDefinitionsResponseDocument.GetMatchingDefinitionsResponse;
 
 /**
  * @created 20-Okt-2008 16:44:48

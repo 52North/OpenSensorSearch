@@ -57,7 +57,7 @@ public abstract class SorTestCase extends TestCase {
     protected static String loadGetRequestExample(String name) {
         return examples.getProperty(name);
     }
-    
+
     /**
      * 
      * @throws IOException
@@ -66,22 +66,18 @@ public abstract class SorTestCase extends TestCase {
     protected void setUp() throws Exception {
         if (PropertiesManager.getInstance() == null) {
             String basepath = "/home/daniel/workspace/SOR/WebContent";
-            InputStream configStream = new FileInputStream(basepath + "/WEB-INF/conf/sor.properties");
-            PropertiesManager.getInstance(configStream, basepath);
+            try (InputStream configStream = new FileInputStream(basepath + "/WEB-INF/conf/sor.properties");
+                    InputStream exampleStream = new FileInputStream(PropertiesManager.getInstance().getTestRequestPath()
+                            + REQUEST_EXAMPLES_GET_FILE);) {
+                PropertiesManager.getInstance(configStream, basepath);
 
-            InputStream exampleStream = new FileInputStream(PropertiesManager.getInstance().getTestRequestPath()
-                    + REQUEST_EXAMPLES_GET_FILE);
-            examples = new Properties();
-            // load properties
-            try {
+                examples = new Properties();
+                // load properties
                 examples.load(exampleStream);
             }
             catch (IOException e) {
                 log.error("Loading examples properties failed");
             }
-
-            configStream.close();
-            exampleStream.close();
 
             log.info("Instatiated PropertiesManager");
         }

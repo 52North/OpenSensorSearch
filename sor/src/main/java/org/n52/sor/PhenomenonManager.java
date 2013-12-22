@@ -74,7 +74,7 @@ public class PhenomenonManager {
      * 
      * TODO make this a hashmap with identifier as key and IDictionaryEntry as value for quicker querying
      */
-    private Collection<IDictionaryEntry> phenomenaList = new ArrayList<IDictionaryEntry>();
+    private Collection<IDictionaryEntry> phenomenaList = new ArrayList<>();
 
     /**
      * The dictionary with all phenomenas
@@ -147,11 +147,9 @@ public class PhenomenonManager {
             }
 
             // save backup
-            FileInputStream in;
-            try {
-                in = new FileInputStream(phenFilePath);
-                FileOutputStream out = new FileOutputStream(pm.getPhenomenonXMLPath() + BACKUP_INFIX
-                        + backupSdf.format(new Date()));
+            try (FileInputStream in = new FileInputStream(phenFilePath);
+                    FileOutputStream out = new FileOutputStream(pm.getPhenomenonXMLPath() + BACKUP_INFIX
+                            + backupSdf.format(new Date()));) {
 
                 byte[] buf = new byte[1024];
                 int len;
@@ -263,7 +261,7 @@ public class PhenomenonManager {
      * @return List of Strings containing phenomena URIs
      */
     public Collection<String> getEquivalentURI(Collection<String> ontologyURIlist) {
-        Collection<String> result = new ArrayList<String>();
+        Collection<String> result = new ArrayList<>();
         for (IDictionaryEntry dicEntry : this.phenomenaList) {
             for (String url : ontologyURIlist) {
                 if (dicEntry.getUrl() != null && dicEntry.getUrl().equals(url)) {

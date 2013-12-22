@@ -57,8 +57,8 @@ import org.n52.sor.request.SorGetMatchingDefinitionsRequest;
 import org.n52.sor.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.GetMatchingDefinitionsRequestDocument;
-import org.x52North.sor.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument;
+import org.x52North.sor.x031.GetMatchingDefinitionsRequestDocument.GetMatchingDefinitionsRequest;
 
 /**
  * @author Jan Schulte, Daniel Nüst

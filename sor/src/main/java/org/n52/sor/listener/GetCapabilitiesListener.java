@@ -63,7 +63,7 @@ public class GetCapabilitiesListener implements IRequestListener {
     }
 
     private ArrayList<Section> checkSections(String[] sections) throws OwsExceptionReport {
-        ArrayList<Section> responseSection = new ArrayList<Section>();
+        ArrayList<Section> responseSection = new ArrayList<>();
         for (String section : sections) {
             if (section.equalsIgnoreCase(Section.CONTENTS.name())) {
                 responseSection.add(Section.CONTENTS);
@@ -158,7 +158,7 @@ public class GetCapabilitiesListener implements IRequestListener {
                 response.setSections(checkSections(sorRequest.getSections()));
             }
             else {
-                ArrayList<Section> temp = new ArrayList<Section>();
+                ArrayList<Section> temp = new ArrayList<>();
                 temp.add(Section.ALL);
                 response.setSections(temp);
             }

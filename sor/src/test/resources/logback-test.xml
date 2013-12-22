@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
 
- <!-- refer to http://logback.qos.ch/manual/appenders.html -->
-
-	<property name="logFile"
-		value="${config.logger.fileappender.filepath}/${pom.artifactId}-${project.version}" />
-
-	<appender name="FILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${logFile}.log</file>
-
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${logFile}/%d{yyyy-MM-dd}.log</fileNamePattern>
- <!-- keep 30 days' worth of history -->
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-
-		<encoder>
-			<pattern>
-				%date %level [%thread] [%file:%line] %msg%n
-			</pattern>
-		</encoder>
-	</appender>
-
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>
@@ -31,10 +9,9 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.n52.sor" level="${config.logger.level}" />
+	<logger name="org.n52.sor" level="DEBUG" />
 
 	<root level="DEBUG">
-		<appender-ref ref="FILE" />
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

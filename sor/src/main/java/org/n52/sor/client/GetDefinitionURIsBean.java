@@ -28,8 +28,8 @@ import org.n52.sor.PropertiesManager;
 import org.n52.sor.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.GetDefinitionURIsRequestDocument;
-import org.x52North.sor.GetDefinitionURIsRequestDocument.GetDefinitionURIsRequest;
+import org.x52North.sor.x031.GetDefinitionURIsRequestDocument;
+import org.x52North.sor.x031.GetDefinitionURIsRequestDocument.GetDefinitionURIsRequest;
 
 /**
  * @author Jan Schulte

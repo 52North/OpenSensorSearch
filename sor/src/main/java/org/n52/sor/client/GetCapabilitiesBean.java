@@ -31,8 +31,8 @@ import org.n52.sor.response.SorGetCapabilitiesResponse.Section;
 import org.n52.sor.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.x52North.sor.GetCapabilitiesDocument;
-import org.x52North.sor.GetCapabilitiesDocument.GetCapabilities;
+import org.x52North.sor.x031.GetCapabilitiesDocument;
+import org.x52North.sor.x031.GetCapabilitiesDocument.GetCapabilities;
 
 /**
  * @author Jan Schulte

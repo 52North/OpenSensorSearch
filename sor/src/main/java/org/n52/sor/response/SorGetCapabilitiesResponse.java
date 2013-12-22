@@ -39,9 +39,9 @@ import org.n52.sor.OwsExceptionReport;
 import org.n52.sor.PhenomenonManager;
 import org.n52.sor.PropertiesManager;
 import org.n52.sor.util.XmlTools;
-import org.x52North.sor.CapabilitiesDocument;
-import org.x52North.sor.CapabilitiesDocument.Capabilities;
-import org.x52North.sor.CapabilitiesDocument.Capabilities.Contents;
+import org.x52North.sor.x031.CapabilitiesDocument;
+import org.x52North.sor.x031.CapabilitiesDocument.Capabilities;
+import org.x52North.sor.x031.CapabilitiesDocument.Capabilities.Contents;
 
 /**
  * @created 20-Okt-2008 16:44:48

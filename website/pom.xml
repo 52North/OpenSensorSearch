@@ -16,10 +16,6 @@
 
 	<properties>
 		<spring.version>3.1.1.RELEASE</spring.version>
-		<logback.version>1.0.13</logback.version>
-
-		<oss.logger.filepath>${catalina.base:-.}/logs/oss</oss.logger.filepath>
-		<oss.logger.level>DEBUG</oss.logger.level>
 	</properties>
 
 	<dependencies>

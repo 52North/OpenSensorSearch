@@ -34,7 +34,7 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sor.client.Client;
 import org.n52.sor.client.GetDefinitionBean;
-import org.x52North.sor.GetDefinitionRequestDocument;
+import org.x52North.sor.x031.GetDefinitionRequestDocument;
 
 /**
  * 

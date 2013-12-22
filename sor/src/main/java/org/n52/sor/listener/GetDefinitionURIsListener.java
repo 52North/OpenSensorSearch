@@ -51,7 +51,7 @@ public class GetDefinitionURIsListener implements IRequestListener {
         SorGetDefinitionURIsResponse getDefResp = new SorGetDefinitionURIsResponse();
 
         ArrayList<IDictionaryEntry> phenomList = (ArrayList<IDictionaryEntry>) PhenomenonManager.getInstance().getPhenomenaList();
-        List<String> defs = new ArrayList<String>();
+        List<String> defs = new ArrayList<>();
 
         if (sorRequest.getSearchString() != null) {
             // search string is given, check all elements and add them to ouput list if they match

@@ -28,8 +28,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.n52.sor.util.XmlTools;
-import org.x52North.sor.DeleteDefinitionResponseDocument;
-import org.x52North.sor.DeleteDefinitionResponseDocument.DeleteDefinitionResponse;
+import org.x52North.sor.x031.DeleteDefinitionResponseDocument;
+import org.x52North.sor.x031.DeleteDefinitionResponseDocument.DeleteDefinitionResponse;
 
 /**
  * @author Jan Schulte

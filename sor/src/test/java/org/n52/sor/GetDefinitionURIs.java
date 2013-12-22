@@ -32,8 +32,8 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sor.client.Client;
 import org.n52.sor.client.GetDefinitionURIsBean;
-import org.x52North.sor.GetDefinitionURIsRequestDocument;
-import org.x52North.sor.GetDefinitionURIsResponseDocument;
+import org.x52North.sor.x031.GetDefinitionURIsRequestDocument;
+import org.x52North.sor.x031.GetDefinitionURIsResponseDocument;
 
 /**
  * 

@@ -32,8 +32,8 @@ import org.apache.xmlbeans.XmlObject;
 import org.junit.Test;
 import org.n52.sor.client.Client;
 import org.n52.sor.client.GetCapabilitiesBean;
-import org.x52North.sor.CapabilitiesDocument;
-import org.x52North.sor.GetCapabilitiesDocument;
+import org.x52North.sor.x031.CapabilitiesDocument;
+import org.x52North.sor.x031.GetCapabilitiesDocument;
 
 /**
  * 

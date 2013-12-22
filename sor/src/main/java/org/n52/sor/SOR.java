@@ -62,7 +62,7 @@ public class SOR extends HttpServlet {
      * The RequestOperator which handles the request
      */
     private RequestOperator requestOperator = new RequestOperator();
-    
+
     /**
      * This Methode handles all incoming GET-requests and send them to the RequestDecoder, where the request
      * is decoded to an intern SOR request.
@@ -97,13 +97,13 @@ public class SOR extends HttpServlet {
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            InputStream in = request.getInputStream();
+        try (InputStream in = request.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));) {
+
             String inputString;
             String decodedString;
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
+
             StringBuffer sb = new StringBuffer();
             while ( (line = br.readLine()) != null) {
                 sb.append(line + "\n");
@@ -151,9 +151,7 @@ public class SOR extends HttpServlet {
      *        SorResponse which is send back to the client
      */
     private void doResponse(HttpServletResponse response, ISorResponse sorResponse) {
-        OutputStream out;
-        try {
-            out = response.getOutputStream();
+        try (OutputStream out = response.getOutputStream();) {
             response.setContentType(PropertiesManager.getInstance().getResponseContentTypeXml());
             byte[] responseByteArray = sorResponse.getByteArray();
             response.setContentLength(responseByteArray.length);
@@ -174,16 +172,15 @@ public class SOR extends HttpServlet {
         ServletContext context = getServletContext();
 
         String basepath = context.getRealPath("/");
-        InputStream configStream = context.getResourceAsStream(getInitParameter(CONFIG_FILE_INIT_PARAMETER));
+        try (InputStream configStream = context.getResourceAsStream(getInitParameter(CONFIG_FILE_INIT_PARAMETER));) {
 
-        // initialize property manager
-        PropertiesManager.getInstance(configStream, basepath);
+            // initialize property manager
+            PropertiesManager.getInstance(configStream, basepath);
 
-        // initialize phenomenon manager
-        try {
+            // initialize phenomenon manager
             PhenomenonManager.getInstance();
         }
-        catch (OwsExceptionReport e) {
+        catch (OwsExceptionReport | IOException e) {
             log.error("Could not initialize PhenomenonManager", e);
             throw new RuntimeException("Could not initialize PhenomenonManager! Service is not ready for use.");
         }

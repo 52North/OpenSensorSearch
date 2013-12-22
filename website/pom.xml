@@ -139,8 +139,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
-
 				<configuration>
 					<!-- have to explicitly add resources and target paths if I want to
 						do filtering on different resources -->
@@ -168,7 +166,6 @@
 				<!-- run "mvn license:format" to add to the files -->
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
-				<version>1.9.0</version>
 				<configuration>
 					<header>src/main/resources/license_header.txt</header>
 					<excludes>

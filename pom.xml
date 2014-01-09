@@ -218,7 +218,8 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 					<artifactId>maven-license-plugin</artifactId>
 					<version>1.9.0</version>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -307,6 +308,42 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.n52.oss</groupId>
+				<artifactId>common</artifactId>
+				<version>0.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.n52.oss</groupId>
+				<artifactId>sir-common</artifactId>
+				<version>0.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.n52.oss</groupId>
+				<artifactId>sor-common</artifactId>
+				<version>0.5.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.n52.oss</groupId>
+				<artifactId>sor</artifactId>
+				<version>0.5.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.n52.oss</groupId>
+				<artifactId>service</artifactId>
+				<version>0.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.n52.oss</groupId>
+				<artifactId>website</artifactId>
+				<version>0.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.n52.oss</groupId>
+				<artifactId>sir-json</artifactId>
+				<version>0.3</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>

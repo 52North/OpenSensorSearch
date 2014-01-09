@@ -60,7 +60,6 @@
 		<dependency>
 			<groupId>org.n52.oss</groupId>
 			<artifactId>service</artifactId>
-			<version>0.6</version>
 		</dependency>
 
 		<dependency>
@@ -76,7 +75,6 @@
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
-			<version>1.2.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -93,7 +91,6 @@
 		<dependency>
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock</artifactId>
-			<version>1.33</version>
 			<classifier>standalone</classifier>
 			<exclusions>
 				<exclusion>
@@ -106,7 +103,6 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

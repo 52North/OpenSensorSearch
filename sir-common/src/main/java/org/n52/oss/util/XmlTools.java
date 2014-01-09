@@ -66,8 +66,6 @@ import x0.oasisNamesTcEbxmlRegrepXsdRim3.SlotDocument;
 import x0.oasisNamesTcEbxmlRegrepXsdRim3.SlotType1;
 
 /**
- * TODO move to common module
- * 
  * Class for helper methods dealing with XML, especially deeper inspection of XML-Documents respectively beans
  * (i.e. instances of (subclasses of) {@link XmlObject}).
  * 

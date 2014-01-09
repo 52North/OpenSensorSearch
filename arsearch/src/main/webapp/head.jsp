@@ -23,8 +23,8 @@
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <script type="text/javascript"
-	src="<%=getServletContext().getContextPath()%>/js/jquery.qrcode.js"></script>
+	src="<%=getServletContext().getContextPath()%>/js/lib/jquery.qrcode.js"></script>
 <script type="text/javascript"
-	src="<%=getServletContext().getContextPath()%>/js/qrcode.js"></script>
+	src="<%=getServletContext().getContextPath()%>/js/lib/qrcode.js"></script>
 
 <link rel="stylesheet" href="styles.css" type="text/css" />

@@ -7,65 +7,11 @@
 		<artifactId>parent</artifactId>
 		<version>1.0</version>
 	</parent>
+	
 	<artifactId>sor-common</artifactId>
 	<version>0.5.1</version>
-	
 	<name>SOR common</name>
 	<description>52°North Sensor Observable Registry common classes</description>
-
-	<url>http://52north.org/communities/sensorweb/discovery/</url>
-	<inceptionYear>2012</inceptionYear>
-
-	<organization>
-		<name>52°North Initiative for Geospatial Open Source Software GmbH</name>
-		<url>http://52north.org</url>
-	</organization>
-
-	<developers>
-		<developer>
-			<name>Jan Schulte</name>
-			<email>j.schulte@52north.org</email>
-			<organization>${project.organization.name}</organization>
-			<organizationUrl>${project.organization.url}</organizationUrl>
-			<timezone>GMT+1</timezone>
-			<id>JanSchulte</id>
-		</developer>
-		<developer>
-			<name>Daniel Nüst</name>
-			<email>d.nuest@52north.org</email>
-			<organization>${project.organization.name}</organization>
-			<organizationUrl>${project.organization.url}</organizationUrl>
-			<timezone>GMT+1</timezone>
-			<id>DanielNuest</id>
-		</developer>
-	</developers>
-
-	<mailingLists>
-		<mailingList>
-			<name>Sensor Web Community Mailing List</name>
-			<subscribe>http://list.52north.org/mailman/listinfo/swe</subscribe>
-			<unsubscribe>http://list.52north.org/mailman/listinfo/swe</unsubscribe>
-			<post>swe@52north.org</post>
-			<archive>http://list.52north.org/pipermail/swe</archive>
-			<otherArchives>
-				<otherArchive>http://sensorweb.forum.52north.org</otherArchive>
-			</otherArchives>
-		</mailingList>
-	</mailingLists>
-
-	<issueManagement>
-		<url>https://github.com/52North/OpenSensorSearch/issues</url>
-		<system>GitHub Issues</system>
-	</issueManagement>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
 
 	<dependencies>
 		<dependency>
@@ -94,46 +40,6 @@
 			<groupId>org.n52.sensorweb</groupId>
 			<artifactId>52n-xml-sor-v031</artifactId>
 		</dependency>
-		
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>src/main/resources/license_header.txt</header>
-					<excludes>
-						<exclude>**/logback*</exclude>
-						<exclude>**/webapp/TestRequests/**</exclude>
-						<exclude>**/webapp/codemirror/**</exclude>
-					</excludes>
-					<includes>
-						<include>**/*.java</include>
-						<include>**/*.properties</include>
-						<include>**/*.jsp</include>
-						<include>**/*.js</include>
-						<include>**/*.xml</include>
-						<include>**/*.xsl</include>
-						<include>**/*.sch</include>
-						<include>**/*.sql</include>
-						<include>**/*.html</include>
-					</includes>
-					<strictCheck>true</strictCheck>
-					<properties>
-						<year>${project.inceptionYear}</year>
-					</properties>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

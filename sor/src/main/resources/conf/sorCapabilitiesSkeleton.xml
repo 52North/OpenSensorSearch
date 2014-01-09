@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
 
-    ï»¿Copyright (C) 2012 52Â°North Initiative for Geospatial Open Source Software GmbH
+    Copyright 2013 52Â°North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,14 +22,14 @@
 	xsi:schemaLocation="http://52north.org/schema/sor/0.3.1/ ./sorGetCapabilities.xsd "
 	updateSequence="2010-01-08T14:57:17+0100" version="1.0.0">
 	<ows:ServiceIdentification>
-		<ows:Title>52°North SOR</ows:Title>
-		<ows:Abstract>Sensor Observable Registry by 52°North</ows:Abstract>
+		<ows:Title>52ï¿½North SOR</ows:Title>
+		<ows:Abstract>Sensor Observable Registry by 52ï¿½North</ows:Abstract>
 		<ows:ServiceType codeSpace="http://52north.org/sor">OGC:SOR</ows:ServiceType>
 		<ows:Fees>NONE</ows:Fees>
 		<ows:AccessConstraints>NONE</ows:AccessConstraints>
 	</ows:ServiceIdentification>
 	<ows:ServiceProvider>
-		<ows:ProviderName>52°North</ows:ProviderName>
+		<ows:ProviderName>52ï¿½North</ows:ProviderName>
 		<ows:ProviderSite xlink:href="http://52north.org" />
 		<ows:ServiceContact>
 			<ows:IndividualName>Simon Jirka</ows:IndividualName>

@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.n52.oss</groupId>
 		<artifactId>parent</artifactId>
 		<version>1.0</version>
 	</parent>
+	
 	<artifactId>website</artifactId>
 	<packaging>war</packaging>
-
 	<version>0.6</version>
 	<name>Open Sensor Search Website</name>
 
@@ -140,70 +141,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<!-- have to explicitly add resources and target paths if I want to
-						do filtering on different resources -->
-					<!-- http://maven.apache.org/plugins/maven-war-plugin/examples/adding-filtering-webresources.html -->
 					<webResources>
 						<resource>
 							<directory>src/main/webapp</directory>
 							<filtering>true</filtering>
 						</resource>
-						<!-- <resource> -->
-						<!-- <directory>src/main/resources</directory> -->
-						<!-- <filtering>true</filtering> -->
-						<!-- <targetPath>WEB-INF/classes</targetPath> -->
-						<!-- </resource> -->
 					</webResources>
-
-					<!-- <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml> -->
-					<!-- <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors> -->
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<!-- check for correct source file headers during test phase: http://code.google.com/p/maven-license-plugin/wiki/HowTo -->
-				<!-- run "mvn license:check" to check -->
-				<!-- run "mvn license:format" to add to the files -->
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>src/main/resources/license_header.txt</header>
-					<excludes>
-						<exclude>**/logback*</exclude>
-						<exclude>**/test/resources/**</exclude>
-						<exclude>**/*.xml</exclude>
-						<exclude>**/js/lib/**</exclude>
-						<exclude>**/js/min/lib/**</exclude>
-						<exclude>**/*.css</exclude>
-					</excludes>
-					<includes>
-						<include>**/*.java</include>
-						<include>**/*.jsp</include>
-						<include>**/*.js</include>
-						<include>**/*.xsl</include>
-						<include>**/*.sch</include>
-						<include>**/*.sql</include>
-						<!-- <include>**/*.css</include> -->
-						<include>**/*.html</include>
-					</includes>
-					<strictCheck>true</strictCheck>
-					<properties>
-						<year>${project.inceptionYear}</year>
-					</properties>
-					<mapping>
-						<sch>XML_STYLE</sch>
-					</mapping>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<!-- test will fail if license headers are not correct, run license:format
-							to add the headers. -->
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

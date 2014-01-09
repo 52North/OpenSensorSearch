@@ -1,88 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.n52.oss</groupId>
 		<artifactId>parent</artifactId>
 		<version>1.0</version>
 	</parent>
+	
 	<artifactId>service</artifactId>
-
 	<name>Open Sensor Search Service</name>
 	<description>Platform for discovery and metadata management for sensors</description>
 	<packaging>war</packaging>
 	<version>0.6</version>
 
-	<url>http://52north.org/communities/sensorweb/discovery/</url>
-	<inceptionYear>2012</inceptionYear>
-
-	<organization>
-		<name>52°North Initiative for Geospatial Open Source Software GmbH</name>
-		<url>http://52north.org</url>
-	</organization>
-
-	<developers>
-		<developer>
-			<name>Jan Schulte</name>
-			<email>j.schulte@52north.org</email>
-			<organization>${project.organization.name}</organization>
-			<organizationUrl>${project.organization.url}</organizationUrl>
-			<timezone>GMT+1</timezone>
-			<id>janschulte</id>
-		</developer>
-		<developer>
-			<name>Daniel Nüst</name>
-			<email>d.nuest@52north.org</email>
-			<organization>${project.organization.name}</organization>
-			<organizationUrl>${project.organization.url}</organizationUrl>
-			<timezone>GMT+1</timezone>
-			<id>nuest</id>
-		</developer>
-		<developer>
-			<name>Mohammad A. Yakoub</name>
-			<email>m.ahmed.yakoub@gmail.com</email>
-			<timezone>GMT+1</timezone>
-			<id>Moh-Yakoub</id>
-		</developer>
-	</developers>
-
-	<mailingLists>
-		<mailingList>
-			<name>Sensor Web Community Mailing List</name>
-			<subscribe>http://list.52north.org/mailman/listinfo/swe</subscribe>
-			<unsubscribe>http://list.52north.org/mailman/listinfo/swe</unsubscribe>
-			<post>swe@52north.org</post>
-			<archive>http://list.52north.org/pipermail/swe</archive>
-			<otherArchives>
-				<otherArchive>http://sensorweb.forum.52north.org</otherArchive>
-			</otherArchives>
-		</mailingList>
-	</mailingLists>
-
-	<scm>
-		<!-- We use the fork & pull development model: https://help.github.com/articles/using-pull-requests -->
-		<connection>scm:git:git://github.com/52North/OpenSensorSearch.git</connection>
-		<url>https://github.com/52North/OpenSensorSearch</url>
-	</scm>
-
-	<issueManagement>
-		<url>https://github.com/52North/OpenSensorSearch/issues</url>
-		<system>GitHub Issues</system>
-	</issueManagement>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
-
 	<properties>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 
-		<restlet.version>2.1.1</restlet.version>
+		<restlet.version>2.1.6</restlet.version>
 	</properties>
 
 	<build>
@@ -145,12 +80,9 @@
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<configuration>
-					<header>src/main/resources/license_header.txt</header>
 					<excludes>
-						<exclude>**/logback*</exclude>
 						<exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
 						<exclude>**/iso_svrl_for_xslt2.xsl</exclude>
-						<exclude>**/test/resources/**</exclude>
 						<exclude>**/webapp/TestRequests/**</exclude>
 						<exclude>**/webapp/codemirror/**</exclude>
 						<exclude>**/*.xml</exclude>
@@ -171,7 +103,6 @@
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>
 						<include>**/*.css</include>
-						<!-- <include>**/*.html</include> -->
 					</includes>
 					<strictCheck>true</strictCheck>
 					<properties>
@@ -181,14 +112,6 @@
 						<sch>XML_STYLE</sch>
 					</mapping>
 				</configuration>
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -199,18 +122,6 @@
 
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.jasig.maven</groupId>
-						<artifactId>maven-notice-plugin</artifactId>
-						<version>1.0.5</version>
-						<configuration>
-							<noticeTemplate>src/main/resources/NOTICE.template</noticeTemplate>
-							<licenseMapping>
-								<param>src/main/resources/license-mappings.xml</param>
-							</licenseMapping>
-						</configuration>
-					</plugin>
-
 					<!-- TODO: add swagger generation plugin here -->
 					<plugin>
 						<groupId>com.github.danielflower.mavenplugins</groupId>
@@ -268,7 +179,6 @@
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
-			<version>2.6.0</version>
 			<!-- if added, the wrong XmlConstants is used, see XmlTools.java and SMLtoEbRIMTransformer.java -->
 			<exclusions>
 				<exclusion>
@@ -327,7 +237,6 @@
 		<dependency>
 			<groupId>org.postgis</groupId>
 			<artifactId>postgis-jdbc</artifactId>
-			<version>1.3.3</version>
 		</dependency>
 
 		<dependency>
@@ -382,7 +291,6 @@
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
-			<version>1.2.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -449,13 +357,11 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock</artifactId>
-			<version>1.33</version>
 			<classifier>standalone</classifier>
 			<exclusions>
 				<exclusion>
@@ -496,53 +402,4 @@
 			<version>0.5.1</version>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>maven-restlet</id>
-			<name>Public online Restlet repository</name>
-			<url>http://maven.restlet.org</url>
-		</repository>
-
-		<!-- for postgis -->
-		<repository>
-			<id>sonatype-postgis-releases</id>
-			<name>Sonatype Postgis Releases Repo</name>
-			<url>http://oss.sonatype.org/content/repositories/postgis-releases</url>
-		</repository>
-
-		<repository>
-			<id>n52-releases</id>
-			<name>52n Releases</name>
-			<url>http://52north.org/maven/repo/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>n52-snapshots</id>
-			<name>52n Snapshots</name>
-			<url>http://52north.org/maven/repo/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>apache-snapshots</id>
-			<name>Apache Snapshots</name>
-			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 </project>

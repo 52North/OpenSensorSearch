@@ -23,6 +23,8 @@ import org.n52.oss.opensearch.listeners.OpenSearchListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.Singleton;
+
 /**
  * 
  * TODO move everything in configurator to external configuration file!
@@ -30,6 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
+@Singleton
 public class OpenSearchConfigurator {
 
     private static Logger log = LoggerFactory.getLogger(OpenSearchConfigurator.class);
@@ -41,8 +44,10 @@ public class OpenSearchConfigurator {
      */
     private boolean compressPermalinks = true;
 
+    @Deprecated
     private String cssFile = "sir.css";
 
+    @Deprecated
     private String feedAuthor = "Open Sensor Search by 52°North";
 
     // TODO move to external configuration file
@@ -52,6 +57,7 @@ public class OpenSearchConfigurator {
 
     HashMap<String, String> responseFormats = new HashMap<>();
 
+    @Deprecated
     private String responseAuthor = "52°North";
 
     public OpenSearchConfigurator() {
@@ -66,10 +72,12 @@ public class OpenSearchConfigurator {
         return this.capabilitiesCacheMaximumAgeSeconds;
     }
 
+    @Deprecated
     public String getCssFile() {
         return this.cssFile;
     }
 
+    @Deprecated
     public String getFeedAuthor() {
         return this.feedAuthor;
     }
@@ -90,8 +98,50 @@ public class OpenSearchConfigurator {
         return this.compressPermalinks;
     }
 
+    @Deprecated
     public String getResponseAuthor() {
         return this.responseAuthor;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("OpenSearchConfigurator [capabilitiesCacheMaximumAgeSeconds=");
+        builder.append(this.capabilitiesCacheMaximumAgeSeconds);
+        builder.append(", compressPermalinks=");
+        builder.append(this.compressPermalinks);
+        builder.append(", ");
+        if (this.cssFile != null) {
+            builder.append("cssFile=");
+            builder.append(this.cssFile);
+            builder.append(", ");
+        }
+        if (this.feedAuthor != null) {
+            builder.append("feedAuthor=");
+            builder.append(this.feedAuthor);
+            builder.append(", ");
+        }
+        if (this.permalinkBaseURL != null) {
+            builder.append("permalinkBaseURL=");
+            builder.append(this.permalinkBaseURL);
+            builder.append(", ");
+        }
+        if (this.permalinkDateFormat != null) {
+            builder.append("permalinkDateFormat=");
+            builder.append(this.permalinkDateFormat);
+            builder.append(", ");
+        }
+        if (this.responseFormats != null) {
+            builder.append("responseFormats=");
+            builder.append(this.responseFormats);
+            builder.append(", ");
+        }
+        if (this.responseAuthor != null) {
+            builder.append("responseAuthor=");
+            builder.append(this.responseAuthor);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

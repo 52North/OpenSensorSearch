@@ -44,11 +44,6 @@
 				</div>
 			</c:if>
 
-			<%
-			    /* http://eltimn.github.io/jquery-bs-alerts/ */
-			%>
-			<div data-alerts="alerts"></div>
-
 			<h1>Open Sensor Search</h1>
 
 			<form class="form-inline" name="requestform" method="get"

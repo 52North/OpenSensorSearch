@@ -1,6 +1,6 @@
 <%--
 
-    ﻿Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
+    Copyright (C) 2013 52�North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -54,7 +54,6 @@
 <script src="lib/jquery.js" type="text/javascript"></script>
 <script src="lib/jquery-ui.min.js" type="text/javascript"></script>
 <script src="lib/bootstrap.js" type="text/javascript"></script>
-<script src="lib/jquery.bsAlerts.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	$("#apiEndpointMenuLink").attr("href", ossApiEndpoint);

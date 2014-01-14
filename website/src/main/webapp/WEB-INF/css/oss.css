@@ -1,0 +1,131 @@
+/* Sticky footer styles
+         See http://getbootstrap.com/2.3.2/examples/sticky-footer-navbar.html
+      */
+html,body {
+	height: 100%;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.betaBanner {
+	position: absolute;
+	margin-top: 51px;
+	top: 0%;
+	right: 0%;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height */
+	margin: 0 auto -80px;
+}
+
+/* fixed height of the footer */
+#footer {
+	height: 80px;
+	clear: both;
+}
+
+#footer {
+	background-color: #f5f5f5;
+	font-size: 80%;
+}
+
+/* responsive CSS fixes */
+@media ( max-width : 991px) {
+	#push,#footer {
+		height: 110px;
+	}
+	#wrap {
+		margin-bottom: -110px;
+	}
+}
+
+@media ( max-width : 767px) {
+	#push,#footer {
+		height: 180px;
+	}
+	#wrap {
+		margin-bottom: -180px;
+	}
+}
+
+#searchResultList {
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+	list-style-type: none;
+}
+
+#searchResultList li {
+	padding: 0;
+	margin: 0;
+}
+
+#searchResultList .result-header {
+	font-size: 13px;
+	margin: 20px 0 0 0;
+	padding: 4px 0 0 0;
+	color: #0000FF;
+}
+
+#searchResultList .result-header a {
+	color: #0000FF;
+}
+
+#searchResultList .result-service {
+	font-size: 12px;
+	color: green;
+	margin: 0px;
+	padding: 0px;
+}
+
+#searchResultList .result-service a {
+	color: green;
+}
+
+#searchResultList .result-service ul,#searchResultList .result-service ul li
+	{
+	display: inline;
+}
+
+#searchResultList .result-properties {
+	margin: 0px;
+	font-size: 10px;
+	color: gray;
+}
+
+#searchResultList .result-description {
+	margin: 2px 0 0 0;
+	font-size: 10px;
+	word-wrap: break-word;
+}
+
+#searchResultControl {
+	margin: 10px auto;
+}
+
+#searchInfo {
+	font-size: 10px;
+	color: gray;
+	float: right !important;
+	margin: 10px auto;
+}
+
+/* fix for ui-bootstrap, see http://angular-ui.github.io/bootstrap/#/getting_started */
+.nav,.pagination,.carousel,.panel-title a {
+	cursor: pointer;
+}
+
+.geolabelEmbed {
+	width: 50px;
+	height: 50px;
+	float: right;
+	top: -30px;
+	position: relative;
+}

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.json;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -133,6 +135,7 @@ public class SearchResultElement {
         return this.sensorId;
     }
 
+    @XmlElement(name = "serviceReferences")
     public Collection<ServiceReference> getServiceReferences() {
         return this.serviceReferences;
     }
@@ -151,6 +154,7 @@ public class SearchResultElement {
 
     public void setServiceReferences(Collection<ServiceReference> serviceReferences) {
         this.serviceReferences = serviceReferences;
+        // this.serviceReferences.addAll(serviceReferences);
     }
 
     @Override

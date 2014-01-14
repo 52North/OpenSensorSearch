@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.opensearch;
 
 import java.net.URI;
@@ -27,7 +28,6 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -42,8 +42,6 @@ import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.api.SirBoundingBox;
 import org.n52.oss.sir.api.SirSearchCriteria;
 import org.n52.oss.sir.api.SirSearchResultElement;
-import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.listener.SearchSensorListener;
 import org.n52.sir.opensearch.RequestDismantler;
 import org.n52.sir.request.SirSearchSensorRequest;
@@ -106,8 +104,10 @@ public class OpenSearch {
         log.info("NEW {} based on {} running at {}", this, constants, this.uri);
     }
 
+    // TODO get parameters using @QueryParam and write own param classes for convenience, see
+    // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public Response json(@HeaderParam(HttpHeaders.ACCEPT)
     String acceptHeader, @Context
     UriInfo uriInfo) {
@@ -141,6 +141,8 @@ public class OpenSearch {
         }
     }
 
+    // TODO get parameters using @QueryParam and write own param classes for convenience, see
+    // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
     @GET
     @Produces(OpenSearchConstants.APPLICATION_VND_KML)
     public Response kml(@HeaderParam(HttpHeaders.ACCEPT)
@@ -174,88 +176,24 @@ public class OpenSearch {
         }
     }
 
-    // TODO get parameters using @QueryParam and write own param classes for convenience, see
-    // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
-    @GET
-    @Produces({MediaType.TEXT_HTML})
-    public Response html(@HeaderParam(HttpHeaders.ACCEPT)
-    String acceptHeader, @Context
-    UriInfo uriInfo) {
-        // FIXME Daniel: the open search functionality must be extracted to a testable classes AND TESTS
-
-        log.debug("****** (GET) Connected: {}", uriInfo.getRequestUri());
-        log.debug("Accept header: {}", acceptHeader);
-
-        MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
-
-        if ( !params.containsKey(OpenSearchConstants.QUERY_PARAM))
-            return Response.status(Status.BAD_REQUEST).entity("query parameter 'q' is missing").build();
-
-        String responseFormat = detectResponseFormat(acceptHeader, params);
-
-        if ( !this.listeners.containsKey(responseFormat)) {
-            // could still be html
-            if (responseFormat.contains(MediaType.TEXT_HTML))
-                responseFormat = MediaType.TEXT_HTML;
-            else {
-                log.error("Could not create response as for format '{}', not supported.", responseFormat);
-                OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
-                                                                   OpenSearchConstants.FORMAT_PARAM + " or "
-                                                                           + HttpHeaders.ACCEPT,
-                                                                   "Unsupported output format '" + responseFormat
-                                                                           + "'.");
-                return Response.status(Status.BAD_REQUEST).entity(report).build();
-            }
-            // return Response.serverError().entity(report).build();
-        }
-
-        log.warn("Redirecting manually with listeners!");
-        try {
-            ISirResponse response = search(params);
-
-            if (response instanceof SirSearchSensorResponse) {
-                SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
-                Collection<SirSearchResultElement> searchResult = sssr.getSearchResultElements();
-
-                OpenSearchListener l = this.listeners.get(responseFormat);
-                Response r = l.createResponse(searchResult, params);
-
-                return Response.ok(r.getEntity(), responseFormat).build();
-            }
-            else if (response instanceof ExceptionResponse) {
-                log.error("Search returned exception response: {}", response);
-                GenericEntity<ISirResponse> entity = new GenericEntity<>(response, ISirResponse.class);
-                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(entity).build();
-            }
-            else {
-                log.error("Unhandled response: {}", response);
-                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(response).build();
-            }
-        }
-        catch (Exception e) {
-            log.error("Unhandled exception in doGet: ", e);
-            return Response.serverError().entity(e).build();
-        }
-    }
-
-    private String detectResponseFormat(String acceptHeader, MultivaluedMap<String, String> params) {
-        String formatParameter = params.getFirst(OpenSearchConstants.FORMAT_PARAM);
-        log.debug("URL format parameter for {} is {}", OpenSearchConstants.FORMAT_PARAM, formatParameter);
-
-        String responseFormat = null;
-        if (acceptHeader == null || acceptHeader.isEmpty())
-            responseFormat = OpenSearchConstants.X_DEFAULT_MIME_TYPE;
-        else
-            responseFormat = acceptHeader;
-
-        // allow manual override
-        if (formatParameter != null) {
-            log.debug("Header ({}) is overridden by format parameter ({}).", acceptHeader, formatParameter);
-            responseFormat = formatParameter;
-        }
-
-        return responseFormat;
-    }
+    // private String detectResponseFormat(String acceptHeader, MultivaluedMap<String, String> params) {
+    // String formatParameter = params.getFirst(OpenSearchConstants.FORMAT_PARAM);
+    // log.debug("URL format parameter for {} is {}", OpenSearchConstants.FORMAT_PARAM, formatParameter);
+    //
+    // String responseFormat = null;
+    // if (acceptHeader == null || acceptHeader.isEmpty())
+    // responseFormat = OpenSearchConstants.X_DEFAULT_MIME_TYPE;
+    // else
+    // responseFormat = acceptHeader;
+    //
+    // // allow manual override
+    // if (formatParameter != null) {
+    // log.debug("Header ({}) is overridden by format parameter ({}).", acceptHeader, formatParameter);
+    // responseFormat = formatParameter;
+    // }
+    //
+    // return responseFormat;
+    // }
 
     private ISirResponse search(MultivaluedMap<String, String> params) {
         SirSearchCriteria searchCriteria = createSearchCriteria(params);

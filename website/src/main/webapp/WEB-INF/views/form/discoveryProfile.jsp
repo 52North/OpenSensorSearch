@@ -88,8 +88,6 @@
 
 		</div>
 
-		<div id="push"></div>
-
 	</div>
 
 	<%@ include file="../footer.jsp"%>

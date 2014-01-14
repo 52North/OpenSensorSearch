@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 function showPosition(position) {
-	$("#lat").val(position.coords.latitude);
-	$("#lng").val(position.coords.longitude);
-	$("#radius").val("1000");
+	jQuery("#lat").val(position.coords.latitude);
+	jQuery("#lng").val(position.coords.longitude);
+	jQuery("#radius").val("1000");
 	console.log("Retrieved location: " + position.coords.latitude + ", " + position.coords.longitude);
 	
 	var str = "You are near: " + Number((position.coords.latitude).toFixed(3)) + ", "
 			+ Number((position.coords.longitude).toFixed(3));
 	// $("#location_info").html(str);
 
-	$('#btnSearchNearby').tooltip('hide').attr('data-original-title', str)
-			.tooltip('fixTitle').tooltip('show');
+	jQuery("#btnSearchNearby").tooltip("hide").attr("data-original-title", str)
+			.tooltip("fixTitle").tooltip("show");
 }
 
 function validate() {
@@ -45,59 +45,59 @@ function validate() {
 	return true;
 }
 
-$(document)
+jQuery(document)
 		.ready(
 				function() {
-					$("#btnSearch").click(function() {
-						$("#lat").attr("disabled", true);
-						$("#lng").attr("disabled", true);
-						$("#radius").attr("disabled", true);
+					jQuery("#btnSearch").click(function() {
+						jQuery("#lat").attr("disabled", true);
+						jQuery("#lng").attr("disabled", true);
+						jQuery("#radius").attr("disabled", true);
 					});
 
 					// activate all tooltips
-					$("[data-toggle='tooltip']").tooltip();
+					jQuery("[data-toggle='tooltip']").tooltip();
 
-					$("#btnSearchNearby")
+					jQuery("#btnSearchNearby")
 							.click(
 									function() {
 										if (navigator.geolocation) {
 											navigator.geolocation
 													.getCurrentPosition(showPosition);
 										} else {
-											$("#alerts")
+											jQuery("#alerts")
 													.append(
 															'<div class="alert alert-danger">Your browser does not support	geolocation!<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a></div>');
 										}
 
-										$("#lat").attr("disabled", false);
-										$("#lng").attr("disabled", false);
-										$("#radius").attr("disabled", false);
+										jQuery("#lat").attr("disabled", false);
+										jQuery("#lng").attr("disabled", false);
+										jQuery("#radius").attr("disabled", false);
 									});
 					
-					$.ajax({
+					jQuery.ajax({
 						dataType : "json",
 						url : ossApiEndpoint + "/statistics/sensors",
 						success : function(data) {
 							// 				console.log(data);
-							$("#statsSensors").html(data.sensors);
+							jQuery("#statsSensors").html(data.sensors);
 						}
 					});
 
-					$.ajax({
+					jQuery.ajax({
 						dataType : "json",
 						url : ossApiEndpoint + "/statistics/phenomena",
 						success : function(data) {
 							// 				console.log(data);
-							$("#statsPhenonema").html(data.phenomena);
+							jQuery("#statsPhenonema").html(data.phenomena);
 						}
 					});
 
-					$.ajax({
+					jQuery.ajax({
 						dataType : "json",
 						url : ossApiEndpoint + "/statistics/services",
 						success : function(data) {
 							// 				console.log(data);
-							$("#statsServices").html(data.services);
+							jQuery("#statsServices").html(data.services);
 						}
 					});
 				});

@@ -28,7 +28,7 @@ public class ListenerModule extends AbstractModule {
     @Override
     protected void configure() {
         Multibinder<OpenSearchListener> uriBinder = Multibinder.newSetBinder(binder(), OpenSearchListener.class);
-        uriBinder.addBinding().to(HtmlListener.class);
+        // uriBinder.addBinding().to(HtmlListener.class);
         uriBinder.addBinding().to(JsonListener.class);
         
         log.debug("Configured {}", this);

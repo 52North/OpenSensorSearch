@@ -79,3 +79,16 @@ There are sample files in the same directories of the base file to get you start
 ### Wiki
 
 For technical information about Open Sensor Search please visit the [Wiki page](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch).
+
+## License
+
+OSS is published under Apache Software License, Version 2.0.
+
+### Java Libraries
+
+See NOTICE file.
+
+### Javascript Libraries
+
+* allmighty-autocomplete, https://github.com/JustGoscha/allmighty-autocomplete/ - MIT License
+* ...

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var autocompleteEndpoint = ossApiEndpoint + "/suggest";
 
 // http://api.jqueryui.com/autocomplete/
 function ossAutocomplete(request, response) {
@@ -22,9 +21,9 @@ function ossAutocomplete(request, response) {
 	var value = autocompleteEndpoint + "?q=" + tokens[tokens.length - 1];
 	console.log("autocomplete: " + value);
 
-	$.ajax({
+	jQuery.ajax({
 		type : "GET",
-		dataType: "json",
+		dataType : "json",
 		url : value,
 		success : function(data) {
 			console.log("results: " + data.results);
@@ -40,7 +39,7 @@ function ossAutocomplete(request, response) {
 			for ( var i = 0; i < availableWords.length; i++)
 				availableWords[i] = first + " " + availableWords[i];
 
-			$("#inputSearch").autocomplete({
+			jQuery("#inputSearch").autocomplete({
 				source : availableWords
 			});
 			response({});
@@ -48,10 +47,8 @@ function ossAutocomplete(request, response) {
 	});
 }
 
-$(document).ready(function() {
-
-	// http://jqueryui.com/autocomplete/
-	$("#inputSearch").autocomplete({
+jQuery(document).ready(function() { // http://jqueryui.com/autocomplete/
+	jQuery("#inputSearch").autocomplete({
 		delay : 500,
 		minLength : 3,
 		source : ossAutocomplete

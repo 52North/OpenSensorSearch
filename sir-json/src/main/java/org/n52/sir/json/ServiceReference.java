@@ -15,11 +15,15 @@
  */
 package org.n52.sir.json;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 
  * @author Daniel Nüst
  * 
  */
+@XmlRootElement
 public class ServiceReference { // extends SirSensorIdentification {
 
     private Service service;
@@ -35,16 +39,19 @@ public class ServiceReference { // extends SirSensorIdentification {
         this.serviceSpecificSensorId = serviceSpecificSensorId;
     }
 
-    public Service getService() {
-        return this.service;
+    @XmlElement
+    public String getServiceType() {
+        return this.service.getType();
     }
 
+    @XmlElement
+    public String getServiceUrl() {
+        return this.service.getUrl();
+    }
+
+    @XmlElement
     public String getServiceSpecificSensorId() {
         return this.serviceSpecificSensorId;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
     }
 
     public void setServiceSpecificSensorId(String serviceSpecificSensorId) {

@@ -15,6 +15,11 @@ html,body {
 	top: 0%;
 	right: 0%;
 }
+@media screen and (max-width: 980px) {
+    .betaBanner {
+        display: none !important;
+    }
+}
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -27,13 +32,10 @@ html,body {
 
 /* fixed height of the footer */
 #footer {
-	height: 80px;
-	clear: both;
-}
-
-#footer {
 	background-color: #f5f5f5;
 	font-size: 80%;
+	height: 80px;
+	clear: both;
 }
 
 /* responsive CSS fixes */

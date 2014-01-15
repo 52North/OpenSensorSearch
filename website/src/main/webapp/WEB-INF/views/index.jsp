@@ -27,7 +27,7 @@
 
 <%@ include file="common-head.jsp"%>
 
-<title ng-bind-template="Open Sensor Search by 52°North | {{query}}">Open
+<title ng-bind-template="Open Sensor Search by 52°North | {{q}}">Open
 	Sensor Search by 52°North</title>
 
 <script src="lib/jquery.js" type="text/javascript"></script>
@@ -46,7 +46,7 @@
 </head>
 
 <body>
-	<div id="wrap">
+	<div id="wrap" style="margin: 60px 0 0 0;">
 		<%@ include file="navigation.jsp"%>
 
 		<div class="container">
@@ -58,7 +58,7 @@
 			<!-- 				</div> -->
 			<%-- 			</c:if> --%>
 
-			<div ng-controller="ossAlertCtrl">
+			<div ng-controller="ossAlertCtrl" ng-cloak>
 				<alert ng-repeat="alert in alerts" type="alert.type"
 					close="closeAlert($index)">{{alert.msg}}</alert>
 			</div>
@@ -117,7 +117,7 @@
 						<li
 							ng-repeat="result in searchResult.results  | filter:query | orderBy:orderProp">
 							<div class="result-header">
-								Sensor: <a href="{{apiEndpoint_sensors}}/{{result.sensorId}}">{{result.sensorId}}</a>,
+								Sensor: <a href="{{apiEndpoint_sensors}}/{{result.sensorId}}" title="RESTful resource for {{result.sensorId}}">{{result.sensorId}}</a>,
 								<a href="{{result.sensorDescription.url}}"
 									title="SIR DescribeSensor request for sensor {{result.sensorId}}">DescribeSensor</a>
 							</div>
@@ -126,14 +126,13 @@
 								{{result.serviceReferences.length}} service(s):
 								<ul>
 									<li ng-repeat="ref in result.serviceReferences">
-										<!-- <pre>{{ref}}</pre> --> <a href="{{serviceUrl(ref)}}"
+										<a href="{{serviceUrl(ref)}}"
 										title="{{ref.serviceSpecificSensorId}} @ {{ref.serviceType}}">{{ref.serviceUrl}}</a>
 									</li>
 								</ul>
 							</div>
 							<div class="result-label">
-								<object class="geolabelEmbed"
-									data="{{geolabelUrl(result)}}"></object>
+								<object class="geolabelEmbed" data="{{geolabelUrl(result)}}"></object>
 							</div>
 							<div class="result-properties">
 								<div>
@@ -148,7 +147,11 @@
 								</div>
 							</div>
 							<div class="social">
-								<span><a href="{{feedbackSubmit(result)}}" title="Submit feedback for GEOSS">Submit Feedback</a></span>
+								<!-- <span><a href="{{feedbackSubmit(result)}}" title="Submit feedback for GEOSS">Submit Feedback</a></span> -->
+								<a class="btn btn-xs btn-default" target="_blank"
+									title="Submit feedback for GEOSS"
+									ng-href="{{createFeedbackSubmitLink(result)}}">Submit Feedback</a>
+									{{feedbackSubmit(result)}}
 							</div>
 						</li>
 					</ul>
@@ -160,8 +163,8 @@
 							id="statsPhenonema">..</span> phenomena, and <span
 							id="statsServices">..</span> services. <span
 							class="infotextHighlight">Is your data missing? <a
-							href="mailto:${sir.deploy.contact}">Write us an email!</a></span> <br />
-						<a href="{{urlQuery}}">{{urlQuery}}</a>
+							href="mailto:d.nuest@52north.org">Write us an email!</a></span> <br />
+						<a ng-href="{{urlQuery}}">{{urlQuery}}</a>
 					</p>
 				</div>
 			</div>

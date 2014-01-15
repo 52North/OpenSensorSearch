@@ -58,7 +58,6 @@ html,body {
 #searchResultList {
 	padding: 0;
 	margin: 0;
-	white-space: nowrap;
 	list-style-type: none;
 }
 
@@ -123,9 +122,10 @@ html,body {
 }
 
 .geolabelEmbed {
-	width: 50px;
-	height: 50px;
+	width: 100px;
+	height: 100px;
 	float: right;
 	top: -30px;
 	position: relative;
+	margin: 0 0 0 5px;
 }

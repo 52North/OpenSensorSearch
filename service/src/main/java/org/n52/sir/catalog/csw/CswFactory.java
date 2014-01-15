@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.catalog.csw;
 
 import java.io.FileReader;
@@ -100,9 +101,7 @@ public class CswFactory implements ICatalogFactory {
                 this.classificationInitDocs.add(initDoc);
             }
         }
-        log.debug("Loaded classification files: {}\nDocs: {}",
-                  Arrays.toString(this.classificationInitFilesArray),
-                  Arrays.toString(this.classificationInitDocs.toArray()));
+        log.debug("Loaded classification files: {}", Arrays.toString(this.classificationInitFilesArray));
 
         this.doNotCheckCatalogsList = new ArrayList<>();
         String[] splitted = doNotCheckCatalogs.split(CONFIG_FILE_LIST_SEPARATOR);

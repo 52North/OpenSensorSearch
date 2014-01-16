@@ -127,3 +127,7 @@ html,body {
 	position: relative;
 	margin: 0 0 0 5px;
 }
+
+#socialshareprivacy {
+	display: inline;
+}

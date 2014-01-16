@@ -13,41 +13,99 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function showPosition(position) {
+showPosition = function(position) {
 	jQuery("#lat").val(position.coords.latitude);
 	jQuery("#lng").val(position.coords.longitude);
 	jQuery("#radius").val("1000");
-	console.log("Retrieved location: " + position.coords.latitude + ", " + position.coords.longitude);
-	
-	var str = "You are near: " + Number((position.coords.latitude).toFixed(3)) + ", "
-			+ Number((position.coords.longitude).toFixed(3));
+	console.log("Retrieved location: " + position.coords.latitude + ", "
+			+ position.coords.longitude);
+
+	var str = "You are near: " + Number((position.coords.latitude).toFixed(3))
+			+ ", " + Number((position.coords.longitude).toFixed(3));
 	// $("#location_info").html(str);
 
 	jQuery("#btnSearchNearby").tooltip("hide").attr("data-original-title", str)
 			.tooltip("fixTitle").tooltip("show");
-}
+};
 
-function validate() {
-	// close open alerts
-	// $(".close").click(function() {
-	// $(".alert").alert();
-	// });
-
+validate = function() {
 	var q = document.forms["requestform"]["q"].value;
 	if (q == null || q == "" || q.toString().trim().length == 0) {
 		// $(document).trigger("add-alerts", {
 		// message : "Please enter a search term.",
 		// priority : "error"
 		// });
-
 		return false;
 	}
 	return true;
-}
+};
+
+getOssShareURI = function() {
+	return "test"; // TODO integrate this in a modal so that I can set the current sensor
+};
+
+configureSocialShare = function() {
+	var infotext = '2 clicks for more privacy: Only after you click here the button is activated and you can share this item on a social network. Already at the activation of the button your data is sent to third parties &ndash; see <em>i</em>.';
+	if ($('#socialshareprivacy').length > 0) {
+		$('#socialshareprivacy')
+				.socialSharePrivacy(
+						{
+							'services' : {
+								'facebook' : {
+									'status' : 'on',
+									'dummy_img' : '',
+									'txt_info' : infotext,
+									'txt_fb_off' : 'not connected to Facebook',
+									'txt_fb_on' : 'connected with Facebook',
+									'perma_option' : 'on',
+									'display_name' : 'Facebook',
+									'referrer_track' : '',
+									'language' : 'en_EN',
+									'action' : 'recommend',
+									'dummy_caption' : 'Recommend'
+								},
+								'twitter' : {
+									'status' : 'on',
+									'dummy_img' : '',
+									'txt_info' : infotext,
+									'txt_twitter_off' : 'not connected to Twitter',
+									'txt_twitter_on' : 'connected with Twitter',
+									'perma_option' : 'on',
+									'display_name' : 'Twitter',
+									'referrer_track' : '',
+									'tweet_text' : getTweetText,
+									'language' : 'en',
+									'dummy_caption' : 'Tweet'
+								},
+								'gplus' : {
+									'status' : 'on',
+									'dummy_img' : '',
+									'txt_info' : infotext,
+									'txt_gplus_off' : 'not connected with Google+',
+									'txt_gplus_on' : 'connected with Google+',
+									'perma_option' : 'on',
+									'display_name' : 'Google+',
+									'referrer_track' : '',
+									'language' : 'en'
+								}
+							},
+							'info_link' : '',
+							'txt_help' : 'If you active these fields with one click, information is sent to to Facebook, Twitter or Google and potentially stored.',
+							'settings_perma' : 'Activate permantly and consent with data transmission:',
+							'cookie_path' : '/oss/',
+							'cookie_domain' : document.location.host,
+							/*'cookie_expires' : '365',*/
+							/*'css_path' : 'socialshareprivacy/socialshareprivacy.css',*/
+							'uri' : getOssShareURI
+						});
+	}
+};
 
 jQuery(document)
 		.ready(
 				function() {
+					// configureSocialShare();
+
 					jQuery("#btnSearch").click(function() {
 						jQuery("#lat").attr("disabled", true);
 						jQuery("#lng").attr("disabled", true);
@@ -71,14 +129,15 @@ jQuery(document)
 
 										jQuery("#lat").attr("disabled", false);
 										jQuery("#lng").attr("disabled", false);
-										jQuery("#radius").attr("disabled", false);
+										jQuery("#radius").attr("disabled",
+												false);
 									});
-					
+
 					jQuery.ajax({
 						dataType : "json",
 						url : ossApiEndpoint + "/statistics/sensors",
 						success : function(data) {
-							// 				console.log(data);
+							// console.log(data);
 							jQuery("#statsSensors").html(data.sensors);
 						}
 					});
@@ -87,7 +146,7 @@ jQuery(document)
 						dataType : "json",
 						url : ossApiEndpoint + "/statistics/phenomena",
 						success : function(data) {
-							// 				console.log(data);
+							// console.log(data);
 							jQuery("#statsPhenonema").html(data.phenomena);
 						}
 					});
@@ -96,7 +155,7 @@ jQuery(document)
 						dataType : "json",
 						url : ossApiEndpoint + "/statistics/services",
 						success : function(data) {
-							// 				console.log(data);
+							// console.log(data);
 							jQuery("#statsServices").html(data.services);
 						}
 					});

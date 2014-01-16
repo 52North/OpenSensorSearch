@@ -91,4 +91,5 @@ See NOTICE file.
 ### Javascript Libraries
 
 * allmighty-autocomplete, https://github.com/JustGoscha/allmighty-autocomplete/ - MIT License
+* SocialSharePrivacy, https://github.com/patrickheck/socialshareprivacy - MIT License
 * ...

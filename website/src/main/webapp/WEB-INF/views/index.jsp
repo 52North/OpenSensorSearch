@@ -36,7 +36,6 @@
 
 <script src="scripts/lib/angular/angular.js"></script>
 <script src="scripts/lib/angular/ui-bootstrap-custom-tpls-0.10.0.js"></script>
-<!-- <script src="scripts/lib/angular/ui-bootstrap.js"></script> -->
 
 <script src="scripts/controllers.js"></script>
 <script src="scripts/oss.js"></script>
@@ -169,10 +168,10 @@
 										ng-href="{{createFeedbackSubmitLink(result)}}">Submit
 											Feedback</a>
 									</span> <span ng-controller="ossFeedbackModalCtrl">
-										<button class="btn btn-xs btn-default"
-											ng-click="open()">Open
+										<button class="btn btn-xs btn-default" ng-click="open()">Open
 											feedback</button>
 									</span>
+									<div id="socialshareprivacy"></div>
 								</div>
 							</div>
 						</li>
@@ -197,9 +196,9 @@
 
 	<%@ include file="footer.jsp"%>
 
+	<!-- 	<script type="text/javascript" src="lib/jquery.socialshareprivacy.min.js"></script> -->
 	<script type="text/javascript">
 		var queryEndpoint = ossApiEndpoint + "/search";
-		$("form[name='requestform']").attr("action", queryEndpoint);
 	</script>
 </body>
 </html>

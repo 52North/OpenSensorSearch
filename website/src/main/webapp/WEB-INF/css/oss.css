@@ -15,11 +15,7 @@ html,body {
 	top: 0%;
 	right: 0%;
 }
-@media screen and (max-width: 980px) {
-    .betaBanner {
-        display: none !important;
-    }
-}
+
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -27,7 +23,7 @@ html,body {
 	height: auto !important;
 	height: 100%;
 	/* Negative indent footer by it's height */
-	margin: 0 auto -80px;
+	margin: 60px auto -80px;
 }
 
 /* fixed height of the footer */
@@ -40,7 +36,7 @@ html,body {
 
 /* responsive CSS fixes */
 @media ( max-width : 991px) {
-	#push,#footer {
+	#footer {
 		height: 110px;
 	}
 	#wrap {
@@ -49,7 +45,7 @@ html,body {
 }
 
 @media ( max-width : 767px) {
-	#push,#footer {
+	#footer {
 		height: 180px;
 	}
 	#wrap {

@@ -35,20 +35,34 @@
 <script src="lib/bootstrap.js" type="text/javascript"></script>
 
 <script src="scripts/lib/angular/angular.js"></script>
-<script src="scripts/lib/angular/ui-bootstrap-custom-tpls-0.9.0.js"></script>
+<script src="scripts/lib/angular/ui-bootstrap-custom-tpls-0.10.0.js"></script>
 <!-- <script src="scripts/lib/angular/ui-bootstrap.js"></script> -->
 
 <script src="scripts/controllers.js"></script>
 <script src="scripts/oss.js"></script>
+
+<script type="text/ng-template" id="feedbackModalContent.html">
+        							<div class="modal-header">
+										<h3>User feedback for {{current.sensorId}}</h3>
+									</div>
+									<div class="modal-body">
+										<pre>{{feedback}}</pre>
+									</div>
+									<div class="modal-footer">
+										<a class="btn btn-primary" target="_blank" title="Submit feedback for GEOSS"
+											ng-href="{{feedbackSubmitLink}}">Submit own feedback</a>
+										<button class="btn btn-primary" ng-click="ok()">Close</button>
+									</div>
+</script>
 
 <link href="styles/autocomplete.css" type="text/css" rel="stylesheet" />
 
 </head>
 
 <body>
-	<div id="wrap" style="margin: 60px 0 0 0;">
-		<%@ include file="navigation.jsp"%>
+	<%@ include file="navigation.jsp"%>
 
+	<div id="wrap">
 		<div class="container">
 			<%-- 			<c:if test="${RegisterSucceded}"> --%>
 			<!-- 				<div class="alert alert-error"> -->
@@ -115,43 +129,51 @@
 
 					<ul id="searchResultList">
 						<li
-							ng-repeat="result in searchResult.results  | filter:query | orderBy:orderProp">
-							<div class="result-header">
-								Sensor: <a href="{{apiEndpoint_sensors}}/{{result.sensorId}}" title="RESTful resource for {{result.sensorId}}">{{result.sensorId}}</a>,
-								<a href="{{result.sensorDescription.url}}"
-									title="SIR DescribeSensor request for sensor {{result.sensorId}}">DescribeSensor</a>
-							</div>
-							<div class="result-service"
-								ng-hide="result.serviceReferences.length != 0">
-								{{result.serviceReferences.length}} service(s):
-								<ul>
-									<li ng-repeat="ref in result.serviceReferences">
-										<a href="{{serviceUrl(ref)}}"
-										title="{{ref.serviceSpecificSensorId}} @ {{ref.serviceType}}">{{ref.serviceUrl}}</a>
-									</li>
-								</ul>
-							</div>
-							<div class="result-label">
-								<object class="geolabelEmbed" data="{{geolabelUrl(result)}}"></object>
-							</div>
-							<div class="result-properties">
-								<div>
-									<span>Last update: {{result.lastUpdate}} </span> | <span>
-										BBOX: {{result.sensorDescription.boundingBox.north}}N,
-										{{result.sensorDescription.boundingBox.east}}E,
-										{{result.sensorDescription.boundingBox.south}}S,
-										{{result.sensorDescription.boundingBox.west}}W </span>
+							ng-repeat="result in searchResult.results | filter:query | orderBy:orderProp">
+							<div ng-control="ossResultCtrl">
+								<div class="result-header">
+									Sensor: <a href="{{apiEndpoint_sensors}}/{{result.sensorId}}"
+										title="RESTful resource for {{result.sensorId}}">{{result.sensorId}}</a>,
+									<a href="{{result.sensorDescription.url}}"
+										title="SIR DescribeSensor request for sensor {{result.sensorId}}">DescribeSensor</a>
 								</div>
-								<div class="result-description">
-									<p>{{result.sensorDescription.text}}</p>
+								<div class="result-service"
+									ng-hide="result.serviceReferences.length != 0">
+									{{result.serviceReferences.length}} service(s):
+									<ul>
+										<li ng-repeat="ref in result.serviceReferences"><a
+											href="{{serviceUrl(ref)}}"
+											title="{{ref.serviceSpecificSensorId}} @ {{ref.serviceType}}">{{ref.serviceUrl}}</a>
+										</li>
+									</ul>
 								</div>
-							</div>
-							<div class="social">
-								<!-- <span><a href="{{feedbackSubmit(result)}}" title="Submit feedback for GEOSS">Submit Feedback</a></span> -->
-								<a class="btn btn-xs btn-default" target="_blank"
-									title="Submit feedback for GEOSS"
-									ng-href="{{createFeedbackSubmitLink(result)}}">Submit Feedback</a>
-									{{feedbackSubmit(result)}}
+								<div class="result-label">
+									<object class="geolabelEmbed" data="{{geolabelUrl(result)}}"></object>
+								</div>
+								<div class="result-properties">
+									<div>
+										<span>Last update: {{result.lastUpdate}} </span> | <span>
+											BBOX: {{result.sensorDescription.boundingBox.north}}N,
+											{{result.sensorDescription.boundingBox.east}}E,
+											{{result.sensorDescription.boundingBox.south}}S,
+											{{result.sensorDescription.boundingBox.west}}W </span>
+									</div>
+									<div class="result-description">
+										<p>{{result.sensorDescription.text}}</p>
+									</div>
+								</div>
+								<div class="social">
+									<!-- <span><a href="{{feedbackSubmit(result)}}" title="Submit feedback for GEOSS">Submit Feedback</a></span> -->
+									<span> <a class="btn btn-xs btn-default" target="_blank"
+										title="Submit feedback for GEOSS"
+										ng-href="{{createFeedbackSubmitLink(result)}}">Submit
+											Feedback</a>
+									</span> <span ng-controller="ossFeedbackModalCtrl">
+										<button class="btn btn-xs btn-default"
+											ng-click="open()">Open
+											feedback</button>
+									</span>
+								</div>
 							</div>
 						</li>
 					</ul>

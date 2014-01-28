@@ -25,11 +25,11 @@ public abstract class ApiPaths {
 
     public static final String STATISTICS_PATH = API_PATH + "/statistics";
 
-    public static final String STATS_SENSORS = "/sensors";
+    public static final String SUB_SENSORS = "/sensors";
 
-    public static final String STATS_SERVICES = "/services";
+    public static final String SUB_SERVICES = "/services";
 
-    public static final String STATS_PHENOMENA = "/phenomena";
+    public static final String SUB_PHENOMENA = "/phenomena";
 
     public static final String TRANSFORMATION_PATH = API_PATH + "/convert";
 
@@ -46,5 +46,7 @@ public abstract class ApiPaths {
     public static final String OPENSEARCH_PATH = API_PATH + "/search";
 
     public static final String AUTOSUGGEST_PATH = API_PATH + "/suggest";
+
+    public static final String BADGES_PATH = API_PATH + "/badges";
 
 }

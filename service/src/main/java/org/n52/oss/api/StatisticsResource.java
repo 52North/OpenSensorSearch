@@ -71,17 +71,17 @@ public class StatisticsResource {
         sb.append(" { ");
         sb.append("\"sensors\" : \"");
         sb.append(this.baseUrl);
-        sb.append(ApiPaths.STATS_SENSORS);
+        sb.append(ApiPaths.SUB_SENSORS);
         sb.append("\"");
         sb.append(" , ");
         sb.append("\"phenomena\" : \"");
         sb.append(this.baseUrl);
-        sb.append(ApiPaths.STATS_PHENOMENA);
+        sb.append(ApiPaths.SUB_PHENOMENA);
         sb.append("\"");
         sb.append(" , ");
         sb.append("\"services\" : \"");
         sb.append(this.baseUrl);
-        sb.append(ApiPaths.STATS_SERVICES);
+        sb.append(ApiPaths.SUB_SERVICES);
         sb.append("\"");
         sb.append(" } ");
 
@@ -89,7 +89,7 @@ public class StatisticsResource {
     }
 
     @GET
-    @Path(ApiPaths.STATS_SENSORS)
+    @Path(ApiPaths.SUB_SENSORS)
     @ApiOperation(value = "Find the number of sensors stored in OSS")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumberOfSensors() {
@@ -108,7 +108,7 @@ public class StatisticsResource {
     }
 
     @GET
-    @Path(ApiPaths.STATS_PHENOMENA)
+    @Path(ApiPaths.SUB_PHENOMENA)
     @ApiOperation(value = "Find the number of phenomena stored in OSS")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumberOfPhenomena() {
@@ -127,7 +127,7 @@ public class StatisticsResource {
     }
 
     @GET
-    @Path(ApiPaths.STATS_SERVICES)
+    @Path(ApiPaths.SUB_SERVICES)
     @ApiOperation(value = "Find the number of services stored in OSS")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNumberOfServices() {

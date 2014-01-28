@@ -27,6 +27,7 @@ import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.catalog.csw.CswFactory;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.ITransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +56,9 @@ public class CatalogIT {
         ICatalogFactory factory;
         ISearchSensorDAO dao = null;
         Set<ITransformer> transformers = null;
+        Set<IProfileValidator> vals = null;
         try {
-            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", transformers, dao);
+            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", transformers, dao, vals);
         }
         catch (XmlException e) {
             log.error("Could not parse classification scheme file!", e);

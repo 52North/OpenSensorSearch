@@ -16,7 +16,6 @@
 
 package org.n52.oss.IT.harvest;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -46,7 +45,7 @@ public class JSHarvest {
         SolrConnection c = new SolrConnection("http://localhost:8983/solr", 2000);
         SOLRSearchSensorDAO dao = new SOLRSearchSensorDAO(c);
         Collection<SirSearchResultElement> elements = dao.searchByID(id);
-        assertNotEquals(elements.size(), 0);
+        assertTrue(elements.size() != 0);
 
         SirSearchResultElement element = elements.iterator().next();
         SirDetailedSensorDescription description = (SirDetailedSensorDescription) element.getSensorDescription();

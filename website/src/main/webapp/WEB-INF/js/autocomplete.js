@@ -1,11 +1,11 @@
 /*
- * ﻿Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-var autocompleteEndpoint = ossApiEndpoint + "/suggest";
-
 // http://api.jqueryui.com/autocomplete/
 function ossAutocomplete(request, response) {
 	var tokens = request.term.split(" ");
@@ -23,9 +21,9 @@ function ossAutocomplete(request, response) {
 	var value = autocompleteEndpoint + "?q=" + tokens[tokens.length - 1];
 	console.log("autocomplete: " + value);
 
-	$.ajax({
+	jQuery.ajax({
 		type : "GET",
-		dataType: "json",
+		dataType : "json",
 		url : value,
 		success : function(data) {
 			console.log("results: " + data.results);
@@ -41,7 +39,7 @@ function ossAutocomplete(request, response) {
 			for ( var i = 0; i < availableWords.length; i++)
 				availableWords[i] = first + " " + availableWords[i];
 
-			$("#inputSearch").autocomplete({
+			jQuery("#inputSearch").autocomplete({
 				source : availableWords
 			});
 			response({});
@@ -49,10 +47,8 @@ function ossAutocomplete(request, response) {
 	});
 }
 
-$(document).ready(function() {
-
-	// http://jqueryui.com/autocomplete/
-	$("#inputSearch").autocomplete({
+jQuery(document).ready(function() { // http://jqueryui.com/autocomplete/
+	jQuery("#inputSearch").autocomplete({
 		delay : 500,
 		minLength : 3,
 		source : ossAutocomplete

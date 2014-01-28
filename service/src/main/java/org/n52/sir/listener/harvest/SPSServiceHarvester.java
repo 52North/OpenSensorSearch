@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.opengis.sps.x10.CapabilitiesDocument;
 import net.opengis.sps.x10.SensorOfferingType;
@@ -32,7 +33,6 @@ import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
@@ -40,6 +40,9 @@ import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
 import org.n52.sir.util.Pair;
+import org.n52.sir.xml.IProfileValidator;
+import org.n52.sir.xml.IProfileValidator.ValidatableFormatAndProfile;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,8 +65,15 @@ public class SPSServiceHarvester extends Harvester {
                                @Named(ISearchSensorDAO.FULL)
                                ISearchSensorDAO searchDao,
                                Client client,
-                               SirConfigurator config) {
-        super(harvServDao, insertDao, searchDao, client, config);
+                               Set<IProfileValidator> validators,
+                               @Named("oss.sir.responses.validate")
+                               boolean validateResponses) {
+        super(harvServDao,
+              insertDao,
+              searchDao,
+              client,
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
+              validateResponses);
 
         log.info("NEW {}", this);
     }
@@ -108,11 +118,10 @@ public class SPSServiceHarvester extends Harvester {
                 URI tempUri = URI.create(currentOffering.getSensorDefinition());
                 String tempID = currentOffering.getSensorID();
                 sensorDefinitions.add(new Pair<>(tempID, tempUri));
-                if (log.isDebugEnabled())
-                    log.debug("Found sensor with ID " + tempID + " and description " + tempUri.toString());
+                log.debug("Found sensor with ID {} and description {}", tempID, tempUri.toString());
             }
 
-            SirHarvestServiceResponse response = new SirHarvestServiceResponse();
+            SirHarvestServiceResponse response = new SirHarvestServiceResponse(this.validateResponses);
             response.setServiceType(this.request.getServiceType());
             response.setServiceUrl(this.request.getServiceUrl());
 

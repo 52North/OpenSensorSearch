@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -128,14 +127,8 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
             // insert in sensor table
             String insertSensor = insertSensorCommand(sensor);
 
-            if (log.isDebugEnabled()) {
-                String debugString = insertSensor.toString();
-                if (debugString.length() > 500) {
-                    debugString = debugString.substring(0, 500) + " [...]";
-                }
-
-                log.debug(">>>Database Query (partial): {}", debugString);
-            }
+            log.debug(">>>Database Query (partial): {}",
+                      insertSensor.toString().substring(0, Math.min(500, insertSensor.toString().length())));
 
             ResultSet rs = stmt.executeQuery(insertSensor);
             if (rs.next())

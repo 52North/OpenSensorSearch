@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -138,8 +138,7 @@ public class GeneratorClient {
 
             if (sending) {
                 try {
-                    if (log.isDebugEnabled())
-                        log.debug("Sleeping for " + SLEEP_BETWEEN_REQUESTS + " msecs.");
+                    log.debug("Sleeping for {} msecs.", SLEEP_BETWEEN_REQUESTS);
                     Thread.sleep(SLEEP_BETWEEN_REQUESTS);
                 }
                 catch (InterruptedException e) {
@@ -182,10 +181,8 @@ public class GeneratorClient {
             system.set(member.getProcess());
 
             if (printSensorMLDocuments) {
-                if (log.isDebugEnabled())
-                    log.debug("\n\n"
-                            + currentSensor.getSensorMLDocument().xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces())
-                            + "\n\n");
+                log.debug("\n {} \n",
+                          currentSensor.getSensorMLDocument().xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
             }
 
             /* ServiceReferences */
@@ -200,13 +197,11 @@ public class GeneratorClient {
         /* SEND REQUEST */
         if (sending) {
             // log.debug("Sending:\n" + requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
-            if (log.isDebugEnabled())
-                log.debug("Sending sensors " + Arrays.toString(insertingIds.toArray()));
+            log.debug("Sending sensors {}", Arrays.toString(insertingIds.toArray()));
 
             if ( !requestDoc.validate()) {
                 String errors = XmlTools.validateAndIterateErrors(requestDoc);
-                if (log.isDebugEnabled())
-                    log.debug(errors);
+                log.debug(errors);
                 return errors.split("\n");
             }
 
@@ -228,18 +223,14 @@ public class GeneratorClient {
                     return insertResponse.getInsertedSensors().getSensorIDInSIRArray();
                 }
             }
-            else {
-                if (log.isDebugEnabled())
-                    log.debug("Response for insertion:\n" + response.xmlText());
-            }
+            else
+                log.debug("Response for insertion:\n {}", response.xmlText());
 
             return null;
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("NOT sending:\n" + requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
-            log.debug(XmlTools.validateAndIterateErrors(requestDoc));
-        }
+        log.debug("NOT sending: {}", requestDoc.xmlText(XmlTools.unconfiguredXmlOptionsForNamespaces()));
+        log.debug(XmlTools.validateAndIterateErrors(requestDoc));
         return null;
     }
 

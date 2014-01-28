@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.oss.api;
 
 public abstract class ApiPaths {
@@ -26,11 +25,11 @@ public abstract class ApiPaths {
 
     public static final String STATISTICS_PATH = API_PATH + "/statistics";
 
-    public static final String STATS_SENSORS = "/sensors";
+    public static final String SUB_SENSORS = "/sensors";
 
-    public static final String STATS_SERVICES = "/services";
+    public static final String SUB_SERVICES = "/services";
 
-    public static final String STATS_PHENOMENA = "/phenomena";
+    public static final String SUB_PHENOMENA = "/phenomena";
 
     public static final String TRANSFORMATION_PATH = API_PATH + "/convert";
 
@@ -42,8 +41,12 @@ public abstract class ApiPaths {
 
     public static final String SENSORS_PATH = API_PATH + "/sensors";
 
+    public static final String SERVICES_PATH = API_PATH + "/services";
+
     public static final String OPENSEARCH_PATH = API_PATH + "/search";
 
     public static final String AUTOSUGGEST_PATH = API_PATH + "/suggest";
+
+    public static final String BADGES_PATH = API_PATH + "/badges";
 
 }

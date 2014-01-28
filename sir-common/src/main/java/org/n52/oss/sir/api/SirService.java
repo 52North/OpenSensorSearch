@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,63 +24,44 @@ package org.n52.oss.sir.api;
  */
 public class SirService {
 
-    /**
-     * service type
-     */
+    private String id = "N/A";
+
     private String type;
 
-    /**
-     * service url
-     */
     private String url;
 
-    /**
-     * @param url
-     *        Service url
-     * @param type
-     *        Service type
-     */
     public SirService(String url, String type) {
         this.url = url;
         this.type = type;
     }
 
-    /**
-     * @return the type
-     */
+    public SirService(String id, String url, String type) {
+        this(url, type);
+        this.id = id;
+    }
+
     public String getType() {
         return this.type;
     }
 
-    /**
-     * @return the url
-     */
     public String getUrl() {
         return this.url;
     }
 
-    /**
-     * @param type
-     *        the type to set
-     */
     public void setType(String type) {
         this.type = type;
     }
 
-    /**
-     * @param url
-     *        the url to set
-     */
     public void setUrl(String url) {
         this.url = url;
     }
 
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SirService: ");
-        sb.append("URL: " + this.url);
-        sb.append(", Type: " + this.type);
-        return sb.toString();
+    public String getId() {
+        return this.id;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }

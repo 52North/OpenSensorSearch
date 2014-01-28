@@ -1,8 +1,8 @@
 {
-  "source" : "http://localhost:8080/OpenSensorSearch",
+  "source" : "http://localhost:8080/test/homepage",
   "query" : "myRandom test query",
-  "url" : "http://localhost:8080/OpenSensorSearch/search?q=myRandom test query&format=application/json",
-  "description" : "These are the search hits for the keyword(s) 'myRandom test query' from Open Sensor Search (http://localhost:8080/OpenSensorSearch).",
+  "url" : "http://localhost:8080/test/homepage/search?q=myRandom test query&format=application/json",
+  "description" : "These are the search hits for the keyword(s) 'myRandom test query' from Open Sensor Search (http://localhost:8080/test/homepage).",
   "author" : "52°North",
   "date" : 1378199192744,
   "results" : [ {
@@ -10,17 +10,8 @@
     "sensorDescription" : {
       "boundingBox" : null,
       "text" : "description",
-      "url" : "url"
+      "url" : "http://sir.url/endpoint?service=SIR&version=develop&REQUEST=DescribeSensor&SENSORIDINSIR=my:mockup:id:42"
     },
-    "sensorId" : "my:mockup:id:42",
-    "serviceReferences" : null,
-    "classifiers" : null,
-    "keywords" : null,
-    "identifiers" : null,
-    "contacts" : null,
-    "inputs" : null,
-    "outputs" : null,
-    "beginDate" : null,
-    "endDate" : null
+    "sensorId" : "my:mockup:id:42"
   } ]
 }

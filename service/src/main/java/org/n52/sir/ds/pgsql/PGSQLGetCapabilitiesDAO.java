@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.ds.pgsql;
 
 import java.net.MalformedURLException;
@@ -51,7 +50,7 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
     }
 
     @Override
-    public Collection<ICatalogConnection> getCatalogConnections() throws OwsExceptionReport {
+    public Collection<ICatalogConnection> getAllCatalogConnections() throws OwsExceptionReport {
         ArrayList<ICatalogConnection> result = new ArrayList<>();
 
         StringBuffer query = new StringBuffer();
@@ -87,13 +86,7 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
 
             con.close();
         }
-        catch (SQLException sqle) {
-            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            log.error("Error while query catalog connections for the getCapabilities from database!", sqle);
-            se.addCodedException(ExceptionCode.NoApplicableCode, null, sqle);
-            throw se;
-        }
-        catch (MalformedURLException e) {
+        catch (SQLException | MalformedURLException e) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
             log.error("Error while query catalog connections for the getCapabilities from database!", e);
             se.addCodedException(ExceptionCode.NoApplicableCode, null, e);
@@ -110,7 +103,7 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
     }
 
     @Override
-    public Collection<String> getPhenomenonURNs() throws OwsExceptionReport {
+    public Collection<String> getAllPhenomenonAllURNs() throws OwsExceptionReport {
         ArrayList<String> result = new ArrayList<>();
 
         StringBuffer query = new StringBuffer();
@@ -135,10 +128,10 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
                 }
             }
         }
-        catch (SQLException sqle) {
+        catch (SQLException e) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
-            log.error("Error while query phenomenon for the getCapabilities from database!", sqle);
-            se.addCodedException(ExceptionCode.NoApplicableCode, null, sqle);
+            log.error("Error while query phenomenon for the getCapabilities from database!", e);
+            se.addCodedException(ExceptionCode.NoApplicableCode, null, e);
             throw se;
         }
 
@@ -158,7 +151,7 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
     }
 
     @Override
-    public Collection<SirService> getServices() throws OwsExceptionReport {
+    public Collection<SirService> getAllServices() throws OwsExceptionReport {
         ArrayList<SirService> result = new ArrayList<>();
 
         StringBuffer query = new StringBuffer();
@@ -166,6 +159,8 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         query.append(PGDAOConstants.serviceUrl);
         query.append(", ");
         query.append(PGDAOConstants.serviceType);
+        query.append(", ");
+        query.append(PGDAOConstants.serviceId);
         query.append(" FROM ");
         query.append(PGDAOConstants.service);
         query.append(";");
@@ -174,14 +169,13 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
             log.debug(">>>Database Query: {}", query.toString());
 
             try (ResultSet rs = stmt.executeQuery(query.toString());) {
-                // if no phenomenon available give back empty list
                 if (rs == null) {
                     return result;
                 }
 
-                // get result as string
                 while (rs.next()) {
-                    SirService serv = new SirService(rs.getString(PGDAOConstants.serviceUrl),
+                    SirService serv = new SirService(rs.getString(PGDAOConstants.serviceId),
+                                                     rs.getString(PGDAOConstants.serviceUrl),
                                                      rs.getString(PGDAOConstants.serviceType));
                     result.add(serv);
                 }
@@ -195,6 +189,46 @@ public class PGSQLGetCapabilitiesDAO implements IGetCapabilitiesDAO {
         }
 
         return result;
+    }
+
+    @Override
+    public SirService getService(String id) throws OwsExceptionReport {
+        StringBuffer query = new StringBuffer();
+        query.append("SELECT ");
+        query.append(PGDAOConstants.serviceUrl);
+        query.append(", ");
+        query.append(PGDAOConstants.serviceType);
+        query.append(", ");
+        query.append(PGDAOConstants.serviceId);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.service);
+        query.append(" WHERE ");
+        query.append(PGDAOConstants.serviceId);
+        query.append(" = '");
+        query.append(id);
+        query.append("';");
+
+        try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
+            log.debug(">>>Database Query: {}", query.toString());
+
+            try (ResultSet rs = stmt.executeQuery(query.toString());) {
+                if (rs == null) {
+                    return null;
+                }
+
+                rs.next();
+                SirService serv = new SirService(rs.getString(PGDAOConstants.serviceId),
+                                                 rs.getString(PGDAOConstants.serviceUrl),
+                                                 rs.getString(PGDAOConstants.serviceType));
+                return serv;
+            }
+        }
+        catch (SQLException sqle) {
+            OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);
+            log.error("Error while query services for the getCapabilities from database!", sqle);
+            se.addCodedException(ExceptionCode.NoApplicableCode, null, sqle);
+            throw se;
+        }
     }
 
     private long getTableSize(String tableName) throws OwsExceptionReport {

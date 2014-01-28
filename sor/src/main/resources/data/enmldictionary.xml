@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<gml:Dictionary gml:id="EnmlDictionary" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd">
+	<gml:name codeSpace="http:\\www.enml.org\">EnmlDictionary</gml:name>
+	<!-- Phenomena -->
+	<!-- Mean annual Day-Night Noise Level as defined in Italian law Decreto 
+		Ministero Ambiente del 31/10/1997. Used only in Italy. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LVA">
+			<gml:metaDataProperty/>
+			<gml:description>Livello di Valutazione Aeroportuale annuale</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LVA</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Daily Day-Night Noise Level as defined in Italian law Decreto Ministerio 
+		Ambiente del 31/10/1997. Used only in Italy. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LVAj">
+			<gml:metaDataProperty/>
+			<gml:description>Livello di Valutazione Aeroportuale giornaliero</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LVAj</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Livello di Valutazione del rumore Aeroportuale, daily from 06 to 23 
+		as defined in Italian law Decreto Ministerio Ambiente del 31/10/1997. Used 
+		only in Italy. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LVAd">
+			<gml:metaDataProperty/>
+			<gml:description>Livello di Valutazione Aeroportuale diurno</gml:description>
+			<gml:name codeSpace="http:\\www.enml.org\">urn:x-enml:def:phenomenon:ENML:1.0:LVAd</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Livello di Valutazione del rumore Aeroportuale, nigthly from 23 to 
+		6 as defined in Italian law Decreto Ministerio Ambiente del 31/10/1997. Used 
+		only in Italy. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LVAn">
+			<gml:metaDataProperty/>
+			<gml:description>Livello di Valutazione Aeroportuale notturno</gml:description>
+			<gml:name codeSpace="http:\\www.enml.org\">urn:x-enml:def:phenomenon:ENML:1.0:LVAn</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Sound Exposure Level as defined in ISO 1996-1 alias: LAE -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="SEL">
+			<gml:metaDataProperty/>
+			<gml:description>Sound Exposure Level</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml::def:phenomenon:ENML:1.0:SEL</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Sound Level, dB ref: 20 microPa as normally intended for the specific 
+		application -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="SPL">
+			<gml:metaDataProperty/>
+			<gml:description>Sound Pressure Level</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:SPL</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Sound Pressure, in Pa -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="SP">
+			<gml:metaDataProperty/>
+			<gml:description>Sound Pressure</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:SP</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- <unit Code="Pa" CODE="PAL" isMetric="yes" class="si"> <name>Pascal</name> 
+		<printSymbol>Pa</printSymbol> <property>pressure</property> <value Unit="N/m2" 
+		UNIT="N/M2" value="1">1</value> </unit> -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Pa">
+			<gml:metaDataProperty about="http://www.unitsofmeasure.org/"/>
+			<gml:description>Pascal</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:uom:ENML:1.0:Pa</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Phon, as defined in ISO 532; 1 phon is equal to 1 dBSPL at a frequency 
+		of 1 kHz -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="phon">
+			<gml:metaDataProperty/>
+			<gml:description>phon</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:uom:ENML:1.0:phon</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Continuous Equivalent Sound Level (20 uPa ref) in Time T, A weighted 
+		as defined in ISO 1996-1 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAeqT">
+			<gml:metaDataProperty/>
+			<gml:description>Continuous Equivalent Level A-Weighted during time T
+</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAeqT</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- A-weighting, as defined in IEC 61672 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="A-weighting">
+			<gml:metaDataProperty/>
+			<gml:description>Weighting scale A</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:weighting:ENML:1.0:A-weighting</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- C-weighting, as defined in IEC 61672 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="C-weighting">
+			<gml:metaDataProperty/>
+			<gml:description>Weighting scale C</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:weighting:ENML:1.0:C-weighting</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Z-weighting, as defined in IEC 61672 Alias:flat -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Z-weighting">
+			<gml:metaDataProperty/>
+			<gml:description>Weighting scale Z</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:weighting:ENML:1.0:Z-weighting</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Time constant F (Fast), value 0,125 s, as defined in IEC 61672 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Fast">
+			<gml:metaDataProperty/>
+			<gml:description>Fast time constant</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:constant:ENML:1.0:Fast</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Time constant S (Slow), value 1 s, as defined in IEC 61672 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Slow">
+			<gml:metaDataProperty/>
+			<gml:description>Slow time constant</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:constant:ENML:1.0:Slow</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Time constant I (Impulse), as defined in IEC 61672 Note: the use of 
+		Time Constant Impulse is deprecated as reported in Annex C of IEC 61672 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Impulse">
+			<gml:metaDataProperty/>
+			<gml:description>Impulse time constant</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:constant:ENML:1.0:Impulse</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Sound Level with time constant Fast in dBA scale, ref 20 uPa, as defined 
+		in IEC 61672 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAF">
+			<gml:metaDataProperty/>
+			<gml:description>Sound Pressure Level Fast, dBA
+</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAF</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Greatest time-weighted Sound Level within a stated time interval with 
+		constant Fast in dBA scale, ref 20 uPa -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAFMax">
+			<gml:metaDataProperty/>
+			<gml:description>Maximum Sound Pressure Level Fast, dBA
+</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAFMax</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Sound Level with time constant Slow in dBA scale, ref 20 uPa, as defined 
+		in IEC 61672 -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAS">
+			<gml:metaDataProperty/>
+			<gml:description>Sound Pressure Level Slow, dBA
+</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAS</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Greatest time-weighted Sound Level within a stated time interval with 
+		constant Slow in dBA scale, ref 20 uPa -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LASMax">
+			<gml:metaDataProperty/>
+			<gml:description>Maximum Sound Pressure Level Slow, dBA
+</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LASMax</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent Coninuous Sound Level during a time interval of 1 sec, dBA 
+		ref 20 uP alias: short LAeq -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAeq1s">
+			<gml:metaDataProperty/>
+			<gml:description>LAeqT with T = 1s</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAeq1s</gml:name>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:shortLAeq</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Time interval within a 24h period indicating daytime which any noise 
+		index refers to Start and duration of this time interval depends over the 
+		noise index definition -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="day">
+			<gml:metaDataProperty/>
+			<gml:description>Day period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:period:ENML:1.0:day</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Time interval within a 24h period indicating evening time which any 
+		noise index refers to Start and duration of this time interval depends over 
+		the noise index definition -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="evening">
+			<gml:metaDataProperty/>
+			<gml:description>Evening period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:period:ENML:1.0:evening</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Time interval within a 24h period indicating night time which any noise 
+		index refers to Start and duration of this time interval depends over the 
+		noise index definition -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="night">
+			<gml:metaDataProperty/>
+			<gml:description>Night period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:period:ENML:1.0:night</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- A-weighted long-term average sound level as defined in ISO 1996-2, 
+		determined over all the day periods of year -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Lday">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for annoyance during day period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Lday</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent sound continuous level in a single day period -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Ldayj">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for annoyance during a single day
+				period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Ldayj</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- A-weighted long-term average sound level as defined in ISO 1996-2, 
+		determined over all the evening periods of year -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Leve">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for annoyance during evening period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Leve</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent sound continuous level in a single evening period -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Levej">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for annoyance during a single
+				evening period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Levej</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- A-weighted long-term average sound level as defined in ISO 1996-2, 
+		determined over all the night periods of year -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Lnight">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for annoyance during night period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Lnight</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent sound continuous level in a single night period -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Lnightj">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for annoyance during a single night
+				period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Lnightj</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Day-evening-night noise indicator as defined by EU END Directive -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Lden">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for overall annoyance</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Lden</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Day-evening-night noise indicator obtained using Ldayj,Levej, Lnightj 
+		in the definition of Lden. It is referred to a single 24h period -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="Ldenj">
+			<gml:metaDataProperty/>
+			<gml:description>Noise indicator for overall annoyance in a single
+				24h period</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:Ldenj</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Day-night average sound level -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="DNL">
+			<gml:metaDataProperty/>
+			<gml:description>Day Night Level </gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:DNL</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent continuous sound level of a group of noise sources, over 
+		a specific measurment time TM, as defined in Italian law DPCM 14/11/1997. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAeq_ambientale">
+			<gml:metaDataProperty/>
+			<gml:description>LAeqT in TM, from overall sources</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAeq_ambientale</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent continuous sound level of a group of noise sources, excluding 
+		the specific annoing source object of enquiring, over a specific measurment 
+		time TM, as defined in Italian law DPCM 14/11/1997. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAeq_residuo">
+			<gml:metaDataProperty/>
+			<gml:description>LAeqT in TM, without annoyng source</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAeq_residuo</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent continuous sound level in daytime period, from 06 AM to 
+		10PM, as defined in Italian law DM 16/03/1998. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAeq_diurno">
+			<gml:metaDataProperty/>
+			<gml:description>LAeqT with TM=57600, from 06AM to 10PM</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAeq_diurno</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent continuous sound level in nightime period, from 10 PM to 
+		06 AM, as defined in Italian law DM 16/03/1998. -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAeq_notturno">
+			<gml:metaDataProperty/>
+			<gml:description>LAeqT with TM=28800, from 10PM to 06AM</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAeq_notturno</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Equivalent Coninuous Sound Level during a time interval of 1 hour, 
+		dBA ref 20 uP -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="LAeq1h">
+			<gml:metaDataProperty/>
+			<gml:description>LAeqT with T = 3600</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:LAeq1h</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+	<!-- Measurment time in sec, coincident with Equivalent continuous sound 
+		level integrating time -->
+	<gml:dictionaryEntry>
+		<gml:Definition gml:id="TM">
+			<gml:metaDataProperty/>
+			<gml:description>Measurement Time in sec</gml:description>
+			<gml:name codeSpace="http://www.enml.org/">urn:x-enml:def:phenomenon:ENML:1.0:TM</gml:name>
+		</gml:Definition>
+	</gml:dictionaryEntry>
+</gml:Dictionary>

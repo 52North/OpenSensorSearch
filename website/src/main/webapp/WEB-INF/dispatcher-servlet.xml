@@ -15,7 +15,7 @@
 	<context:component-scan
 		base-package="org.n52.oss.ui.controllers,org.n52.oss.ui.services" />
 
-	<mvc:resources mapping="/styles/**" location="/WEB-INF/views/css/" />
+	<mvc:resources mapping="/styles/**" location="/WEB-INF/css/" />
 	<mvc:resources mapping="/scripts/**" location="/WEB-INF/js/" />
 	<mvc:resources mapping="/lib/**" location="/WEB-INF/js/lib/" />
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />

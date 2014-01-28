@@ -49,7 +49,6 @@ import org.slf4j.LoggerFactory;
 public class AutoCompleteServletIT {
     private static Logger log = LoggerFactory.getLogger(AutoCompleteServletIT.class);
     private String insertedSensorId;
-    private String enteredText = "str";
 
     // @Before
     public void insertSensor() throws OwsExceptionReport, XmlException, IOException {

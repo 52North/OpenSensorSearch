@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,16 +22,19 @@ package org.n52.sir.listener.harvest;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSensor;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.response.ExceptionResponse;
 import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
+import org.n52.sir.xml.IProfileValidator;
+import org.n52.sir.xml.IProfileValidator.ValidatableFormatAndProfile;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
@@ -55,8 +58,14 @@ public abstract class FileHarvester extends Harvester {
 
     @Inject
     public FileHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
-        super(harvServDao, insertDao, searchDao, client, config);
+    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators, @Named("oss.sir.responses.validate")
+    boolean validateResponses) {
+        super(harvServDao,
+              insertDao,
+              searchDao,
+              client,
+              ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
+              validateResponses);
 
         log.info("NEW {}", this);
     }
@@ -68,7 +77,7 @@ public abstract class FileHarvester extends Harvester {
         try {
             log.info("Starting Harvesting of File " + this.request.getServiceUrl());
 
-            SirHarvestServiceResponse response = new SirHarvestServiceResponse();
+            SirHarvestServiceResponse response = new SirHarvestServiceResponse(this.validateResponses);
             // set service type in response
             response.setServiceType(this.request.getServiceType());
             // set service URL in response

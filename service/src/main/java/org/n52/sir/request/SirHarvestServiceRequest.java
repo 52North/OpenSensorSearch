@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,51 +23,26 @@ package org.n52.sir.request;
  */
 public class SirHarvestServiceRequest extends AbstractSirRequest {
 
-    /**
-     * type of the service
-     */
     private String serviceType;
 
-    /**
-     * url of the service
-     */
     private String serviceUrl;
 
-    /**
-     * @return the serviceType
-     */
     public String getServiceType() {
         return this.serviceType;
     }
 
-    /**
-     * @return the serviceUrl
-     */
     public String getServiceUrl() {
         return this.serviceUrl;
     }
 
-    /**
-     * @param serviceType
-     *        the serviceType to set
-     */
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
-    /**
-     * @param serviceUrl
-     *        the serviceUrl to set
-     */
     public void setServiceUrl(String serviceUrl) {
         this.serviceUrl = serviceUrl;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();

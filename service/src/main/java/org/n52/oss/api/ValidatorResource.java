@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.oss.api;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +38,7 @@ import org.apache.xmlbeans.XmlException;
 import org.codehaus.jackson.io.JsonStringEncoder;
 import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.IProfileValidator.ValidatableFormatAndProfile;
+import org.n52.sir.xml.ValidationResult;
 import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,15 +112,15 @@ public class ValidatorResource {
 
         try {
             IProfileValidator smlValidator = getValidator(version);
-            boolean b = validate(data, smlValidator);
+            ValidationResult vr = validate(data, smlValidator);
 
-            if (b)
+            if (vr.isValidated())
                 response.append("{\"status\": \"valid\"}");
             else {
                 JsonStringEncoder encoder = new JsonStringEncoder();
 
                 response.append("{\"status\" : \"invalid\", \"errors\" : [ ");
-                List<String> errors = smlValidator.getValidationFailures();
+                List<String> errors = new ArrayList<>(vr.getValidationFailures());
                 for (int i = 0; i < errors.size(); i++) {
                     response.append("{ \"message");
                     response.append(i);
@@ -156,12 +157,12 @@ public class ValidatorResource {
         String response = null;
         try {
             IProfileValidator smlValidator = getValidator(version);
-            boolean b = validate(data, smlValidator);
+            ValidationResult vr = validate(data, smlValidator);
 
-            if (b)
+            if (vr.isValidated())
                 response = "<result><status>valid</status></result>";
             else {
-                String details = smlValidator.getValidationFailuresAsString();
+                String details = vr.getValidationFailuresAsString();
                 response = "<result><status>invalid</status><errors>" + details + "</errors></result>";
             }
         }
@@ -173,13 +174,13 @@ public class ValidatorResource {
         return Response.ok(response).build();
     }
 
-    private boolean validate(String data, IProfileValidator smlValidator) throws XmlException, IOException {
+    private ValidationResult validate(String data, IProfileValidator smlValidator) throws XmlException, IOException {
         if (data.isEmpty())
-            return false;
+            return new ValidationResult(false, "Provided data is empty");
 
         SensorMLDocument doc = SensorMLDocument.Factory.parse(data);
-        boolean b = smlValidator.validate(doc);
-        return b;
+        ValidationResult vr = smlValidator.validate(doc);
+        return vr;
     }
 
     private IProfileValidator getValidator(String version) {

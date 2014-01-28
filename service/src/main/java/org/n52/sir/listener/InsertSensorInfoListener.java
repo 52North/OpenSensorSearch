@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.listener;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 import org.n52.oss.id.IdentifierGenerator;
 import org.n52.oss.sir.SirConstants;
@@ -29,7 +29,6 @@ import org.n52.oss.sir.api.SirInfoToBeInserted_ServiceReference;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.solr.SOLRInsertSensorInfoDAO;
 import org.n52.sir.request.AbstractSirRequest;
@@ -39,7 +38,8 @@ import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirInsertSensorInfoResponse;
 import org.n52.sir.sml.SensorMLDecoder;
 import org.n52.sir.xml.IProfileValidator;
-import org.n52.sir.xml.IValidatorFactory;
+import org.n52.sir.xml.ValidationResult;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,18 +57,19 @@ public class InsertSensorInfoListener implements ISirRequestListener {
 
     private IInsertSensorInfoDAO insSensInfoDao;
 
-    private IValidatorFactory validatorFactory;
-
     private IdentifierGenerator identifierGenerator;
 
     private SOLRInsertSensorInfoDAO anotherInsSensInfoDao;
 
+    private IProfileValidator validator;
+
     @Inject
     public InsertSensorInfoListener(IdentifierGenerator idGen,
-                                    SirConfigurator configurator,
                                     IInsertSensorInfoDAO dao,
-                                    SOLRInsertSensorInfoDAO anotherInsSensorInfoDao) {
-        this.validatorFactory = configurator.getValidatorFactory();
+                                    SOLRInsertSensorInfoDAO anotherInsSensorInfoDao,
+                                    Set<IProfileValidator> validators) {
+        this.validator = ValidatorModule.getFirstMatchFor(validators,
+                                                          IProfileValidator.ValidatableFormatAndProfile.SML_DISCOVERY);
         this.identifierGenerator = idGen;
         this.anotherInsSensInfoDao = anotherInsSensorInfoDao;
 
@@ -91,8 +92,8 @@ public class InsertSensorInfoListener implements ISirRequestListener {
         log.debug("InsertSensor called, generated new ID {}", id);
 
         if (sensor.getSensorMLDocument() != null) {
-            IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
-            boolean isValid = profileValidator.validate(sensor.getSensorMLDocument());
+            ValidationResult result = this.validator.validate(sensor.getSensorMLDocument());
+            boolean isValid = result.isValidated();
             log.debug("The sensor is valid: {}", isValid);
 
             if (isValid) {
@@ -140,10 +141,7 @@ public class InsertSensorInfoListener implements ISirRequestListener {
 
             }
             else
-                log.error("SensorML is not profile conform: {}",
-                          String.valueOf(profileValidator.getValidationFailuresAsString()));
-
-            profileValidator = null;
+                log.error("SensorML is not profile conform: {}", result);
         }
         else {
             OwsExceptionReport se = new OwsExceptionReport(OwsExceptionReport.ExceptionLevel.DetailedExceptions);

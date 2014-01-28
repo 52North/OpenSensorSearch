@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.listener;
 
 import java.io.UnsupportedEncodingException;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.SirConstants;
@@ -115,23 +115,30 @@ public class SearchSensorListener implements ISirRequestListener {
             return new ExceptionResponse(e);
         }
 
+        // remove duplicates
+        Collection<SirSearchResultElement> result = new HashSet<>(searchResElements);
+        if (result.size() != searchResElements.size())
+            log.debug("Set size {} vs. list size {} - removed duplicates",
+                      result.size(),
+                      searchResElements.size());
+
         // if a simple response, add the corresponding GET URLs and bounding boxes
         if (searchSensReq.isSimpleResponse()) {
-            processForSimpleResponse(searchSensReq, searchResElements);
+            result = processForSimpleResponse(searchSensReq, result);
         }
 
-        response.setSearchResultElements(searchResElements);
+        response.setSearchResultElements(result);
 
         return response;
     }
 
-    private void processForSimpleResponse(SirSearchSensorRequest searchSensReq,
-                                          ArrayList<SirSearchResultElement> searchResElements) {
+    private Collection<SirSearchResultElement> processForSimpleResponse(SirSearchSensorRequest searchSensReq,
+                                                                        Collection<SirSearchResultElement> result) {
         // if the requested version is not 0.3.0, keep the bounding box, otherwise remove
         String version = searchSensReq.getVersion();
         boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
 
-        for (SirSearchResultElement sirSearchResultElement : searchResElements) {
+        for (SirSearchResultElement sirSearchResultElement : result) {
             SirSimpleSensorDescription sensorDescription = (SirSimpleSensorDescription) sirSearchResultElement.getSensorDescription();
 
             String descriptionURL;
@@ -150,6 +157,8 @@ public class SearchSensorListener implements ISirRequestListener {
             if (removeBBoxes)
                 sensorDescription.setBoundingBox(null);
         }
+
+        return result;
     }
 
     private ArrayList<SirSearchResultElement> searchBySearchCriteria(SirSearchSensorRequest searchSensReq,

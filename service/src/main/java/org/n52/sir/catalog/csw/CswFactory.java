@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,9 +36,11 @@ import org.n52.sir.catalog.ICatalog;
 import org.n52.sir.catalog.ICatalogConnection;
 import org.n52.sir.catalog.ICatalogFactory;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.ITransformer;
 import org.n52.sir.xml.ITransformer.TransformableFormat;
 import org.n52.sir.xml.TransformerModule;
+import org.n52.sir.xml.ValidatorModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,12 +71,14 @@ public class CswFactory implements ICatalogFactory {
 
     private ISearchSensorDAO searchDao;
 
+    private IProfileValidator validator;
+
     @Inject
     public CswFactory(@Named("oss.catalogconnection.csw-ebrim.classificationInitFilenames")
     String classificationInitFilenames, @Named("oss.catalogconnection.csw-ebrim.slotInitFilename")
     String slotInitFile, @Named("oss.catalogconnection.doNotCheckCatalogs")
     String doNotCheckCatalogs, Set<ITransformer> transformers, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao) throws XmlException, IOException {
+    ISearchSensorDAO searchDao, Set<IProfileValidator> validators) throws XmlException, IOException {
         this.slotInitFile = getAbsolutePath(slotInitFile);
         this.searchDao = searchDao;
 
@@ -97,9 +101,7 @@ public class CswFactory implements ICatalogFactory {
                 this.classificationInitDocs.add(initDoc);
             }
         }
-        log.debug("Loaded classification files: {}\nDocs: {}",
-                  Arrays.toString(this.classificationInitFilesArray),
-                  Arrays.toString(this.classificationInitDocs.toArray()));
+        log.debug("Loaded classification files: {}", Arrays.toString(this.classificationInitFilesArray));
 
         this.doNotCheckCatalogsList = new ArrayList<>();
         String[] splitted = doNotCheckCatalogs.split(CONFIG_FILE_LIST_SEPARATOR);
@@ -116,6 +118,9 @@ public class CswFactory implements ICatalogFactory {
             }
         }
         log.debug("Loaded do-not-check-catalogs: {}", Arrays.toString(this.doNotCheckCatalogsList.toArray()));
+
+        this.validator = ValidatorModule.getFirstMatchFor(validators,
+                                                          IProfileValidator.ValidatableFormatAndProfile.SML_DISCOVERY);
 
         log.info("NEW {}", this);
     }
@@ -140,7 +145,8 @@ public class CswFactory implements ICatalogFactory {
                                             client,
                                             this.classificationInitDocs,
                                             this.slotInitDoc,
-                                            this.transformer);
+                                            this.transformer,
+                                            this.validator);
         return catalog;
     }
 

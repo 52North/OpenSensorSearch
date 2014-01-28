@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -241,7 +241,6 @@ public class TestSensorFactory {
     }
 
     public TestSensor createRandomTestSensor() {
-        if (log.isDebugEnabled())
             log.debug("Creating random sensor... ");
 
         String sensorId = randomSensorId();
@@ -337,7 +336,6 @@ public class TestSensorFactory {
      */
     private Collection<Map<String, String>> generateInputs(String intendedApplication) {
         int howMany = this.rand.nextInt(3) + 1;
-        if (log.isDebugEnabled())
             log.debug("Generating " + howMany + " inputs for " + intendedApplication);
 
         Collection<Map<String, String>> inputs = new ArrayList<Map<String, String>>();
@@ -366,11 +364,10 @@ public class TestSensorFactory {
      */
     private Collection<Map<String, String>> randomInterfaces(String intendedApplication) {
         int howMany = this.rand.nextInt(2) + 1;
-        if (log.isDebugEnabled())
             log.debug("Generating " + howMany + " interfaces for " + intendedApplication);
 
-        Collection<Map<String, String>> interfaces = new ArrayList<Map<String, String>>();
-        List<String> added = new ArrayList<String>();
+        Collection<Map<String, String>> interfaces = new ArrayList<>();
+        List<String> added = new ArrayList<>();
         List<String[]> possibleInterfaces = this.availableInterfaces.get(intendedApplication);
 
         for (int i = 0; i <= howMany; i++) {
@@ -378,7 +375,7 @@ public class TestSensorFactory {
             if ( !added.contains(current[1])) {
                 added.add(current[1]);
 
-                HashMap<String, String> currentInterface = new HashMap<String, String>();
+                HashMap<String, String> currentInterface = new HashMap<>();
                 currentInterface.put(OGC_INTERFACE_PREFIX + "ServiceURL", current[1]);
                 currentInterface.put(OGC_INTERFACE_PREFIX + "ServiceType", current[2]);
                 currentInterface.put(OGC_INTERFACE_PREFIX + "ServiceSpecificSensorID",
@@ -436,7 +433,6 @@ public class TestSensorFactory {
      */
     private List<String> generateKeywords(String intendedApplication) {
         int howMany = this.rand.nextInt(3) + 1;
-        if (log.isDebugEnabled())
             log.debug("Generating " + howMany + " keywords for " + intendedApplication);
 
         List<String> keywords = new ArrayList<String>();

@@ -1,25 +1,17 @@
 /**
- * ﻿Copyright (C) 2012
- * by 52 North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2012 52°North Initiative for Geospatial Open Source Software GmbH
  *
- * Contact: Andreas Wytzisk
- * 52 North Initiative for Geospatial Open Source Software GmbH
- * Martin-Luther-King-Weg 24
- * 48155 Muenster, Germany
- * info@52north.org
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is free software; you can redistribute and/or modify it under
- * the terms of the GNU General Public License version 2 as published by the
- * Free Software Foundation.
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
- * This program is distributed WITHOUT ANY WARRANTY; even without the implied
- * WARRANTY OF MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program (see gnu-gpl v2.txt). If not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA or
- * visit the Free Software Foundation web page, http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.n52.ar.wikitude;
 
@@ -33,14 +25,14 @@ import org.n52.ar.SirPOI;
 public class WikitudePOI extends SirPOI { 
 
 	void appendARML(StringBuilder sb) {
-		sb.append("<Placemark id=\"" + id + "\">");
+        sb.append("<Placemark id=\"" + this.id + "\">");
 
 		sb.append("<ar:provider>52North</ar:provider>");
-		sb.append("<name><![CDATA[" + title + "]]></name>");
-		sb.append("<description><![CDATA[" + description + "]]></description>");
+        sb.append("<name><![CDATA[" + this.title + "]]></name>");
+        sb.append("<description><![CDATA[" + this.description + "]]></description>");
 
 		sb.append("<Point>");
-		sb.append("<coordinates>" + lat + "," + lon + "," + alt
+        sb.append("<coordinates>" + this.lat + "," + this.lon + "," + this.alt
 				+ "</coordinates>");
 		sb.append("</Point>");
 

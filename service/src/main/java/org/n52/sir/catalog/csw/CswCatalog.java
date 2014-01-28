@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.catalog.csw;
 
 import java.io.IOException;
@@ -65,7 +64,7 @@ import org.n52.sir.util.Pair;
 import org.n52.sir.util.SoapTools;
 import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.ITransformer;
-import org.n52.sir.xml.IValidatorFactory;
+import org.n52.sir.xml.ValidationResult;
 import org.n52.sir.xml.impl.SMLtoEbRIMTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,41 +118,39 @@ public class CswCatalog implements ICatalog {
 
     private int[] lastPushSummary;
 
-    private IValidatorFactory validatorFactory;
-
     private ITransformer transformer;
 
     private ISearchSensorDAO searchDao;
+
+    private IProfileValidator validator;
 
     public CswCatalog(ISearchSensorDAO searchDao,
                       SimpleSoapCswClient c,
                       List<XmlObject> classificationInitDocs,
                       XmlObject slotInitDoc,
-                      ITransformer transformer) {
-        initialize(c, classificationInitDocs, slotInitDoc);
+                      ITransformer transformer,
+                      IProfileValidator validator) {
+        this.client = c;
+        this.identifiableCache = new CswCatalogCache();
         this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
         this.transformer = transformer;
         this.searchDao = searchDao;
+        this.validator = validator;
+
+        log.info("NEW {}", this);
     }
 
     @Override
     public boolean acceptsDocument(XmlObject doc) throws OwsExceptionReport, IOException {
-        IProfileValidator validator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
+        ValidationResult result = this.validator.validate(doc);
 
-        boolean b = Boolean.valueOf(validator.validate(doc)).booleanValue();
+        if (result.isValidated())
+            log.debug("Given document is profile conform!");
+        else
+            log.debug("Given document is NOT profile conform! {}", result);
 
-        if (log.isDebugEnabled()) {
-            if (b) {
-                log.debug("Given document is profile conform!");
-            }
-            else {
-                log.debug("Given document is NOT profile conform!");
-                log.debug(String.valueOf(validator.getValidationFailuresAsString()));
-            }
-        }
-
-        validator = null;
-        return b;
+        this.validator = null;
+        return result.isValidated();
     }
 
     /**
@@ -175,9 +172,7 @@ public class CswCatalog implements ICatalog {
      * @return
      */
     private GetRecordByIdDocument createGetRecordById(Collection<String> ids) {
-        if (log.isDebugEnabled()) {
-            log.debug("* Creating GetRecordsByIdDocument with these ids: " + Arrays.toString(ids.toArray()));
-        }
+        log.debug("* Creating GetRecordsByIdDocument with these ids: {}", Arrays.toString(ids.toArray()));
 
         GetRecordByIdDocument getRecDoc = GetRecordByIdDocument.Factory.newInstance();
         GetRecordByIdType getRecordById = getRecDoc.addNewGetRecordById();
@@ -220,9 +215,9 @@ public class CswCatalog implements ICatalog {
         Collection<SirSearchResultElement> currentSensors = new ArrayList<>();
         Hashtable<String, RegistryPackageDocument> transformedDocs;
 
-        if (log.isDebugEnabled())
-            log.debug("Transforming description of " + sensors.size() + " sensors into transactions with "
-                    + MAXIMUM_COUNT_OF_SENSORS_IN_DOC + " each.");
+        log.debug("Transforming description of {} sensors into transactions with {} each.",
+                  sensors.size(),
+                  MAXIMUM_COUNT_OF_SENSORS_IN_DOC);
 
         TransactionDocument transactionDoc;
         while (sensors.size() > 0) {
@@ -232,18 +227,14 @@ public class CswCatalog implements ICatalog {
                 if (sensorsIterator.hasNext()) {
                     // check if an update is neccessary, add the sensor if that is the case
                     SirSearchResultElement s = sensorsIterator.next();
-                    if (s.getLastUpdate().after(lastPushToCatalog)) {
+                    if (s.getLastUpdate().after(lastPushToCatalog))
                         currentSensors.add(s);
-                    }
-                    else {
-                        if (log.isDebugEnabled()) {
-                            log.debug("Not adding sensor because it was not updated since last push to catalog!");
-                        }
-                    }
+
+                    else
+                        log.debug("Not adding sensor because it was not updated since last push to catalog!");
                 }
-                else {
+                else
                     break;
-                }
             }
 
             // transform all sensor descriptions
@@ -280,10 +271,9 @@ public class CswCatalog implements ICatalog {
 
                     // add transaction to list as document and number of expected inserts
                     Pair<Document, Integer> p = new Pair<>((Document) transactionDoc.getDomNode(),
-                                                                            Integer.valueOf(transformedDocs.size()));
+                                                           Integer.valueOf(transformedDocs.size()));
                     documents.add(p);
-                    if (log.isDebugEnabled())
-                        log.debug("Added insert transaction document: " + p);
+                    log.debug("Added insert transaction document: {}", p);
                 }
                 catch (OwsExceptionReport e) {
                     log.error("Could not create transaction document! None of these will be inserted: "
@@ -313,9 +303,7 @@ public class CswCatalog implements ICatalog {
      * @throws OwsExceptionReport
      */
     private TransactionDocument createTransaction(Hashtable<String, RegistryPackageDocument> transformedDocs) throws OwsExceptionReport {
-        if (log.isDebugEnabled()) {
-            log.debug("** Creating TransactionDocument for " + transformedDocs.size() + " transformed docs.");
-        }
+        log.debug("** Creating TransactionDocument for {} transformed docs.", transformedDocs.size());
 
         TransactionDocument transactionDoc = TransactionDocument.Factory.newInstance();
         TransactionType transaction = transactionDoc.addNewTransaction();
@@ -353,8 +341,7 @@ public class CswCatalog implements ICatalog {
             if (SirConfigurator.getInstance().isValidateRequests()) {
                 if ( !regObjListDoc.validate()) {
                     log.warn("Created invalid RegistryObjectListDocument, possibly rejected by the service! Set the logging level to DEBUG for more information on the document.");
-                    if (log.isDebugEnabled())
-                        log.debug("### Invalid document: ###\n" + regObjListDoc.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
+                    log.debug("### Invalid document: ###\n{}", regObjListDoc.xmlText(XmlTools.PRETTY_PRINT_OPTIONS));
                 }
             }
         }
@@ -393,25 +380,18 @@ public class CswCatalog implements ICatalog {
      * @throws OwsExceptionReport
      */
     private Map<IdentifiableType, Boolean> getExistingIdentifiablesById(IdentifiableType[] identifiableArray) throws OwsExceptionReport {
-        if (log.isDebugEnabled()) {
-            log.debug("** Requesting " + identifiableArray.length + " identifiables from catalog.");
-        }
+        log.debug("** Requesting {} identifiables from catalog.", identifiableArray.length);
 
         // use a set to remove duplicates
         SortedSet<String> ids = new TreeSet<>();
         for (int i = 0; i < identifiableArray.length; i++) {
             if ( !this.identifiableCache.contains(identifiableArray[i])) {
                 boolean added = ids.add(identifiableArray[i].getId());
-                if (log.isDebugEnabled()) {
-                    if ( !added)
-                        log.debug("Did not add duplicate to identifiables cache " + identifiableArray[i].getId());
-                }
+                if ( !added)
+                    log.debug("Did not add duplicate to identifiables cache {}", identifiableArray[i].getId());
             }
-            else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Not requesting element because it is cached: " + identifiableArray[i].getId());
-                }
-            }
+            else
+                log.debug("Not requesting element because it is cached: {}", identifiableArray[i].getId());
         }
 
         // create request
@@ -433,8 +413,7 @@ public class CswCatalog implements ICatalog {
             GetRecordByIdResponseDocument getRecRespDoc = GetRecordByIdResponseDocument.Factory.parse(content.getDomNode());
 
             getRecordByIdResponse = getRecRespDoc.getGetRecordByIdResponse();
-            if (log.isDebugEnabled())
-                log.debug("* GetRecordsByIdResponseDocument: " + XmlTools.inspect(getRecordByIdResponse));
+            log.debug("* GetRecordsByIdResponseDocument: {}", XmlTools.inspect(getRecordByIdResponse));
         }
         catch (XmlException e) {
             log.error("Could not parse response to GetRecordByIdResponseDocument.");
@@ -468,9 +447,7 @@ public class CswCatalog implements ICatalog {
                 if (iT != null) {
                     this.identifiableCache.add(iT);
                     toUpdate.put(iT, Boolean.TRUE);
-                    if (log.isDebugEnabled()) {
-                        log.debug("Found element in response: " + XmlTools.inspect(iT));
-                    }
+                    log.debug("Found element in response: {}", XmlTools.inspect(iT));
                 }
                 else
                     log.debug("Could not identify element in get records response, this element is NOT added to cache: "
@@ -478,9 +455,7 @@ public class CswCatalog implements ICatalog {
 
             }
             catch (XmlException e) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Node in response is not a Classification Node...");
-                }
+                log.debug("Node in response is not a Classification Node...");
             }
         }
 
@@ -522,13 +497,10 @@ public class CswCatalog implements ICatalog {
                         + " documents but only " + this.lastPushSummary[0] + "/" + this.lastPushSummary[1]
                         + " were inserted/updated!");
             }
-            else {
+            else
                 log.info("Got transaction response with count of inserted high enough - set the logging level to DEBUG for details.");
-            }
 
-            if (log.isDebugEnabled())
-                log.debug("RESPONSE FOR INSERT TRANSACTION: " + XmlTools.inspect(transactionSummary));
-
+            log.debug("RESPONSE FOR INSERT TRANSACTION: {}", XmlTools.inspect(transactionSummary));
         }
         catch (XmlException e) {
             log.warn("Could not parse response to TransactionResponseDocument. Maybe it's a Fault?");
@@ -542,17 +514,6 @@ public class CswCatalog implements ICatalog {
     @Override
     public boolean hasSufficientCapabilities() throws OwsExceptionReport {
         return this.checker.checkClient(this.client);
-    }
-
-    private void initialize(SimpleSoapCswClient c, List<XmlObject> classificationInitDocs, XmlObject slotInitDoc) {
-        this.client = c;
-        this.identifiableCache = new CswCatalogCache();
-
-        this.checker = new CswCatalogChecker(this.client, classificationInitDocs, slotInitDoc);
-        this.validatorFactory = SirConfigurator.getInstance().getValidatorFactory();
-
-        if (log.isDebugEnabled())
-            log.debug("Initialized " + this.toString());
     }
 
     /**
@@ -581,10 +542,10 @@ public class CswCatalog implements ICatalog {
                 transformedDocs.put(transformed.getKey(), ITransformer.PROCESSING_ERROR_OBJECT);
                 continue;
             }
-            else if (log.isDebugEnabled()) {
-                log.debug("Starting to process " + identifableArray.length + " elements in RegistryPackageDocument "
-                        + transformed.getValue().getIdentifiable().getId());
-            }
+
+            log.debug("Starting to process {} elements in RegistryPackageDocument {}",
+                      identifableArray.length,
+                      transformed.getValue().getIdentifiable().getId());
 
             // query service which Identifiables can be found
             Map<IdentifiableType, Boolean> existing = getExistingIdentifiablesById(identifableArray);
@@ -598,9 +559,7 @@ public class CswCatalog implements ICatalog {
                 if ( !needsUpdate)
                     continue;
 
-                if (log.isDebugEnabled()) {
-                    log.debug("Processing " + iT.getId());
-                }
+                log.debug("Processing {}", iT.getId());
 
                 // check for already existing ExtrinsicObjects
                 if (iT instanceof ExtrinsicObjectType) {
@@ -619,9 +578,7 @@ public class CswCatalog implements ICatalog {
                 // check for already existing Service definitions
                 else if (iT instanceof ServiceType) {
                     ServiceType st = (ServiceType) iT;
-                    if (log.isDebugEnabled()) {
-                        log.debug("REMOVING " + XmlTools.inspect(st));
-                    }
+                    log.debug("REMOVING {}", XmlTools.inspect(st));
 
                     // TODO get the capabilites of the service and fill in rim:Name and rim:Description with
                     // ows:ServiceIdentification/ows:Title and /ows:Abstract respectively (see 07-144r4 12.2)
@@ -664,10 +621,9 @@ public class CswCatalog implements ICatalog {
         List<OwsExceptionReport> reports = new ArrayList<>();
         for (Pair<Document, Integer> currentPair : inserts) {
             try {
-                if (log.isDebugEnabled()) {
-                    log.debug("Sending Document with " + currentPair.getSecond() + " sensor description(s) to client "
-                            + this.client);
-                }
+                log.debug("Sending Document with {} sensor description(s) to client {}",
+                          currentPair.getSecond(),
+                          this.client);
                 SOAPMessage responseMessage = this.client.send(currentPair.getFirst());
                 handleTransactionResponse(responseMessage, currentPair.getSecond().intValue());
             }
@@ -695,10 +651,7 @@ public class CswCatalog implements ICatalog {
             IdentifiableType current = identifiables[i];
 
             if (idsToRemove.contains(current.getId())) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Removing identifiable from registry object list: " + current.getId() + " with index "
-                            + i);
-                }
+                log.debug("Removing identifiable from registry object list: {} with index {}", current.getId(), i);
                 registryObjectList.removeIdentifiable(i);
                 identifiables = registryObjectList.getIdentifiableArray();
             }
@@ -731,8 +684,7 @@ public class CswCatalog implements ICatalog {
         XmlObject description;
 
         for (SirSearchResultElement sensorResultElem : sensors) {
-            if (log.isDebugEnabled())
-                log.debug("Transforming sensor description of sensor " + sensorResultElem.getSensorId());
+            log.debug("Transforming sensor description of sensor {}", sensorResultElem.getSensorId());
 
             // get SensorML
             SirXmlSensorDescription sensorDescr = (SirXmlSensorDescription) sensorResultElem.getSensorDescription();
@@ -790,16 +742,15 @@ public class CswCatalog implements ICatalog {
                 if (SirConfigurator.getInstance().isValidateRequests()) {
                     // check if the transformed document for the outgoing request is valid and warn if not.
                     if (registryPackage.validate()) {
-                        if (log.isDebugEnabled())
-                            log.debug("Added new (valid!) transformed sensor description for sensor with id "
-                                    + sensorResultElem.getSensorId() + "\n" + XmlTools.inspect(ebrimDescription));
+                        log.debug("Added new (valid!) transformed sensor description for sensor with id {}:\n{}",
+                                  sensorResultElem.getSensorId(),
+                                  XmlTools.inspect(ebrimDescription));
                     }
                     else {
                         String errors = XmlTools.validateAndIterateErrors(registryPackage);
                         log.warn("Transformed sensor description sensor with id " + sensorResultElem.getSensorId()
                                 + " IS NOT VALID and might not be accepted by the service.");
-                        if (log.isDebugEnabled())
-                            log.debug("\nErrors:\t" + errors + "\nebRIM:\t" + ebrimDescription.xmlText());
+                        log.debug("\nErrors:\t{}\nebRIM:\t{}", errors, ebrimDescription.xmlText());
 
                     }
                 }

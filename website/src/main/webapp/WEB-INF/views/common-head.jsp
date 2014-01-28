@@ -32,7 +32,11 @@
 <link href="styles/bootstrap-responsive.css" rel="stylesheet">
 <link href="styles/jquery-ui.css" rel="stylesheet" />
 
-<link type="text/css" rel="stylesheet" href="styles/oss.css" />
+<link href="styles/oss.css" type="text/css" rel="stylesheet" />
+
+<script src="lib/jquery.js" type="text/javascript"></script>
+<script src="lib/jquery-ui.min.js" type="text/javascript"></script>
+<script src="lib/bootstrap.js" type="text/javascript"></script>
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>

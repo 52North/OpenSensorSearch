@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.sml;
 
 import java.text.ParseException;
@@ -190,11 +189,7 @@ public class SensorMLDecoder {
     public static SirSensor decode(SystemType system) throws OwsExceptionReport {
         SirSensor sensor = new SirSensor();
 
-        if (log.isDebugEnabled()) {
-            log.debug("Decoding SystemType:");
-            String errors = XmlTools.validateAndIterateErrors(system);
-            log.debug(errors);
-        }
+        log.debug("Decoding SystemType: \n{}", XmlTools.validateAndIterateErrors(system));
 
         sensor.setSensorMLDocument(SmlTools.wrapSystemTypeInSensorMLDocument(system));
         sensor.setbBox(getBoundingBox(system));
@@ -292,15 +287,13 @@ public class SensorMLDecoder {
                 for (DataComponentPropertyType dataComponent : fieldArray) {
                     AbstractDataRecordType dataRec = dataComponent.getAbstractDataRecord();
                     if (dataRec != null) {
-                        if (log.isDebugEnabled())
-                            log.debug("A data record, check if bbox!");
+                        log.debug("A data record, check if bbox!");
 
                         String currentDefinition = dataRec.getDefinition();
                         if (currentDefinition.equals(BOUNDING_BOX_FIELD_DEFINITION)) {
                             if (dataRec instanceof EnvelopeType) {
 
-                                if (log.isDebugEnabled())
-                                    log.debug("Found bbox!");
+                                log.debug("Found bbox!");
                                 EnvelopeType envelope = (EnvelopeType) dataRec;
                                 Coordinate[] lowerCornerCoords = envelope.getLowerCorner().getVector().getCoordinateArray();
                                 Coordinate[] upperCornerCoords = envelope.getUpperCorner().getVector().getCoordinateArray();

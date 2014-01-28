@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.n52.sir.decode.impl;
 
 import org.n52.oss.sir.SirConstants;
@@ -128,15 +127,13 @@ public class HttpGetRequestDecoder implements IHttpGetRequestDecoder {
 
                 // check request = GetCapabilities
                 if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.GetCapabilities.name())) {
-                    if (log.isDebugEnabled())
-                        log.debug("**** GetCapabilities");
+                    log.debug("**** GetCapabilities");
                     return decodeGetCapabilities(params);
                 }
 
                 // check request = DescribeSensor
                 if (nameAndValue[1].equalsIgnoreCase(SirConstants.Operations.DescribeSensor.name())) {
-                    if (log.isDebugEnabled())
-                        log.debug("**** DescribeSensor");
+                    log.debug("**** DescribeSensor");
                     return decodeDescribeSensor(params);
                 }
             }

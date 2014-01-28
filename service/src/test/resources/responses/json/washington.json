@@ -1,0 +1,495 @@
+{
+    "author": "52°North",
+    "date": "2014-01-13T17:50:15.344+01:00",
+    "description": "These are the search hits for the keyword(s) 'washington ' from Open Sensor Search (http://localhost:8080/oss-service/).",
+    "query": "washington ",
+    "results": [
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-131.02",
+                    "north": "46.05",
+                    "south": "46.05",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:46005 longName: National Data Buoy Center SOS shortName: 46005 WMO_ID: 46005; Classifications: ocean observation winds air_pressure_at_sea_level waves air_temperature sea_water_temperature; Keywords: National Data Buoy Center NDBC WASHINGTON 315NM West of Aberdeen WA Winds Waves WaterTemperature IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=7tlk1fj0h3"
+            },
+            "sensorId": "7tlk1fj0h3",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:46005"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.9498",
+                    "north": "40.8496",
+                    "south": "40.8496",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0611 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0611 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=al2notupy6"
+            },
+            "sensorId": "al2notupy6",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0611"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.9497",
+                    "north": "40.8495",
+                    "south": "40.8495",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0601 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0601 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=xpthmnw6vl"
+            },
+            "sensorId": "xpthmnw6vl",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0601"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-86.43",
+                    "north": "45.33",
+                    "south": "45.33",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:45002 longName: National Data Buoy Center SOS shortName: 45002 WMO_ID: 45002; Classifications: ocean observation sea_water_temperature air_pressure_at_sea_level waves winds air_temperature; Keywords: National Data Buoy Center NDBC N MICHIGAN- Halfway between North Manitou and Washington Islands. WaterTemperature Waves Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=t8pasxrvjy"
+            },
+            "sensorId": "t8pasxrvjy",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:45002"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.9497",
+                    "north": "40.8495",
+                    "south": "40.8495",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0601 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0601 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=xpthmnw6vl"
+            },
+            "sensorId": "xpthmnw6vl",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0601"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-77.0217",
+                    "north": "38.8733",
+                    "south": "38.8733",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:8594900 longName: NOAA.NOS.CO-OPS SOS shortName: 8594900 WMO_ID: ; Classifications: ocean observation winds datums air_temperature harmonic_constituents sea_water_temperature sea_surface_height_amplitude_due_to_equilibrium_ocean_tide water_surface_height_above_reference_datum air_pressure; Keywords: Center for Operational Oceanographic Products and Services CO-OPS Washington Winds AirTemperature WaterTemperature WaterLevel BarometricPressure IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=4g5qxj3pbw"
+            },
+            "sensorId": "4g5qxj3pbw",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:8594900"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-131.02",
+                    "north": "46.05",
+                    "south": "46.05",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:46005 longName: National Data Buoy Center SOS shortName: 46005 WMO_ID: 46005; Classifications: ocean observation winds sea_water_temperature air_pressure_at_sea_level waves air_temperature; Keywords: National Data Buoy Center NDBC WASHINGTON 315NM West of Aberdeen WA Winds WaterTemperature Waves IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=r0vmbch4t5"
+            },
+            "sensorId": "r0vmbch4t5",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:46005"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-131.02",
+                    "north": "46.05",
+                    "south": "46.05",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:46005 longName: National Data Buoy Center SOS shortName: 46005 WMO_ID: 46005; Classifications: ocean observation winds sea_water_temperature air_pressure_at_sea_level waves air_temperature; Keywords: National Data Buoy Center NDBC WASHINGTON 315NM West of Aberdeen WA Winds WaterTemperature Waves IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=r0vmbch4t5"
+            },
+            "sensorId": "r0vmbch4t5",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:46005"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.95",
+                    "north": "40.85",
+                    "south": "40.85",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0511 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0511 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=5ht3c974pd"
+            },
+            "sensorId": "5ht3c974pd",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0511"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-77.0217",
+                    "north": "38.8733",
+                    "south": "38.8733",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:8594900 longName: NOAA.NOS.CO-OPS SOS shortName: 8594900 WMO_ID: ; Classifications: ocean observation water_surface_height_above_reference_datum air_pressure sea_surface_height_amplitude_due_to_equilibrium_ocean_tide harmonic_constituents datums air_temperature sea_water_temperature winds; Keywords: Center for Operational Oceanographic Products and Services CO-OPS Washington WaterLevel BarometricPressure AirTemperature WaterTemperature Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=yfzcae2g05"
+            },
+            "sensorId": "yfzcae2g05",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:8594900"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.9503",
+                    "north": "40.8486",
+                    "south": "40.8486",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0501 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0501 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=egp9ci5dfb"
+            },
+            "sensorId": "egp9ci5dfb",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0501"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-86.43",
+                    "north": "45.33",
+                    "south": "45.33",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:45002 longName: National Data Buoy Center SOS shortName: 45002 WMO_ID: 45002; Classifications: ocean observation sea_water_temperature air_pressure_at_sea_level air_temperature waves winds; Keywords: National Data Buoy Center NDBC N MICHIGAN- Halfway between North Manitou and Washington Islands. WaterTemperature Waves Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=zr9thvwjyi"
+            },
+            "sensorId": "zr9thvwjyi",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:45002"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-86.43",
+                    "north": "45.33",
+                    "south": "45.33",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:45002 longName: National Data Buoy Center SOS shortName: 45002 WMO_ID: 45002; Classifications: ocean observation sea_water_temperature air_pressure_at_sea_level waves winds air_temperature; Keywords: National Data Buoy Center NDBC N MICHIGAN- Halfway between North Manitou and Washington Islands. WaterTemperature Waves Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=t8pasxrvjy"
+            },
+            "sensorId": "t8pasxrvjy",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:45002"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-87.868",
+                    "north": "43.388",
+                    "south": "43.388",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:pwaw3 longName: National Data Buoy Center SOS shortName: pwaw3 WMO_ID: pwaw3; Classifications: ocean observation winds air_temperature air_pressure_at_sea_level; Keywords: NWS Central Region NDBC Port Washington WI Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=j3s95yvkbd"
+            },
+            "sensorId": "j3s95yvkbd",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:pwaw3"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-86.43",
+                    "north": "45.33",
+                    "south": "45.33",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:45002 longName: National Data Buoy Center SOS shortName: 45002 WMO_ID: 45002; Classifications: ocean observation sea_water_temperature air_pressure_at_sea_level air_temperature waves winds; Keywords: National Data Buoy Center NDBC N MICHIGAN- Halfway between North Manitou and Washington Islands. WaterTemperature Waves Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=zr9thvwjyi"
+            },
+            "sensorId": "zr9thvwjyi",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:45002"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-87.868",
+                    "north": "43.388",
+                    "south": "43.388",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:pwaw3 longName: National Data Buoy Center SOS shortName: pwaw3 WMO_ID: pwaw3; Classifications: ocean observation winds air_temperature air_pressure_at_sea_level; Keywords: NWS Central Region NDBC Port Washington WI Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=j3s95yvkbd"
+            },
+            "sensorId": "j3s95yvkbd",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:pwaw3"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-131.02",
+                    "north": "46.05",
+                    "south": "46.05",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:wmo:46005 longName: National Data Buoy Center SOS shortName: 46005 WMO_ID: 46005; Classifications: ocean observation winds air_pressure_at_sea_level waves air_temperature sea_water_temperature; Keywords: National Data Buoy Center NDBC WASHINGTON 315NM West of Aberdeen WA Winds Waves WaterTemperature IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=7tlk1fj0h3"
+            },
+            "sensorId": "7tlk1fj0h3",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://sdf.ndbc.noaa.gov/sos/server.php"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:wmo:46005"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.9503",
+                    "north": "40.8486",
+                    "south": "40.8486",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0501 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0501 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=egp9ci5dfb"
+            },
+            "sensorId": "egp9ci5dfb",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0501"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.95",
+                    "north": "40.85",
+                    "south": "40.85",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0511 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0511 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=5ht3c974pd"
+            },
+            "sensorId": "5ht3c974pd",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0511"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-77.0217",
+                    "north": "38.8733",
+                    "south": "38.8733",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:8594900 longName: NOAA.NOS.CO-OPS SOS shortName: 8594900 WMO_ID: ; Classifications: ocean observation water_surface_height_above_reference_datum air_pressure sea_surface_height_amplitude_due_to_equilibrium_ocean_tide harmonic_constituents datums air_temperature sea_water_temperature winds; Keywords: Center for Operational Oceanographic Products and Services CO-OPS Washington WaterLevel BarometricPressure AirTemperature WaterTemperature Winds IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=yfzcae2g05"
+            },
+            "sensorId": "yfzcae2g05",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:8594900"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-77.0217",
+                    "north": "38.8733",
+                    "south": "38.8733",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:8594900 longName: NOAA.NOS.CO-OPS SOS shortName: 8594900 WMO_ID: ; Classifications: ocean observation winds datums air_temperature harmonic_constituents sea_water_temperature sea_surface_height_amplitude_due_to_equilibrium_ocean_tide water_surface_height_above_reference_datum air_pressure; Keywords: Center for Operational Oceanographic Products and Services CO-OPS Washington Winds AirTemperature WaterTemperature WaterLevel BarometricPressure IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=4g5qxj3pbw"
+            },
+            "sensorId": "4g5qxj3pbw",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:8594900"
+            }
+        },
+        {
+            "lastUpdate": "2012-02-13T00:00:00+01:00",
+            "sensorDescription": {
+                "boundingBox": {
+                    "east": "-73.9498",
+                    "north": "40.8496",
+                    "south": "40.8496",
+                    "srid": "-1",
+                    "west": "4.9E-324"
+                },
+                "text": "Identifications: uniqueID: urn:ioos:station:NOAA.NOS.CO-OPS:HUR0611 longName: NOAA.NOS.CO-OPS SOS shortName: HUR0611 WMO_ID: ; Classifications: ocean observation currents; Keywords: Center for Operational Oceanographic Products and Services CO-OPS George Washington Bridge IOOS;",
+                "url": "http://localhost:8080/oss-service/sir?service=SIR&version=42.42.42&REQUEST=DescribeSensor&SENSORIDINSIR=al2notupy6"
+            },
+            "sensorId": "al2notupy6",
+            "serviceReferences": {
+                "service": {
+                    "type": "SOS",
+                    "url": "http://opendap.co-ops.nos.noaa.gov/ioos-dif-sos/SOS"
+                },
+                "serviceSpecificSensorId": "urn:ioos:station:NOAA.NOS.CO-OPS:HUR0611"
+            }
+        }
+    ],
+    "source": "http://localhost:8080/oss-service/",
+    "url": "http://localhost:8080/oss-service/api/v1/search?q=washington &format=application/json"
+
+}

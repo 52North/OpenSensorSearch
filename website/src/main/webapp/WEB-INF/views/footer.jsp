@@ -1,6 +1,6 @@
 <%--
 
-    ï»¿Copyright (C) 2013 52Â°North Initiative for Geospatial Open Source Software GmbH
+    Copyright (C) 2013 52°North Initiative for Geospatial Open Source Software GmbH
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 	<div class="container">
 		<div class="row" style="margin-top: 10px;">
 			<dl class="dl-horizontal col-md-6" style="margin: 0px;">
-				<dt>52°North</dt>
+				<dt>52&deg;North</dt>
 				<dd>
 					<a href="http://www.52north.org/">http://www.52north.org</a>
 				</dd>
@@ -51,10 +51,9 @@
 </div>
 
 <!-- load scripts -->
-<script src="lib/jquery.js" type="text/javascript"></script>
-<script src="lib/jquery-ui.min.js" type="text/javascript"></script>
-<script src="lib/bootstrap.js" type="text/javascript"></script>
-<script src="lib/jquery.bsAlerts.min.js" type="text/javascript"></script>
+<!-- <script src="lib/jquery.js" type="text/javascript"></script> -->
+<!-- <script src="lib/jquery-ui.min.js" type="text/javascript"></script> -->
+<!-- <script src="lib/bootstrap.js" type="text/javascript"></script> -->
 
 <script type="text/javascript">
 	$("#apiEndpointMenuLink").attr("href", ossApiEndpoint);

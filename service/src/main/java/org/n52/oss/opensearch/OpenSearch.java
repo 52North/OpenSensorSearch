@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,6 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -43,8 +42,6 @@ import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.api.SirBoundingBox;
 import org.n52.oss.sir.api.SirSearchCriteria;
 import org.n52.oss.sir.api.SirSearchResultElement;
-import org.n52.oss.sir.ows.OwsExceptionReport;
-import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.sir.listener.SearchSensorListener;
 import org.n52.sir.opensearch.RequestDismantler;
 import org.n52.sir.request.SirSearchSensorRequest;
@@ -94,6 +91,8 @@ public class OpenSearch {
 
         this.listeners = new HashMap<>();
         for (OpenSearchListener l : listeners) {
+            // setting the endpoint and home URL at runtime based on UriInfo - not nice for object
+            // instantiation, but less fixed configuration
             l.setOpenSearchEndpoint(this.uri);
             URI homeUri = uri.getBaseUri();
             l.setHomeURI(homeUri);
@@ -105,8 +104,10 @@ public class OpenSearch {
         log.info("NEW {} based on {} running at {}", this, constants, this.uri);
     }
 
+    // TODO get parameters using @QueryParam and write own param classes for convenience, see
+    // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public Response json(@HeaderParam(HttpHeaders.ACCEPT)
     String acceptHeader, @Context
     UriInfo uriInfo) {
@@ -140,6 +141,8 @@ public class OpenSearch {
         }
     }
 
+    // TODO get parameters using @QueryParam and write own param classes for convenience, see
+    // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
     @GET
     @Produces(OpenSearchConstants.APPLICATION_VND_KML)
     public Response kml(@HeaderParam(HttpHeaders.ACCEPT)
@@ -173,88 +176,24 @@ public class OpenSearch {
         }
     }
 
-    // TODO get parameters using @QueryParam and write own param classes for convenience, see
-    // http://jersey.java.net/documentation/latest/user-guide.html#d0e1432
-    @GET
-    @Produces({MediaType.TEXT_HTML})
-    public Response html(@HeaderParam(HttpHeaders.ACCEPT)
-    String acceptHeader, @Context
-    UriInfo uriInfo) {
-        // FIXME Daniel: the open search functionality must be extracted to a testable classes AND TESTS
-
-        log.debug("****** (GET) Connected: {}", uriInfo.getRequestUri());
-        log.debug("Accept header: {}", acceptHeader);
-
-        MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
-
-        if ( !params.containsKey(OpenSearchConstants.QUERY_PARAM))
-            return Response.status(Status.BAD_REQUEST).entity("query parameter 'q' is missing").build();
-
-        String responseFormat = detectResponseFormat(acceptHeader, params);
-
-        if ( !this.listeners.containsKey(responseFormat)) {
-            // could still be html
-            if (responseFormat.contains(MediaType.TEXT_HTML))
-                responseFormat = MediaType.TEXT_HTML;
-            else {
-                log.error("Could not create response as for format '{}', not supported.", responseFormat);
-                OwsExceptionReport report = new OwsExceptionReport(ExceptionCode.InvalidParameterValue,
-                                                                   OpenSearchConstants.FORMAT_PARAM + " or "
-                                                                           + HttpHeaders.ACCEPT,
-                                                                   "Unsupported output format '" + responseFormat
-                                                                           + "'.");
-                return Response.status(Status.BAD_REQUEST).entity(report).build();
-            }
-            // return Response.serverError().entity(report).build();
-        }
-
-        log.warn("Redirecting manually with listeners!");
-        try {
-            ISirResponse response = search(params);
-
-            if (response instanceof SirSearchSensorResponse) {
-                SirSearchSensorResponse sssr = (SirSearchSensorResponse) response;
-                Collection<SirSearchResultElement> searchResult = sssr.getSearchResultElements();
-
-                OpenSearchListener l = this.listeners.get(responseFormat);
-                Response r = l.createResponse(searchResult, params);
-
-                return Response.ok(r.getEntity(), responseFormat).build();
-            }
-            else if (response instanceof ExceptionResponse) {
-                log.error("Search returned exception response: {}", response);
-                GenericEntity<ISirResponse> entity = new GenericEntity<>(response, ISirResponse.class);
-                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(entity).build();
-            }
-            else {
-                log.error("Unhandled response: {}", response);
-                return Response.status(Status.INTERNAL_SERVER_ERROR).entity(response).build();
-            }
-        }
-        catch (Exception e) {
-            log.error("Unhandled exception in doGet: ", e);
-            return Response.serverError().entity(e).build();
-        }
-    }
-
-    private String detectResponseFormat(String acceptHeader, MultivaluedMap<String, String> params) {
-        String formatParameter = params.getFirst(OpenSearchConstants.FORMAT_PARAM);
-        log.debug("URL format parameter for {} is {}", OpenSearchConstants.FORMAT_PARAM, formatParameter);
-
-        String responseFormat = null;
-        if (acceptHeader == null || acceptHeader.isEmpty())
-            responseFormat = OpenSearchConstants.X_DEFAULT_MIME_TYPE;
-        else
-            responseFormat = acceptHeader;
-
-        // allow manual override
-        if (formatParameter != null) {
-            log.debug("Header ({}) is overridden by format parameter ({}).", acceptHeader, formatParameter);
-            responseFormat = formatParameter;
-        }
-
-        return responseFormat;
-    }
+    // private String detectResponseFormat(String acceptHeader, MultivaluedMap<String, String> params) {
+    // String formatParameter = params.getFirst(OpenSearchConstants.FORMAT_PARAM);
+    // log.debug("URL format parameter for {} is {}", OpenSearchConstants.FORMAT_PARAM, formatParameter);
+    //
+    // String responseFormat = null;
+    // if (acceptHeader == null || acceptHeader.isEmpty())
+    // responseFormat = OpenSearchConstants.X_DEFAULT_MIME_TYPE;
+    // else
+    // responseFormat = acceptHeader;
+    //
+    // // allow manual override
+    // if (formatParameter != null) {
+    // log.debug("Header ({}) is overridden by format parameter ({}).", acceptHeader, formatParameter);
+    // responseFormat = formatParameter;
+    // }
+    //
+    // return responseFormat;
+    // }
 
     private ISirResponse search(MultivaluedMap<String, String> params) {
         SirSearchCriteria searchCriteria = createSearchCriteria(params);
@@ -362,48 +301,35 @@ public class OpenSearch {
         return searchCriteria;
     }
 
-    // private void redirectMissingHttpAccept(HttpServletRequest req, HttpServletResponse resp) throws
-    // IOException {
-    // log.debug("Redirecting... {}", req);
-    //
-    // StringBuilder sb = new StringBuilder();
-    //
-    // sb.append(this.configurator.getFullOpenSearchPath());
-    // sb.append("?");
-    //
-    // Enumeration< ? > params = req.getParameterNames();
-    // while (params.hasMoreElements()) {
-    // String s = (String) params.nextElement();
-    // sb.append(s);
-    // sb.append("=");
-    // String[] parameterValues = req.getParameterValues(s);
-    // for (String sVal : parameterValues) {
-    // sb.append(sVal);
-    // sb.append(",");
-    // }
-    //
-    // sb.replace(sb.length() - 1, sb.length(), "&");
-    // }
-    //
-    // sb.append(OpenSearchConstants.FORMAT_PARAM);
-    // sb.append("=");
-    // sb.append(OpenSearchConstants.X_DEFAULT_MIME_TYPE);
-    // log.debug("Redirecting to {}", sb.toString());
-    // resp.sendRedirect(sb.toString());
-    // }
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("OpenSearch [");
+        StringBuilder builder = new StringBuilder();
+        builder.append("OpenSearch [");
         if (this.configurator != null) {
-            sb.append("config = ");
-            sb.append(this.configurator);
-            sb.append(", ");
+            builder.append("configurator=");
+            builder.append(this.configurator);
+            builder.append(", ");
         }
-        sb.append("URI = ");
-        sb.append(this.uri);
-        sb.append("]");
-        return sb.toString();
+        if (this.dismantler != null) {
+            builder.append("dismantler=");
+            builder.append(this.dismantler);
+            builder.append(", ");
+        }
+        if (this.listeners != null) {
+            builder.append("listeners=");
+            builder.append(this.listeners);
+            builder.append(", ");
+        }
+        if (this.sensorSearcher != null) {
+            builder.append("sensorSearcher=");
+            builder.append(this.sensorSearcher);
+            builder.append(", ");
+        }
+        if (this.uri != null) {
+            builder.append("uri=");
+            builder.append(this.uri);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 }

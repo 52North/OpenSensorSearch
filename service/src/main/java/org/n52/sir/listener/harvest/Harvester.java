@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,6 @@ import org.n52.oss.sir.api.SirService;
 import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
@@ -51,7 +50,7 @@ import org.n52.sir.response.ISirResponse;
 import org.n52.sir.response.SirHarvestServiceResponse;
 import org.n52.sir.sml.SensorMLDecoder;
 import org.n52.sir.xml.IProfileValidator;
-import org.n52.sir.xml.IValidatorFactory;
+import org.n52.sir.xml.ValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,22 +76,24 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
     protected ArrayList<SirSensor> updatedSensors;
 
-    protected IValidatorFactory validatorFactory;
-
     private Client client;
 
     protected SirHarvestServiceRequest request;
 
+    private IProfileValidator validator;
+
+    protected boolean validateResponses;
+
     public Harvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
+    ISearchSensorDAO searchDao, Client client, IProfileValidator validator, boolean validateResponses) {
         this.harvServDao = harvServDao;
         this.client = client;
+        this.validator = validator;
+        this.validateResponses = validateResponses;
 
         this.insertedSensors = new ArrayList<>();
         this.updatedSensors = new ArrayList<>();
         this.failedSensors = new HashMap<>();
-
-        this.validatorFactory = config.getValidatorFactory();
 
         this.insertSensorDao = insertDao;
         this.searchSensorDao = searchDao;
@@ -178,15 +179,15 @@ public abstract class Harvester implements Callable<ISirResponse> {
                                            SensorMLDocument sensorMLDocument,
                                            String serviceSpecificSensorId) throws OwsExceptionReport, IOException {
         // check SensorML for conformity with profile
-        IProfileValidator profileValidator = this.validatorFactory.getSensorMLProfile4DiscoveryValidator();
-        boolean isValid = profileValidator.validate(sensorMLDocument);
+        ValidationResult result = this.validator.validate(sensorMLDocument);
+        boolean isValid = result.isValidated();
         if ( !isValid) {
             String errMsg = "Sensor metadata document of sensor " + serviceSpecificSensorId + " in " + serviceURL
                     + " is not conform with the required profile and cannot be harvested.\n\n"
-                    + String.valueOf(profileValidator.getValidationFailuresAsString());
+                    + result.getValidationFailuresAsString();
             throw new OwsExceptionReport(ExceptionCode.InvalidParameterValue, "sensor description", errMsg);
         }
-        profileValidator = null;
+        
         log.info("Sensor description is conform with discovery profile!");
 
         // set sensor
@@ -202,8 +203,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         sensor.setServDescs(servDescs);
 
         // add sensor do database
-        if (log.isDebugEnabled())
-            log.debug("Saving harvested sensor " + serviceSpecificSensorId + " to DB.");
+        log.debug("Saving harvested sensor {} to DB.", serviceSpecificSensorId);
 
         SirSensor temporarySensor = this.harvServDao.insertSensor(sensor);
 
@@ -214,22 +214,19 @@ public abstract class Harvester implements Callable<ISirResponse> {
             log.info("Inserted sensor " + temporarySensor);
         }
         else {
-            if (log.isDebugEnabled())
-                log.debug("Could not insert sensor, trying to update..." + temporarySensor);
+                log.debug("Could not insert sensor, trying to update: {}", temporarySensor);
 
             // could still be updateable
             SirService sirService = new SirService(serviceURL, serviceType);
             SirServiceReference serviceRef = new SirServiceReference(sirService, serviceSpecificSensorId);
 
-            SirSearchResultElement result = this.searchSensorDao.getSensorByServiceDescription(serviceRef, false);
+            SirSearchResultElement searchResult = this.searchSensorDao.getSensorByServiceDescription(serviceRef, false);
 
-            if (result != null) {
-                if (log.isDebugEnabled())
-                    log.debug("Found and will update sensor: " + result);
+            if (searchResult != null) {
+                    log.debug("Found and will update sensor: {}", searchResult);
 
-                sensor.setInternalSensorId(result.getSensorId());
+                sensor.setInternalSensorId(searchResult.getSensorId());
                 String id = this.insertSensorDao.updateSensor(serviceRef, sensor);
-
                 updatedSensorsP.add(sensor);
 
                 log.info("Updated sensor with id " + id);
@@ -244,23 +241,12 @@ public abstract class Harvester implements Callable<ISirResponse> {
         }
     }
 
-    /**
-     * 
-     * @param request
-     * @param response
-     * @param insertedSensors
-     * @param updatedSensors
-     * @param failedSensors
-     * @param currentUri
-     * @throws OwsExceptionReport
-     */
     protected void processURI(Collection<SirSensor> insertedSensorsP,
                               Map<String, String> failedSensorsP,
                               Collection<SirSensor> updatedSensorsP,
                               String sensorID,
                               URI sensorDefinition) {
-        if (log.isDebugEnabled())
-            log.debug("Processing URI: " + sensorDefinition);
+        log.debug("Processing URI: {}", sensorDefinition);
 
         SensorMLDocument sensorMLDocument = null;
         try {

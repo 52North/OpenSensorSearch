@@ -1,11 +1,11 @@
 /**
- * ﻿Copyright (C) 2012 52°North Initiative for Geospatial Open Source Software GmbH
+ * Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -70,10 +71,10 @@ import org.n52.oss.sir.SMLConstants;
 import org.n52.oss.sir.api.SirBoundingBox;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.util.XmlTools;
-import org.n52.sir.SirConfigurator;
 import org.n52.sir.ds.IHarvestServiceDAO;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.n52.sir.ds.ISearchSensorDAO;
+import org.n52.sir.xml.IProfileValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
@@ -85,6 +86,9 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 /**
+ * 
+ * Catalog: http://p5.neracoos.org/IOOSCatalog/sos_platforms.xml
+ * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
@@ -778,8 +782,9 @@ public class IOOSHarvester extends FileHarvester {
 
     @Inject
     public IOOSHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, SirConfigurator config) {
-        super(harvServDao, insertDao, searchDao, client, config);
+    ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators, @Named("oss.sir.responses.validate")
+    boolean validateResponses) {
+        super(harvServDao, insertDao, searchDao, client, validators, validateResponses);
 
         log.info("NEW {}", this);
     }

@@ -1,93 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.n52.oss</groupId>
 		<artifactId>parent</artifactId>
 		<version>1.0</version>
 	</parent>
+	
 	<artifactId>service</artifactId>
-
 	<name>Open Sensor Search Service</name>
 	<description>Platform for discovery and metadata management for sensors</description>
 	<packaging>war</packaging>
 	<version>0.6</version>
 
-	<url>http://52north.org/communities/sensorweb/discovery/</url>
-	<inceptionYear>2012</inceptionYear>
-
-	<organization>
-		<name>52°North Initiative for Geospatial Open Source Software GmbH</name>
-		<url>http://52north.org</url>
-	</organization>
-
-	<developers>
-		<developer>
-			<name>Jan Schulte</name>
-			<email>j.schulte@52north.org</email>
-			<organization>${project.organization.name}</organization>
-			<organizationUrl>${project.organization.url}</organizationUrl>
-			<timezone>GMT+1</timezone>
-			<id>janschulte</id>
-		</developer>
-		<developer>
-			<name>Daniel Nüst</name>
-			<email>d.nuest@52north.org</email>
-			<organization>${project.organization.name}</organization>
-			<organizationUrl>${project.organization.url}</organizationUrl>
-			<timezone>GMT+1</timezone>
-			<id>nuest</id>
-		</developer>
-		<developer>
-			<name>Mohammad A. Yakoub</name>
-			<email>m.ahmed.yakoub@gmail.com</email>
-			<timezone>GMT+1</timezone>
-			<id>Moh-Yakoub</id>
-		</developer>
-	</developers>
-
-	<mailingLists>
-		<mailingList>
-			<name>Sensor Web Community Mailing List</name>
-			<subscribe>http://list.52north.org/mailman/listinfo/swe</subscribe>
-			<unsubscribe>http://list.52north.org/mailman/listinfo/swe</unsubscribe>
-			<post>swe@52north.org</post>
-			<archive>http://list.52north.org/pipermail/swe</archive>
-			<otherArchives>
-				<otherArchive>http://sensorweb.forum.52north.org</otherArchive>
-			</otherArchives>
-		</mailingList>
-	</mailingLists>
-
-	<scm>
-		<!-- We use the fork & pull development model: https://help.github.com/articles/using-pull-requests -->
-		<connection>scm:git:git://github.com/52North/OpenSensorSearch.git</connection>
-		<url>https://github.com/52North/OpenSensorSearch</url>
-	</scm>
-
-	<issueManagement>
-		<url>https://github.com/52North/OpenSensorSearch/issues</url>
-		<system>GitHub Issues</system>
-	</issueManagement>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
-
 	<properties>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 
-		<restlet.version>2.1.1</restlet.version>
-		<jersey.version>1.8</jersey.version>
-		<logback.version>1.0.13</logback.version>
-
-		<oss.logger.filepath>${catalina.base:-.}/logs/oss</oss.logger.filepath>
-		<oss.logger.level>DEBUG</oss.logger.level>
+		<restlet.version>2.1.6</restlet.version>
 	</properties>
 
 	<build>
@@ -115,7 +45,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
 
 				<configuration>
 					<!-- have to explicitly add resources and target paths if I want to
@@ -150,14 +79,10 @@
 				<!-- run "mvn license:format" to add to the files -->
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
-				<version>1.9.0</version>
 				<configuration>
-					<header>src/main/resources/license_header.txt</header>
 					<excludes>
-						<exclude>**/logback*</exclude>
 						<exclude>**/iso_schematron_skeleton_for_saxon.xsl</exclude>
 						<exclude>**/iso_svrl_for_xslt2.xsl</exclude>
-						<exclude>**/test/resources/**</exclude>
 						<exclude>**/webapp/TestRequests/**</exclude>
 						<exclude>**/webapp/codemirror/**</exclude>
 						<exclude>**/*.xml</exclude>
@@ -178,7 +103,6 @@
 						<include>**/*.sch</include>
 						<include>**/*.sql</include>
 						<include>**/*.css</include>
-						<!-- <include>**/*.html</include> -->
 					</includes>
 					<strictCheck>true</strictCheck>
 					<properties>
@@ -188,14 +112,6 @@
 						<sch>XML_STYLE</sch>
 					</mapping>
 				</configuration>
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -206,18 +122,6 @@
 
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.jasig.maven</groupId>
-						<artifactId>maven-notice-plugin</artifactId>
-						<version>1.0.5</version>
-						<configuration>
-							<noticeTemplate>src/main/resources/NOTICE.template</noticeTemplate>
-							<licenseMapping>
-								<param>src/main/resources/license-mappings.xml</param>
-							</licenseMapping>
-						</configuration>
-					</plugin>
-
 					<!-- TODO: add swagger generation plugin here -->
 					<plugin>
 						<groupId>com.github.danielflower.mavenplugins</groupId>
@@ -236,26 +140,7 @@
 		</profile>
 	</profiles>
 
-
-
 	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.restlet.jee</groupId>
 			<artifactId>org.restlet</artifactId>
@@ -276,17 +161,13 @@
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<!-- it’s just the api and the implementation should be provided by the
-				application server/web container -->
-			<scope>provided</scope> <!-- for running with tomcat-maven-plugin, see http://singztechmusings.wordpress.com/2011/06/17/java-lang-classcastexception-cannot-be-cast-to-javax-servlet-servlet-how-to-resolve/ -->
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.1</version>
 		</dependency>
 
 		<dependency>
@@ -298,7 +179,6 @@
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
-			<version>2.6.0</version>
 			<!-- if added, the wrong XmlConstants is used, see XmlTools.java and SMLtoEbRIMTransformer.java -->
 			<exclusions>
 				<exclusion>
@@ -311,13 +191,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
-			<version>1.3</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -363,7 +237,6 @@
 		<dependency>
 			<groupId>org.postgis</groupId>
 			<artifactId>postgis-jdbc</artifactId>
-			<version>1.3.3</version>
 		</dependency>
 
 		<dependency>
@@ -411,21 +284,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.n52.oss</groupId>
-			<artifactId>sir-common</artifactId>
-			<version>0.3</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
-			<version>1.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
-			<version>1.2.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -437,29 +302,24 @@
 		<dependency>
 			<groupId>xmlunit</groupId>
 			<artifactId>xmlunit</artifactId>
-			<version>1.4</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>${guice.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-servlet</artifactId>
-			<version>${guice.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-assistedinject</artifactId>
-			<version>${guice.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-multibindings</artifactId>
-			<version>${guice.version}</version>
 		</dependency>
 
 		<dependency>
@@ -471,27 +331,22 @@
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-bundle</artifactId>
-			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
-			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-guice</artifactId>
-			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-multipart</artifactId>
-			<version>${jersey.version}</version>
 		</dependency>
 
 		<dependency>
@@ -502,13 +357,11 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock</artifactId>
-			<version>1.33</version>
 			<classifier>standalone</classifier>
 			<exclusions>
 				<exclusion>
@@ -524,54 +377,25 @@
 			<version>1.2.1</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>sir-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>sor-common</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.n52.oss</groupId>
+			<artifactId>sor</artifactId>
+		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>maven-restlet</id>
-			<name>Public online Restlet repository</name>
-			<url>http://maven.restlet.org</url>
-		</repository>
-
-		<!-- for postgis -->
-		<repository>
-			<id>sonatype-postgis-releases</id>
-			<name>Sonatype Postgis Releases Repo</name>
-			<url>http://oss.sonatype.org/content/repositories/postgis-releases</url>
-		</repository>
-
-		<repository>
-			<id>n52-releases</id>
-			<name>52n Releases</name>
-			<url>http://52north.org/maven/repo/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>n52-snapshots</id>
-			<name>52n Snapshots</name>
-			<url>http://52north.org/maven/repo/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>apache-snapshots</id>
-			<name>Apache Snapshots</name>
-			<url>http://people.apache.org/repo/m2-snapshot-repository</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 </project>

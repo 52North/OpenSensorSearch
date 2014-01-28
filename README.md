@@ -78,7 +78,7 @@ There are sample files in the same directories of the base file to get you start
 
 ### Wiki
 
-For technical information about Open Sensor Search please visit the [Wiki page](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch).
+For organisational information about Open Sensor Search please visit the [Wiki page](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch).
 
 ## License
 
@@ -90,6 +90,18 @@ See NOTICE file.
 
 ### Javascript Libraries
 
-* allmighty-autocomplete, https://github.com/JustGoscha/allmighty-autocomplete/ - MIT License
-* SocialSharePrivacy, https://github.com/patrickheck/socialshareprivacy - MIT License
-* ...
+The website module uses a collection of Javascript libraries:
+
+* AngularJS, https://github.com/angular/angular.js/blob/master/LICENSE - MIT License
+* Angular-UI Bootstrap, https://github.com/angular-ui/bootstrap/blob/master/LICENSE - MIT License
+* CodeMirror, http://codemirror.net/LICENSE - MIT License
+* jQuery, https://jquery.org/license/ - MIT License
+* Bootstrap, https://github.com/twbs/bootstrap/blob/master/LICENSE - MIT License
+* Swagger API Documentation
+  * swagger-js, https://github.com/wordnik/swagger-js - Apache Software License, Version 2.0
+  * jQuery BBQ, http://benalman.com/code/projects/jquery-bbq/docs/files/jquery-ba-bbq-js.html#License - MIT License
+  * underscore.js, https://github.com/jashkenas/underscore/blob/master/LICENSE - MIT License
+  * Backbone.js, http://github.com/jashkenas/backbone/blob/master/LICENSE - MIT License
+  * SocialSharePrivacy, https://github.com/patrickheck/socialshareprivacy - MIT License
+  * Handlebars.js, https://github.com/wycats/handlebars.js/blob/master/LICENSE - MIT License
+  * highlight.js, https://github.com/isagalaev/highlight.js/blob/master/LICENSE - BSD 3 clause license

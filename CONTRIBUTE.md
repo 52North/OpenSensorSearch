@@ -31,7 +31,7 @@ This section includes advice on how to build new features for the project & what
 
 * Before you start working on a new feature, create a new issue and start a discussion on the mailing list.
 * We follow the fork & pull development model: <https://help.github.com/articles/using-pull-requests>
-* Use the 52°North code style for Eclise: <https://wiki.52north.org/bin/view/Documentation/WebHome#Software_Development>
+* Use the 52°North code style for Ecplise: <https://wiki.52north.org/bin/view/Documentation/WebHome#Software_Development>
 * Follow the OSS code guidelines: <https://wiki.52north.org/bin/view/SensorWeb/OssDevelopment#Development_Process>
 
 Don't get discouraged! We estimate that the response time from the maintainers is around 3 days.

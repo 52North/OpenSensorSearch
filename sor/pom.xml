@@ -7,10 +7,10 @@
 		<artifactId>parent</artifactId>
 		<version>1.0</version>
 	</parent>
-	
+
 	<artifactId>sor</artifactId>
 	<version>0.5.1</version>
-	
+
 	<name>Sensor Observable Registry</name>
 	<description>52°North Sensor Observable Registry</description>
 
@@ -67,10 +67,26 @@
 			<artifactId>guice-servlet</artifactId>
 		</dependency>
 
+		<!-- redirect logging of jena: http://www.slf4j.org/legacy.html -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.hp.hpl.jena</groupId>
 			<artifactId>jena</artifactId>
 			<version>2.6.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 </project>

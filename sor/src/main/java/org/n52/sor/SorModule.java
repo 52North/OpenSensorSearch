@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sor;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import org.n52.oss.common.AbstractConfigModule;
@@ -31,24 +33,39 @@ public class SorModule extends AbstractConfigModule {
 
     private static Logger log = LoggerFactory.getLogger(SorModule.class);
 
+    private static final String HOME_CONFIG_FILE = "org.n52.oss.service.sor.properties";
+
     @Override
     protected void configure() {
+        boolean startSor = true;
+
+        Properties properties = null;
         try {
-            Properties properties = loadProperties("/conf/sor.properties");
-            // initialize property manager
-            PropertiesManager.getInstance(properties);
-
-            // initialize phenomenon manager
-            PhenomenonManager.getInstance();
+            properties = loadProperties("/conf/sor.properties");
+            properties = updateFromUserHome(properties, HOME_CONFIG_FILE);
+            startSor = Boolean.parseBoolean(properties.getProperty("oss.sor.startSor"));
         }
-        catch (Exception e) {
-            log.error("Could not load and init.", e);
+        catch (IOException e) {
+            log.error("Could not load properties for SOR.", e);
         }
 
-        bind(SOR.class);
-        bind(Frontend.class);
+        log.debug("Loaded properties: ", properties);
 
-        log.info("Configured {}", this);
+        if (startSor) {
+            try {
+                PropertiesManager.getInstance(properties);
+                PhenomenonManager.getInstance();
+            }
+            catch (Exception e) {
+                log.error("Could not init SOR.", e);
+            }
+
+            bind(SOR.class);
+            bind(Frontend.class);
+
+            log.info("Configured {}", this);
+        }
+        else
+            log.warn("SOR startup disabled");
     }
-
 }

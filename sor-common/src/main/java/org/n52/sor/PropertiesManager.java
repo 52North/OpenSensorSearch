@@ -140,6 +140,9 @@ public class PropertiesManager {
     }
 
     public static PropertiesManager getInstance(Properties properties) {
+        if (properties == null)
+            log.error("Given properties are null, cannot instantiate!");
+
         if (instance == null)
             instance = new PropertiesManager(properties);
 

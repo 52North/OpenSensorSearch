@@ -19,6 +19,6 @@
 <HarvestServiceRequest service="SIR" version="0.3.0" xmlns="http://52north.org/sir/0.3.2"
 	xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://52north.org/sir/0.3.2 http://52north.org/schema/sir/0.3.2/sirAll.xsd">
-	<ServiceURL>http://v-swe.uni-muenster.de:8080/WeatherSOS/sos</ServiceURL>
+	<ServiceURL>http://geoviqua.dev.52north.org/SOS-Q/sos/pox</ServiceURL>
 	<ServiceType>SOS</ServiceType>
 </HarvestServiceRequest>

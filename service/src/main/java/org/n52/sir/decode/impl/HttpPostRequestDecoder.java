@@ -50,6 +50,7 @@ import org.n52.oss.sir.api.SirServiceReference;
 import org.n52.oss.sir.api.SirStatus;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
+import org.n52.oss.util.XmlTools;
 import org.n52.sir.decode.IHttpPostRequestDecoder;
 import org.n52.sir.request.AbstractSirRequest;
 import org.n52.sir.request.SirConnectToCatalogRequest;
@@ -144,7 +145,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
     private AbstractSirRequest decodeDeleteSensorInfoRequest(DeleteSensorInfoRequestDocument delSensInfoDoc) throws OwsExceptionReport {
         SirDeleteSensorInfoRequest sirRequest = new SirDeleteSensorInfoRequest();
-        Collection<SirInfoToBeDeleted> deleteInfos = new ArrayList<SirInfoToBeDeleted>();
+        Collection<SirInfoToBeDeleted> deleteInfos = new ArrayList<>();
 
         InfoToBeDeleted[] infos = delSensInfoDoc.getDeleteSensorInfoRequest().getInfoToBeDeletedArray();
 
@@ -244,7 +245,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         SirGetSensorStatusRequest sirRequest = new SirGetSensorStatusRequest();
         // sensor identification
         if (getSensStatDoc.getGetSensorStatusRequest().getSensorIdentificationArray().length != 0) {
-            ArrayList<SirSensorIdentification> sensIdents = new ArrayList<SirSensorIdentification>();
+            ArrayList<SirSensorIdentification> sensIdents = new ArrayList<>();
             SensorIdentification[] sensorIdentifications = getSensStatDoc.getGetSensorStatusRequest().getSensorIdentificationArray();
             for (SensorIdentification sensIdent : sensorIdentifications) {
                 sensIdents.add(decodeSensorIdentification(sensIdent));
@@ -265,7 +266,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         }
         // property filter
         if (getSensStatDoc.getGetSensorStatusRequest().getPropertyFilterArray().length != 0) {
-            ArrayList<SirPropertyFilter> propFilters = new ArrayList<SirPropertyFilter>();
+            ArrayList<SirPropertyFilter> propFilters = new ArrayList<>();
             for (PropertyFilter propFilt : getSensStatDoc.getGetSensorStatusRequest().getPropertyFilterArray()) {
                 propFilters.add(decodePropertyFilter(propFilt));
             }
@@ -323,7 +324,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
      */
     private AbstractSirRequest decodeInsertSensorInfoRequest(InsertSensorInfoRequestDocument insSensInfoDoc) throws OwsExceptionReport {
         SirInsertSensorInfoRequest sirRequest = new SirInsertSensorInfoRequest();
-        ArrayList<SirInfoToBeInserted> infoToBeInserteds = new ArrayList<SirInfoToBeInserted>();
+        ArrayList<SirInfoToBeInserted> infoToBeInserteds = new ArrayList<>();
         if (insSensInfoDoc.getInsertSensorInfoRequest().getInfoToBeInsertedArray().length != 0) {
             InfoToBeInserted[] infoArray = insSensInfoDoc.getInsertSensorInfoRequest().getInfoToBeInsertedArray();
 
@@ -337,7 +338,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
                     // optional service references
                     ServiceReference[] servRefs = infoToInsert.getServiceReferenceArray();
                     if (servRefs.length != 0) {
-                        ArrayList<SirServiceReference> sirServiceRefs = new ArrayList<SirServiceReference>();
+                        ArrayList<SirServiceReference> sirServiceRefs = new ArrayList<>();
                         for (ServiceReference servRef : servRefs) {
                             sirServiceRefs.add(decodeServiceReference(servRef));
                         }
@@ -355,7 +356,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
                     // service references
                     ServiceReference[] servRefs = infoToInsert.getServiceReferenceArray();
                     if (servRefs.length != 0) {
-                        ArrayList<SirServiceReference> sirServiceRefs = new ArrayList<SirServiceReference>();
+                        ArrayList<SirServiceReference> sirServiceRefs = new ArrayList<>();
                         for (ServiceReference servRef : servRefs) {
                             sirServiceRefs.add(decodeServiceReference(servRef));
                         }
@@ -425,7 +426,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         }
 
         Status[] status = reqDoc.getInsertSensorStatusRequest().getStatusDescription().getStatusArray();
-        ArrayList<SirStatus> sirStatus = new ArrayList<SirStatus>();
+        ArrayList<SirStatus> sirStatus = new ArrayList<>();
         for (Status stat : status) {
             SirStatus sirStat = new SirStatus();
             // property name
@@ -606,14 +607,14 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         SirSearchCriteria sirSearchCriteria = new SirSearchCriteria();
 
         // serviceCriteria
-        ArrayList<SirService> servCrits = new ArrayList<SirService>();
+        ArrayList<SirService> servCrits = new ArrayList<>();
         for (ServiceCriteria servCrit : searchCrit.getServiceCriteriaArray()) {
             servCrits.add(new SirService(servCrit.getServiceURL(), servCrit.getServiceType()));
         }
         sirSearchCriteria.setServiceCriteria(servCrits);
 
         // searchText
-        ArrayList<String> searchText = new ArrayList<String>();
+        ArrayList<String> searchText = new ArrayList<>();
         for (String text : searchCrit.getSearchTextArray()) {
             searchText.add(text);
         }
@@ -629,7 +630,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
         }
 
         // uom
-        ArrayList<String> uoms = new ArrayList<String>();
+        ArrayList<String> uoms = new ArrayList<>();
         for (UomPropertyType uom : searchCrit.getUomArray()) {
             uoms.add(uom.getCode());
         }
@@ -741,7 +742,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
         // sensorIdentification
         if (searchSensDoc.getSearchSensorRequest().getSensorIdentificationArray().length != 0) {
-            ArrayList<SirSensorIdentification> sensIdents = new ArrayList<SirSensorIdentification>();
+            ArrayList<SirSensorIdentification> sensIdents = new ArrayList<>();
 
             for (SensorIdentification sensIdent : searchSensDoc.getSearchSensorRequest().getSensorIdentificationArray()) {
                 sensIdents.add(decodeSensorIdentification(sensIdent));
@@ -798,7 +799,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
     private SirServiceInfo decodeServiceInfo(ServiceInfo serviceInfo) {
         ServiceReference[] serviceReferenceArray = serviceInfo.getServiceReferenceArray();
-        Collection<SirServiceReference> decodedReferences = new ArrayList<SirServiceReference>();
+        Collection<SirServiceReference> decodedReferences = new ArrayList<>();
 
         for (ServiceReference serviceReference : serviceReferenceArray) {
             SirServiceReference newRef = new SirServiceReference(new SirService(serviceReference.getServiceURL(),
@@ -875,7 +876,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
 
     private AbstractSirRequest decodeUpdateSensorDescriptionRequest(UpdateSensorDescriptionRequestDocument updSensDescrDoc) throws OwsExceptionReport {
         SirUpdateSensorDescriptionRequest sirRequest = new SirUpdateSensorDescriptionRequest();
-        Collection<SirDescriptionToBeUpdated> descriptionsToBeUpdated = new ArrayList<SirDescriptionToBeUpdated>();
+        Collection<SirDescriptionToBeUpdated> descriptionsToBeUpdated = new ArrayList<>();
 
         SensorDescriptionToBeUpdated[] sensors = updSensDescrDoc.getUpdateSensorDescriptionRequest().getSensorDescriptionToBeUpdatedArray();
 
@@ -910,7 +911,7 @@ public class HttpPostRequestDecoder implements IHttpPostRequestDecoder {
             throw se;
         }
 
-        log.debug("Parsed request: {}", doc.xmlText().substring(0, Math.min(doc.xmlText().length(), 500)));
+        log.debug("Parsed request: {}", XmlTools.getXmlContentLimited(doc));
 
         // getCapabilitiesRequest
         if (doc instanceof GetCapabilitiesDocument) {

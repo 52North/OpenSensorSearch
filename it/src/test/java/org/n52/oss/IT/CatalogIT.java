@@ -58,7 +58,7 @@ public class CatalogIT {
         Set<ITransformer> transformers = null;
         Set<IProfileValidator> vals = null;
         try {
-            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", transformers, dao, vals);
+            factory = new CswFactory(classInit, slotInit, "http://doNotCheck.url", transformers, dao, vals, true);
         }
         catch (XmlException e) {
             log.error("Could not parse classification scheme file!", e);

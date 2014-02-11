@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.util;
 
 import java.io.StringWriter;
@@ -174,7 +175,7 @@ public class XmlTools {
     }
 
     public static String generateGmlID(XmlObject o) {
-        return "id" + Long.toString(rand.nextInt(1000));
+        return "id" + o.hashCode() + Long.toString(rand.nextInt(1000));
     }
 
     public static Map<String, String> getFixedSuggestedPrefixes() {
@@ -710,5 +711,18 @@ public class XmlTools {
             e.printStackTrace();
         }
         return "ERROR transforming given Node";
+    }
+
+    public static String getXmlContentLimited(XmlObject xml) {
+        return getXmlContentLimited(xml, 100, true);
+    }
+
+    public static String getXmlContentLimited(XmlObject xml, int max, boolean removeComments) {
+        String s = xml.xmlText();
+
+        if (removeComments)
+            s = s.replaceAll("(?s)<!--.*?-->", "");
+
+        return s.substring(0, Math.min(s.length(), max));
     }
 }

@@ -143,8 +143,7 @@ CREATE TABLE remoteHarvestSensor
    serverURL text NOT NULL, 
    auth_token text, 
    lastStatus integer
-) 
-;
+);
 
 --Table : userAccount
 CREATE TABLE userAccount

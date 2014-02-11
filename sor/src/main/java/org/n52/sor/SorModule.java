@@ -49,8 +49,6 @@ public class SorModule extends AbstractConfigModule {
             log.error("Could not load properties for SOR.", e);
         }
 
-        log.debug("Loaded properties: ", properties);
-
         if (startSor) {
             try {
                 PropertiesManager.getInstance(properties);

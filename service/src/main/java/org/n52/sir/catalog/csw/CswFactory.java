@@ -78,13 +78,16 @@ public class CswFactory implements ICatalogFactory {
     String classificationInitFilenames, @Named("oss.catalogconnection.csw-ebrim.slotInitFilename")
     String slotInitFile, @Named("oss.catalogconnection.doNotCheckCatalogs")
     String doNotCheckCatalogs, Set<ITransformer> transformers, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Set<IProfileValidator> validators) throws XmlException, IOException {
+    ISearchSensorDAO searchDao, Set<IProfileValidator> validators, @Named("oss.catalogconnection.logLoadedFiles")
+    boolean logLoadedFiles) throws XmlException, IOException {
         this.slotInitFile = getAbsolutePath(slotInitFile);
         this.searchDao = searchDao;
 
         try (FileReader reader = new FileReader(this.slotInitFile);) {
             this.slotInitDoc = XmlObject.Factory.parse(reader);
-            log.debug("Loaded slot init doc: {}", this.slotInitDoc);
+
+            if (logLoadedFiles)
+                log.debug("Loaded slot init doc: {}", this.slotInitDoc);
         }
 
         this.transformer = TransformerModule.getFirstMatchFor(transformers,
@@ -176,8 +179,8 @@ public class CswFactory implements ICatalogFactory {
         StringBuilder builder = new StringBuilder();
         builder.append("CswFactory [");
         if (this.classificationInitDocs != null) {
-            builder.append("classificationInitDocs=");
-            builder.append(this.classificationInitDocs);
+            builder.append("classificationInitDocs count=");
+            builder.append(this.classificationInitDocs.size());
             builder.append(", ");
         }
         if (this.classificationInitFilesArray != null) {
@@ -187,7 +190,7 @@ public class CswFactory implements ICatalogFactory {
         }
         if (this.slotInitDoc != null) {
             builder.append("slotInitDoc=");
-            builder.append(this.slotInitDoc);
+            builder.append(this.slotInitDoc.getDomNode());
             builder.append(", ");
         }
         if (this.slotInitFile != null) {

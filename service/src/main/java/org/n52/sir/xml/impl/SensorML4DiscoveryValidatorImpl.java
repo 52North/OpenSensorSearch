@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.xml.impl;
 
 import java.io.File;
@@ -67,6 +68,8 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     private class SchematronResultHandler extends DefaultHandler {
 
+        protected Logger logger = LoggerFactory.getLogger(SchematronResultHandler.class);
+
         private String failTmp;
         private boolean insideFail = false;
         private Locator locator;
@@ -80,7 +83,8 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
             if (this.insideFail) {
-                this.failTmp += new String(ch, start, length).trim();
+                String s = new String(ch, start, length).trim();
+                this.failTmp += s;
             }
         }
 
@@ -93,6 +97,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             }
             else if (qName.endsWith(QNAME_FIRED_RULE)) {
                 getFiredRules().add(this.ruleTmp);
+                logger.debug("Finished with rule {}", this.ruleTmp);
                 this.ruleTmp = null;
             }
             else if (qName.endsWith(QNAME_ACTIVE_PATTERN)) {
@@ -109,9 +114,9 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (qName.endsWith(QNAME_FAILED_ASSERT)) {
-                this.failTmp = "[line " + this.locator.getLineNumber() + "]\tAssertion error at \""
-                        + attributes.getValue(ATTRIBUTE_NAME_TEST) + "\"" + " (location: \""
-                        + attributes.getValue(ATTRIBUTE_NAME_LOCATION) + "\"): ";
+                this.failTmp = "[line " + this.locator.getLineNumber() + ", col " + this.locator.getColumnNumber()
+                        + "]\tAssertion error at \"" + attributes.getValue(ATTRIBUTE_NAME_TEST) + "\""
+                        + " (location: \"" + attributes.getValue(ATTRIBUTE_NAME_LOCATION) + "\"): ";
                 this.insideFail = true;
             }
             else if (qName.endsWith(QNAME_FIRED_RULE)) {

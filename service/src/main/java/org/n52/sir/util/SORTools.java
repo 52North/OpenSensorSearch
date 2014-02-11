@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 /**
+ * FIXME one method in utillity class > remove class.
  * 
  * @author Daniel Nüst
  * 

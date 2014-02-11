@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.sml;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,7 +60,8 @@ import org.n52.oss.sir.api.SirBoundingBox;
 import org.n52.oss.sir.api.SirPhenomenon;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirSensorIdentification;
-import org.n52.oss.sir.api.SirTimePeriod;
+import org.n52.oss.sir.api.TimePeriod;
+import org.n52.oss.sir.api.TimePeriod.IndeterminateTime;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
 import org.n52.oss.util.Tools;
@@ -78,9 +78,6 @@ public class SensorMLDecoder {
     private static final Object BOUNDING_BOX_FIELD_DEFINITION = "urn:ogc:def:property:OGC:1.0:observedBBOX";
 
     private static Logger log = LoggerFactory.getLogger(SensorMLDecoder.class);
-
-    // dateformater for ISO 8601 Date format
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final ArrayList<String> X_AXIS_IDENTIFIERS = new ArrayList<>(Arrays.asList(new String[] {"x",
                                                                                                             "easting"}));
@@ -651,23 +648,23 @@ public class SensorMLDecoder {
         return texts;
     }
 
-    private static SirTimePeriod getTimePeriod(SensorMLDocument sensDoc) throws OwsExceptionReport {
-        SirTimePeriod sirTimePeriod = null;
+    private static TimePeriod getTimePeriod(SensorMLDocument sensDoc) throws OwsExceptionReport {
+        TimePeriod sirTimePeriod = null;
         Member[] members = sensDoc.getSensorML().getMemberArray();
         for (Member member : members) {
             SystemType systemType = (SystemType) member.getProcess();
             if (sirTimePeriod == null)
                 sirTimePeriod = getTimePeriod(systemType);
             else {
-                SirTimePeriod stp = getTimePeriod(systemType);
+                TimePeriod stp = getTimePeriod(systemType);
                 sirTimePeriod.union(stp);
             }
         }
         return sirTimePeriod;
     }
 
-    private static SirTimePeriod getTimePeriod(SystemType system) throws OwsExceptionReport {
-        SirTimePeriod sirTimePeriod = new SirTimePeriod();
+    private static TimePeriod getTimePeriod(SystemType system) throws OwsExceptionReport {
+        TimePeriod sirTimePeriod = new TimePeriod();
 
         if (system.isSetValidTime()) {
             ValidTime validTime = system.getValidTime();
@@ -675,45 +672,46 @@ public class SensorMLDecoder {
             String startString = null;
             if (validTime.getTimePeriod().getBeginPosition() != null) {
                 startString = validTime.getTimePeriod().getBeginPosition().getStringValue();
+                if (startString.isEmpty())
+                    startString = validTime.getTimePeriod().getBeginPosition().getIndeterminatePosition().toString();
             }
-            else {
+            else
                 startString = validTime.getTimePeriod().getBegin().getTimeInstant().getTimePosition().getStringValue();
-            }
 
             String endString = null;
             if (validTime.getTimePeriod().getEndPosition() != null) {
                 endString = validTime.getTimePeriod().getEndPosition().getStringValue();
+                if (endString.isEmpty()) // could be indeterminate
+                    endString = validTime.getTimePeriod().getEndPosition().getIndeterminatePosition().toString();
             }
-            else {
+            else
                 endString = validTime.getTimePeriod().getEnd().getTimeInstant().getTimePosition().getStringValue();
-            }
 
-            try {
-                sirTimePeriod.setStartTime(sdf.parse(startString));
-            }
-            catch (ParseException e) {
-                log.error("Error parsing gml:beginPosition in valid time element.", e);
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(ExceptionCode.NoApplicableCode,
-                                     "SensorMLDecoder.decode",
-                                     "The start time is missing or cannot be parsed in the timePeriod element of valid time section!");
-                throw se;
-            }
+            IndeterminateTime start = new IndeterminateTime(startString);
+            sirTimePeriod.setStartTime(start);
+            IndeterminateTime end = new IndeterminateTime(endString);
+            sirTimePeriod.setEndTime(end);
 
-            try {
-                sirTimePeriod.setEndTime(sdf.parse(endString));
-            }
-            catch (ParseException e) {
-                log.error("The start time is missing or cannot be parsed in the timePeriod element of valid time section!");
-                OwsExceptionReport se = new OwsExceptionReport();
-                se.addCodedException(ExceptionCode.NoApplicableCode,
-                                     "SensorMLDecoder.decode",
-                                     "The end time is missing in the timePeriod element of valid time parameter!");
-                throw se;
-            }
+            checkTime(sirTimePeriod);
         }
 
         return sirTimePeriod;
+    }
+
+    private static void checkTime(TimePeriod sirTimePeriod) {
+        checkTime(sirTimePeriod.getStartTime());
+        checkTime(sirTimePeriod.getEndTime());
+    }
+
+    private static void checkTime(IndeterminateTime it) {
+        if (it.isIndeterminate() && it.isDeterminate()) {
+            // no time created
+            OwsExceptionReport se = new OwsExceptionReport();
+            se.addCodedException(ExceptionCode.NoApplicableCode,
+                                 "SensorMLDecoder.decode",
+                                 "The start time is missing or cannot be parsed in the timePeriod element of valid time section! Time: "
+                                         + it);
+        }
     }
 
     private static double[] getXYCoords(Coordinate[] coordinates) {

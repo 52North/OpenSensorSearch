@@ -25,32 +25,48 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.oss.sir.Client;
 import org.n52.oss.ui.beans.HarvestServiceBean;
-import org.n52.oss.util.GuiceUtil;
 import org.x52North.sir.x032.HarvestServiceRequestDocument;
 import org.x52North.sir.x032.HarvestServiceResponseDocument;
 
 /**
  * 
- * @author Yakoub
+ * @author Yakoub, Daniel Nüst
  */
 public class HarvestServiceIT {
 
     // FIXME use a mocked up webservice to test harvesting
-    private String serviceURL = "http://v-swe.uni-muenster.de:8080/WeatherSOS/sos";
+    private String harvestedServiceURL = "http://geoviqua.dev.52north.org/SOS-Q/sos/pox";
 
-    private String serviceType = "SOS";
+    private static String sirServiceURL = "http://localhost:8080/oss-service/sir";
+
+    private String harvestedServiceType = "SOS";
 
     private static Client client;
 
     @BeforeClass
     public static void setUp() {
-        client = GuiceUtil.configureSirClient();
+        client = new Client(sirServiceURL);
     }
 
     @Test
     public void harvestWeatherServiceBean() throws Exception {
+        // HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        // // increase timeout for slow servers
+        // RequestConfig config =
+        // RequestConfig.custom().setConnectionRequestTimeout(6000).setSocketTimeout(6000).build();
+        // httpClientBuilder.setDefaultRequestConfig(config);
+        // try (CloseableHttpClient c = httpClientBuilder.build();) {
+        // HttpGet get = new HttpGet("http://www.google.de");
+        // CloseableHttpResponse response = c.execute(get);
+        //
+        // int respCode = response.getStatusLine().getStatusCode();
+        //
+        // IOUtils.copy(response.getEntity().getContent(), System.out);
+        // response.close();
+        // }
+
         // buildRequest
-        HarvestServiceBean hsb = new HarvestServiceBean(this.serviceURL, this.serviceType);
+        HarvestServiceBean hsb = new HarvestServiceBean(this.harvestedServiceURL, this.harvestedServiceType);
         hsb.buildRequest();
 
         // send request
@@ -63,9 +79,9 @@ public class HarvestServiceIT {
         // FIXME test must check whether the correct number of sensors was added, and more
     }
 
-    @Test
+    // @Test
     public void harvestWeatherServiceDoc() throws Exception {
-        File f = new File(ClassLoader.getSystemResource("Requests/HarvestService_WeatherSOS.xml").getFile());
+        File f = new File(ClassLoader.getSystemResource("Requests/HarvestService.xml").getFile());
         HarvestServiceRequestDocument hsrd = HarvestServiceRequestDocument.Factory.parse(f);
 
         XmlObject response = client.xSendPostRequest(hsrd);

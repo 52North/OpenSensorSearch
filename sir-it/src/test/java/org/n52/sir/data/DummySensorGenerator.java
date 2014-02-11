@@ -39,7 +39,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSensor;
-import org.n52.oss.sir.api.SirTimePeriod;
+import org.n52.oss.sir.api.TimePeriod;
+import org.n52.oss.sir.api.TimePeriod.IndeterminateTime;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.util.GuiceUtil;
 import org.x52North.sir.x032.InsertSensorInfoRequestDocument;
@@ -78,7 +79,7 @@ public class DummySensorGenerator {
             SirSensor sensor = new SirSensor();
             JSONSensor jsensor = sensors.next();
             sensor.setKeywords(jsensor.keywords);
-            SirTimePeriod period = new SirTimePeriod();
+            TimePeriod period = new TimePeriod();
             DateTime begin = DateTime.parse(jsensor.beginPosition);
             DateTime end = DateTime.parse(jsensor.endPosition);
             // fix because we need start < end , and the data is randomly
@@ -88,8 +89,8 @@ public class DummySensorGenerator {
                 end = begin;
                 begin = temp;
             }
-            period.setStartTime(begin.toDate());
-            period.setEndTime(end.toDate());
+            period.setStartTime(new IndeterminateTime(begin.toDate()));
+            period.setEndTime(new IndeterminateTime(end.toDate()));
             sensor.setTimePeriod(period);
             sensor.setIdentificationsList(jsensor.Identifiers);
             List<String> contacts = new ArrayList<>();

@@ -213,7 +213,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(", ");
         cmd.append(PGDAOConstants.lastUpdate);
-        cmd.append(") SELECT GeometryFromText('POLYGON((");
+        cmd.append(") SELECT ST_GeometryFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());
@@ -269,7 +269,7 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(PGDAOConstants.sensor);
         cmd.append(" WHERE (");
         cmd.append(PGDAOConstants.bBox);
-        cmd.append(" = GeometryFromText('POLYGON((");
+        cmd.append(" = ST_GeometryFromText('POLYGON((");
         cmd.append(sensor.getbBox().getWest());
         cmd.append(" ");
         cmd.append(sensor.getbBox().getNorth());

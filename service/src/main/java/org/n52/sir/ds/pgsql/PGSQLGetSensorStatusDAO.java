@@ -234,7 +234,7 @@ public class PGSQLGetSensorStatusDAO implements IGetSensorStatusDAO {
         // bounding box
         if (searchCriteria.getBoundingBox() != null) {
             SirBoundingBox bbox = searchCriteria.getBoundingBox();
-            query.append("(CONTAINS (GeometryFromText('POLYGON((");
+            query.append("(CONTAINS (ST_GeometryFromText('POLYGON((");
             query.append(bbox.getWest());
             query.append(" ");
             query.append(bbox.getNorth());

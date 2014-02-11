@@ -165,7 +165,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
         catch (OwsExceptionReport e) {
             String errMsg = "Error requesting SensorML document from " + this.request.getServiceType() + " @ "
                     + uri.toString() + " for sensor " + serviceSpecificSensorId + " : " + e.getMessage();
-            log.error(errMsg);
+            log.error(errMsg, e);
 
             failedSensorsP.put(serviceSpecificSensorId, e.getMessage());
             response.setNumberOfFailedSensors(response.getNumberOfFailedSensors() + 1);
@@ -187,7 +187,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
                     + result.getValidationFailuresAsString();
             throw new OwsExceptionReport(ExceptionCode.InvalidParameterValue, "sensor description", errMsg);
         }
-        
+
         log.info("Sensor description is conform with discovery profile!");
 
         // set sensor
@@ -214,7 +214,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
             log.info("Inserted sensor " + temporarySensor);
         }
         else {
-                log.debug("Could not insert sensor, trying to update: {}", temporarySensor);
+            log.debug("Could not insert sensor, trying to update: {}", temporarySensor);
 
             // could still be updateable
             SirService sirService = new SirService(serviceURL, serviceType);
@@ -223,7 +223,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
             SirSearchResultElement searchResult = this.searchSensorDao.getSensorByServiceDescription(serviceRef, false);
 
             if (searchResult != null) {
-                    log.debug("Found and will update sensor: {}", searchResult);
+                log.debug("Found and will update sensor: {}", searchResult);
 
                 sensor.setInternalSensorId(searchResult.getSensorId());
                 String id = this.insertSensorDao.updateSensor(serviceRef, sensor);
@@ -234,7 +234,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
             else {
                 String errMsg = "Could not add sensor to database, because it could neither be inserted nor updated: "
                         + sensor
-                        + "\nIf the sensor was inserted once without (or with a different) service reference, it is not updatable.";
+                        + "\nIf the sensor was inserted before without (or with a different) service reference, it is *not* updatable.";
                 log.error(errMsg);
                 throw new OwsExceptionReport(ExceptionCode.NoApplicableCode, "", errMsg);
             }
@@ -271,13 +271,13 @@ public abstract class Harvester implements Callable<ISirResponse> {
                                                               errMsg);
                 log.error("No SensorML", e);
 
-                failedSensorsP.put(sensorID, e.getMessage());
+                failedSensorsP.put(sensorID, e.getDocument().xmlText());
             }
 
         }
         catch (OwsExceptionReport | IOException e) {
             log.error("Error processing SensorML Document", e);
-            failedSensorsP.put(sensorID, e.getMessage());
+            failedSensorsP.put(sensorID, e.getClass() + ": " + e.getMessage());
         }
     }
 

@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.sir;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
@@ -23,15 +25,14 @@ import net.opengis.sos.x10.GetCapabilitiesDocument;
 import net.opengis.sos.x10.GetCapabilitiesDocument.GetCapabilities;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.ows.OwsExceptionReport;
@@ -56,6 +57,15 @@ public class Client {
 
     protected URI uri = null;
 
+    private static HttpClientBuilder httpClientBuilder;
+
+    static {
+        httpClientBuilder = HttpClientBuilder.create();
+        // increase timeout for slow servers
+        RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(CONNECTION_TIMEOUT).setSocketTimeout(CONNECTION_TIMEOUT).build();
+        httpClientBuilder.setDefaultRequestConfig(config);
+    }
+
     public Client() {
         log.info("NEW {}", this);
     }
@@ -72,15 +82,15 @@ public class Client {
         log.debug("GetCapabilities to be send to {} @ {} : {}", serviceType, requestUri.toString(), gcDoc);
 
         // send getCapabilities request
-        XmlObject caps = null;
-        XmlObject getCapXmlResponse = null;
+        XmlObject responseObject = null;
+        XmlObject response = null;
         try {
-            getCapXmlResponse = xSendPostRequest(XmlObject.Factory.parse(gcDoc), requestUri);
-            caps = XmlObject.Factory.parse(getCapXmlResponse.getDomNode());
+            response = xSendPostRequest(XmlObject.Factory.parse(gcDoc), requestUri);
+            responseObject = XmlObject.Factory.parse(response.getDomNode());
         }
         catch (XmlException xmle) {
             String msg = "Error on parsing Capabilities document: " + xmle.getMessage()
-                    + (getCapXmlResponse == null ? "" : "\n" + getCapXmlResponse.xmlText());
+                    + (response == null ? "" : "\n" + response.xmlText());
             log.warn(msg);
             OwsExceptionReport se = new OwsExceptionReport();
             se.addCodedException(OwsExceptionReport.ExceptionCode.InvalidRequest, null, msg);
@@ -95,7 +105,7 @@ public class Client {
             throw se;
         }
 
-        return caps;
+        return responseObject;
     }
 
     private String createGetCapabilities(String serviceType) {
@@ -127,65 +137,66 @@ public class Client {
             return oer.getDocument();
         }
 
-        HttpClient client = new DefaultHttpClient();
-        // configure timeout to handle really slow servers
-        HttpParams params = client.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-        HttpConnectionParams.setSoTimeout(params, CONNECTION_TIMEOUT);
+        try (CloseableHttpClient client = httpClientBuilder.build();) {
 
-        HttpRequestBase method = null;
+            HttpRequestBase method = null;
 
-        if (requestMethod.equals(GET_METHOD)) {
-            log.debug("Client connecting via GET to '{}' with request '{}'", requestUri, request);
+            if (requestMethod.equals(GET_METHOD)) {
+                log.debug("Client connecting via GET to '{}' with request '{}'", requestUri, request);
 
-            String fullUri = null;
-            if (request == null || request.isEmpty())
-                fullUri = requestUri.toString();
-            else
-                fullUri = requestUri.toString() + "?" + request;
+                String fullUri = null;
+                if (request == null || request.isEmpty())
+                    fullUri = requestUri.toString();
+                else
+                    fullUri = requestUri.toString() + "?" + request;
 
-            log.debug("GET call: {}", fullUri);
-            HttpGet get = new HttpGet(fullUri);
-            method = get;
-        }
-        else if (requestMethod.equals(POST_METHOD)) {
-            log.debug("Client connecting via POST to {}", requestUri);
-            HttpPost postMethod = new HttpPost(requestUri.toString());
+                log.debug("GET call: {}", fullUri);
+                HttpGet get = new HttpGet(fullUri);
+                method = get;
+            }
+            else if (requestMethod.equals(POST_METHOD)) {
+                log.debug("Client connecting via POST to {}", requestUri);
+                HttpPost postMethod = new HttpPost(requestUri.toString());
 
-            postMethod.setEntity(new StringEntity(request, ContentType.create(SirConstants.REQUEST_CONTENT_TYPE)));
+                postMethod.setEntity(new StringEntity(request, ContentType.create(SirConstants.REQUEST_CONTENT_TYPE)));
 
-            method = postMethod;
-        }
-        else {
-            throw new IllegalArgumentException("requestMethod not supported!");
-        }
+                method = postMethod;
+            }
+            else {
+                throw new IllegalArgumentException("requestMethod not supported!");
+            }
 
-        try {
-            HttpResponse httpResponse = client.execute(method);
+            try {
+                HttpResponse httpResponse = client.execute(method);
 
-            try (InputStream is = httpResponse.getEntity().getContent();) {
-                XmlObject responseObject = XmlObject.Factory.parse(is);
-                return responseObject;
+                try (InputStream is = httpResponse.getEntity().getContent();) {
+                    XmlObject responseObject = XmlObject.Factory.parse(is);
+                    return responseObject;
+                }
+            }
+            catch (XmlException e) {
+                log.error("Error parsing response.", e);
+
+                // TODO add handling to identify HTML response
+                // if (responseString.contains(HTML_TAG_IN_RESPONSE)) {
+                // log.error("Received HTML!\n" + responseString + "\n");
+                // }
+
+                String msg = "Could not parse response (received via " + requestMethod + ") to the request\n\n"
+                        + request + "\n\n\n" + Tools.getStackTrace(e);
+                // msg = msg + "\n\nRESPONSE STRING:\n<![CDATA[" + responseObject.xmlText() + "]]>";
+
+                OwsExceptionReport er = new OwsExceptionReport(ExceptionCode.NoApplicableCode, "Client.doSend()", msg);
+                return er.getDocument();
+            }
+            catch (Exception e) {
+                log.error("Error executing method on httpClient.", e);
+                return new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", e.getMessage()).getDocument();
             }
         }
-        catch (XmlException e) {
-            log.error("Error parsing response.", e);
-
-            // TODO add handling to identify HTML response
-            // if (responseString.contains(HTML_TAG_IN_RESPONSE)) {
-            // log.error("Received HTML!\n" + responseString + "\n");
-            // }
-
-            String msg = "Could not parse response (received via " + requestMethod + ") to the request\n\n" + request
-                    + "\n\n\n" + Tools.getStackTrace(e);
-            // msg = msg + "\n\nRESPONSE STRING:\n<![CDATA[" + responseObject.xmlText() + "]]>";
-
-            OwsExceptionReport er = new OwsExceptionReport(ExceptionCode.NoApplicableCode, "Client.doSend()", msg);
-            return er.getDocument();
-        }
-        catch (Exception e) {
-            log.error("Error executing method on httpClient.", e);
-            return new OwsExceptionReport(ExceptionCode.NoApplicableCode, "service", e.getMessage()).getDocument();
+        catch (IOException e) {
+            log.error("Could not create http client.", e);
+            return null;
         }
     }
 

@@ -43,7 +43,7 @@ public class SirSensor {
 
 	private Collection<String> text;
 
-	private SirTimePeriod timePeriod;
+	private TimePeriod timePeriod;
 
     private Collection<String> keywords = new ArrayList<>();
 
@@ -93,7 +93,7 @@ public class SirSensor {
 		return this.text;
 	}
 
-	public SirTimePeriod getTimePeriod() {
+	public TimePeriod getTimePeriod() {
 		return this.timePeriod;
 	}
 
@@ -125,7 +125,7 @@ public class SirSensor {
 		this.text = text;
 	}
 
-	public void setTimePeriod(SirTimePeriod timePeriod) {
+	public void setTimePeriod(TimePeriod timePeriod) {
 		this.timePeriod = timePeriod;
 	}
 

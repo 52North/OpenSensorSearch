@@ -21,14 +21,13 @@ package org.n52.sir.ds.solr;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirSensorIdentification;
 import org.n52.oss.sir.api.SirServiceReference;
-import org.n52.oss.sir.api.SirTimePeriod;
+import org.n52.oss.sir.api.TimePeriod;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.IInsertSensorInfoDAO;
 import org.slf4j.Logger;
@@ -97,14 +96,18 @@ public class SOLRInsertSensorInfoDAO implements IInsertSensorInfoDAO {
             }
         }
 
-        SirTimePeriod timePeriod = sensor.getTimePeriod();
+        TimePeriod timePeriod = sensor.getTimePeriod();
         if (timePeriod != null) {
-            Date startDate = timePeriod.getStartTime();
-            Date endDate = timePeriod.getEndTime();
-            if (startDate != null)
-                inputDocument.addField(SolrConstants.START_DATE, SolrUtils.getISO8601UTCString(startDate));
-            if (endDate != null)
-                inputDocument.addField(SolrConstants.END_DATE, SolrUtils.getISO8601UTCString(endDate));
+            if (timePeriod.getStartTime().isDeterminate())
+                inputDocument.addField(SolrConstants.START_DATE,
+                                       SolrUtils.getISO8601UTCString(timePeriod.getStartTime().d));
+            else if (timePeriod.getStartTime().isIndeterminate())
+                inputDocument.addField(SolrConstants.START_DATE, timePeriod.getStartTime().itt);
+
+            if (timePeriod.getEndTime().isDeterminate())
+                inputDocument.addField(SolrConstants.END_DATE, SolrUtils.getISO8601UTCString(timePeriod.getEndTime().d));
+            else if (timePeriod.getEndTime().isIndeterminate())
+                inputDocument.addField(SolrConstants.END_DATE, timePeriod.getEndTime().itt);
         }
         if (longitude != null && latitude != null)
             if (longitude.length() > 0 && latitude.length() > 0)

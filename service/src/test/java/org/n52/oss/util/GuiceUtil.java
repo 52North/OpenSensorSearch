@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.util;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class GuiceUtil {
 
             @Override
             protected void configure() {
+                // FIXME remove fixed url for tests
                 bindConstant().annotatedWith(Names.named("oss.sir.sirClient.url")).to("http://localhost:8080/OpenSensorSearch/sir");
                 bind(Client.class);
                 log.info("Configured client for tests.");
@@ -102,7 +104,7 @@ public class GuiceUtil {
                 }
             }
         });
-        
+
         return i;
     }
 

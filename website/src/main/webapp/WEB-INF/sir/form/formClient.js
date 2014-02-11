@@ -55,7 +55,7 @@ function initExamples(datafolder) {
 	requests[7] = placeholderIndex;
 	requests[8] = placeholderIndex;
 	requests[9] = placeholderIndex;
-	requests[10] = datafolder + "HarvestService_WeatherSOS.xml";
+	requests[10] = datafolder + "HarvestService_SOS.xml";
 
 	requests[11] = datafolder + "InsertSensorInfo_addReference.xml";
 	requests[12] = datafolder + "InsertSensorInfo_newSensor.xml";

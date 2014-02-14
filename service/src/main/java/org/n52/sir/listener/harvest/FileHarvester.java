@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.n52.oss.id.IdentifierGenerator;
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.sir.ds.IHarvestServiceDAO;
@@ -59,13 +60,14 @@ public abstract class FileHarvester extends Harvester {
     @Inject
     public FileHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
     ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators, @Named("oss.sir.responses.validate")
-    boolean validateResponses) {
+    boolean validateResponses, IdentifierGenerator idGen) {
         super(harvServDao,
               insertDao,
               searchDao,
               client,
               ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
-              validateResponses);
+              validateResponses,
+              idGen);
 
         log.info("NEW {}", this);
     }

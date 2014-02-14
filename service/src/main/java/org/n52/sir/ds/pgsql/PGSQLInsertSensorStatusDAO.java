@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -137,9 +138,10 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
                 String sensorIdQuery = getSensorIdByInternalID((InternalSensorID) ident);
                 log.debug(">>>Database Query: {}", sensorIdQuery);
 
-                ResultSet rs = stmt.executeQuery(sensorIdQuery);
-                while (rs.next()) {
-                    sensorId = rs.getString(PGDAOConstants.sensorId);
+                try (ResultSet rs = stmt.executeQuery(sensorIdQuery);) {
+                    while (rs.next()) {
+                        sensorId = rs.getString(PGDAOConstants.sensorId);
+                    }
                 }
             }
             // check service description
@@ -147,9 +149,10 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
                 String sensorIdQuery = getSensorIdByServiceDescription((SirServiceReference) ident);
                 log.debug(">>>Database Query: {}", sensorIdQuery);
 
-                ResultSet rs = stmt.executeQuery(sensorIdQuery);
-                while (rs.next()) {
-                    sensorId = rs.getString(PGDAOConstants.sensorId);
+                try (ResultSet rs = stmt.executeQuery(sensorIdQuery);) {
+                    while (rs.next()) {
+                        sensorId = rs.getString(PGDAOConstants.sensorId);
+                    }
                 }
             }
             if (sensorId == null) {
@@ -164,25 +167,27 @@ public class PGSQLInsertSensorStatusDAO implements IInsertSensorStatusDAO {
                 String statusIdQuery = getStatusId(sirStatus, sensorId);
                 log.debug(">>> Database Query: {}", statusIdQuery);
 
-                ResultSet rs = stmt.executeQuery(statusIdQuery);
-                while (rs.next()) {
-                    statusID = rs.getString(PGDAOConstants.statusId);
-                }
-                if (statusID == null) {
-                    // insert status
-                    String insertSensorStatus = insertStatus(sirStatus, sensorId);
-                    log.debug(">>> Database Query: {}", insertSensorStatus);
-
-                    rs = stmt.executeQuery(insertSensorStatus);
+                try (ResultSet rs = stmt.executeQuery(statusIdQuery);) {
                     while (rs.next()) {
-                        sensorId = rs.getString(PGDAOConstants.sensorIdSirOfStatus);
+                        statusID = rs.getString(PGDAOConstants.statusId);
                     }
-                }
-                else {
-                    // update status
-                    String updateSensorStatus = updateStatus(sirStatus, statusID);
-                    log.debug(">>> Database Query: " + updateSensorStatus);
-                    stmt.execute(updateSensorStatus);
+                    if (statusID == null) {
+                        // insert status
+                        String insertSensorStatus = insertStatus(sirStatus, sensorId);
+                        log.debug(">>> Database Query: {}", insertSensorStatus);
+
+                        try (ResultSet rs2 = stmt.executeQuery(insertSensorStatus);) {
+                            while (rs2.next()) {
+                                sensorId = rs2.getString(PGDAOConstants.sensorIdSirOfStatus);
+                            }
+                        }
+                    }
+                    else {
+                        // update status
+                        String updateSensorStatus = updateStatus(sirStatus, statusID);
+                        log.debug(">>> Database Query: " + updateSensorStatus);
+                        stmt.execute(updateSensorStatus);
+                    }
                 }
             }
         }

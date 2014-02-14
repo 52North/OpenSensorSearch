@@ -42,7 +42,7 @@ public class TimePeriod {
         private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         public static enum IndeterminateTimeType {
-            BEFORE, AFTER, NOW, UNKNOWN;
+            NOW, UNKNOWN;
         }
 
         public Date d = null;
@@ -70,7 +70,7 @@ public class TimePeriod {
                 this.d = sdf.parse(s);
             }
             catch (ParseException e) {
-                log.warn("Error parsing IndeterminateTime from String {}", s, e);
+                log.warn("Error parsing IndeterminateTime from String {}", s);
             }
 
             if (this.d == null) {

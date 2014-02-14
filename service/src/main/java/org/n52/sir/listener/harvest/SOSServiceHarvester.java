@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener.harvest;
 
 import java.net.URI;
@@ -28,6 +29,7 @@ import net.opengis.sos.x10.CapabilitiesDocument;
 import net.opengis.sos.x10.CapabilitiesDocument.Capabilities;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.id.IdentifierGenerator;
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirConstants;
 import org.n52.oss.sir.api.SirSensor;
@@ -72,13 +74,15 @@ public class SOSServiceHarvester extends Harvester {
                                Client client,
                                Set<IProfileValidator> validators,
                                @Named("oss.sir.responses.validate")
-                               boolean validateResponses) {
+                               boolean validateResponses,
+                               IdentifierGenerator idGen) {
         super(harvServDao,
               insertDao,
               searchDao,
               client,
               ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
-              validateResponses);
+              validateResponses,
+              idGen);
         this.client = client;
 
         log.info("NEW {}", this);

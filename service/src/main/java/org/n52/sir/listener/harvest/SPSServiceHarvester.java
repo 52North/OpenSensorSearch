@@ -29,6 +29,7 @@ import net.opengis.sps.x10.CapabilitiesDocument;
 import net.opengis.sps.x10.SensorOfferingType;
 
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.id.IdentifierGenerator;
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.api.SirSensor;
@@ -67,13 +68,15 @@ public class SPSServiceHarvester extends Harvester {
                                Client client,
                                Set<IProfileValidator> validators,
                                @Named("oss.sir.responses.validate")
-                               boolean validateResponses) {
+                               boolean validateResponses,
+                               IdentifierGenerator idGen) {
         super(harvServDao,
               insertDao,
               searchDao,
               client,
               ValidatorModule.getFirstMatchFor(validators, ValidatableFormatAndProfile.SML_DISCOVERY),
-              validateResponses);
+              validateResponses,
+              idGen);
 
         log.info("NEW {}", this);
     }

@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
+import org.n52.oss.sir.api.TimePeriod;
+import org.n52.oss.sir.api.TimePeriod.IndeterminateTime;
+import org.n52.oss.sir.api.TimePeriod.IndeterminateTime.IndeterminateTimeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +33,30 @@ public class SqlTools {
             s = s.replace("'", "\\'");
         }
         return s;
+    }
+
+    public static String getStartDate(final TimePeriod period) {
+        IndeterminateTime startTime = period.getStartTime();
+        if (startTime.isIndeterminate() && startTime.itt.equals(IndeterminateTimeType.UNKNOWN))
+            return "-infinity";
+
+        return getDateStringForDB(startTime);
+    }
+
+    private static String getDateStringForDB(IndeterminateTime t) {
+        if (t.isDeterminate())
+            return t.d.toString();
+
+        log.error("Cannot create DB time string from time {}", t);
+        return null;
+    }
+
+    public static String getEndDate(TimePeriod period) {
+        IndeterminateTime endTime = period.getEndTime();
+        if (endTime.isIndeterminate() && endTime.itt.equals(IndeterminateTimeType.UNKNOWN))
+            return "infinity";
+
+        return getDateStringForDB(endTime);
     }
 
 }

@@ -77,6 +77,7 @@ public class SirSensor {
 		return this.phenomenon;
 	}
 
+	// FIXME should this not be called "gloablSensorID" for clarity?
 	public String getInternalSensorID() {
 		return this.internalSensorId;
 	}

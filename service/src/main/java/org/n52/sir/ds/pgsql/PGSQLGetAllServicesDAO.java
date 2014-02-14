@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -60,20 +61,20 @@ public class PGSQLGetAllServicesDAO implements IGetAllServicesDAO {
         // execute query
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
             log.debug(">>>Database Query: {}", query.toString());
-            ResultSet rs = stmt.executeQuery(query.toString());
+            try (ResultSet rs = stmt.executeQuery(query.toString());) {
 
-            // if no phenomenon available give back empty list
-            if (rs == null) {
-                return result;
+                // if no phenomenon available give back empty list
+                if (rs == null) {
+                    return result;
+                }
+
+                // get result as string
+                while (rs.next()) {
+                    SirService serv = new SirService(rs.getString(PGDAOConstants.serviceUrl),
+                                                     rs.getString(PGDAOConstants.serviceType));
+                    result.add(serv);
+                }
             }
-
-            // get result as string
-            while (rs.next()) {
-                SirService serv = new SirService(rs.getString(PGDAOConstants.serviceUrl),
-                                                 rs.getString(PGDAOConstants.serviceType));
-                result.add(serv);
-            }
-
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport(ExceptionLevel.DetailedExceptions);

@@ -66,6 +66,7 @@ import net.opengis.swe.x101.VectorType;
 import net.opengis.swe.x101.VectorType.Coordinate;
 
 import org.apache.xmlbeans.XmlException;
+import org.n52.oss.id.IdentifierGenerator;
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.SMLConstants;
 import org.n52.oss.sir.api.SirBoundingBox;
@@ -783,8 +784,8 @@ public class IOOSHarvester extends FileHarvester {
     @Inject
     public IOOSHarvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
     ISearchSensorDAO searchDao, Client client, Set<IProfileValidator> validators, @Named("oss.sir.responses.validate")
-    boolean validateResponses) {
-        super(harvServDao, insertDao, searchDao, client, validators, validateResponses);
+    boolean validateResponses, IdentifierGenerator idGen) {
+        super(harvServDao, insertDao, searchDao, client, validators, validateResponses, idGen);
 
         log.info("NEW {}", this);
     }

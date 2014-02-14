@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Connection;
@@ -54,15 +55,16 @@ public class PGSQLDescribeSensorDAO implements IDescribeSensorDAO {
             // sensorML query by sensorId
             String sensorMlQuery = sensorMlQuery(sensorId);
             log.debug(">>>Database Query: {}", sensorMlQuery);
-            ResultSet rs = stmt.executeQuery(sensorMlQuery);
-            Timestamp timestamp = null;
+            try (ResultSet rs = stmt.executeQuery(sensorMlQuery);) {
+                Timestamp timestamp = null;
 
-            while (rs.next()) {
-                sensorML = XmlObject.Factory.parse(rs.getString(PGDAOConstants.sensorml));
-                timestamp = rs.getTimestamp(PGDAOConstants.lastUpdate);
+                while (rs.next()) {
+                    sensorML = XmlObject.Factory.parse(rs.getString(PGDAOConstants.sensorml));
+                    timestamp = rs.getTimestamp(PGDAOConstants.lastUpdate);
+                }
+
+                log.debug("Got SensorML from datbase, last update: {}", timestamp);
             }
-
-            log.debug("Got SensorML from datbase, last update: {}", timestamp);
         }
         catch (SQLException sqle) {
             OwsExceptionReport se = new OwsExceptionReport();

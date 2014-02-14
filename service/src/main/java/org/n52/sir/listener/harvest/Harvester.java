@@ -35,6 +35,7 @@ import net.opengis.sos.x10.DescribeSensorDocument.DescribeSensor;
 
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
+import org.n52.oss.id.IdentifierGenerator;
 import org.n52.oss.sir.Client;
 import org.n52.oss.sir.api.SirSearchResultElement;
 import org.n52.oss.sir.api.SirSensor;
@@ -53,8 +54,6 @@ import org.n52.sir.xml.IProfileValidator;
 import org.n52.sir.xml.ValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.name.Named;
 
 /**
  * @author Daniel Nüst (d.nuest@52north.org)
@@ -84,8 +83,15 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
     protected boolean validateResponses;
 
-    public Harvester(IHarvestServiceDAO harvServDao, IInsertSensorInfoDAO insertDao, @Named(ISearchSensorDAO.FULL)
-    ISearchSensorDAO searchDao, Client client, IProfileValidator validator, boolean validateResponses) {
+    private IdentifierGenerator identifierGenerator;
+
+    public Harvester(IHarvestServiceDAO harvServDao,
+                     IInsertSensorInfoDAO insertDao,
+                     ISearchSensorDAO searchDao,
+                     Client client,
+                     IProfileValidator validator,
+                     boolean validateResponses,
+                     IdentifierGenerator idGen) {
         this.harvServDao = harvServDao;
         this.client = client;
         this.validator = validator;
@@ -97,6 +103,8 @@ public abstract class Harvester implements Callable<ISirResponse> {
 
         this.insertSensorDao = insertDao;
         this.searchSensorDao = searchDao;
+
+        this.identifierGenerator = idGen;
 
         log.info("NEW {}", this);
     }
@@ -202,6 +210,10 @@ public abstract class Harvester implements Callable<ISirResponse> {
         servDescs.add(new SirServiceReference(new SirService(serviceURL, serviceType), serviceSpecificSensorId));
         sensor.setServDescs(servDescs);
 
+        // add public identifier
+        String id = this.identifierGenerator.generate();
+        sensor.setInternalSensorId(id);
+
         // add sensor do database
         log.debug("Saving harvested sensor {} to DB.", serviceSpecificSensorId);
 
@@ -211,7 +223,7 @@ public abstract class Harvester implements Callable<ISirResponse> {
             // add to inserted sensor to response
             insertedSensorsP.add(temporarySensor);
 
-            log.info("Inserted sensor " + temporarySensor);
+            log.info("Inserted sensor {}", temporarySensor);
         }
         else {
             log.debug("Could not insert sensor, trying to update: {}", temporarySensor);
@@ -225,11 +237,11 @@ public abstract class Harvester implements Callable<ISirResponse> {
             if (searchResult != null) {
                 log.debug("Found and will update sensor: {}", searchResult);
 
-                sensor.setInternalSensorId(searchResult.getSensorId());
-                String id = this.insertSensorDao.updateSensor(serviceRef, sensor);
+                // sensor.setInternalSensorId(searchResult.getSensorId());
+                String updatedId = this.insertSensorDao.updateSensor(serviceRef, sensor);
                 updatedSensorsP.add(sensor);
 
-                log.info("Updated sensor with id " + id);
+                log.info("Updated sensor with id {}", updatedId);
             }
             else {
                 String errMsg = "Could not add sensor to database, because it could neither be inserted nor updated: "

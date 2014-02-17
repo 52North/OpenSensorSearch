@@ -26,8 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FormController {
 
     @RequestMapping("/discoveryProfile")
-    public String developers() {
+    public String discoveryProfile() {
         return "form/discoveryProfile";
+    }
+
+    @RequestMapping("/conversion")
+    public String conversion() {
+        return "form/conversion";
     }
 
 }

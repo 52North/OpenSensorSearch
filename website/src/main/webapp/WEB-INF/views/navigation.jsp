@@ -77,6 +77,7 @@
 						<li class="divider"></li>
 						<li class="dropdown-header">Tools</li>
 						<li><a href="form/discoveryProfile">Discovery Profile</a></li>
+						<li><a href="form/conversion">Conversion</a></li>
 						<li class="divider"></li>
 						<li class="dropdown-header">Meta</li>
 						<li><a

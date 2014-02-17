@@ -96,7 +96,9 @@ public class TransformationResource {
         StringBuilder sb = new StringBuilder();
 
         sb.append("{ \"transformations\" : [");
-        sb.append(" { \"input\" : ");
+
+        sb.append(" { \"id\" : \"sml100_to_ebrim101\", ");
+        sb.append(" \"input\" : ");
         sb.append("\"text/xml;subtype='sensorML/1.0.0'\"");
         sb.append(" , \"output\" : ");
         sb.append("\"text/xml;subtype='EbRIM/1.0.1'\"");

@@ -45,8 +45,9 @@ For details please check the PostgreSQL (http://www.postgresql.org/docs/) and Po
 
 * **Download and install solr 4.4.0**: There are good tutorials for several platforms around, such as these for Debian/Linux: http://www.arunchinnachamy.com/apache-solr-installation-and-configuration/ and http://andreas-lehr.com/blog/archives/536-installing-apache-solr-on-debian-squeeze-6-0-and-tomcat7.html
 * Download the solr configuration file from https://raw.github.com/52North/OpenSensorSearch/master/service/src/main/resources/db/solrconfig.xml and save it, e.g. as /tmp/solrconfig.xml
+* Download the solr schema file from https://raw.github.com/52North/OpenSensorSearch/master/service/src/main/resources/db/solrschema.xml and save it, e.g. as /tmp/solrschema.xml
 * Create a **node** in solr
-  * See http://wiki.apache.org/solr/CoreAdmin for a detailed description.
+  * See http://wiki.apache.org/solr/CoreAdmin for a detailed description, and http://wiki.apache.org/solr/ConfiguringSolr for configuration options.
   * Create a new core with the following call to the admin API: ``.../admin/cores?action=CREATE&name=opensensorsearch&instanceDir=opensensorsearch&config=/tmp/solrconfig.xml&schema=/tmp/solrschema.xml&persist=true&loadOnStartup=true``
 
 ### Test Data Generation

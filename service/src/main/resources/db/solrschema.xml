@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright 2013 52°North Initiative for Geospatial Open Source Software GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+	This is the Solr schema file based on the example file from http://svn.apache.org/viewvc/lucene/dev/trunk/solr/example/solr/collection1/conf/schema.xml?view=markup
+
+	For more information, comments and tipps on how to customize this file,
+	please see
+	http://wiki.apache.org/solr/SchemaXml or the orgininal example file.
+-->
+
+<schema name="example" version="1.5">
+	<fields>
+		<field name="uniqueID" type="string" indexed="true" stored="true" />
+		<field name="longName" type="string" indexed="true" stored="true" />
+		<field name="shortName" type="string" indexed="true" stored="true" />
+
+		<field name="id" type="string" indexed="true" stored="true"
+			required="true" multiValued="false" />
+		<field name="identification" type="string" indexed="true"
+			stored="true" multiValued="true" />
+		<field name="contact" type="string" indexed="true" stored="true"
+			multiValued="true" />
+		<field name="classifier" type="string" indexed="true" stored="true"
+			multiValued="true" />
+
+		<field name="interface" type="text_general_edge_ngram" indexed="true"
+			stored="true" multiValued="true" />
+		<field name="input" type="text_general_edge_ngram" indexed="true"
+			stored="true" multiValued="true" />
+		<field name="output" type="text_general_edge_ngram" indexed="true"
+			stored="true" multiValued="true" />
+		<field name="keyword" type="text_general_edge_ngram" indexed="true"
+			stored="true" multiValued="true" />
+		<field name="description" type="text_general_edge_ngram"
+			indexed="true" stored="true" />
+
+		<field name="dtstart" type="tdate" indexed="true" stored="true"
+			multiValued="false" />
+		<field name="dtend" type="tdate" indexed="true" stored="true"
+			multiValued="false" />
+
+		<field name="location" type="lnglatlocation" indexed="true"
+			stored="true" />
+		<field name="bboxcenter" type="lnglatlocation" indexed="true"
+			stored="true" />
+
+		<field name="_version_" type="long" indexed="true" stored="true" />
+
+	</fields>
+
+	<uniqueKey>id</uniqueKey>
+
+	<solrQueryParser defaultOperator="AND" />
+
+	<types>
+		<fieldType name="text_general_edge_ngram" class="solr.TextField"
+			positionIncrementGap="100">
+			<analyzer type="index">
+				<tokenizer class="solr.LowerCaseTokenizerFactory" />
+				<filter class="solr.EdgeNGramFilterFactory" minGramSize="2"
+					maxGramSize="15" side="front" />
+			</analyzer>
+			<analyzer type="query">
+				<tokenizer class="solr.LowerCaseTokenizerFactory" />
+			</analyzer>
+		</fieldType>
+
+		<fieldType name="lnglatlocation" class="solr.LatLonType"
+			subFieldSuffix="_coordinate" />
+
+		<fieldType name="string" class="solr.StrField"
+			sortMissingLast="true" />
+
+		<fieldType name="int" class="solr.TrieIntField"
+			precisionStep="0" positionIncrementGap="0" />
+		<fieldType name="float" class="solr.TrieFloatField"
+			precisionStep="0" positionIncrementGap="0" />
+		<fieldType name="long" class="solr.TrieLongField"
+			precisionStep="0" positionIncrementGap="0" />
+		<fieldType name="double" class="solr.TrieDoubleField"
+			precisionStep="0" positionIncrementGap="0" />
+
+		<fieldType name="tint" class="solr.TrieIntField"
+			precisionStep="8" positionIncrementGap="0" />
+		<fieldType name="tfloat" class="solr.TrieFloatField"
+			precisionStep="8" positionIncrementGap="0" />
+		<fieldType name="tlong" class="solr.TrieLongField"
+			precisionStep="8" positionIncrementGap="0" />
+		<fieldType name="tdouble" class="solr.TrieDoubleField"
+			precisionStep="8" positionIncrementGap="0" />
+
+		<fieldType name="date" class="solr.TrieDateField"
+			precisionStep="0" positionIncrementGap="0" />
+
+		<fieldType name="tdate" class="solr.TrieDateField"
+			precisionStep="6" positionIncrementGap="0" />
+
+		<fieldtype name="binary" class="solr.BinaryField" />
+
+		<fieldType name="random" class="solr.RandomSortField"
+			indexed="true" />
+
+		<!-- A specialized field for geospatial search. If indexed, this fieldType
+			must not be multivalued. -->
+		<fieldType name="location" class="solr.LatLonType"
+			subFieldSuffix="_coordinate" />
+
+		<!-- An alternative geospatial field type new to Solr 4. It supports multiValued
+			and polygon shapes.
+			For more information about this and other Spatial fields new to Solr 4,
+			see:
+			http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4
+		-->
+		<fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
+			geo="true" distErrPct="0.025" maxDistErr="0.000009" units="degrees" />
+
+	</types>
+
+</schema>

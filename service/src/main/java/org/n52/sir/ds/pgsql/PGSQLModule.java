@@ -77,6 +77,8 @@ public class PGSQLModule extends AbstractConfigModule {
         bind(IDisconnectFromCatalogDAO.class).to(PGSQLDisconnetFromCatalogDAO.class);
         bind(ICatalogStatusHandlerDAO.class).to(PGSQLCatalogStatusHandlerDAO.class);
 
+        bind(PGSQLObservedPropertyDAO.class);
+
         log.debug("Configured {}", this);
     }
 

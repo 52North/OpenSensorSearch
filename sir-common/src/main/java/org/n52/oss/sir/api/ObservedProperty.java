@@ -19,26 +19,26 @@ package org.n52.oss.sir.api;
  * @author Jan Schulte, Daniel Nüst
  * 
  */
-public class SirPhenomenon {
+public class ObservedProperty {
 
-    String phenomenonId;
+    String id;
 
     String uom;
 
     String urn;
 
-    public SirPhenomenon() {
+    public ObservedProperty() {
         //
     }
 
-    public SirPhenomenon(String urn, String uom, String phenomenonId) {
+    public ObservedProperty(String urn, String uom, String phenomenonId) {
         this.urn = urn;
         this.uom = uom;
-        this.phenomenonId = phenomenonId;
+        this.id = phenomenonId;
     }
 
-    public String getPhenomenonId() {
-        return this.phenomenonId;
+    public String getId() {
+        return this.id;
     }
 
     public String getUom() {
@@ -49,8 +49,8 @@ public class SirPhenomenon {
         return this.urn;
     }
 
-    public void setPhenomenonId(String phenomenonId) {
-        this.phenomenonId = phenomenonId;
+    public void setId(String phenomenonId) {
+        this.id = phenomenonId;
     }
 
     public void setUom(String uom) {
@@ -63,15 +63,24 @@ public class SirPhenomenon {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("Phenomenon: ");
-        sb.append("Urn: ");
-        sb.append(this.urn);
-        sb.append(", UOM: ");
-        sb.append(this.uom);
-        sb.append(", id: ");
-        sb.append(this.phenomenonId);
-        return sb.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("SirPhenomenon [");
+        if (id != null) {
+            builder.append("phenomenonId=");
+            builder.append(id);
+            builder.append(", ");
+        }
+        if (uom != null) {
+            builder.append("uom=");
+            builder.append(uom);
+            builder.append(", ");
+        }
+        if (urn != null) {
+            builder.append("urn=");
+            builder.append(urn);
+        }
+        builder.append("]");
+        return builder.toString();
     }
 
 }

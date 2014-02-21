@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.n52.oss.sir.api.SirPhenomenon;
+import org.n52.oss.sir.api.ObservedProperty;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
@@ -41,9 +41,12 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
 
     private PGConnectionPool cpool;
 
+    private PGSQLObservedPropertyDAO obsPropDao;
+
     @Inject
-    public PGSQLHarvestServiceDAO(PGConnectionPool cpool) {
+    public PGSQLHarvestServiceDAO(PGConnectionPool cpool, PGSQLObservedPropertyDAO obsPropDao) {
         this.cpool = cpool;
+        this.obsPropDao = obsPropDao;
     }
 
     @Override
@@ -80,39 +83,6 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         return result;
     }
 
-    private String insertPhenomenonCommand(SirPhenomenon phenom) {
-        StringBuffer cmd = new StringBuffer();
-
-        cmd.append("INSERT INTO ");
-        cmd.append(PGDAOConstants.phenomenon);
-        cmd.append(" (");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(") SELECT '");
-        cmd.append(phenom.getUrn());
-        cmd.append("', '");
-        cmd.append(phenom.getUom());
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.phenomenon);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(" = '");
-        cmd.append(phenom.getUrn());
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(" = '");
-        cmd.append(phenom.getUom());
-        cmd.append("')) RETURNING ");
-        cmd.append(PGDAOConstants.phenomenonId);
-
-        return cmd.toString();
-    }
-
     @Override
     public SirSensor insertSensor(SirSensor sensor) throws OwsExceptionReport {
         String id = sensor.getInternalSensorID();
@@ -138,31 +108,29 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
 
                 // if (sensor.getInternalSensorID() != null) {
                 if (sensorIdSir != null) {
-                    for (SirPhenomenon phenom : sensor.getPhenomenon()) {
-                        // insert in phenomenon table
-                        String phenomenonID = "";
-                        String insertPhenomenon = insertPhenomenonCommand(phenom);
-                        log.debug(">>>Database Query: {}", insertPhenomenon);
+                    for (ObservedProperty obsProp : sensor.getObservedProperties()) {
+                        String obsPropId = "";
+                        String insertObsProp = this.obsPropDao.insertObservedPropertyCommand(obsProp);
+                        log.debug(">>>Database Query: {}", insertObsProp);
 
-                        try (ResultSet rs2 = stmt.executeQuery(insertPhenomenon);) {
+                        try (ResultSet rs2 = stmt.executeQuery(insertObsProp);) {
                             while (rs2.next()) {
-                                phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
+                                obsPropId = rs.getString(PGDAOConstants.obsPropId);
                             }
-                            if (phenomenonID.isEmpty()) {
-                                // phenomenon ID query
-                                String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                                log.debug(">>>Database Query: {}", phenomenonIDQuery);
-                                try (ResultSet rs3 = stmt.executeQuery(phenomenonIDQuery);) {
+                            if (obsPropId.isEmpty()) {
+                                String idQuery = this.obsPropDao.getIdQuery(obsProp);
+                                log.debug(">>>Database Query: {}", idQuery);
+                                try (ResultSet rs3 = stmt.executeQuery(idQuery);) {
                                     while (rs3.next()) {
-                                        phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
+                                        obsPropId = rs.getString(PGDAOConstants.obsPropId);
                                     }
                                 }
                             }
 
-                            // insert in sensor/phenomenon table
-                            String insertSensorPhenomenon = insertSensorPhenomenonCommand(sensorIdSir, phenomenonID);
-                            log.debug(">>>Database Query: {}", insertSensorPhenomenon);
-                            stmt.execute(insertSensorPhenomenon);
+                            String insertSensorObsProp = this.obsPropDao.insertSensorObsPropCommand(sensorIdSir,
+                                                                                                       obsPropId);
+                            log.debug(">>>Database Query: {}", insertSensorObsProp);
+                            stmt.execute(insertSensorObsProp);
                         }
                     }
 
@@ -196,6 +164,10 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         return sensor;
     }
 
+    /**
+     * @param sensor
+     * @return the database id of the sensor
+     */
     private String insertSensorCommand(SirSensor sensor) {
         StringBuffer cmd = new StringBuffer();
 
@@ -218,6 +190,8 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(", ");
         cmd.append(PGDAOConstants.lastUpdate);
+
+        // the content of the fields
         cmd.append(") SELECT '");
         cmd.append(sensor.getInternalSensorID());
         cmd.append("', ");
@@ -263,15 +237,20 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         }
         cmd.append("}', '");
         cmd.append(sensor.getLastUpdate());
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
+        cmd.append("'");
+
+        // check if sensor exists already
+        // FIXME this check of non-existence is not complete, should check service_spec_id/service combination
+        // as well
+        cmd.append(" WHERE NOT EXISTS (SELECT ");
         cmd.append(PGDAOConstants.bBox);
         cmd.append(", ");
         cmd.append(PGDAOConstants.sensorTimeStart);
         cmd.append(", ");
         cmd.append(PGDAOConstants.sensorTimeEnd);
         cmd.append(", ");
-        cmd.append(PGDAOConstants.sensorml);
-        cmd.append(", ");
+        // cmd.append(PGDAOConstants.sensorml);
+        // cmd.append(", ");
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(" FROM ");
         cmd.append(PGDAOConstants.sensor);
@@ -305,11 +284,16 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append(PGDAOConstants.sensorTimeEnd);
         cmd.append(" = '");
         cmd.append(end);
-        cmd.append("') AND (");
-        cmd.append(PGDAOConstants.sensorml);
-        cmd.append(" = '");
-        cmd.append(sensorMLDocument);
-        cmd.append("') AND (");
+        cmd.append("')");
+
+        // do not check sml content
+        // cmd.append("AND (");
+        // cmd.append(PGDAOConstants.sensorml);
+        // cmd.append(" = '");
+        // cmd.append(sensorMLDocument);
+        // cmd.append("')");
+
+        cmd.append(" AND (");
         cmd.append(PGDAOConstants.sensorText);
         cmd.append(" = '{");
         if ( !sensor.getText().isEmpty()) {
@@ -321,38 +305,6 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         }
         cmd.append("}')) RETURNING ");
         cmd.append(PGDAOConstants.sensorIdSir);
-
-        return cmd.toString();
-    }
-
-    private String insertSensorPhenomenonCommand(String sensorId, String phenomenonID) {
-        StringBuffer cmd = new StringBuffer();
-
-        cmd.append("INSERT INTO ");
-        cmd.append(PGDAOConstants.sensorPhen);
-        cmd.append(" (");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append(") SELECT '");
-        cmd.append(sensorId);
-        cmd.append("', '");
-        cmd.append(phenomenonID);
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.sensorPhen);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append("='");
-        cmd.append(sensorId);
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append("='");
-        cmd.append(phenomenonID);
-        cmd.append("'));");
 
         return cmd.toString();
     }
@@ -459,26 +411,6 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
         cmd.append("'));");
 
         return cmd.toString();
-    }
-
-    private String phenomenonIDQuery(SirPhenomenon phenom) {
-        StringBuffer query = new StringBuffer();
-
-        query.append("SELECT ");
-        query.append(PGDAOConstants.phenomenonId);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.phenomenon);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.phenomenonUrn);
-        query.append("='");
-        query.append(phenom.getUrn());
-        query.append("' AND ");
-        query.append(PGDAOConstants.phenomenonUom);
-        query.append("='");
-        query.append(phenom.getUom());
-        query.append("');");
-
-        return query.toString();
     }
 
     /**

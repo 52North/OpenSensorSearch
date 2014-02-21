@@ -69,7 +69,7 @@ public class PGDAOConstants {
     public static String phenomenon;
 
     // column names of phenomenon
-    public static String phenomenonId;
+    public static String obsPropId;
 
     public static String phenomenonUom;
 
@@ -273,7 +273,7 @@ public class PGDAOConstants {
         service = props.getProperty(this.TNSERVICE);
         status = props.getProperty(this.TNSTATUS);
         catalog = props.getProperty(this.TNCATALOG);
-        phenomenonId = props.getProperty(this.PHENOMENONID);
+        obsPropId = props.getProperty(this.PHENOMENONID);
         phenomenonUrn = props.getProperty(this.PHENOMENONURN);
         phenomenonUom = props.getProperty(this.PHENOMENONUOM);
         sensorIdSir = props.getProperty(this.SENSORIDSIR);

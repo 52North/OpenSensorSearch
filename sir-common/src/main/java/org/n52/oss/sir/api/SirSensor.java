@@ -33,7 +33,7 @@ public class SirSensor {
 
 	private Date lastUpdate;
 
-	private Collection<SirPhenomenon> phenomenon;
+	private Collection<ObservedProperty> observedProperties;
 
 	private String internalSensorId;
 
@@ -73,8 +73,8 @@ public class SirSensor {
 		return this.lastUpdate;
 	}
 
-	public Collection<SirPhenomenon> getPhenomenon() {
-		return this.phenomenon;
+	public Collection<ObservedProperty> getObservedProperties() {
+		return this.observedProperties;
 	}
 
 	// FIXME should this not be called "gloablSensorID" for clarity?
@@ -106,8 +106,8 @@ public class SirSensor {
 		this.lastUpdate = lastUpdate;
 	}
 
-	public void setPhenomenon(Collection<SirPhenomenon> phenomenon) {
-		this.phenomenon = phenomenon;
+	public void setObservedProperties(Collection<ObservedProperty> phenomenon) {
+		this.observedProperties = phenomenon;
 	}
 
 	public void setInternalSensorId(String id) {
@@ -136,7 +136,7 @@ public class SirSensor {
 		sb.append("SirSensor: ");
         sb.append("internalSensorId: " + this.internalSensorId);
 		sb.append(", Service description: " + this.servDescs);
-		sb.append(", " + this.phenomenon);
+		sb.append(", " + this.observedProperties);
 		sb.append(", " + this.bBox);
 		sb.append(", Timeperiod: " + this.timePeriod);
 		sb.append(", Last update: " + this.lastUpdate);

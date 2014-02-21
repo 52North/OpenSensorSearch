@@ -56,8 +56,8 @@ import net.opengis.swe.x101.VectorType.Coordinate;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.n52.oss.sir.api.InternalSensorID;
+import org.n52.oss.sir.api.ObservedProperty;
 import org.n52.oss.sir.api.SirBoundingBox;
-import org.n52.oss.sir.api.SirPhenomenon;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirSensorIdentification;
 import org.n52.oss.sir.api.TimePeriod;
@@ -145,7 +145,7 @@ public class SensorMLDecoder {
 
         sensor.setSensorMLDocument(sensorML);
         sensor.setbBox(getBoundingBox(sensorML));
-        sensor.setPhenomenon(getPhenomenona(sensorML));
+        sensor.setObservedProperties(getObservedProperties(sensorML));
         sensor.setTimePeriod(getTimePeriod(sensorML));
         sensor.setText(getText(sensorML));
         sensor.setKeywords(getKeywords(sensorML));
@@ -190,7 +190,7 @@ public class SensorMLDecoder {
 
         sensor.setSensorMLDocument(SmlTools.wrapSystemTypeInSensorMLDocument(system));
         sensor.setbBox(getBoundingBox(system));
-        sensor.setPhenomenon(getPhenomenon(system));
+        sensor.setObservedProperties(getObservedProperties(system));
         sensor.setTimePeriod(getTimePeriod(system));
         sensor.setText(getText(system));
         sensor.setLongitude(getLongitude(system));
@@ -550,50 +550,50 @@ public class SensorMLDecoder {
 
     }
 
-    private static ArrayList<SirPhenomenon> getPhenomenon(SystemType system) {
-        ArrayList<SirPhenomenon> phenomenona = new ArrayList<>();
+    private static ArrayList<ObservedProperty> getObservedProperties(SystemType system) {
+        ArrayList<ObservedProperty> obsProps = new ArrayList<>();
 
         Outputs outputs = system.getOutputs();
         OutputList outputList = outputs.getOutputList();
         IoComponentPropertyType[] outputArray = outputList.getOutputArray();
         for (IoComponentPropertyType output : outputArray) {
-            SirPhenomenon phenom = new SirPhenomenon();
+            ObservedProperty obsProp = new ObservedProperty();
 
             if (output.isSetQuantity()) {
-                // urn
-                phenom.setUrn(output.getQuantity().getDefinition());
-                // uom
-                phenom.setUom(output.getQuantity().getUom().getCode());
-                phenomenona.add(phenom);
+                String urn = output.getQuantity().getDefinition();
+                obsProp.setUrn(urn);
+                String uom = output.getQuantity().getUom().getCode();
+                obsProp.setUom(uom);
+                obsProps.add(obsProp);
             }
             else if (output.isSetAbstractDataArray1()) {
                 if (output.getAbstractDataArray1().isSetDefinition()) {
-                    phenom.setUrn(output.getAbstractDataArray1().getDefinition());
-                    phenomenona.add(phenom);
+                    obsProp.setUrn(output.getAbstractDataArray1().getDefinition());
+                    obsProps.add(obsProp);
                 }
                 else {
-                    log.warn("Could not handle output phenomenon data array, definition missing.");
+                    log.warn("Could not handle output observedProperty data array, definition missing.");
                 }
             }
             else {
-                log.warn("Could not handle output phenomenon: " + output);
+                log.warn("Could not handle output observedProperty: " + output);
             }
         }
 
-        return phenomenona;
+        return obsProps;
     }
 
-    private static ArrayList<SirPhenomenon> getPhenomenona(SensorMLDocument sensDoc) {
-        ArrayList<SirPhenomenon> phenomenona = new ArrayList<>();
+    private static ArrayList<ObservedProperty> getObservedProperties(SensorMLDocument sensDoc) {
+        ArrayList<ObservedProperty> obsProps = new ArrayList<>();
 
         Member[] members = sensDoc.getSensorML().getMemberArray();
         for (Member member : members) {
             SystemType systemType = (SystemType) member.getProcess();
-            ArrayList<SirPhenomenon> currentPhenomenona = getPhenomenon(systemType);
+            ArrayList<ObservedProperty> current = getObservedProperties(systemType);
 
-            phenomenona.addAll(currentPhenomenona);
+            obsProps.addAll(current);
         }
-        return phenomenona;
+        return obsProps;
     }
 
     /**

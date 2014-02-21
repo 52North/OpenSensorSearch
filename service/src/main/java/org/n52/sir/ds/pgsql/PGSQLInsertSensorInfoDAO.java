@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.n52.oss.sir.api.InternalSensorID;
-import org.n52.oss.sir.api.SirPhenomenon;
+import org.n52.oss.sir.api.ObservedProperty;
 import org.n52.oss.sir.api.SirSensor;
 import org.n52.oss.sir.api.SirSensorIdentification;
 import org.n52.oss.sir.api.SirServiceReference;
@@ -44,9 +44,12 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
     private PGConnectionPool cpool;
 
+    private PGSQLObservedPropertyDAO obsPropDao;
+
     @Inject
-    public PGSQLInsertSensorInfoDAO(PGConnectionPool cpool) {
+    public PGSQLInsertSensorInfoDAO(PGConnectionPool cpool, PGSQLObservedPropertyDAO obsPropDao) {
         this.cpool = cpool;
+        this.obsPropDao = obsPropDao;
     }
 
     @Override
@@ -386,39 +389,6 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         return query.toString();
     }
 
-    private String insertPhenomenonCommand(SirPhenomenon phenom) {
-        StringBuilder cmd = new StringBuilder();
-
-        cmd.append("INSERT INTO ");
-        cmd.append(PGDAOConstants.phenomenon);
-        cmd.append(" (");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(") SELECT '");
-        cmd.append(phenom.getUrn());
-        cmd.append("', '");
-        cmd.append(phenom.getUom());
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.phenomenon);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(" = '");
-        cmd.append(phenom.getUrn());
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(" = '");
-        cmd.append(phenom.getUom());
-        cmd.append("')) RETURNING ");
-        cmd.append(PGDAOConstants.phenomenonId);
-
-        return cmd.toString();
-    }
-
     @Override
     public String insertSensor(SirSensor sensor) throws OwsExceptionReport {
         String id = sensor.getInternalSensorID();
@@ -442,29 +412,26 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
 
                 // use database id for relation tables
                 if (dbId != null) {
-                    for (SirPhenomenon phenom : sensor.getPhenomenon()) {
-                        // insert in phenomenon table
-                        String phenomenonID = "";
-                        String insertPhenomenon = insertPhenomenonCommand(phenom);
-                        log.debug(">>>Database Query: {}", insertPhenomenon);
-                        try (ResultSet rs2 = stmt.executeQuery(insertPhenomenon);) {
+                    for (ObservedProperty obsProp : sensor.getObservedProperties()) {
+                        String obsPropId = "";
+                        String insertObsProp = this.obsPropDao.insertObservedPropertyCommand(obsProp);
+                        log.debug(">>>Database Query: {}", insertObsProp);
+                        try (ResultSet rs2 = stmt.executeQuery(insertObsProp);) {
                             while (rs.next()) {
-                                phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
+                                obsPropId = rs.getString(PGDAOConstants.obsPropId);
                             }
-                            if (phenomenonID.isEmpty()) {
-                                // phenomenon ID query
-                                String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                                log.debug(">>>Database Query: {}", phenomenonIDQuery);
-                                try (ResultSet rs3 = stmt.executeQuery(phenomenonIDQuery);) {
+                            if (obsPropId.isEmpty()) {
+                                String iDQuery = this.obsPropDao.getIdQuery(obsProp);
+                                log.debug(">>>Database Query: {}", iDQuery);
+                                try (ResultSet rs3 = stmt.executeQuery(iDQuery);) {
                                     while (rs.next()) {
-                                        phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
+                                        obsPropId = rs.getString(PGDAOConstants.obsPropId);
                                     }
                                 }
                             }
-                            // insert in sensor/phenomenon table
-                            String insertSensorPhenomenon = insertSensorPhenomenonCommand(dbId, phenomenonID);
-                            log.debug(">>>Database Query: {}", insertSensorPhenomenon);
-                            stmt.execute(insertSensorPhenomenon);
+                            String insertSensorObsProp = this.obsPropDao.insertSensorObsPropCommand(dbId, obsPropId);
+                            log.debug(">>>Database Query: {}", insertSensorObsProp);
+                            stmt.execute(insertSensorObsProp);
                         }
                     }
                 }
@@ -609,58 +576,6 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         return cmd.toString();
     }
 
-    private String insertSensorPhenomenonCommand(String sensorDbId, String phenomenonID) {
-        StringBuilder cmd = new StringBuilder();
-
-        cmd.append("INSERT INTO ");
-        cmd.append(PGDAOConstants.sensorPhen);
-        cmd.append(" (");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append(") SELECT '");
-        cmd.append(sensorDbId);
-        cmd.append("', '");
-        cmd.append(phenomenonID);
-        cmd.append("' WHERE NOT EXISTS (SELECT ");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append(", ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append(" FROM ");
-        cmd.append(PGDAOConstants.sensorPhen);
-        cmd.append(" WHERE (");
-        cmd.append(PGDAOConstants.sensorIdSirOfSensPhen);
-        cmd.append("='");
-        cmd.append(sensorDbId);
-        cmd.append("' AND ");
-        cmd.append(PGDAOConstants.phenomeonIdOfSensPhen);
-        cmd.append("='");
-        cmd.append(phenomenonID);
-        cmd.append("'));");
-
-        return cmd.toString();
-    }
-
-    private String phenomenonIDQuery(SirPhenomenon phenom) {
-        StringBuilder query = new StringBuilder();
-
-        query.append("SELECT ");
-        query.append(PGDAOConstants.phenomenonId);
-        query.append(" FROM ");
-        query.append(PGDAOConstants.phenomenon);
-        query.append(" WHERE (");
-        query.append(PGDAOConstants.phenomenonUrn);
-        query.append("='");
-        query.append(phenom.getUrn());
-        query.append("' AND ");
-        query.append(PGDAOConstants.phenomenonUom);
-        query.append("='");
-        query.append(phenom.getUom());
-        query.append("');");
-
-        return query.toString();
-    }
-
     private String removeReferenceString(String sensorId, SirServiceReference servDesc) {
         StringBuilder query = new StringBuilder();
 
@@ -711,28 +626,6 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
         return query.toString();
     }
 
-    private String updatePhenomenonCommand(SirPhenomenon phenom) {
-        StringBuilder cmd = new StringBuilder();
-
-        cmd.append("UPDATE ");
-        cmd.append(PGDAOConstants.phenomenon);
-        cmd.append(" SET ");
-        cmd.append(PGDAOConstants.phenomenonUrn);
-        cmd.append(" = '");
-        cmd.append(phenom.getUrn());
-        cmd.append("', ");
-        cmd.append(PGDAOConstants.phenomenonUom);
-        cmd.append(" = '");
-        cmd.append(phenom.getUom());
-        cmd.append("' WHERE ");
-        cmd.append(PGDAOConstants.phenomenonId);
-        cmd.append(" = ");
-        cmd.append(phenom.getPhenomenonId());
-        cmd.append(";");
-
-        return cmd.toString();
-    }
-
     @Override
     public String updateSensor(SirSensorIdentification sensIdent, SirSensor sensor) throws OwsExceptionReport {
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement();) {
@@ -750,24 +643,23 @@ public class PGSQLInsertSensorInfoDAO implements IInsertSensorInfoDAO {
                 log.debug("Updated sensor: {} !", sensor);
 
                 if (sensor.getInternalSensorID() != null) {
-                    for (SirPhenomenon phenom : sensor.getPhenomenon()) {
-                        // phenomenon ID query
-                        String phenomenonIDQuery = phenomenonIDQuery(phenom);
-                        log.debug(">>>Database Query: {}", phenomenonIDQuery);
-                        try (ResultSet rs = stmt.executeQuery(phenomenonIDQuery);) {
+                    for (ObservedProperty obsProp : sensor.getObservedProperties()) {
+                        String iDQuery = this.obsPropDao.getIdQuery(obsProp);
+                        log.debug(">>>Database Query: {}", iDQuery);
+                        try (ResultSet rs = stmt.executeQuery(iDQuery);) {
                             while (rs.next()) {
-                                String phenomenonID = rs.getString(PGDAOConstants.phenomenonId);
-                                phenom.setPhenomenonId(phenomenonID);
+                                String obsPropId = rs.getString(PGDAOConstants.obsPropId);
+                                obsProp.setId(obsPropId);
                             }
 
-                            String updatePhenomenon = updatePhenomenonCommand(phenom);
-                            log.debug(">>>Database Query: {}", updatePhenomenon);
-                            boolean phenUpdate = stmt.execute(updatePhenomenon);
+                            String updateObsProp = this.obsPropDao.updateObservedPropertyCommand(obsProp);
+                            log.debug(">>>Database Query: {}", updateObsProp);
+                            boolean phenUpdate = stmt.execute(updateObsProp);
 
                             if (phenUpdate)
-                                log.warn("Wanted to only update phenomenon, but got a result set.");
+                                log.warn("Wanted to only update observed property, but got a result set.");
                             else
-                                log.debug("Updated phenomenon: {} ", phenom);
+                                log.debug("Updated observedProperty: {} ", obsProp);
                         }
                     }
                 }

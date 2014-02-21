@@ -786,7 +786,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
             query.append(") AND (");
             query.append(PGDAOConstants.phenomenon);
             query.append(".");
-            query.append(PGDAOConstants.phenomenonId);
+            query.append(PGDAOConstants.obsPropId);
             query.append(" = ");
             query.append(PGDAOConstants.sensorPhen);
             query.append(".");

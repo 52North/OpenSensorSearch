@@ -109,6 +109,8 @@ public class PGSQLHarvestServiceDAO implements IHarvestServiceDAO {
                 // if (sensor.getInternalSensorID() != null) {
                 if (sensorIdSir != null) {
                     for (ObservedProperty obsProp : sensor.getObservedProperties()) {
+
+                        // FIXME "add or get id" procedure for observed properties
                         String obsPropId = "";
                         String insertObsProp = this.obsPropDao.insertObservedPropertyCommand(obsProp);
                         log.debug(">>>Database Query: {}", insertObsProp);

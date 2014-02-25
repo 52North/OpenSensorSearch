@@ -30,7 +30,7 @@ public class SqlTools {
         String s = text;
         if (text.contains("'")) {
             log.debug("Text contains character that has to be escaped before database insertion, namely ' .");
-            s = s.replace("'", "\\'");
+            s = s.replace("'", "''"); // http://www.postgresql.org/docs/9.3/static/sql-syntax-lexical.html
         }
         return s;
     }

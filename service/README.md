@@ -23,3 +23,10 @@ The following line in ``SolrModule.java`` activates Solr for autocomplete-search
 ```
 bind(ISearchSensorDAO.class).annotatedWith(Names.named(ISearchSensorDAO.AUTOCOMPLETE)).to(SOLRSearchSensorDAO.class);
 ```
+
+Second, the used engines for search can be configured in the config file. The results are combined in a ``Set`` using the public sensor identifier, the full engine is used first (following the assumption that it contains more detailed information).
+
+```
+oss.search.useAutocompleteEngine=true
+oss.search.useFullEngine=true
+```

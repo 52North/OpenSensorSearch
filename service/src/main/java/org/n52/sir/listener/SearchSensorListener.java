@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.listener;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.n52.oss.sir.SirClient;
 import org.n52.oss.sir.SirConstants;
@@ -41,6 +40,7 @@ import org.n52.sir.util.SORTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
@@ -64,13 +64,21 @@ public class SearchSensorListener implements ISirRequestListener {
 
     private SirClient client;
 
+    private boolean useAutocompletEngine;
+
+    private boolean useFullEngine;
+
     @Inject
     public SearchSensorListener(@Named(ISearchSensorDAO.FULL)
     ISearchSensorDAO dao, @Named(ISearchSensorDAO.AUTOCOMPLETE)
-    ISearchSensorDAO autocompleteDao, SirClient client) {
+    ISearchSensorDAO autocompleteDao, @Named("oss.search.useAutocompleteEngine")
+    boolean useAutocompleteEngine, @Named("oss.search.useAutocompleteEngine")
+    boolean useFullEngine, SirClient client) {
         this.client = client;
         this.searchSensDao = dao;
         this.autocompleteDao = autocompleteDao;
+        this.useAutocompletEngine = useAutocompleteEngine;
+        this.useFullEngine = useFullEngine;
 
         log.debug("NEW {}", this);
     }
@@ -86,54 +94,40 @@ public class SearchSensorListener implements ISirRequestListener {
 
     @Override
     public ISirResponse receiveRequest(AbstractSirRequest request) {
-        return receiveRequest(request, false);
+        return receiveRequest(request, this.useAutocompletEngine, this.useFullEngine);
     }
 
-    public ISirResponse receiveRequest(AbstractSirRequest request, boolean autocompleteEngineOnly) {
+    public ISirResponse receiveRequest(AbstractSirRequest request, boolean autocompleteEngine, boolean fullEngine) {
         SirSearchSensorRequest searchSensReq = (SirSearchSensorRequest) request;
         // SirSearchCriteria crit = searchSensReq.getSearchCriteria();
         // String lat = crit.getLat();
         // String lng = crit.getLng();
 
         SirSearchSensorResponse response = new SirSearchSensorResponse();
-        ArrayList<SirSearchResultElement> searchResElements = null;
+        Set<SirSearchResultElement> searchResElements = null;
 
         try {
             if (searchSensReq.getSensIdent() != null)
                 searchResElements = searchByIdentification(searchSensReq);
             else
-                searchResElements = searchBySearchCriteria(searchSensReq, autocompleteEngineOnly);
-
-            // FIXME moh-yakoub: why do you query by id manually here, there is one happening above!
-            // Object resultElement = this.searchSensDao.getSensorBySensorID(sensorId.getSensorId(),
-            // searchSensReq.isSimpleResponse());
-            // if (resultElement != null) {
-            // searchResElements.add(resultElement);
+                searchResElements = searchBySearchCriteria(searchSensReq, autocompleteEngine, fullEngine);
         }
-
         catch (OwsExceptionReport e) {
             return new ExceptionResponse(e);
         }
 
-        // remove duplicates
-        Collection<SirSearchResultElement> result = new HashSet<>(searchResElements);
-        if (result.size() != searchResElements.size())
-            log.debug("Set size {} vs. list size {} - removed duplicates",
-                      result.size(),
-                      searchResElements.size());
-
         // if a simple response, add the corresponding GET URLs and bounding boxes
         if (searchSensReq.isSimpleResponse()) {
-            result = processForSimpleResponse(searchSensReq, result);
+            searchResElements = processForSimpleResponse(searchSensReq, searchResElements);
         }
 
-        response.setSearchResultElements(result);
+        response.setSearchResultElements(searchResElements);
 
         return response;
     }
 
-    private Collection<SirSearchResultElement> processForSimpleResponse(SirSearchSensorRequest searchSensReq,
-                                                                        Collection<SirSearchResultElement> result) {
+    private Set<SirSearchResultElement> processForSimpleResponse(SirSearchSensorRequest searchSensReq,
+                                                                 Set<SirSearchResultElement> result) {
         // if the requested version is not 0.3.0, keep the bounding box, otherwise remove
         String version = searchSensReq.getVersion();
         boolean removeBBoxes = version.equals(SirConstants.SERVICE_VERSION_0_3_0);
@@ -161,13 +155,13 @@ public class SearchSensorListener implements ISirRequestListener {
         return result;
     }
 
-    private ArrayList<SirSearchResultElement> searchBySearchCriteria(SirSearchSensorRequest searchSensReq,
-                                                                     boolean autocompleteOnly) {
-        log.debug("Searching with criteria {} using only the autocomplete engine: {}",
+    private Set<SirSearchResultElement> searchBySearchCriteria(SirSearchSensorRequest searchSensReq,
+                                                               boolean autocompleteEngine,
+                                                               boolean fullEngine) {
+        log.debug("Searching with criteria {} using only the engines autocomplete: {} | full: {}",
                   searchSensReq.getSearchCriteria(),
-                  autocompleteOnly);
-
-        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
+                  autocompleteEngine,
+                  fullEngine);
 
         // utilize SOR if information is given
         if (searchSensReq.getSearchCriteria().isUsingSOR()) {
@@ -182,45 +176,45 @@ public class SearchSensorListener implements ISirRequestListener {
             phenomena.addAll(newPhenomena);
         }
 
-        Collection<SirSearchResultElement> searchResElementsSolr = null;
-        Collection<SirSearchResultElement> searchResElementsPgSQL = null;
+        Set<SirSearchResultElement> searchResElements = Sets.newHashSet();
+        int autocompleteCount = 0;
+        int fullCount = 0;
 
-        // search autocomplete database
-        try {
-            searchResElementsSolr = this.autocompleteDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                      searchSensReq.isSimpleResponse());
-        }
-        catch (OwsExceptionReport e) {
-            log.error("Could not query data from search backend.", e);
-            searchResElementsSolr = new ArrayList<>();
-            // return new ExceptionResponse(e);
-        }
-
-        if ( !autocompleteOnly) {
-            // search PostGreSQL
+        if (fullEngine) {
             try {
-                searchResElementsPgSQL = this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
-                                                                         searchSensReq.isSimpleResponse());
+                Collection<SirSearchResultElement> result = this.searchSensDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                                            searchSensReq.isSimpleResponse());
+                searchResElements.addAll(result);
+                fullCount = result.size();
             }
             catch (OwsExceptionReport e) {
-                log.error("Could not query data from search backend.", e);
-                searchResElementsPgSQL = new ArrayList<>();
+                log.error("Could not query data from full search backend.", e);
             }
         }
 
-        // union the searches
-        Collections.addAll(searchResElements, searchResElementsSolr.toArray(new SirSearchResultElement[] {}));
-        Collections.addAll(searchResElements, searchResElementsPgSQL.toArray(new SirSearchResultElement[] {}));
-        log.debug("Found {} results in Solr, {} in Postgres, so {} in total.",
-                  searchResElementsSolr.size(),
-                  searchResElementsPgSQL.size(),
+        if (autocompleteEngine) {
+            try {
+                Collection<SirSearchResultElement> result = this.autocompleteDao.searchSensor(searchSensReq.getSearchCriteria(),
+                                                                                              searchSensReq.isSimpleResponse());
+                searchResElements.addAll(result);
+                autocompleteCount = result.size();
+            }
+            catch (OwsExceptionReport e) {
+                log.error("Could not query data from autocomplete backend.", e);
+            }
+        }
+
+        // TODO one could assume that both backends provide the same data...
+        log.debug("Found {} results in autocomplete, {} in full DB, leaving {} in total.",
+                  autocompleteCount,
+                  fullCount,
                   searchResElements.size());
 
         return searchResElements;
     }
 
-    private ArrayList<SirSearchResultElement> searchByIdentification(SirSearchSensorRequest searchSensReq) throws OwsExceptionReport {
-        ArrayList<SirSearchResultElement> searchResElements = new ArrayList<>();
+    private Set<SirSearchResultElement> searchByIdentification(SirSearchSensorRequest searchSensReq) throws OwsExceptionReport {
+        Set<SirSearchResultElement> searchResElements = Sets.newHashSet();
 
         for (SirSensorIdentification sensIdent : searchSensReq.getSensIdent()) {
             if (sensIdent instanceof InternalSensorID) {

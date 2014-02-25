@@ -19,18 +19,17 @@
 package org.n52.oss.ui.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/form")
+// @RequestMapping(value = "/form")
 public class FormController {
 
-    @RequestMapping("/discoveryProfile")
+    // @RequestMapping("/discoveryProfile")
     public String discoveryProfile() {
         return "form/discoveryProfile";
     }
 
-    @RequestMapping("/conversion")
+    // @RequestMapping("/conversion")
     public String conversion() {
         return "form/conversion";
     }

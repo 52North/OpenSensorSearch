@@ -32,7 +32,7 @@ public class ConfigModule extends AbstractConfigModule {
     @Override
     protected void configure() {
         try {
-            Properties sirProps = loadProperties("/prop/sir.properties");
+            Properties sirProps = loadProperties("/prop/default.properties");
 
             // update properties from home folder file
             sirProps = updateFromUserHome(sirProps, HOME_CONFIG_FILE);

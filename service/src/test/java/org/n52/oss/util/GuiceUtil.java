@@ -63,7 +63,7 @@ public class GuiceUtil {
                 try {
                     Properties sirProps = new Properties();
                     Properties dbProps = new Properties();
-                    sirProps.load(GuiceUtil.class.getResourceAsStream("/prop/sir.properties"));
+                    sirProps.load(GuiceUtil.class.getResourceAsStream("/prop/default.properties"));
                     dbProps.load(GuiceUtil.class.getResourceAsStream("/prop/db.properties"));
                     Names.bindProperties(binder(), sirProps);
                     Names.bindProperties(binder(), dbProps);

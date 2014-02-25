@@ -42,7 +42,7 @@ public class Configuration {
 
     private Configuration() throws IOException {
         Properties props = new Properties();
-        props.load(Configuration.class.getResourceAsStream("sir.properties"));
+        props.load(Configuration.class.getResourceAsStream("default.properties"));
         properties = props;
 
         log.info("NEW {}", this);

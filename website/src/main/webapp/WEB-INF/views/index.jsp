@@ -18,27 +18,61 @@
 <%@ page language="java" contentType="text/html; utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
-<html lang="en" ng-app="ossApp" ng-controller="ossCtrl">
+<html lang="en" ng-app="oss.app">
 <head>
 
-<%@ include file="common-head.jsp"%>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
-<title ng-bind-template="Open Sensor Search by 52°North | {{q}}">Open
-	Sensor Search by 52°North</title>
+<base
+	href="${fn:substring(url, 0, fn:length(url) - fn:length(pageContext.request.requestURI))}${pageContext.request.contextPath}/" />
 
-<script src="lib/jquery.js" type="text/javascript"></script>
-<script src="lib/jquery-ui.min.js" type="text/javascript"></script>
-<script src="lib/bootstrap.js" type="text/javascript"></script>
+<link href="http://52north.org/templates/52n-2012/favicon.ico"
+	rel="shortcut icon" type="image/x-icon" />
 
-<script src="scripts/lib/angular/angular.js"></script>
-<script src="scripts/lib/angular/ui-bootstrap-custom-tpls-0.10.0.js"></script>
+<link href="styles/bootstrap.css" rel="stylesheet">
+<link href="styles/bootstrap-responsive.css" rel="stylesheet">
+<link href="styles/jquery-ui.css" rel="stylesheet" />
 
-<script src="scripts/controllers.js"></script>
-<script src="scripts/oss.js"></script>
+<link href="styles/oss.css" type="text/css" rel="stylesheet" />
+
+<jsp:useBean id="configBean" scope="application"
+	class="org.n52.oss.ui.WebsiteConfig" />
+
+<script type="text/javascript">
+	var ossApiEndpoint = '<%=configBean.getApiEndpoint()%>';
+	console.log("ossApiEndpoint = " + ossApiEndpoint);
+	var sirEndpoint = '<%=configBean.getSirEndpoint()%>';
+	console.log("sirEndpoint = " + sirEndpoint);
+</script>
+
+<!-- <title ng-bind-template="Open Sensor Search by 52°North | {{q}}">Open -->
+<!-- 	Sensor Search by 52°North</title> -->
+<title>Open Sensor Search by 52°North</title>
+
+<script src="js/lib/jquery.js" type="text/javascript"></script>
+<script src="js/lib/jquery-ui.min.js" type="text/javascript"></script>
+<script src="js/lib/bootstrap.js" type="text/javascript"></script>
+
+<script src="js/lib/angular/angular.js"></script>
+<script src="js/lib/angular/angular-route.js"></script>
+<script src="js/lib/angular/ui-bootstrap-custom-tpls-0.10.0.js"></script>
+
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/oss.js"></script>
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
 
 <script type="text/ng-template" id="feedbackModalContent.html">
         							<div class="modal-header">
@@ -59,145 +93,129 @@
 </head>
 
 <body>
-	<%@ include file="navigation.jsp"%>
+	<img class="betaBanner" src="images/beta.png" height="100"
+		alt="beta banner" />
+
+	<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<a href="http://52north.org" title="52&deg;North Website"><img
+				alt="52N logo" src="images/52n-icon.png"
+				style="float: right; margin-top: 4px; margin-right: 10px;"
+				width="42" height="42"></a>
+
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Open Sensor Search</a>
+			</div>
+
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">Documentation <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-header">OSS</li>
+							<li><a
+								href="https://52north.org/twiki/bin/view/SensorWeb/OpenSensorSearch">Wiki</a></li>
+							<li><a href="#/api">API</a></li>
+							<li><a href="#" id="apiEndpointMenuLink">API endpoint</a></li>
+							<li class="divider"></li>
+							<li class="dropdown-header">Meta</li>
+							<li><a
+								href="http://52north.org/communities/sensorweb/discovery/">Sensor
+									Discovery</a></li>
+						</ul></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">Harvesting <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-header">Documentation</li>
+							<li><a href="#/harvesting/developers">Script Developers</a></li>
+							<li class="dropdown-header">Forms</li>
+							<li><a href="#/harvesting/script">Javascript</a></li>
+							<li><a href="#/harvesting/oss">OSS Server</a></li>
+							<li><a href="#/harvesting/ows">OGC Web Service</a></li>
+						</ul></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">More <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-header">Tools</li>
+							<li><a href="#/discoveryProfile">Discovery Profile</a></li>
+							<li><a href="#/conversion">Conversion</a></li>
+							<li class="divider"></li>
+							<li class="dropdown-header">SIR</li>
+							<li><a href="sir/client">Extended Client</a></li>
+							<li><a href="sir/form">Form Client</a></li>
+							<li><a
+								href="https://52north.org/twiki/bin/view/SensorWeb/SensorInstanceRegistry">Documentation</a></li>
+							<li class="divider"></li>
+							<li class="dropdown-header">Meta</li>
+							<li><a href="#/about">About</a></li>
+							<li><a href="#/login">Login</a></li>
+							<li><a href="https://github.com/52North/OpenSensorSearch">Source
+									Code</a></li>
+							<li><a
+								onclick="window.external.AddSearchProvider('resources/searchPlugin.xml');">Add
+									as search plugin</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
 
 	<div id="wrap">
+		<div data-alerts="alerts"></div>
+		
 		<div class="container">
-			<%-- 			<c:if test="${RegisterSucceded}"> --%>
-			<!-- 				<div class="alert alert-error"> -->
-			<!-- 					<a class="close" data-dismiss="alert"></a> <strong>Error!</strong> -->
-			<!-- 					Your account was created , contact Site administrator for -->
-			<!-- 					activation -->
-			<!-- 				</div> -->
-			<%-- 			</c:if> --%>
-
-			<div ng-controller="ossAlertCtrl" ng-cloak>
-				<alert ng-repeat="alert in alerts" type="alert.type"
-					close="closeAlert($index)">{{alert.msg}}</alert>
-			</div>
-
-			<div id="search">
-				<form class="form-inline" ng-submit="ossSearch()">
-					<!-- <pre>Model: {{asyncSelected | json}}</pre> -->
-					<!-- 					<div class='container-fluid' ng-controller="ossTypeaheadCtrl"> -->
-					<!-- 						<pre>Model: {{asyncSelected | json}}</pre> -->
-					<!-- 						<label for="q">Search:</label> <input type="text" -->
-					<!-- 							name="q" class="form-control" ng-model="asyncSelected" -->
-					<!-- 							placeholder="Suggestions will be loaded while typing..." -->
-					<!-- 							typeahead="s for suggestions in getSuggestions($viewValue) | filter:$viewValue" -->
-					<!-- 							typeahead-loading="loadingLocations" typeahead-min-length="3" -->
-					<!-- 							typeahead-wait-ms="300" required> <i -->
-					<!-- 							ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i> -->
-					<!-- 						<p class="help-block">Try for example: "washington" or "water" -->
-					<!-- 							or "temperature"</p> -->
-					<!-- 					</div> -->
-					<div>
-						<div class='container-fluid'>
-							<label for="q">Search for sensor data:</label> <input type="text"
-								name="q" class="form-control" ng-model="q"
-								placeholder="Search term(s)..." required>
-							<p class="help-block">Try for example: "washington" or
-								"water" or "temperature"</p>
-						</div>
-					</div>
-					<div>
-						<button type="submit" class="btn btn-primary btn-large">Search</button>
-						<button type="submit" data-toggle="tooltip"
-							data-placement="bottom" title="Uses the Geolocation API"
-							class="btn btn-info btn-large" id="btnSearchNearby">Search
-							nearby</button>
-					</div>
-
-					<input type="hidden" name="httpAccept" value="text/html" /> <input
-						name="lat" type="hidden" id="lat" class="form-control"> <input
-						name="lng" type="hidden" id="lng" class="form-control"> <input
-						name="radius" type="hidden" id="radius" class="form-control">
-				</form>
-
-				<div id="searchResult.results">
-					<div id="searchResultControl" ng-show="searchResult.results">
-						<span id="searchResultStatistics">{{searchResult.results.length}}
-							hits</span> | <span id="searchFilter"> Filter: <input
-							ng-model="query">
-						</span> <span id="searchFormats" ng-controller="ossFormatCtrl"> <span>Response
-								format:</span> <select ng-model="selectedFormat"
-							ng-options="format.name for format in availableResponseFormats"
-							ng-change="update()"></select>
-						</span>
-					</div>
-
-					<ul id="searchResultList">
-						<li
-							ng-repeat="result in searchResult.results | filter:query | orderBy:orderProp">
-							<div ng-control="ossResultCtrl">
-								<div class="result-header">
-									Sensor: <a href="{{apiEndpoint_sensors}}/{{result.sensorId}}"
-										title="RESTful resource for {{result.sensorId}}">{{result.sensorId}}</a>,
-									<a href="{{result.sensorDescription.url}}"
-										title="SIR DescribeSensor request for sensor {{result.sensorId}}">DescribeSensor</a>
-								</div>
-								<div class="result-service"
-									ng-hide="result.serviceReferences.length != 0">
-									{{result.serviceReferences.length}} service(s):
-									<ul>
-										<li ng-repeat="ref in result.serviceReferences"><a
-											href="{{serviceUrl(ref)}}"
-											title="{{ref.serviceSpecificSensorId}} @ {{ref.serviceType}}">{{ref.serviceUrl}}</a>
-										</li>
-									</ul>
-								</div>
-								<div class="result-label">
-									<object class="geolabelEmbed" data="{{geolabelUrl(result)}}"></object>
-								</div>
-								<div class="result-properties">
-									<div>
-										<span>Last update: {{result.lastUpdate}} </span> | <span>
-											BBOX: {{result.sensorDescription.boundingBox.north}}N,
-											{{result.sensorDescription.boundingBox.east}}E,
-											{{result.sensorDescription.boundingBox.south}}S,
-											{{result.sensorDescription.boundingBox.west}}W </span>
-									</div>
-									<div class="result-description">
-										<p>{{result.sensorDescription.text}}</p>
-									</div>
-								</div>
-								<div class="social">
-									<!-- <span><a href="{{feedbackSubmit(result)}}" title="Submit feedback for GEOSS">Submit Feedback</a></span> -->
-									<span> <a class="btn btn-xs btn-default" target="_blank"
-										title="Submit feedback for GEOSS"
-										ng-href="{{createFeedbackSubmitLink(result)}}">Submit
-											Feedback</a>
-									</span> <span ng-controller="ossFeedbackModalCtrl">
-										<button class="btn btn-xs btn-default" ng-click="open()">Open
-											feedback</button>
-									</span>
-									<div id="socialshareprivacy"></div>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-
-				<div id="searchInfo">
-					<p>
-						Searching across... <span id="statsSensors">..</span> sensors, <span
-							id="statsPhenonema">..</span> phenomena, and <span
-							id="statsServices">..</span> services. <span
-							class="infotextHighlight">Is your data missing? <a
-							href="mailto:d.nuest@52north.org">Write us an email!</a></span> <br />
-						<a ng-href="{{urlQuery}}">{{urlQuery}}</a>
-					</p>
-				</div>
-			</div>
+			<div ng-view></div>
 		</div>
 	</div>
 
 	<div style="clear: both;"></div>
 
-	<%@ include file="footer.jsp"%>
+	<div id="footer">
+		<div class="container">
+			<div class="row" style="margin-top: 10px;">
+				<dl class="dl-horizontal col-md-6" style="margin: 0px;">
+					<dt>52&deg;North</dt>
+					<dd>
+						<a href="http://www.52north.org/">http://www.52north.org</a>
+					</dd>
+					<dt>GitHub Project</dt>
+					<dd>
+						<a href="https://github.com/52North/OpenSensorSearch">https://github.com/52North/OpenSensorSearch</a>
+						<a href="https://github.com/52North/OpenSensorSearch"
+							style="text-decoration: none"><span class="label label-info">Fork
+								us!</span> </a>
+					</dd>
+				</dl>
+				<dl class="dl-horizontal col-md-6" style="margin: 0px;">
+					<dt>GeoViQua</dt>
+					<dd>
+						<a href="http://www.geoviqua.org/">http://www.geoviqua.org/</a>
+					</dd>
+					<dt>More Projects</dt>
+					<dd>
+						<a
+							href="http://52north.org/resources/references/sensor-web/osiris">OSIRIS</a>,
+						GENESIS
+					</dd>
+				</dl>
+			</div>
+			<p class="text-center" style="margin-top: 10px;">Copyright &copy;
+				2013 52&deg;North Initiative for Geospatial Open Source Software
+				GmbH. All Rights Reserved. | ${project.build.finalName} version
+				${version}</p>
+		</div>
+	</div>
 
 	<!-- 	<script type="text/javascript" src="lib/jquery.socialshareprivacy.min.js"></script> -->
 	<script type="text/javascript">
+		$("#apiEndpointMenuLink").attr("href", ossApiEndpoint);
 		var queryEndpoint = ossApiEndpoint + "/search";
 	</script>
 </body>

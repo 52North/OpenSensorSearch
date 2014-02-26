@@ -43,8 +43,6 @@
 	<%@ include file="../navigation.jsp"%>
 
 	<div id="wrap">
-		<%@ include file="../navigation.jsp"%>
-
 		<div class="container" style="padding-top: 60px;">
 			<h1>Login</h1>
 

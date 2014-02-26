@@ -12,12 +12,11 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
-	<context:component-scan
-		base-package="org.n52.oss.ui.controllers,org.n52.oss.ui.services" />
+	<context:component-scan base-package="org.n52.oss.ui.controllers" />
+	<!-- org.n52.oss.ui.services -->
 
 	<mvc:resources mapping="/styles/**" location="/WEB-INF/css/" />
-	<mvc:resources mapping="/scripts/**" location="/WEB-INF/js/" />
-	<mvc:resources mapping="/lib/**" location="/WEB-INF/js/lib/" />
+	<mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
 	<mvc:resources mapping="/images/**" location="/WEB-INF/images/" />
 	<mvc:resources mapping="/sir/**" location="/WEB-INF/sir/" />

@@ -13,22 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var ossApp = angular.module("ossApp", [ "ui.bootstrap" ]);
 
-ossApp.constant("typeaheadEndpoint", ossApiEndpoint + "/suggest");
-ossApp.constant("apiEndpoint", ossApiEndpoint + "/search");
-ossApp.constant("apiEndpoint_sensors", ossApiEndpoint + "/sensors");
-// ossApp.constant("geolabelEndpoint",
-// "http://geoviqua.dev.52north.org/glbservice/api/v1/svg");
-ossApp.constant("geolabelEndpoint",
-		"http://localhost:8080/glbservice/api/v1/svg");
-ossApp.constant("feedbackServerEndpoint",
-		"http://geoviqua.stcorp.nl/devel/api/v1/feedback/collections/search");
-ossApp.constant("feedbackSubmitEndpoint",
-		"https://geoviqua.stcorp.nl/devel/submit_feedback.html");
-ossApp.constant("targetCodespace", "http://opensensorsearch.net/");
+var ossControllers = angular.module("oss.controllers", []);
 
-ossApp.controller("ossCtrl", [
+ossControllers.controller("oss.searchControl", [
 		"$scope",
 		"$http",
 		"apiEndpoint",
@@ -117,7 +105,7 @@ ossApp.controller("ossCtrl", [
 			};
 		} ]);
 
-ossApp.controller("ossTypeaheadCtrl", [
+ossControllers.controller("ossTypeaheadCtrl", [
 		"$scope",
 		"$http",
 		"typeaheadEndpoint",
@@ -151,7 +139,7 @@ ossApp.controller("ossTypeaheadCtrl", [
 			};
 		} ]);
 
-ossApp.controller('ossFormatCtrl', function($scope) {
+ossControllers.controller("ossFormatCtrl", function($scope) {
 	$scope.availableResponseFormats = [ {
 		// mimeType : "text/html",
 		// name : "HTML"
@@ -179,7 +167,7 @@ ossApp.controller('ossFormatCtrl', function($scope) {
 	};
 });
 
-ossApp.controller("ossAlertCtrl", [ "$scope", function($scope) {
+ossControllers.controller("ossAlertCtrl", [ "$scope", function($scope) {
 	// $scope.alerts = [ {
 	// type : 'danger',
 	// msg : 'Oh snap! Change a few things up and try submitting again.'
@@ -199,7 +187,10 @@ ossApp.controller("ossAlertCtrl", [ "$scope", function($scope) {
 	};
 } ]);
 
-ossApp.controller("ossFeedbackModalCtrl", [ "$scope", "$modal", "$log",
+ossControllers.controller("ossFeedbackModalCtrl", [
+		"$scope",
+		"$modal",
+		"$log",
 		function($scope, $modal, $log) {
 			// alert("from scope: " + $scope.result);
 			$scope.open = function() {
@@ -211,7 +202,8 @@ ossApp.controller("ossFeedbackModalCtrl", [ "$scope", "$modal", "$log",
 							return $scope.result;
 						},
 						feedbackSubmitLink : function() {
-							return $scope.createFeedbackSubmitLink($scope.result);
+							return $scope
+									.createFeedbackSubmitLink($scope.result);
 						},
 						feedbackUrl : function() {
 							return $scope.feedbackUrl($scope.result, "json");
@@ -225,22 +217,29 @@ ossApp.controller("ossFeedbackModalCtrl", [ "$scope", "$modal", "$log",
 			};
 		} ]);
 
-var ModalInstanceCtrl = [ "$scope", "$http", "$modalInstance", "currentResult", "feedbackUrl", "feedbackSubmitLink",
+var ModalInstanceCtrl = [
+		"$scope",
+		"$http",
+		"$modalInstance",
+		"currentResult",
+		"feedbackUrl",
+		"feedbackSubmitLink",
 		function($scope, $http, $modalInstance, currentResult, feedbackUrl,
 				feedbackSubmitLink) {
 			$scope.current = currentResult;
 			$scope.feedbackUrl = feedbackUrl;
 			$scope.feedbackSubmitLink = feedbackSubmitLink;
 			$scope.feedback = "loading...";
-			
-			console.log("[OSS] showing feedback for " + $scope.current + " using " + feedbackUrl);
-			
+
+			console.log("[OSS] showing feedback for " + $scope.current
+					+ " using " + feedbackUrl);
+
 			$scope.displayFeedback = function(data) {
 				// $modalInstance.close($scope.selected.item);
-				//alert("here: " + data);
+				// alert("here: " + data);
 				$scope.feedback = data;
 			};
-			
+
 			$scope.ok = function() {
 				// $modalInstance.close($scope.selected.item);
 				$modalInstance.dismiss("submitOwnFeedback");
@@ -249,7 +248,27 @@ var ModalInstanceCtrl = [ "$scope", "$http", "$modalInstance", "currentResult", 
 			$scope.cancel = function() {
 				$modalInstance.dismiss("cancel");
 			};
-			
+
 			$http.get(feedbackUrl).success($scope.displayFeedback);
 
 		} ];
+
+ossControllers.controller("oss.conversionCtrl", [ "$scope", "$routeParams",
+		function($scope, $routeParams) {
+			$scope.message = "Welcome to conversion!";
+		} ]);
+
+ossControllers.controller("oss.profileControl", [ "$scope", "$routeParams",
+		function($scope, $routeParams) {
+			$scope.message = "Welcome to profile stuff!";
+		} ]);
+
+ossControllers.controller("oss.harvestControl", [ "$scope", "$routeParams",
+		function($scope, $routeParams) {
+			$scope.message = "Welcome to harvesting stuff!";
+		} ]);
+
+ossControllers.controller("oss.apiControl", [ "$scope", "$routeParams",
+		function($scope, $routeParams) {
+			$scope.message = "Welcome to API stuff!";
+		} ]);

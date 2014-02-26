@@ -1,0 +1,29 @@
+<div class="modal-header">
+	<h3>User feedback for {{current.sensorId}}</h3>
+</div>
+<div class="modal-body">
+	<div>
+		<p>{{feedback.collection.GVQ_FeedbackCollection}}</p>
+
+		<ul class="feedback-item-list">
+			<li class="feedback-item"
+				ng-repeat="item in feedback.collection.GVQ_FeedbackCollection.itemCollection">
+				[{{$index + 1}}] {{item.subject}} <br />
+				{{item.userComment.comment}} <br />{{item.rating.score}}
+			</li>
+		</ul>
+
+		<div ng-bind-html="feedbackHtml"></div>
+
+		<!-- 		<pre>{{feedbackHtml}}</pre> -->
+		<!-- 		<pre>{{feedback}}</pre> -->
+
+	</div>
+	<!-- 	<pre>{{feedback}}</pre> -->
+</div>
+<div class="modal-footer">
+	<a class="btn btn-primary" target="_blank"
+		title="Submit feedback for GEOSS" ng-href="{{feedbackSubmitLink}}">Submit
+		own feedback</a>
+	<button class="btn btn-primary" ng-click="ok()">Close</button>
+</div>

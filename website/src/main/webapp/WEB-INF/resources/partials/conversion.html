@@ -1,0 +1,145 @@
+<div data-alerts="alerts"></div>
+
+<h1>Sensor Description Document Conversion</h1>
+
+<p>
+	Transform a SensorML document to ebRIM. For details see the OGC
+	discussion paper 09-163r2: <a
+		href="http://portal.opengeospatial.org/files/?artifact_id=37944">SensorML
+		Extension Package for ebRIM Application Profile</a>
+</p>
+
+<!-- TODO: add listing of available transformations based on API endpoint /oss-service/api/v1/convert -->
+<!-- TODO: add selection of output formats -->
+
+<form id="testform">
+	<div class="form-group">
+		<label for="input" class="control-label">SensorML Document</label>
+		<textarea id="input" name="input" class="form-control" rows="5"></textarea>
+		<span class="help-block"> Insert the SensorML description of a
+			sensor.
+			<button id="btnAddExample" type="button"
+				class="btn btn-default btn-xs">Add an example file</button>
+		</span>
+	</div>
+
+	<div class="form-group">
+		<button type="submit" class="btn btn-lg btn-primary">Convert!</button>
+		<!-- 					<div class="btn-group" data-toggle="buttons" id="responseFormat" -->
+		<!-- 						style="top: 8px;" title="Format of the check result" -->
+		<!-- 						data-toggle="tooltip"> -->
+		<!-- 						<label for="inputJson" class="btn btn-default btn-sm active"> -->
+		<!-- 							<input type="radio" name="format" id="inputJson" value="json" -->
+		<!-- 							checked="checked"> JSON -->
+		<!-- 						</label> <label for="inputXml" class="btn btn-default btn-sm"> <input -->
+		<!-- 							type="radio" name="format" id="inputXml" value="xml"> XML -->
+		<!-- 						</label> -->
+		<!-- 					</div> -->
+	</div>
+
+	<div id="resultGroup" class="form-group" style="margin-top: 42px;">
+		<label for="input" class="control-label">Conversion output</label>
+		<textarea id="output" name="output" class="form-control" rows="3"></textarea>
+		<span class="help-block">The output is the result of applying
+			an <a href="http://en.wikipedia.org/wiki/XSLT"
+			title="XSLT @ Wikipedia">XSLT</a> transformation to the document. You
+			can download the used files <a
+			href="https://github.com/52North/OpenSensorSearch/tree/master/service/src/main/resources/xslt"
+			title="XSLT Transformation Source Files for SensorML to ebRIM">on
+				GitHub</a>.
+		</span>
+	</div>
+</form>
+
+<script type="text/javascript">
+	var requestEditor = null;
+	var responseEditor = null;
+	var descriptionEditor = null;
+
+	$(document).ready(function() {
+		// 			var inArea = document.getElementById("input");
+		// 			CodeMirror.fromTextArea(inArea, {
+		// 				mode : "text/xml",
+		// 				lineNumbers : true,
+		// 				value : defaultString
+		// 			});
+		// 			var outArea = document.getElementById("output");
+		// 			CodeMirror.fromTextArea(outArea);
+
+		$("responseFormat").tooltip({
+			container : "body",
+			placement : "top"
+		});
+	});
+
+	$("#input").bind("input propertychange", function() {
+		$("#resultGroup").removeClass("has-success");
+		$("#resultGroup").removeClass("has-error");
+		$("#output").val("");
+	});
+
+	$('#btnAddExample')
+			.click(
+					function() {
+						$
+								.ajax({
+									type : "GET",
+									url : "resources/SensorML-discovery-profile-example.xml",
+									success : function(data) {
+										console.log("Loaded example file:");
+										var xmlstr = data.xml ? data.xml
+												: (new XMLSerializer())
+														.serializeToString(data);
+										console.log(xmlstr);
+										$("#input").val(xmlstr);
+									}
+								});
+					});
+
+	$("#testform")
+			.on(
+					"submit",
+					function(e) {
+						e.preventDefault();
+						var url = ossApiEndpoint + "/convert";
+						var payload = $("#input").val();
+						// 							var format = $("input:radio[name='format']:checked")
+						// 									.val();
+						console.log("Sending request to " + url + ", data: "
+								+ payload);
+
+						$
+								.ajax(
+										{
+											type : "POST",
+											cache : false,
+											url : url,
+											data : payload,
+											dataType : "xml",
+											success : function(data) {
+												console.log(data);
+												var output = data.xml ? data.xml
+														: (new XMLSerializer())
+																.serializeToString(data);
+												$("#output").val(output);
+
+												$("#resultGroup").addClass(
+														"has-success");
+											}
+										})
+								.fail(
+										function(data) {
+											console.log(data);
+											$("#output")
+													.val(
+															data.status
+																	+ " "
+																	+ data.statusText
+																	+ "\n\n"
+																	+ data.responseText);
+											$("#resultGroup").addClass(
+													"has-error");
+										});
+
+					});
+</script>

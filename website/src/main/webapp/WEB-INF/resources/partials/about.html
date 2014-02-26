@@ -1,0 +1,71 @@
+<style>
+#forkongithub a {
+	background: #000;
+	color: #fff;
+	text-decoration: none;
+	font-family: arial, sans-serif;
+	text-align: center;
+	font-weight: bold;
+	padding: 5px 40px;
+	font-size: 1rem;
+	line-height: 2rem;
+	position: relative;
+	transition: 0.5s;
+}
+
+#forkongithub a:hover {
+	background: #060;
+	color: #fff;
+}
+
+#forkongithub a::before,#forkongithub a::after {
+	content: "";
+	width: 100%;
+	display: block;
+	position: absolute;
+	top: 1px;
+	left: 0;
+	height: 1px;
+	background: #fff;
+}
+
+#forkongithub a::after {
+	bottom: 1px;
+	top: auto;
+}
+
+@media screen and (min-width:800px) {
+	#forkongithub {
+		position: absolute;
+		display: block;
+		top: 0;
+		right: 0;
+		width: 200px;
+		overflow: hidden;
+		height: 200px;
+	}
+	#forkongithub a {
+		width: 200px;
+		position: absolute;
+		top: 80px;
+		right: -60px;
+		transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
+		box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+	}
+}
+</style>
+
+<span id="forkongithub"><a
+	href="https://github.com/52North/OpenSensorSearch">Fork me on
+		GitHub</a></span>
+
+<h1>About / Contact</h1>
+
+<p>Open Sensor Search is an open source catalog for sensor
+	descriptions featuring user-contributed metadata.</p>
+
+<p>
+	GitHub: <a href="https://github.com/52North/OpenSensorSearch"
+		title="OSS @ GitHub">https://github.com/52North/OpenSensorSearch</a>
+</p>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 var ossApp = angular.module("oss.app", [ "ngRoute", "ui.bootstrap",
-		"oss.controllers" ]);
+		"oss.controllers", "ngSanitize" ]);
 
 ossApp.constant("typeaheadEndpoint", ossApiEndpoint + "/suggest");
 ossApp.constant("apiEndpoint", ossApiEndpoint + "/search");

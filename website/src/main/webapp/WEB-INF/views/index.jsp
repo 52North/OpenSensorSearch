@@ -62,6 +62,7 @@
 
 <script src="js/lib/angular/angular.js"></script>
 <script src="js/lib/angular/angular-route.js"></script>
+<script src="js/lib/angular/angular-sanitize.min.js"></script>
 <script src="js/lib/angular/ui-bootstrap-custom-tpls-0.10.0.js"></script>
 
 <script src="js/app.js"></script>
@@ -73,20 +74,6 @@
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
-
-<script type="text/ng-template" id="feedbackModalContent.html">
-        							<div class="modal-header">
-										<h3>User feedback for {{current.sensorId}}</h3>
-									</div>
-									<div class="modal-body">
-										<pre>{{feedback}}</pre>
-									</div>
-									<div class="modal-footer">
-										<a class="btn btn-primary" target="_blank" title="Submit feedback for GEOSS"
-											ng-href="{{feedbackSubmitLink}}">Submit own feedback</a>
-										<button class="btn btn-primary" ng-click="ok()">Close</button>
-									</div>
-</script>
 
 <link href="styles/autocomplete.css" type="text/css" rel="stylesheet" />
 

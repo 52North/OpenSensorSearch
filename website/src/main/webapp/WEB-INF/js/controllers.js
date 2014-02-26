@@ -187,35 +187,47 @@ ossControllers.controller("ossAlertCtrl", [ "$scope", function($scope) {
 	};
 } ]);
 
-ossControllers.controller("ossFeedbackModalCtrl", [
-		"$scope",
-		"$modal",
-		"$log",
-		function($scope, $modal, $log) {
-			// alert("from scope: " + $scope.result);
-			$scope.open = function() {
-				var modalInstance = $modal.open({
-					templateUrl : 'feedbackModalContent.html',
-					controller : ModalInstanceCtrl,
-					resolve : {
-						currentResult : function() {
-							return $scope.result;
-						},
-						feedbackSubmitLink : function() {
-							return $scope
-									.createFeedbackSubmitLink($scope.result);
-						},
-						feedbackUrl : function() {
-							return $scope.feedbackUrl($scope.result, "json");
-						}
-					}
-				});
+ossControllers
+		.controller(
+				"ossFeedbackModalCtrl",
+				[
+						"$scope",
+						"$modal",
+						"$log",
+						function($scope, $modal, $log) {
+							// alert("from scope: " + $scope.result);
+							$scope.open = function() {
+								var modalInstance = $modal
+										.open({
+											templateUrl : 'resources/partials/feedbackModalContent.html',
+											controller : ModalInstanceCtrl,
+											resolve : {
+												currentResult : function() {
+													return $scope.result;
+												},
+												feedbackSubmitLink : function() {
+													return $scope
+															.createFeedbackSubmitLink($scope.result);
+												},
+												feedbackUrl : function() {
+													return $scope.feedbackUrl(
+															$scope.result,
+															"json");
+												},
+												feedbackUrlHtml : function() {
+													return $scope.feedbackUrl(
+															$scope.result,
+															"html");
+												}
+											}
+										});
 
-				modalInstance.result.then(function() {
-					$log.info('Modal dismissed at: ' + new Date());
-				});
-			};
-		} ]);
+								modalInstance.result.then(function() {
+									$log.info('Modal dismissed at: '
+											+ new Date());
+								});
+							};
+						} ]);
 
 var ModalInstanceCtrl = [
 		"$scope",
@@ -223,11 +235,13 @@ var ModalInstanceCtrl = [
 		"$modalInstance",
 		"currentResult",
 		"feedbackUrl",
+		"feedbackUrlHtml",
 		"feedbackSubmitLink",
 		function($scope, $http, $modalInstance, currentResult, feedbackUrl,
-				feedbackSubmitLink) {
+				feedbackUrlHtml, feedbackSubmitLink) {
 			$scope.current = currentResult;
 			$scope.feedbackUrl = feedbackUrl;
+			$scope.feedbackUrlHtml = feedbackUrlHtml;
 			$scope.feedbackSubmitLink = feedbackSubmitLink;
 			$scope.feedback = "loading...";
 
@@ -237,7 +251,13 @@ var ModalInstanceCtrl = [
 			$scope.displayFeedback = function(data) {
 				// $modalInstance.close($scope.selected.item);
 				// alert("here: " + data);
-				$scope.feedback = data;
+				$scope.feedback = data[0]; // data[0].collection
+			};
+
+			$scope.displayFeedbackHtml = function(data) {
+				// $modalInstance.close($scope.selected.item);
+				// alert("here: " + data);
+				$scope.feedbackHtml = data;
 			};
 
 			$scope.ok = function() {
@@ -250,6 +270,7 @@ var ModalInstanceCtrl = [
 			};
 
 			$http.get(feedbackUrl).success($scope.displayFeedback);
+			$http.get(feedbackUrlHtml).success($scope.displayFeedbackHtml);
 
 		} ];
 

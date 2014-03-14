@@ -97,7 +97,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             }
             else if (qName.endsWith(QNAME_FIRED_RULE)) {
                 getFiredRules().add(this.ruleTmp);
-                logger.debug("Finished with rule {}", this.ruleTmp);
+                this.logger.debug("Finished with rule {}", this.ruleTmp);
                 this.ruleTmp = null;
             }
             else if (qName.endsWith(QNAME_ACTIVE_PATTERN)) {
@@ -149,9 +149,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     protected static final String QNAME_FIRED_RULE = "fired-rule";
 
-    private static final String tempDir = System.getProperty("java.io.tmpdir") + "/";
-
-    protected static File tempXSLFile = null;
+    protected File tempXSLFile = null;
 
     private static TransformerFactory tFactory = TransformerFactory.newInstance();
 
@@ -242,29 +240,37 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
     private synchronized void initialize(final String profilePath, final String svrlSchemaPath) throws URISyntaxException {
         final File discoveryFile = new File(getClass().getResource(profilePath).toURI());
         final File svrlFile = new File(getClass().getResource(svrlSchemaPath).toURI());
-        tempXSLFile = new File(tempDir + discoveryFile.getName() + ".xsl");
-        // tempXSLFile.canWrite();
+
+        try {
+            this.tempXSLFile = File.createTempFile(discoveryFile.getName(), ".xsl");
+            // tempXSLFile.canWrite();
+        }
+        catch (IOException e) {
+            log.error("Cannot create temporary schema file for schematron rules", e);
+            return;
+        }
 
         log.debug("Initializing validator with Schematron file from {} and SVRL from {} into file {}",
                   discoveryFile,
                   svrlFile,
-                  tempXSLFile);
+                  this.tempXSLFile);
 
         // run this thread if the transformed file does not exist or if the transformer future is not yet
         // created
-        if ( !tempXSLFile.exists() || this.transformerFuture == null) {
-            log.debug("Creating XSL from schematron in a new thread ... ");
+        if ( !this.tempXSLFile.exists() || this.transformerFuture == null) {
+            log.debug("XSL for schematron not found, create it.");
 
             this.transformerFuture = Executors.newSingleThreadExecutor().submit(new Callable<Transformer>() {
 
                 @Override
                 public Transformer call() throws Exception {
-                    log.debug("Creating XSL from schematron in a new Thread ...");
+                    log.debug("Creating XSL from schematron now...");
 
                     // http://blog.eight02.com/2011/05/validating-xml-with-iso-schematron-on.html
                     String[] arguments = new String[] {"-x:org.apache.xerces.parsers.SAXParser",
                                                        // "-w1",
-                                                       "-o:" + tempXSLFile.getAbsolutePath(),
+                                                       "-o:"
+                                                               + SensorML4DiscoveryValidatorImpl.this.tempXSLFile.getAbsolutePath(),
                                                        "-s:" + discoveryFile.getAbsolutePath(),
                                                        svrlFile.getAbsolutePath() // "docs/iso_svrl_for_xslt2.xsl",
                     // "generate-paths=yes"
@@ -277,10 +283,10 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
                     trans.doTransform(arguments, "java net.sf.saxon.Transform");
 
-                    log.info("Created XSL file for validation: {}", tempXSLFile);
+                    log.info("Created XSL file for validation: {}", SensorML4DiscoveryValidatorImpl.this.tempXSLFile);
 
                     log.debug("Creating transformer...");
-                    StreamSource source = new StreamSource(tempXSLFile);
+                    StreamSource source = new StreamSource(SensorML4DiscoveryValidatorImpl.this.tempXSLFile);
                     Transformer t = tFactory.newTransformer(source);
                     log.debug("Created {}", t);
 
@@ -290,7 +296,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
         }
         else
-            log.debug("Reusing existing XSL file {} for {}.", tempXSLFile, profilePath);
+            log.debug("Reusing existing XSL file {} for {}.", this.tempXSLFile, profilePath);
     }
 
     private void processSVRL(InputSource inputSource) throws SAXException, IOException, ParserConfigurationException {

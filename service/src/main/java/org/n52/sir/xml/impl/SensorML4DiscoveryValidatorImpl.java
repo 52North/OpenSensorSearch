@@ -68,7 +68,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
 
     private class SchematronResultHandler extends DefaultHandler {
 
-        protected Logger logger = LoggerFactory.getLogger(SchematronResultHandler.class);
+        // protected Logger logger = LoggerFactory.getLogger(SchematronResultHandler.class);
 
         private String failTmp;
         private boolean insideFail = false;
@@ -97,7 +97,7 @@ public class SensorML4DiscoveryValidatorImpl implements IProfileValidator {
             }
             else if (qName.endsWith(QNAME_FIRED_RULE)) {
                 getFiredRules().add(this.ruleTmp);
-                this.logger.debug("Finished with rule {}", this.ruleTmp);
+                // this.logger.debug("Finished with rule {}", this.ruleTmp);
                 this.ruleTmp = null;
             }
             else if (qName.endsWith(QNAME_ACTIVE_PATTERN)) {

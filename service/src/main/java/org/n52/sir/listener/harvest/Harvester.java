@@ -56,6 +56,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 
+ * Abstract class that contains functions to collect harvesting status (number of items, ids) and create the
+ * internal response class for it.
+ * 
+ * IMPORTANT: implementing harvesters must call the reset() method after a harvest is complete.
+ * 
  * @author Daniel Nüst (d.nuest@52north.org)
  * 
  */
@@ -97,16 +103,22 @@ public abstract class Harvester implements Callable<ISirResponse> {
         this.validator = validator;
         this.validateResponses = validateResponses;
 
-        this.insertedSensors = new ArrayList<>();
-        this.updatedSensors = new ArrayList<>();
-        this.failedSensors = new HashMap<>();
-
         this.insertSensorDao = insertDao;
         this.searchSensorDao = searchDao;
 
         this.identifierGenerator = idGen;
 
+        reset();
+
         log.info("NEW {}", this);
+    }
+
+    protected void reset() {
+        log.debug("Resetting {}", this);
+
+        this.insertedSensors = new ArrayList<>();
+        this.updatedSensors = new ArrayList<>();
+        this.failedSensors = new HashMap<>();
     }
 
     public void setRequest(SirHarvestServiceRequest request) {
@@ -291,6 +303,37 @@ public abstract class Harvester implements Callable<ISirResponse> {
             log.error("Error processing SensorML Document", e);
             failedSensorsP.put(sensorID, e.getClass() + ": " + e.getMessage());
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getClass().getName());
+        builder.append("[");
+        if (this.failedSensors != null) {
+            builder.append("#failedSensors=");
+            builder.append(this.failedSensors.size());
+            builder.append(", ");
+        }
+        if (this.insertedSensors != null) {
+            builder.append("#insertedSensors=");
+            builder.append(this.insertedSensors.size());
+            builder.append(", ");
+        }
+        if (this.updatedSensors != null) {
+            builder.append("#updatedSensors=");
+            builder.append(this.updatedSensors.size());
+            builder.append(", ");
+        }
+        if (this.client != null) {
+            builder.append("client=");
+            builder.append(this.client);
+            builder.append(", ");
+        }
+        builder.append("validateResponses=");
+        builder.append(this.validateResponses);
+        builder.append("]");
+        return builder.toString();
     }
 
 }

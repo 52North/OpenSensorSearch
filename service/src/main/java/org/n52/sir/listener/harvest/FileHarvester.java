@@ -48,10 +48,7 @@ import com.google.inject.name.Named;
 
 /**
  * 
- * Works for http://p5.neracoos.org/IOOSCatalog/sos_platforms.xml
- * 
  * @author Daniel Nüst
- * 
  */
 public abstract class FileHarvester extends Harvester {
 
@@ -123,13 +120,11 @@ public abstract class FileHarvester extends Harvester {
             r = new ExceptionResponse(e);
         }
 
+        reset();
+
         return r;
     }
 
-    /**
-     * 
-     * @return
-     */
     protected abstract ContentHandler getHandler();
 
 }

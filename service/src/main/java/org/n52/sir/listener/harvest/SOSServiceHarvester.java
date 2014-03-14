@@ -209,6 +209,8 @@ public class SOSServiceHarvester extends Harvester {
             r = new ExceptionResponse(e);
         }
 
+        reset();
+
         return r;
     }
 

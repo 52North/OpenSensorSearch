@@ -154,6 +154,8 @@ public class SPSServiceHarvester extends Harvester {
             r = new ExceptionResponse(e);
         }
 
+        reset();
+
         return r;
     }
 }

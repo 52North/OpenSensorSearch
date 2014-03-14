@@ -31,7 +31,7 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <link href="sir.css" rel="stylesheet" type="text/css" />
-<link href="../lib/codemirror/codemirror.css" rel="stylesheet"
+<link href="../js/lib/codemirror/codemirror.css" rel="stylesheet"
 	type="text/css" />
 <link rel="shortcut icon"
 	href="http://52north.org/templates/52n-2012/favicon.ico" />
@@ -97,11 +97,11 @@
 	</div>
 
 	<%
-	    /* compressed version from : codemirror, xml, active-line, foldcode, foldgutter, xml-fold, */
+	    /* compressed version with: codemirror, xml, active-line, foldcode, foldgutter, xml-fold, */
 	%>
-	<script src="../lib/jquery.js" type="text/javascript"></script>
-	<script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
-	<script src="../lib/codemirror/xml.js" type="text/javascript"></script>
+	<script src="../js/lib/jquery.js" type="text/javascript"></script>
+	<script src="../js/lib/codemirror/codemirror.js" type="text/javascript"></script>
+	<script src="../js/lib/codemirror/xml.js" type="text/javascript"></script>
 
 	<script type="text/javascript" src="form/formClient.js"></script>
 

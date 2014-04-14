@@ -134,6 +134,12 @@ public class ApiResource {
         sb.append(this.baseUri);
         sb.append(ApiPaths.OPENSEARCH_PATH);
         sb.append("\"");
+        sb.append(" , ");
+
+        sb.append("\"autocomplete\" : \"");
+        sb.append(this.baseUri);
+        sb.append(ApiPaths.AUTOSUGGEST_PATH);
+        sb.append("\"");
 
         sb.append(" } ");
 

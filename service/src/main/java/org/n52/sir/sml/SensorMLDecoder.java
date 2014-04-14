@@ -24,7 +24,6 @@ import java.util.List;
 import net.opengis.sensorML.x101.AbstractProcessType;
 import net.opengis.sensorML.x101.CapabilitiesDocument.Capabilities;
 import net.opengis.sensorML.x101.ClassificationDocument.Classification;
-import net.opengis.sensorML.x101.ClassificationDocument.Classification.ClassifierList.Classifier;
 import net.opengis.sensorML.x101.ContactDocument.Contact;
 import net.opengis.sensorML.x101.IdentificationDocument.Identification;
 import net.opengis.sensorML.x101.IdentificationDocument.Identification.IdentifierList.Identifier;
@@ -43,7 +42,6 @@ import net.opengis.sensorML.x101.SensorMLDocument;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML;
 import net.opengis.sensorML.x101.SensorMLDocument.SensorML.Member;
 import net.opengis.sensorML.x101.SystemType;
-import net.opengis.sensorML.x101.TermDocument.Term;
 import net.opengis.sensorML.x101.ValidTimeDocument.ValidTime;
 import net.opengis.swe.x101.AbstractDataRecordType;
 import net.opengis.swe.x101.DataComponentPropertyType;
@@ -64,7 +62,6 @@ import org.n52.oss.sir.api.TimePeriod;
 import org.n52.oss.sir.api.TimePeriod.IndeterminateTime;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.oss.sir.ows.OwsExceptionReport.ExceptionCode;
-import org.n52.oss.util.Tools;
 import org.n52.oss.util.XmlTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,69 +82,17 @@ public class SensorMLDecoder {
     private static final ArrayList<String> Y_AXIS_IDENTIFIERS = new ArrayList<>(Arrays.asList(new String[] {"y",
                                                                                                             "northing"}));
 
-    private static String createClassificationString(Classification[] classifications) {
-        StringBuilder sbClass = new StringBuilder();
-        sbClass.append("Classifications: ");
-        for (Classification classification : classifications) {
-            Classifier[] classifiers = classification.getClassifierList().getClassifierArray();
-            for (Classifier classifier : classifiers) {
-                // sbClass.append(classifier.getName());
-                // sbClass.append(" - ");
-                sbClass.append(Tools.simplifyString(classifier.getTerm().getValue()));
-                sbClass.append(", ");
-            }
-        }
-        sbClass.replace(sbClass.length() - 2, sbClass.length(), ""); // remove
-                                                                     // last
-                                                                     // space
-        sbClass.append(";");
-        return sbClass.toString();
-    }
 
-    private static String createIdentifierString(Identification[] identifications) {
-        StringBuilder sbIdent = new StringBuilder();
-        sbIdent.append("Identifications: ");
-        for (Identification identification : identifications) {
-            Identifier[] identifiers = identification.getIdentifierList().getIdentifierArray();
-            for (Identifier identifier : identifiers) {
-                Term term = identifier.getTerm();
-                String[] s = term.getDefinition().split(":");
-                sbIdent.append(s[s.length - 1]);
-                sbIdent.append(": ");
-                sbIdent.append(Tools.simplifyString(term.getValue()));
-                sbIdent.append(", ");
-            }
-        }
-        sbIdent.replace(sbIdent.length() - 2, sbIdent.length(), "");
-        sbIdent.append(";");
-        return sbIdent.toString();
-    }
+    private static SensorMLStringConverter stringConverter = new SensorMLStringConverter();
 
-    private static String createKeywordsString(Keywords[] keywords) {
-        StringBuilder sbKeywords = new StringBuilder();
-        sbKeywords.append("Keywords: ");
-        for (Keywords keyword : keywords) {
-            String[] kwArray = keyword.getKeywordList().getKeywordArray();
-            for (String currentKeyword : kwArray) {
-                sbKeywords.append(Tools.simplifyString(currentKeyword));
-                sbKeywords.append(", ");
-            }
-        }
-        sbKeywords.replace(sbKeywords.length() - 2, sbKeywords.length(), "");
-        sbKeywords.append(";");
-        return sbKeywords.toString();
-    }
-
-    public SirSensor decode(SensorMLDocument sensorML) throws OwsExceptionReport {
+    public SirSensor decode(SensorMLDocument sensorML) {
         SirSensor sensor = new SirSensor();
-
-        // TODO check how this creates the identification part...
 
         sensor.setSensorMLDocument(sensorML);
         sensor.setbBox(getBoundingBox(sensorML));
         sensor.setObservedProperties(getObservedProperties(sensorML));
         sensor.setTimePeriod(getTimePeriod(sensorML));
-        sensor.setText(getText(sensorML));
+        sensor.setText(stringConverter.getText(sensorML));
         sensor.setKeywords(getKeywords(sensorML));
         sensor.setLatitude(getLatitude(sensorML));
         sensor.setLongitude(getLongitude(sensorML));
@@ -166,11 +111,6 @@ public class SensorMLDecoder {
      * 
      * decodes the given sensor description and also adds the given identification to the returned SirSensor
      * instance if possible.
-     * 
-     * @param sensorIdent
-     * @param sensorDescription
-     * @return
-     * @throws OwsExceptionReport
      */
     public SirSensor decode(SirSensorIdentification sensorIdent, XmlObject sensorDescription) throws OwsExceptionReport {
         SirSensor sensor = decode(sensorDescription);
@@ -183,7 +123,7 @@ public class SensorMLDecoder {
         return sensor;
     }
 
-    public static SirSensor decode(SystemType system) throws OwsExceptionReport {
+    public static SirSensor decode(SystemType system) {
         SirSensor sensor = new SirSensor();
 
         log.debug("Decoding SystemType: \n{}", XmlTools.validateAndIterateErrors(system));
@@ -192,7 +132,7 @@ public class SensorMLDecoder {
         sensor.setbBox(getBoundingBox(system));
         sensor.setObservedProperties(getObservedProperties(system));
         sensor.setTimePeriod(getTimePeriod(system));
-        sensor.setText(getText(system));
+        sensor.setText(stringConverter.getText(system));
         sensor.setLongitude(getLongitude(system));
         sensor.setDescription(getDescription(system));
         sensor.setClassificationList(getClassificationList(system));
@@ -596,59 +536,7 @@ public class SensorMLDecoder {
         return obsProps;
     }
 
-    /**
-     * discovery profile expects one {@link SystemType} as a {@link Member}.
-     * 
-     * @param sensorML
-     * @return
-     */
-    private static Collection<String> getText(SensorML sensorML) {
-        Collection<String> texts = new ArrayList<>();
-
-        Member[] members = sensorML.getMemberArray();
-
-        Member member = members[0];
-        if (member.getProcess() instanceof SystemType) {
-            SystemType system = (SystemType) member.getProcess();
-            return getText(system);
-        }
-        log.warn("Could not get text from given document. It is required to contain one member which is a SystemType.");
-
-        return texts;
-    }
-
-    private static Collection<String> getText(SensorMLDocument sensDoc) {
-        return getText(sensDoc.getSensorML());
-    }
-
-    /**
-     * method handles the extraction of string descriptions
-     */
-    private static Collection<String> getText(SystemType system) {
-        Collection<String> texts = new ArrayList<>();
-
-        // add identification to text field
-        Identification[] identifications = system.getIdentificationArray();
-        String sIdent = createIdentifierString(identifications);
-        if ( !sIdent.isEmpty())
-            texts.add(sIdent);
-
-        // add classification to text field
-        Classification[] classifications = system.getClassificationArray();
-        String sClass = createClassificationString(classifications);
-        if ( !sClass.isEmpty())
-            texts.add(sClass);
-
-        // add keywords to text field
-        Keywords[] keywords = system.getKeywordsArray();
-        String sKeywords = createKeywordsString(keywords);
-        if ( !sKeywords.isEmpty())
-            texts.add(sKeywords);
-
-        return texts;
-    }
-
-    private static TimePeriod getTimePeriod(SensorMLDocument sensDoc) throws OwsExceptionReport {
+    private static TimePeriod getTimePeriod(SensorMLDocument sensDoc) {
         TimePeriod sirTimePeriod = null;
         Member[] members = sensDoc.getSensorML().getMemberArray();
         for (Member member : members) {
@@ -663,7 +551,7 @@ public class SensorMLDecoder {
         return sirTimePeriod;
     }
 
-    private static TimePeriod getTimePeriod(SystemType system) throws OwsExceptionReport {
+    private static TimePeriod getTimePeriod(SystemType system) {
         TimePeriod sirTimePeriod = new TimePeriod();
 
         if (system.isSetValidTime()) {

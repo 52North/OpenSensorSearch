@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.sir.ds.pgsql;
 
 import java.sql.Array;
@@ -144,7 +145,8 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
 
     private Collection<SirSearchResultElement> doQuery(String searchString,
                                                        boolean simpleResponse,
-                                                       boolean addServiceReferences) throws OwsExceptionReport {
+                                                       boolean addServiceReferences,
+                                                       boolean addBBox) throws OwsExceptionReport {
         ArrayList<SirSearchResultElement> results = new ArrayList<>();
 
         try (Connection con = this.cpool.getConnection(); Statement stmt = con.createStatement()) {
@@ -182,14 +184,16 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
                         descr.setDescriptionText(sb.toString());
                         result.setSensorDescription(descr);
 
-                        Object object = rs.getObject(PGDAOConstants.bBox);
-                        Geometry boundingGeom = getGeometry(object);
-                        SirBoundingBox bbox = new SirBoundingBox(boundingGeom);
+                        if (addBBox) {
+                            Object object = rs.getObject(PGDAOConstants.bBox);
+                            Geometry boundingGeom = getGeometry(object);
+                            SirBoundingBox bbox = new SirBoundingBox(boundingGeom);
 
-                        if (this.crazyDebug)
-                            log.debug("Description bounding box: {}", bbox);
+                            if (this.crazyDebug)
+                                log.debug("Description bounding box: {}", bbox);
 
-                        descr.setBoundingBox(bbox);
+                            descr.setBoundingBox(bbox);
+                        }
                     }
                     else {
                         XmlObject sD = XmlObject.Factory.parse(rs.getString(PGDAOConstants.sensorml));
@@ -273,7 +277,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
     @Override
     public Collection<SirSearchResultElement> getAllSensors(boolean simpleReponse) throws OwsExceptionReport {
         String allSensorsQuery = allSensors();
-        return doQuery(allSensorsQuery, simpleReponse, true);
+        return doQuery(allSensorsQuery, simpleReponse, true, true);
     }
 
     private Geometry getGeometry(Object obj) {
@@ -301,7 +305,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         String sensorIdQuery = sensorBySensorIdQuery(sensorId);
 
         ArrayList<SirSearchResultElement> results = new ArrayList<>();
-        results = (ArrayList<SirSearchResultElement>) doQuery(sensorIdQuery, simpleReponse, true);
+        results = (ArrayList<SirSearchResultElement>) doQuery(sensorIdQuery, simpleReponse, true, true);
 
         Iterator<SirSearchResultElement> iter = results.iterator();
         if (iter.hasNext()) {
@@ -317,7 +321,7 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
         String servDescQuery = sensorByServDescQuery(servDesc);
 
         ArrayList<SirSearchResultElement> results = new ArrayList<>();
-        results = (ArrayList<SirSearchResultElement>) doQuery(servDescQuery, simpleReponse, true);
+        results = (ArrayList<SirSearchResultElement>) doQuery(servDescQuery, simpleReponse, true, true);
 
         Iterator<SirSearchResultElement> iter = results.iterator();
         if (iter.hasNext()) {
@@ -383,9 +387,78 @@ public class PGSQLSearchSensorDAO implements ISearchSensorDAO {
 
     @Override
     public Collection<SirSearchResultElement> searchSensor(SirSearchCriteria searchCriteria, boolean simpleReponse) throws OwsExceptionReport {
-        // Sensors by search criteria
-        String sensorsBySearchCriteria = sensorsBySearchCriteria(searchCriteria);
-        return doQuery(sensorsBySearchCriteria, simpleReponse, true);
+        String sensorsBySearchCriteria;
+        if (searchCriteria.isIndexedTextSearchWithMinimalResult()) {
+            sensorsBySearchCriteria = sensorsByTextOnIndexedColums(searchCriteria);
+            return doQuery(sensorsBySearchCriteria, simpleReponse, false, false);
+        }
+
+        sensorsBySearchCriteria = sensorsBySearchCriteria(searchCriteria);
+        return doQuery(sensorsBySearchCriteria, simpleReponse, true, true);
+    }
+
+    /**
+     * Manual test queries:
+     * 
+     * select text from sensor WHERE ('%Wasser%Station%' % ANY(text));
+     * 
+     * select text from sensor WHERE '%Potsdam%' % ANY(text);
+     * 
+     * select text from sensor WHERE '%(Vaisala|Potsdam)%' % ANY(text);
+     * 
+     * Documentation:
+     * 
+     * http://www.postgresql.org/docs/9.0/static/functions-matching.html
+     * 
+     * http://www.rdegges.com/easy-fuzzy-text-searching-with-postgresql/
+     */
+    private String sensorsByTextOnIndexedColums(SirSearchCriteria searchCriteria) {
+        StringBuilder query = new StringBuilder();
+
+        Collection<String> searchText = searchCriteria.getSearchText();
+
+        query.append("SELECT ");
+        query.append(PGDAOConstants.sensor);
+        query.append(".");
+        query.append(PGDAOConstants.sensorId);
+        query.append(", ");
+        query.append(PGDAOConstants.sensor);
+        query.append(".");
+        query.append(PGDAOConstants.sensorText);
+        query.append(", ");
+        query.append(PGDAOConstants.sensor);
+        query.append(".");
+        query.append(PGDAOConstants.lastUpdate);
+        // query.append(", ");
+        // query.append(PGDAOConstants.sensor);
+        // query.append(".");
+        // query.append(PGDAOConstants.bBox);
+        query.append(" FROM ");
+        query.append(PGDAOConstants.sensor);
+        query.append(" WHERE ");
+
+        String fuzzySearchQuery = fuzzySearchQuery(searchText);
+        query.append(fuzzySearchQuery);
+        query.append(" % ANY(");
+        query.append(PGDAOConstants.sensor);
+        query.append(".");
+        query.append(PGDAOConstants.sensorText);
+
+        query.append(");");
+
+        return query.toString();
+    }
+
+    private String fuzzySearchQuery(Collection<String> searchText) {
+        StringBuilder query = new StringBuilder();
+        query.append("'%(");
+        for (String s : searchText) {
+            query.append(s);
+            query.append("|");
+        }
+        query.replace(query.length() - 2, query.length(), "%)'");
+
+        return query.toString();
     }
 
     private String sensorBySensorIdQuery(String sensorId) {

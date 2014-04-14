@@ -98,6 +98,7 @@ The website module uses a collection of Javascript libraries:
 * CodeMirror, http://codemirror.net/LICENSE - MIT License
 * jQuery, https://jquery.org/license/ - MIT License
 * Bootstrap, https://github.com/twbs/bootstrap/blob/master/LICENSE - MIT License
+* angucomplete-alt, http://ngmodules.org/modules/angucomplete-alt - MIT License
 * Swagger API Documentation
   * swagger-js, https://github.com/wordnik/swagger-js - Apache Software License, Version 2.0
   * jQuery BBQ, http://benalman.com/code/projects/jquery-bbq/docs/files/jquery-ba-bbq-js.html#License - MIT License

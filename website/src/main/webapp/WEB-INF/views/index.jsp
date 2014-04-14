@@ -39,6 +39,7 @@
 <link href="styles/bootstrap.css" rel="stylesheet">
 <link href="styles/bootstrap-responsive.css" rel="stylesheet">
 <link href="styles/jquery-ui.css" rel="stylesheet" />
+<link href="styles/angucomplete-alt.css" rel="stylesheet" />
 
 <link href="styles/oss.css" type="text/css" rel="stylesheet" />
 
@@ -63,6 +64,7 @@
 <script src="js/lib/angular/angular.js"></script>
 <script src="js/lib/angular/angular-route.js"></script>
 <script src="js/lib/angular/angular-sanitize.min.js"></script>
+<script src="js/lib/angular/angucomplete-alt.js"></script>
 <script src="js/lib/angular/ui-bootstrap-custom-tpls-0.10.0.js"></script>
 
 <script src="js/app.js"></script>
@@ -74,8 +76,6 @@
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
-
-<link href="styles/autocomplete.css" type="text/css" rel="stylesheet" />
 
 </head>
 

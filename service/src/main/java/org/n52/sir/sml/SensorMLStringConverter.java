@@ -21,17 +21,17 @@ import org.slf4j.LoggerFactory;
 
 public class SensorMLStringConverter {
 
-    private static final Object NAME_VALUE_DELIMITER = ": ";
+    private static final String NAME_VALUE_DELIMITER = ": ";
 
-    private static final Object KEYWORDS_PREPEND = "Keywords" + NAME_VALUE_DELIMITER;
+    public static final String KEYWORDS_PREPEND = "Keywords" + NAME_VALUE_DELIMITER;
 
-    private static final Object CLASSIFICATIONS_PREPEND = "Classifications" + NAME_VALUE_DELIMITER;
+    public static final String CLASSIFICATIONS_PREPEND = "Classifications" + NAME_VALUE_DELIMITER;
 
-    private static final Object IDENTIFICATIONS_PREPEND = "Identifications" + NAME_VALUE_DELIMITER;
+    public static final String IDENTIFICATIONS_PREPEND = "Identifications" + NAME_VALUE_DELIMITER;
 
-    private static final Object SECTION_END = ";";
+    private static final String SECTION_END = ";";
 
-    private static final Object LIST_ITEM_DELIMITER = ", ";
+    private static final String LIST_ITEM_DELIMITER = ", ";
 
     private static Logger log = LoggerFactory.getLogger(SensorMLStringConverter.class);
 

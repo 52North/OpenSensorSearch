@@ -19,6 +19,8 @@
 -- last change: 2014-04-14
 -- last change by: Daniel Nüst
 
+CREATE EXTENSION pg_trgm;
+
 DROP TABLE IF EXISTS badge CASCADE;
 DROP TABLE IF EXISTS sensor_badge CASCADE;
 DROP TABLE IF EXISTS service_badge CASCADE;
@@ -77,3 +79,6 @@ ALTER TABLE sensor_badge ADD FOREIGN KEY (badge_dbid) REFERENCES badge ON UPDATE
 --foreign keys for service_badge
 ALTER TABLE service_badge ADD FOREIGN KEY (service_id) REFERENCES service ON UPDATE CASCADE ON DELETE CASCADE INITIALLY DEFERRED;
 ALTER TABLE service_badge ADD FOREIGN KEY (badge_dbid) REFERENCES badge ON UPDATE CASCADE ON DELETE CASCADE INITIALLY DEFERRED;
+
+--search index
+CREATE INDEX sensortext_idx ON sensor USING gin(text);

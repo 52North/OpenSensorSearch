@@ -38,8 +38,15 @@ ossControllers.controller("oss.searchControl", [
 			$scope.targetCodespace = targetCodespace;
 
 			$scope.q = '';
+			$scope.qSelected = null;
 
 			$scope.ossSearch = function() {
+				if($scope.q == '') {
+					alert("Empty query string.");
+					console.log("[OSS] rempty search string:" + $scope.q);
+					return;
+				}
+				
 				$scope.urlQuery = $scope.apiEndpoint + "?q=" + $scope.q;
 				console.log("Sending query: " + $scope.urlQuery);
 
@@ -55,7 +62,7 @@ ossControllers.controller("oss.searchControl", [
 					console.log("[OSS] got error:" + data);
 				});
 			};
-
+			
 			$scope.serviceUrl = function(reference) {
 				var url = "";
 				switch (reference.serviceType) {

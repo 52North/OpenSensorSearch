@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.sir.api;
 
 import java.util.ArrayList;
@@ -29,124 +30,99 @@ public class SirSearchCriteria {
 
     private Calendar end;
 
-    private Collection<SirSearchCriteria_Phenomenon> phenomena = new ArrayList<SirSearchCriteria_Phenomenon>();
+    private Collection<SirSearchCriteria_Phenomenon> phenomena = new ArrayList<>();
 
     private Collection<String> searchText;
 
     private Collection<SirService> serviceCriteria;
-    
+
     private String lat;
-    public String getLat() {
-		return lat;
-	}
 
-	public void setLat(String lat) {
-		this.lat = lat;
-	}
+    private String lng;
 
-	public String getLng() {
-		return lng;
-	}
-
-	public void setLng(String lng) {
-		this.lng = lng;
-	}
-
-	public String getRadius() {
-		return radius;
-	}
-
-	public void setRadius(String radius) {
-		this.radius = radius;
-	}
-
-	private String lng;
     private String radius;
 
     private Calendar start;
+
+    private boolean indexedTextSearchWithMinimalResult = false;
+
+    public String getLat() {
+        return this.lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return this.lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getRadius() {
+        return this.radius;
+    }
+
+    public void setRadius(String radius) {
+        this.radius = radius;
+    }
+
     public String getDtstart() {
-		return this.dtstart;
-	}
+        return this.dtstart;
+    }
 
-	public void setDtstart(String dtstart) {
-		this.dtstart = dtstart;
-	}
+    public void setDtstart(String dtstart) {
+        this.dtstart = dtstart;
+    }
 
-	public String getDtend() {
-		return this.dtend;
-	}
+    public String getDtend() {
+        return this.dtend;
+    }
 
-	public void setDtend(String dtend) {
-		this.dtend = dtend;
-	}
+    public void setDtend(String dtend) {
+        this.dtend = dtend;
+    }
 
-	private String dtstart;
+    private String dtstart;
     private String dtend;
 
     private Collection<String> uom;
 
-    /**
-     * 
-     * @param p
-     */
     public void addPhenomenon(SirSearchCriteria_Phenomenon p) {
         this.phenomena.add(p);
     }
 
-    /**
-     * @return the boundingBox
-     */
     public SirBoundingBox getBoundingBox() {
         return this.boundingBox;
     }
 
-    /**
-     * @return the end
-     */
     public Calendar getEnd() {
         return this.end;
     }
 
-    /**
-     * 
-     * @return
-     */
     public Collection<SirSearchCriteria_Phenomenon> getPhenomena() {
         return this.phenomena;
     }
 
-    /**
-     * @return the searchText
-     */
     public Collection<String> getSearchText() {
         return this.searchText;
     }
 
-    /**
-     * @return the serviceCriteria
-     */
     public Collection<SirService> getServiceCriteria() {
         return this.serviceCriteria;
     }
 
-    /**
-     * @return the start
-     */
     public Calendar getStart() {
         return this.start;
     }
 
-    /**
-     * @return the uom
-     */
     public Collection<String> getUom() {
         return this.uom;
     }
 
-    /**
-     * 
-     * @return true if one of the given phenomena uses SOR feature
-     */
     public boolean isUsingSOR() {
         for (SirSearchCriteria_Phenomenon p : this.phenomena) {
             if (p.usesSOR())
@@ -155,74 +131,110 @@ public class SirSearchCriteria {
         return false;
     }
 
-    /**
-     * @param boundingBox
-     *        the boundingBox to set
-     */
     public void setBoundingBox(SirBoundingBox boundingBox) {
         this.boundingBox = boundingBox;
     }
 
-    /**
-     * @param end
-     *        the end to set
-     */
     public void setEnd(Calendar end) {
         this.end = end;
     }
 
-    /**
-     * 
-     * @param phenomena
-     */
     public void setPhenomena(Collection<SirSearchCriteria_Phenomenon> phenomena) {
         this.phenomena = phenomena;
     }
 
-    /**
-     * @param searchText
-     *        the searchText to set
-     */
     public void setSearchText(Collection<String> searchText) {
         this.searchText = searchText;
     }
 
-    /**
-     * @param serviceCriteria
-     *        the serviceCriteria to set
-     */
     public void setServiceCriteria(Collection<SirService> serviceCriteria) {
         this.serviceCriteria = serviceCriteria;
     }
 
-    /**
-     * @param start
-     *        the start to set
-     */
     public void setStart(Calendar start) {
         this.start = start;
     }
 
-    /**
-     * @param uom
-     *        the uom to set
-     */
     public void setUom(Collection<String> uom) {
         this.uom = uom;
     }
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("SearchCriteria: ");
-        sb.append("ServiceCriteria: " + this.serviceCriteria);
-        sb.append(", SearchText: " + this.searchText);
-        sb.append(", Phenomena: " + this.phenomena);
-        sb.append(", Uom: " + this.uom);
-        sb.append(", BoundingBox: " + this.boundingBox);
-        sb.append(", Start: " + this.start);
-        sb.append(", End: " + this.end);
-        return sb.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("SirSearchCriteria [");
+        if (this.boundingBox != null) {
+            builder.append("boundingBox=");
+            builder.append(this.boundingBox);
+            builder.append(", ");
+        }
+        if (this.end != null) {
+            builder.append("end=");
+            builder.append(this.end);
+            builder.append(", ");
+        }
+        if (this.phenomena != null) {
+            builder.append("phenomena=");
+            builder.append(this.phenomena);
+            builder.append(", ");
+        }
+        if (this.searchText != null) {
+            builder.append("searchText=");
+            builder.append(this.searchText);
+            builder.append(", ");
+        }
+        if (this.serviceCriteria != null) {
+            builder.append("serviceCriteria=");
+            builder.append(this.serviceCriteria);
+            builder.append(", ");
+        }
+        if (this.lat != null) {
+            builder.append("lat=");
+            builder.append(this.lat);
+            builder.append(", ");
+        }
+        if (this.lng != null) {
+            builder.append("lng=");
+            builder.append(this.lng);
+            builder.append(", ");
+        }
+        if (this.radius != null) {
+            builder.append("radius=");
+            builder.append(this.radius);
+            builder.append(", ");
+        }
+        if (this.start != null) {
+            builder.append("start=");
+            builder.append(this.start);
+            builder.append(", ");
+        }
+        builder.append("partialTextSearch=");
+        builder.append(this.indexedTextSearchWithMinimalResult);
+        builder.append(", ");
+        if (this.dtstart != null) {
+            builder.append("dtstart=");
+            builder.append(this.dtstart);
+            builder.append(", ");
+        }
+        if (this.dtend != null) {
+            builder.append("dtend=");
+            builder.append(this.dtend);
+            builder.append(", ");
+        }
+        if (this.uom != null) {
+            builder.append("uom=");
+            builder.append(this.uom);
+        }
+        builder.append("]");
+        return builder.toString();
+    }
+
+    public boolean isIndexedTextSearchWithMinimalResult() {
+        return this.indexedTextSearchWithMinimalResult;
+    }
+
+    public void setIndexedTextSearchWithMinimalResult(boolean partialTextSearch) {
+        this.indexedTextSearchWithMinimalResult = partialTextSearch;
     }
 
 }

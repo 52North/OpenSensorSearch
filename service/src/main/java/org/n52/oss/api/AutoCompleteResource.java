@@ -13,23 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.n52.oss.api;
 
 /**
+ * 
+ * JSON with Jersey: https://jersey.java.net/documentation/1.18/json.html
+ * 
  * @author Yakoub, Daniel Nüst
  */
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.n52.oss.opensearch.listeners.OpenSearchTools;
 import org.n52.oss.sir.api.SirDetailedSensorDescription;
@@ -40,6 +46,7 @@ import org.n52.oss.sir.api.SirXmlSensorDescription;
 import org.n52.oss.sir.ows.OwsExceptionReport;
 import org.n52.sir.ds.ISearchSensorDAO;
 import org.n52.sir.ds.solr.SOLRSearchSensorDAO;
+import org.n52.sir.sml.SensorMLStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +63,56 @@ public class AutoCompleteResource {
     private static final String REQUEST_PARAM_AUTOCOMPLETE = "q";
 
     private ISearchSensorDAO searchSensorDao;
+
+    /**
+     * include only the text results that actually contain the query
+     */
+    private boolean includeOnlyWordsContainingQuery = true;
+
+    private static Collection<String> wordsToBeRemoved = new ArrayList<>();
+
+    static {
+        wordsToBeRemoved.add(SensorMLStringConverter.CLASSIFICATIONS_PREPEND.trim());
+        wordsToBeRemoved.add(SensorMLStringConverter.IDENTIFICATIONS_PREPEND.trim());
+        wordsToBeRemoved.add(SensorMLStringConverter.KEYWORDS_PREPEND.trim());
+    }
+
+    private static class ResultItem {
+
+        public String description;
+
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("ResultItem [");
+            if (this.description != null) {
+                builder.append("description=");
+                builder.append(this.description);
+            }
+            builder.append("]");
+            return builder.toString();
+        }
+    }
+
+    @XmlRootElement
+    private static class Result {
+
+        @XmlElement(name = "results")
+        public ArrayList<ResultItem> items = new ArrayList<>();
+
+        @Override
+        public String toString() {
+            final int maxLen = 3;
+            StringBuilder builder = new StringBuilder();
+            builder.append("Result [");
+            if (this.items != null) {
+                builder.append("items=");
+                builder.append(this.items.subList(0, Math.min(this.items.size(), maxLen)));
+            }
+            builder.append("]");
+            return builder.toString();
+        }
+    }
 
     @Inject
     public AutoCompleteResource(@Named(ISearchSensorDAO.AUTOCOMPLETE)
@@ -78,6 +135,8 @@ public class AutoCompleteResource {
         Collection<String> results = new HashSet<>();
 
         SirSearchCriteria crit = new SirSearchCriteria();
+        crit.setIndexedTextSearchWithMinimalResult(true);
+
         Collection<String> text = new ArrayList<>();
         text.add(query);
         crit.setSearchText(text);
@@ -114,7 +173,10 @@ public class AutoCompleteResource {
 
                 if (simpleSD.getDescriptionText() != null) {
                     String descriptionText = OpenSearchTools.extractDescriptionText(simpleSD);
-                    results.add(descriptionText);
+
+                    // split up text
+                    String[] words = descriptionText.split(" "); // (" |-|_");
+                    Collections.addAll(results, words);
                 }
             }
             else if (element.getSensorDescription() instanceof SirXmlSensorDescription) {
@@ -123,32 +185,24 @@ public class AutoCompleteResource {
             }
         }
 
-        String result = null;
-        if (results.size() == 0)
-            result = "{ \"results\" : [ ] }";
-        else {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{ \"results\" : [");
-            for (String s : results) {
-                // check again if the keyword is contained - could also disable this!
-                if (s.toLowerCase().contains(query.toLowerCase())) {
-                    sb.append("\"");
-                    sb.append(s);
-                    sb.append("\", ");
-                }
-                else
-                    log.debug("Got a result that is not contained in the query: {}", s);
-            }
-            if (sb.length() > 4)
-                sb.replace(sb.length() - 2, sb.length(), ""); // remove last comma
-            sb.append("] } ");
+        // remove undesired artifacts from decoding
+        results.removeAll(wordsToBeRemoved);
 
-            result = sb.toString();
+        Result r = new Result();
+
+        if (results.size() > 0) {
+            for (String s : results) {
+                if (includeOnlyWordsContainingQuery && s.contains(query)) {
+                    ResultItem ri = new ResultItem();
+                    ri.description = s.trim();
+                    r.items.add(ri);
+                }
+            }
         }
 
-        log.debug("Done serving autocomplete, response: {}", result);
+        log.debug("Done serving autocomplete, response: {}", r);
 
-        return Response.status(200).entity(result).header(HttpHeaders.CONTENT_LENGTH, result.length()).build();
+        return Response.status(200).entity(r).build();
     }
 
 }

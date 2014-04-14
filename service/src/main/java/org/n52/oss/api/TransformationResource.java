@@ -127,10 +127,6 @@ public class TransformationResource {
             log.error("Could not *parse* SensorML for transformation.", e);
             return Response.status(Response.Status.BAD_REQUEST).entity("{\"error\" : \"" + e.getMessage() + "\" } ").build();
         }
-        catch (OwsExceptionReport e) {
-            log.error("Could not *decode* SensorML for transformation.", e);
-            return Response.serverError().entity("{\"error\" : \"" + e.getMessage() + "\" } ").build();
-        }
     }
 
     @POST

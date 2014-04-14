@@ -21,6 +21,7 @@
 -----------------------------------------------------------------------------------------------------------------------
 CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_topology;
+CREATE EXTENSION pg_trgm;
 
 -----------------------------------------------------------------------------------------------------------------------
 -- Dropping Tables
@@ -185,6 +186,7 @@ CREATE TABLE userAuthToken
 CREATE INDEX phenIndex ON phenomenon(phenomenon_urn);
 CREATE INDEX bbox_index ON sensor USING
         GIST (bbox gist_geometry_ops_2d);
+CREATE INDEX sensortext_idx ON sensor USING gin(text);
 
 -----------------------------------------------------------------------------------------------------------------------
 -- add references and foreign keys

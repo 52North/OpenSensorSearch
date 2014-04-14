@@ -20,11 +20,22 @@
 		<!-- 					</div> -->
 		<div>
 			<div class='container-fluid'>
-				<label for="q">Search for sensor data:</label> <input type="text"
-					name="q" class="form-control" ng-model="q"
-					placeholder="Search term(s)..." required>
+				<label for="query">Search for sensor data:</label>
+				<div>
+					<angucomplete-alt id="inputSearch" name="query" 
+						placeholder="Search term(s)..." pause="242" selected-object="qSelected"
+						remote-url="http://localhost:8080/oss-service/api/v1/suggest?q="
+						remote-url-data-field="results"
+						title-field="description" minlength="3" input-class="form-control"
+						inputclass="form-control form-control-small" />
+					</div>
+
+				<!-- <input type="text" name="q" class="form-control" ng-model="q" -->
+					<!--	placeholder="Search term(s)..." required> -->
+
 				<p class="help-block">Try for example: "washington" or "water"
-					or "temperature"</p>
+					or "climate".</p>
+				<p>{{q}}</p>
 			</div>
 		</div>
 		<div>

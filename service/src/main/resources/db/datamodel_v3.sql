@@ -39,10 +39,22 @@ DROP TABLE IF EXISTS userAccount CASCADE;
 DROP TABLE IF EXISTS badge CASCADE;
 DROP TABLE IF EXISTS sensor_badge CASCADE;
 DROP TABLE IF EXISTS service_badge CASCADE;
+DROP TABLE IF EXISTS settings_info CASCADE;
 
 -----------------------------------------------------------------------------------------------------------------------
 -- Creating the tables
 -----------------------------------------------------------------------------------------------------------------------
+
+-- Table: settings_info
+-- project settings and information
+CREATE TABLE settings_info (
+  setting_id SERIAL,
+  setting_name varchar(255) NOT NULL,
+  setting_value varchar(255) NOT NULL,
+  PRIMARY KEY(setting_id)
+);
+
+INSERT INTO settings_info(setting_name, setting_value) VALUES ('db_version', '3');
 
 -- Table: sensor_service
 -- links every service to a sensor

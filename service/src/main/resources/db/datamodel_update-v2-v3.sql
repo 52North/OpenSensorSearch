@@ -16,16 +16,28 @@
 
 -- Database structure update for PostGIS 2
 
--- last change: 2014-01-16
+-- last change: 2014-04-14
 -- last change by: Daniel Nüst
 
 DROP TABLE IF EXISTS badge CASCADE;
 DROP TABLE IF EXISTS sensor_badge CASCADE;
 DROP TABLE IF EXISTS service_badge CASCADE;
+DROP TABLE IF EXISTS settings_info CASCADE;
 
 -----------------------------------------------------------------------------------------------------------------------
 -- Creating the tables
 -----------------------------------------------------------------------------------------------------------------------
+
+-- Table: settings_info
+-- project settings and information
+CREATE TABLE settings_info (
+  setting_id SERIAL UNIQUE,
+  setting_name varchar(255) NOT NULL,
+  setting_value varchar(255) NOT NULL,
+  PRIMARY KEY(setting_id)
+);
+
+INSERT INTO settings_info(setting_name, setting_value) VALUES ('db_version', '3');
 
 --Table: badge
 --information about badges available for sensors and services

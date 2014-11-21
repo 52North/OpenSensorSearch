@@ -2,11 +2,6 @@
 
 Open Sensor Search (OSS) is a platform for discovery of in-situ sensor data. across all sensor web supporting major specifications (OGC SWE) and popular IoT websites (Xively, Thingspeak, ...). It spans across large scale networks based on powerful OGC Sensor Web standards and protocols (Sensor Observation Service, SensorML) and specific individual platforms by providing a modular and open architecture and a flexible mechanism to include data from many different sources.
 
-## Development
-
-[![Build Status](https://travis-ci.org/52North/OpenSensorSearch.png?branch=master)](https://travis-ci.org/52North/OpenSensorSearch)
-
-If you want to join the Open Sensor Search developer team, take a look at the CONTRIBUTE.md file.
 
 ## Structure
 
@@ -19,6 +14,7 @@ OSS is written in Java and organized as a Maven multi-module project. The module
 * **sir-it**: integration tests for SIR API
 * **sir-json**: json datamodel files
 * **website**: browser user interface for the OSS API
+
 
 ## Installation
 
@@ -80,6 +76,18 @@ There are sample files in the same directories of the base file to get you start
 ### Wiki
 
 For organisational information about Open Sensor Search please visit the [Wiki page](https://wiki.52north.org/bin/view/SensorWeb/OpenSensorSearch).
+
+
+## Development
+
+[![Build Status](https://travis-ci.org/52North/OpenSensorSearch.png?branch=master)](https://travis-ci.org/52North/OpenSensorSearch)
+
+If you want to join the Open Sensor Search developer team, take a look at the CONTRIBUTE.md file.
+
+### Integration tests
+
+The integration tests can be activated during build with a Maven profile: ``mvn clean install -Pintegration-test``
+
 
 ## License
 

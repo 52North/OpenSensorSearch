@@ -94,7 +94,7 @@ http://maven.apache.org/maven-v4_0_0.xsd">
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<guice.version>3.0</guice.version>
-		<sensorweb.schemas.version>1.1.6-SNAPSHOT</sensorweb.schemas.version>
+		<sensorweb.schemas.version>2.0.0</sensorweb.schemas.version>
 		<logback.version>1.0.13</logback.version>
 		<jersey.version>1.8</jersey.version>
 		<jackson.version>2.2.2</jackson.version>

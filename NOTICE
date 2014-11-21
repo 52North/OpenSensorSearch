@@ -92,23 +92,23 @@ This project includes:
   MIME streaming extension under COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0 or GPLv2 with classpath exception
   Mockito under The MIT License
   Mozilla Rhino under Mozilla Public License, Version 2.0
-  OASIS ebXML Registry Information Model (RIM) schemas v3.0.0 under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC CSW schema (spec. v2.0.2) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC CSW-ebRIM schema (spec. v1.0.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC Filter schema (spec. v1.1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC GML schema (spec. v3.1.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC GML schema (spec. v3.2.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC Keyhole Markup Language schema (spec. v2.2.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC O&M schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC OWS schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC OWS schema (spec. v1.1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC SensorML schema (spec. v1.0.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC SIR schema 0.3.2 (OGC Discussion Paper 10-171) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC SOR schema 0.3.1 (OGC Discussion Paper 09-112r1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC SOS schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC SPS schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC SWECommon schema (spec. v1.0.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
-  OGC SWECommon schema (spec. v1.0.1) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  OASIS ebXML Registry Information Model (RIM) schemas v3.0.0 under The Apache Software License, Version 2.0
+  OGC CSW schema (spec. v2.0.2) under The Apache Software License, Version 2.0
+  OGC CSW-ebRIM schema (spec. v1.0.1) under The Apache Software License, Version 2.0
+  OGC Filter schema (spec. v1.1.0) under The Apache Software License, Version 2.0
+  OGC GML schema (spec. v3.1.1) under The Apache Software License, Version 2.0
+  OGC GML schema (spec. v3.2.1) under The Apache Software License, Version 2.0
+  OGC Keyhole Markup Language schema (spec. v2.2.0) under The Apache Software License, Version 2.0
+  OGC O&M schema (spec. v1.0.0) under The Apache Software License, Version 2.0
+  OGC OWS schema (spec. v1.0.0) under The Apache Software License, Version 2.0
+  OGC OWS schema (spec. v1.1.0) under The Apache Software License, Version 2.0
+  OGC SensorML schema (spec. v1.0.1) under The Apache Software License, Version 2.0
+  OGC SIR schema 0.3.2 (OGC Discussion Paper 10-171) under The Apache Software License, Version 2.0
+  OGC SOR schema 0.3.1 (OGC Discussion Paper 09-112r1) under The Apache Software License, Version 2.0
+  OGC SOS schema (spec. v1.0.0) under The Apache Software License, Version 2.0
+  OGC SPS schema (spec. v1.0.0) under The Apache Software License, Version 2.0
+  OGC SWECommon schema (spec. v1.0.0) under The Apache Software License, Version 2.0
+  OGC SWECommon schema (spec. v1.0.1) under The Apache Software License, Version 2.0
   Open Sensor Search common classes under The Apache Software License, Version 2.0
   Open Sensor Search Parent Project under The Apache Software License, Version 2.0
   Open Sensor Search Service under The Apache Software License, Version 2.0
@@ -157,7 +157,7 @@ This project includes:
   swagger-annotations under Apache License 2.0
   swagger-core under Apache License 2.0
   swagger-jaxrs under Apache License 2.0
-  W3C xlink schema (spec. v1.1.0) under GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+  W3C xlink schema (spec. v1.1.0) under The Apache Software License, Version 2.0
   WireMock under The Apache Software License, Version 2.0
   Woodstox under The Apache Software License, Version 2.0
   Xerces2-j under The Apache Software License, Version 2.0

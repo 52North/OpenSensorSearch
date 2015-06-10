@@ -48,14 +48,14 @@ This project includes:
   Jackson-JAXRS-JSON_Provider under The Apache Software License, Version 2.0
   Jackson-module-JAXB-annotations under The Apache Software License, Version 2.0
   Jackson-module-Scala under The Apache Software License, Version 2.0
-  Java Servlet API under CDDL + GPLv2 with classpath exception
+  Java Servlet API under CDDL 1.1 or GPL2 w/ CPE
   JavaBeans Activation Framework (JAF) under Common Development and Distribution License (CDDL) v1.0
   javax.inject under The Apache Software License, Version 2.0
   javax.xml.soap API under CDDL 1.1 or GPL2 w/ CPE
   JAX-RS provider for JSON content type under The Apache Software License, Version 2.0 or GNU Lesser General Public License (LGPL), Version 2.1
   JAXB API bundle for GlassFish V3 under CDDL 1.1 or GPL2 w/ CPE
   JAXB RI under CDDL 1.1 or GPL2 w/ CPE
-  jdom under JDOM license, https://github.com/hunterhacker/jdom/blob/master/LICENSE.txt
+  jdom under JDOM license (Apache style), https://github.com/hunterhacker/jdom/blob/master/LICENSE.txt
   Jena under BSD
   Jena IRI under BSD-style license
   jersey-bundle under CDDL 1.1 or GPL2 w/ CPE

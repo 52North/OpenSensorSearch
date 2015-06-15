@@ -69,7 +69,7 @@ Several files have to be used so that Guice does not try to bind the same proper
   * ``org.n52.oss.service.db.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/prop/db.properties``
   * ``org.n52.oss.service.sir.properties`` are added to (and potentially overwrite) the base file ``src/main/resources/prop/sir.properties``
 * **website module**
-  * ``org.n52.oss.website.properties`` overwrites the values in website module src/main/resources/org.n52.oss.website.properties
+  * ``org.n52.oss.website.properties`` overwrites the values in website module's file ``src/main/resources/org.n52.oss.website.properties``
 
 There are sample files in the same directories of the base file to get you started.
 

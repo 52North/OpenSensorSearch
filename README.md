@@ -1,3 +1,7 @@
+# ARCHIVED
+
+This project is no longer maintained and will not receive any further updates. If you plan to continue using it, please be aware that future security issues will not be addressed.
+
 # OpenSensorSearch
 
 Open Sensor Search (OSS) is a platform for discovery of in-situ sensor data. across all sensor web supporting major specifications (OGC SWE) and popular IoT websites (Xively, Thingspeak, ...). It spans across large scale networks based on powerful OGC Sensor Web standards and protocols (Sensor Observation Service, SensorML) and specific individual platforms by providing a modular and open architecture and a flexible mechanism to include data from many different sources.
